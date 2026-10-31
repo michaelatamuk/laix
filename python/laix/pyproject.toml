@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "laix"
-version = "0.1.0"
+version = "0.1.1"
 description = "LAIX: one generic decision layer for live apps. Contracts, policies, runtime, execution, outcomes and decision records."
 readme = "README.md"
 requires-python = ">=3.11"
