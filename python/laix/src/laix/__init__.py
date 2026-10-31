@@ -53,7 +53,22 @@ from .platform import (
     Platform,
     SkillCall,
 )
-from .policies import DecisionPolicy, POLICY_VERSION, Policy, PolicyConfig, PolicyError, PolicyRegistry, PolicyRequest, decide
+from .policies import (
+    ActivePerceptionPolicy,
+    AllocationPolicy,
+    DecisionPolicy,
+    NegotiationPolicy,
+    POLICY_VERSION,
+    Policy,
+    PolicyConfig,
+    PolicyError,
+    PolicyRegistry,
+    PolicyRequest,
+    PreferenceElicitationPolicy,
+    ReplanningPolicy,
+    SafetyConstrainedPolicy,
+    decide,
+)
 from .records.decision import DecisionRecord, approve as approve_record, create_record, reject as reject_record, verify as verify_record
 from .records.proposal import Proposal, apply as apply_proposal, approve as approve_proposal, reject as reject_proposal, undo as undo_proposal
 from .runtime import (
@@ -72,6 +87,8 @@ from .runtime import (
 
 __all__ = [
     "Action",
+    "ActivePerceptionPolicy",
+    "AllocationPolicy",
     "ApprovalDecision",
     "ApprovalRequest",
     "ApprovalRequired",
@@ -90,6 +107,7 @@ __all__ = [
     "Layer",
     "LayerDecision",
     "NullDelivery",
+    "NegotiationPolicy",
     "OutcomeStore",
     "Platform",
     "Policy",
@@ -135,11 +153,14 @@ __all__ = [
     "POLICY_VERSION",
     "PolicyConfig",
     "PolicyRequest",
+    "PreferenceElicitationPolicy",
     "RECEIPT_STATUSES",
     "Receipt",
     "ResourcePlan",
     "ResourcePolicy",
+    "ReplanningPolicy",
     "SCHEMA_VERSION",
+    "SafetyConstrainedPolicy",
     "SensingOption",
     "Situation",
     "Trace",

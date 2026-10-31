@@ -39,6 +39,12 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 | `decisions.py` | the one decision shape, request shape and policy-result conversions |
 | `layer.py` | the public `Layer` orchestrator |
 | `policies/action.py` | built-in action-selection policy |
+| `policies/active_perception.py` | reference `observe` policy |
+| `policies/safety.py` | risk-limited action policy |
+| `policies/replanning.py` | feasible-plan selection policy |
+| `policies/allocation.py` | budgeted allocation policy |
+| `policies/negotiation.py` | accept, counter or escalate policy |
+| `policies/preference.py` | preference-question selection policy |
 | `policies/registry.py` | policy plugin protocol and registry |
 | `attention/` | attention policy: gates, score, quiet hours, budget, feedback, replay |
 | `runtime/decision_runtime.py` | the action runtime |

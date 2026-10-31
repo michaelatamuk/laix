@@ -26,6 +26,12 @@ python/laix/src/laix/
 ├── platform.py              the south platform interface and in-memory platform
 ├── policies/
 │   ├── action.py            the built-in action policy
+│   ├── active_perception.py reference observe policy
+│   ├── safety.py            risk-limited action policy
+│   ├── replanning.py        feasible-plan selection policy
+│   ├── allocation.py        budgeted allocation policy
+│   ├── negotiation.py       accept, counter or escalate policy
+│   ├── preference.py        preference-question selection policy
 │   └── registry.py          the policy plugin interface
 ├── attention/               the attention policy
 ├── runtime/

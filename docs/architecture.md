@@ -32,6 +32,15 @@ lifecycle phase after an action.
 
 The app sends one request. `Layer.decide()` reads it and uses the matching generic policy.
 
+## Reference policy packs
+
+The two request shapes above are the common path. LAIX also ships deterministic reference policies
+for other decision classes: active perception, safety-constrained action, replanning, allocation,
+negotiation and preference elicitation. They read generic inputs from `DecisionRequest.attributes`,
+return the same decision shape, and are registered like any other policy. An app can use a pack
+directly or replace it with a learned policy behind the same interface. `docs/policy-packs.md`
+describes each contract.
+
 ## Growth rules
 
 1. App names live in app adapters. The layer uses generic vocabulary.

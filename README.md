@@ -41,10 +41,14 @@ policy.
 
 ## Inside the layer
 
-The layer holds one set of contracts and two generic policies:
+The layer holds one set of contracts and two common request policies:
 
 - **attention**: which signal deserves attention now, and how?
 - **action**: which of the available actions should the app take?
+
+It also ships reference policy packs for active perception, safety-constrained action, replanning,
+allocation, negotiation and preference elicitation. They use the same plugin interface and decision
+shape.
 
 New apps send requests. Shared rules become generic policies. App rules stay in the app adapter.
 
