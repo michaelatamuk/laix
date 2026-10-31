@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+          python -m pip install -e ./python/laix
+      - name: Test
+        working-directory: python/laix
+        run: python -m pytest -q
+      - name: Run examples
+        run: |
+          python examples/python/bill_due.py
+          python examples/python/quiet_hours.py
+          python examples/python/leaking_sink.py
+          python examples/python/pay_bill.py
+          python examples/python/check_again.py
+          python examples/python/record.py
+
+  typescript:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["22", "24"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Test
+        working-directory: typescript/laix
+        run: npm test
+      - name: Conformance
+        working-directory: typescript/laix
+        run: npm run conformance
+      - name: Run example
+        run: node --experimental-strip-types examples/typescript/bill_due.mts

@@ -1,5 +1,7 @@
 # LAIX
 
+[![CI](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml)
+
 LAIX is one decision layer for live apps. An app describes the moment and its limits. LAIX decides
 whether to **wait, observe, guide, ask, act, verify or escalate**, and records what happened.
 
@@ -55,7 +57,7 @@ New apps send requests. Shared rules become generic policies. App rules stay in 
 | `contracts/` | the JSON Schema and behavioural vectors |
 | `eval/` | the benchmark seed |
 | `examples/` | small runnable requests in Python and TypeScript |
-| `docs/` | design notes |
+| `docs/` | design notes and the integration guide |
 
 ## Test
 

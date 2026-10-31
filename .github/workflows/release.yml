@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Test Python
+        working-directory: python/laix
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+          python -m pip install -e .
+          python -m pytest -q
+
+      - name: Test TypeScript
+        working-directory: typescript/laix
+        run: |
+          npm test
+          npm run conformance
+
+      - name: Build Python package
+        run: |
+          python -m pip install build
+          python -m build --outdir dist/python ./python/laix
+
+      - name: Build TypeScript package
+        run: |
+          mkdir -p dist/typescript
+          cd typescript/laix
+          npm pack --pack-destination ../../dist/typescript
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/python/*
+            dist/typescript/*
+          generate_release_notes: true
