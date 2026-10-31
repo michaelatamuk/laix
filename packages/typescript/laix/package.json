@@ -1,6 +1,6 @@
 {
   "name": "laix",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "private": true,
   "type": "module",
   "description": "LAIX: one generic decision layer for live apps - decisions, timing, approval, audit and outcomes.",
@@ -15,7 +15,8 @@
   "files": ["src", "types.d.ts", "README.md"],
   "sideEffects": false,
   "scripts": {
-    "test": "node --experimental-strip-types --test test/attention.test.ts test/conformance.test.ts test/record.test.ts test/record-replay.test.ts test/layer.test.ts",
+    "test": "node --experimental-strip-types --test test/attention.test.ts test/conformance.test.ts test/record.test.ts test/record-replay.test.ts test/layer.test.ts test/parity.test.ts",
+    "bench": "node --experimental-strip-types scripts/bench.mjs",
     "conformance": "node --experimental-strip-types scripts/conformance.mjs"
   }
 }

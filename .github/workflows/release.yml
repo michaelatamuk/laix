@@ -27,11 +27,13 @@ jobs:
           python -m pip install pytest
           python -m pip install -e .
           python -m pytest -q
+          python -m laix.bench
 
       - name: Test TypeScript
         working-directory: packages/typescript/laix
         run: |
           npm test
+          npm run bench
           npm run conformance
 
       - name: Build Python package

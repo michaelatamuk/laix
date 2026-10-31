@@ -62,11 +62,20 @@ imports from `laix`, not from the internal paths.
 
 ```text
 packages/typescript/laix/src/
-├── attention.ts   attention policy and its types
-├── layer.ts       the public Layer and action policy
-├── record.ts      the decision record
-├── index.ts       the public exports
-└── types.d.ts     the public TypeScript declarations
+├── attention.ts       attention policy and its types
+├── bench.ts           LAIX-Bench suites and report
+├── contracts.ts       core records and helpers
+├── delivery.ts        delivery port and receipt
+├── evaluation.ts      parity harness
+├── layer.ts           the public Layer and action policy
+├── outcome.ts         ledger, store contract and UCB learner
+├── platform.ts        south platform interface and in-memory platform
+├── proposal.ts        proposal lifecycle
+├── record.ts          the decision record
+├── policies/          eight packs, bandit policy and registry
+├── runtime/           execution, state, stores, resources and perception
+├── index.ts           the public exports
+└── types.d.ts         the public TypeScript declarations
 ```
 
 ## Size rules
@@ -75,7 +84,7 @@ packages/typescript/laix/src/
   500–700 lines.
 - A folder is added when a group has a real boundary, not to reduce a file count.
 - Generated files and data files are allowed to be larger than code files.
-- `typescript/attention.ts` is medium and cohesive. `contracts.py` holds ten related
+- `packages/typescript/laix/src/attention.ts` is medium and cohesive. `contracts.py` holds ten related
   dataclasses. Neither needs a split yet.
 - `schemas/laix-v1.schema.json` is generated. `packages/contracts/attention.v1.json` is test data.
 

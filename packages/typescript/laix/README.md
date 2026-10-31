@@ -1,7 +1,8 @@
 # laix (TypeScript)
 
-One package for the LAIX decision layer: the attention policy and the decision record, behind one
-entry point. The package uses language features only and takes generic inputs.
+One package for the LAIX decision layer: contracts, attention, action, the ten decision classes,
+Live Context, outcome learning, bench, platform, stores, proposals, delivery, execution and records.
+It mirrors the Python package capability for capability.
 
 ```ts
 import { Layer } from "laix";
@@ -16,30 +17,37 @@ const decisions = layer.decide({
 ```
 
 `Layer.decide` accepts either `signals` + `context` or `situation` + `options`, and returns the same
-`LayerDecision` shape for both.
+`LayerDecision` shape for both. A policy plugin can be supplied with `new Layer({ policy })`, or
+registered with `registerPolicy` and selected with `usePolicy`.
 
-The package also exports:
+## Capabilities
 
-- `decide(context, signals)` — the attention policy;
-- `isQuietHours`, `score`, `costOfWaiting`, `OutcomeLog`;
-- `createDecisionRecord`, `approveRecord`, `rejectRecord`, `markExecuted`, `undoRecord`,
-  `verifyRecord`, `fingerprint`.
+| Area | Exports |
+|---|---|
+| Attention | `decide`, `score`, `costOfWaiting`, `OutcomeLog` |
+| Action | `Layer`, `decideAction` |
+| Policy packs | `ActivePerceptionPolicy`, `SafetyConstrainedPolicy`, `ReplanningPolicy`, `AllocationPolicy`, `NegotiationPolicy`, `PreferenceElicitationPolicy`, `VerificationPolicy`, `EscalationPolicy` |
+| Learned policy | `BanditPolicy`, `UCBBandit`, `Arm`, `rewardForLabel` |
+| Live Context | `LiveContext`, `CallableDetector`, `Detector`, `Detection`, `PerceptionEvent` |
+| Runtime | `DecisionRuntime`, `ExecutionBridge`, `ExperienceState`, `ResourcePolicy` |
+| Platform | `Platform`, `InMemoryPlatform`, `SkillCall` |
+| Stores | `StateStore`, `InMemoryStateStore`, `OutcomeLedger`, `OutcomeStore` |
+| Proposals | `createProposal`, `approveProposal`, `rejectProposal`, `applyProposal`, `undoProposal` |
+| Delivery | `DeliveryPort`, `NullDelivery`, `DeliveryReceipt` |
+| Evaluation | `compare`, `loadCases`, `Case`, `Report` |
+| Bench | `runBench`, `suiteNames` |
 
-The attention policy passes the same 23 cases as the Python policy. The decision record lifecycle
-is:
-
-```
-draft -> approved -> executed -> undone
-  |
-  +-> rejected
-```
+The attention policy passes the same 24 decisions as Python. The bench runs the same 10 suites and
+25 cases as Python.
 
 ## Test
 
 ```powershell
 npm.cmd test
+npm.cmd run bench
 npm.cmd run conformance
 ```
 
 `npm.cmd run conformance` compares every attention decision against
 `packages/contracts/attention.v1.json` and exits non-zero on a mismatch.
+`npm.cmd run bench` runs all decision classes.

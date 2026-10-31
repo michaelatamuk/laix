@@ -18,7 +18,11 @@ examples/
 ├── typescript/
 │   ├── attention/
 │   ├── action/
-│   └── records/
+│   ├── policies/
+│   ├── runtime/
+│   ├── stores/
+│   ├── records/
+│   └── integration/
 └── apps/              one caller example per working app
 ```
 
@@ -90,7 +94,19 @@ examples/
 |---|---|---|
 | `typescript/attention/bill_due.mts` | The same bill, in TypeScript. | `guide worth_surfacing 84` |
 | `typescript/action/action.mts` | The leaking sink, in TypeScript. | `act policy_rule option-close-valve` |
-| `typescript/records/record.mts` | The decision record lifecycle, in TypeScript. | `executed true` |
+| `typescript/policies/packs.mts` | All eight reference policy packs. | one line per pack |
+| `typescript/policies/bandit.mts` | Outcome learning changes the next choice. | `manual automatic 0.75` |
+| `typescript/runtime/live_context.mts` | Cheap and deep detectors under a budget. | `[ 'motion', 'read-label' ] [ 'transcribe' ] 2 0.097` |
+| `typescript/runtime/execution.mts` | Decide, execute, record a receipt. | `executed close the valve` |
+| `typescript/runtime/platform.mts` | Run a skill, approve, read events. | `7 skill.started,skill.finished fast true` |
+| `typescript/runtime/resources.mts` | Cheap/deep admission. | `[ 'camera', 'read-page' ] [ 'full-audio' ]` |
+| `typescript/stores/state_store.mts` | Save, load and delete experience state. | `decide true` |
+| `typescript/stores/outcome_store.mts` | Record a measured outcome. | `helped -2 1` |
+| `typescript/records/proposal.mts` | Proposal lifecycle. | `pending approved applied undone` |
+| `typescript/records/record.mts` | Decision record lifecycle. | `executed true` |
+| `typescript/integration/bench.mts` | Run LAIX-Bench from TypeScript. | `25 25 1` |
+| `typescript/integration/delivery.mts` | Delivery port and receipt. | `skipped email` |
+| `typescript/integration/evaluation.mts` | Parity harness. | `2 2 1` |
 
 ## Run
 
@@ -112,9 +128,7 @@ py examples/python/policies/active_perception.py
 The TypeScript examples run with Node's type stripping:
 
 ```powershell
-node --experimental-strip-types examples/typescript/attention/bill_due.mts
-node --experimental-strip-types examples/typescript/action/action.mts
-node --experimental-strip-types examples/typescript/records/record.mts
+Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object { node --experimental-strip-types $_.FullName }
 ```
 
 `packages/python/laix/tests/test_examples.py` runs every example, so none of them can rot.

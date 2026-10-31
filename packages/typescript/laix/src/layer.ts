@@ -7,6 +7,8 @@
  */
 
 import { decide as decideAttention, type Context, type Signal } from "./attention.ts";
+import type { Decision } from "./contracts.ts";
+import { PolicyRegistry, type Policy } from "./policies/registry.ts";
 
 export type Verb = "wait" | "observe" | "guide" | "ask" | "act" | "verify" | "escalate";
 
@@ -21,6 +23,16 @@ export interface LayerDecision {
   traceId: string;
   deliver: boolean;
   record: boolean;
+  decisionId?: string;
+  policyVersion?: string;
+  evidence?: Decision["evidence"];
+  breakdown?: Decision["breakdown"];
+  intent?: Decision["intent"];
+  escalation?: Decision["escalation"];
+  costOfWaiting?: number;
+  reversible?: boolean;
+  undoHint?: string | null;
+  createdAt?: string;
 }
 
 export interface LayerRequest {
@@ -30,6 +42,7 @@ export interface LayerRequest {
   context?: Context;
   situation?: Situation;
   options?: ActionOption[];
+  attributes?: Record<string, unknown>;
 }
 
 export interface BeliefLike {
@@ -198,7 +211,64 @@ export function decideAction(situation: Situation, options: ActionOption[]): Lay
 }
 
 export class Layer {
+  private registry = new PolicyRegistry();
+  private policy: Policy | null;
+
+  constructor(options: { policy?: Policy } = {}) {
+    this.policy = options.policy ?? null;
+    if (this.policy) this.registry.register(this.policy.name, this.policy);
+  }
+
+  registerPolicy(name: string, policy: Policy): void {
+    this.registry.register(name, policy);
+  }
+
+  usePolicy(name: string): void {
+    this.policy = this.registry.get(name);
+  }
+
+  status(): Record<string, unknown> {
+    return { policy: this.policy?.name ?? "built-in", registered: this.registry.names() };
+  }
+
+  explain(decision: LayerDecision): Record<string, unknown> {
+    return {
+      verb: decision.verb,
+      reasonCode: decision.reasonCode,
+      rationale: decision.rationale,
+      confidence: decision.confidence,
+      actionId: decision.actionId,
+      requiresApproval: decision.requiresApproval,
+      score: decision.score,
+      policy: decision.policyVersion ?? this.policy?.name ?? "built-in",
+    };
+  }
+
   decide(request: LayerRequest): LayerDecision[] {
+    if (this.policy) {
+      return this.policy.decide(request as unknown as import("./contracts.ts").DecisionRequest).map((decision) => ({
+        verb: decision.verb,
+        confidence: decision.confidence,
+        reasonCode: decision.reasonCode,
+        rationale: decision.rationale,
+        actionId: decision.actionId ?? null,
+        requiresApproval: decision.requiresApproval ?? false,
+        score: decision.score ?? null,
+        traceId: decision.traceId ?? "",
+        deliver: decision.deliver ?? true,
+        record: decision.record ?? true,
+        decisionId: decision.decisionId,
+        policyVersion: decision.policyVersion,
+        evidence: decision.evidence,
+        breakdown: decision.breakdown,
+        intent: decision.intent,
+        escalation: decision.escalation,
+        costOfWaiting: decision.costOfWaiting,
+        reversible: decision.reversible,
+        undoHint: decision.undoHint,
+        createdAt: decision.createdAt,
+      }));
+    }
     if (request.situation || request.options?.length) {
       if (!request.situation) throw new Error("action selection needs a situation");
       return [decideAction(request.situation, request.options ?? [])];

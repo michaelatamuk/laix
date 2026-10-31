@@ -8,11 +8,10 @@ place that knows the app.
 ### Python
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.5.2#subdirectory=python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.6.0#subdirectory=packages/python/laix"
 ```
 
-Tags up to `v0.5.2` use `python/laix`. Tags released after the package reorg use
-`packages/python/laix`.
+Tags up to `v0.5.2` use `python/laix`. Tags from `v0.6.0` use `packages/python/laix`.
 
 For local development:
 
@@ -137,7 +136,7 @@ the app repository.
 Use a tag, not a branch:
 
 ```text
-v0.5.2
+v0.6.0
 ```
 
 A contract change creates a new version. The app upgrades deliberately.

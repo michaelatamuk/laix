@@ -46,11 +46,14 @@ jobs:
       - name: Test
         working-directory: packages/typescript/laix
         run: npm test
+      - name: Bench
+        working-directory: packages/typescript/laix
+        run: npm run bench
       - name: Conformance
         working-directory: packages/typescript/laix
         run: npm run conformance
       - name: Run examples
         run: |
-          node --experimental-strip-types examples/typescript/attention/bill_due.mts
-          node --experimental-strip-types examples/typescript/action/action.mts
-          node --experimental-strip-types examples/typescript/records/record.mts
+          for file in $(find examples/typescript -name '*.mts'); do
+            node --experimental-strip-types "$file"
+          done
