@@ -42,3 +42,5 @@ Store decision consequences, not app content:
 
 Do not store raw transcripts, images, customer data or secrets in a shared outcome store. The app
 keeps the evidence; the store keeps the reference and the measurement.
+
+Learning reads labels from these outcomes. See [`outcome-learning.md`](outcome-learning.md).

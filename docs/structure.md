@@ -34,6 +34,7 @@ python/laix/src/laix/
 │   ├── preference.py        preference-question selection policy
 │   ├── verification.py      outcome confirmation policy
 │   ├── escalation.py        hand-over policy
+│   ├── bandit.py            learned bandit policy
 │   └── registry.py          the policy plugin interface
 ├── attention/               the attention policy
 ├── runtime/
@@ -46,7 +47,7 @@ python/laix/src/laix/
 ├── records/
 │   ├── decision.py          the decision record
 │   └── proposal.py          the proposal lifecycle
-├── outcome.py               the metric outcome ledger
+├── outcome.py               outcome ledger, store contract and UCB learner
 ├── delivery.py              the delivery port and receipt
 ├── evaluation.py            the parity harness
 ├── schema.py                schema generation

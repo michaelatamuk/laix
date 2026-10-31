@@ -53,6 +53,9 @@ plugin interface and decision shape.
 Live Context adds a detector contract and a perception loop: cheap detectors run continuously, deep
 ones are admitted under a sub-second cost and latency budget, and each event produces a frame.
 
+Outcome learning turns measured labels into rewards. `UCBBandit` learns which arm works and
+`BanditPolicy` puts that learner behind the policy interface.
+
 New apps send requests. Shared rules become generic policies. App rules stay in the app adapter.
 
 ## Repository map

@@ -42,7 +42,7 @@ from .evaluation import compare as compare_decisions
 from .evaluation import load_cases
 from .layer import Decision as LayerDecision
 from .layer import DecisionRequest, Layer
-from .outcome import OutcomeLedger, OutcomeStore
+from .outcome import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
 from .platform import (
     ApprovalDecision,
     ApprovalRequest,
@@ -56,6 +56,7 @@ from .platform import (
 from .policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
+    BanditPolicy,
     DecisionPolicy,
     EscalationPolicy,
     NegotiationPolicy,
@@ -108,6 +109,7 @@ __all__ = [
     "ApprovalDecision",
     "ApprovalRequest",
     "ApprovalRequired",
+    "Arm",
     "CAPABILITY_LEVELS",
     "Capability",
     "Case",
@@ -149,9 +151,11 @@ __all__ = [
     "mark_executed",
     "reject_proposal",
     "reject_record",
+    "reward_for_label",
     "undo_proposal",
     "verify_record",
     "Belief",
+    "BanditPolicy",
     "Budget",
     "CONTRACT_NAMES",
     "CONTRACTS",
@@ -189,6 +193,7 @@ __all__ = [
     "SensingOption",
     "Situation",
     "Trace",
+    "UCBBandit",
     "UnknownAction",
     "VERBS",
     "VerificationPolicy",

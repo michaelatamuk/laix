@@ -59,6 +59,8 @@ The layer has four generic seams:
   `Layer.register_policy()` and select it with `use_policy()`.
 - **Detector** — any object with `name`, `tier`, `cost`, `latency_ms`, `information_gain` and
   `detect(event)`; `LiveContext` admits cheap detectors always and deep ones under budget.
+- **Learned policy** — `BanditPolicy` chooses among arms from `UCBBandit` and improves from measured
+  outcome labels.
 - **Platform interface** — run a named skill, cancel, approve, read/write state, stream events and
   request a capability level.
 - **Proposal** — a storage-free record for an action that needs a person: pending, approved,

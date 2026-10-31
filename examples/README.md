@@ -10,7 +10,7 @@ examples/
 ├── python/
 │   ├── attention/     surfacing, quiet hours, feedback
 │   ├── action/        action selection and custom policy
-│   ├── policies/      the eight reference policy packs
+│   ├── policies/      reference policy packs and learned bandit
 │   ├── runtime/       execution, resources, platform
 │   ├── records/       decision record and proposal
 │   ├── stores/        state store and outcome store
@@ -51,6 +51,7 @@ examples/
 | `python/policies/preference.py` | Preference elicitation | `ask ask_preference q2` |
 | `python/policies/verification.py` | Verification | `verify verify_outcome api` |
 | `python/policies/escalation.py` | Escalation | `escalate escalate_to_target manager` |
+| `python/policies/bandit.py` | Outcome learning | `manual automatic 0.75` |
 
 ## Runtime
 

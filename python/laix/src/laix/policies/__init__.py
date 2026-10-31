@@ -10,6 +10,7 @@ from .registry import Policy, PolicyError, PolicyRegistry
 _LAZY = {
     "ActivePerceptionPolicy": "active_perception",
     "AllocationPolicy": "allocation",
+    "BanditPolicy": "bandit",
     "EscalationPolicy": "escalation",
     "NegotiationPolicy": "negotiation",
     "PreferenceElicitationPolicy": "preference",
@@ -31,6 +32,7 @@ def __getattr__(name: str):
 __all__ = [
     "ActivePerceptionPolicy",
     "AllocationPolicy",
+    "BanditPolicy",
     "DecisionPolicy",
     "EscalationPolicy",
     "NegotiationPolicy",

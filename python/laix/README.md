@@ -47,6 +47,7 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 | `policies/preference.py` | preference-question selection policy |
 | `policies/verification.py` | outcome confirmation policy |
 | `policies/escalation.py` | hand-over policy |
+| `policies/bandit.py` | learned bandit policy |
 | `policies/registry.py` | policy plugin protocol and registry |
 | `attention/` | attention policy: gates, score, quiet hours, budget, feedback, replay |
 | `runtime/decision_runtime.py` | the action runtime |
@@ -56,7 +57,7 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 | `runtime/state_store.py` | storage-free state store contract and in-memory store |
 | `runtime/resources.py` | cheap/deep call admission under budget |
 | `platform.py` | south platform interface and in-memory platform |
-| `outcome.py` | directed metric ledger and outcome store contract |
+| `outcome.py` | directed metric ledger, outcome store contract and UCB learner |
 | `records/decision.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
 | `records/proposal.py` | storage-free proposal and approval lifecycle |
 | `delivery.py` | delivery port and receipt |
