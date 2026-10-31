@@ -42,7 +42,17 @@ from .evaluation import compare as compare_decisions
 from .evaluation import load_cases
 from .layer import Decision as LayerDecision
 from .layer import DecisionRequest, Layer
-from .outcome import OutcomeLedger
+from .outcome import OutcomeLedger, OutcomeStore
+from .platform import (
+    ApprovalDecision,
+    ApprovalRequest,
+    CAPABILITY_LEVELS,
+    Capability,
+    Event,
+    InMemoryPlatform,
+    Platform,
+    SkillCall,
+)
 from .policies import DecisionPolicy, POLICY_VERSION, Policy, PolicyConfig, PolicyError, PolicyRegistry, PolicyRequest, decide
 from .records.decision import DecisionRecord, approve as approve_record, create_record, reject as reject_record, verify as verify_record
 from .records.proposal import Proposal, apply as apply_proposal, approve as approve_proposal, reject as reject_proposal, undo as undo_proposal
@@ -52,25 +62,36 @@ from .runtime import (
     DecisionRuntime,
     ExecutionBridge,
     ExperienceState,
+    InMemoryStateStore,
     ResourcePlan,
     ResourcePolicy,
     SensingOption,
+    StateStore,
     UnknownAction,
 )
 
 __all__ = [
     "Action",
+    "ApprovalDecision",
+    "ApprovalRequest",
     "ApprovalRequired",
+    "CAPABILITY_LEVELS",
+    "Capability",
     "Case",
     "Context",
     "DecisionRecord",
     "DecisionRequest",
     "DeliveryPort",
     "DeliveryReceipt",
+    "Event",
     "Feedback",
+    "InMemoryPlatform",
+    "InMemoryStateStore",
     "Layer",
     "LayerDecision",
     "NullDelivery",
+    "OutcomeStore",
+    "Platform",
     "Policy",
     "PolicyError",
     "PolicyRegistry",
@@ -78,6 +99,8 @@ __all__ = [
     "Report",
     "Row",
     "Signal",
+    "SkillCall",
+    "StateStore",
     "apply_proposal",
     "approve_proposal",
     "approve_record",

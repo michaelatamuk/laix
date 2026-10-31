@@ -23,6 +23,7 @@ python/laix/src/laix/
 ├── contracts.py             the core records
 ├── decisions.py             the decision/request shapes and conversions
 ├── layer.py                 the public Layer orchestrator
+├── platform.py              the south platform interface and in-memory platform
 ├── policies/
 │   ├── action.py            the built-in action policy
 │   └── registry.py          the policy plugin interface
@@ -31,6 +32,7 @@ python/laix/src/laix/
 │   ├── decision_runtime.py  the action runtime
 │   ├── execution.py         approval, execute, cancel, undo
 │   ├── state.py             experience state
+│   ├── state_store.py       the storage-free state store contract
 │   └── resources.py         resource policy
 ├── records/
 │   ├── decision.py          the decision record

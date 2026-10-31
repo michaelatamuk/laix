@@ -44,8 +44,10 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 | `runtime/decision_runtime.py` | the action runtime |
 | `runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
 | `runtime/state.py` | experience state: goals, phase, beliefs, decay, expiry |
+| `runtime/state_store.py` | storage-free state store contract and in-memory store |
 | `runtime/resources.py` | cheap/deep call admission under budget |
-| `outcome.py` | directed metric ledger |
+| `platform.py` | south platform interface and in-memory platform |
+| `outcome.py` | directed metric ledger and outcome store contract |
 | `records/decision.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
 | `records/proposal.py` | storage-free proposal and approval lifecycle |
 | `delivery.py` | delivery port and receipt |

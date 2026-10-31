@@ -4,6 +4,7 @@ from .execution import ApprovalRequired, ExecutionBridge, UnknownAction
 from .resources import Budget, ResourcePlan, ResourcePolicy, SensingOption
 from .decision_runtime import DecisionRuntime
 from .state import ExperienceState
+from .state_store import InMemoryStateStore, StateStore
 
 __all__ = [
     "ApprovalRequired",
@@ -11,8 +12,10 @@ __all__ = [
     "DecisionRuntime",
     "ExecutionBridge",
     "ExperienceState",
+    "InMemoryStateStore",
     "ResourcePlan",
     "ResourcePolicy",
     "SensingOption",
+    "StateStore",
     "UnknownAction",
 ]

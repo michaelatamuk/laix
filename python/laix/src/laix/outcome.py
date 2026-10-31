@@ -12,9 +12,26 @@ scored as a regression.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Iterable
+from typing import Any, Iterable, Protocol, runtime_checkable
 
 from .contracts import OUTCOME_DIRECTIONS, OUTCOME_LABELS, Outcome, iso, new_id
+
+
+@runtime_checkable
+class OutcomeStore(Protocol):
+    """What an app supplies when outcomes outlive one request."""
+
+    def add(self, outcome: Outcome) -> Outcome:
+        ...
+
+    def for_decision(self, decision_id: str) -> list[Outcome]:
+        ...
+
+    def all(self) -> list[Outcome]:
+        ...
+
+    def summary(self) -> dict[str, Any]:
+        ...
 
 
 def _signed_gain(delta: float, direction: str) -> float:
@@ -73,8 +90,15 @@ class OutcomeLedger:
         self.records.append(outcome)
         return outcome
 
+    def add(self, outcome: Outcome) -> Outcome:
+        self.records.append(outcome)
+        return outcome
+
     def for_decision(self, decision_id: str) -> list[Outcome]:
         return [item for item in self.records if item.decision_id == decision_id]
+
+    def all(self) -> list[Outcome]:
+        return list(self.records)
 
     def summary(self) -> dict[str, Any]:
         """Measured gain, with attribution coverage stated separately."""
@@ -115,3 +139,6 @@ class OutcomeLedger:
 
     def to_dict(self) -> dict[str, Any]:
         return {"tolerance": self.tolerance, "records": [item.to_dict() for item in self.records], "summary": self.summary()}
+
+
+__all__ = ["OutcomeLedger", "OutcomeStore"]

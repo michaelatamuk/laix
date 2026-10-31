@@ -47,10 +47,14 @@ The layer has four generic seams:
 
 - **Policy plugin** — any object with `name` and `decide(request)`; register it with
   `Layer.register_policy()` and select it with `use_policy()`.
+- **Platform interface** — run a named skill, cancel, approve, read/write state, stream events and
+  request a capability level.
 - **Proposal** — a storage-free record for an action that needs a person: pending, approved,
   rejected, applied, undone.
 - **Delivery port** — the app supplies the transport; the layer supplies the decision and expects a
   delivery receipt.
+- **State store** — save, load and delete experience snapshots.
+- **Outcome store** — record decision consequences and return a summary.
 - **Parity harness** — compare two policies or two versions of one policy on the same cases.
 
 These are contracts. The app keeps its database, channels, UI and domain rules.
