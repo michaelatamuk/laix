@@ -26,9 +26,9 @@ function Run-Step {
 Run-Step 'python laix' "$root\python\laix" { py -m pytest -q }
 Run-Step 'typescript laix' "$root\typescript\laix" { npm.cmd test }
 Run-Step 'typescript conformance' "$root\typescript\laix" { npm.cmd run conformance }
-Run-Step 'typescript example attention' "$root" { node --experimental-strip-types examples/typescript/bill_due.mts }
-Run-Step 'typescript example action' "$root" { node --experimental-strip-types examples/typescript/action.mts }
-Run-Step 'typescript example record' "$root" { node --experimental-strip-types examples/typescript/record.mts }
+Run-Step 'typescript example attention' "$root" { node --experimental-strip-types examples/typescript/attention/bill_due.mts }
+Run-Step 'typescript example action' "$root" { node --experimental-strip-types examples/typescript/action/action.mts }
+Run-Step 'typescript example record' "$root" { node --experimental-strip-types examples/typescript/records/record.mts }
 
 if ($script:failures.Count -gt 0) {
     Write-Host ""

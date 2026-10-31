@@ -3,50 +3,89 @@
 Each example sends one request to `Layer` or uses one LAIX contract, then prints a short result. The
 stories are small everyday situations, so the result is easy to picture.
 
-## Common decisions
+## Layout
+
+```text
+examples/
+├── python/
+│   ├── attention/     surfacing, quiet hours, feedback
+│   ├── action/        action selection and custom policy
+│   ├── policies/      the six reference policy packs
+│   ├── runtime/       execution, resources, platform
+│   ├── records/       decision record and proposal
+│   ├── stores/        state store and outcome store
+│   └── integration/   delivery and evaluation
+├── typescript/
+│   ├── attention/
+│   ├── action/
+│   └── records/
+└── apps/              one caller example per working app
+```
+
+## Attention
 
 | File | Story | Output |
 |---|---|---|
-| `python/bill_due.py` | An electricity bill is due tomorrow, at 10:00. | `guide worth_surfacing 84.0` |
-| `python/quiet_hours.py` | The same bill, now at 23:30. | `wait quiet_hours 84.0 True False` |
-| `python/leaking_sink.py` | The kitchen sink is about to overflow. | `act policy_rule option-close-valve` |
-| `python/pay_bill.py` | A bill is due today and a person must approve the payment. | `act policy_rule option-pay True` |
-| `python/check_again.py` | A parcel is late; a tracking page can settle it. | `observe policy_rule option-check-tracking` |
-| `python/custom_policy.py` | A caller supplies its own policy. | `wait policy_rule` |
-| `python/record.py` | Record the payment, approve it, execute it. | `executed True` |
-| `python/feedback.py` | The person already dismissed this signal. | `wait dismissed` |
+| `python/attention/bill_due.py` | An electricity bill is due tomorrow, at 10:00. | `guide worth_surfacing 84.0` |
+| `python/attention/quiet_hours.py` | The same bill, now at 23:30. | `wait quiet_hours 84.0 True False` |
+| `python/attention/feedback.py` | The person already dismissed this signal. | `wait dismissed` |
+
+## Action
+
+| File | Story | Output |
+|---|---|---|
+| `python/action/leaking_sink.py` | The kitchen sink is about to overflow. | `act policy_rule option-close-valve` |
+| `python/action/pay_bill.py` | A bill is due today and a person must approve the payment. | `act policy_rule option-pay True` |
+| `python/action/check_again.py` | A parcel is late; a tracking page can settle it. | `observe policy_rule option-check-tracking` |
+| `python/action/custom_policy.py` | A caller supplies its own policy. | `wait policy_rule` |
 
 ## Policy packs
 
 | File | Class | Output |
 |---|---|---|
-| `python/active_perception.py` | Active perception | `observe observe_for_information look-1` |
-| `python/safety.py` | Safety-constrained action | `act safe_action valve` |
-| `python/replanning.py` | Replanning | `act replan plan-fast` |
-| `python/allocation.py` | Allocation | `act allocate ['a', 'b']` |
-| `python/negotiation.py` | Negotiation | `act counter_offer 12.5` |
-| `python/preference.py` | Preference elicitation | `ask ask_preference q2` |
+| `python/policies/active_perception.py` | Active perception | `observe observe_for_information look-1` |
+| `python/policies/safety.py` | Safety-constrained action | `act safe_action valve` |
+| `python/policies/replanning.py` | Replanning | `act replan plan-fast` |
+| `python/policies/allocation.py` | Allocation | `act allocate ['a', 'b']` |
+| `python/policies/negotiation.py` | Negotiation | `act counter_offer 12.5` |
+| `python/policies/preference.py` | Preference elicitation | `ask ask_preference q2` |
 
-## Platform and contracts
+## Runtime
 
 | File | Piece | Output |
 |---|---|---|
-| `python/platform_interface.py` | Run a skill, approve, read events | `7 skill.started,skill.finished fast True` |
-| `python/state_store.py` | Save, load and delete an experience snapshot | `decide True` |
-| `python/outcome_store.py` | Record what a decision changed | `helped -2.0 1` |
-| `python/proposal.py` | Proposal lifecycle | `pending approved applied undone` |
-| `python/delivery.py` | Delivery port and receipt | `skipped email` |
-| `python/evaluation.py` | Parity harness over cases | `2 2 1.0` |
-| `python/resources.py` | Cheap/deep call admission | `('camera', 'read-page') ('full-audio',)` |
-| `python/execution.py` | Decision runtime and execution bridge | `executed close the valve` |
+| `python/runtime/execution.py` | Decision runtime and execution bridge | `executed close the valve` |
+| `python/runtime/resources.py` | Cheap/deep call admission | `('camera', 'read-page') ('full-audio',)` |
+| `python/runtime/platform_interface.py` | Run a skill, approve, read events | `7 skill.started,skill.finished fast True` |
+
+## Records
+
+| File | Piece | Output |
+|---|---|---|
+| `python/records/record.py` | Record, approve, execute, verify | `executed True` |
+| `python/records/proposal.py` | Proposal lifecycle | `pending approved applied undone` |
+
+## Stores
+
+| File | Piece | Output |
+|---|---|---|
+| `python/stores/state_store.py` | Save, load and delete an experience snapshot | `decide True` |
+| `python/stores/outcome_store.py` | Record what a decision changed | `helped -2.0 1` |
+
+## Integration
+
+| File | Piece | Output |
+|---|---|---|
+| `python/integration/delivery.py` | Delivery port and receipt | `skipped email` |
+| `python/integration/evaluation.py` | Parity harness over cases | `2 2 1.0` |
 
 ## TypeScript
 
 | File | Story | Output |
 |---|---|---|
-| `typescript/bill_due.mts` | The same bill, in TypeScript. | `guide worth_surfacing 84` |
-| `typescript/action.mts` | The leaking sink, in TypeScript. | `act policy_rule option-close-valve` |
-| `typescript/record.mts` | The decision record lifecycle, in TypeScript. | `executed true` |
+| `typescript/attention/bill_due.mts` | The same bill, in TypeScript. | `guide worth_surfacing 84` |
+| `typescript/action/action.mts` | The leaking sink, in TypeScript. | `act policy_rule option-close-valve` |
+| `typescript/records/record.mts` | The decision record lifecycle, in TypeScript. | `executed true` |
 
 ## Run
 
@@ -54,7 +93,7 @@ From the repository root:
 
 ```powershell
 $env:PYTHONPATH = "python/laix/src"
-Get-ChildItem examples/python/*.py | ForEach-Object { py $_.FullName }
+Get-ChildItem examples/python -Recurse -Filter *.py | ForEach-Object { py $_.FullName }
 Get-ChildItem examples/apps/*.py | ForEach-Object { py $_.FullName }
 ```
 
@@ -62,15 +101,15 @@ A single example:
 
 ```powershell
 $env:PYTHONPATH = "python/laix/src"
-py examples/python/active_perception.py
+py examples/python/policies/active_perception.py
 ```
 
 The TypeScript examples run with Node's type stripping:
 
 ```powershell
-node --experimental-strip-types examples/typescript/bill_due.mts
-node --experimental-strip-types examples/typescript/action.mts
-node --experimental-strip-types examples/typescript/record.mts
+node --experimental-strip-types examples/typescript/attention/bill_due.mts
+node --experimental-strip-types examples/typescript/action/action.mts
+node --experimental-strip-types examples/typescript/records/record.mts
 ```
 
 `python/laix/tests/test_examples.py` runs every example, so none of them can rot.

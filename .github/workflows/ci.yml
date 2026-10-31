@@ -26,13 +26,9 @@ jobs:
         run: python -m pytest -q
       - name: Run examples
         run: |
-          python examples/python/bill_due.py
-          python examples/python/quiet_hours.py
-          python examples/python/leaking_sink.py
-          python examples/python/pay_bill.py
-          python examples/python/check_again.py
-          python examples/python/custom_policy.py
-          python examples/python/record.py
+          for file in $(find examples/python -name '*.py'); do
+            python "$file"
+          done
 
   typescript:
     runs-on: ubuntu-latest
@@ -50,5 +46,8 @@ jobs:
       - name: Conformance
         working-directory: typescript/laix
         run: npm run conformance
-      - name: Run example
-        run: node --experimental-strip-types examples/typescript/bill_due.mts
+      - name: Run examples
+        run: |
+          node --experimental-strip-types examples/typescript/attention/bill_due.mts
+          node --experimental-strip-types examples/typescript/action/action.mts
+          node --experimental-strip-types examples/typescript/records/record.mts
