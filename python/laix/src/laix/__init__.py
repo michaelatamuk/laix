@@ -57,6 +57,7 @@ from .policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
     DecisionPolicy,
+    EscalationPolicy,
     NegotiationPolicy,
     POLICY_VERSION,
     Policy,
@@ -67,6 +68,7 @@ from .policies import (
     PreferenceElicitationPolicy,
     ReplanningPolicy,
     SafetyConstrainedPolicy,
+    VerificationPolicy,
     decide,
 )
 from .records.decision import (
@@ -109,6 +111,7 @@ __all__ = [
     "DeliveryPort",
     "DeliveryReceipt",
     "Event",
+    "EscalationPolicy",
     "EvidenceRef",
     "Feedback",
     "InMemoryPlatform",
@@ -176,6 +179,7 @@ __all__ = [
     "Trace",
     "UnknownAction",
     "VERBS",
+    "VerificationPolicy",
     "confidence_band",
     "decide",
     "iso",

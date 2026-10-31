@@ -10,10 +10,12 @@ from .registry import Policy, PolicyError, PolicyRegistry
 _LAZY = {
     "ActivePerceptionPolicy": "active_perception",
     "AllocationPolicy": "allocation",
+    "EscalationPolicy": "escalation",
     "NegotiationPolicy": "negotiation",
     "PreferenceElicitationPolicy": "preference",
     "ReplanningPolicy": "replanning",
     "SafetyConstrainedPolicy": "safety",
+    "VerificationPolicy": "verification",
 }
 
 
@@ -30,10 +32,12 @@ __all__ = [
     "ActivePerceptionPolicy",
     "AllocationPolicy",
     "DecisionPolicy",
+    "EscalationPolicy",
     "NegotiationPolicy",
     "PreferenceElicitationPolicy",
     "ReplanningPolicy",
     "SafetyConstrainedPolicy",
+    "VerificationPolicy",
     "POLICY_VERSION",
     "Policy",
     "PolicyConfig",

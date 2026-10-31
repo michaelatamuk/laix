@@ -10,7 +10,7 @@ examples/
 ├── python/
 │   ├── attention/     surfacing, quiet hours, feedback
 │   ├── action/        action selection and custom policy
-│   ├── policies/      the six reference policy packs
+│   ├── policies/      the eight reference policy packs
 │   ├── runtime/       execution, resources, platform
 │   ├── records/       decision record and proposal
 │   ├── stores/        state store and outcome store
@@ -49,6 +49,8 @@ examples/
 | `python/policies/allocation.py` | Allocation | `act allocate ['a', 'b']` |
 | `python/policies/negotiation.py` | Negotiation | `act counter_offer 12.5` |
 | `python/policies/preference.py` | Preference elicitation | `ask ask_preference q2` |
+| `python/policies/verification.py` | Verification | `verify verify_outcome api` |
+| `python/policies/escalation.py` | Escalation | `escalate escalate_to_target manager` |
 
 ## Runtime
 

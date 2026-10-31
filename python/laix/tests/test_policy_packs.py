@@ -6,11 +6,13 @@ from laix import (
     ActivePerceptionPolicy,
     AllocationPolicy,
     DecisionRequest,
+    EscalationPolicy,
     Layer,
     NegotiationPolicy,
     PreferenceElicitationPolicy,
     ReplanningPolicy,
     SafetyConstrainedPolicy,
+    VerificationPolicy,
 )
 
 
@@ -118,3 +120,59 @@ def test_preference_elicitation_asks_the_best_question() -> None:
     assert decision.verb == "ask"
     assert decision.intent is not None
     assert decision.intent.args["id"] == "q2"
+
+
+def test_verification_picks_the_best_check() -> None:
+    decision = decide(
+        VerificationPolicy(),
+        confidence=0.5,
+        required_confidence=0.8,
+        checks=[
+            {"id": "manual", "confidence_gain": 0.2, "cost": 1},
+            {"id": "api", "confidence_gain": 0.8, "cost": 1},
+        ],
+    )
+    assert decision.verb == "verify"
+    assert decision.action_id == "api"
+    assert decision.intent is not None
+    assert decision.intent.capability == "verify"
+
+
+def test_verification_escalates_without_a_path() -> None:
+    decision = decide(VerificationPolicy(), confidence=0.3, required_confidence=0.8, checks=[])
+    assert decision.verb == "escalate"
+    assert decision.reason_code == "no_verification_path"
+    assert decision.escalation is not None
+    assert decision.escalation.target == "human"
+
+
+def test_verification_is_not_needed_when_confident() -> None:
+    decision = decide(
+        VerificationPolicy(),
+        confidence=0.95,
+        required_confidence=0.8,
+        verification_due=False,
+        checks=[],
+    )
+    assert decision.verb == "wait"
+    assert decision.reason_code == "verification_not_needed"
+
+
+def test_escalation_hands_over_to_a_target() -> None:
+    decision = decide(EscalationPolicy(), severity=0.9, severity_threshold=0.8, target="manager")
+    assert decision.verb == "escalate"
+    assert decision.action_id == "manager"
+    assert decision.escalation is not None
+    assert decision.escalation.target == "manager"
+
+
+def test_escalation_waits_within_limits() -> None:
+    decision = decide(EscalationPolicy(), severity=0.2, severity_threshold=0.8, confidence=0.9)
+    assert decision.verb == "wait"
+    assert decision.reason_code == "within_limits"
+
+
+def test_escalation_asks_for_a_target_when_missing() -> None:
+    decision = decide(EscalationPolicy(), severity=0.9, severity_threshold=0.8)
+    assert decision.verb == "ask"
+    assert decision.reason_code == "target_required"

@@ -32,6 +32,8 @@ python/laix/src/laix/
 │   ├── allocation.py        budgeted allocation policy
 │   ├── negotiation.py       accept, counter or escalate policy
 │   ├── preference.py        preference-question selection policy
+│   ├── verification.py      outcome confirmation policy
+│   ├── escalation.py        hand-over policy
 │   └── registry.py          the policy plugin interface
 ├── attention/               the attention policy
 ├── runtime/

@@ -45,6 +45,8 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 | `policies/allocation.py` | budgeted allocation policy |
 | `policies/negotiation.py` | accept, counter or escalate policy |
 | `policies/preference.py` | preference-question selection policy |
+| `policies/verification.py` | outcome confirmation policy |
+| `policies/escalation.py` | hand-over policy |
 | `policies/registry.py` | policy plugin protocol and registry |
 | `attention/` | attention policy: gates, score, quiet hours, budget, feedback, replay |
 | `runtime/decision_runtime.py` | the action runtime |
