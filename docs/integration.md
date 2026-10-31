@@ -8,7 +8,7 @@ place that knows the app.
 ### Python
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.1.0#subdirectory=python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.2.0#subdirectory=python/laix"
 ```
 
 For local development:
@@ -134,7 +134,7 @@ the app repository.
 Use a tag, not a branch:
 
 ```text
-v0.1.0
+v0.2.0
 ```
 
 A contract change creates a new version. The app upgrades deliberately.
@@ -151,7 +151,28 @@ LAIX:    whether to act now, how, with what approval, and whether it worked
 
 The manager keeps its memory and missions. LAIX does not store them.
 
-## 7. Add an HTTP service only when needed
+## 7. Add a custom policy when needed
+
+A vertical decision style is a policy plugin, not a fork of the layer:
+
+```python
+from laix import Layer, LayerDecision
+
+class QualityPolicy:
+    name = "quality"
+    version = "1.0"
+
+    def decide(self, request):
+        return [LayerDecision(verb="guide", confidence=0.8, reason_code="policy_rule", rationale="open a watch")]
+
+layer = Layer(policy=QualityPolicy())
+```
+
+Use `layer.register_policy("quality", QualityPolicy())` and `layer.use_policy("quality")` when the
+selection is dynamic. `layer.status()` reports the active policy; `layer.explain(decision)` returns
+the record fields.
+
+## 8. Add an HTTP service only when needed
 
 The package runs in-process. Add a small HTTP wrapper when a caller cannot run Python or TypeScript
 in the same process:
@@ -164,7 +185,7 @@ POST /v1/decide
 
 The wrapper adds network latency, authentication and deployment work. It is a separate change.
 
-## 8. Release
+## 9. Release
 
 The repository has CI for every push and pull request. A tag creates a GitHub release with:
 

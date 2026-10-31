@@ -43,9 +43,42 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 | `execution.py` | approval gate, execute, cancel, undo, receipts |
 | `outcome.py` | directed metric ledger |
 | `record.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
+| `policies.py` | policy plugin protocol and registry |
+| `proposal.py` | storage-free proposal and approval lifecycle |
+| `delivery.py` | delivery port and receipt |
+| `evaluation.py` | policy parity and replay harness |
 | `resources.py` | cheap/deep call admission under budget |
 | `runtime.py` | the action runtime |
 | `schema.py` | generated JSON Schema |
+
+## Custom policies
+
+A policy is any object with a name and a `decide` method:
+
+```python
+from laix import DecisionRequest, Layer, LayerDecision
+
+class MyPolicy:
+    name = "my-policy"
+    version = "1.0"
+
+    def decide(self, request):
+        return [LayerDecision(verb="wait", confidence=0.5, reason_code="policy_rule", rationale="wait")]
+
+layer = Layer(policy=MyPolicy())
+decision = layer.decide(
+    DecisionRequest(subject="one decision", at="2026-11-01T10:00:00+00:00")
+)[0]
+```
+
+Register and select policies at runtime:
+
+```python
+layer.register_policy("my-policy", MyPolicy())
+layer.use_policy("my-policy")
+print(layer.status())
+print(layer.explain(decision))
+```
 
 ## Test
 

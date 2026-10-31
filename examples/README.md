@@ -10,6 +10,7 @@ situations, so the result is easy to picture.
 | `python/leaking_sink.py` | The kitchen sink is about to overflow. | `act policy_rule option-close-valve` |
 | `python/pay_bill.py` | A bill is due today and a person must approve the payment. | `act policy_rule option-pay True` |
 | `python/check_again.py` | A parcel is late; a tracking page can settle it. | `observe policy_rule option-check-tracking` |
+| `python/custom_policy.py` | A caller supplies its own policy. | `wait policy_rule` |
 | `python/record.py` | Record the payment, approve it, execute it. | `executed True` |
 | `typescript/bill_due.mts` | The same bill, in TypeScript. | `guide worth_surfacing 84` |
 
@@ -22,6 +23,7 @@ py examples/python/quiet_hours.py
 py examples/python/leaking_sink.py
 py examples/python/pay_bill.py
 py examples/python/check_again.py
+py examples/python/custom_policy.py
 py examples/python/record.py
 ```
 

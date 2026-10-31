@@ -41,6 +41,20 @@ The app sends one request. `Layer.decide()` reads it and uses the matching gener
 4. A score describes one policy. Each policy keeps its own score and breakdown.
 5. The app owns stored state. The layer reads the state the caller supplies.
 
+## Extension points
+
+The layer has four generic seams:
+
+- **Policy plugin** — any object with `name` and `decide(request)`; register it with
+  `Layer.register_policy()` and select it with `use_policy()`.
+- **Proposal** — a storage-free record for an action that needs a person: pending, approved,
+  rejected, applied, undone.
+- **Delivery port** — the app supplies the transport; the layer supplies the decision and expects a
+  delivery receipt.
+- **Parity harness** — compare two policies or two versions of one policy on the same cases.
+
+These are contracts. The app keeps its database, channels, UI and domain rules.
+
 ## Scope
 
 The layer covers decisions, execution records, outcomes and decision records. Perception, storage,

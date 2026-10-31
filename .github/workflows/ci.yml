@@ -31,6 +31,7 @@ jobs:
           python examples/python/leaking_sink.py
           python examples/python/pay_bill.py
           python examples/python/check_again.py
+          python examples/python/custom_policy.py
           python examples/python/record.py
 
   typescript:
