@@ -1,0 +1,83 @@
+{
+  "contract": "laix-bench",
+  "version": "1.0.0",
+  "note": "Twelve synthetic, labelled interventions used to score a policy against two baselines. Labels describe what the user later decided: helpful, harmful or neutral. This is a miniature bench.",
+  "cases": [
+    {
+      "id": "b01_kind_a_critical_day",
+      "label": "helpful",
+      "context": { "now": "2026-11-01T10:00:00+02:00", "quietHours": "22:00-06:00" },
+      "signal": { "id": "b01", "kind": "kind-a", "severity": "critical", "confidence": 0.9, "due": "2026-11-02T09:00:00+02:00" }
+    },
+    {
+      "id": "b02_kind_f_critical_night",
+      "label": "helpful",
+      "context": { "now": "2026-11-01T23:30:00+02:00", "quietHours": "22:00-06:00" },
+      "signal": { "id": "b02", "kind": "kind-f", "severity": "critical", "confidence": 0.9, "due": "2026-11-03T09:00:00+02:00" }
+    },
+    {
+      "id": "b03_kind_c_high_night",
+      "label": "harmful",
+      "context": { "now": "2026-11-01T23:30:00+02:00", "quietHours": "22:00-06:00" },
+      "signal": { "id": "b03", "kind": "kind-c", "severity": "high", "confidence": 0.7 }
+    },
+    {
+      "id": "b04_kind_b_high_night",
+      "label": "harmful",
+      "context": { "now": "2026-11-01T23:40:00+02:00", "quietHours": "22:00-06:00" },
+      "signal": { "id": "b04", "kind": "kind-b", "severity": "high", "confidence": 0.7 }
+    },
+    {
+      "id": "b05_kind_d_medium_day",
+      "label": "harmful",
+      "context": { "now": "2026-11-01T10:00:00+02:00", "quietHours": "22:00-06:00" },
+      "signal": { "id": "b05", "kind": "kind-d", "severity": "medium", "confidence": 0.8 }
+    },
+    {
+      "id": "b06_kind_g_high_neutral",
+      "label": "neutral",
+      "context": { "now": "2026-11-01T10:00:00+02:00", "quietHours": "22:00-06:00" },
+      "signal": { "id": "b06", "kind": "kind-g", "severity": "high", "confidence": 0.8 }
+    },
+    {
+      "id": "b07_kind_h_high_muted",
+      "label": "harmful",
+      "context": { "now": "2026-11-01T10:00:00+02:00", "quietHours": "22:00-06:00", "mutedKinds": ["kind-h"] },
+      "signal": { "id": "b07", "kind": "kind-h", "severity": "high", "confidence": 0.8 }
+    },
+    {
+      "id": "b08_kind_c_high_snoozed",
+      "label": "harmful",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": "22:00-06:00",
+        "feedback": { "b08": { "state": "snoozed", "until": "2026-11-03T08:00:00+02:00" } }
+      },
+      "signal": { "id": "b08", "kind": "kind-c", "severity": "high", "confidence": 0.8 }
+    },
+    {
+      "id": "b09_kind_a_critical_already_sent",
+      "label": "helpful",
+      "context": { "now": "2026-11-01T10:00:00+02:00", "quietHours": "22:00-06:00", "sent": ["b09:2026-11-01"] },
+      "signal": { "id": "b09", "kind": "kind-a", "severity": "critical", "confidence": 0.9 }
+    },
+    {
+      "id": "b10_kind_d_medium_night",
+      "label": "harmful",
+      "context": { "now": "2026-11-01T23:30:00+02:00", "quietHours": "22:00-06:00" },
+      "signal": { "id": "b10", "kind": "kind-d", "severity": "medium", "confidence": 0.8 }
+    },
+    {
+      "id": "b11_kind_b_high_day",
+      "label": "helpful",
+      "context": { "now": "2026-11-01T10:00:00+02:00", "quietHours": "22:00-06:00" },
+      "signal": { "id": "b11", "kind": "kind-b", "severity": "high", "confidence": 0.85, "due": "2026-11-02T09:00:00+02:00" }
+    },
+    {
+      "id": "b12_kind_i_high_night",
+      "label": "neutral",
+      "context": { "now": "2026-11-01T23:50:00+02:00", "quietHours": "22:00-06:00" },
+      "signal": { "id": "b12", "kind": "kind-i", "severity": "high", "confidence": 0.75 }
+    }
+  ]
+}

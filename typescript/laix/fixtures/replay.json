@@ -1,0 +1,29 @@
+{
+  "name": "decision-record-replay-v1",
+  "note": "Deterministic replay: fixed now and id, no wall clock, no random values. The test executes the steps in order.",
+  "create": {
+    "id": "dr_replay_1",
+    "now": "2026-11-04T10:00:00Z",
+    "input": {
+      "title": "One decision",
+      "decision": "Proceed with the plan.",
+      "confidence": 0.94,
+      "evidence": [
+        {
+          "id": "e3",
+          "kind": "reference",
+          "quote": "The evidence is confirmed.",
+          "confidence": 0.95
+        }
+      ],
+      "requiresApproval": true,
+      "metadata": { "sourceRef": "ref-1" }
+    }
+  },
+  "steps": [
+    { "action": "create", "expectedStatus": "draft" },
+    { "action": "approve", "by": "owner", "at": "2026-11-04T10:05:00Z", "expectedStatus": "approved" },
+    { "action": "execute", "by": "owner", "at": "2026-11-04T10:06:00Z", "expectedStatus": "executed" },
+    { "action": "undo", "by": "owner", "at": "2026-11-04T10:07:00Z", "reason": "Incorrect decision.", "expectedStatus": "undone" }
+  ]
+}

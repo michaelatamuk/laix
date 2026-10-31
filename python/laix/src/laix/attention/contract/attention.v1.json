@@ -1,0 +1,694 @@
+{
+  "contract": "laix",
+  "version": "2.2.0",
+  "note": "Behavioural contract. Any implementation that passes every case is a valid LAIX attention runtime. Scores are part of the contract in v1; changing a weight is a major version.",
+  "cases": [
+    {
+      "id": "critical_at_night_still_reaches_a_human",
+      "context": {
+        "now": "2026-11-01T23:30:00+02:00",
+        "quietHours": "22:00-06:00",
+        "minSeverity": "high"
+      },
+      "signals": [
+        {
+          "id": "signal-1",
+          "kind": "kind-a",
+          "severity": "critical",
+          "confidence": 0.9,
+          "due": "2026-11-02T09:00:00+02:00",
+          "evidenceRefs": [
+            "ev-1"
+          ],
+          "interruptionCost": 0.2
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-1",
+          "action": "guide",
+          "reason": "worth_surfacing",
+          "deliver": true,
+          "record": true,
+          "score": 94.0,
+          "cost_of_waiting": 40.0,
+          "undo_hint": "withdraw",
+          "reversible": false
+        }
+      ]
+    },
+    {
+      "id": "high_waits_for_the_digest_at_night",
+      "context": {
+        "now": "2026-11-01T23:30:00+02:00",
+        "quietHours": "22:00-06:00",
+        "minSeverity": "high"
+      },
+      "signals": [
+        {
+          "id": "signal-2",
+          "kind": "kind-b",
+          "severity": "high",
+          "confidence": 0.8,
+          "due": "2026-11-02T09:00:00+02:00"
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-2",
+          "action": "wait",
+          "reason": "quiet_hours",
+          "deliver": false,
+          "record": true,
+          "score": 81.0
+        }
+      ]
+    },
+    {
+      "id": "medium_is_below_the_floor",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": "22:00-06:00",
+        "minSeverity": "high"
+      },
+      "signals": [
+        {
+          "id": "signal-3",
+          "kind": "kind-d",
+          "severity": "medium",
+          "confidence": 0.7
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-3",
+          "action": "wait",
+          "reason": "below_floor",
+          "deliver": false,
+          "record": false,
+          "score": 44.0
+        }
+      ]
+    },
+    {
+      "id": "low_confidence_is_not_raised",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "minSeverity": "high",
+        "minConfidence": 0.6
+      },
+      "signals": [
+        {
+          "id": "signal-4",
+          "kind": "kind-c",
+          "severity": "high",
+          "confidence": 0.3
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-4",
+          "action": "wait",
+          "reason": "low_confidence",
+          "deliver": false,
+          "record": false,
+          "score": 51.0
+        }
+      ]
+    },
+    {
+      "id": "a_muted_kind_is_silent",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "mutedKinds": [
+          "kind-c"
+        ]
+      },
+      "signals": [
+        {
+          "id": "signal-5",
+          "kind": "kind-c",
+          "severity": "high",
+          "confidence": 0.9
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-5",
+          "action": "wait",
+          "reason": "muted",
+          "deliver": false,
+          "record": false,
+          "score": 63.0
+        }
+      ]
+    },
+    {
+      "id": "the_same_signal_is_not_repeated_the_same_day",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "sent": [
+          "signal-6:2026-11-01"
+        ]
+      },
+      "signals": [
+        {
+          "id": "signal-6",
+          "kind": "kind-h",
+          "severity": "high",
+          "confidence": 0.9
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-6",
+          "action": "wait",
+          "reason": "already_sent",
+          "deliver": false,
+          "record": false,
+          "score": 63.0
+        }
+      ]
+    },
+    {
+      "id": "the_kill_switch_wins_over_everything",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "stopped": true
+      },
+      "signals": [
+        {
+          "id": "signal-7",
+          "kind": "kind-a",
+          "severity": "critical",
+          "confidence": 0.99
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-7",
+          "action": "wait",
+          "reason": "kill_switch",
+          "deliver": false,
+          "record": false,
+          "score": 79.8
+        }
+      ]
+    },
+    {
+      "id": "the_interruption_budget_is_a_hard_cap",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "interruptionBudget": 1
+      },
+      "signals": [
+        {
+          "id": "signal-8a",
+          "kind": "kind-a",
+          "severity": "critical",
+          "confidence": 0.9
+        },
+        {
+          "id": "signal-8b",
+          "kind": "kind-f",
+          "severity": "critical",
+          "confidence": 0.9
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-8a",
+          "action": "guide",
+          "reason": "worth_surfacing",
+          "deliver": true,
+          "record": true,
+          "score": 78.0
+        },
+        {
+          "signalId": "signal-8b",
+          "action": "wait",
+          "reason": "budget",
+          "deliver": false,
+          "record": false,
+          "score": 78.0
+        }
+      ]
+    },
+    {
+      "id": "a_critical_that_stayed_overdue_escalates",
+      "context": {
+        "now": "2026-11-04T10:00:00+02:00",
+        "quietHours": "22:00-06:00",
+        "escalateAfterHours": 48
+      },
+      "signals": [
+        {
+          "id": "signal-9",
+          "kind": "kind-e",
+          "severity": "critical",
+          "confidence": 0.95,
+          "due": "2026-11-01T10:00:00+02:00",
+          "requiresApproval": true
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-9",
+          "action": "escalate",
+          "reason": "overdue_escalation",
+          "deliver": true,
+          "record": true,
+          "score": 109.0,
+          "cost_of_waiting": 60.0,
+          "undo_hint": null,
+          "reversible": false
+        }
+      ]
+    },
+    {
+      "id": "quiet_hours_end_is_inclusive",
+      "context": {
+        "now": "2026-11-02T06:00:00+02:00",
+        "quietHours": "22:00-06:00"
+      },
+      "signals": [
+        {
+          "id": "signal-10",
+          "kind": "kind-g",
+          "severity": "high",
+          "confidence": 0.8
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-10",
+          "action": "wait",
+          "reason": "quiet_hours",
+          "deliver": false,
+          "record": true,
+          "score": 61.0
+        }
+      ]
+    },
+    {
+      "id": "one_minute_after_quiet_hours_notifies",
+      "context": {
+        "now": "2026-11-02T06:01:00+02:00",
+        "quietHours": "22:00-06:00"
+      },
+      "signals": [
+        {
+          "id": "signal-11",
+          "kind": "kind-g",
+          "severity": "high",
+          "confidence": 0.8
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-11",
+          "action": "guide",
+          "reason": "worth_surfacing",
+          "deliver": true,
+          "record": true,
+          "score": 61.0
+        }
+      ]
+    },
+    {
+      "id": "learned_adjustment_is_added_to_the_score",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "learned": {
+          "kind-b": 8.0
+        }
+      },
+      "signals": [
+        {
+          "id": "signal-12",
+          "kind": "kind-b",
+          "severity": "high",
+          "confidence": 0.9
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-12",
+          "action": "guide",
+          "reason": "worth_surfacing",
+          "deliver": true,
+          "record": true,
+          "score": 71.0
+        }
+      ]
+    },
+    {
+      "id": "a_snooze_holds_until_it_expires",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "feedback": {
+          "signal-13": {
+            "state": "snoozed",
+            "at": "2026-10-30T09:00:00+02:00",
+            "until": "2026-11-02T08:00:00+02:00"
+          }
+        }
+      },
+      "signals": [
+        {
+          "id": "signal-13",
+          "kind": "kind-c",
+          "severity": "high",
+          "confidence": 0.8
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-13",
+          "action": "wait",
+          "reason": "snoozed",
+          "deliver": false,
+          "record": false,
+          "score": 61.0
+        }
+      ]
+    },
+    {
+      "id": "an_expired_snooze_releases_the_signal",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "feedback": {
+          "signal-14": {
+            "state": "snoozed",
+            "until": "2026-10-31T08:00:00+02:00"
+          }
+        }
+      },
+      "signals": [
+        {
+          "id": "signal-14",
+          "kind": "kind-c",
+          "severity": "high",
+          "confidence": 0.8
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-14",
+          "action": "guide",
+          "reason": "worth_surfacing",
+          "deliver": true,
+          "record": true,
+          "score": 61.0
+        }
+      ]
+    },
+    {
+      "id": "a_signal_marked_wrong_never_repeats",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "feedback": {
+          "signal-15": {
+            "state": "wrong"
+          }
+        }
+      },
+      "signals": [
+        {
+          "id": "signal-15",
+          "kind": "kind-c",
+          "severity": "high",
+          "confidence": 0.8
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-15",
+          "action": "wait",
+          "reason": "wrong",
+          "deliver": false,
+          "record": false,
+          "score": 61.0
+        }
+      ]
+    },
+    {
+      "id": "an_assigned_signal_is_someone_elses_job",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "feedback": {
+          "signal-16": {
+            "state": "assigned"
+          }
+        }
+      },
+      "signals": [
+        {
+          "id": "signal-16",
+          "kind": "kind-c",
+          "severity": "high",
+          "confidence": 0.8
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-16",
+          "action": "wait",
+          "reason": "assigned",
+          "deliver": false,
+          "record": false,
+          "score": 61.0
+        }
+      ]
+    },
+    {
+      "id": "a_dismissed_signal_stays_dismissed",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "feedback": {
+          "signal-17": {
+            "state": "dismissed"
+          }
+        }
+      },
+      "signals": [
+        {
+          "id": "signal-17",
+          "kind": "kind-c",
+          "severity": "high",
+          "confidence": 0.8
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-17",
+          "action": "wait",
+          "reason": "dismissed",
+          "deliver": false,
+          "record": false,
+          "score": 61.0
+        }
+      ]
+    },
+    {
+      "id": "an_accepted_signal_is_not_suppressed",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "feedback": {
+          "signal-18": {
+            "state": "accepted"
+          }
+        }
+      },
+      "signals": [
+        {
+          "id": "signal-18",
+          "kind": "kind-c",
+          "severity": "high",
+          "confidence": 0.8
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-18",
+          "action": "guide",
+          "reason": "worth_surfacing",
+          "deliver": true,
+          "record": true,
+          "score": 61.0
+        }
+      ]
+    },
+    {
+      "id": "a_reversible_intent_is_executed_when_act_is_allowed",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "allowAct": true
+      },
+      "signals": [
+        {
+          "id": "signal-19",
+          "kind": "kind-a",
+          "severity": "high",
+          "confidence": 0.9,
+          "reversible": true,
+          "intent": {
+            "capability": "capability-a",
+            "args": {
+              "variation": "foundry-cut"
+            }
+          }
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-19",
+          "action": "act",
+          "reason": "act",
+          "deliver": true,
+          "record": true,
+          "score": 63.0,
+          "cost_of_waiting": 0.0,
+          "undo_hint": "cancel",
+          "reversible": true
+        }
+      ]
+    },
+    {
+      "id": "an_action_that_needs_approval_keeps_the_flag",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null,
+        "allowAct": true
+      },
+      "signals": [
+        {
+          "id": "signal-20",
+          "kind": "kind-f",
+          "severity": "high",
+          "confidence": 0.9,
+          "reversible": true,
+          "requiresApproval": true,
+          "intent": {
+            "capability": "capability-b",
+            "args": {
+              "kind-g": "rain-02"
+            }
+          }
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-20",
+          "action": "act",
+          "reason": "act",
+          "deliver": true,
+          "record": true,
+          "requires_approval": true,
+          "score": 63.0,
+          "cost_of_waiting": 0.0,
+          "undo_hint": "cancel",
+          "reversible": true
+        }
+      ]
+    },
+    {
+      "id": "an_intent_does_nothing_unless_act_is_allowed",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null
+      },
+      "signals": [
+        {
+          "id": "signal-21",
+          "kind": "kind-a",
+          "severity": "high",
+          "confidence": 0.9,
+          "reversible": true,
+          "intent": {
+            "capability": "capability-a",
+            "args": {}
+          }
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-21",
+          "action": "guide",
+          "reason": "worth_surfacing",
+          "deliver": true,
+          "record": true,
+          "score": 63.0
+        }
+      ]
+    },
+    {
+      "id": "an_escalation_carries_its_target",
+      "context": {
+        "now": "2026-11-04T10:00:00+02:00",
+        "quietHours": "22:00-06:00",
+        "escalateAfterHours": 24
+      },
+      "signals": [
+        {
+          "id": "signal-22",
+          "kind": "kind-e",
+          "severity": "critical",
+          "confidence": 0.95,
+          "due": "2026-11-01T10:00:00+02:00",
+          "escalation": {
+            "target": "target-a",
+            "reason": "overdue item unchanged for three days"
+          }
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-22",
+          "action": "escalate",
+          "reason": "overdue_escalation",
+          "deliver": true,
+          "record": true,
+          "score": 109.0
+        }
+      ]
+    },
+    {
+      "id": "no_new_context_behaves_exactly_as_before",
+      "context": {
+        "now": "2026-11-01T10:00:00+02:00",
+        "quietHours": null
+      },
+      "signals": [
+        {
+          "id": "signal-23",
+          "kind": "kind-h",
+          "severity": "high",
+          "confidence": 0.9
+        }
+      ],
+      "expected": [
+        {
+          "signalId": "signal-23",
+          "action": "guide",
+          "reason": "worth_surfacing",
+          "deliver": true,
+          "record": true,
+          "score": 63.0
+        }
+      ]
+    }
+  ]
+}
