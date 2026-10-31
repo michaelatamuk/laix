@@ -9,7 +9,6 @@ laix/
 ├── examples/         small runnable requests and caller examples
 ├── python/laix/      the Python package and its tests
 ├── typescript/laix/  the TypeScript package and its tests
-├── scripts/          repository test runner
 └── .github/          CI and release workflows
 ```
 

@@ -77,10 +77,16 @@ New apps send requests. Shared rules become generic policies. App rules stay in 
 ## Test
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/test-all.ps1
+cd python/laix
+py -m pytest -q
+py -m laix.bench
+
+cd ../../typescript/laix
+npm test
+npm run conformance
 ```
 
-The script runs the Python package, the TypeScript package and the contract conformance check.
+CI runs the same checks in `.github/workflows/ci.yml`.
 
 ## Status
 
