@@ -336,7 +336,7 @@ function decideOne(signal: Signal, context: Context, delivered: number): Decisio
     evidenceRefs: signal.evidenceRefs ?? [],
     breakdown,
     traceId: traceId(signal, context.now, action),
-    intent: action === "act" || action === "ask" ? signal.intent ?? null : null,
+    intent: action === "act" ? signal.intent ?? null : null,
     escalation: action === "escalate" ? signal.escalation ?? null : null,
     costOfWaiting: costOfWaiting(signal, context),
     reversible: Boolean(signal.reversible),
