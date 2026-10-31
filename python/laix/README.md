@@ -37,18 +37,18 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 |---|---|
 | `contracts.py` | versioned records: observation, belief, goal, constraint, action, situation, decision, outcome, receipt, trace |
 | `layer.py` | the public `Layer` and the common decision shape |
+| `policies/action.py` | built-in action-selection policy |
+| `policies/registry.py` | policy plugin protocol and registry |
 | `attention/` | attention policy: gates, score, quiet hours, budget, feedback, replay |
-| `state.py` | experience state: goals, phase, beliefs, decay, expiry |
-| `policy.py` | action-selection policy |
-| `execution.py` | approval gate, execute, cancel, undo, receipts |
+| `runtime/decision_runtime.py` | the action runtime |
+| `runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
+| `runtime/state.py` | experience state: goals, phase, beliefs, decay, expiry |
+| `runtime/resources.py` | cheap/deep call admission under budget |
 | `outcome.py` | directed metric ledger |
-| `record.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
-| `policies.py` | policy plugin protocol and registry |
-| `proposal.py` | storage-free proposal and approval lifecycle |
+| `records/decision.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
+| `records/proposal.py` | storage-free proposal and approval lifecycle |
 | `delivery.py` | delivery port and receipt |
 | `evaluation.py` | policy parity and replay harness |
-| `resources.py` | cheap/deep call admission under budget |
-| `runtime.py` | the action runtime |
 | `schema.py` | generated JSON Schema |
 
 ## Custom policies

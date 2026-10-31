@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from typing import Any, Callable
 
-from .contracts import Action, Decision, Receipt, new_receipt_id
+from ..contracts import Action, Decision, Receipt, new_receipt_id
 
 Handler = Callable[[Action, dict[str, Any]], dict[str, Any]]
 

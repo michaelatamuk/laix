@@ -15,7 +15,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Iterable
 
-from .contracts import clamp
+from ..contracts import clamp
 
 
 @dataclass(frozen=True)

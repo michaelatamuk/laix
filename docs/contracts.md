@@ -17,7 +17,7 @@ The staleness test regenerates the document and fails when the committed file di
 py -m pytest tests/test_laix.py -k schema
 ```
 
-The policy rules live in `policy.py` and `README.md`. Thresholds, rule order and the seven verbs are
+The policy rules live in `policies/action.py` and `README.md`. Thresholds, rule order and the seven verbs are
 part of the policy version.
 
 ## The ten contracts

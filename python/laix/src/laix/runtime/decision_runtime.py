@@ -14,7 +14,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any, Callable, Iterable
 
-from .contracts import (
+from ..contracts import (
     Action,
     Decision,
     Observation,
@@ -26,8 +26,8 @@ from .contracts import (
     new_id,
 )
 from .execution import ApprovalRequired, ExecutionBridge
-from .outcome import OutcomeLedger
-from .policy import DecisionPolicy, PolicyRequest
+from ..outcome import OutcomeLedger
+from ..policies.action import DecisionPolicy, PolicyRequest
 from .resources import Budget, ResourcePlan, ResourcePolicy, SensingOption
 from .state import ExperienceState
 

@@ -17,7 +17,7 @@ A rejected record ends at rejected.
 """
 
 from laix import approve_record, create_record, verify_record
-from laix.record import EvidenceRef, mark_executed
+from laix.records.decision import EvidenceRef, mark_executed
 
 record = create_record(
     title="Pay the electricity bill",

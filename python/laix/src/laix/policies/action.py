@@ -23,7 +23,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from .contracts import (
+from ..contracts import (
     VERBS,
     Action,
     Decision,

@@ -24,12 +24,12 @@ from laix.contracts import (
     iso,
     utcnow,
 )
-from laix.execution import ApprovalRequired, ExecutionBridge
-from laix.policy import DecisionPolicy, PolicyConfig, PolicyRequest
-from laix.resources import Budget, ResourcePolicy, SensingOption
+from laix.runtime import ApprovalRequired, ExecutionBridge
+from laix.policies import DecisionPolicy, PolicyConfig, PolicyRequest
+from laix.runtime import Budget, ResourcePolicy, SensingOption
 from laix.runtime import DecisionRuntime
 from laix.schema import SCHEMA_PATH, build_schema, check, dumps_schema
-from laix.state import ExperienceState
+from laix.runtime import ExperienceState
 
 
 def situation(**attributes: object) -> Situation:

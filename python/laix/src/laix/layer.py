@@ -21,9 +21,9 @@ from .contracts import SCHEMA_VERSION
 from .contracts import Decision as CoreDecision
 from .contracts import Situation
 from .delivery import DeliveryPort, DeliveryReceipt
-from .execution import ExecutionBridge
+from .runtime.execution import ExecutionBridge
 from .policies import Policy, PolicyError, PolicyRegistry
-from .policy import POLICY_VERSION
+from .policies.action import POLICY_VERSION
 from .runtime import DecisionRuntime
 
 
