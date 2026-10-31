@@ -8,13 +8,16 @@ place that knows the app.
 ### Python
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.5.2#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.5.2#subdirectory=python/laix"
 ```
+
+Tags up to `v0.5.2` use `python/laix`. Tags released after the package reorg use
+`packages/python/laix`.
 
 For local development:
 
 ```powershell
-pip install -e C:\Workspace\laix\python\laix
+pip install -e C:\Workspace\laix\packages\python\laix
 ```
 
 ### TypeScript
@@ -138,6 +141,16 @@ v0.5.2
 ```
 
 A contract change creates a new version. The app upgrades deliberately.
+
+When an app moves from a tag at or before `v0.5.2` to a later tag, change only the subdirectory:
+
+```text
+old: #subdirectory=python/laix
+new: #subdirectory=packages/python/laix
+```
+
+TypeScript local file dependencies change from `typescript/laix` to
+`packages/typescript/laix`. App imports and app code do not change.
 
 ## 6. Use the manager boundary
 
