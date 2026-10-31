@@ -16,8 +16,7 @@ A record moves through these states:
 A rejected record ends at rejected.
 """
 
-from laix import approve_record, create_record, verify_record
-from laix.records.decision import EvidenceRef, mark_executed
+from laix import EvidenceRef, approve_record, create_record, mark_executed, verify_record
 
 record = create_record(
     title="Pay the electricity bill",

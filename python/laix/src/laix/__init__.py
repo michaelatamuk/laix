@@ -69,7 +69,15 @@ from .policies import (
     SafetyConstrainedPolicy,
     decide,
 )
-from .records.decision import DecisionRecord, approve as approve_record, create_record, reject as reject_record, verify as verify_record
+from .records.decision import (
+    DecisionRecord,
+    EvidenceRef,
+    approve as approve_record,
+    create_record,
+    mark_executed,
+    reject as reject_record,
+    verify as verify_record,
+)
 from .records.proposal import Proposal, apply as apply_proposal, approve as approve_proposal, reject as reject_proposal, undo as undo_proposal
 from .runtime import (
     ApprovalRequired,
@@ -101,6 +109,7 @@ __all__ = [
     "DeliveryPort",
     "DeliveryReceipt",
     "Event",
+    "EvidenceRef",
     "Feedback",
     "InMemoryPlatform",
     "InMemoryStateStore",
@@ -127,6 +136,7 @@ __all__ = [
     "create_record",
     "evaluation",
     "load_cases",
+    "mark_executed",
     "reject_proposal",
     "reject_record",
     "undo_proposal",

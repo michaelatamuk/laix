@@ -17,12 +17,12 @@ from datetime import datetime, timezone
 from laix import (
     Context,
     DecisionRequest,
+    EvidenceRef,
     Layer,
     Signal,
     approve_record,
     create_record,
 )
-from laix.record import EvidenceRef
 
 layer = Layer()
 decision = layer.decide(
