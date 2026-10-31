@@ -52,7 +52,8 @@ typescript/laix/src/
 ├── attention.ts   attention policy and its types
 ├── layer.ts       the public Layer and action policy
 ├── record.ts      the decision record
-└── index.ts       the public exports
+├── index.ts       the public exports
+└── types.d.ts     the public TypeScript declarations
 ```
 
 ## Size rules
