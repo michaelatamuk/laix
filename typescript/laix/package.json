@@ -1,6 +1,6 @@
 {
   "name": "laix",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "description": "LAIX: one generic decision layer for live apps — decisions, timing, approval, audit and outcomes.",

@@ -206,6 +206,32 @@ def test_policy_blocks_actions_that_break_hard_constraints() -> None:
     assert any(item["action_id"] == "a-slow" for item in decision.alternatives)
 
 
+def test_approval_flag_is_scoped_to_actions() -> None:
+    sit = Situation(
+        id="S",
+        at=iso(),
+        subject="demo",
+        beliefs=(Belief(id="b", proposition="the condition is real", confidence=0.9),),
+        constraints=(Constraint(id="approve", kind="approval", value="required", hard=True),),
+        attributes={"urgency": 0.6},
+    )
+    guide = DecisionPolicy().decide(PolicyRequest(sit, options()))
+    assert guide.verb == "guide"
+    assert guide.requires_approval is False
+
+    act_sit = Situation(
+        id="S2",
+        at=iso(),
+        subject="demo",
+        beliefs=sit.beliefs,
+        constraints=sit.constraints,
+        attributes={"urgency": 0.99},
+    )
+    act = DecisionPolicy().decide(PolicyRequest(act_sit, options()))
+    assert act.verb == "act"
+    assert act.requires_approval is True
+
+
 def test_policy_requires_approval_for_destructive_actions() -> None:
     destructive = Action(id="a-delete", verb="act", name="delete", destructive=True, expected_benefit=0.99)
     decision = DecisionPolicy().decide(PolicyRequest(situation(urgency=0.99), (*options(), destructive)))

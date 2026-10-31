@@ -153,6 +153,7 @@ class DecisionPolicy:
 
         requires_approval = bool(
             chosen
+            and verb == "act"
             and (
                 chosen.requires_approval
                 or chosen.destructive

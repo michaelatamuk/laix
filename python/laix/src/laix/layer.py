@@ -265,11 +265,18 @@ class Layer:
         self._decisions.extend(result)
         return result
 
-    def execute(self, decision: Decision, *, actor: str, approver: str | None = None) -> Any:
+    def execute(
+        self,
+        decision: Decision,
+        *,
+        actor: str,
+        approver: str | None = None,
+        context: dict[str, Any] | None = None,
+    ) -> Any:
         core = self._core_decisions.get(decision.decision_id)
         if core is None:
             raise ValueError("this decision has no executable action in this layer")
-        return self.runtime.execute(core, actor=actor, approver=approver)
+        return self.runtime.execute(core, actor=actor, approver=approver, context=context)
 
     def measure(self, decision: Decision, **kwargs: Any) -> Any:
         return self.runtime.measure(decision.decision_id, **kwargs)
