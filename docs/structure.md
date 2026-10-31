@@ -39,6 +39,7 @@ python/laix/src/laix/
 ├── runtime/
 │   ├── decision_runtime.py  the action runtime
 │   ├── execution.py         approval, execute, cancel, undo
+│   ├── perception.py        live context: detectors, admission, frames
 │   ├── state.py             experience state
 │   ├── state_store.py       the storage-free state store contract
 │   └── resources.py         resource policy

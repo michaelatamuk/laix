@@ -58,6 +58,7 @@ examples/
 |---|---|---|
 | `python/runtime/execution.py` | Decision runtime and execution bridge | `executed close the valve` |
 | `python/runtime/resources.py` | Cheap/deep call admission | `('camera', 'read-page') ('full-audio',)` |
+| `python/runtime/live_context.py` | Detectors, admission and perception frames | `('motion', 'read-label') ('transcribe',) 2 0.097` |
 | `python/runtime/platform_interface.py` | Run a skill, approve, read events | `7 skill.started,skill.finished fast True` |
 
 ## Records

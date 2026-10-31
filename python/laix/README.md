@@ -51,6 +51,7 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 | `attention/` | attention policy: gates, score, quiet hours, budget, feedback, replay |
 | `runtime/decision_runtime.py` | the action runtime |
 | `runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
+| `runtime/perception.py` | live context: detector contract, admission and frames |
 | `runtime/state.py` | experience state: goals, phase, beliefs, decay, expiry |
 | `runtime/state_store.py` | storage-free state store contract and in-memory store |
 | `runtime/resources.py` | cheap/deep call admission under budget |

@@ -57,6 +57,8 @@ The layer has four generic seams:
 
 - **Policy plugin** — any object with `name` and `decide(request)`; register it with
   `Layer.register_policy()` and select it with `use_policy()`.
+- **Detector** — any object with `name`, `tier`, `cost`, `latency_ms`, `information_gain` and
+  `detect(event)`; `LiveContext` admits cheap detectors always and deep ones under budget.
 - **Platform interface** — run a named skill, cancel, approve, read/write state, stream events and
   request a capability level.
 - **Proposal** — a storage-free record for an action that needs a person: pending, approved,
