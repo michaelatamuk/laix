@@ -21,7 +21,8 @@ laix/
 python/laix/src/laix/
 ├── __init__.py              public exports; `from laix import ...` stays stable
 ├── contracts.py             the core records
-├── layer.py                 the public Layer and DecisionRequest
+├── decisions.py             the decision/request shapes and conversions
+├── layer.py                 the public Layer orchestrator
 ├── policies/
 │   ├── action.py            the built-in action policy
 │   └── registry.py          the policy plugin interface

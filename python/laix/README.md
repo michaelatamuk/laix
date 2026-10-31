@@ -36,7 +36,8 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 | Piece | Role |
 |---|---|
 | `contracts.py` | versioned records: observation, belief, goal, constraint, action, situation, decision, outcome, receipt, trace |
-| `layer.py` | the public `Layer` and the common decision shape |
+| `decisions.py` | the one decision shape, request shape and policy-result conversions |
+| `layer.py` | the public `Layer` orchestrator |
 | `policies/action.py` | built-in action-selection policy |
 | `policies/registry.py` | policy plugin protocol and registry |
 | `attention/` | attention policy: gates, score, quiet hours, budget, feedback, replay |

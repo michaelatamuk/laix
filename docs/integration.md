@@ -8,7 +8,7 @@ place that knows the app.
 ### Python
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.3.0#subdirectory=python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.3.1#subdirectory=python/laix"
 ```
 
 For local development:
@@ -134,7 +134,7 @@ the app repository.
 Use a tag, not a branch:
 
 ```text
-v0.3.0
+v0.3.1
 ```
 
 A contract change creates a new version. The app upgrades deliberately.
