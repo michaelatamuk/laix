@@ -40,6 +40,14 @@ stories are small everyday situations, so the result is easy to picture.
 | `python/resources.py` | Cheap/deep call admission | `('camera', 'read-page') ('full-audio',)` |
 | `python/execution.py` | Decision runtime and execution bridge | `executed close the valve` |
 
+## TypeScript
+
+| File | Story | Output |
+|---|---|---|
+| `typescript/bill_due.mts` | The same bill, in TypeScript. | `guide worth_surfacing 84` |
+| `typescript/action.mts` | The leaking sink, in TypeScript. | `act policy_rule option-close-valve` |
+| `typescript/record.mts` | The decision record lifecycle, in TypeScript. | `executed true` |
+
 ## Run
 
 From the repository root:
@@ -57,10 +65,12 @@ $env:PYTHONPATH = "python/laix/src"
 py examples/python/active_perception.py
 ```
 
-The TypeScript example runs with Node's type stripping:
+The TypeScript examples run with Node's type stripping:
 
 ```powershell
 node --experimental-strip-types examples/typescript/bill_due.mts
+node --experimental-strip-types examples/typescript/action.mts
+node --experimental-strip-types examples/typescript/record.mts
 ```
 
 `python/laix/tests/test_examples.py` runs every example, so none of them can rot.
