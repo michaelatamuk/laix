@@ -80,6 +80,7 @@ examples/
 
 | File | Piece | Output |
 |---|---|---|
+| `python/integration/bench.py` | Run LAIX-Bench from Python | `25 25 1.0` |
 | `python/integration/delivery.py` | Delivery port and receipt | `skipped email` |
 | `python/integration/evaluation.py` | Parity harness over cases | `2 2 1.0` |
 

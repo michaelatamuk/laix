@@ -50,6 +50,7 @@ python/laix/src/laix/
 ├── outcome.py               outcome ledger, store contract and UCB learner
 ├── delivery.py              the delivery port and receipt
 ├── evaluation.py            the parity harness
+├── bench.py                 LAIX-Bench suites, report and CLI
 ├── schema.py                schema generation
 └── schemas/                 the generated schema file
 ```

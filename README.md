@@ -56,6 +56,12 @@ ones are admitted under a sub-second cost and latency budget, and each event pro
 Outcome learning turns measured labels into rewards. `UCBBandit` learns which arm works and
 `BanditPolicy` puts that learner behind the policy interface.
 
+LAIX-Bench runs deterministic cases for every decision class:
+
+```powershell
+python -m laix.bench
+```
+
 New apps send requests. Shared rules become generic policies. App rules stay in the app adapter.
 
 ## Repository map

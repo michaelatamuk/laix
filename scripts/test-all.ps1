@@ -24,6 +24,7 @@ function Run-Step {
 }
 
 Run-Step 'python laix' "$root\python\laix" { py -m pytest -q }
+Run-Step 'python bench' "$root\python\laix" { py -m laix.bench }
 Run-Step 'typescript laix' "$root\typescript\laix" { npm.cmd test }
 Run-Step 'typescript conformance' "$root\typescript\laix" { npm.cmd run conformance }
 Run-Step 'typescript example attention' "$root" { node --experimental-strip-types examples/typescript/attention/bill_due.mts }

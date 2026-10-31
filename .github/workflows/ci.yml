@@ -24,6 +24,9 @@ jobs:
       - name: Test
         working-directory: python/laix
         run: python -m pytest -q
+      - name: Bench
+        working-directory: python/laix
+        run: python -m laix.bench
       - name: Run examples
         run: |
           for file in $(find examples/python -name '*.py'); do

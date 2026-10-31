@@ -9,6 +9,14 @@ This folder holds a small set of checks.
 | `contracts/decision.v1.schema.json` | the shape of one decision |
 | `contracts/decision-record.v1.schema.json` | the shape of one decision record |
 
+`laix/bench.py` runs deterministic cases for every decision class:
+
+```powershell
+python -m laix.bench
+```
+
+See [`bench.md`](bench.md).
+
 Run the checks with the test script in the repository root.
 
 ## Next additions

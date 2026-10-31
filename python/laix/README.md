@@ -62,6 +62,7 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 | `records/proposal.py` | storage-free proposal and approval lifecycle |
 | `delivery.py` | delivery port and receipt |
 | `evaluation.py` | policy parity and replay harness |
+| `bench.py` | LAIX-Bench suites, report and `python -m laix.bench` |
 | `schema.py` | generated JSON Schema |
 
 ## Custom policies
