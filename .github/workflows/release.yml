@@ -21,7 +21,7 @@ jobs:
           node-version: "24"
 
       - name: Test Python
-        working-directory: python/laix
+        working-directory: packages/python/laix
         run: |
           python -m pip install --upgrade pip
           python -m pip install pytest
@@ -29,7 +29,7 @@ jobs:
           python -m pytest -q
 
       - name: Test TypeScript
-        working-directory: typescript/laix
+        working-directory: packages/typescript/laix
         run: |
           npm test
           npm run conformance
@@ -37,13 +37,13 @@ jobs:
       - name: Build Python package
         run: |
           python -m pip install build
-          python -m build --outdir dist/python ./python/laix
+          python -m build --outdir dist/python ./packages/python/laix
 
       - name: Build TypeScript package
         run: |
           mkdir -p dist/typescript
-          cd typescript/laix
-          npm pack --pack-destination ../../dist/typescript
+          cd packages/typescript/laix
+          npm pack --pack-destination ../../../dist/typescript
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2

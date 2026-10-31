@@ -1,10 +1,10 @@
 /**
  * Canonical attention-contract conformance.
  *
- * Reads `contracts/attention.v1.json` (the same file the Python implementation
+ * Reads `packages/contracts/attention.v1.json` (the same file the Python implementation
  * uses) and fails if any of the 23 behavioural cases disagree.
  *
- * Run from typescript/laix:
+ * Run from packages/typescript/laix:
  *   node --experimental-strip-types scripts/conformance.mjs
  */
 import { readFileSync, writeFileSync } from "node:fs";

@@ -97,7 +97,7 @@ examples/
 From the repository root:
 
 ```powershell
-$env:PYTHONPATH = "python/laix/src"
+$env:PYTHONPATH = "packages/python/laix/src"
 Get-ChildItem examples/python -Recurse -Filter *.py | ForEach-Object { py $_.FullName }
 Get-ChildItem examples/apps/*.py | ForEach-Object { py $_.FullName }
 ```
@@ -105,7 +105,7 @@ Get-ChildItem examples/apps/*.py | ForEach-Object { py $_.FullName }
 A single example:
 
 ```powershell
-$env:PYTHONPATH = "python/laix/src"
+$env:PYTHONPATH = "packages/python/laix/src"
 py examples/python/policies/active_perception.py
 ```
 
@@ -117,7 +117,7 @@ node --experimental-strip-types examples/typescript/action/action.mts
 node --experimental-strip-types examples/typescript/records/record.mts
 ```
 
-`python/laix/tests/test_examples.py` runs every example, so none of them can rot.
+`packages/python/laix/tests/test_examples.py` runs every example, so none of them can rot.
 
 ## What the output means
 

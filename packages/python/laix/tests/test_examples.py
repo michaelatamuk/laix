@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 PYTHON_EXAMPLES = sorted((ROOT / "examples" / "python").rglob("*.py"))
 APP_EXAMPLES = sorted((ROOT / "examples" / "apps").glob("*.py"))
 EXAMPLES = PYTHON_EXAMPLES + APP_EXAMPLES

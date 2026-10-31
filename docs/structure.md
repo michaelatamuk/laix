@@ -4,20 +4,21 @@
 
 ```text
 laix/
-├── contracts/        canonical JSON Schema and behavioural vectors
-├── docs/             design, decisions, contracts, evaluation, integration
-├── examples/         small runnable requests and caller examples
-├── python/laix/      the Python package and its tests
-├── typescript/laix/  the TypeScript package and its tests
-└── .github/          CI and release workflows
+├── packages/
+│   ├── contracts/         canonical JSON Schema and behavioural vectors
+│   ├── python/laix/       the Python package and its tests
+│   └── typescript/laix/   the TypeScript package and its tests
+├── docs/                  design, decisions, contracts, evaluation, integration
+├── examples/              small runnable requests and caller examples
+└── .github/               CI and release workflows
 ```
 
-`contracts/` is the source of truth for data. The packages implement it.
+`packages/contracts/` is the source of truth for data. The packages implement it.
 
 ## Python package
 
 ```text
-python/laix/src/laix/
+packages/python/laix/src/laix/
 ├── __init__.py              public exports; `from laix import ...` stays stable
 ├── contracts.py             the core records
 ├── decisions.py             the decision/request shapes and conversions
@@ -60,7 +61,7 @@ imports from `laix`, not from the internal paths.
 ## TypeScript package
 
 ```text
-typescript/laix/src/
+packages/typescript/laix/src/
 ├── attention.ts   attention policy and its types
 ├── layer.ts       the public Layer and action policy
 ├── record.ts      the decision record
@@ -76,14 +77,14 @@ typescript/laix/src/
 - Generated files and data files are allowed to be larger than code files.
 - `typescript/attention.ts` is medium and cohesive. `contracts.py` holds ten related
   dataclasses. Neither needs a split yet.
-- `schemas/laix-v1.schema.json` is generated. `contracts/attention.v1.json` is test data.
+- `schemas/laix-v1.schema.json` is generated. `packages/contracts/attention.v1.json` is test data.
 
 ## Duplicated contracts
 
 The attention vectors and bench exist twice:
 
-- `contracts/` — canonical.
-- `python/laix/src/laix/attention/contract/` — packaged copy for installation.
+- `packages/contracts/` — canonical.
+- `packages/python/laix/src/laix/attention/contract/` — packaged copy for installation.
 
 `tests/test_contract_copies.py` fails if the two copies differ.
 

@@ -20,12 +20,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install pytest
-          python -m pip install -e ./python/laix
+          python -m pip install -e ./packages/python/laix
       - name: Test
-        working-directory: python/laix
+        working-directory: packages/python/laix
         run: python -m pytest -q
       - name: Bench
-        working-directory: python/laix
+        working-directory: packages/python/laix
         run: python -m laix.bench
       - name: Run examples
         run: |
@@ -44,10 +44,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Test
-        working-directory: typescript/laix
+        working-directory: packages/typescript/laix
         run: npm test
       - name: Conformance
-        working-directory: typescript/laix
+        working-directory: packages/typescript/laix
         run: npm run conformance
       - name: Run examples
         run: |

@@ -1,6 +1,6 @@
 /** The kitchen sink is about to overflow. Ask the TypeScript Layer what to do. */
 
-import { Layer } from "../../../typescript/laix/src/index.ts";
+import { Layer } from "../../../packages/typescript/laix/src/index.ts";
 
 const layer = new Layer();
 const [decision] = layer.decide({

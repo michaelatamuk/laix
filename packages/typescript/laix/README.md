@@ -42,4 +42,4 @@ npm.cmd run conformance
 ```
 
 `npm.cmd run conformance` compares every attention decision against
-`contracts/attention.v1.json` and exits non-zero on a mismatch.
+`packages/contracts/attention.v1.json` and exits non-zero on a mismatch.

@@ -8,7 +8,7 @@ place that knows the app.
 ### Python
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.5.2#subdirectory=python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.5.2#subdirectory=packages/python/laix"
 ```
 
 For local development:
@@ -24,7 +24,7 @@ For local development, point the app at the package:
 ```json
 {
   "dependencies": {
-    "laix": "file:../../laix/typescript/laix"
+    "laix": "file:../../laix/packages/typescript/laix"
   }
 }
 ```

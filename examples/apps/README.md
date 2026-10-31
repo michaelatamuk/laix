@@ -13,7 +13,7 @@ receives a generic request and returns a generic decision.
 Run them from the repository root:
 
 ```powershell
-$env:PYTHONPATH = "python/laix/src"
+$env:PYTHONPATH = "packages/python/laix/src"
 py examples/apps/cue.py
 py examples/apps/georesponse.py
 py examples/apps/recall.py

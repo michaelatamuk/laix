@@ -7,8 +7,8 @@ from pathlib import Path
 
 import laix.attention
 
-ROOT = Path(__file__).resolve().parents[3]
-CANONICAL = ROOT / "contracts"
+PACKAGES = Path(__file__).resolve().parents[3]
+CANONICAL = PACKAGES / "contracts"
 PACKAGED = Path(laix.attention.__file__).resolve().parent / "contract"
 
 

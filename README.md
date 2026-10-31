@@ -68,20 +68,20 @@ New apps send requests. Shared rules become generic policies. App rules stay in 
 
 | Path | Contents |
 |---|---|
-| `python/laix` | one Python package: contracts, policies, runtime, execution, outcomes, records |
-| `typescript/laix` | one TypeScript package: the decision contract, attention policy and decision record |
-| `contracts/` | the JSON Schema and behavioural vectors |
+| `packages/python/laix` | one Python package: contracts, policies, runtime, execution, outcomes, records |
+| `packages/typescript/laix` | one TypeScript package: the decision contract, attention policy and decision record |
+| `packages/contracts/` | the JSON Schema and behavioural vectors |
 | `examples/` | small runnable requests in Python and TypeScript |
 | `docs/` | design notes and the integration guide |
 
 ## Test
 
 ```powershell
-cd python/laix
+cd packages/python/laix
 py -m pytest -q
 py -m laix.bench
 
-cd ../../typescript/laix
+cd ../../packages/typescript/laix
 npm test
 npm run conformance
 ```

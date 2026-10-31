@@ -4,10 +4,10 @@ This folder holds a small set of checks.
 
 | File | What it checks |
 |---|---|
-| `contracts/attention.v1.json` | 23 timing cases, 24 decisions |
-| `contracts/attention-bench.v1.json` | 12 labelled cases for precision, hazard and recall |
-| `contracts/decision.v1.schema.json` | the shape of one decision |
-| `contracts/decision-record.v1.schema.json` | the shape of one decision record |
+| `packages/contracts/attention.v1.json` | 23 timing cases, 24 decisions |
+| `packages/contracts/attention-bench.v1.json` | 12 labelled cases for precision, hazard and recall |
+| `packages/contracts/decision.v1.schema.json` | the shape of one decision |
+| `packages/contracts/decision-record.v1.schema.json` | the shape of one decision record |
 
 `laix/bench.py` runs deterministic cases for every decision class:
 

@@ -6,7 +6,7 @@ import {
   evidenceFromQuotes,
   markExecuted,
   verifyRecord,
-} from "../../../typescript/laix/src/index.ts";
+} from "../../../packages/typescript/laix/src/index.ts";
 
 const record = createDecisionRecord(
   {

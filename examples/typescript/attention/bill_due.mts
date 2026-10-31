@@ -1,6 +1,6 @@
 /** A bill is due tomorrow. Ask the TypeScript Layer whether to show it now. */
 
-import { Layer } from "../../../typescript/laix/src/index.ts";
+import { Layer } from "../../../packages/typescript/laix/src/index.ts";
 
 const layer = new Layer();
 const [decision] = layer.decide({
