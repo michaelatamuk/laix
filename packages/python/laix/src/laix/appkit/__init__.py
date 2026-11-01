@@ -1,19 +1,10 @@
 """LAIX app kit: optional integration for apps.
 
-This surface contains attention, execution, records, delivery, platform and
+This surface contains execution, records, delivery, platform, live context and
 bench. It is useful for apps, but it is not the decision core. Persistent
 memory, ingestion, proactivity, permissions and missions belong to the host.
 """
 
-from .attention import (
-    Context,
-    Feedback,
-    OutcomeLog,
-    Signal,
-    decide as decide_attention,
-    is_quiet,
-    score,
-)
 from .delivery import DeliveryPort, DeliveryReceipt, NullDelivery
 from .layer import Decision as LayerDecision
 from .layer import DecisionRequest, Layer
@@ -43,22 +34,15 @@ from .records.proposal import (
     reject as reject_proposal,
     undo as undo_proposal,
 )
+from ..core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
+from ..core.resources import Budget, ResourcePlan, ResourcePolicy, SensingOption
+from .live_context import CallableDetector, LiveContext
 from .runtime import (
     ApprovalRequired,
-    Budget,
-    CallableDetector,
     DecisionRuntime,
-    Detection,
-    Detector,
     ExecutionBridge,
     ExperienceState,
     InMemoryStateStore,
-    LiveContext,
-    PerceptionEvent,
-    PerceptionFrame,
-    ResourcePlan,
-    ResourcePolicy,
-    SensingOption,
     StateStore,
     UnknownAction,
 )
@@ -71,7 +55,6 @@ __all__ = [
     "CAPABILITY_LEVELS",
     "CallableDetector",
     "Capability",
-    "Context",
     "DecisionRecord",
     "DecisionRequest",
     "DecisionRuntime",
@@ -83,14 +66,12 @@ __all__ = [
     "EvidenceRef",
     "ExecutionBridge",
     "ExperienceState",
-    "Feedback",
     "InMemoryPlatform",
     "InMemoryStateStore",
     "Layer",
     "LayerDecision",
     "LiveContext",
     "NullDelivery",
-    "OutcomeLog",
     "PerceptionEvent",
     "PerceptionFrame",
     "Platform",
@@ -99,7 +80,6 @@ __all__ = [
     "ResourcePlan",
     "ResourcePolicy",
     "SensingOption",
-    "Signal",
     "SkillCall",
     "StateStore",
     "UnknownAction",
@@ -107,12 +87,9 @@ __all__ = [
     "approve_proposal",
     "approve_record",
     "create_record",
-    "decide_attention",
-    "is_quiet",
     "mark_executed",
     "reject_proposal",
     "reject_record",
-    "score",
     "undo_proposal",
     "verify_record",
 ]

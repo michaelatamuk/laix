@@ -11,6 +11,8 @@ Live Context is the perception part of LAIX.
 
 The app supplies detectors and events. LAIX decides what to run and returns a frame.
 
+The contracts live in `core/perception`; the host-driven loop lives in `appkit/live_context`.
+
 ## Detector
 
 ```python

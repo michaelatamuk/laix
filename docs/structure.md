@@ -34,17 +34,20 @@ packages/python/laix/src/laix/
 │   ├── decisions.py         request and decision shapes
 │   ├── outcome.py           outcome ledger, store and UCB learner
 │   ├── evaluation.py        parity harness
+│   ├── perception.py        detector, detection and frame contracts
+│   ├── resources.py         budget and resource admission policy
 │   ├── schema.py            schema generator
 │   ├── schemas/             generated schema
+│   ├── attention/           attention policy and vectors
 │   └── policies/            action policy, eight packs, bandit, registry
 └── appkit/
     ├── __init__.py          optional app surface
     ├── layer.py             public Layer
+    ├── live_context.py      host-driven detector loop
     ├── platform.py          platform contract
     ├── delivery.py          delivery port
     ├── bench.py             LAIX-Bench implementation
-    ├── attention/           attention policy and vectors
-    ├── runtime/             execution, state, stores, resources, perception
+    ├── runtime/             execution, state and stores
     └── records/             decision record and proposal
 ```
 
@@ -60,17 +63,20 @@ packages/typescript/laix/src/
 │   ├── contracts.ts   core records
 │   ├── outcome.ts     outcome ledger and UCB learner
 │   ├── evaluation.ts  parity harness
+│   ├── perception.ts  detector and frame contracts
+│   ├── resources.ts   budget and resource admission
+│   ├── attention.ts   attention policy
 │   └── policies/      eight packs, bandit, registry
 └── appkit/
     ├── index.ts       optional app surface
     ├── layer.ts       public Layer and action policy
-    ├── attention.ts   attention policy
+    ├── live-context.ts host-driven detector loop
     ├── record.ts      decision record
     ├── platform.ts    platform contract
     ├── proposal.ts    proposal lifecycle
     ├── delivery.ts    delivery port
     ├── bench.ts       LAIX-Bench
-    └── runtime/       execution, state, stores, resources, perception
+    └── runtime/       execution, state and stores
 ```
 
 The TypeScript package mirrors the same folders under `src/core` and `src/appkit`. It exports one

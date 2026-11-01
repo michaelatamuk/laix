@@ -3,7 +3,7 @@ import { clamp, iso, newId } from "../../core/contracts.ts";
 import { decideAction, type ActionOption, type LayerDecision, type Situation } from "../layer.ts";
 import { OutcomeLedger } from "../../core/outcome.ts";
 import { ApprovalRequired, ExecutionBridge } from "./execution.ts";
-import { ResourcePolicy, type Budget, type ResourcePlan, type SensingOption } from "./resources.ts";
+import { ResourcePolicy, type Budget, type ResourcePlan, type SensingOption } from "../../core/resources.ts";
 import { ExperienceState } from "./state.ts";
 
 export interface RuntimeDecision extends LayerDecision {

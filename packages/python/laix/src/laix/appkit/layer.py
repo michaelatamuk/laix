@@ -1,8 +1,7 @@
 """The public Layer: one request in, one decision shape out.
 
-The decision types live in ``laix.core.decisions``. This module keeps the orchestrator
-and re-exports the public types so existing imports from ``laix.layer`` keep
-working.
+The decision types live in ``laix.core.decisions``. This module keeps the
+orchestrator and the built-in request routing.
 """
 
 from __future__ import annotations
@@ -10,7 +9,7 @@ from __future__ import annotations
 from dataclasses import asdict
 from typing import Any
 
-from . import attention
+from ..core import attention
 from ..core.contracts import SCHEMA_VERSION
 from ..core.contracts import Decision as CoreDecision
 from ..core.decisions import (

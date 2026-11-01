@@ -16,12 +16,14 @@ CORE_FILES = [
     CORE / "decisions.py",
     CORE / "outcome.py",
     CORE / "evaluation.py",
+    CORE / "perception.py",
+    CORE / "resources.py",
     CORE / "schema.py",
     CORE / "__init__.py",
+    *sorted((CORE / "attention").glob("*.py")),
     *sorted((CORE / "policies").glob("*.py")),
 ]
 APP_KIT_MODULES = {
-    "attention",
     "runtime",
     "records",
     "delivery",
@@ -58,15 +60,14 @@ def test_core_files_do_not_import_the_app_kit() -> None:
 
 def test_core_surface_has_no_app_kit_objects() -> None:
     assert not hasattr(laix.core, "Layer")
-    assert not hasattr(laix.core, "Signal")
     assert not hasattr(laix.core, "ExecutionBridge")
+    assert hasattr(laix.core, "Signal")
     assert hasattr(laix.core, "DecisionRequest")
     assert hasattr(laix.core, "PolicyDecision")
 
 
 def test_app_kit_exposes_the_integration_surface() -> None:
     assert hasattr(laix.appkit, "Layer")
-    assert hasattr(laix.appkit, "Signal")
     assert hasattr(laix.appkit, "ExecutionBridge")
 
 

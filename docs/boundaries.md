@@ -26,29 +26,30 @@ It contains:
 
 - contracts;
 - request and decision shapes;
-- policies and the policy registry;
+- attention and the policy packs;
+- resource admission;
+- perception contracts;
 - the UCB learner and outcome ledger;
 - the parity harness.
 
-It does not load attention, execution, records, delivery or platform.
+It does not load the Layer, execution, records, delivery, platform or the live-context loop.
 
 ### `laix.appkit`
 
 Use this when an app wants the optional app-facing parts.
 
 ```python
-from laix.appkit import Layer, Signal, Context, ExecutionBridge
+from laix.appkit import Layer, ExecutionBridge
 ```
 
 It contains:
 
 - `Layer` and the built-in request routing;
-- attention;
 - execution and runtime;
 - decision records and proposals;
 - delivery;
 - platform;
-- live context;
+- the live-context loop;
 - bench.
 
 The app kit is optional and frozen. It is useful, but it is not the decision core.

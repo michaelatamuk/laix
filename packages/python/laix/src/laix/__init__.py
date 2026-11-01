@@ -34,9 +34,8 @@ from .core.contracts import (
     parse_iso,
     utcnow,
 )
-from .appkit import attention
-from .core import evaluation
-from .appkit.attention import Context, Feedback, Signal
+from .core import attention, evaluation
+from .core.attention import Context, Feedback, Signal
 from .appkit.delivery import DeliveryPort, DeliveryReceipt, NullDelivery
 from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
@@ -83,25 +82,18 @@ from .appkit.records.decision import (
     verify as verify_record,
 )
 from .appkit.records.proposal import Proposal, apply as apply_proposal, approve as approve_proposal, reject as reject_proposal, undo as undo_proposal
+from .appkit.live_context import CallableDetector, LiveContext
 from .appkit.runtime import (
     ApprovalRequired,
-    Budget,
-    CallableDetector,
     DecisionRuntime,
-    Detection,
-    Detector,
     ExecutionBridge,
     ExperienceState,
     InMemoryStateStore,
-    LiveContext,
-    PerceptionEvent,
-    PerceptionFrame,
-    ResourcePlan,
-    ResourcePolicy,
-    SensingOption,
     StateStore,
     UnknownAction,
 )
+from .core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
+from .core.resources import Budget, ResourcePlan, ResourcePolicy, SensingOption
 
 __all__ = [
     "Action",

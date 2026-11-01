@@ -1,92 +1,18 @@
-"""Live Context: continuous perception under a resource budget.
+"""Live Context loop: run detectors under a resource budget.
 
-The app supplies detectors. LAIX supplies the loop, the admission rule and the
-frame. Cheap detectors run on every event; a deep detector is admitted only when
-its information gain, weighted by uncertainty, clears a threshold and its cost
-and latency fit the budget. The default latency budget is sub-second.
-
-This is a reference implementation. Real cameras, audio, sensors and streams are
-app adapters behind the ``Detector`` protocol.
+The contracts live in :mod:`laix.core.perception`; the host supplies detectors
+and drives the clock. This module runs cheap detectors always and admits deep
+detectors only when gain, cost and latency allow.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any, Callable, Iterable, Protocol, runtime_checkable
+from dataclasses import dataclass
+from typing import Callable, Iterable
 
-from ...core.contracts import clamp
-from .resources import Budget, ResourcePolicy, SensingOption
-
-
-@dataclass(frozen=True, slots=True)
-class Detection:
-    """One thing a detector noticed in one event."""
-
-    id: str
-    detector: str
-    kind: str
-    subject: str
-    at: str
-    confidence: float = 0.5
-    severity: str = "low"
-    payload: dict[str, Any] = field(default_factory=dict)
-
-    def __post_init__(self) -> None:
-        object.__setattr__(self, "confidence", clamp(self.confidence))
-
-    def to_dict(self) -> dict[str, Any]:
-        from dataclasses import asdict
-
-        return asdict(self)
-
-
-@dataclass(frozen=True, slots=True)
-class PerceptionEvent:
-    """One input to the loop: what happened, when and where."""
-
-    subject: str
-    at: str
-    payload: dict[str, Any] = field(default_factory=dict)
-
-
-@dataclass(frozen=True, slots=True)
-class PerceptionFrame:
-    """What the loop saw for one event and what it skipped."""
-
-    subject: str
-    at: str
-    detections: tuple[Detection, ...]
-    allowed: tuple[str, ...]
-    skipped: tuple[dict[str, Any], ...]
-    uncertainty: float
-    deep_calls: int = 0
-    cost: float = 0.0
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "subject": self.subject,
-            "at": self.at,
-            "detections": [item.to_dict() for item in self.detections],
-            "allowed": list(self.allowed),
-            "skipped": [dict(item) for item in self.skipped],
-            "uncertainty": round(self.uncertainty, 6),
-            "deepCalls": self.deep_calls,
-            "cost": round(self.cost, 6),
-        }
-
-
-@runtime_checkable
-class Detector(Protocol):
-    """A cheap or deep detector the app supplies."""
-
-    name: str
-    tier: str
-    cost: float
-    latency_ms: int
-    information_gain: float
-
-    def detect(self, event: PerceptionEvent) -> Iterable[Detection]:
-        ...
+from ..core.contracts import clamp
+from ..core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
+from ..core.resources import Budget, ResourcePolicy, SensingOption
 
 
 @dataclass(frozen=True, slots=True)
@@ -184,11 +110,4 @@ class LiveContext:
         return self.frames[-1] if self.frames else None
 
 
-__all__ = [
-    "CallableDetector",
-    "Detection",
-    "Detector",
-    "LiveContext",
-    "PerceptionEvent",
-    "PerceptionFrame",
-]
+__all__ = ["CallableDetector", "LiveContext"]

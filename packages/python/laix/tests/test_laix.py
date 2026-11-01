@@ -26,7 +26,7 @@ from laix.core.contracts import (
 )
 from laix.appkit.runtime import ApprovalRequired, ExecutionBridge
 from laix.core.policies import DecisionPolicy, PolicyConfig, PolicyRequest
-from laix.appkit.runtime import Budget, ResourcePolicy, SensingOption
+from laix.core.resources import Budget, ResourcePolicy, SensingOption
 from laix.appkit.runtime import DecisionRuntime
 from laix.core.schema import SCHEMA_PATH, build_schema, check, dumps_schema
 from laix.appkit.runtime import ExperienceState

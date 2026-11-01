@@ -49,13 +49,14 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 | `core/policies/escalation.py` | hand-over policy |
 | `core/policies/bandit.py` | learned bandit policy |
 | `core/policies/registry.py` | policy plugin protocol and registry |
-| `appkit/attention/` | attention policy: gates, score, quiet hours, budget, feedback, replay |
+| `core/attention/` | attention policy: gates, score, quiet hours, budget, feedback, replay |
 | `appkit/runtime/decision_runtime.py` | the action runtime |
 | `appkit/runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
-| `appkit/runtime/perception.py` | live context: detector contract, admission and frames |
+| `core/perception.py` | detector, detection and frame contracts |
+| `appkit/live_context.py` | host-driven detector loop |
 | `appkit/runtime/state.py` | experience state: goals, phase, beliefs, decay, expiry |
 | `appkit/runtime/state_store.py` | storage-free state store contract and in-memory store |
-| `appkit/runtime/resources.py` | cheap/deep call admission under budget |
+| `core/resources.py` | cheap/deep call admission under budget |
 | `appkit/platform.py` | south platform interface and in-memory platform |
 | `core/outcome.py` | directed metric ledger, outcome store contract and UCB learner |
 | `appkit/records/decision.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |

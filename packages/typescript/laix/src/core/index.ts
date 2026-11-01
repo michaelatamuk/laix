@@ -1,6 +1,9 @@
 export * from "./contracts.ts";
 export * from "./evaluation.ts";
 export * from "./outcome.ts";
+export * from "./perception.ts";
+export * from "./resources.ts";
+export { Context, Feedback, OutcomeLog, Signal, decide as decideAttention, isQuietHours, score } from "./attention.ts";
 export * from "./policies/active-perception.ts";
 export * from "./policies/allocation.ts";
 export * from "./policies/bandit.ts";

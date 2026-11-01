@@ -1,4 +1,4 @@
-import { clamp } from "../../core/contracts.ts";
+import { clamp } from "./contracts.ts";
 
 export interface Budget {
   maxDeepCalls?: number;

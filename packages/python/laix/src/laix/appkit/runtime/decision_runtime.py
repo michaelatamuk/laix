@@ -28,7 +28,7 @@ from ...core.contracts import (
 from .execution import ApprovalRequired, ExecutionBridge
 from ...core.outcome import OutcomeLedger
 from ...core.policies.action import DecisionPolicy, PolicyRequest
-from .resources import Budget, ResourcePlan, ResourcePolicy, SensingOption
+from ...core.resources import Budget, ResourcePlan, ResourcePolicy, SensingOption
 from .state import ExperienceState
 
 IdFactory = Callable[[str], str]

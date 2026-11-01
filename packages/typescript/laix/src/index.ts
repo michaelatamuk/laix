@@ -1,4 +1,7 @@
 export * from "./appkit/index.ts";
+export * from "./core/attention.ts";
+export * from "./core/perception.ts";
+export * from "./core/resources.ts";
 
 export * from "./core/evaluation.ts";
 export * from "./core/outcome.ts";

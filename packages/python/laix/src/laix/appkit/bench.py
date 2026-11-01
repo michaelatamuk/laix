@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any, Callable, Iterable, Mapping, Sequence
 
-from .attention import Context, Feedback, Signal
+from ..core.attention import Context, Feedback, Signal
 from ..core.contracts import Action, Belief, Situation
 from ..core.decisions import DecisionRequest
 from .layer import Layer

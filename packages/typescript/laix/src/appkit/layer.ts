@@ -6,7 +6,7 @@
  * the same LayerDecision.
  */
 
-import { decide as decideAttention, type Context, type Signal } from "./attention.ts";
+import { decide as decideAttention, type Context, type Signal } from "../core/attention.ts";
 import type { Decision, Verb } from "../core/contracts.ts";
 import { PolicyRegistry, type Policy } from "../core/policies/registry.ts";
 

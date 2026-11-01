@@ -9,8 +9,8 @@ from pathlib import Path
 
 import pytest
 
-import laix.appkit.attention as laix
-from laix.appkit.attention import (
+import laix.core.attention as laix
+from laix.core.attention import (
     Context,
     Outcome,
     OutcomeLog,

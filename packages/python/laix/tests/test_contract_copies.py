@@ -5,11 +5,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import laix.appkit.attention
+import laix.core.attention as attention_pkg
 
 PACKAGES = Path(__file__).resolve().parents[3]
 CANONICAL = PACKAGES / "contracts"
-PACKAGED = Path(laix.attention.__file__).resolve().parent / "contract"
+PACKAGED = Path(attention_pkg.__file__).resolve().parent / "contract"
 
 
 def test_attention_vectors_are_in_sync() -> None:
