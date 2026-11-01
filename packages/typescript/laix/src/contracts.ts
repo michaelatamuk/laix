@@ -1,7 +1,7 @@
 import type { Verb } from "./layer.ts";
 
 export const VERBS: Verb[] = ["wait", "observe", "guide", "ask", "act", "verify", "escalate"];
-export const PHASES = ["observe", "decide", "act", "verify", "learn"] as const;
+export const PHASES = ["observe", "understand", "decide", "act", "verify", "adapt"] as const;
 export type Phase = (typeof PHASES)[number];
 
 export interface EvidenceRef {

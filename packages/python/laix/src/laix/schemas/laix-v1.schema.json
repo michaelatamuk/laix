@@ -282,8 +282,9 @@
           "type": "string",
           "enum": [
             "wait",
-            "ask",
+            "observe",
             "guide",
+            "ask",
             "act",
             "verify",
             "escalate"
@@ -563,8 +564,9 @@
           "type": "string",
           "enum": [
             "wait",
-            "ask",
+            "observe",
             "guide",
+            "ask",
             "act",
             "verify",
             "escalate"

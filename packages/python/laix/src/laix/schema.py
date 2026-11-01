@@ -20,7 +20,7 @@ SCHEMA_DIR = Path(__file__).resolve().parent / "schemas"
 SCHEMA_PATH = SCHEMA_DIR / "laix-v1.schema.json"
 
 _ENUMS: dict[str, list[str]] = {
-    "verb": ["wait", "ask", "guide", "act", "verify", "escalate"],
+    "verb": ["wait", "observe", "guide", "ask", "act", "verify", "escalate"],
     "phase": ["observe", "understand", "decide", "act", "verify", "adapt"],
     "horizon": ["seconds", "minutes", "hours", "days", "weeks"],
     "status": ["pending", "approved", "executed", "refused", "cancelled", "failed", "undone"],

@@ -1,79 +1,134 @@
-# Design
+# Architecture
 
-## The shape
+LAIX turns a described situation into one decision. Everything else exists to make that decision
+safe, explainable and measurable.
 
+```text
+app or platform
+      │  DecisionRequest
+      ▼
+    LAIX Layer
+      │  Decision
+      ▼
+app or platform executes
+      │  Receipt / Outcome
+      ▼
+LAIX records and learns
 ```
-app -> one request -> LAIX Layer -> one Decision -> app executes
-                                      |
-                                receipt / outcome / record
-```
 
-The app supplies the situation and its limits. LAIX returns a decision. The app, or the platform
-under it, performs the action. LAIX records the result.
+## Who owns what
+
+| Owner | Owns |
+|---|---|
+| **App** | Domain rules, detectors, transports, user interface, durable storage, app-specific audit fields |
+| **Platform** | Running named skills, approvals, session state, event streams, models and hardware |
+| **LAIX** | Contracts, decision policies, admission rules, execution state machine, outcome learning, bench and reference runtime |
+
+LAIX never imports an app and never names a model, vendor or domain.
 
 ## One decision shape
 
-Every policy returns the same fields:
+Every policy returns the same decision. Fields fall into five groups:
 
-`verb`, `confidence`, `reason_code`, `rationale`, `evidence`, `requires_approval`, `score`,
-`breakdown`, `intent`, `escalation`, `cost_of_waiting`, `reversible`, `undo_hint`, `trace_id`,
-`deliver`, `record`, `created_at`.
-
-`verb` is one of `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate`. `notify` is the
-delivery form of `guide`. Approval is the `requires_approval` flag on the decision; `verify` is a
-lifecycle phase after an action.
-
-## Two generic requests
-
-| Request | Question | Policy |
+| Group | Fields | Meaning |
 |---|---|---|
-| signals + context | Which signal deserves attention now, and how? | attention |
-| situation + options | Which available action should we take? | action |
+| **Outcome** | `verb`, `confidence`, `reason_code`, `rationale` | what to do, how sure, why |
+| **Choice** | `action_id`, `intent`, `requires_approval`, `reversible`, `undo_hint` | what to run and how to undo it |
+| **Cost** | `score`, `breakdown`, `cost_of_waiting` | the policy's ranking, never a hidden model score |
+| **Evidence** | `evidence`, `escalation` | what supports the decision and who takes over |
+| **Audit** | `decision_id`, `policy_version`, `trace_id`, `deliver`, `record`, `created_at` | how to trace and store it |
 
-The app sends one request. `Layer.decide()` reads it and uses the matching generic policy.
+The full field-by-field explanation is in [decisions.md](decisions.md).
 
-## Reference policy packs
+## The seven verbs
+
+| Verb | Meaning |
+|---|---|
+| `wait` | Do nothing now; keep watching. |
+| `observe` | Get more information before deciding. |
+| `guide` | Show the situation to a person and let them choose. |
+| `ask` | Ask a person or another agent for information or a decision. |
+| `act` | Run the chosen action now. |
+| `verify` | Check whether an earlier action worked. |
+| `escalate` | Hand the decision to a person with more authority. |
+
+There is no `notify` verb. When an app notifies someone, the decision is `guide`; delivery is a
+separate concern. Approval is the `requires_approval` flag, not a verb. `verify` is both a verb and a
+lifecycle phase, depending on whether it is deciding to check or recording that a check happened.
+
+## Two common requests
+
+| Request | Question | Built-in policy |
+|---|---|---|
+| `signals` + `context` | Which signal deserves attention now, and how? | attention |
+| `situation` + `options` | Which available action should we take? | action |
+
+`Layer.decide()` chooses the right policy from the request shape.
+
+## Ten decision classes
 
 The two request shapes above are the common path. LAIX also ships deterministic reference policies
-for other decision classes: active perception, safety-constrained action, replanning, allocation,
-negotiation, preference elicitation, verification and escalation. With attention and action, the
-layer covers ten decision classes. They read generic inputs from `DecisionRequest.attributes`,
-return the same decision shape, and are registered like any other policy. An app can use a pack
-directly or replace it with a learned policy behind the same interface. `docs/guides/policy-packs.md`
-describes each contract.
+for the other classes:
 
-## Growth rules
+| # | Class | Policy |
+|---|---|---|
+| 1 | Attention | built-in attention policy |
+| 2 | Action | built-in action policy |
+| 3 | Active perception | `ActivePerceptionPolicy` |
+| 4 | Safety-constrained action | `SafetyConstrainedPolicy` |
+| 5 | Replanning | `ReplanningPolicy` |
+| 6 | Allocation | `AllocationPolicy` |
+| 7 | Negotiation | `NegotiationPolicy` |
+| 8 | Preference elicitation | `PreferenceElicitationPolicy` |
+| 9 | Verification | `VerificationPolicy` |
+| 10 | Escalation | `EscalationPolicy` |
 
-1. App names live in app adapters. The layer uses generic vocabulary.
-2. Shared rules live in generic policies. App rules live in the app.
-3. One contract governs every policy. A change to a verb, reason or field is a version change with a
-   new vector.
-4. A score describes one policy. Each policy keeps its own score and breakdown.
-5. The app owns stored state. The layer reads the state the caller supplies.
+The packs read generic inputs from `DecisionRequest.attributes`, return the same decision shape and
+are registered like any other policy. They are starting points, not tuned research models. An app
+can use one directly, wrap it, or replace it behind the same interface. See
+[policy packs](../guides/policy-packs.md).
+
+## Perception, learning and measurement
+
+- **Live Context** runs detectors: cheap ones on every event, deep ones only when their information
+  gain, cost and latency clear the budget. Each event produces a perception frame. See
+  [live context](../guides/live-context.md).
+- **Outcome learning** turns measured outcome labels into rewards and lets `BanditPolicy` change the
+  next choice. See [outcome learning](../guides/outcome-learning.md).
+- **LAIX-Bench** runs deterministic cases for every decision class and reports agreement per class.
+  See [bench](../guides/bench.md).
 
 ## Extension points
 
-The layer has four generic seams:
+| Seam | Contract | Role |
+|---|---|---|
+| Policy | `name`, `decide(request)` | choose a decision |
+| Detector | `name`, `tier`, cost/latency/gain, `detect(event)` | produce observations |
+| Learned policy | `BanditPolicy` + `UCBBandit` | improve from outcomes |
+| Execution bridge | `ExecutionBridge` | approve, run, cancel, undo, receipt |
+| Platform | `Platform` | run skills, approve, state, events, capability level |
+| Proposal | `Proposal` | an action that needs a person |
+| Delivery | `DeliveryPort` | send a decision through an app channel |
+| State store | `StateStore` | save and load experience state |
+| Outcome store | `OutcomeStore` | record decision consequences |
+| Evaluation | `Case`, `compare` | compare policies on the same cases |
 
-- **Policy plugin** — any object with `name` and `decide(request)`; register it with
-  `Layer.register_policy()` and select it with `use_policy()`.
-- **Detector** — any object with `name`, `tier`, `cost`, `latency_ms`, `information_gain` and
-  `detect(event)`; `LiveContext` admits cheap detectors always and deep ones under budget.
-- **Learned policy** — `BanditPolicy` chooses among arms from `UCBBandit` and improves from measured
-  outcome labels.
-- **Platform interface** — run a named skill, cancel, approve, read/write state, stream events and
-  request a capability level.
-- **Proposal** — a storage-free record for an action that needs a person: pending, approved,
-  rejected, applied, undone.
-- **Delivery port** — the app supplies the transport; the layer supplies the decision and expects a
-  delivery receipt.
-- **State store** — save, load and delete experience snapshots.
-- **Outcome store** — record decision consequences and return a summary.
-- **Parity harness** — compare two policies or two versions of one policy on the same cases.
+## Boundaries
 
-These are contracts. The app keeps its database, channels, UI and domain rules.
+LAIX owns the decision and the records around it. It does not own:
 
-## Scope
+- the app's database or user interface;
+- the app's channels or hardware;
+- the platform's model routing;
+- an edge/cloud runtime split;
+- reference apps or a coach.
 
-The layer covers decisions, execution records, outcomes and decision records. Perception, storage,
-model routing and user interfaces sit around it.
+Those are integrations, not missing decisions.
+
+## Growth rules
+
+1. App nouns stay in app adapters. LAIX uses generic vocabulary.
+2. Shared rules become generic policies. App rules stay in the app.
+3. Every policy returns the same decision shape. A verb, reason or field change is a version change.
+4. A score describes one policy. Each policy keeps its own score and breakdown.
+5. The app owns stored state. LAIX defines the contract and reads what the caller supplies.
