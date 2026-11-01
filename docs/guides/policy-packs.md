@@ -112,10 +112,12 @@ decision = layer.decide(
 Register several and choose one:
 
 ```python
-layer.register_policy("safety", SafetyConstrainedPolicy())
-layer.register_policy("replan", ReplanningPolicy())
-layer.use_policy("replan")
+layer.register_policy("safety", SafetyConstrainedPolicy())  # store
+layer.register_policy("replan", ReplanningPolicy())         # store
+layer.use_policy("replan")                                  # activate
 ```
+
+`register_policy` stores a policy. `use_policy` makes it active.
 
 ## Replace a pack
 

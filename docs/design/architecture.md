@@ -74,36 +74,66 @@ A verb is the action word in a decision.
 A notification is a `guide` decision plus an app delivery channel. Approval is the
 `requires_approval` flag on a decision.
 
-## How a policy is chosen
+## Selecting a policy
 
-A policy reads a request and returns a decision. `Layer.decide()` uses this order:
+A `Layer` has **one active policy** at a time. Every `decide()` call uses that policy until you
+change it.
 
-| Order | Condition | Policy |
-|---|---|---|
-| 1 | A policy is active via `Layer(policy=...)` or `use_policy(...)` | that policy |
-| 2 | Request has `situation` + `options` | built-in action |
-| 3 | Request has `signals` + `context` | built-in attention |
-
-The first rule matters: an explicit policy handles every request, even one with a different request
-shape.
-
-The eight packs are selected only through rule 1:
+### One policy for the life of the layer
 
 ```python
-from laix import Layer, SafetyConstrainedPolicy
+from laix import DecisionRequest, Layer, SafetyConstrainedPolicy
+
+request = DecisionRequest(
+    subject="leaking sink",
+    at="2026-11-01T10:00:00+00:00",
+    attributes={
+        "risk_limit": 0.2,
+        "options": [
+            {"id": "valve", "benefit": 0.9, "risk": 0.1},
+            {"id": "hit-pipe", "benefit": 1.0, "risk": 0.9},
+        ],
+    },
+)
 
 layer = Layer(policy=SafetyConstrainedPolicy())
-decision = layer.decide(request)[0]
+decision = layer.decide(request)[0]   # act safe_action valve
 ```
 
-Or registered and selected by name:
+`Layer(policy=...)` activates the policy immediately.
+
+### Several policies, choose at runtime
 
 ```python
-layer.register_policy("safety", SafetyConstrainedPolicy())
-layer.use_policy("safety")
+from laix import Layer, ReplanningPolicy, SafetyConstrainedPolicy
+
+layer = Layer()
+layer.register_policy("safety", SafetyConstrainedPolicy())  # stores it, does not activate it
+layer.register_policy("replan", ReplanningPolicy())         # stores it, does not activate it
+
+layer.use_policy("safety")   # now safety is active
+decision = layer.decide(request)[0]
+
+layer.use_policy("replan")   # switch
+decision = layer.decide(another_request)[0]
 ```
 
-`DecisionRequest.attributes` feeds a selected pack. Attributes alone do not choose a pack.
+`register_policy` adds a policy to the registry. `use_policy` makes one active.
+
+### If no policy is active
+
+```python
+layer = Layer()
+```
+
+Then `Layer.decide()` uses the request shape:
+
+| Request has | Policy |
+|---|---|
+| `situation` + `options` | built-in action |
+| `signals` + `context` | built-in attention |
+
+`attributes` alone do not activate a packaged policy. They are input to whichever policy is active.
 
 ## The ten decision classes
 
@@ -135,6 +165,9 @@ The split is about selection, not importance. All ten return the same decision s
   [outcome learning](../guides/outcome-learning.md).
 - **LAIX-Bench** runs the same test cases for every class. See [bench](../guides/bench.md).
 
+LAIX is a decision layer, not a decision model. A classifier or JEV-style model can be used inside a
+policy. See [LAIX and decision models](positioning.md).
+
 ## Rules
 
 1. App words stay in the app. LAIX words stay generic.
@@ -153,3 +186,6 @@ The split is about selection, not importance. All ten return the same decision s
 | New execution | `ExecutionBridge` or a `Platform` |
 | New storage | Implement `StateStore` or `OutcomeStore` |
 | New channel | Implement `DeliveryPort` |
+
+The next step is a decision-engine core. It is tracked in
+[the engine roadmap](engine-roadmap.md).
