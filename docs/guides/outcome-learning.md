@@ -2,6 +2,13 @@
 
 LAIX measures what happened, turns the result into a reward, and improves the next choice.
 
+| Word | Meaning |
+|---|---|
+| **Outcome** | A measured result of a decision. |
+| **Reward** | A number from `0` to `1` that says how good the outcome was. |
+| **Arm** | One choice the learner can pick. |
+| **Learner** | Code that updates its choice from rewards. |
+
 ```text
 decision -> outcome -> reward -> learner -> next decision
 ```

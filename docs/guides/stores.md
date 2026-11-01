@@ -2,6 +2,11 @@
 
 LAIX defines the contracts. The app owns the database.
 
+| Word | Meaning |
+|---|---|
+| **State** | Short-lived experience data: goal, phase, beliefs and open items. |
+| **Outcome** | A measured result of a decision. |
+
 ## State store
 
 Use it for short-lived experience state: goal, phase, beliefs, open items, expiry.

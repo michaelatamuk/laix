@@ -1,10 +1,10 @@
 # Policy packs
 
-LAIX has eight reference policies for the decision classes beyond attention and action. With those
-two, the layer covers ten classes.
+A **policy** is a rule set that reads a request and returns a decision. A **decision class** is a
+kind of question, such as “should we look first?” or “which plan fits?”
 
-Each pack is a small deterministic policy. Use it directly, wrap it, or replace it with your own
-policy.
+Attention and action are the two built-in classes. LAIX also ships eight reference policies for other
+classes:
 
 ```python
 from laix import Layer, ReplanningPolicy
@@ -25,7 +25,8 @@ Inputs come from `DecisionRequest.attributes`. The packs use generic words only.
 | Verification | `VerificationPolicy` | `verify`, `wait` or `escalate` |
 | Escalation | `EscalationPolicy` | `escalate`, `ask` or `wait` |
 
-TypeScript exports the same classes.
+TypeScript exports the same classes. Verb meanings are in
+[reading a decision](../design/decisions.md).
 
 ## Active perception
 

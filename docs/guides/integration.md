@@ -2,6 +2,13 @@
 
 The app sends a request. LAIX returns a decision. The app performs the action.
 
+| Word | Meaning |
+|---|---|
+| **Request** | The app's description of what is happening. |
+| **Decision** | LAIX's answer: one verb plus reasons and action details. |
+| **Verb** | The action word: `wait`, `observe`, `guide`, `ask`, `act`, `verify` or `escalate`. |
+| **Adapter** | App code that builds requests and turns decisions into app actions. |
+
 ## Install
 
 Python:

@@ -1,10 +1,22 @@
 # Reading a decision
 
-A request goes in. One decision comes out. Every policy returns the same shape.
+## First, the words
+
+| Word | Meaning |
+|---|---|
+| **Request** | What the app sends to LAIX: what is happening and what it can do. |
+| **Signal** | One item that might need attention, such as a deadline or a risk. |
+| **Context** | Rules around attention: current time, quiet hours, minimum severity. |
+| **Situation** | The current state for an action decision: beliefs, goals and limits. |
+| **Option** | One action the app can take. |
+| **Decision** | What LAIX sends back: one verb, a reason, and optional action details. |
+| **Verb** | The action word in a decision. |
+| **Policy** | The rule set that produced the decision. |
+| **Reason code** | A short stable label for the rule that fired. |
 
 ## Example
 
-A bill is due tomorrow. The app asks LAIX whether to show it now.
+A bill is due tomorrow. The app sends a request with one signal and the attention context.
 
 ```python
 DecisionRequest(
@@ -26,6 +38,8 @@ DecisionRequest(
 )
 ```
 
+LAIX returns:
+
 ```text
 guide worth_surfacing 84.0
 ```
@@ -35,21 +49,21 @@ guide worth_surfacing 84.0
 | `verb` | `guide` | Show the bill now; the user decides when to pay. |
 | `reason_code` | `worth_surfacing` | The attention rules say it is worth showing. |
 | `score` | `84.0` | The attention policy's ranking. |
-| `confidence` | `0.95` | How sure the layer is. |
+| `confidence` | `0.95` | How sure LAIX is. |
 | `requires_approval` | `false` | No approval needed. |
 | `deliver` | `true` | Show it now. |
 | `record` | `true` | Keep it in history. |
 
-## Fields
+## The decision fields
 
 | Field | Meaning |
 |---|---|
 | `verb` | What to do next. |
 | `confidence` | How sure the policy is, `0..1`. |
 | `reason_code` | The rule that fired. Use this in app logic. |
-| `rationale` | Human-readable explanation. Do not parse it. |
+| `rationale` | Explanation for people. Do not parse it. |
 | `action_id` | The chosen option, if there is one. |
-| `intent` | `{capability, args}` to execute. |
+| `intent` | `{capability, args}` the app can execute. |
 | `requires_approval` | Ask a person before executing. |
 | `reversible` | Whether the action can be undone. |
 | `undo_hint` | How to undo it. |
@@ -65,7 +79,7 @@ guide worth_surfacing 84.0
 | `record` | Keep it. |
 | `created_at` | When it was made. |
 
-## Verbs
+## The seven verbs
 
 | Verb | Meaning |
 |---|---|
@@ -82,7 +96,7 @@ A notification is a `guide` decision plus an app delivery channel. Approval is t
 
 ## More examples
 
-**Quiet hours.** The same bill at 23:30 returns `wait quiet_hours 84.0`. The score stays high, but
+**Quiet hours.** The same bill at 23:30 returns `wait quiet_hours 84.0`. The score is still high, but
 `deliver` is `false` and `record` is `true`.
 
 **Look first.** A late parcel with a tracking page returns `observe policy_rule option-check-tracking`.

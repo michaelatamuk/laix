@@ -1,6 +1,20 @@
 # Contracts
 
-Everything in this release uses one version: **0.6.0**.
+## What a contract is
+
+A contract is a named data shape. It says which fields exist, what type they have and what values are
+allowed. LAIX uses contracts for requests, decisions, outcomes and the records around them.
+
+| Word | Meaning |
+|---|---|
+| **Record** | One data object, such as a decision or an outcome. |
+| **Schema** | A machine-readable description of a record. |
+| **Vector** | A fixed input and its expected output, used as a test case. |
+| **Policy version** | The label of the rule set that produced a decision. |
+
+## One version
+
+Everything in this release uses the same version: **0.6.0**.
 
 | Thing | Version |
 |---|---|

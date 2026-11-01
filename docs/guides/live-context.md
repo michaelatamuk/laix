@@ -1,7 +1,15 @@
 # Live Context
 
-Live Context is the perception side of LAIX. The app supplies detectors and events. LAIX decides what
-to run and returns a frame.
+Live Context is the perception part of LAIX.
+
+| Word | Meaning |
+|---|---|
+| **Event** | Something that happened, with a subject and a time. |
+| **Detector** | App code that looks at an event and returns detections. |
+| **Detection** | One thing a detector noticed. |
+| **Frame** | LAIX's report for one event: what ran, what was skipped and what was found. |
+
+The app supplies detectors and events. LAIX decides what to run and returns a frame.
 
 ## Detector
 
@@ -48,7 +56,8 @@ The rule:
 3. Cost and latency must fit the budget.
 4. The frame records what ran, what was skipped and why.
 
-The default budget allows two deep calls, cost `1.0` and latency `500 ms`.
+`uncertainty` is how unsure LAIX is, from `0` to `1`. The default budget allows two deep calls, cost
+`1.0` and latency `500 ms`.
 
 ## Frames
 

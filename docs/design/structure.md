@@ -1,5 +1,8 @@
 # Repository structure
 
+This page maps files. Concepts are defined in [architecture](architecture.md) and
+[contracts](contracts.md).
+
 ```text
 laix/
 ├── packages/

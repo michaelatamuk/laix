@@ -1,7 +1,13 @@
 # Platform interface
 
-The app describes the experience. The platform runs skills, keeps state and streams events. LAIX
-asks for a capability level and does not choose the model.
+The app describes the experience. The platform runs work and reports results. LAIX decides; the
+platform executes.
+
+| Word | Meaning |
+|---|---|
+| **Platform** | The system below LAIX that runs skills, approvals, state and events. |
+| **Skill** | A named unit of work the platform can run. |
+| **Capability level** | How much power a call needs: `fast`, `balanced` or `deep`. |
 
 ## Contract
 

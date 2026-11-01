@@ -1,7 +1,14 @@
 # LAIX-Bench
 
-LAIX-Bench runs the same cases in Python and TypeScript. It uses no app data, network or randomness,
-so failures reproduce.
+LAIX-Bench runs the same test cases in Python and TypeScript.
+
+| Word | Meaning |
+|---|---|
+| **Case** | One request and the decision it should produce. |
+| **Suite** | A group of cases for one decision class. |
+| **Agreement** | The share of cases that produced the expected decision. |
+
+It uses no app data, network or randomness, so failures reproduce.
 
 ## Run
 

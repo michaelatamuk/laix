@@ -1,6 +1,8 @@
 # LAIX documentation
 
-One page per concept. Start with the design, then pick the guide you need.
+One page per concept. New to LAIX? Read [architecture](design/architecture.md), then
+[reading a decision](design/decisions.md), then [contracts](design/contracts.md). The guides are
+independent after that.
 
 ## Design
 
