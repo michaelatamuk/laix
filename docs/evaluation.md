@@ -1,30 +1,38 @@
-# Evaluation seed
+# Evaluation
 
-This folder holds a small set of checks.
+LAIX has three kinds of checks.
 
-| File | What it checks |
+| Check | Location |
 |---|---|
-| `packages/contracts/attention.v1.json` | 23 timing cases, 24 decisions |
-| `packages/contracts/attention-bench.v1.json` | 12 labelled cases for precision, hazard and recall |
-| `packages/contracts/decision.v1.schema.json` | the shape of one decision |
-| `packages/contracts/decision-record.v1.schema.json` | the shape of one decision record |
+| Attention behaviour | `packages/contracts/attention.v1.json` |
+| Attention outcomes | `packages/contracts/attention-bench.v1.json` |
+| Every decision class | `python -m laix.bench`, `npm run bench` |
 
-`laix/bench.py` runs deterministic cases for every decision class:
+The JSON schemas in `packages/contracts/` describe the record shapes.
+
+## Run
 
 ```powershell
-python -m laix.bench
+# Python
+cd packages/python/laix
+py -m pytest -q
+py -m laix.bench
+
+# TypeScript
+cd packages/typescript/laix
+npm.cmd test
+npm.cmd run bench
+npm.cmd run conformance
 ```
 
-See [`guides/bench.md`](guides/bench.md).
+Conformance compares the attention decisions with the shared vector file.
 
-Run the checks with the test script in the repository root.
-
-## Next additions
+## What is next
 
 - A held-out set.
 - Real user outcomes.
 - A causal study.
-- Cases for live perception and sub-second timing.
+- Live perception and sub-second cases.
 
-The current files show whether a code change altered behaviour. User studies show how the layer
-performs in the world.
+Today the checks show whether a change altered behaviour. User studies show how the layer performs in
+the real world.

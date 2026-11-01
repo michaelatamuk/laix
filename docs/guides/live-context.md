@@ -1,10 +1,9 @@
 # Live Context
 
-Live Context is the perception side of LAIX: what the layer can see, how often it looks, and what
-looking costs. The app supplies detectors and events; LAIX supplies the loop, the admission rule and
-the frame.
+Live Context is the perception side of LAIX. The app supplies detectors and events. LAIX decides what
+to run and returns a frame.
 
-## Detector contract
+## Detector
 
 ```python
 from laix import Detection, PerceptionEvent
@@ -21,17 +20,16 @@ class MyDetector:
 
 | Field | Meaning |
 |---|---|
-| `name` | unique detector name |
+| `name` | unique name |
 | `tier` | `cheap` or `deep` |
 | `cost` | cost of one call |
 | `latency_ms` | time one call takes |
-| `information_gain` | expected reduction in uncertainty, `0..1` |
+| `information_gain` | expected uncertainty reduction, `0..1` |
 | `detect(event)` | return zero or more detections |
 
-`CallableDetector` wraps a plain function for tests and small adapters. A vision, audio or streaming
-SDK stays inside the detector adapter.
+`CallableDetector` wraps a function for small adapters.
 
-## The loop
+## Loop
 
 ```python
 from laix import LiveContext, PerceptionEvent
@@ -45,53 +43,37 @@ frame = context.perceive(
 
 The rule:
 
-1. Every cheap detector runs on every event.
-2. A deep detector runs only when gain, weighted by uncertainty, clears the threshold.
+1. Cheap detectors run on every event.
+2. A deep detector runs when its gain, weighted by uncertainty, clears the threshold.
 3. Cost and latency must fit the budget.
-4. The frame records what ran, what was skipped, why, and the remaining uncertainty.
+4. The frame records what ran, what was skipped and why.
 
-The default budget admits at most two deep calls, spends at most `1.0`, and caps latency at `500 ms`.
-A host can pass another `Budget`.
+The default budget allows two deep calls, cost `1.0` and latency `500 ms`.
 
-## Frames and streams
+## Frames
 
 ```python
 frames = context.feed(events, uncertainty=0.7)
 latest = context.latest
 ```
 
-A `PerceptionFrame` contains:
+A frame has:
 
-| Field | Meaning |
-|---|---|
-| `subject`, `at` | event identity |
-| `detections` | what the admitted detectors found |
-| `allowed` | detectors that ran |
-| `skipped` | detector name, reason and gain for each skipped call |
-| `uncertainty` | remaining uncertainty after the observations |
-| `deep_calls`, `cost` | resource use for this frame |
+- subject and time;
+- detections;
+- allowed and skipped detectors;
+- remaining uncertainty;
+- deep-call count and cost.
 
-## TypeScript
+TypeScript exports the same `LiveContext`, `CallableDetector` and `PerceptionFrame`.
 
-The TypeScript package mirrors the contract:
+## Clock
 
-```ts
-import { CallableDetector, LiveContext } from "laix";
-
-const context = new LiveContext([
-  new CallableDetector("motion", (event) => [{ id: "d-1", detector: "motion", kind: "presence", subject: event.subject, at: event.at }], { informationGain: 0.2 }),
-]);
-```
-
-## Driving the clock
-
-The host drives time. A live loop calls `perceive` on each event; a batch job calls `feed`. Both
-produce the same frame shape.
+The host drives time. A live loop calls `perceive` on each event. A batch job calls `feed`.
 
 ## Example
 
-`examples/python/runtime/live_context.py` runs a cheap detector, an admitted deep detector and a deep
-detector skipped for latency:
+`examples/python/runtime/live_context.py`:
 
 ```text
 ('motion', 'read-label') ('transcribe',) 2 0.097

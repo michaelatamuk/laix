@@ -3,7 +3,7 @@ import { makeDecision, numberValue, value } from "./support.ts";
 
 export class PreferenceElicitationPolicy {
   name = "preference-elicitation.v1";
-  version = "1.0";
+  version = "0.6.0";
 
   decide(request: DecisionRequest): Decision[] {
     const uncertainty = numberValue(request, "uncertainty", 0.5);

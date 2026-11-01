@@ -1,25 +1,22 @@
 # Integrating LAIX
 
-An app calls LAIX, receives one decision, and performs the action itself. The adapter is the only
-place that knows the app's nouns.
+The app sends a request. LAIX returns a decision. The app performs the action.
 
 ## Install
 
-### Python
+Python:
 
 ```powershell
 pip install "git+https://github.com/michaelatamuk/laix.git@v0.6.0#subdirectory=packages/python/laix"
 ```
 
-For local development:
+Local checkout:
 
 ```powershell
 pip install -e C:\Workspace\laix\packages\python\laix
 ```
 
-### TypeScript
-
-Use a local checkout or the release tarball:
+TypeScript:
 
 ```json
 {
@@ -29,20 +26,16 @@ Use a local checkout or the release tarball:
 }
 ```
 
-The npm package is not published to a registry yet. The release page includes `laix-0.6.0.tgz`.
+The release page also has a packed `laix-0.6.0.tgz`.
 
 ## Build the adapter
 
-The adapter does two jobs:
+The adapter does two things:
 
-1. Translate the app's event into a `DecisionRequest`.
-2. Translate the returned `Decision` back into an app action.
+1. Turn the app's event into a `DecisionRequest`.
+2. Turn the returned `Decision` into an app action.
 
-The app keeps its nouns; LAIX receives generic fields.
-
-### Attention request
-
-Use this when the app asks: **which signal deserves attention now, and how?**
+### Attention
 
 ```python
 from laix import Context, DecisionRequest, Layer, Signal
@@ -59,9 +52,7 @@ decision = Layer().decide(
 )[0]
 ```
 
-### Action request
-
-Use this when the app asks: **which of the actions I can afford should I take?**
+### Action
 
 ```python
 from laix import Action, Belief, DecisionRequest, Layer, Situation
@@ -89,8 +80,6 @@ decision = Layer().decide(
 
 ### TypeScript
 
-The same two request shapes:
-
 ```ts
 import { Layer } from "laix";
 
@@ -102,77 +91,59 @@ const [decision] = new Layer().decide({
 });
 ```
 
-## Read the decision
-
-Every decision has the same shape. The fields you usually branch on:
+## Use the decision
 
 | Field | Use |
 |---|---|
-| `verb` | what to do: `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` |
-| `reason_code` | why this rule fired; stable for app logic |
-| `action_id` | the chosen option, when there is one |
-| `requires_approval` | ask a person before executing |
-| `deliver` / `record` | show now / keep in history |
-
-The full field list is in [reading a decision](../design/decisions.md).
+| `verb` | What to do. |
+| `reason_code` | Why this rule fired. |
+| `action_id` | Which option was chosen. |
+| `requires_approval` | Ask a person first. |
+| `deliver` / `record` | Show now / keep it. |
 
 | Verb | App action |
 |---|---|
-| `wait` | do nothing; keep the item for later |
-| `observe` | take a cheap look or fetch a missing reading |
-| `guide` | show the item to the user |
-| `ask` | ask the user or an approver |
-| `act` | run the chosen action |
-| `verify` | check an earlier action |
-| `escalate` | hand the decision to another person |
+| `wait` | Do nothing now. |
+| `observe` | Get more information. |
+| `guide` | Show it to the user. |
+| `ask` | Ask a person or agent. |
+| `act` | Run the action. |
+| `verify` | Check an earlier action. |
+| `escalate` | Hand over to someone else. |
 
-## Roll out in shadow mode
+Full fields: [reading a decision](../design/decisions.md).
+
+## Roll out safely
 
 1. Add the adapter behind a flag.
-2. Run the old and new decision paths together.
+2. Run the old and new paths together.
 3. Record both decisions.
 4. Compare verb, reason, approval and delivery.
-5. Explain every difference.
-6. Move live traffic to LAIX.
-7. Remove the old module after a quiet period.
+5. Explain each difference.
+6. Move traffic to LAIX.
+7. Remove the old path after a quiet period.
 
-`examples/apps/` contains one caller example per working app. The production adapter stays in the app
-repository.
+The production adapter stays in the app. `examples/apps/` shows caller examples.
 
 ## Pin a version
 
-Use a tag, not a branch:
+Use a tag:
 
 ```text
 v0.6.0
 ```
 
-A contract change creates a new version. The app upgrades deliberately.
-
-The Python subdirectory is `packages/python/laix`. A TypeScript file dependency points at
+The Python subdirectory is `packages/python/laix`. The TypeScript path is
 `packages/typescript/laix`. App imports stay the same.
 
-## Manager boundary
-
-A manager service supplies memory and long-lived plans. LAIX returns the decision for the moment.
-
-```text
-manager: memory, plans, commitments, missions
-LAIX:    whether to act now, how, with what approval, and whether it worked
-```
-
-The manager keeps its memory and missions. LAIX keeps the decision contract.
-
 ## Custom policy
-
-A vertical decision style is a policy plugin:
 
 ```python
 from laix import Layer, LayerDecision
 
 class QualityPolicy:
     name = "quality"
-    version = "1.0"
+    version = "0.6.0"
 
     def decide(self, request):
         return [
@@ -187,36 +158,20 @@ class QualityPolicy:
 layer = Layer(policy=QualityPolicy())
 ```
 
-For dynamic selection:
+Or select it at runtime:
 
 ```python
 layer.register_policy("quality", QualityPolicy())
 layer.use_policy("quality")
-layer.status()
-layer.explain(decision)
 ```
 
-TypeScript uses the same pattern with `new Layer({ policy })`, `registerPolicy` and `usePolicy`.
+TypeScript uses `new Layer({ policy })`, `registerPolicy` and `usePolicy`.
 
-## HTTP service
+## Manager boundary
 
-The package runs in-process. Add a small HTTP wrapper when a caller cannot run Python or TypeScript in
-the same process:
+A manager service keeps memory and long-lived plans. LAIX returns the decision for the moment.
 
 ```text
-POST /v1/decide
-  -> Layer.decide()
-  -> Decision
+manager: memory, plans, commitments, missions
+LAIX:    whether to act now, how, with what approval, and whether it worked
 ```
-
-The wrapper adds network latency, authentication and deployment work, so treat it as a separate
-change.
-
-## Release
-
-CI runs on every push. A tag creates a GitHub release with:
-
-- the Python wheel and source archive;
-- the npm tarball.
-
-Registry publishing is a separate decision. Install from the tag or the release artifacts until then.

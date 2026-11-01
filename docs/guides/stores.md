@@ -1,10 +1,10 @@
-# State and outcome stores
+# Stores
 
-LAIX defines the contracts. The app or a dedicated service owns persistence.
+LAIX defines the contracts. The app owns the database.
 
 ## State store
 
-Use it for short-lived experience state: current goal, phase, beliefs, open items and expiry.
+Use it for short-lived experience state: goal, phase, beliefs, open items, expiry.
 
 ```python
 from laix import ExperienceState, StateStore
@@ -15,14 +15,14 @@ class MyStore:
     def delete(self, key: str) -> None: ...
 ```
 
-`InMemoryStateStore` is a reference implementation for tests.
+`InMemoryStateStore` is the reference implementation.
 
-Long-lived project or user memory belongs to the app or to a manager service. `ExperienceState`
-supports `snapshot()` and `from_snapshot()` when the app wants to persist it in its own database.
+`ExperienceState` has `snapshot()` and `from_snapshot()` for app-owned persistence. Long-lived project
+or user memory belongs in the app or a manager service.
 
 ## Outcome store
 
-Use it for decision consequences, not app content.
+Use it for decision consequences.
 
 ```python
 from laix import Outcome, OutcomeStore
@@ -34,9 +34,9 @@ class MyOutcomeStore:
     def summary(self) -> dict: ...
 ```
 
-`OutcomeLedger` implements the contract in memory.
+`OutcomeLedger` is the reference implementation.
 
-Keep these fields:
+Store:
 
 - decision id;
 - metric and before/after values;
@@ -44,14 +44,8 @@ Keep these fields:
 - attribution;
 - evidence reference.
 
-Transcripts, images, customer data and secrets stay in the app. A shared outcome store keeps the
-reference and the measurement.
+Keep transcripts, images, customer data and secrets in the app.
 
-## TypeScript
+TypeScript exports `StateStore`, `InMemoryStateStore`, `OutcomeStore` and `OutcomeLedger`.
 
-The TypeScript package mirrors the contracts with `StateStore`, `InMemoryStateStore`, `OutcomeStore`
-and `OutcomeLedger`.
-
-## Learning
-
-Learning reads labels from the outcome store. See [outcome learning](outcome-learning.md).
+Learning uses outcome labels: [outcome learning](outcome-learning.md).

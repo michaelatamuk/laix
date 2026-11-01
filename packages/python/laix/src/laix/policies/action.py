@@ -32,7 +32,7 @@ from ..contracts import (
     iso,
 )
 
-POLICY_VERSION = "2026.2"
+POLICY_VERSION = "0.6.0"
 
 
 def _number(payload: dict[str, Any], key: str, default: float) -> float:

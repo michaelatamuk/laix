@@ -49,7 +49,7 @@ from .replay import (
 )
 from .timing import hours_until, is_quiet, parse_range
 
-__version__ = "2.2.0"
+__version__ = "0.6.0"
 
 __all__ = [
     "ACTIONS",

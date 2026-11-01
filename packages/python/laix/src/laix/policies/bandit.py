@@ -29,7 +29,7 @@ def _arm(item: Any) -> Arm:
 
 class BanditPolicy:
     name = "bandit.v1"
-    version = "1.0"
+    version = "0.6.0"
 
     def __init__(
         self,

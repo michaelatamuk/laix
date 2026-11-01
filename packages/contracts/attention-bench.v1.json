@@ -1,6 +1,6 @@
 {
   "contract": "laix-bench",
-  "version": "1.0.0",
+  "version": "0.6.0",
   "note": "Twelve synthetic, labelled interventions used to score a policy against two baselines. Labels describe what the user later decided: helpful, harmful or neutral. This is a miniature bench.",
   "cases": [
     {

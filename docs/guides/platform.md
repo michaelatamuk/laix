@@ -1,12 +1,12 @@
 # Platform interface
 
-The app supplies the experience. The platform runs skills, keeps session state and streams events.
-LAIX asks for a **capability level** and leaves model choice to the platform.
+The app describes the experience. The platform runs skills, keeps state and streams events. LAIX
+asks for a capability level and does not choose the model.
 
 ## Contract
 
 ```python
-from laix import ApprovalRequest, Platform, SkillCall
+from laix import ApprovalRequest, SkillCall
 
 class MyPlatform:
     def run_skill(self, call: SkillCall): ...
@@ -18,24 +18,19 @@ class MyPlatform:
     def capability(self, level: str): ...
 ```
 
-| Need | Why |
+| Method | Purpose |
 |---|---|
-| run a named skill with typed arguments | LAIX decides; the platform executes |
-| cancel a running action | the situation changed |
-| ask for approval | the action is destructive |
-| read and write session state | experience state outlives one turn |
-| stream events with trace ids | cost, latency and debugging |
-| a capability level | LAIX stays portable across platforms |
+| `run_skill` | run a named skill |
+| `cancel` | stop a running action |
+| `request_approval` | ask a person |
+| `read_state` / `write_state` | keep session state |
+| `events` | return events for a trace |
+| `capability` | return a capability level |
 
-Capability levels are `fast`, `balanced` and `deep`.
+Levels are `fast`, `balanced` and `deep`.
 
-`InMemoryPlatform` is a reference implementation for tests and local runs. A production adapter
-wraps openJiuwen, a cloud runtime or another platform.
-
-## Division of work
-
-The platform executes and reports. LAIX decides and records. The platform may choose the model, tool
-or vendor behind a capability level.
+`InMemoryPlatform` is the reference implementation. A real adapter wraps openJiuwen, a cloud runtime
+or another platform.
 
 ## Example
 
@@ -48,7 +43,4 @@ result = platform.run_skill(SkillCall("lookup", {}, trace_id="tr-1"))
 events = platform.events("tr-1")
 ```
 
-## TypeScript
-
-`Platform`, `InMemoryPlatform`, `SkillCall`, `ApprovalRequest` and `Capability` are also exported from
-the TypeScript package.
+TypeScript exports `Platform`, `InMemoryPlatform`, `SkillCall` and `ApprovalRequest`.

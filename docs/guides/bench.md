@@ -1,7 +1,7 @@
 # LAIX-Bench
 
-LAIX-Bench runs deterministic cases across every decision class. It uses no app data, network or
-randomness, so a failure is reproducible.
+LAIX-Bench runs the same cases in Python and TypeScript. It uses no app data, network or randomness,
+so failures reproduce.
 
 ## Run
 
@@ -12,7 +12,6 @@ python -m laix.bench
 python -m laix.bench --list
 python -m laix.bench --suite safety
 python -m laix.bench --json
-python -m laix.bench --fail-under 1.0
 ```
 
 TypeScript:
@@ -24,7 +23,6 @@ npm.cmd run bench -- --suite safety --json
 
 ```text
 suite                     cases  passed  agreement
----------------------------------------------------
 attention                     3       3      1.000
 action                        3       3      1.000
 active-perception             2       2      1.000
@@ -35,31 +33,27 @@ negotiation                   3       3      1.000
 preference                    2       2      1.000
 verification                  3       3      1.000
 escalation                    3       3      1.000
----------------------------------------------------
 overall                      25      25      1.000
 ```
 
-Both implementations run the same cases and exit `0` when agreement meets `--fail-under`, otherwise
-`1`.
+Both exit `0` when agreement meets `--fail-under`, otherwise `1`.
 
 ## Suites
 
-| Suite | Decision class |
+| Suite | Question |
 |---|---|
-| `attention` | which signal deserves attention now |
-| `action` | which available action to take |
-| `active-perception` | look before deciding when uncertainty is high |
-| `safety` | act only inside the hard risk limit |
-| `replanning` | choose a replacement plan |
-| `allocation` | fund a portfolio under a budget |
-| `negotiation` | accept, counter or escalate |
-| `preference` | ask the question that reduces uncertainty most |
-| `verification` | confirm that an action worked |
-| `escalation` | hand over to a named target |
+| `attention` | Which signal deserves attention now? |
+| `action` | Which action should we take? |
+| `active-perception` | Should we look first? |
+| `safety` | Is any action inside the risk limit? |
+| `replanning` | Which replacement plan fits? |
+| `allocation` | What fits the budget? |
+| `negotiation` | Accept, counter or escalate? |
+| `preference` | Which question should we ask? |
+| `verification` | Did the action work? |
+| `escalation` | Should we hand over? |
 
-Each suite has one policy factory and an ordered list of cases.
-
-## Case format
+## Case
 
 ```python
 BenchCase(
@@ -69,29 +63,23 @@ BenchCase(
 )
 ```
 
-The runner compares the expected subset of `verb`, `reason_code`, `action_id` and
-`requires_approval`. Extra fields on the decision are allowed.
+The runner compares `verb`, `reason_code`, `action_id` and `requires_approval`. Other fields are
+ignored.
 
 ## Report
 
-`run_bench()` returns a `BenchReport`:
+`run_bench()` returns:
 
 - `total`, `passed`, `failed`, `agreement`;
-- `by_suite()` with cases, passed, failed and agreement per class;
+- `by_suite()`;
 - `to_dict()` for JSON.
-
-A mismatch row names the suite, the case, the expected value and the actual value.
 
 ## Add a case
 
-1. Add a `BenchCase` to the suite in `packages/python/laix/src/laix/bench.py`.
+1. Add it to `packages/python/laix/src/laix/bench.py`.
 2. Add the same case to `packages/typescript/laix/src/bench.ts`.
 3. Run both benches.
-4. If a case fails, decide whether the case or the policy is wrong.
-5. Keep the case as a regression.
+4. Keep the case as a regression.
 
-## Case sources
-
-App logs become bench cases by exporting the same decision request and the expected decision. LAIX
-keeps its own fixtures; the app exports traces in the same shape. Real traces can be added as a
-separate suite without changing the runner.
+App traces can become cases by exporting the request and the expected decision. LAIX keeps its own
+fixtures.

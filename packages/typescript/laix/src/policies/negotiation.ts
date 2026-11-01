@@ -3,7 +3,7 @@ import { makeDecision, numberValue } from "./support.ts";
 
 export class NegotiationPolicy {
   name = "negotiation.v1";
-  version = "1.0";
+  version = "0.6.0";
 
   decide(request: DecisionRequest): Decision[] {
     const offer = numberValue(request, "offer", 0);

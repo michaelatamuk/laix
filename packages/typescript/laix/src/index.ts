@@ -27,7 +27,7 @@ export * from "./runtime/resources.ts";
 export * from "./runtime/state.ts";
 export * from "./runtime/state-store.ts";
 
-export { PHASES, VERBS, clamp, confidenceBand, iso, newId } from "./contracts.ts";
+export { PHASES, POLICY_VERSION, SCHEMA_VERSION, VERBS, clamp, confidenceBand, iso, newId } from "./contracts.ts";
 export type {
   Action,
   Belief,

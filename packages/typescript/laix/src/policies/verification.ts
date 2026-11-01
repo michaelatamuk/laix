@@ -3,7 +3,7 @@ import { makeDecision, numberValue, value } from "./support.ts";
 
 export class VerificationPolicy {
   name = "verification.v1";
-  version = "1.0";
+  version = "0.6.0";
 
   decide(request: DecisionRequest): Decision[] {
     if (Boolean(value(request, "verified", false))) {

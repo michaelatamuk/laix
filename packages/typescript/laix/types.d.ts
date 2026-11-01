@@ -589,6 +589,8 @@
   export function runBench(names?: string[]): BenchReport;
   export function suiteNames(): string[];
 
+  export const SCHEMA_VERSION: string;
+  export const POLICY_VERSION: string;
   export const VERBS: Verb[];
   export const PHASES: string[];
   export function clamp(value: number, low?: number, high?: number): number;
