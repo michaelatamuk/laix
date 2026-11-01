@@ -76,26 +76,49 @@ A notification is a `guide` decision plus an app delivery channel. Approval is t
 
 ## How a policy is chosen
 
-A policy reads a request and returns a decision. `Layer.decide()` chooses one:
+A policy reads a request and returns a decision. `Layer.decide()` uses this order:
 
-- request with `signals` + `context` → the built-in attention policy;
-- request with `situation` + `options` → the built-in action policy;
-- any other class → pass a pack explicitly with `Layer(policy=...)` or register it.
+| Order | Condition | Policy |
+|---|---|---|
+| 1 | A policy is active via `Layer(policy=...)` or `use_policy(...)` | that policy |
+| 2 | Request has `situation` + `options` | built-in action |
+| 3 | Request has `signals` + `context` | built-in attention |
+
+The first rule matters: an explicit policy handles every request, even one with a different request
+shape.
+
+The eight packs are selected only through rule 1:
+
+```python
+from laix import Layer, SafetyConstrainedPolicy
+
+layer = Layer(policy=SafetyConstrainedPolicy())
+decision = layer.decide(request)[0]
+```
+
+Or registered and selected by name:
+
+```python
+layer.register_policy("safety", SafetyConstrainedPolicy())
+layer.use_policy("safety")
+```
+
+`DecisionRequest.attributes` feeds a selected pack. Attributes alone do not choose a pack.
 
 ## The ten decision classes
 
 | # | Class | Input | Policy | Selected by |
 |---|---|---|---|---|
-| 1 | Attention | `signals` + `context` | built-in attention | `Layer.decide()` |
-| 2 | Action | `situation` + `options` | built-in action | `Layer.decide()` |
-| 3 | Active perception | `attributes` | `ActivePerceptionPolicy` | `Layer(policy=...)` |
-| 4 | Safety-constrained action | `attributes` | `SafetyConstrainedPolicy` | `Layer(policy=...)` |
-| 5 | Replanning | `attributes` | `ReplanningPolicy` | `Layer(policy=...)` |
-| 6 | Allocation | `attributes` | `AllocationPolicy` | `Layer(policy=...)` |
-| 7 | Negotiation | `attributes` | `NegotiationPolicy` | `Layer(policy=...)` |
-| 8 | Preference elicitation | `attributes` | `PreferenceElicitationPolicy` | `Layer(policy=...)` |
-| 9 | Verification | `attributes` | `VerificationPolicy` | `Layer(policy=...)` |
-| 10 | Escalation | `attributes` | `EscalationPolicy` | `Layer(policy=...)` |
+| 1 | Attention | `signals` + `context` | built-in attention | request shape |
+| 2 | Action | `situation` + `options` | built-in action | request shape |
+| 3 | Active perception | `attributes` | `ActivePerceptionPolicy` | explicit policy |
+| 4 | Safety-constrained action | `attributes` | `SafetyConstrainedPolicy` | explicit policy |
+| 5 | Replanning | `attributes` | `ReplanningPolicy` | explicit policy |
+| 6 | Allocation | `attributes` | `AllocationPolicy` | explicit policy |
+| 7 | Negotiation | `attributes` | `NegotiationPolicy` | explicit policy |
+| 8 | Preference elicitation | `attributes` | `PreferenceElicitationPolicy` | explicit policy |
+| 9 | Verification | `attributes` | `VerificationPolicy` | explicit policy |
+| 10 | Escalation | `attributes` | `EscalationPolicy` | explicit policy |
 
 There are ten classes. The first two are built into `Layer` because they define the two request
 shapes it understands. The other eight are ordinary policy objects that take their inputs from
