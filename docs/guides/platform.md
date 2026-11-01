@@ -1,12 +1,12 @@
 # Platform interface
 
-LAIX needs a small south interface. The app supplies the experience. The platform runs skills,
-keeps session state and streams events. LAIX names a **capability level**, never a model name.
+The app supplies the experience. The platform runs skills, keeps session state and streams events.
+LAIX asks for a **capability level** and leaves model choice to the platform.
 
 ## Contract
 
 ```python
-from laix import Platform, SkillCall, ApprovalRequest
+from laix import ApprovalRequest, Platform, SkillCall
 
 class MyPlatform:
     def run_skill(self, call: SkillCall): ...
@@ -28,13 +28,14 @@ class MyPlatform:
 | a capability level | LAIX stays portable across platforms |
 
 Capability levels are `fast`, `balanced` and `deep`.
-`InMemoryPlatform` is a reference implementation for tests and local runs.
-A real adapter wraps openJiuwen, a cloud runtime or another platform.
 
-## Boundary
+`InMemoryPlatform` is a reference implementation for tests and local runs. A production adapter
+wraps openJiuwen, a cloud runtime or another platform.
 
-The platform does not decide. It runs and reports. LAIX does not know model names, tool names or
-vendor endpoints.
+## Division of work
+
+The platform executes and reports. LAIX decides and records. The platform may choose the model, tool
+or vendor behind a capability level.
 
 ## Example
 
@@ -46,3 +47,8 @@ platform.register("lookup", lambda call: {"value": 7})
 result = platform.run_skill(SkillCall("lookup", {}, trace_id="tr-1"))
 events = platform.events("tr-1")
 ```
+
+## TypeScript
+
+`Platform`, `InMemoryPlatform`, `SkillCall`, `ApprovalRequest` and `Capability` are also exported from
+the TypeScript package.

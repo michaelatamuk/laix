@@ -1,11 +1,10 @@
 # Policy packs
 
-LAIX ships eight reference policies for decision classes beyond attention and action. With those two
-common policies, the layer covers ten decision classes. Each pack is a small, deterministic seed: a
-clear contract and a defensible default, not a finished research algorithm. An app can use a pack
-directly, wrap it, or replace it with a learned policy behind the same plugin interface.
+LAIX ships eight reference policies for decision classes beyond attention and action. Together with
+those two common policies, the layer covers ten decision classes.
 
-All packs are exported from the one public API:
+Each pack is a small deterministic policy: a clear contract and a sensible default. An app can use it
+directly, wrap it, or replace it with a domain or learned policy behind the same interface.
 
 ```python
 from laix import Layer, ReplanningPolicy
@@ -13,7 +12,21 @@ from laix import Layer, ReplanningPolicy
 decision = Layer(policy=ReplanningPolicy()).decide(request)[0]
 ```
 
-Inputs are read from `DecisionRequest.attributes`. None of the packs names an app, domain or vendor.
+Inputs are read from `DecisionRequest.attributes`. The packs use generic fields; app nouns stay in the
+adapter.
+
+| # | Class | Policy | Output |
+|---|---|---|---|
+| 3 | Active perception | `ActivePerceptionPolicy` | `observe` or `wait` |
+| 4 | Safety-constrained action | `SafetyConstrainedPolicy` | `act`, `guide` or `wait` |
+| 5 | Replanning | `ReplanningPolicy` | `act` or `ask` |
+| 6 | Allocation | `AllocationPolicy` | `act` or `wait` |
+| 7 | Negotiation | `NegotiationPolicy` | `act` or `escalate` |
+| 8 | Preference elicitation | `PreferenceElicitationPolicy` | `ask`, `act` or `wait` |
+| 9 | Verification | `VerificationPolicy` | `verify`, `wait` or `escalate` |
+| 10 | Escalation | `EscalationPolicy` | `escalate`, `ask` or `wait` |
+
+The TypeScript package exports the same classes with the same inputs and outputs.
 
 ## Active perception
 
@@ -23,10 +36,10 @@ Inputs are read from `DecisionRequest.attributes`. None of the packs names an ap
 |---|---|
 | `uncertainty` | how unsure the layer is, `0..1` |
 | `observations` | candidates with `id`, `information_gain`, `cost` |
-| `min_information_gain` | gain below which looking is not worth it |
+| `min_information_gain` | minimum gain that justifies a look |
 | `budget` | maximum cost of one observation |
 
-- Low uncertainty returns `wait` with `uncertainty_low`.
+- Uncertainty below the threshold returns `wait` with `uncertainty_low`.
 - The best observation by gain per cost returns `observe`.
 - No affordable or useful observation returns `wait`.
 
@@ -57,7 +70,7 @@ Inputs are read from `DecisionRequest.attributes`. None of the packs names an ap
 | `risk_weight` | weight on cost against success |
 
 - No feasible plan returns `ask` for a changed constraint.
-- Otherwise the best feasible plan returns `act` with an `adopt_plan` intent.
+- The best feasible plan returns `act` with an `adopt_plan` intent.
 
 ## Allocation
 
@@ -101,7 +114,7 @@ Inputs are read from `DecisionRequest.attributes`. None of the packs names an ap
 
 - Low uncertainty returns `act` with `preference_known`.
 - No question available returns `wait`.
-- Otherwise the best question by gain per cost returns `ask` with an `ask_question` intent.
+- The best question by gain per cost returns `ask` with an `ask_question` intent.
 
 ## Verification
 
@@ -119,7 +132,7 @@ Inputs are read from `DecisionRequest.attributes`. None of the packs names an ap
 - An already confirmed outcome returns `wait` with `already_verified`.
 - No check and enough confidence returns `wait` with `verification_not_needed`.
 - No affordable or useful check returns `escalate` with a target.
-- Otherwise the best check by gain per cost returns `verify` with a `verify` intent.
+- The best check by gain per cost returns `verify` with a `verify` intent.
 
 ## Escalation
 
@@ -139,10 +152,10 @@ Inputs are read from `DecisionRequest.attributes`. None of the packs names an ap
 - A trigger without a target returns `ask` with `target_required`.
 - Otherwise it returns `escalate` with an `escalation` target and reason.
 
-## Using a pack with the layer
+## Use a pack
 
 ```python
-from laix import DecisionRequest, Layer, AllocationPolicy
+from laix import AllocationPolicy, DecisionRequest, Layer
 
 layer = Layer(policy=AllocationPolicy())
 decisions = layer.decide(
@@ -168,11 +181,14 @@ layer.register_policy("replan", ReplanningPolicy())
 layer.use_policy("replan")
 ```
 
-## What these packs are not
+## Replacing a pack
 
-- They are not tuned on real data.
-- They do not learn or negotiate strategically.
-- They do not replace the app's domain rules.
+The packs are reference behaviour. Replace one when the app has better domain logic or measured
+weights:
 
-They exist so the decision class has a contract, a default and tests before an app needs it. A real
-implementation replaces the policy, not the interface.
+1. Keep the same policy name and version if the contract is unchanged.
+2. Return the same decision shape.
+3. Add cases to LAIX-Bench before changing behaviour.
+4. Bump the policy version when the rules change.
+
+A custom implementation replaces the policy, not the interface.

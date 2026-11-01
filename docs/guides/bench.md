@@ -1,9 +1,11 @@
 # LAIX-Bench
 
-LAIX-Bench v0 runs deterministic cases across every decision class. It has no app data, no network
-and no randomness, so a failure is reproducible.
+LAIX-Bench runs deterministic cases across every decision class. It uses no app data, network or
+randomness, so a failure is reproducible.
 
 ## Run
+
+Python:
 
 ```powershell
 python -m laix.bench
@@ -11,6 +13,13 @@ python -m laix.bench --list
 python -m laix.bench --suite safety
 python -m laix.bench --json
 python -m laix.bench --fail-under 1.0
+```
+
+TypeScript:
+
+```powershell
+npm.cmd run bench
+npm.cmd run bench -- --suite safety --json
 ```
 
 ```text
@@ -30,7 +39,8 @@ escalation                    3       3      1.000
 overall                      25      25      1.000
 ```
 
-The process exits `0` when agreement meets `--fail-under`, otherwise `1`.
+Both implementations run the same cases and exit `0` when agreement meets `--fail-under`, otherwise
+`1`.
 
 ## Suites
 
@@ -74,13 +84,14 @@ A mismatch row names the suite, the case, the expected value and the actual valu
 
 ## Add a case
 
-1. Add a `BenchCase` to the suite in `laix/bench.py`.
-2. Run `python -m laix.bench`.
-3. If it fails, decide whether the case or the policy is wrong.
-4. Keep the case; it is now a regression.
+1. Add a `BenchCase` to the suite in `packages/python/laix/src/laix/bench.py`.
+2. Add the same case to `packages/typescript/laix/src/bench.ts`.
+3. Run both benches.
+4. If a case fails, decide whether the case or the policy is wrong.
+5. Keep the case as a regression.
 
-## Boundary
+## Case sources
 
-The bench uses generic situations and attributes. App logs become bench cases by exporting the same
-decision request and the expected decision; LAIX never imports the app. The fixtures stay in LAIX;
-real traces can be added as a separate suite without changing the runner.
+App logs become bench cases by exporting the same decision request and the expected decision. LAIX
+keeps its own fixtures; the app exports traces in the same shape. Real traces can be added as a
+separate suite without changing the runner.
