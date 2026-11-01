@@ -50,7 +50,7 @@ guide worth_surfacing 84.0
 | `reason_code` | `worth_surfacing` | The attention rules say it is worth showing. |
 | `score` | `84.0` | The attention policy's ranking. |
 | `confidence` | `0.95` | How sure LAIX is. |
-| `requires_approval` | `false` | No approval needed. |
+| `requires_approval` | `false` | Runs without approval. |
 | `deliver` | `true` | Show it now. |
 | `record` | `true` | Keep it in history. |
 
@@ -61,13 +61,13 @@ guide worth_surfacing 84.0
 | `verb` | What to do next. |
 | `confidence` | How sure the policy is, `0..1`. |
 | `reason_code` | The rule that fired. Use this in app logic. |
-| `rationale` | Explanation for people. Do not parse it. |
+| `rationale` | Explanation for people. Use `reason_code` in app logic. |
 | `action_id` | The chosen option, if there is one. |
 | `intent` | `{capability, args}` the app can execute. |
 | `requires_approval` | Ask a person before executing. |
 | `reversible` | Whether the action can be undone. |
 | `undo_hint` | How to undo it. |
-| `score` | Ranking inside one policy. Not a probability. |
+| `score` | Ranking inside one policy. Use `confidence` for probability. |
 | `breakdown` | Score parts for attention decisions. |
 | `cost_of_waiting` | Cost of waiting in this situation. |
 | `evidence` | References that support the decision. |
@@ -80,12 +80,14 @@ guide worth_surfacing 84.0
 | `created_at` | When it was made. |
 | `confidence_source` | Where the confidence came from. |
 | `calibrated` | Whether the confidence is a calibrated probability. |
+| `alternatives` | Other options, their score and why they lost. |
+| `constraints_applied` | Hard limits that changed the option set. |
 
 ## The seven verbs
 
 | Verb | Meaning |
 |---|---|
-| `wait` | Do nothing now; keep watching. |
+| `wait` | Hold for now; keep watching. |
 | `observe` | Get more information first. |
 | `guide` | Show the situation to a person. |
 | `ask` | Ask a person or agent for information or a decision. |

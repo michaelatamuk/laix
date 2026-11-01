@@ -101,4 +101,4 @@ and the canonical file differ.
 - One file per clear responsibility, until it gets too large.
 - Group folders by role: `policies`, `runtime`, `records`, `attention`.
 - Keep the public API in `__init__.py` and `index.ts`.
-- Use generic words, not app, domain or vendor names.
+- Use generic words and leave app, domain and vendor names out.

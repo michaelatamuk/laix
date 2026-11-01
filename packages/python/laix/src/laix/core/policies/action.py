@@ -32,7 +32,7 @@ from ..contracts import (
     iso,
 )
 
-POLICY_VERSION = "0.6.1"
+POLICY_VERSION = "0.7.0"
 
 
 def _number(payload: dict[str, Any], key: str, default: float) -> float:
@@ -103,6 +103,7 @@ class DecisionPolicy:
         uncertainty = _number(attributes, "uncertainty", 1.0 - confidence)
         urgency = _number(attributes, "urgency", 0.5)
         deadline_breached = _truthy(attributes.get("deadline_breached", False))
+        safety_breached = _truthy(attributes.get("safety_breached", False))
         verification_due = _truthy(attributes.get("verification_due", False))
         needs_more_info = _truthy(attributes.get("needs_more_info", False))
 
@@ -112,9 +113,13 @@ class DecisionPolicy:
 
         if self._safety_blocked(situation):
             verb, rationale = "wait", "hard safety constraint blocks action"
-        elif deadline_breached and by_verb["escalate"]:
+        elif (deadline_breached or safety_breached) and by_verb["escalate"]:
             verb, chosen = "escalate", self._best(by_verb["escalate"])
-            rationale = "a hard deadline or commitment is already breached"
+            rationale = (
+                "a hard safety boundary is already breached"
+                if safety_breached
+                else "a hard deadline or commitment is already breached"
+            )
         elif (needs_more_info or uncertainty >= self.config.ask_uncertainty) and by_verb["observe"]:
             verb, chosen = "observe", self._best(by_verb["observe"])
             rationale = "more information is available from a cheap check; look before asking anyone else"
@@ -182,6 +187,7 @@ class DecisionPolicy:
                 "urgency": round(urgency, 4),
                 "uncertainty": round(uncertainty, 4),
                 "deadline_breached": deadline_breached,
+                "safety_breached": safety_breached,
                 "needs_more_info": needs_more_info,
             },
         )
@@ -280,7 +286,7 @@ class DecisionPolicy:
             elif option.verb == chosen_verb:
                 reason = "same verb, lower utility"
             else:
-                reason = f"not selected; {chosen_verb} won"
+                reason = f"outranked by {chosen_verb}"
             rows.append(
                 {
                     "action_id": option.id,

@@ -60,7 +60,7 @@ def options(**overrides: object) -> tuple[Action, ...]:
 
 
 def test_package_exposes_versioned_contracts() -> None:
-    assert laix.SCHEMA_VERSION == "0.6.1"
+    assert laix.SCHEMA_VERSION == "0.7.0"
     assert set(laix.CONTRACT_NAMES) == {
         "Observation",
         "Belief",

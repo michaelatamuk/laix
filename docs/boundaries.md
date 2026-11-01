@@ -5,12 +5,12 @@ LAIX has three layers:
 | Layer | What it is |
 |---|---|
 | **LAIX core** | contracts, decision shape, policies, engines, outcomes and bench |
-| **LAIX app kit** | optional integration: attention, execution, records, delivery, platform, state and live context |
+| **LAIX app kit** | optional integration: Layer, execution, records, delivery, platform, state and live context |
 | **Host** | the product that uses LAIX: memory, ingestion, connectors, orchestration, permissions and user settings |
 
 The rule is simple:
 
-> The host imports LAIX. LAIX never imports or names the host.
+> The host imports LAIX. LAIX uses its own modules and generic vocabulary.
 
 ## The two LAIX surfaces
 
@@ -32,7 +32,7 @@ It contains:
 - the UCB learner and outcome ledger;
 - the parity harness.
 
-It does not load the Layer, execution, records, delivery, platform or the live-context loop.
+Core imports contracts, policies and evaluation. Layer, execution, records, delivery, platform and the live-context loop live in the app kit.
 
 ### `laix.appkit`
 
@@ -52,7 +52,7 @@ It contains:
 - the live-context loop;
 - bench.
 
-The app kit is optional and frozen. It is useful, but it is not the decision core.
+The app kit is optional and frozen. Core is the decision layer; the app kit connects it to an app.
 
 The TypeScript package uses the same folders under `src/core` and `src/appkit`; it exports one
 entry point, `laix`.
@@ -73,7 +73,7 @@ The host owns:
 | App policy | auto-execute vs ask per app and tool |
 | Command confidence | calibration of the host's own commands |
 
-These are product concerns. They vary by host and cannot be generic LAIX contracts.
+These are product concerns. Each host defines them.
 
 ## What belongs to LAIX
 
@@ -88,7 +88,7 @@ LAIX owns:
 | Task outcomes | measured outcome and learning |
 | Evaluation | policy comparison, parity and bench |
 
-LAIX does not know why the host asked. It only knows the request and the options.
+LAIX sees the request and its options. The host keeps the task and its reason.
 
 ## The seam
 
@@ -105,13 +105,13 @@ host
 laix.core
 ```
 
-The host may use `laix.appkit` for attention, execution and records. That is still host-driven integration, not a second orchestrator.
+The host may use `laix.appkit` for execution and records. The host drives that integration.
 
 ## Rules
 
-1. LAIX core does not import the app kit.
-2. The app kit does not import a host.
-3. LAIX never adds host memory, ingestion, connectors, permissions, proactivity or missions.
-4. The host may add a LAIX adapter; LAIX never adds a host adapter.
+1. Core imports only core modules.
+2. The app kit imports core and its own modules.
+3. Host concerns stay in the host.
+4. Adapters live in the host and call LAIX.
 5. A decision is bounded to one task. The host decides when a task exists.
-6. New app-kit features need a host that uses them. No speculative expansion.
+6. Add app-kit features when a host uses them.

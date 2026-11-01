@@ -14,18 +14,17 @@ allowed. LAIX uses contracts for requests, decisions, outcomes and the records a
 
 ## One version
 
-Everything in this release uses the same version: **0.6.1**.
+Everything in this release uses the same version: **0.7.0**.
 
 | Thing | Version |
 |---|---|
-| Package | `0.6.1` |
-| Record schema | `0.6.1` |
-| Policy | `0.6.1` |
-| Attention vectors | `0.6.1` |
+| Package | `0.7.0` |
+| Record schema | `0.7.0` |
+| Policy | `0.7.0` |
+| Attention vectors | `0.7.0` |
 
-There is one current shape and one current rule set. Old versions are not kept in the repository.
-Tags keep history. If a change would break a caller, bump the package and update the callers in the
-same pass.
+The repository carries one current shape and one current rule set. Tags keep history. When a change
+would break a caller, bump the package and update the callers in the same pass.
 
 ## Files
 
@@ -55,7 +54,7 @@ packages.
 | `Receipt` | action, status, actor, result, error |
 | `Trace` | ordered events for one decision |
 
-Every record carries `schema_version = "0.6.1"`.
+Every record carries `schema_version = "0.7.0"`.
 
 ## JSON
 

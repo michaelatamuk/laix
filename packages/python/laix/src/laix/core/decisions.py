@@ -72,6 +72,8 @@ class Decision:
     created_at: str | None = None
     confidence_source: str = ""
     calibrated: bool = False
+    alternatives: tuple[dict[str, Any], ...] = ()
+    constraints_applied: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         if self.verb not in {"wait", "observe", "guide", "ask", "act", "verify", "escalate"}:
@@ -100,6 +102,8 @@ class Decision:
                     "note": self.escalation.reason,
                 }
             )
+        for item in self.constraints_applied:
+            rows.append({"kind": "constraint", "ref": item, "note": ""})
         return tuple(rows)
 
     def to_dict(self) -> dict[str, Any]:
@@ -189,6 +193,8 @@ def from_core(decision: CoreDecision) -> Decision:
         score=decision.utility,
         trace_id=decision.trace_id,
         created_at=decision.created_at,
+        alternatives=tuple(dict(item) for item in decision.alternatives),
+        constraints_applied=tuple(decision.constraints_applied),
     )
 
 

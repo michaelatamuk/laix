@@ -66,10 +66,10 @@ New apps send requests. Shared rules become generic policies. App rules stay in 
 
 ## Two surfaces
 
-- **`laix.core`** — contracts, decision shape, attention, policies, perception contracts, resource admission, outcomes and bench. No app kit.
+- **`laix.core`** — contracts, decision shape, attention, policies, perception contracts, resource admission, outcomes and bench. Core uses only core modules.
 - **`laix.appkit`** — optional integration: Layer, execution, records, delivery, platform, live-context loop and state.
 
-A host imports LAIX. LAIX does not import or name the host. See
+A host imports LAIX. LAIX uses its own modules and generic vocabulary. See
 [boundaries](docs/boundaries.md).
 
 ## Repository map

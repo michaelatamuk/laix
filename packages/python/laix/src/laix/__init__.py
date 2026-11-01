@@ -40,6 +40,7 @@ from .appkit.delivery import DeliveryPort, DeliveryReceipt, NullDelivery
 from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
 from .core.evaluation import load_cases
+from .core.decisions import Escalation
 from .appkit.layer import Decision as LayerDecision
 from .appkit.layer import DecisionRequest, Layer
 from .core.outcome import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
@@ -112,6 +113,7 @@ __all__ = [
     "DeliveryPort",
     "DeliveryReceipt",
     "Event",
+    "Escalation",
     "EscalationPolicy",
     "EvidenceRef",
     "Feedback",

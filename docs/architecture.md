@@ -6,7 +6,7 @@ LAIX answers one question:
 
 > Given this situation, what should the app do next?
 
-It returns a **decision**. It does not run the action; the app does that.
+It returns a **decision**. The app runs the action.
 
 ## Terms used in this documentation
 
@@ -63,7 +63,7 @@ A verb is the action word in a decision.
 
 | Verb | Meaning |
 |---|---|
-| `wait` | Do nothing now; keep watching. |
+| `wait` | Hold for now; keep watching. |
 | `observe` | Get more information before deciding. |
 | `guide` | Show the situation to a person and let them choose. |
 | `ask` | Ask a person or another agent for information or a decision. |
@@ -108,8 +108,8 @@ decision = layer.decide(request)[0]   # act safe_action valve
 from laix import Layer, ReplanningPolicy, SafetyConstrainedPolicy
 
 layer = Layer()
-layer.register_policy("safety", SafetyConstrainedPolicy())  # stores it, does not activate it
-layer.register_policy("replan", ReplanningPolicy())         # stores it, does not activate it
+layer.register_policy("safety", SafetyConstrainedPolicy())  # stores it
+layer.register_policy("replan", ReplanningPolicy())         # stores it
 
 layer.use_policy("safety")   # now safety is active
 decision = layer.decide(request)[0]
@@ -133,7 +133,7 @@ Then `Layer.decide()` uses the request shape:
 | `situation` + `options` | built-in action |
 | `signals` + `context` | built-in attention |
 
-`attributes` alone do not activate a packaged policy. They are input to whichever policy is active.
+To activate a packaged policy, pass it to `Layer` or select it with `use_policy`. Attributes are input to the active policy.
 
 ## The ten decision classes
 
@@ -154,7 +154,7 @@ There are ten classes. The first two are built into `Layer` because they define 
 shapes it understands. The other eight are ordinary policy objects that take their inputs from
 `DecisionRequest.attributes`.
 
-The split is about selection, not importance. All ten return the same decision shape. See
+The split is about selection. All ten return the same decision shape. See
 [policy packs](core/policy-packs.md).
 
 ## Other parts
@@ -165,15 +165,15 @@ The split is about selection, not importance. All ten return the same decision s
   [outcome learning](core/outcome-learning.md).
 - **LAIX-Bench** runs the same test cases for every class. See [bench](appkit/bench.md).
 
-LAIX is a decision layer, not a decision model. A classifier or JEV-style model can be used inside a
-policy. See [LAIX and decision models](positioning.md).
+LAIX is a decision layer. It can host a decision model such as JEV inside a policy. See
+[LAIX and decision models](positioning.md).
 
 ## Rules
 
 1. App words stay in the app. LAIX words stay generic.
 2. Shared rules become policies. App rules stay in the app.
 3. Every policy returns the same decision shape.
-4. A score belongs to one policy. Do not compare scores across policies.
+4. A score belongs to one policy. Scores rank options inside that policy.
 5. The app stores its own data. LAIX defines the contracts.
 
 ## Extend it

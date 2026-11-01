@@ -3,7 +3,7 @@
 This page describes the next major step for LAIX: adding a real decision-engine core while keeping
 LAIX usable as a decision layer.
 
-The goal is not one universal algorithm. The goal is:
+The goal is:
 
 - one engine contract;
 - LAIX’s own engines;
@@ -182,7 +182,7 @@ Internally this is still an engine-backed policy.
 
 ## Limits
 
-- A planner needs a world model. LAIX cannot invent domain transitions.
+- A planner needs a world model. The app supplies the domain transitions; LAIX plans over them.
 - Utility elicitation remains the hard part.
 - POMDPs get expensive quickly.
 - Calibration needs real outcomes.
@@ -196,9 +196,9 @@ Internally this is still an engine-backed policy.
 | Rule policies | done |
 | UCB bandit | done |
 | Bench | done |
-| Engine contract | not started |
-| Utility engine | not started |
-| MDP planner | not started |
-| Calibration | not started |
-| Model learning | not started |
-| POMDP | not started |
+| Engine contract | planned |
+| Utility engine | planned |
+| MDP planner | planned |
+| Calibration | planned |
+| Model learning | planned |
+| POMDP | planned |

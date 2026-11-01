@@ -132,6 +132,29 @@ describe("typescript parity", () => {
     assert.equal(decision.calibrated, true);
   });
 
+  it("escalates when a safety boundary is breached and no safe action remains", () => {
+    const layer = new Layer();
+    const [decision] = layer.decide({
+      subject: "water near electricity",
+      at: "2026-11-01T10:00:00Z",
+      situation: {
+        id: "leak-1",
+        at: "2026-11-01T10:00:00Z",
+        subject: "water near electricity",
+        beliefs: [{ confidence: 0.9 }],
+        constraints: [{ kind: "risk", value: 0.2, hard: true }],
+        attributes: { urgency: 0.9, safety_breached: true },
+      },
+      options: [
+        { id: "wait", verb: "wait", name: "wait", expectedBenefit: 0.1 },
+        { id: "breaker", verb: "act", name: "cross wet floor", expectedBenefit: 1.0, risk: 0.9 },
+        { id: "manager", verb: "escalate", name: "call manager", expectedBenefit: 0.7 },
+      ],
+    });
+    assert.equal(decision.verb, "escalate");
+    assert.equal(decision.actionId, "manager");
+  });
+
   it("uses a policy plugin through Layer", () => {
     const layer = new Layer({ policy: new SafetyConstrainedPolicy() });
     const [decision] = layer.decide({

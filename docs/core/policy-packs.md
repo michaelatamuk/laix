@@ -28,13 +28,12 @@ Inputs come from `DecisionRequest.attributes`. The packs use generic words only.
 TypeScript exports the same classes. Verb meanings are in
 [reading a decision](decisions.md).
 
-## Packaged, not examples
+## Packaged policies
 
 These classes are part of the `laix` package. They run when you select them and are covered by tests.
-They are not example scripts.
 
-`examples/python/policies/safety.py` is an example that calls `SafetyConstrainedPolicy`. The policy
-itself lives in `packages/python/laix/src/laix/policies/safety.py`.
+`examples/python/policies/safety.py` is a usage example that calls `SafetyConstrainedPolicy`. The
+policy itself lives in `packages/python/laix/src/laix/core/policies/safety.py`.
 
 The packaged policies are simple deterministic defaults. Replace one when your domain has better
 rules.
@@ -43,15 +42,15 @@ rules.
 
 - **Inputs:** `uncertainty`, `observations` (`id`, `information_gain`, `cost`),
   `min_information_gain`, `budget`.
-- **Result:** `observe` the best gain per cost. `wait` when uncertainty is low or the look is not
-  worth it.
+- **Result:** `observe` the best gain per cost. `wait` when uncertainty is low or the look costs
+  more than it resolves.
 
 ## Safety-constrained action
 
 - **Inputs:** `options` (`id`, `benefit`, `risk`, `cost`, `destructive`), `risk_limit`,
   `safety_blocked`.
 - **Result:** `act` on the best option inside the risk limit, or `guide` when the benefit is small.
-  `wait` when nothing is safe.
+  `wait` when no safe option exists.
 
 ## Replanning
 
@@ -62,7 +61,7 @@ rules.
 ## Allocation
 
 - **Inputs:** `requests` (`id`, `value`, `cost`, `risk`), `budget`, `max_risk`.
-- **Result:** `act` with the chosen ids, ranked by value per cost. `wait` when nothing fits.
+- **Result:** `act` with the chosen ids, ranked by value per cost. `wait` when no request fits.
 
 ## Negotiation
 

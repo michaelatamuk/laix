@@ -4,8 +4,8 @@ Attention answers one question inside a task:
 
 > Which signal should be shown now, and how?
 
-It is a decision policy like action. It is **not** a product's global proactivity
-or interruption system.
+It is a decision policy like action. It is a **task-level** policy. The host owns global proactivity
+and interruption.
 
 ## Inputs
 
@@ -38,8 +38,8 @@ The bill is important, it is daytime, and the user can decide when to pay.
 ## Scope
 
 - **Task attention:** this page. LAIX decides about the signals the host gives it.
-- **Product proactivity:** the host. It decides whether the product may interrupt
-  the user at all, across apps and tasks.
+- **Product proactivity:** the host. The host decides whether the product may interrupt the user at
+  all, across apps and tasks.
 
 A host that already has a global interruption policy should keep it and use LAIX
 only for task-level signal decisions.

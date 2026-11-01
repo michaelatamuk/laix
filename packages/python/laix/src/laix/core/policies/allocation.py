@@ -10,7 +10,7 @@ from ._support import decision, number, value
 
 class AllocationPolicy:
     name = "allocation.v1"
-    version = "0.6.1"
+    version = "0.7.0"
 
     def decide(self, request: Any) -> list[Decision]:
         requests = tuple(value(request, "requests", ()) or ())

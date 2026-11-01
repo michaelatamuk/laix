@@ -26,7 +26,7 @@ choice / score / yes-no
 + confidence
 ```
 
-It classifies, scores or judges. It does not execute actions, ask for approval or record outcomes.
+It classifies, scores or judges. The host executes, approves and records.
 
 ## LAIX
 
@@ -40,8 +40,8 @@ one verb + reason + approval + action details
 execute -> receipt -> outcome
 ```
 
-LAIX does not require a particular model. Its built-in policies are deterministic rules. Its bandit
-policy is a small learner. A JEV call can sit behind a LAIX policy.
+LAIX works with any model. Its built-in policies are deterministic rules. Its bandit policy is a
+small learner. A JEV call can sit behind a LAIX policy.
 
 ## Side by side
 
@@ -51,9 +51,9 @@ policy is a small learner. A JEV call can sit behind a LAIX policy.
 | Input | State + typed question | Request + options + limits |
 | Output | Typed answer + probabilities | Verb + reason + action and approval |
 | Main value | calibrated judgment | decision semantics and lifecycle |
-| Executes actions | No | No; the app or platform does |
-| Approval, undo, receipts | No | Yes |
-| Records outcomes | No | Yes |
+| Execution | host | host |
+| Approval, undo, receipts | host policy | LAIX app kit |
+| Records outcomes | host | LAIX ledger |
 | Learns | The model is fixed or calibrated | Optional bandit policy |
 | Vendor | A specific model | Model-agnostic |
 
@@ -73,23 +73,23 @@ The difference is how the choice is made and what happens around it.
 |---|---|---|
 | Read the situation | beliefs, constraints, urgency | state text or context |
 | Read the options | `Action` objects | allowed answers |
-| Remove unsafe options | yes, hard constraints filter first | no built-in filter |
+| Remove unsafe options | filters hard constraints first | states them in the question |
 | Choose | threshold rules plus utility | model probabilities |
 | Confidence | belief or attribute | calibrated confidence |
 | Output | full `Decision` | choice plus probabilities |
-| Approval, execution, verify | yes | no |
+| Lifecycle | approval, execution, verify | judgment only |
 
 LAIX’s built-in action policy is itself a small decision model: a rule-based one. JEV is a different
 kind of decision model: a calibrated classifier over typed answers.
 
-The useful distinction is not “LAIX or JEV”. It is:
+The useful distinction:
 
 - **JEV can be the chooser** inside a policy.
 - **LAIX is the layer** that filters unsafe options, applies approval, executes, verifies and records.
 
 If JEV replaces the LAIX action policy, LAIX still adds the lifecycle around the choice.
 
-## A decision JEV cannot own alone
+## A decision that needs a host layer
 
 A plumber sends a £480 invoice. The house rule says:
 
@@ -107,8 +107,8 @@ Does this invoice match the work order?
 
 That is useful, but it is only one input.
 
-**LAIX does not know what an invoice, a plumber, a bank or £500 is.** The app supplies all of that.
-The app maps the domain into generic pieces:
+The app defines the invoice, the plumber, the bank and the £500 rule. LAIX sees generic pieces.
+The app maps the domain into those pieces:
 
 | App supplies | Example |
 |---|---|
@@ -141,13 +141,10 @@ JEV and LAIX both depend on the app for domain meaning:
 
 ## When LAIX is actually needed
 
-For **one app with one decision**, LAIX is usually not needed. JEV plus app code is simpler.
+For **one app with one decision**, app code with JEV is a good fit.
 
-There is no functional gap that JEV plus app code cannot close. The app can enforce its own rules,
-call a payment API, verify the result and write an audit log.
-
-LAIX is a prebuilt **shared decision layer**. It matters when that layer would otherwise be written
-again in several apps:
+JEV plus app code can implement every functional step. LAIX is a prebuilt **shared decision layer**.
+It matters when that layer would otherwise be written again in several apps:
 
 - several apps or agents;
 - several decision classes per app;
@@ -155,8 +152,7 @@ again in several apps:
 - policies that must be compared or swapped;
 - one place to record outcomes and run a bench.
 
-The question is not “can JEV plus app do it?”. It can. The question is “do you want every app to
-build and maintain the same decision layer?”.
+The question is: do you want every app to build and maintain the same decision layer?
 
 ### Example: a home-repair dispatch company
 
@@ -195,8 +191,8 @@ already built.
 | Shared approval, audit, verification and bench | LAIX |
 | Policy experiments or shadow comparisons | LAIX |
 
-LAIX replaces the bespoke decision layer an app would otherwise write. It does not replace JEV or
-the app’s domain logic.
+LAIX replaces the bespoke decision layer an app would otherwise write. JEV and the app’s domain
+logic stay in place.
 
 The plan for adding a real engine core is in [the engine roadmap](core/engine-roadmap.md).
 
@@ -241,7 +237,7 @@ LAIX still applies the rest:
 - verification when the outcome matters;
 - outcome recording and learning.
 
-The adapter stays in the app. The LAIX core does not import JEV or name a model vendor.
+The adapter stays in the app. LAIX core stays model-neutral.
 
 ## Which one to choose
 
@@ -252,7 +248,7 @@ The adapter stays in the app. The LAIX core does not import JEV or name a model 
 | Decide whether to act, ask, wait or escalate, with approval and records | LAIX |
 | Both judgment and decision lifecycle | JEV inside a LAIX policy |
 
-## Why not either-or
+## Why pair them
 
 A model can be confident and wrong. LAIX adds the parts around a judgment:
 
@@ -261,11 +257,11 @@ A model can be confident and wrong. LAIX adds the parts around a judgment:
 - verification of the outcome;
 - a record of what was decided and what happened.
 
-That is why the comparison is not “JEV versus LAIX”. The useful comparison is:
+The useful comparison is:
 
 ```text
 JEV / classifier / LLM  -> judgment
 LAIX                    -> decision, approval, execution, outcome
 ```
 
-LAIX is the layer that can use a decision model. It is not a competing decision model.
+LAIX is the layer that can use a decision model. It works alongside JEV and other models.

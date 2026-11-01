@@ -142,6 +142,7 @@ export function decideAction(situation: Situation, options: ActionOption[]): Lay
     : 1 - confidence;
   const urgency = typeof situation.attributes?.urgency === "number" ? Number(situation.attributes.urgency) : 0.5;
   const deadlineBreached = truthy(situation.attributes?.deadline_breached);
+  const safetyBreached = truthy(situation.attributes?.safety_breached);
   const verificationDue = truthy(situation.attributes?.verification_due);
   const needsMoreInfo = truthy(situation.attributes?.needs_more_info);
   const safetyBlocked = (situation.constraints ?? []).some(
@@ -163,10 +164,12 @@ export function decideAction(situation: Situation, options: ActionOption[]): Lay
 
   if (safetyBlocked) {
     rationale = "hard safety constraint blocks action";
-  } else if (deadlineBreached && (byVerb.get("escalate") ?? []).length > 0) {
+  } else if ((deadlineBreached || safetyBreached) && (byVerb.get("escalate") ?? []).length > 0) {
     verb = "escalate";
     chosen = best(byVerb.get("escalate") ?? []);
-    rationale = "a hard deadline or commitment is already breached";
+    rationale = safetyBreached
+      ? "a hard safety boundary is already breached"
+      : "a hard deadline or commitment is already breached";
   } else if ((needsMoreInfo || uncertainty >= 0.45) && (byVerb.get("observe") ?? []).length > 0) {
     verb = "observe";
     chosen = best(byVerb.get("observe") ?? []);

@@ -40,6 +40,7 @@ examples/
 | File | Story | Output |
 |---|---|---|
 | `python/action/leaking_sink.py` | The kitchen sink is about to overflow. | `act policy_rule option-close-valve` |
+| `python/action/water_electricity_no_valve.py` | No safe valve: the safety boundary escalates. | `escalate manager 0.7` |
 | `python/action/pay_bill.py` | A bill is due today and a person must approve the payment. | `act policy_rule option-pay True` |
 | `python/action/check_again.py` | A parcel is late; a tracking page can settle it. | `observe policy_rule option-check-tracking` |
 | `python/action/custom_policy.py` | A caller supplies its own policy. | `wait policy_rule` |
@@ -57,6 +58,7 @@ examples/
 | `python/policies/verification.py` | Verification | `verify verify_outcome api` |
 | `python/policies/escalation.py` | Escalation | `escalate escalate_to_target manager` |
 | `python/policies/bandit.py` | Outcome learning | `manual automatic 0.75` |
+| `python/policies/time_critical.py` | Gates, delay, cost, disruption and confidence | `act breaker-dry 0.44` |
 
 ## Runtime
 

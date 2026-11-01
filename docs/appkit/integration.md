@@ -14,7 +14,7 @@ The app sends a request. LAIX returns a decision. The app performs the action.
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.6.1#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.7.0#subdirectory=packages/python/laix"
 ```
 
 Local checkout:
@@ -33,7 +33,7 @@ TypeScript:
 }
 ```
 
-The release page also has a packed `laix-0.6.1.tgz`.
+The release page also has a packed `laix-0.7.0.tgz`.
 
 ## Build the adapter
 
@@ -110,7 +110,7 @@ const [decision] = new Layer().decide({
 
 | Verb | App action |
 |---|---|
-| `wait` | Do nothing now. |
+| `wait` | Hold for now. |
 | `observe` | Get more information. |
 | `guide` | Show it to the user. |
 | `ask` | Ask a person or agent. |
@@ -133,8 +133,7 @@ DecisionRequest(
 )
 ```
 
-The returned decision carries the same source and calibration flag. LAIX does not
-turn a rule score into a probability.
+The returned decision carries the same source and calibration flag. A rule score stays a rule score.
 
 ## Roll out safely
 
@@ -153,7 +152,7 @@ The production adapter stays in the app. `examples/apps/` shows caller examples.
 Use a tag:
 
 ```text
-v0.6.1
+v0.7.0
 ```
 
 The Python subdirectory is `packages/python/laix`. The TypeScript path is
@@ -166,7 +165,7 @@ from laix import Layer, LayerDecision
 
 class QualityPolicy:
     name = "quality"
-    version = "0.6.1"
+    version = "0.7.0"
 
     def decide(self, request):
         return [

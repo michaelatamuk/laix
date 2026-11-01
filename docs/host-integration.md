@@ -5,7 +5,7 @@ six questions a host team usually asks before trying it.
 
 ## 1. Where does LAIX plug in?
 
-LAIX is called by a **task**, not by the product's main loop.
+A task calls LAIX:
 
 ```text
 product decides a task exists
@@ -32,13 +32,11 @@ It shows:
 
 ## 2. One reasoning path
 
-The host decides **when** to ask LAIX. LAIX never starts work, watches events or
-calls itself.
+The host decides **when** to ask LAIX. LAIX answers only when called.
 
-That means a product keeps one orchestrator. LAIX is a tool inside a task, not a
-second orchestrator beside the first.
+That means a product keeps one orchestrator. LAIX is a tool inside a task.
 
-The example above is the whole flow. There is no background loop in LAIX.
+The example above is the whole flow. The host drives the loop.
 
 ## 3. Confidence and calibration
 
@@ -61,8 +59,8 @@ decision.confidence_source   # "host-calibrated"
 decision.calibrated          # True
 ```
 
-LAIX does not pretend that a rule score is a calibrated probability. If the host
-does not calibrate, the fields stay empty and `calibrated` is false.
+LAIX reports confidence as given. A rule score stays a rule score. When the host
+leaves calibration out, the fields stay empty and `calibrated` is false.
 
 ## 4. Approval and execution
 
@@ -80,19 +78,18 @@ Runnable example: [`examples/python/host/mission_execution.py`](../examples/pyth
 
 It shows a decision that needs approval, an owner approval, and a receipt.
 
-## 5. Task attention is not product proactivity
+## 5. Task attention and product proactivity
 
 LAIX attention answers:
 
 > Which signal in this task should be shown now?
 
-It is not:
+The product answers:
 
 > May this product interrupt the user anywhere, at any time?
 
 The product keeps its own proactivity, quiet hours, daily caps and owner
-settings. LAIX attention is a reusable task-level policy, not a second global
-interruption manager.
+settings. LAIX attention is a reusable task-level policy.
 
 ## 6. Decision basis
 
@@ -113,17 +110,20 @@ It returns entries the host can put in its own audit record:
 
 The host keeps its own record format. LAIX gives it the evidence and the reason.
 
-## What the host always keeps
+## Ownership
 
-| Host keeps | LAIX does not |
+| Area | Owner |
 |---|---|
-| Memory and history | remember the user |
-| Apps and connectors | read mail or calendars |
-| Proactivity and interruption | decide when to disturb the user |
-| Permissions and approvals | own the permission model |
-| Missions and dispatch | start or manage work |
-| App execution policy | decide auto-run vs ask for host commands |
-| User interface | show anything |
+| Memory and history | host |
+| Apps and connectors | host |
+| Proactivity and interruption | host |
+| Permissions and approvals | host |
+| Missions and dispatch | host |
+| App execution policy | host |
+| User interface | host |
+| Decision shape and policies | LAIX |
+| Task perception contracts | LAIX |
+| Policy bench and parity | LAIX |
 
 ## Try it
 

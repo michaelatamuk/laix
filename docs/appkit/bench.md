@@ -8,7 +8,7 @@ LAIX-Bench runs the same test cases in Python and TypeScript.
 | **Suite** | A group of cases for one decision class. |
 | **Agreement** | The share of cases that produced the expected decision. |
 
-It uses no app data, network or randomness, so failures reproduce.
+It uses fixed cases, local execution and deterministic ordering, so failures reproduce.
 
 ## Run
 
