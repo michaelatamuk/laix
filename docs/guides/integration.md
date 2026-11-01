@@ -149,8 +149,7 @@ v0.6.0
 
 A contract change creates a new version. The app upgrades deliberately.
 
-Tags up to `v0.5.2` use `#subdirectory=python/laix`. Tags from `v0.6.0` use
-`#subdirectory=packages/python/laix`. A TypeScript file dependency moves from `typescript/laix` to
+The Python subdirectory is `packages/python/laix`. A TypeScript file dependency points at
 `packages/typescript/laix`. App imports stay the same.
 
 ## Manager boundary

@@ -1,15 +1,36 @@
 # Contracts and versions
 
-LAIX data is versioned in three independent layers:
+Two questions have two different answers:
 
-| Layer | Current | Changed when |
-|---|---|---|
-| **Record schema** | `1.1` | a field, type or enum changes |
-| **Action policy** | `2026.2` | a rule, threshold or score weight changes |
-| **Attention behaviour** | `2.2.0` | a vector, weight or reason changes |
+- **Which package do I install?** The package version: `0.6.0`.
+- **Which shape and rules produced this record?** `schema_version` and `policy_version`.
 
-A policy change does not require a schema change. A schema change always requires a new schema
-version and a migration path.
+## Version labels
+
+| Label | Current | What it identifies | Where it appears |
+|---|---|---|---|
+| **Package** | `0.6.0` | the release you install | tag, pip, npm |
+| **Record schema** | `1.1` | the JSON field shape | every record's `schema_version` |
+| **Action policy** | `2026.2` | the built-in action rule set | `decision.policy_version` |
+| **Attention vectors** | `2.2.0` | the behavioural test set | `packages/contracts/attention.v1.json` |
+
+These are labels for different things, not three versions of LAIX. `1.1` is not older than `2026.2`;
+they count different objects. The action policy label is date-coded: `2026.2` means the 2026 rule
+set, revision 2.
+
+- A package release happens for any change.
+- The schema changes only when a field, type or enum changes.
+- A policy version changes when its rules, thresholds or weights change.
+- The attention vector version changes when its cases or expected decisions change.
+
+The package is the only version an app pins.
+
+## Compatibility
+
+LAIX is pre-1.0. The repository ships **one current schema** and **one current rule set**. There is no
+old-version support matrix to maintain. When a change would break an existing caller, bump the
+package and update the callers in the same pass. Tags keep the history; the main branch carries only
+the current shape.
 
 ## Source of truth
 
@@ -64,11 +85,12 @@ py -m pytest tests/test_laix.py -k schema
 
 ## Versioning rules
 
-1. **Additive record change** → new minor schema version. Old readers keep working.
-2. **Removal or meaning change** → new major schema version. Keep the old version available.
-3. **Policy threshold or score change** → bump the policy version, not the schema.
-4. **Attention weight or reason change** → new major attention contract; vectors are the evidence.
-5. **New decision class** → new policy name and version. No change to the decision shape.
+1. **Field, type or enum change** → bump the package and the schema, then regenerate the schema.
+2. **Rule, threshold or score change** → bump the package and that policy's version.
+3. **Attention case, weight or reason change** → bump the package and the attention vector version.
+4. **New decision class** → new policy name and version; the decision shape stays the same.
+5. **Breaking shape change** → bump the package and update every caller in the same pass. The old
+   shape is not carried forward.
 
 The seven verbs are part of the schema:
 
