@@ -3,7 +3,7 @@
   "$id": "https://laix.local/schemas/laix-v1.schema.json",
   "title": "LAIX contracts",
   "description": "Domain-neutral decision-layer contracts. Generated from laix.contracts.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "$defs": {
     "Observation": {
       "type": "object",

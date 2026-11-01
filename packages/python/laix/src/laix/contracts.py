@@ -16,7 +16,7 @@ from dataclasses import asdict, dataclass, field, fields, is_dataclass
 from datetime import datetime, timezone
 from typing import Any
 
-SCHEMA_VERSION = "0.6.0"
+SCHEMA_VERSION = "0.6.1"
 
 # The seven verbs are the whole north interface. An app receives one of these
 # decisions, with approval carried as a flag rather than as its own verb.

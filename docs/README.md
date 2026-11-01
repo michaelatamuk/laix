@@ -12,6 +12,7 @@ independent after that.
 | [structure.md](design/structure.md) | Where does each package and module live? |
 | [decisions.md](design/decisions.md) | What does one decision contain? |
 | [contracts.md](design/contracts.md) | What is the data contract and version? |
+| [boundaries.md](design/boundaries.md) | What belongs to LAIX core, the app kit and the host |
 | [positioning.md](design/positioning.md) | How LAIX relates to decision models like JEV |
 | [engine-roadmap.md](design/engine-roadmap.md) | Planned decision-engine core and build order |
 

@@ -61,7 +61,7 @@ describe("decision record contract", () => {
   it("rejects, executes and undoes", () => {
     assert.equal(rejectRecord(record(), { by: "owner" }).status, "rejected");
     const approved = approveRecord(record(), { by: "owner" });
-    const executed = markExecuted(approved, { by: "ppma" });
+    const executed = markExecuted(approved, { by: "operator" });
     assert.equal(executed.status, "executed");
     const undone = undoRecord(executed, { by: "owner" });
     assert.equal(undone.status, "undone");

@@ -1,6 +1,6 @@
 # Canonical attention conformance
 
-- Contract: `laix` v0.6.0
+- Contract: `laix` v0.6.1
 - Cases: **24**
 - Decisions compared: **24 / 24**
 

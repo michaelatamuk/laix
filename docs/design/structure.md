@@ -27,6 +27,8 @@ packages/python/laix/src/laix/
 ├── __init__.py              public API
 ├── contracts.py             ten core records
 ├── decisions.py             request and decision shapes
+├── core/                    core surface: contracts, policies, outcomes, bench
+├── appkit/                  optional app surface: attention, execution, records
 ├── layer.py                 public Layer
 ├── platform.py              platform contract
 ├── policies/                action policy, eight packs, bandit, registry

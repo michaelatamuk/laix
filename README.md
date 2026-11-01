@@ -64,6 +64,14 @@ python -m laix.bench
 
 New apps send requests. Shared rules become generic policies. App rules stay in the app adapter.
 
+## Two surfaces
+
+- **`laix.core`** — contracts, decision shape, policies, outcomes and bench. No app kit.
+- **`laix.appkit`** — optional integration: attention, execution, records, delivery, platform, state and live context.
+
+A host imports LAIX. LAIX does not import or name the host. See
+[boundaries](docs/design/boundaries.md).
+
 ## Repository map
 
 | Path | Contents |

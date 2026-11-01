@@ -10,7 +10,7 @@ from ._support import decision, number, value
 
 class ReplanningPolicy:
     name = "replanning.v1"
-    version = "0.6.0"
+    version = "0.6.1"
 
     def decide(self, request: Any) -> list[Decision]:
         plans = tuple(value(request, "plans", ()) or ())

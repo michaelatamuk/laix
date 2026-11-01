@@ -1,6 +1,6 @@
 {
   "contract": "laix",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "note": "Behavioural contract. Any implementation that passes every case is a valid LAIX attention runtime. Scores are part of the contract in v1; changing a weight is a major version.",
   "cases": [
     {

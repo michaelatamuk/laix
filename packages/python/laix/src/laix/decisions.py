@@ -10,7 +10,6 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, field
 from typing import Any, Iterable
 
-from . import attention
 from .contracts import Decision as CoreDecision
 from .contracts import Situation
 from .policies.registry import PolicyError
@@ -164,7 +163,8 @@ def from_core(decision: CoreDecision) -> Decision:
     )
 
 
-def from_attention(decision: attention.Decision) -> Decision:
+def from_attention(decision: Any) -> Decision:
+    """Convert an attention-policy decision without importing the attention package."""
     verb = "guide" if decision.action == "notify" else decision.action
     return Decision(
         verb=verb,

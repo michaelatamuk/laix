@@ -10,7 +10,7 @@ from ._support import decision, number, value
 
 class NegotiationPolicy:
     name = "negotiation.v1"
-    version = "0.6.0"
+    version = "0.6.1"
 
     def decide(self, request: Any) -> list[Decision]:
         offer = number(request, "offer", 0.0)

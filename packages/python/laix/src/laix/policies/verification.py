@@ -15,7 +15,7 @@ from ._support import decision, number, value
 
 class VerificationPolicy:
     name = "verification.v1"
-    version = "0.6.0"
+    version = "0.6.1"
 
     def decide(self, request: Any) -> list[Decision]:
         if bool(value(request, "verified", False)):

@@ -1,7 +1,7 @@
 import type { Verb } from "./layer.ts";
 
-export const SCHEMA_VERSION = "0.6.0";
-export const POLICY_VERSION = "0.6.0";
+export const SCHEMA_VERSION = "0.6.1";
+export const POLICY_VERSION = "0.6.1";
 
 export const VERBS: Verb[] = ["wait", "observe", "guide", "ask", "act", "verify", "escalate"];
 export const PHASES = ["observe", "understand", "decide", "act", "verify", "adapt"] as const;

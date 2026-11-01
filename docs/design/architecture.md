@@ -189,3 +189,5 @@ policy. See [LAIX and decision models](positioning.md).
 
 The next step is a decision-engine core. It is tracked in
 [the engine roadmap](engine-roadmap.md).
+
+Core vs app kit vs host is defined in [boundaries](boundaries.md).
