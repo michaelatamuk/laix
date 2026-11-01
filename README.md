@@ -72,7 +72,7 @@ New apps send requests. Shared rules become generic policies. App rules stay in 
 | `packages/typescript/laix` | one TypeScript package: the decision contract, attention policy and decision record |
 | `packages/contracts/` | the JSON Schema and behavioural vectors |
 | `examples/` | small runnable requests in Python and TypeScript |
-| `docs/` | design notes and the integration guide |
+| `docs/` | [design notes, guides and the integration guide](docs/README.md) |
 
 ## Test
 
