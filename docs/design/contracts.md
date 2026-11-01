@@ -76,7 +76,8 @@ The seven verbs are part of the schema:
 wait, observe, guide, ask, act, verify, escalate
 ```
 
-Approval is the `requires_approval` flag. There is no `notify` verb.
+Approval is the `requires_approval` flag. A decision to notify someone uses the `guide` verb; the app
+chooses the delivery channel.
 
 ## Where the rules live
 

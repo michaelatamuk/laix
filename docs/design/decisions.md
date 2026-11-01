@@ -101,8 +101,8 @@ guide worth_surfacing 84.0
 | `verify` | Check whether an earlier action worked. |
 | `escalate` | Hand the decision to a person with more authority. |
 
-`notify` is not a verb. When an app notifies, the decision is `guide`. Approval is a flag, not a
-verb.
+`notify` is a delivery action, not a decision verb. When an app notifies someone, the decision is
+`guide` and the app chooses the channel. Approval is a flag on the decision.
 
 ## More examples
 

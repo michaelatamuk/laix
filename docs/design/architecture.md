@@ -24,7 +24,8 @@ LAIX records and learns
 | **Platform** | Running named skills, approvals, session state, event streams, models and hardware |
 | **LAIX** | Contracts, decision policies, admission rules, execution state machine, outcome learning, bench and reference runtime |
 
-LAIX never imports an app and never names a model, vendor or domain.
+LAIX imports only its own modules and uses generic vocabulary: a decision names a capability, not an
+app, model or vendor.
 
 ## One decision shape
 
@@ -52,9 +53,9 @@ The full field-by-field explanation is in [decisions.md](decisions.md).
 | `verify` | Check whether an earlier action worked. |
 | `escalate` | Hand the decision to a person with more authority. |
 
-There is no `notify` verb. When an app notifies someone, the decision is `guide`; delivery is a
-separate concern. Approval is the `requires_approval` flag, not a verb. `verify` is both a verb and a
-lifecycle phase, depending on whether it is deciding to check or recording that a check happened.
+Delivery is an app concern: when an app notifies someone, the decision verb is `guide`, and the app
+chooses the channel. Approval is carried by the `requires_approval` flag. `verify` is a decision verb
+when LAIX is choosing to check something, and a lifecycle phase when a check is due or has finished.
 
 ## Two common requests
 
@@ -115,7 +116,7 @@ can use one directly, wrap it, or replace it behind the same interface. See
 
 ## Boundaries
 
-LAIX owns the decision and the records around it. It does not own:
+LAIX owns the decision and the records around it. The following remain app or platform concerns:
 
 - the app's database or user interface;
 - the app's channels or hardware;
@@ -123,7 +124,7 @@ LAIX owns the decision and the records around it. It does not own:
 - an edge/cloud runtime split;
 - reference apps or a coach.
 
-Those are integrations, not missing decisions.
+They connect to LAIX through the extension points above.
 
 ## Growth rules
 
