@@ -15,7 +15,7 @@ This folder holds a small set of checks.
 python -m laix.bench
 ```
 
-See [`bench.md`](bench.md).
+See [`guides/bench.md`](guides/bench.md).
 
 Run the checks with the test script in the repository root.
 

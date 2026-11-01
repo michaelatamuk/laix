@@ -2,7 +2,7 @@
 
 **Schema version:** `1.1`
 **Policy version:** `2026.1`
-**Normative shape:** [`../packages/python/laix/src/laix/schemas/laix-v1.schema.json`](../packages/python/laix/src/laix/schemas/laix-v1.schema.json)
+**Normative shape:** [`../../packages/python/laix/src/laix/schemas/laix-v1.schema.json`](../../packages/python/laix/src/laix/schemas/laix-v1.schema.json)
 
 The generated schema defines the shape of every contract. `schema.py` builds it from the dataclasses
 in `contracts.py` and writes the committed file:

@@ -39,7 +39,7 @@ for other decision classes: active perception, safety-constrained action, replan
 negotiation, preference elicitation, verification and escalation. With attention and action, the
 layer covers ten decision classes. They read generic inputs from `DecisionRequest.attributes`,
 return the same decision shape, and are registered like any other policy. An app can use a pack
-directly or replace it with a learned policy behind the same interface. `docs/policy-packs.md`
+directly or replace it with a learned policy behind the same interface. `docs/guides/policy-packs.md`
 describes each contract.
 
 ## Growth rules

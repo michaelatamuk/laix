@@ -173,8 +173,8 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object { node
 - `executed` — the record moved from approved to executed.
 - `True` — the record fingerprint still matches its content.
 
-The full field list is in [`../docs/decisions.md`](../docs/decisions.md). The policy-pack contracts
-are in [`../docs/policy-packs.md`](../docs/policy-packs.md).
+The full field list is in [`../docs/design/decisions.md`](../docs/design/decisions.md). The policy-pack contracts
+are in [`../docs/guides/policy-packs.md`](../docs/guides/policy-packs.md).
 
 ## Real caller examples
 
