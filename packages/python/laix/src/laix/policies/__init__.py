@@ -1,6 +1,6 @@
-"""Policies: the built-in action policy, reference packs and the plugin registry.
+"""Policies: the built-in action policy, packaged packs and the plugin registry.
 
-The reference packs are loaded lazily. ``decisions`` imports the registry, and
+The packaged packs are loaded lazily. ``decisions`` imports the registry, and
 the packs import ``decisions``; lazy loading keeps that cycle out of import time.
 """
 

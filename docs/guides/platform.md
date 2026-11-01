@@ -35,7 +35,7 @@ class MyPlatform:
 
 Levels are `fast`, `balanced` and `deep`.
 
-`InMemoryPlatform` is the reference implementation. A real adapter wraps openJiuwen, a cloud runtime
+`InMemoryPlatform` is an in-memory implementation. A real adapter wraps openJiuwen, a cloud runtime
 or another platform.
 
 ## Example

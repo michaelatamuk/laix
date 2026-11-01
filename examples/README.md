@@ -10,7 +10,7 @@ examples/
 ├── python/
 │   ├── attention/     surfacing, quiet hours, feedback
 │   ├── action/        action selection and custom policy
-│   ├── policies/      reference policy packs and learned bandit
+│   ├── policies/      packaged policy packs and learned bandit
 │   ├── runtime/       execution, resources, platform
 │   ├── records/       decision record and proposal
 │   ├── stores/        state store and outcome store
@@ -94,7 +94,7 @@ examples/
 |---|---|---|
 | `typescript/attention/bill_due.mts` | The same bill, in TypeScript. | `guide worth_surfacing 84` |
 | `typescript/action/action.mts` | The leaking sink, in TypeScript. | `act policy_rule option-close-valve` |
-| `typescript/policies/packs.mts` | All eight reference policy packs. | one line per pack |
+| `typescript/policies/packs.mts` | All eight packaged policy packs. | one line per pack |
 | `typescript/policies/bandit.mts` | Outcome learning changes the next choice. | `manual automatic 0.75` |
 | `typescript/runtime/live_context.mts` | Cheap and deep detectors under a budget. | `[ 'motion', 'read-label' ] [ 'transcribe' ] 2 0.097` |
 | `typescript/runtime/execution.mts` | Decide, execute, record a receipt. | `executed close the valve` |

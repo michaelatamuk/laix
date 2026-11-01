@@ -39,7 +39,7 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 | `decisions.py` | the one decision shape, request shape and policy-result conversions |
 | `layer.py` | the public `Layer` orchestrator |
 | `policies/action.py` | built-in action-selection policy |
-| `policies/active_perception.py` | reference `observe` policy |
+| `policies/active_perception.py` | packaged `observe` policy |
 | `policies/safety.py` | risk-limited action policy |
 | `policies/replanning.py` | feasible-plan selection policy |
 | `policies/allocation.py` | budgeted allocation policy |

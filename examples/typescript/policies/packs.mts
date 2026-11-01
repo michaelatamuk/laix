@@ -1,4 +1,4 @@
-/** The eight reference policy packs behind the same Layer interface. */
+/** The eight packaged policy packs behind the same Layer interface. */
 import {
   ActivePerceptionPolicy,
   AllocationPolicy,

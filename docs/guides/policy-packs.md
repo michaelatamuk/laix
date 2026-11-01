@@ -4,7 +4,7 @@ A **policy** is a rule set that reads a request and returns a decision. A **deci
 kind of question, such as “should we look first?” or “which plan fits?”
 
 Attention and action are built in because `Layer` uses their request shapes to choose a policy. The
-other eight are ordinary policy objects selected explicitly. LAIX ships them as reference policies:
+other eight are ordinary policy objects selected explicitly. LAIX ships them as packaged policies:
 
 ```python
 from laix import Layer, ReplanningPolicy
@@ -27,6 +27,17 @@ Inputs come from `DecisionRequest.attributes`. The packs use generic words only.
 
 TypeScript exports the same classes. Verb meanings are in
 [reading a decision](../design/decisions.md).
+
+## Packaged, not examples
+
+These classes are part of the `laix` package. They run when you select them and are covered by tests.
+They are not example scripts.
+
+`examples/python/policies/safety.py` is an example that calls `SafetyConstrainedPolicy`. The policy
+itself lives in `packages/python/laix/src/laix/policies/safety.py`.
+
+The packaged policies are simple deterministic defaults. Replace one when your domain has better
+rules.
 
 ## Active perception
 

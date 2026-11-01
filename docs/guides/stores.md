@@ -20,7 +20,7 @@ class MyStore:
     def delete(self, key: str) -> None: ...
 ```
 
-`InMemoryStateStore` is the reference implementation.
+`InMemoryStateStore` is an in-memory implementation.
 
 `ExperienceState` has `snapshot()` and `from_snapshot()` for app-owned persistence. Long-lived project
 or user memory belongs in the app or a manager service.
@@ -39,7 +39,7 @@ class MyOutcomeStore:
     def summary(self) -> dict: ...
 ```
 
-`OutcomeLedger` is the reference implementation.
+`OutcomeLedger` is an in-memory implementation.
 
 Store:
 

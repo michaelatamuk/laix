@@ -1,4 +1,4 @@
-"""Shared helpers for the reference policy packs."""
+"""Shared helpers for the packaged policy packs."""
 
 from __future__ import annotations
 

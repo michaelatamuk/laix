@@ -18,7 +18,7 @@ independent after that.
 | Page | What it covers |
 |---|---|
 | [integration.md](guides/integration.md) | Install LAIX, build an adapter, pin a version |
-| [policy-packs.md](guides/policy-packs.md) | The eight reference policies and the ten decision classes |
+| [policy-packs.md](guides/policy-packs.md) | The eight packaged policies and the ten decision classes |
 | [live-context.md](guides/live-context.md) | Detectors, cheap/deep admission, perception frames |
 | [outcome-learning.md](guides/outcome-learning.md) | Measured outcomes, rewards and the UCB learner |
 | [bench.md](guides/bench.md) | LAIX-Bench suites, report and CLI |
