@@ -10,14 +10,15 @@ import laix.appkit
 import laix.core
 
 PACKAGE = Path(laix.__file__).resolve().parent
+CORE = PACKAGE / "core"
 CORE_FILES = [
-    PACKAGE / "contracts.py",
-    PACKAGE / "decisions.py",
-    PACKAGE / "outcome.py",
-    PACKAGE / "evaluation.py",
-    PACKAGE / "schema.py",
-    PACKAGE / "core" / "__init__.py",
-    *sorted((PACKAGE / "policies").glob("*.py")),
+    CORE / "contracts.py",
+    CORE / "decisions.py",
+    CORE / "outcome.py",
+    CORE / "evaluation.py",
+    CORE / "schema.py",
+    CORE / "__init__.py",
+    *sorted((CORE / "policies").glob("*.py")),
 ]
 APP_KIT_MODULES = {
     "attention",
@@ -67,7 +68,6 @@ def test_app_kit_exposes_the_integration_surface() -> None:
     assert hasattr(laix.appkit, "Layer")
     assert hasattr(laix.appkit, "Signal")
     assert hasattr(laix.appkit, "ExecutionBridge")
-    assert hasattr(laix.appkit, "run_bench")
 
 
 def test_versions_are_aligned() -> None:

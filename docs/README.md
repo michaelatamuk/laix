@@ -1,38 +1,43 @@
 # LAIX documentation
 
-One page per concept. New to LAIX? Read [architecture](design/architecture.md), then
-[reading a decision](design/decisions.md), then [contracts](design/contracts.md). The guides are
-independent after that.
+New to LAIX? Read [architecture](architecture.md), then [reading a decision](core/decisions.md), then
+[contracts](core/contracts.md).
 
-## Design
+The split follows the code:
 
-| Page | What it answers |
+- **Core** — the decision layer.
+- **App kit** — optional integration.
+- **Boundaries** — which layer owns what.
+
+## Understand LAIX
+
+| Page | Answers |
 |---|---|
-| [architecture.md](design/architecture.md) | What is LAIX, what are the verbs, and how do the parts fit? |
-| [structure.md](design/structure.md) | Where does each package and module live? |
-| [decisions.md](design/decisions.md) | What does one decision contain? |
-| [contracts.md](design/contracts.md) | What is the data contract and version? |
-| [boundaries.md](design/boundaries.md) | What belongs to LAIX core, the app kit and the host |
-| [positioning.md](design/positioning.md) | How LAIX relates to decision models like JEV |
-| [engine-roadmap.md](design/engine-roadmap.md) | Planned decision-engine core and build order |
+| [architecture.md](architecture.md) | What is LAIX and how do the parts fit? |
+| [structure.md](structure.md) | Where does each file live? |
+| [boundaries.md](boundaries.md) | What belongs to core, the app kit and the host? |
+| [positioning.md](positioning.md) | How does LAIX relate to decision models? |
 
-## Guides
+## Core
 
-| Page | What it covers |
+| Page | Covers |
 |---|---|
-| [integration.md](guides/integration.md) | Install LAIX, build an adapter, pin a version |
-| [policy-packs.md](guides/policy-packs.md) | The eight packaged policies and the ten decision classes |
-| [live-context.md](guides/live-context.md) | Detectors, cheap/deep admission, perception frames |
-| [outcome-learning.md](guides/outcome-learning.md) | Measured outcomes, rewards and the UCB learner |
-| [bench.md](guides/bench.md) | LAIX-Bench suites, report and CLI |
-| [platform.md](guides/platform.md) | The south platform contract |
-| [stores.md](guides/stores.md) | State store and outcome store contracts |
+| [core/contracts.md](core/contracts.md) | record shapes and the `0.6.1` version |
+| [core/decisions.md](core/decisions.md) | verbs, fields and examples |
+| [core/policy-packs.md](core/policy-packs.md) | the eight packaged policies |
+| [core/outcome-learning.md](core/outcome-learning.md) | rewards, UCB and `BanditPolicy` |
+| [core/evaluation.md](core/evaluation.md) | vectors, conformance and bench |
+| [core/engine-roadmap.md](core/engine-roadmap.md) | the next decision-engine work |
 
-## Evaluation
+## App kit
 
-| Page | What it covers |
+| Page | Covers |
 |---|---|
-| [evaluation.md](evaluation.md) | Contract vectors, conformance and what to add next |
+| [appkit/integration.md](appkit/integration.md) | install, adapter, rollout and pinning |
+| [appkit/live-context.md](appkit/live-context.md) | detectors, admission and frames |
+| [appkit/platform.md](appkit/platform.md) | the platform contract |
+| [appkit/stores.md](appkit/stores.md) | state and outcome stores |
+| [appkit/bench.md](appkit/bench.md) | LAIX-Bench suites and CLI |
 
 ## Examples
 

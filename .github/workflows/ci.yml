@@ -26,7 +26,7 @@ jobs:
         run: python -m pytest -q
       - name: Bench
         working-directory: packages/python/laix
-        run: python -m laix.bench
+        run: python -m laix.appkit.bench
       - name: Run examples
         run: |
           for file in $(find examples/python -name '*.py'); do

@@ -8,7 +8,7 @@ It is intentionally standard-library only.  The host application provides
 domain adapters; the decision layer never imports them.
 """
 
-from .contracts import (
+from .core.contracts import (
     CONTRACT_NAMES,
     CONTRACTS,
     CONSTRAINT_KINDS,
@@ -34,16 +34,17 @@ from .contracts import (
     parse_iso,
     utcnow,
 )
-from . import attention, evaluation
-from .attention import Context, Feedback, Signal
-from .delivery import DeliveryPort, DeliveryReceipt, NullDelivery
-from .evaluation import Case, Report, Row
-from .evaluation import compare as compare_decisions
-from .evaluation import load_cases
-from .layer import Decision as LayerDecision
-from .layer import DecisionRequest, Layer
-from .outcome import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
-from .platform import (
+from .appkit import attention
+from .core import evaluation
+from .appkit.attention import Context, Feedback, Signal
+from .appkit.delivery import DeliveryPort, DeliveryReceipt, NullDelivery
+from .core.evaluation import Case, Report, Row
+from .core.evaluation import compare as compare_decisions
+from .core.evaluation import load_cases
+from .appkit.layer import Decision as LayerDecision
+from .appkit.layer import DecisionRequest, Layer
+from .core.outcome import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
+from .appkit.platform import (
     ApprovalDecision,
     ApprovalRequest,
     CAPABILITY_LEVELS,
@@ -53,7 +54,7 @@ from .platform import (
     Platform,
     SkillCall,
 )
-from .policies import (
+from .core.policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
     BanditPolicy,
@@ -72,7 +73,7 @@ from .policies import (
     VerificationPolicy,
     decide,
 )
-from .records.decision import (
+from .appkit.records.decision import (
     DecisionRecord,
     EvidenceRef,
     approve as approve_record,
@@ -81,8 +82,8 @@ from .records.decision import (
     reject as reject_record,
     verify as verify_record,
 )
-from .records.proposal import Proposal, apply as apply_proposal, approve as approve_proposal, reject as reject_proposal, undo as undo_proposal
-from .runtime import (
+from .appkit.records.proposal import Proposal, apply as apply_proposal, approve as approve_proposal, reject as reject_proposal, undo as undo_proposal
+from .appkit.runtime import (
     ApprovalRequired,
     Budget,
     CallableDetector,

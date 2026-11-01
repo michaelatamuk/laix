@@ -13,7 +13,7 @@ from pathlib import Path
 import pytest
 
 import laix
-from laix.contracts import (
+from laix.core.contracts import (
     Action,
     Belief,
     Constraint,
@@ -24,12 +24,12 @@ from laix.contracts import (
     iso,
     utcnow,
 )
-from laix.runtime import ApprovalRequired, ExecutionBridge
-from laix.policies import DecisionPolicy, PolicyConfig, PolicyRequest
-from laix.runtime import Budget, ResourcePolicy, SensingOption
-from laix.runtime import DecisionRuntime
-from laix.schema import SCHEMA_PATH, build_schema, check, dumps_schema
-from laix.runtime import ExperienceState
+from laix.appkit.runtime import ApprovalRequired, ExecutionBridge
+from laix.core.policies import DecisionPolicy, PolicyConfig, PolicyRequest
+from laix.appkit.runtime import Budget, ResourcePolicy, SensingOption
+from laix.appkit.runtime import DecisionRuntime
+from laix.core.schema import SCHEMA_PATH, build_schema, check, dumps_schema
+from laix.appkit.runtime import ExperienceState
 
 
 def situation(**attributes: object) -> Situation:

@@ -5,7 +5,7 @@ bench. It is useful for apps, but it is not the decision core. Persistent
 memory, ingestion, proactivity, permissions and missions belong to the host.
 """
 
-from ..attention import (
+from .attention import (
     Context,
     Feedback,
     OutcomeLog,
@@ -14,12 +14,10 @@ from ..attention import (
     is_quiet,
     score,
 )
-from ..bench import main as bench_main
-from ..bench import run_bench
-from ..delivery import DeliveryPort, DeliveryReceipt, NullDelivery
-from ..layer import Decision as LayerDecision
-from ..layer import DecisionRequest, Layer
-from ..platform import (
+from .delivery import DeliveryPort, DeliveryReceipt, NullDelivery
+from .layer import Decision as LayerDecision
+from .layer import DecisionRequest, Layer
+from .platform import (
     ApprovalDecision,
     ApprovalRequest,
     CAPABILITY_LEVELS,
@@ -29,7 +27,7 @@ from ..platform import (
     Platform,
     SkillCall,
 )
-from ..records.decision import (
+from .records.decision import (
     DecisionRecord,
     EvidenceRef as RecordEvidenceRef,
     approve as approve_record,
@@ -38,14 +36,14 @@ from ..records.decision import (
     reject as reject_record,
     verify as verify_record,
 )
-from ..records.proposal import (
+from .records.proposal import (
     Proposal,
     apply as apply_proposal,
     approve as approve_proposal,
     reject as reject_proposal,
     undo as undo_proposal,
 )
-from ..runtime import (
+from .runtime import (
     ApprovalRequired,
     Budget,
     CallableDetector,
@@ -108,14 +106,12 @@ __all__ = [
     "apply_proposal",
     "approve_proposal",
     "approve_record",
-    "bench_main",
     "create_record",
     "decide_attention",
     "is_quiet",
     "mark_executed",
     "reject_proposal",
     "reject_record",
-    "run_bench",
     "score",
     "undo_proposal",
     "verify_record",

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from laix import DecisionRecord, approve_record, create_record, reject_record, verify_record
-from laix.records.decision import EvidenceRef, mark_executed, undo
+from laix.appkit.records.decision import EvidenceRef, mark_executed, undo
 
 
 def make() -> DecisionRecord:

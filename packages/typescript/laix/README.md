@@ -4,6 +4,8 @@ One package for the LAIX decision layer: contracts, attention, action, the ten d
 Live Context, outcome learning, bench, platform, stores, proposals, delivery, execution and records.
 It mirrors the Python package capability for capability.
 
+The source is split into `src/core` and `src/appkit`. The package exports one entry point, `laix`.
+
 ```ts
 import { Layer } from "laix";
 

@@ -1,5 +1,5 @@
 /** LAIX-Bench for the TypeScript package. */
-import { runBench, suiteNames } from "../src/bench.ts";
+import { runBench, suiteNames } from "../src/appkit/bench.ts";
 
 const args = process.argv.slice(2);
 const suites = [];

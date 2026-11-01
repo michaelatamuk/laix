@@ -9,7 +9,7 @@ The result is:
 - 1.0: full agreement.
 """
 
-from laix.bench import run_bench
+from laix.appkit.bench import run_bench
 
 report = run_bench()
 print(report.total, report.passed, report.agreement)

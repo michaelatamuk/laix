@@ -35,35 +35,35 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 
 | Piece | Role |
 |---|---|
-| `contracts.py` | versioned records: observation, belief, goal, constraint, action, situation, decision, outcome, receipt, trace |
-| `decisions.py` | the one decision shape, request shape and policy-result conversions |
-| `layer.py` | the public `Layer` orchestrator |
-| `policies/action.py` | built-in action-selection policy |
-| `policies/active_perception.py` | packaged `observe` policy |
-| `policies/safety.py` | risk-limited action policy |
-| `policies/replanning.py` | feasible-plan selection policy |
-| `policies/allocation.py` | budgeted allocation policy |
-| `policies/negotiation.py` | accept, counter or escalate policy |
-| `policies/preference.py` | preference-question selection policy |
-| `policies/verification.py` | outcome confirmation policy |
-| `policies/escalation.py` | hand-over policy |
-| `policies/bandit.py` | learned bandit policy |
-| `policies/registry.py` | policy plugin protocol and registry |
-| `attention/` | attention policy: gates, score, quiet hours, budget, feedback, replay |
-| `runtime/decision_runtime.py` | the action runtime |
-| `runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
-| `runtime/perception.py` | live context: detector contract, admission and frames |
-| `runtime/state.py` | experience state: goals, phase, beliefs, decay, expiry |
-| `runtime/state_store.py` | storage-free state store contract and in-memory store |
-| `runtime/resources.py` | cheap/deep call admission under budget |
-| `platform.py` | south platform interface and in-memory platform |
-| `outcome.py` | directed metric ledger, outcome store contract and UCB learner |
-| `records/decision.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
-| `records/proposal.py` | storage-free proposal and approval lifecycle |
-| `delivery.py` | delivery port and receipt |
-| `evaluation.py` | policy parity and replay harness |
-| `bench.py` | LAIX-Bench suites, report and `python -m laix.bench` |
-| `schema.py` | generated JSON Schema |
+| `core/contracts.py` | versioned records: observation, belief, goal, constraint, action, situation, decision, outcome, receipt, trace |
+| `core/decisions.py` | the one decision shape, request shape and policy-result conversions |
+| `appkit/layer.py` | the public `Layer` orchestrator |
+| `core/policies/action.py` | built-in action-selection policy |
+| `core/policies/active_perception.py` | packaged `observe` policy |
+| `core/policies/safety.py` | risk-limited action policy |
+| `core/policies/replanning.py` | feasible-plan selection policy |
+| `core/policies/allocation.py` | budgeted allocation policy |
+| `core/policies/negotiation.py` | accept, counter or escalate policy |
+| `core/policies/preference.py` | preference-question selection policy |
+| `core/policies/verification.py` | outcome confirmation policy |
+| `core/policies/escalation.py` | hand-over policy |
+| `core/policies/bandit.py` | learned bandit policy |
+| `core/policies/registry.py` | policy plugin protocol and registry |
+| `appkit/attention/` | attention policy: gates, score, quiet hours, budget, feedback, replay |
+| `appkit/runtime/decision_runtime.py` | the action runtime |
+| `appkit/runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
+| `appkit/runtime/perception.py` | live context: detector contract, admission and frames |
+| `appkit/runtime/state.py` | experience state: goals, phase, beliefs, decay, expiry |
+| `appkit/runtime/state_store.py` | storage-free state store contract and in-memory store |
+| `appkit/runtime/resources.py` | cheap/deep call admission under budget |
+| `appkit/platform.py` | south platform interface and in-memory platform |
+| `core/outcome.py` | directed metric ledger, outcome store contract and UCB learner |
+| `appkit/records/decision.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
+| `appkit/records/proposal.py` | storage-free proposal and approval lifecycle |
+| `appkit/delivery.py` | delivery port and receipt |
+| `core/evaluation.py` | policy parity and replay harness |
+| `appkit/bench.py` | LAIX-Bench suites, report and `python -m laix.appkit.bench` |
+| `core/schema.py` | generated JSON Schema |
 
 ## Custom policies
 

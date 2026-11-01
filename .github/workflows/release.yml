@@ -27,7 +27,7 @@ jobs:
           python -m pip install pytest
           python -m pip install -e .
           python -m pytest -q
-          python -m laix.bench
+          python -m laix.appkit.bench
 
       - name: Test TypeScript
         working-directory: packages/typescript/laix

@@ -4,7 +4,7 @@ This surface is domain-neutral and does not load the app kit. Use it from a
 mission, agent or another application that only needs the decision layer.
 """
 
-from ..contracts import (
+from .contracts import (
     CONTRACT_NAMES,
     CONTRACTS,
     CONSTRAINT_KINDS,
@@ -25,7 +25,7 @@ from ..contracts import (
     Situation,
     Trace,
 )
-from ..decisions import (
+from .decisions import (
     Breakdown,
     Decision as PolicyDecision,
     DecisionRequest,
@@ -33,9 +33,9 @@ from ..decisions import (
     EvidenceRef,
     Intent,
 )
-from ..evaluation import Case, Report, Row, compare, load_cases
-from ..outcome import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
-from ..policies import (
+from .evaluation import Case, Report, Row, compare, load_cases
+from .outcome import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
+from .policies import (
     POLICY_VERSION,
     ActivePerceptionPolicy,
     AllocationPolicy,

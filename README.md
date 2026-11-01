@@ -59,7 +59,7 @@ Outcome learning turns measured labels into rewards. `UCBBandit` learns which ar
 LAIX-Bench runs deterministic cases for every decision class:
 
 ```powershell
-python -m laix.bench
+python -m laix.appkit.bench
 ```
 
 New apps send requests. Shared rules become generic policies. App rules stay in the app adapter.
@@ -70,7 +70,7 @@ New apps send requests. Shared rules become generic policies. App rules stay in 
 - **`laix.appkit`** — optional integration: attention, execution, records, delivery, platform, state and live context.
 
 A host imports LAIX. LAIX does not import or name the host. See
-[boundaries](docs/design/boundaries.md).
+[boundaries](docs/boundaries.md).
 
 ## Repository map
 
@@ -87,7 +87,7 @@ A host imports LAIX. LAIX does not import or name the host. See
 ```powershell
 cd packages/python/laix
 py -m pytest -q
-py -m laix.bench
+py -m laix.appkit.bench
 
 cd ../../packages/typescript/laix
 npm test

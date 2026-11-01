@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 
-from laix.bench import main, run_bench, suite_names
+from laix.appkit.bench import main, run_bench, suite_names
 
 
 def test_bench_runs_every_decision_class() -> None:
