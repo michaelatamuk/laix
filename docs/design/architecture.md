@@ -74,36 +74,35 @@ A verb is the action word in a decision.
 A notification is a `guide` decision plus an app delivery channel. Approval is the
 `requires_approval` flag on a decision.
 
-## How a policy chooses
+## How a policy is chosen
 
-A policy reads a request and returns a decision. LAIX has two built-in policies for two request
-shapes:
+A policy reads a request and returns a decision. `Layer.decide()` chooses one:
 
-| Request contains | Question | Built-in policy |
-|---|---|---|
-| `signals` + `context` | Which signal deserves attention now, and how? | attention |
-| `situation` + `options` | Which available action should we take? | action |
+- request with `signals` + `context` → the built-in attention policy;
+- request with `situation` + `options` → the built-in action policy;
+- any other class → pass a pack explicitly with `Layer(policy=...)` or register it.
 
-`Layer.decide()` reads the request and calls the matching policy.
+## The ten decision classes
 
-## Ten decision classes
+| # | Class | Input | Policy | Selected by |
+|---|---|---|---|---|
+| 1 | Attention | `signals` + `context` | built-in attention | `Layer.decide()` |
+| 2 | Action | `situation` + `options` | built-in action | `Layer.decide()` |
+| 3 | Active perception | `attributes` | `ActivePerceptionPolicy` | `Layer(policy=...)` |
+| 4 | Safety-constrained action | `attributes` | `SafetyConstrainedPolicy` | `Layer(policy=...)` |
+| 5 | Replanning | `attributes` | `ReplanningPolicy` | `Layer(policy=...)` |
+| 6 | Allocation | `attributes` | `AllocationPolicy` | `Layer(policy=...)` |
+| 7 | Negotiation | `attributes` | `NegotiationPolicy` | `Layer(policy=...)` |
+| 8 | Preference elicitation | `attributes` | `PreferenceElicitationPolicy` | `Layer(policy=...)` |
+| 9 | Verification | `attributes` | `VerificationPolicy` | `Layer(policy=...)` |
+| 10 | Escalation | `attributes` | `EscalationPolicy` | `Layer(policy=...)` |
 
-A decision class is a kind of question. The two policies above cover attention and action. LAIX also
-ships eight reference policies for other classes:
+There are ten classes. The first two are built into `Layer` because they define the two request
+shapes it understands. The other eight are ordinary policy objects that take their inputs from
+`DecisionRequest.attributes`.
 
-| Class | Policy |
-|---|---|
-| Active perception | `ActivePerceptionPolicy` |
-| Safety-constrained action | `SafetyConstrainedPolicy` |
-| Replanning | `ReplanningPolicy` |
-| Allocation | `AllocationPolicy` |
-| Negotiation | `NegotiationPolicy` |
-| Preference elicitation | `PreferenceElicitationPolicy` |
-| Verification | `VerificationPolicy` |
-| Escalation | `EscalationPolicy` |
-
-Together with attention and action, these make ten classes. The reference policies take generic
-inputs from `DecisionRequest.attributes`. See [policy packs](../guides/policy-packs.md).
+The split is about selection, not importance. All ten return the same decision shape. See
+[policy packs](../guides/policy-packs.md).
 
 ## Other parts
 

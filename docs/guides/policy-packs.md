@@ -3,8 +3,8 @@
 A **policy** is a rule set that reads a request and returns a decision. A **decision class** is a
 kind of question, such as “should we look first?” or “which plan fits?”
 
-Attention and action are the two built-in classes. LAIX also ships eight reference policies for other
-classes:
+Attention and action are built in because `Layer` uses their request shapes to choose a policy. The
+other eight are ordinary policy objects selected explicitly. LAIX ships them as reference policies:
 
 ```python
 from laix import Layer, ReplanningPolicy
