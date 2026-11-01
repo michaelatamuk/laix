@@ -33,6 +33,8 @@ export interface LayerDecision {
   reversible?: boolean;
   undoHint?: string | null;
   createdAt?: string;
+  confidenceSource?: string;
+  calibrated?: boolean;
 }
 
 export interface LayerRequest {
@@ -43,6 +45,9 @@ export interface LayerRequest {
   situation?: Situation;
   options?: ActionOption[];
   attributes?: Record<string, unknown>;
+  confidence?: number;
+  confidenceSource?: string;
+  calibrated?: boolean;
 }
 
 export interface BeliefLike {
@@ -245,8 +250,13 @@ export class Layer {
   }
 
   decide(request: LayerRequest): LayerDecision[] {
+    const annotate = (decision: LayerDecision): LayerDecision => ({
+      ...decision,
+      confidenceSource: request.confidenceSource ?? decision.confidenceSource,
+      calibrated: request.calibrated ?? decision.calibrated,
+    });
     if (this.policy) {
-      return this.policy.decide(request as unknown as import("../core/contracts.ts").DecisionRequest).map((decision) => ({
+      return this.policy.decide(request as unknown as import("../core/contracts.ts").DecisionRequest).map((decision) => annotate({
         verb: decision.verb,
         confidence: decision.confidence,
         reasonCode: decision.reasonCode,
@@ -267,14 +277,22 @@ export class Layer {
         reversible: decision.reversible,
         undoHint: decision.undoHint,
         createdAt: decision.createdAt,
+        confidenceSource: decision.confidenceSource,
+        calibrated: decision.calibrated,
       }));
     }
     if (request.situation || request.options?.length) {
       if (!request.situation) throw new Error("action selection needs a situation");
-      return [decideAction(request.situation, request.options ?? [])];
+      const attributes = {
+        ...(request.situation.attributes ?? {}),
+        ...(request.confidence !== undefined ? { confidence: request.confidence } : {}),
+        ...(request.confidenceSource ? { confidence_source: request.confidenceSource } : {}),
+        ...(request.calibrated ? { calibrated: true } : {}),
+      };
+      return [annotate(decideAction({ ...request.situation, attributes }, request.options ?? []))];
     }
     if (!request.context) throw new Error("attention allocation needs a context with now");
-    return decideAttention(request.context, request.signals ?? []).map((decision) => ({
+    return decideAttention(request.context, request.signals ?? []).map((decision) => annotate({
       verb: decision.action,
       confidence: decision.confidence,
       reasonCode: decision.reason,

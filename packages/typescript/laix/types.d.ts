@@ -214,6 +214,8 @@
     traceId: string;
     deliver: boolean;
     record: boolean;
+    confidenceSource?: string;
+    calibrated?: boolean;
     decisionId?: string;
     policyVersion?: string;
     evidence?: unknown[];
@@ -246,6 +248,9 @@
     situation?: unknown;
     options?: unknown[];
     attributes?: Record<string, unknown>;
+    confidence?: number;
+    confidenceSource?: string;
+    calibrated?: boolean;
   }
   export interface PolicyDecision {
     verb: Verb;
@@ -268,6 +273,8 @@
     deliver?: boolean;
     record?: boolean;
     createdAt?: string;
+    confidenceSource?: string;
+    calibrated?: boolean;
   }
   export interface Action {
     id: string;

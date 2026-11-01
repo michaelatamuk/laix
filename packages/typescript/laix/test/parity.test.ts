@@ -107,6 +107,31 @@ describe("typescript parity", () => {
     assert.equal(report.agreementRate, 1);
   });
 
+  it("carries host confidence and its source", () => {
+    const layer = new Layer();
+    const [decision] = layer.decide({
+      subject: "one task",
+      at: "2026-11-01T10:00:00Z",
+      situation: {
+        id: "task-1",
+        at: "2026-11-01T10:00:00Z",
+        subject: "one task",
+        beliefs: [{ confidence: 0.9 }],
+        attributes: { urgency: 0.9 },
+      },
+      options: [
+        { id: "wait", verb: "wait", name: "wait", expectedBenefit: 0.1 },
+        { id: "act", verb: "act", name: "act", expectedBenefit: 0.9 },
+      ],
+      confidence: 0.86,
+      confidenceSource: "host-calibrated",
+      calibrated: true,
+    });
+    assert.equal(decision.confidence, 0.86);
+    assert.equal(decision.confidenceSource, "host-calibrated");
+    assert.equal(decision.calibrated, true);
+  });
+
   it("uses a policy plugin through Layer", () => {
     const layer = new Layer({ policy: new SafetyConstrainedPolicy() });
     const [decision] = layer.decide({

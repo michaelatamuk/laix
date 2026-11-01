@@ -78,6 +78,8 @@ guide worth_surfacing 84.0
 | `deliver` | Show now. |
 | `record` | Keep it. |
 | `created_at` | When it was made. |
+| `confidence_source` | Where the confidence came from. |
+| `calibrated` | Whether the confidence is a calibrated probability. |
 
 ## The seven verbs
 
@@ -104,6 +106,19 @@ A notification is a `guide` decision plus an app delivery channel. Approval is t
 **Act.** An overflowing sink returns `act policy_rule option-close-valve`.
 
 **Approval.** A payment returns `act policy_rule option-pay` with `requires_approval = true`.
+
+## Decision basis
+
+`decision.basis()` returns host-neutral evidence rows:
+
+```python
+[
+    {"kind": "reason", "ref": "safe_action", "note": "risk is inside the limit"},
+    {"kind": "reference", "ref": "sensor-1", "note": "water detected"},
+]
+```
+
+The host can put these in its own audit record.
 
 ## Records
 

@@ -1,7 +1,11 @@
 # LAIX documentation
 
-New to LAIX? Read [architecture](architecture.md), then [reading a decision](core/decisions.md), then
-[contracts](core/contracts.md).
+If you are new to LAIX, start with [What is LAIX?](what-is-laix.md) — plain
+English, no code. Then read [Host integration](host-integration.md) for the six
+things a product team checks first.
+
+For the design: [architecture](architecture.md), then
+[reading a decision](core/decisions.md), then [contracts](core/contracts.md).
 
 The split follows the code:
 
@@ -13,6 +17,8 @@ The split follows the code:
 
 | Page | Answers |
 |---|---|
+| [what-is-laix.md](what-is-laix.md) | What is LAIX, in plain language? |
+| [host-integration.md](host-integration.md) | Where does a host call it, and what does the host keep? |
 | [architecture.md](architecture.md) | What is LAIX and how do the parts fit? |
 | [structure.md](structure.md) | Where does each file live? |
 | [boundaries.md](boundaries.md) | What belongs to core, the app kit and the host? |
@@ -24,6 +30,7 @@ The split follows the code:
 |---|---|
 | [core/contracts.md](core/contracts.md) | record shapes and the `0.6.1` version |
 | [core/decisions.md](core/decisions.md) | verbs, fields and examples |
+| [core/attention.md](core/attention.md) | task-level attention and its scope |
 | [core/policy-packs.md](core/policy-packs.md) | the eight packaged policies |
 | [core/outcome-learning.md](core/outcome-learning.md) | rewards, UCB and `BanditPolicy` |
 | [core/evaluation.md](core/evaluation.md) | vectors, conformance and bench |

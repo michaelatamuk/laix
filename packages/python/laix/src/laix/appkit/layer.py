@@ -6,7 +6,7 @@ orchestrator and the built-in request routing.
 
 from __future__ import annotations
 
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from typing import Any
 
 from ..core import attention
@@ -55,22 +55,41 @@ class Layer:
 
     def decide(self, request: DecisionRequest) -> list[Decision]:
         if self._policy is not None:
-            decisions = [coerce(item) for item in self._policy.decide(request)]
+            decisions = [self._annotate(coerce(item), request) for item in self._policy.decide(request)]
             self._decisions.extend(decisions)
             return decisions
+
+        attributes = dict(request.attributes)
+        if request.confidence is not None:
+            attributes.setdefault("confidence", request.confidence)
+        if request.confidence_source:
+            attributes.setdefault("confidence_source", request.confidence_source)
+        if request.calibrated:
+            attributes.setdefault("calibrated", True)
 
         if request.situation is not None or request.options:
             if request.situation is None:
                 raise ValueError("action selection needs a situation")
-            decision = self.runtime.decide(request.situation, request.options, attributes=request.attributes)
+            decision = self.runtime.decide(request.situation, request.options, attributes=attributes)
             self._core_decisions[decision.id] = decision
-            result = [from_core(decision)]
+            result = [self._annotate(from_core(decision), request)]
         else:
             if request.context is None:
                 raise ValueError("attention allocation needs a context with now")
-            result = [from_attention(item) for item in attention.decide(request.signals, request.context)]
+            result = [
+                self._annotate(from_attention(item), request)
+                for item in attention.decide(request.signals, request.context)
+            ]
         self._decisions.extend(result)
         return result
+
+    @staticmethod
+    def _annotate(decision: Decision, request: DecisionRequest) -> Decision:
+        source = request.confidence_source or decision.confidence_source
+        calibrated = request.calibrated or decision.calibrated
+        if source == decision.confidence_source and calibrated == decision.calibrated:
+            return decision
+        return replace(decision, confidence_source=source, calibrated=calibrated)
 
     def execute(
         self,

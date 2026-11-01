@@ -14,6 +14,7 @@ examples/
 │   ├── runtime/       execution, resources, platform
 │   ├── records/       decision record and proposal
 │   ├── stores/        state store and outcome store
+│   ├── host/          task adapter and approval/execution
 │   └── integration/   delivery and evaluation
 ├── typescript/
 │   ├── attention/
@@ -79,6 +80,13 @@ examples/
 |---|---|---|
 | `python/stores/state_store.py` | Save, load and delete an experience snapshot | `decide True` |
 | `python/stores/outcome_store.py` | Record what a decision changed | `helped -2.0 1` |
+
+## Host integration
+
+| File | Shows | Output |
+|---|---|---|
+| `python/host/mission_adapter.py` | Task → request → decision → basis | `act valve host-calibrated True reason` |
+| `python/host/mission_execution.py` | Approval → execution → receipt | `executed approve the repair True` |
 
 ## Integration
 

@@ -70,11 +70,37 @@ class Decision:
     deliver: bool = True
     record: bool = True
     created_at: str | None = None
+    confidence_source: str = ""
+    calibrated: bool = False
 
     def __post_init__(self) -> None:
         if self.verb not in {"wait", "observe", "guide", "ask", "act", "verify", "escalate"}:
             raise ValueError(f"unknown verb: {self.verb!r}")
         object.__setattr__(self, "confidence", max(0.0, min(1.0, float(self.confidence))))
+
+    def basis(self) -> tuple[dict[str, Any], ...]:
+        """A host-neutral basis for a decision record or explain view."""
+        rows: list[dict[str, Any]] = [
+            {"kind": "reason", "ref": self.reason_code, "note": self.rationale}
+        ]
+        for item in self.evidence:
+            rows.append(
+                {
+                    "kind": item.kind,
+                    "ref": item.id,
+                    "note": item.quote or "",
+                    "source": item.source or "",
+                }
+            )
+        if self.escalation is not None:
+            rows.append(
+                {
+                    "kind": "escalation",
+                    "ref": self.escalation.target,
+                    "note": self.escalation.reason,
+                }
+            )
+        return tuple(rows)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -95,6 +121,9 @@ class DecisionRequest:
     situation: Situation | None = None
     options: tuple[Any, ...] = ()
     attributes: dict[str, Any] = field(default_factory=dict)
+    confidence: float | None = None
+    confidence_source: str = ""
+    calibrated: bool = False
 
 
 def _evidence(items: Iterable[Any] | None) -> tuple[EvidenceRef, ...]:

@@ -120,6 +120,22 @@ const [decision] = new Layer().decide({
 
 Full fields: [reading a decision](../core/decisions.md).
 
+## Host confidence
+
+If the host calculates confidence, pass it in:
+
+```python
+DecisionRequest(
+    ...,
+    confidence=0.88,
+    confidence_source="host-calibrated",
+    calibrated=True,
+)
+```
+
+The returned decision carries the same source and calibration flag. LAIX does not
+turn a rule score into a probability.
+
 ## Roll out safely
 
 1. Add the adapter behind a flag.

@@ -55,6 +55,8 @@ export interface Decision {
   deliver?: boolean;
   record?: boolean;
   createdAt?: string;
+  confidenceSource?: string;
+  calibrated?: boolean;
 }
 
 export interface DecisionRequest {
@@ -65,6 +67,9 @@ export interface DecisionRequest {
   situation?: Situation;
   options?: Action[];
   attributes?: Record<string, unknown>;
+  confidence?: number;
+  confidenceSource?: string;
+  calibrated?: boolean;
 }
 
 export interface Observation {
