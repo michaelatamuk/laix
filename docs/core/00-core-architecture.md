@@ -49,10 +49,15 @@ block-beta
 
 ## Request shapes
 
-| The request carries | The engine |
+Without `policy=`, the request shape selects one of the two built-in engines:
+
+| The call has | The engine |
 |---|---|
 | `signals` + `context` | Attention |
 | `situation` + `options` | Action policy |
+| `policy=...` | The policy you pass |
+
+Packaged and custom policies are always selected explicitly.
 
 ## Learning loop
 
@@ -85,6 +90,7 @@ outcome → label → feedback → better attention
 - **Evaluate** checks the engines; it is not on the request path.
 - **Decision request** and **Decision response** are the boundary.
 - The request shape routes: `signals + context` → Attention; `situation + options` → Action policy.
+- A packaged or custom policy is selected explicitly with `policy=...`.
 - **Decision response** carries the verb, reason, confidence, action and approval.
 - **Execution trail** records what happened after the response.
 - **Attention**, **Policies** and **Resources** are the engines.
