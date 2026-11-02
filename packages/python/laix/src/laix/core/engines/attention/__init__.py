@@ -31,7 +31,7 @@ from .labels import (
 from .ports.null_sink import NullSink
 from .outcome_log import OutcomeLog
 from .decide import decide_attention, decide_one, dedupe_key, rollup, trace_id
-from .gates import GATES, REASONS, Gate, ReasonCode, feedback_blocks, rank
+from .gates import GATES, GATE_RULES, REASONS, Gate, ReasonCode, feedback_blocks, rank
 from .score import SEVERITY_POINTS, WAIT_FACTOR, cost_of_waiting, score, undo_hint
 from .ports.recorder import Recorder
 from .replay import (
@@ -56,6 +56,7 @@ __version__ = "0.8.0"
 __all__ = [
     "FEEDBACK_STATES",
     "GATES",
+    "GATE_RULES",
     "Gate",
     "ReasonCode",
     "HELPED",
