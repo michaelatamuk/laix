@@ -37,7 +37,7 @@ packages/python/laix/src/laix/
 │   ├── decisions/
 │   │   ├── request/         request.py envelope; payload records
 │   │   ├── answer/          decision.py; payload: evidence ref, intent, score breakdown
-│   │   ├── lifecycle/       execution receipt and trace
+│   │   ├── trail/       execution receipt and trace
 │   │   └── normalise.py     coerce and from_attention
 │   ├── policies/
 │   │   ├── builtin/action/  version, config, request and policy

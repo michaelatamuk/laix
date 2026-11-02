@@ -24,8 +24,8 @@ from .request import (
 from .response import EvidenceRef, Intent, ScoreBreakdown
 from .normalise import coerce, from_attention
 from .response.decision import Decision
-from .lifecycle.execution_receipt import EXECUTION_RECEIPT_STATUSES, ExecutionReceipt
-from .lifecycle.trace import Trace
+from .trail.execution_receipt import EXECUTION_RECEIPT_STATUSES, ExecutionReceipt
+from .trail.trace import Trace
 
 __all__ = [
     "ActionOption",
