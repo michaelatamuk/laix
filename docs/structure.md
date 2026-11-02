@@ -17,7 +17,7 @@ laix/
 │   ├── boundaries.md      core, app kit and host
 │   ├── positioning.md     LAIX and decision models
 │   ├── structure.md       this page
-│   ├── core/              records, decisions, attention, policies, learning, evaluation
+│   ├── core/              decisions, engines, outcome learning, evaluation, sensing
 │   └── appkit/            integration, live context, platform, stores, bench
 ├── examples/              runnable Python and TypeScript examples
 └── .github/               CI and release workflows
@@ -40,7 +40,7 @@ packages/python/laix/src/laix/
 │   │   ├── trail/           execution receipt and trace
 │   │   └── normalise.py     coerce and from_attention
 │   ├── engines/
-│   │   ├── policies/        builtin action, packs, protocol, registry
+│   │   ├── policies/        action, others, protocol, registry
 │   │   ├── attention/       model, ports, vectors, decide, gates, score, replay
 │   │   └── resources/       budget, sensing option, plan, scheduler
 │   ├── outcome_learning/    record, ledger, store, arm, bandit, rewards

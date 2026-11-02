@@ -1,26 +1,26 @@
-"""Policies: the built-in action policy, packaged packs and the plugin registry.
+"""Policies: the built-in action policy, other policies and the plugin registry.
 
-The packaged packs are loaded lazily. ``decisions`` imports the registry, and
-the packs import ``decisions``; lazy loading keeps that cycle out of import time.
+The other policies are loaded lazily. ``decisions`` imports the registry, and
+the policies import ``decisions``; lazy loading keeps that cycle out of import time.
 """
 
 from __future__ import annotations
 
 from ...support.errors import PolicyError
-from .builtin.action import ACTION_POLICY_VERSION, ActionPolicy, ActionPolicyConfig, ActionPolicyRequest, decide_action
+from .action import ACTION_POLICY_VERSION, ActionPolicy, ActionPolicyConfig, ActionPolicyRequest, decide_action
 from .policy import Policy
 from .registry import PolicyRegistry
 
 _LAZY = {
-    "ActivePerceptionPolicy": "packs.active_perception",
-    "AllocationPolicy": "packs.allocation",
-    "BanditPolicy": "packs.bandit",
-    "EscalationPolicy": "packs.escalation",
-    "NegotiationPolicy": "packs.negotiation",
-    "PreferenceElicitationPolicy": "packs.preference",
-    "ReplanningPolicy": "packs.replanning",
-    "SafetyConstrainedPolicy": "packs.safety",
-    "VerificationPolicy": "packs.verification",
+    "ActivePerceptionPolicy": "others.active_perception",
+    "AllocationPolicy": "others.allocation",
+    "BanditPolicy": "others.bandit",
+    "EscalationPolicy": "others.escalation",
+    "NegotiationPolicy": "others.negotiation",
+    "PreferenceElicitationPolicy": "others.preference",
+    "ReplanningPolicy": "others.replanning",
+    "SafetyConstrainedPolicy": "others.safety",
+    "VerificationPolicy": "others.verification",
 }
 
 

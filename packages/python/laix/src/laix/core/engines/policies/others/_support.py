@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ...decisions import Decision, Intent
+from ....decisions import Decision, Intent
 
 
 def value(request: Any, key: str, default: Any = None) -> Any:

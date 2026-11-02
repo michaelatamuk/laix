@@ -27,7 +27,7 @@ from ...core.outcome_learning import Outcome
 from ...core.support.time import iso
 from .execution import ApprovalRequired, ExecutionBridge
 from ...core.outcome_learning import OutcomeLedger
-from ...core.engines.policies.builtin.action import ActionPolicy, ActionPolicyRequest
+from ...core.engines.policies.action import ActionPolicy, ActionPolicyRequest
 from ...core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .state import ExperienceState
 
