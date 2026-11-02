@@ -197,7 +197,6 @@ def test_the_guard_catches_a_direct_clock_read(tmp_path: Path) -> None:
 def test_the_contract_file_ships_with_the_package() -> None:
     assert (PACKAGE / "vectors" / "attention.v1.json").is_file()
     assert (PACKAGE / "vectors" / "bench.v1.json").is_file()
-    assert (PACKAGE / "vectors" / "schema.json").is_file()
 
 
 # --------------------------------------------------------------------------- feedback
@@ -325,17 +324,6 @@ def test_every_decision_carries_cost_and_undo() -> None:
 
 
 # --------------------------------------------------------------------------- schema and bench
-
-
-def test_the_schema_and_the_module_agree() -> None:
-    import json
-
-    document = json.loads((PACKAGE / "vectors" / "schema.json").read_text(encoding="utf-8"))
-    defs = document["$defs"]
-    assert tuple(defs["verb"]["enum"]) == laix.VERBS
-    assert tuple(defs["reason_code"]["enum"]) == laix.REASONS
-    assert tuple(defs["feedbackState"]["enum"]) == laix.FEEDBACK_STATES
-    assert tuple(defs["severity"]["enum"]) == tuple(laix.SEVERITY_RANK)
 
 
 def test_validate_document_accepts_the_contract() -> None:

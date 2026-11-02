@@ -13,19 +13,23 @@ from dataclasses import MISSING, fields
 from pathlib import Path
 from typing import Any, Union, get_args, get_origin, get_type_hints
 
-from .records import RECORDS
+from ..decisions.request.payload.situation import HORIZONS, PHASES
+from ..decisions.trail.execution_receipt import EXECUTION_RECEIPT_STATUSES
+from ..outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
+from ..support.verbs import VERBS
 from ..support.version import SCHEMA_VERSION
+from .records import RECORDS
 
 SCHEMA_ID = "https://laix.dev/records/laix-v1.schema.json"
 SCHEMA_PATH = Path(__file__).resolve().parent / "laix-v1.schema.json"
 
 _ENUMS: dict[str, list[str]] = {
-    "verb": ["wait", "observe", "guide", "ask", "act", "verify", "escalate"],
-    "phase": ["observe", "understand", "decide", "act", "verify", "adapt"],
-    "horizon": ["seconds", "minutes", "hours", "days", "weeks"],
-    "status": ["pending", "approved", "executed", "refused", "cancelled", "failed", "undone"],
-    "label": ["helped", "neutral", "hurt", "unknown"],
-    "direction": ["higher-better", "lower-better"],
+    "verb": list(VERBS),
+    "phase": list(PHASES),
+    "horizon": list(HORIZONS),
+    "status": list(EXECUTION_RECEIPT_STATUSES),
+    "label": list(OUTCOME_LABELS),
+    "direction": list(OUTCOME_DIRECTIONS),
 }
 
 

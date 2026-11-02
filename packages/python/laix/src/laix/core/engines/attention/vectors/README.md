@@ -6,7 +6,6 @@ These files form part of the one LAIX contract.
 |---|---|
 | `attention.v1.json` | the behavioural cases for the attention policy |
 | `bench.v1.json` | labelled cases for precision, hazard and recall |
-| `schema.json` | the machine-readable shape of the cases |
 
 `guide` is the decision verb; `notify` is its delivery form.
 
