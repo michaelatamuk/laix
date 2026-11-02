@@ -15,10 +15,10 @@ PPMA owns the activation decision. LAIX owns the task decision.
 | | PPMA activation decision | LAIX task decision |
 |---|---|---|
 | Owner | PPMA's Epistemic Core | LAIX core |
-| Input | A host trigger: event, timer, answer, outcome or surface change | A bounded task: subject, situation, options and constraints |
-| Question | What does this trigger become for PPMA? | What is the next move for this task? |
+| Input | A host input: event, timer, answer, outcome or surface change | A bounded task: subject, situation, options and constraints |
+| Question | What is the system's next move? | What is the task's next move? |
 | Output | `NOOP` · `UPDATE_STATE` · `ISSUE_COMMAND` · `DISPATCH` | `wait` · `observe` · `guide` · `ask` · `act` · `verify` · `escalate` |
-| Scope | PPMA's next cycle | One task |
+| Scope | Across the system | Inside one task |
 | Lifecycle | PPMA creates, continues and closes the work | PPMA owns the lifecycle; LAIX returns the decision |
 | Effect | Starts or changes work | Chooses the next move inside the work |
 
@@ -27,12 +27,12 @@ PPMA's activation core is its Epistemic Core: the Ingestor and the Commander. Th
 In one line:
 
 ```text
-PPMA decides what the trigger becomes.
-LAIX decides what one bounded task does next.
+PPMA decides what the system does next.
+LAIX decides what one task does next.
 ```
 
 ```text
-PPMA trigger
+PPMA input
   ▼
 PPMA Epistemic Core / Commander
   │ activation decision: NOOP | UPDATE_STATE | ISSUE_COMMAND | DISPATCH
@@ -55,7 +55,7 @@ PPMA Epistemic Core / Commander
 PPMA keeps:
 
 - memory and history;
-- ingestion, filters, triggers and routing;
+- ingestion, filters and routing;
 - connectors, credentials and transports;
 - proactivity, permissions, clearances and owner settings;
 - missions, workers, lifecycle and budgets;
@@ -83,7 +83,7 @@ Both shapes are first-class. The choice belongs to the host.
 
 ### 2.1 PPMA with its own activation core
 
-PPMA decides what the trigger becomes. When the work is a bounded task, PPMA asks LAIX for the task decision.
+PPMA decides what the system does next. When the work is a bounded task, PPMA asks LAIX for the task decision.
 
 ```text
 PPMA activation core

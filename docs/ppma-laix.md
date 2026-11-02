@@ -1,6 +1,6 @@
 # PPMA + LAIX: the task-decision layer
 
-PPMA decides what to do with a trigger. LAIX decides what one bounded task does next.
+PPMA decides what the system does next. LAIX decides what one task does next.
 
 ## 1. What LAIX decides
 
@@ -16,44 +16,62 @@ A LAIX policy is a small object with a `name` and a `decide(request)` method. It
 Example:
 
 ```text
-Task: a customer asks for a €780 refund.
-Options: send_reply (act), ask_owner (ask), wait.
-Constraints: refunds above €500 need owner approval; VIP complaints escalate.
-Attributes: amount_eur = 780, vip = true.
+Request
+  task               a customer asks for a €780 refund
+  options            send_reply (act) · ask_owner (ask) · wait
+  constraints        refunds above €500 need owner approval; VIP complaints escalate
+  attributes         amount_eur = 780, vip = true
 
-LAIX returns:
-  verb = ask
-  reason_code = over_approval_limit
-  action_id = send_reply
-  requires_approval = true
-  confidence = 0.92
-  decision_id = DEC-...
+Decision
+  verb               ask
+  reason_code        over_approval_limit
+  action_id          send_reply
+  requires_approval  true
+  confidence         0.92
+  decision_id        DEC-...
 ```
 
 PPMA issues `ui.ask`, records the decision, commits the outcome and acts.
 
-## 2. Two decision scopes
+## 2. How PPMA decides today
+
+PPMA reaches an activation decision through four paths today. It names its edges by compass: **north** is apps, **south** is what PPMA runs on (model vendors and their adapters), **east** is third-party agents that PPMA delegates work to, and **west** is agents that consult memory.
+
+Every activation decision is one of four kinds: `NOOP` (no operation), `UPDATE_STATE` (a memory change), `ISSUE_COMMAND` (one or more commands), or `DISPATCH` (start a mission).
+
+| Path | Edge | How | Output |
+|---|---|---|---|
+| `Commander.wake()` | South | One `command.decide` LLM ask | `NOOP`, `UPDATE_STATE`, `ISSUE_COMMAND` or `DISPATCH` |
+| `Commander.exit_check()` | South | One `command.exit_check` LLM ask for a due entry | `UPDATE_STATE` or `NOOP` |
+| `Commander.effect_step()` | Neither | No model call; a scheduled command is re-checked and issued | `ISSUE_COMMAND` |
+| Mission agent | East | An agent run on JiuwenSwarm, Claude Code or another harness | A proposal (`DispatchResult`), not a command |
+
+The `command.decide` ask is the only general chooser: it picks the commands, dispatch, plans, filters and missions. The other three paths handle a narrower case.
+
+An effect step is a scheduled command. The command was chosen by the `command.decide` ask when the plan was installed; the timer only executes it. When the timer fires, PPMA re-checks it against the current manifests, permissions, holders and health rules and issues it as `ISSUE_COMMAND`. No model runs at fire time.
+
+A mission agent returns a proposal, not a command: its `DispatchResult` carries the report, evidence and artifacts it produced, plus an optional state delta. PPMA reviews it before committing.
+
+PPMA's core rules and filters do not choose a command. They validate, constrain or hold it, and calibrate its confidence.
+
+## 3. The PPMA–LAIX boundary
+
+### What each decides
+
+The two decisions differ in vocabulary and scope:
 
 | | PPMA activation decision | LAIX task decision |
 |---|---|---|
-| Question | What should PPMA do with this trigger? | What is the next move for this task? |
 | Kind | `NOOP` · `UPDATE_STATE` · `ISSUE_COMMAND` · `DISPATCH` | `wait` · `observe` · `guide` · `ask` · `act` · `verify` · `escalate` |
-| Scope | PPMA's next cycle | One bounded task |
+| Scope | Across the system | Inside one task |
 
-The two vocabularies describe different scopes.
+The mapping from a LAIX verb to a command is not one-to-one. PPMA chooses the command type and target from the task move, the available manifests and the execution policy. A `guide` decision may become `ui.notify`, `ui.deliver_brief` or an app-specific message; an `act` decision may become a manifest tool, a plan step or a `DISPATCH`.
 
-- `NOOP`: no operation.
-- `UPDATE_STATE`: a memory change.
-- `ISSUE_COMMAND`: one or more commands to apps or tools.
-- `DISPATCH`: start a mission.
-
-`ISSUE_COMMAND` carries one or more commands. The mapping from a LAIX verb to a command is not one-to-one: PPMA chooses the command type and target from the task move, the available manifests and the execution policy. A `guide` decision may become `ui.notify`, `ui.deliver_brief` or an app-specific message; an `act` decision may become a manifest tool, a plan step or a `DISPATCH`. LAIX returns the task move; PPMA chooses the command and issues it.
-
-## 3. Who owns what
+### What each side owns
 
 | Area | Owner |
 |---|---|
-| Trigger and activation decision | PPMA |
+| Incoming input and activation decision | PPMA |
 | Memory, connectors, permissions, proactivity | PPMA |
 | Flow policy, holding and app execution policy | PPMA |
 | Task goal, options and constraints | PPMA |
@@ -61,23 +79,13 @@ The two vocabularies describe different scopes.
 | Policy composition and decision semantics | LAIX |
 | Calibration, provenance, commit and execution | PPMA |
 
-PPMA supplies the task. LAIX returns the decision. PPMA acts on it.
+## 4. Why PPMA should use LAIX
 
-### How PPMA decides today
+LAIX adds a policy path alongside the Commander. For a bounded decision class, compare a LAIX policy with the Commander's `command.decide` ask on calls and tokens, latency, determinism, constraint compliance, audit clarity and reuse. If the policy improves on none of them, keep the Commander.
 
-| Path | What it does |
-|---|---|
-| `Commander.wake()` | One `command.decide` LLM ask. It chooses the commands, dispatch, plans, filters and missions. |
-| `Commander.exit_check()` | One `command.exit_check` LLM ask for an entry whose `until` passed. |
-| `Commander.effect_step()` | A plan's pre-approved step issues its stored command. No model call; the decision was made when the plan was installed. |
-| Mission agent | The agent decides inside its bounded mission. PPMA reviews the proposal. |
-| Core rules and filters | They validate, constrain, calibrate or hold. They do not choose a command. |
+The difference is clearest in latency. PPMA's command choice is taken when the model answers: `command.decide` is an LLM ask. A rules-only LAIX policy decides locally, with no model round-trip; a model-backed policy pays the model, but on a smaller question. For a decision taken inside a loop, that is the difference that matters.
 
-Today the Commander's `command.decide` ask is the only general command chooser. LAIX adds a policy path for bounded task decisions alongside it. The comparison is Commander alone vs Commander + LAIX for one bounded decision class.
-
-## 4. Why PPMA uses it
-
-LAIX wins for a bounded class when the policy beats the Commander's LLM ask on at least one of: calls and tokens, latency, determinism, constraint compliance, audit clarity or reuse. If it does not, keep the Commander.
+It also adds:
 
 - **One task-decision contract** across the Commander, missions and apps.
 - **Decision semantics** — constraints, approval, escalation and verification travel with the decision.
@@ -87,10 +95,10 @@ LAIX wins for a bounded class when the policy beats the Commander's LLM ask on a
 - **Model independence** — swap the model behind the same contract.
 - **Reuse without Core changes** — a policy lives outside `ppma.core`; PPMA adds decision classes without new Core modules.
 
-## 5. How the call works
+## 5. How PPMA would call LAIX
 
 ```text
-PPMA trigger
+PPMA input
   → Commander / ActivationDecision
   → bounded task
   → LAIX task policy
@@ -100,7 +108,7 @@ PPMA trigger
   → PPMA calibrates, records, commits, executes
 ```
 
-PPMA calls LAIX as a tool or task policy inside the Commander or a mission. The call uses PPMA's existing Commander or mission path; JEV and LLM calls stay with PPMA's engines or the policy adapter. LAIX returns a `Decision`. PPMA calibrates the confidence it emits, records the decision, commits the outcome and executes.
+The integration calls LAIX as a tool or task policy inside the Commander or a mission. The call uses PPMA's existing Commander or mission path; JEV and LLM calls stay with PPMA's engines or the policy adapter.
 
 Deployment:
 
@@ -109,7 +117,7 @@ Deployment:
 - exposes `laix.decide` as an `effect: none` query tool or a mission tool;
 - one `DecisionRequest` in, one `Decision` out.
 
-PPMA implements four things:
+The integration adds four things:
 
 - a manifest entry for `laix.decide` with `effect: none`;
 - an adapter from the bounded task to `DecisionRequest`;
@@ -129,22 +137,20 @@ PPMA records the LAIX decision id as a reference. LAIX confidence is a source es
 
 ## 6. If you already use a judgment model
 
-JEV is a judgment engine: one closed question in, an answer with probabilities out. It can sit inside a LAIX policy.
+JEV gives you the judgment — one closed question in, an answer with probabilities out. LAIX gives you the decision: the move, reason, action, approval, reversibility, verification and record, under the same contract across tasks. JEV can sit inside a LAIX policy.
 
 ### Example: paying a supplier invoice
 
-JEV answers one question:
+**JEV alone.** Ask JEV the task question directly:
 
 ```text
-Does this invoice match the purchase order?
-→ yes, 0.93 confidence
+Pay, hold, ask or escalate this invoice?
+→ pay, 0.87
 ```
 
-That is not the task decision. The task is: **pay, hold, ask or escalate?**
+That is a proposed move, not the decision. JEV returns a probability over options: no reason code, no action, no approval flag, no reversibility, no verification step, and no shared decision record.
 
-The invoice is €4,800, above the €2,000 approval limit. Payment is irreversible. The supplier is new. JEV can be told these facts, but its answer is still a judgment. It does not choose the task move or carry the approval, reversibility and verification semantics.
-
-A LAIX policy takes the JEV judgment plus the options and constraints and returns:
+**JEV inside a LAIX policy.** The invoice is €4,800, above the €2,000 approval limit. Payment is irreversible. The supplier is new. The policy takes the JEV answer plus the options and constraints and returns:
 
 ```text
 verb = ask
@@ -152,13 +158,15 @@ reason_code = over_approval_limit
 action_id = pay_invoice
 requires_approval = true
 reversible = false
-confidence = 0.93
+confidence = 0.95
 ```
+
+The judgment said `pay`; the limit says `ask`. The policy does not average them: the rule takes precedence and the decision records why. A prompt can carry the limit too; a policy makes it a rule that fires whenever the condition holds. The judgment still matters where no rule fires — the PO match, the new supplier, the delivery.
 
 PPMA issues `ui.ask`, records the decision, pays on approval and verifies the bank confirmation.
 
-JEV plus app code can encode this. LAIX is the reusable layer that does it once, with the same decision shape across tasks.
+### JEV alone or with LAIX
 
-Put it there when the judgment must become a task decision with constraints, approval, escalation, verification and a record. That is the work LAIX does.
+**Use JEV alone when** the output is one judgment and the app already knows what to do with it. App code can add approval, reversibility, verification and the record for one task; the second task writes them again, and the copies drift — one gates in the UI, another in a flag, a third forgets `reversible`.
 
-If you need one closed judgment, JEV is enough. When you need the layer around many bounded decisions, LAIX is the layer.
+**Use JEV with LAIX when** the judgment must become a task decision with constraints, approval, escalation, verification and a record. LAIX supplies it once, under the same contract across tasks.
