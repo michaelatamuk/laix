@@ -1,6 +1,7 @@
 # PPMA + LAIX: the task-decision layer
 
-PPMA decides what a trigger becomes. LAIX decides what one bounded task does next.
+PPMA decides what to do with a trigger: no action, a memory update, an app command, or a dispatch.
+LAIX decides what one bounded task does next.
 
 ## 1. What LAIX decides
 
@@ -36,7 +37,7 @@ PPMA issues `ui.ask`, records the decision, commits the outcome and acts.
 
 | | PPMA activation decision | LAIX task decision |
 |---|---|---|
-| Question | What does this trigger become? | What is the next move for this task? |
+| Question | What should PPMA do with this trigger? | What is the next move for this task? |
 | Kind | `NOOP` · `UPDATE_STATE` · `ISSUE_COMMAND` · `DISPATCH` | `wait` · `observe` · `guide` · `ask` · `act` · `verify` · `escalate` |
 | Scope | PPMA's next cycle | One bounded task |
 
