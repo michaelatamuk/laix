@@ -4,48 +4,37 @@ LAIX core only. Read bottom-up: each row builds on the row below it.
 
 ```mermaid
 block-beta
-    columns 3
+    columns 1
 
-    decide["Decide<br/>select · decide"]
-    learn["Learn from outcomes<br/>outcome · reward · ledger · bandit"]
-    evaluate["Evaluate<br/>cases · parity · bench"]
-
-    request["Decision request<br/>signals · context · options"]
-    response["Decision response<br/>verb · reason · confidence · action"]
-    trail["Execution trail<br/>receipt · trace"]
-
-    attention["Attention<br/>gates · score"]
-    policies["Policies<br/>action · packaged"]
-    resources["Resources<br/>budget · admission"]
-
-    schema["Schema<br/>records · build · check"]
-    sensing["Sensing<br/>detector · event · frame"]
-    support["Support<br/>ids · time · values · verbs · errors"]
+    capabilities["Capabilities<br/>Decide · Learn from outcomes · Evaluate"]
+    contract["Contract<br/>Decision request · Decision response · Execution trail"]
+    engines["Engines<br/>Attention · Policies · Resources"]
+    foundation["Foundation<br/>Schema · Sensing · Support"]
 ```
 
 ## The rows
 
-| Row | Blocks | What it is |
+| Row block | Contains | What it is |
 |---|---|---|
-| **Top** | Decide · Learn from outcomes · Evaluate | What the core can do. |
-| **Second** | Decision request · Decision response · Execution trail | The contract and its records. |
-| **Third** | Attention · Policies · Resources | The engines that produce a decision. |
-| **Bottom** | Schema · Sensing · Support | The shared records and foundations. |
+| **Capabilities** | Decide · Learn from outcomes · Evaluate | What the core can do. |
+| **Contract** | Decision request · Decision response · Execution trail | The boundary and its records. |
+| **Engines** | Attention · Policies · Resources | What produces a decision. |
+| **Foundation** | Schema · Sensing · Support | The shared records and foundations. |
 
-## What each block contains
+## What each part contains
 
-| Block | Contains | Built on |
+| Part | Contains | Built on |
 |---|---|---|
-| **Decide** | `select` and `decide` | Decision request, decision response, engines |
+| **Decide** | `select` and `decide` | Contract, engines |
 | **Learn from outcomes** | outcome, reward, ledger, bandit | Support |
-| **Evaluate** | cases, parity, report, bench | Decision request, decision response, engines |
+| **Evaluate** | cases, parity, report, bench | Contract, engines |
 | **Decision request** | signals, context, situation, options | Support |
 | **Decision response** | verb, reason, confidence, action, evidence | Support |
 | **Execution trail** | execution receipt, trace | Support |
-| **Attention** | gates, score, timing | Decision request, decision response, support |
-| **Policies** | action and packaged policies | Decision request, decision response, learning, support |
+| **Attention** | gates, score, timing | Contract, support |
+| **Policies** | action and packaged policies | Contract, learning, support |
 | **Resources** | budget, sensing option, admission | Support |
-| **Schema** | records, build, check | Decision request, decision response, learning, support |
+| **Schema** | records, build, check | Contract, learning, support |
 | **Sensing** | detector, detection, event, frame | Support |
 | **Support** | ids, time, values, verbs, errors | — |
 
