@@ -130,7 +130,7 @@ host state
 
 `decide` is stateless between calls. The outcome belongs to the host: the host records it, and its next request can carry what it learned. When the host uses LAIX's outcome learning, it passes the outcome to that learner explicitly; `decide` itself does not receive it.
 
-The host may use `laix.appkit` for execution, records and delivery, or keep those in the host.
+The host owns execution, records and delivery. The next request carries the result.
 
 ## 3. The seam
 
@@ -181,7 +181,7 @@ PPMA keeps the domain nouns. LAIX keeps the generic vocabulary.
 
 **Provenance.** PPMA records the request, the LAIX decision id and whether it used, modified or rejected the decision. LAIX returns the decision shape and keeps no PPMA record.
 
-**Commit.** PPMA commits its own state through its own path. LAIX returns a decision; PPMA records and applies it. The app kit stays outside PPMA's commit path.
+**Commit.** PPMA commits its own state through its own path. LAIX returns a decision; PPMA records and applies it. PPMA's commit path stays inside PPMA.
 
 ## 5. Roles
 
