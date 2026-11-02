@@ -19,7 +19,16 @@ gives it deserves attention; the product decides whether it may interrupt the us
 
 ## Output
 
-A decision with a verb such as `guide`, `wait`, `observe` or `escalate`.
+Attention returns a `Decision` with one of four verbs:
+
+| Verb | When attention returns it | What the app does |
+|---|---|---|
+| `guide` | the signal is worth surfacing now | show it |
+| `wait` | quiet hours, below floor, low confidence, muted, feedback, budget, already sent or kill switch | hold it |
+| `act` | `allow_act` is on, the signal carries an intent, and the intent is reversible | run the intent |
+| `escalate` | a critical signal passed `escalate_after_hours` | hand it over |
+
+Attention does not return `observe`, `ask` or `verify`.
 
 ```python
 from laix.core.engines.attention import Context, decide_attention
