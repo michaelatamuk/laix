@@ -9,8 +9,8 @@ network, no database, no clock of its own.
 
 from __future__ import annotations
 
-from ..decisions import ScoreBreakdown, Intent
-from ..support.verbs import VERBS
+from ...decisions import ScoreBreakdown, Intent
+from ...support.verbs import VERBS
 from .model.decision import AttentionDecision
 from .model.outcome import AttentionOutcome
 from .ports.clock import Clock

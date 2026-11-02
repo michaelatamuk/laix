@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import laix.core.attention as attention_pkg
+import laix.core.engines.attention as attention_pkg
 
 PACKAGES = Path(__file__).resolve().parents[5]
 CANONICAL = PACKAGES / "contracts"

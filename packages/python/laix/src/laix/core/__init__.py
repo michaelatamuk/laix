@@ -5,7 +5,7 @@ mission, agent or another application that only needs the decision layer.
 """
 
 from .schema.records import RECORDS, RECORD_NAMES
-from .attention import (
+from .engines.attention import (
     Context,
     Feedback,
     OutcomeLog,
@@ -14,7 +14,7 @@ from .attention import (
     is_quiet,
     score,
 )
-from .resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from .engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .decisions import (
     ActionOption,
     Belief,
@@ -50,7 +50,7 @@ from .support.values import confidence_band
 from .support.version import SCHEMA_VERSION
 from .support.verbs import VERBS
 from .evaluation import Case, Report, Row, compare, load_cases
-from .policies import (
+from .engines.policies import (
     ACTION_POLICY_VERSION,
     ActivePerceptionPolicy,
     AllocationPolicy,

@@ -27,8 +27,8 @@ from ...core.outcome import Outcome
 from ...core.support.time import iso
 from .execution import ApprovalRequired, ExecutionBridge
 from ...core.outcome import OutcomeLedger
-from ...core.policies.builtin.action import ActionPolicy, ActionPolicyRequest
-from ...core.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from ...core.engines.policies.builtin.action import ActionPolicy, ActionPolicyRequest
+from ...core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .state import ExperienceState
 
 IdFactory = Callable[[str], str]

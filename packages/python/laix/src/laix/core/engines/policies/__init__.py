@@ -6,7 +6,7 @@ the packs import ``decisions``; lazy loading keeps that cycle out of import time
 
 from __future__ import annotations
 
-from ..support.errors import PolicyError
+from ...support.errors import PolicyError
 from .builtin.action import ACTION_POLICY_VERSION, ActionPolicy, ActionPolicyConfig, ActionPolicyRequest, decide_action
 from .policy import Policy
 from .registry import PolicyRegistry

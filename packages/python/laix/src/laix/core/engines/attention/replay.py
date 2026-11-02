@@ -12,8 +12,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from ..support.verbs import VERBS
-from ..decisions import Intent
+from ...support.verbs import VERBS
+from ...decisions import Intent
 from .model.context import Context
 from .model.feedback import Feedback
 from .labels import FEEDBACK_STATES, SEVERITY_RANK

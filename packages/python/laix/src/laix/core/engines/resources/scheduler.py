@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from typing import Any, Iterable
 
-from ..support.values import clamp
+from ...support.values import clamp
 from .budget import Budget
 from .plan import ResourcePlan
 from .sensing_option import SensingOption

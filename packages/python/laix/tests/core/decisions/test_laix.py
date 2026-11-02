@@ -24,8 +24,8 @@ from laix.core.decisions import (
 from laix.core.support.time import iso, utcnow
 from laix.core.decisions import Decision
 from laix.appkit.runtime import ApprovalRequired, ExecutionBridge
-from laix.core.policies import ActionPolicy, ActionPolicyConfig, ActionPolicyRequest
-from laix.core.resources import Budget, ResourceScheduler, SensingOption
+from laix.core.engines.policies import ActionPolicy, ActionPolicyConfig, ActionPolicyRequest
+from laix.core.engines.resources import Budget, ResourceScheduler, SensingOption
 from laix.appkit.runtime import DecisionRuntime
 from laix.core.schema import SCHEMA_PATH, build_schema, check, dumps_schema
 from laix.appkit.runtime import ExperienceState

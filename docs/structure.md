@@ -35,31 +35,17 @@ packages/python/laix/src/laix/
 ├── core/
 │   ├── __init__.py          core surface
 │   ├── decisions/
-│   │   ├── request/         request.py envelope; payload records
-│   │   ├── answer/          decision.py; payload: evidence ref, intent, score breakdown
-│   │   ├── trail/       execution receipt and trace
+│   │   ├── request/         decision_request.py envelope; payload records
+│   │   ├── response/        decision.py; payload: evidence ref, intent, score breakdown
+│   │   ├── trail/           execution receipt and trace
 │   │   └── normalise.py     coerce and from_attention
-│   ├── policies/
-│   │   ├── builtin/action/  version, config, request and policy
-│   │   ├── packs/           eight packs and the learned bandit
-│   │   ├── policy.py        Policy protocol
-│   │   ├── registry.py      PolicyRegistry
-│   │   └── _support.py      shared pack helpers
-│   ├── attention/
-│   │   ├── model/           signal, context, feedback, decision, outcome
-│   │   ├── ports/           clock, sink, recorder, defaults
-│   │   ├── vectors/         attention.v1.json, bench.v1.json, schema.json
-│   │   ├── decide.py        decide_one and decide_attention
-│   │   ├── gates.py         gate order and feedback suppression
-│   │   ├── score.py         score, cost of waiting, undo hint
-│   │   ├── timing.py        quiet hours and windows
-│   │   ├── replay.py        replay, validate and benchmark
-│   │   ├── labels.py        outcome labels
-│   │   └── outcome_log.py   bounded outcome log
+│   ├── engines/
+│   │   ├── policies/        builtin action, packs, protocol, registry
+│   │   ├── attention/       model, ports, vectors, decide, gates, score, replay
+│   │   └── resources/       budget, sensing option, plan, scheduler
 │   ├── outcome/             record, ledger, store, arm, bandit, rewards
 │   ├── evaluation/          case, row, report, compare
 │   ├── perception/          detection, detector, event, frame
-│   ├── resources/           budget, sensing option, plan, scheduler
 │   ├── schema/              build, check, records and laix-v1.schema.json
 │   └── support/             time, ids, values, serialize, errors, verbs, version
 └── appkit/

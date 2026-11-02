@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import asdict, replace
 from typing import Any
 
-from ..core import attention
+from ..core.engines import attention
 from ..core.support.version import SCHEMA_VERSION
 from ..core.decisions import (
     ScoreBreakdown,
@@ -21,8 +21,8 @@ from ..core.decisions import (
     from_attention,
 )
 from .delivery import DeliveryPort, DeliveryReceipt
-from ..core.policies import Policy, PolicyRegistry
-from ..core.policies.builtin.action import ACTION_POLICY_VERSION
+from ..core.engines.policies import Policy, PolicyRegistry
+from ..core.engines.policies.builtin.action import ACTION_POLICY_VERSION
 from .runtime import DecisionRuntime
 from .runtime.execution import ExecutionBridge
 

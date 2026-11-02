@@ -42,26 +42,26 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/schema/` | `RECORDS`, `RECORD_NAMES`, schema generation, validation and `laix-v1.schema.json` |
 | `core/support/` | time, ids, values, serialization, errors, verb and version helpers |
 | `appkit/layer.py` | the public `Layer` orchestrator |
-| `core/policies/builtin/action/` | built-in action-selection policy |
-| `core/policies/packs/active_perception.py` | packaged `observe` policy |
-| `core/policies/packs/safety.py` | risk-limited action policy |
-| `core/policies/packs/replanning.py` | feasible-plan selection policy |
-| `core/policies/packs/allocation.py` | budgeted allocation policy |
-| `core/policies/packs/negotiation.py` | accept, counter or escalate policy |
-| `core/policies/packs/preference.py` | preference-question selection policy |
-| `core/policies/packs/verification.py` | outcome confirmation policy |
-| `core/policies/packs/escalation.py` | hand-over policy |
-| `core/policies/packs/bandit.py` | learned bandit policy |
-| `core/policies/policy.py`, `core/policies/registry.py` | policy plugin protocol and registry |
-| `core/attention/model/`, `core/attention/ports/`, `core/attention/vectors/` | attention records, ports and test vectors |
-| `core/attention/decide.py`, `timing.py`, `replay.py`, `labels.py`, `outcome_log.py` | attention policy, gates, quiet hours, replay and labels |
+| `core/engines/policies/builtin/action/` | built-in action-selection policy |
+| `core/engines/policies/packs/active_perception.py` | packaged `observe` policy |
+| `core/engines/policies/packs/safety.py` | risk-limited action policy |
+| `core/engines/policies/packs/replanning.py` | feasible-plan selection policy |
+| `core/engines/policies/packs/allocation.py` | budgeted allocation policy |
+| `core/engines/policies/packs/negotiation.py` | accept, counter or escalate policy |
+| `core/engines/policies/packs/preference.py` | preference-question selection policy |
+| `core/engines/policies/packs/verification.py` | outcome confirmation policy |
+| `core/engines/policies/packs/escalation.py` | hand-over policy |
+| `core/engines/policies/packs/bandit.py` | learned bandit policy |
+| `core/engines/policies/policy.py`, `core/engines/policies/registry.py` | policy plugin protocol and registry |
+| `core/engines/attention/model/`, `core/engines/attention/ports/`, `core/engines/attention/vectors/` | attention records, ports and test vectors |
+| `core/engines/attention/decide.py`, `timing.py`, `replay.py`, `labels.py`, `outcome_log.py` | attention policy, gates, quiet hours, replay and labels |
 | `appkit/runtime/decision_runtime.py` | the action runtime |
 | `appkit/runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
 | `core/perception/` | detector, detection and frame records |
 | `appkit/live_context/` | host-driven detector loop and function-backed detector |
 | `appkit/runtime/state.py` | experience state: goals, phase, beliefs, decay, expiry |
 | `appkit/runtime/state_store.py`, `in_memory_state_store.py` | state store contract and in-memory store |
-| `core/resources/` | cheap/deep call admission under budget |
+| `core/engines/resources/` | cheap/deep call admission under budget |
 | `appkit/platform/` | south platform interface, records and in-memory platform |
 | `core/outcome/` | directed metric ledger, outcome store protocol and UCB learner |
 | `appkit/audit/decision_record.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |

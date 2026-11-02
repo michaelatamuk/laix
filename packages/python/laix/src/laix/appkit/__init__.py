@@ -34,7 +34,7 @@ from .audit.proposal import (
     undo as undo_proposal,
 )
 from ..core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
-from ..core.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from ..core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .live_context import CallableDetector, LiveContext
 from .runtime import (
     ApprovalRequired,

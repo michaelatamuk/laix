@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from ..decisions import ScoreBreakdown
+from ...decisions import ScoreBreakdown
 from .model.context import Context
 from .model.signal import Signal
 from .timing import hours_until

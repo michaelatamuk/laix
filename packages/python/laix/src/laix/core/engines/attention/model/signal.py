@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ...decisions import Intent
+from ....decisions import Intent
 
 
 @dataclass(frozen=True, slots=True)

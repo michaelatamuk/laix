@@ -33,8 +33,9 @@ from .core.support.time import iso, parse_iso, utcnow
 from .core.support.values import confidence_band
 from .core.support.verbs import VERBS
 from .core.support.version import SCHEMA_VERSION
-from .core import attention, evaluation
-from .core.attention import AttentionDecision, AttentionOutcome, Context, Feedback, Signal, decide_attention
+from .core import evaluation
+from .core.engines import attention
+from .core.engines.attention import AttentionDecision, AttentionOutcome, Context, Feedback, Signal, decide_attention
 from .appkit.delivery import DeliveryPort, DeliveryReceipt, NullDelivery
 from .appkit.layer import Layer
 from .core.evaluation import Case, Report, Row
@@ -51,7 +52,7 @@ from .appkit.platform import (
     Platform,
     SkillCall,
 )
-from .core.policies import (
+from .core.engines.policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
     BanditPolicy,
@@ -91,7 +92,7 @@ from .appkit.runtime import (
     UnknownAction,
 )
 from .core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
-from .core.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from .core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 
 __all__ = [
     "ActionOption",

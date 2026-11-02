@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Iterable
 
 from ...core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
-from ...core.resources import Budget, ResourceScheduler, SensingOption
+from ...core.engines.resources import Budget, ResourceScheduler, SensingOption
 from ...core.support.values import clamp
 
 
