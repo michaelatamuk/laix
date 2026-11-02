@@ -42,7 +42,7 @@ PPMA Epistemic Core / Commander
   └── bounded task
         │  builds a DecisionRequest
         ▼
-      laix.core decide()
+      laix decide()
         │  returns a task Decision
         ▼
       PPMA
@@ -118,14 +118,17 @@ A host without its own activation core asks LAIX directly and acts on the answer
 host
   │  builds a DecisionRequest for one bounded task
   ▼
-laix.core decide()
+laix decide()
   │  returns a Decision
   ▼
 host
-  │  acts, then reports the outcome
+  │  acts
+  │  records the outcome
   ▼
-laix.core
+host state
 ```
+
+`decide` is stateless between calls. The outcome belongs to the host: the host records it, and its next request can carry what it learned. When the host uses LAIX's outcome learning, it passes the outcome to that learner explicitly; `decide` itself does not receive it.
 
 The host may use `laix.appkit` for execution, records and delivery, or keep those in the host.
 
@@ -184,7 +187,7 @@ PPMA keeps the domain nouns. LAIX keeps the generic vocabulary.
 
 | Role | What it owns |
 |---|---|
-| **LAIX core** (`laix.core`) | The decision contract, the task policies and the engines that produce a task decision. Deterministic, standard-library only; host state stays with the host. |
+| **LAIX core** (`laix.core`) | The decision contract, the task policies and the engines that produce a task decision. Stateless, standard-library only; host state stays with the host. |
 | **LAIX app kit** (`laix.appkit`) | The optional integration around a core decision: `Layer`, runtime, execution, records, delivery and platform. |
 | **Host** | The product: memory, ingestion, connectors, orchestration, proactivity, permissions, missions, app policy, calibration, commit, execution and UI. |
 
