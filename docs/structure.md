@@ -1,7 +1,7 @@
 # Repository structure
 
 This page maps files. Concepts are defined in [architecture](architecture.md),
-[reading a decision](core/01-decisions.md) and [records](core/02-records.md).
+[the Decision response](core/01-decisions.md) and [records](core/02-records.md).
 
 ```text
 laix/

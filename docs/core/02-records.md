@@ -5,6 +5,9 @@
 A record is a named data shape. It says which fields exist, what type they have and what values are
 allowed. LAIX uses records for requests, decisions, outcomes and the lifecycle around them.
 
+The Decision response itself is documented in [The Decision response](01-decisions.md). This page
+covers the other core records, the `DecisionRecord` lifecycle and the schema.
+
 | Word | Meaning |
 |---|---|
 | **Record** | One data object, such as a decision or an outcome. |
@@ -33,14 +36,10 @@ Two versions travel with a decision, and they mean different things:
 | `ActionOption` | id, verb, name, benefit, cost, risk, reversibility and approval |
 | `Situation` | observations, beliefs, goals, constraints, phase, horizon and attributes |
 
-### Decision records
+### Response records
 
-| Record | Carries |
-|---|---|
-| `Decision` | verb, chosen option, reason, confidence, alternatives, approval and ids |
-| `EvidenceRef` | id, kind, quote, source and confidence |
-| `Intent` | capability and args |
-| `ScoreBreakdown` | severity, due, confidence, interruption, learned and total |
+`Decision`, `EvidenceRef`, `Intent` and `ScoreBreakdown` are documented in
+[The Decision response](01-decisions.md).
 
 ### Outcome and execution records
 
@@ -52,9 +51,9 @@ Two versions travel with a decision, and they mean different things:
 
 Every core record carries `schema_version`.
 
-## Decision record lifecycle
+## DecisionRecord lifecycle
 
-The core `Decision` is immutable. The app kit wraps it in a `DecisionRecord`, with `Approval`,
+The core Decision response is immutable. The app kit wraps it in a `DecisionRecord`, with `Approval`,
 `Undo` and `AuditEvent`, for approval, execution and undo.
 
 ```text
@@ -111,7 +110,7 @@ The seven verbs are part of the contract: `wait`, `observe`, `guide`, `ask`, `ac
 | File | Contents |
 |---|---|
 | `packages/python/laix/src/laix/core/schema/laix-v1.schema.json` | generated schema for all core records, including `Decision` |
-| `packages/contracts/decision-record.v1.schema.json` | decision record shape |
+| `packages/contracts/decision-record.v1.schema.json` | `DecisionRecord` shape |
 | `packages/contracts/attention.v1.json` | attention test cases |
 | `packages/contracts/attention-bench.v1.json` | attention outcome cases |
 

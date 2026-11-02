@@ -1,12 +1,13 @@
-# Reading a decision
+# The Decision response
 
-A decision is LAIX’s answer for one bounded task:
+The Decision response is LAIX’s answer for one bounded task:
 
 - one verb — what the task should do next;
 - one reason — why that move;
 - optional execution details — the chosen option and intent the app can run.
 
-Everything else on this page explains that answer.
+Everything else on this page explains that response. Its class is `Decision`; it lives under
+`core/decisions/response/`.
 
 ## The terms used here
 
@@ -23,7 +24,7 @@ Everything else on this page explains that answer.
 
 | Term | Meaning |
 |---|---|
-| **Decision** | What LAIX sends back: one verb, a reason, and optional execution details. |
+| **Decision response** (`Decision`) | What LAIX sends back: one verb, a reason, and optional execution details. |
 | **Verb** | The word that says what to do next. |
 | **Reason code** | A short stable label for the rule that fired. |
 | **Chosen option id** (`action_id`) | The id of the chosen option, if there is one. |
@@ -74,7 +75,7 @@ guide worth_surfacing 84.0
 | `deliver` | `true` | Show it now. |
 | `record` | `true` | Keep it in history. |
 
-## The decision fields
+## The response fields
 
 | Field | Meaning |
 |---|---|
@@ -130,7 +131,7 @@ A notification is a `guide` decision plus an app delivery channel. Approval is t
 
 **Approval.** A payment returns `act policy_rule option-pay` with `requires_approval = true`.
 
-## Decision basis
+## Response basis
 
 `decision.basis()` returns portable evidence rows:
 

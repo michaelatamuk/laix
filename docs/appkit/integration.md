@@ -118,7 +118,7 @@ const [decision] = new Layer().decide({
 | `verify` | Check an earlier step. |
 | `escalate` | Hand over to someone else. |
 
-Full fields: [reading a decision](../core/01-decisions.md).
+Full fields: [the Decision response](../core/01-decisions.md).
 
 ## Host confidence
 

@@ -5,7 +5,7 @@ English, no code. Then read [Host integration](host-integration.md) for the six
 things a product team checks first.
 
 For the design: [architecture](architecture.md), then the core pages in numeric order,
-starting with [reading a decision](core/01-decisions.md) and [records](core/02-records.md).
+starting with [the Decision response](core/01-decisions.md) and [records](core/02-records.md).
 
 The split follows the code:
 
@@ -29,7 +29,7 @@ The split follows the code:
 
 | Page | Covers |
 |---|---|
-| [core/01-decisions.md](core/01-decisions.md) | verbs, fields and examples |
+| [core/01-decisions.md](core/01-decisions.md) | the Decision response: verbs, fields and examples |
 | [core/02-records.md](core/02-records.md) | record shapes and the `0.8.0` version |
 | [core/03-attention.md](core/03-attention.md) | task-level attention and its scope |
 | [core/04-policy-packs.md](core/04-policy-packs.md) | the eight packaged policies |
