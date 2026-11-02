@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from .errors import PolicyError
-from .ids import new_id, new_receipt_id
+from .ids import new_id, new_execution_receipt_id
 from .serialize import to_primitive, to_string_tuple
 from .time import iso, parse_iso, utcnow
 from .values import clamp, confidence_band
@@ -18,7 +18,7 @@ __all__ = [
     "confidence_band",
     "iso",
     "new_id",
-    "new_receipt_id",
+    "new_execution_receipt_id",
     "parse_iso",
     "to_primitive",
     "to_string_tuple",

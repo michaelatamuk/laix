@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from ..decisions import Breakdown
+from ..decisions import ScoreBreakdown
 from .model.context import Context
 from .model.signal import Signal
 from .timing import hours_until
@@ -34,14 +34,14 @@ def due_points(now: datetime, due: str | None) -> float:
     return 0.0
 
 
-def score(signal: Signal, context: Context) -> Breakdown:
+def score(signal: Signal, context: Context) -> ScoreBreakdown:
     severity = SEVERITY_POINTS.get(signal.severity, 5.0)
     due = due_points(context.now, signal.due)
     confidence = max(0.0, min(1.0, signal.confidence)) * 20.0
     interruption = -max(0.0, min(1.0, signal.interruption_cost)) * 20.0
     learned = float(context.learned.get(signal.kind, 0.0))
     total = severity + due + confidence + interruption + learned
-    return Breakdown(severity, due, confidence, interruption, learned, total)
+    return ScoreBreakdown(severity, due, confidence, interruption, learned, total)
 
 
 def cost_of_waiting(signal: Signal, context: Context) -> float:

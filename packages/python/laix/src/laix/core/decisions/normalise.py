@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any, Iterable
 
 from ..support.errors import PolicyError
-from .answer.breakdown import Breakdown
+from .answer.score_breakdown import ScoreBreakdown
 from .answer.decision import Decision
 from .answer.evidence_ref import EvidenceRef
 from .answer.intent import Intent
@@ -35,13 +35,13 @@ def _intent(value: Any) -> Intent | None:
     return Intent(str(getattr(value, "capability", "")), dict(getattr(value, "args", {}) or {}))
 
 
-def _breakdown(value: Any) -> Breakdown | None:
+def _breakdown(value: Any) -> ScoreBreakdown | None:
     if value is None:
         return None
-    if isinstance(value, Breakdown):
+    if isinstance(value, ScoreBreakdown):
         return value
     data = value if isinstance(value, dict) else getattr(value, "as_dict", lambda: {})()
-    return Breakdown(
+    return ScoreBreakdown(
         severity=float(data.get("severity", 0.0)),
         due=float(data.get("due", 0.0)),
         confidence=float(data.get("confidence", 0.0)),

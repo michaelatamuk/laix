@@ -11,7 +11,7 @@ from ..support.verbs import VERBS
 from ..support.version import SCHEMA_VERSION
 from .request.action_option import ActionOption
 from .request.belief import Belief
-from .answer.breakdown import Breakdown
+from .answer.score_breakdown import ScoreBreakdown
 from .request.constraint import CONSTRAINT_KINDS, Constraint
 from .normalise import coerce, from_attention
 from .answer.decision import Decision
@@ -20,14 +20,14 @@ from .answer.evidence_ref import EvidenceRef
 from .request.goal import Goal
 from .answer.intent import Intent
 from .request.observation import Observation
-from .lifecycle.receipt import RECEIPT_STATUSES, Receipt
+from .lifecycle.execution_receipt import EXECUTION_RECEIPT_STATUSES, ExecutionReceipt
 from .request.situation import HORIZONS, PHASES, Situation
 from .lifecycle.trace import Trace
 
 __all__ = [
     "ActionOption",
     "Belief",
-    "Breakdown",
+    "ScoreBreakdown",
     "CONSTRAINT_KINDS",
     "Constraint",
     "Decision",
@@ -38,8 +38,8 @@ __all__ = [
     "Intent",
     "Observation",
     "PHASES",
-    "RECEIPT_STATUSES",
-    "Receipt",
+    "EXECUTION_RECEIPT_STATUSES",
+    "ExecutionReceipt",
     "SCHEMA_VERSION",
     "Situation",
     "Trace",

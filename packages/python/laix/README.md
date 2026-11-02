@@ -36,8 +36,8 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | Piece | Role |
 |---|---|
 | `core/decisions/request/` | situation, observation, belief, goal, constraint, action option and request |
-| `core/decisions/answer/` | decision, evidence ref, intent, escalation and breakdown |
-| `core/decisions/lifecycle/` | receipt and trace |
+| `core/decisions/answer/` | decision, evidence ref, intent and score breakdown |
+| `core/decisions/lifecycle/` | execution receipt and trace |
 | `core/decisions/normalise.py` | `coerce` and `from_attention` |
 | `core/schema/` | `RECORDS`, `RECORD_NAMES`, schema generation, validation and `laix-v1.schema.json` |
 | `core/support/` | time, ids, values, serialization, errors, verb and version helpers |

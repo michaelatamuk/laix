@@ -18,7 +18,7 @@ from ...core.decisions import (
     ActionOption,
     Decision,
     Observation,
-    Receipt,
+    ExecutionReceipt,
     Situation,
     Trace,
 )
@@ -113,7 +113,7 @@ class DecisionRuntime:
         approver: str | None = None,
         context: dict[str, Any] | None = None,
         action: ActionOption | None = None,
-    ) -> Receipt:
+    ) -> ExecutionReceipt:
         resolved = action or (self._actions.get(decision.action_id) if decision.action_id else None)
         try:
             receipt = self.bridge.execute(decision, action=resolved, actor=actor, approver=approver, context=context)
@@ -128,14 +128,14 @@ class DecisionRuntime:
         )
         return receipt
 
-    def cancel(self, receipt_id: str, *, actor: str, reason: str = "") -> Receipt:
+    def cancel(self, receipt_id: str, *, actor: str, reason: str = "") -> ExecutionReceipt:
         receipt = self.bridge.cancel(receipt_id, actor=actor, reason=reason)
         decision = self._decisions.get(receipt.decision_id)
         if decision:
             self._append_trace(decision, "execution.cancelled", {"receipt": receipt.id, "actor": actor, "reason": reason})
         return receipt
 
-    def undo(self, receipt_id: str, *, actor: str) -> Receipt:
+    def undo(self, receipt_id: str, *, actor: str) -> ExecutionReceipt:
         receipt = self.bridge.undo(receipt_id, actor=actor)
         decision = self._decisions.get(receipt.decision_id)
         if decision:
@@ -202,7 +202,7 @@ class DecisionRuntime:
             return None
         return self._actions.get(decision.action_id)
 
-    def receipts(self) -> list[Receipt]:
+    def receipts(self) -> list[ExecutionReceipt]:
         return [self.bridge.get(receipt_id) for receipt_id in self._receipts]
 
     def stats(self) -> dict[str, Any]:

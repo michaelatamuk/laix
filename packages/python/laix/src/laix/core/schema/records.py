@@ -14,7 +14,7 @@ from ..decisions import (
     Decision,
     Goal,
     Observation,
-    Receipt,
+    ExecutionReceipt,
     Situation,
     Trace,
 )
@@ -28,7 +28,7 @@ RECORDS = (
     ActionOption,
     Situation,
     Outcome,
-    Receipt,
+    ExecutionReceipt,
     Trace,
     Decision,
 )

@@ -69,7 +69,7 @@ def test_package_exposes_versioned_contracts() -> None:
         "Situation",
         "Decision",
         "Outcome",
-        "Receipt",
+        "ExecutionReceipt",
         "Trace",
     }
     assert laix.VERBS == ("wait", "observe", "guide", "ask", "act", "verify", "escalate")

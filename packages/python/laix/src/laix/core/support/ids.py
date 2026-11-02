@@ -9,8 +9,8 @@ def new_id(prefix: str) -> str:
     return f"{prefix}-{uuid.uuid4().hex[:10].upper()}"
 
 
-def new_receipt_id() -> str:
+def new_execution_receipt_id() -> str:
     return new_id("RCT")
 
 
-__all__ = ["new_id", "new_receipt_id"]
+__all__ = ["new_id", "new_execution_receipt_id"]

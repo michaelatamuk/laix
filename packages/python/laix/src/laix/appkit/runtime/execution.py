@@ -12,8 +12,8 @@ from __future__ import annotations
 
 from typing import Any, Callable
 
-from ...core.decisions import ActionOption, Decision, Receipt
-from ...core.support.ids import new_receipt_id
+from ...core.decisions import ActionOption, Decision, ExecutionReceipt
+from ...core.support.ids import new_execution_receipt_id
 from .approval_required import ApprovalRequired
 
 Handler = Callable[[ActionOption, dict[str, Any]], dict[str, Any]]
@@ -23,7 +23,7 @@ class ExecutionBridge:
     def __init__(self, *, handlers: dict[str, Handler] | None = None, undo_handlers: dict[str, Handler] | None = None) -> None:
         self.handlers: dict[str, Handler] = dict(handlers or {})
         self.undo_handlers: dict[str, Handler] = dict(undo_handlers or {})
-        self.receipts: dict[str, Receipt] = {}
+        self.receipts: dict[str, ExecutionReceipt] = {}
 
     def register(self, name: str, handler: Handler, *, undo: Handler | None = None) -> None:
         self.handlers[name] = handler
@@ -41,11 +41,11 @@ class ExecutionBridge:
         actor: str,
         approver: str | None = None,
         context: dict[str, Any] | None = None,
-    ) -> Receipt:
+    ) -> ExecutionReceipt:
         if action is None:
             return self._store(
-                Receipt(
-                    id=new_receipt_id(),
+                ExecutionReceipt(
+                    id=new_execution_receipt_id(),
                     decision_id=decision.decision_id,
                     action_name="",
                     status="refused",
@@ -57,8 +57,8 @@ class ExecutionBridge:
             raise ApprovalRequired(f"{action.name} requires human approval")
         if not self.can_handle(action.name):
             return self._store(
-                Receipt(
-                    id=new_receipt_id(),
+                ExecutionReceipt(
+                    id=new_execution_receipt_id(),
                     decision_id=decision.decision_id,
                     action_name=action.name,
                     status="failed",
@@ -71,8 +71,8 @@ class ExecutionBridge:
             detail = self.handlers[action.name](action, dict(context or {})) or {}
         except Exception as exc:  # noqa: BLE001 - a failed action is data, not a crash
             return self._store(
-                Receipt(
-                    id=new_receipt_id(),
+                ExecutionReceipt(
+                    id=new_execution_receipt_id(),
                     decision_id=decision.decision_id,
                     action_name=action.name,
                     status="failed",
@@ -82,8 +82,8 @@ class ExecutionBridge:
                 )
             )
         return self._store(
-            Receipt(
-                id=new_receipt_id(),
+            ExecutionReceipt(
+                id=new_execution_receipt_id(),
                 decision_id=decision.decision_id,
                 action_name=action.name,
                 status="executed",
@@ -93,10 +93,10 @@ class ExecutionBridge:
             )
         )
 
-    def refuse(self, decision: Decision, *, action: ActionOption | None, actor: str, reason: str) -> Receipt:
+    def refuse(self, decision: Decision, *, action: ActionOption | None, actor: str, reason: str) -> ExecutionReceipt:
         return self._store(
-            Receipt(
-                id=new_receipt_id(),
+            ExecutionReceipt(
+                id=new_execution_receipt_id(),
                 decision_id=decision.decision_id,
                 action_name=action.name if action else "",
                 status="refused",
@@ -105,11 +105,11 @@ class ExecutionBridge:
             )
         )
 
-    def cancel(self, receipt_id: str, *, actor: str, reason: str = "") -> Receipt:
+    def cancel(self, receipt_id: str, *, actor: str, reason: str = "") -> ExecutionReceipt:
         receipt = self.get(receipt_id)
         if receipt.status not in {"pending", "approved"}:
             raise ValueError(f"cannot cancel a receipt that is {receipt.status}")
-        cancelled = Receipt(
+        cancelled = ExecutionReceipt(
             id=receipt.id,
             decision_id=receipt.decision_id,
             action_name=receipt.action_name,
@@ -120,7 +120,7 @@ class ExecutionBridge:
         )
         return self._store(cancelled)
 
-    def undo(self, receipt_id: str, *, actor: str) -> Receipt:
+    def undo(self, receipt_id: str, *, actor: str) -> ExecutionReceipt:
         receipt = self.get(receipt_id)
         if receipt.status != "executed":
             raise ValueError(f"cannot undo a receipt that is {receipt.status}")
@@ -131,7 +131,7 @@ class ExecutionBridge:
             detail = handler(ActionOption(id=receipt.id, verb="act", name=receipt.action_name), {"receipt": receipt.to_dict()}) or {}
         except Exception as exc:  # noqa: BLE001
             raise ValueError(f"undo failed: {type(exc).__name__}: {exc}") from exc
-        undone = Receipt(
+        undone = ExecutionReceipt(
             id=receipt.id,
             decision_id=receipt.decision_id,
             action_name=receipt.action_name,
@@ -143,12 +143,12 @@ class ExecutionBridge:
         )
         return self._store(undone)
 
-    def get(self, receipt_id: str) -> Receipt:
+    def get(self, receipt_id: str) -> ExecutionReceipt:
         receipt = self.receipts.get(receipt_id)
         if receipt is None:
             raise KeyError(receipt_id)
         return receipt
 
-    def _store(self, receipt: Receipt) -> Receipt:
+    def _store(self, receipt: ExecutionReceipt) -> ExecutionReceipt:
         self.receipts[receipt.id] = receipt
         return receipt

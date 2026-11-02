@@ -12,7 +12,7 @@ from typing import Any
 from ..core import attention
 from ..core.support.version import SCHEMA_VERSION
 from ..core.decisions import (
-    Breakdown,
+    ScoreBreakdown,
     Decision,
     DecisionRequest,
     EvidenceRef,
@@ -140,7 +140,7 @@ class Layer:
 
 
 __all__ = [
-    "Breakdown",
+    "ScoreBreakdown",
     "Decision",
     "DecisionRequest",
     "EvidenceRef",

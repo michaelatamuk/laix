@@ -656,9 +656,9 @@
         "label"
       ]
     },
-    "Receipt": {
+    "ExecutionReceipt": {
       "type": "object",
-      "title": "Receipt",
+      "title": "ExecutionReceipt",
       "additionalProperties": false,
       "properties": {
         "id": {

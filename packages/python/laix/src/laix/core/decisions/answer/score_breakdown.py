@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True, slots=True)
-class Breakdown:
+class ScoreBreakdown:
     severity: float = 0.0
     due: float = 0.0
     confidence: float = 0.0
@@ -25,4 +25,4 @@ class Breakdown:
         }
 
 
-__all__ = ["Breakdown"]
+__all__ = ["ScoreBreakdown"]

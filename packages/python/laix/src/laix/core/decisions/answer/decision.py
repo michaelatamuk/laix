@@ -8,7 +8,7 @@ from typing import Any
 from ...support.values import clamp
 from ...support.verbs import VERBS
 from ...support.version import SCHEMA_VERSION
-from .breakdown import Breakdown
+from .score_breakdown import ScoreBreakdown
 from .evidence_ref import EvidenceRef
 from .intent import Intent
 
@@ -28,7 +28,7 @@ class Decision:
     evidence: tuple[EvidenceRef, ...] = ()
     requires_approval: bool = False
     score: float | None = None
-    breakdown: Breakdown | None = None
+    breakdown: ScoreBreakdown | None = None
     intent: Intent | None = None
     cost_of_waiting: float = 0.0
     reversible: bool = False

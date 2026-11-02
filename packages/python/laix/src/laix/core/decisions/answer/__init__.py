@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .breakdown import Breakdown
+from .score_breakdown import ScoreBreakdown
 from .decision import Decision
 from .evidence_ref import EvidenceRef
 from .intent import Intent

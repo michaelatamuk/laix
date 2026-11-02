@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .receipt import RECEIPT_STATUSES, Receipt
+from .execution_receipt import EXECUTION_RECEIPT_STATUSES, ExecutionReceipt
 from .trace import Trace
 
-__all__ = ["RECEIPT_STATUSES", "Receipt", "Trace"]
+__all__ = ["EXECUTION_RECEIPT_STATUSES", "ExecutionReceipt", "Trace"]

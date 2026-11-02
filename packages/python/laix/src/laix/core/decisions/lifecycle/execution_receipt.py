@@ -9,7 +9,7 @@ from ...support.serialize import to_primitive
 from ...support.time import iso
 from ...support.version import SCHEMA_VERSION
 
-RECEIPT_STATUSES: tuple[str, ...] = (
+EXECUTION_RECEIPT_STATUSES: tuple[str, ...] = (
     "pending",
     "approved",
     "executed",
@@ -21,7 +21,7 @@ RECEIPT_STATUSES: tuple[str, ...] = (
 
 
 @dataclass(frozen=True, slots=True)
-class Receipt:
+class ExecutionReceipt:
     """Proof that an action was executed, refused, cancelled or undone."""
 
     id: str
@@ -37,11 +37,11 @@ class Receipt:
     schema_version: str = SCHEMA_VERSION
 
     def __post_init__(self) -> None:
-        if self.status not in RECEIPT_STATUSES:
+        if self.status not in EXECUTION_RECEIPT_STATUSES:
             raise ValueError(f"unknown receipt status: {self.status}")
 
     def to_dict(self) -> dict:
         return to_primitive(self)
 
 
-__all__ = ["RECEIPT_STATUSES", "Receipt"]
+__all__ = ["EXECUTION_RECEIPT_STATUSES", "ExecutionReceipt"]

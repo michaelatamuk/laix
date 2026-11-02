@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ...decisions import Breakdown, Intent
+from ...decisions import ScoreBreakdown, Intent
 
 
 @dataclass(frozen=True, slots=True)
@@ -20,7 +20,7 @@ class AttentionDecision:
     record: bool
     requires_approval: bool
     evidence_refs: tuple[str, ...]
-    breakdown: Breakdown
+    breakdown: ScoreBreakdown
     trace_id: str
     #: Carried for ``act`` and ``ask``; None otherwise.
     intent: Intent | None = None

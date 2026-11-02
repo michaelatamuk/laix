@@ -36,8 +36,8 @@ packages/python/laix/src/laix/
 │   ├── __init__.py          core surface
 │   ├── decisions/
 │   │   ├── request/         situation, observation, belief, goal, constraint, option, request
-│   │   ├── answer/          decision, evidence ref, intent, escalation, breakdown
-│   │   ├── lifecycle/       receipt and trace
+│   │   ├── answer/          decision, evidence ref, intent, score breakdown
+│   │   ├── lifecycle/       execution receipt and trace
 │   │   └── normalise.py     coerce and from_attention
 │   ├── policies/
 │   │   ├── builtin/action/  version, config, request and policy

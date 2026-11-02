@@ -9,7 +9,7 @@ network, no database, no clock of its own.
 
 from __future__ import annotations
 
-from ..decisions import Breakdown, Intent
+from ..decisions import ScoreBreakdown, Intent
 from ..support.verbs import VERBS
 from .model.decision import AttentionDecision
 from .model.outcome import AttentionOutcome
@@ -66,7 +66,7 @@ __all__ = [
     "SEVERITY_RANK",
     "UNKNOWN",
     "VERBS",
-    "Breakdown",
+    "ScoreBreakdown",
     "Clock",
     "Context",
     "AttentionDecision",

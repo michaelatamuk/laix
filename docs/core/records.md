@@ -50,7 +50,7 @@ vectors are hand-written and shared by both packages.
 | `Situation` | observations, beliefs, goals, constraints, phase, horizon |
 | `Decision` | verb, action, rationale, alternatives, approval, audit ids |
 | `Outcome` | metric, before/after, direction, attribution, label |
-| `Receipt` | action, status, actor, result, error |
+| `ExecutionReceipt` | action, status, actor, result, error |
 | `Trace` | ordered events for one decision |
 
 Every record carries `schema_version = "0.8.0"`.
