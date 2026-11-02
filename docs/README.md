@@ -11,7 +11,7 @@ The split follows the code:
 
 - **Core** — the decision layer.
 - **App kit** — optional integration.
-- **Boundaries** — which layer owns what.
+- **Boundaries** — PPMA, LAIX and other hosts.
 
 ## Understand LAIX
 
@@ -21,7 +21,7 @@ The split follows the code:
 | [host-integration.md](host-integration.md) | Where does a host call it, and what does the host keep? |
 | [architecture.md](architecture.md) | What is LAIX and how do the parts fit? |
 | [structure.md](structure.md) | Where does each file live? |
-| [boundaries.md](boundaries.md) | What belongs to core, the app kit and the host? |
+| [boundaries.md](boundaries.md) | Where does PPMA end and LAIX begin, and what belongs to core, app kit and host? |
 | [positioning.md](positioning.md) | How does LAIX relate to decision models? |
 
 ## Core

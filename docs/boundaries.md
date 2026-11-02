@@ -1,4 +1,4 @@
-# Boundaries: LAIX and the host
+# Boundaries: PPMA, LAIX and other hosts
 
 LAIX produces a decision for one bounded task. A host owns the product around it.
 
