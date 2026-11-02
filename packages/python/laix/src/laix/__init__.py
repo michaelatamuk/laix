@@ -12,6 +12,7 @@ from .core import RECORD_NAMES
 from .core.decisions import (
     ActionOption,
     Belief,
+    CONSTRAINT_KINDS,
     Constraint,
     Decision,
     DecisionRequest,
@@ -26,7 +27,6 @@ from .core.decisions import (
     Situation,
     Trace,
 )
-from .core.decisions.request.constraint import CONSTRAINT_KINDS
 from .core.outcome.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
 from .core.outcome import Outcome
 from .core.support.time import iso, parse_iso, utcnow

@@ -5,8 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from ...support.serialize import to_primitive
-from ...support.version import SCHEMA_VERSION
+from ....support.serialize import to_primitive
+from ....support.version import SCHEMA_VERSION
 
 CONSTRAINT_KINDS: tuple[str, ...] = (
     "latency",

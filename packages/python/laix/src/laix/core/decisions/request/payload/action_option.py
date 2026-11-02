@@ -5,10 +5,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from ...support.serialize import to_primitive, to_string_tuple
-from ...support.values import clamp
-from ...support.verbs import VERBS
-from ...support.version import SCHEMA_VERSION
+from ....support.serialize import to_primitive, to_string_tuple
+from ....support.values import clamp
+from ....support.verbs import VERBS
+from ....support.version import SCHEMA_VERSION
 
 
 @dataclass(frozen=True, slots=True)

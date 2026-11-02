@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ...support.serialize import to_primitive
-from ...support.values import clamp
-from ...support.version import SCHEMA_VERSION
+from ....support.serialize import to_primitive
+from ....support.values import clamp
+from ....support.version import SCHEMA_VERSION
 
 
 @dataclass(frozen=True, slots=True)

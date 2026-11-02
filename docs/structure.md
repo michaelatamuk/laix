@@ -35,7 +35,7 @@ packages/python/laix/src/laix/
 ├── core/
 │   ├── __init__.py          core surface
 │   ├── decisions/
-│   │   ├── request/         situation, observation, belief, goal, constraint, option, request
+│   │   ├── request/         request.py envelope; payload records
 │   │   ├── answer/          decision, evidence ref, intent, score breakdown
 │   │   ├── lifecycle/       execution receipt and trace
 │   │   └── normalise.py     coerce and from_attention

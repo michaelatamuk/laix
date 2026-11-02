@@ -5,8 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from .action_option import ActionOption
-from .situation import Situation
+from .payload.action_option import ActionOption
+from .payload.situation import Situation
 
 
 @dataclass(frozen=True, slots=True)

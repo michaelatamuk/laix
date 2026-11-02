@@ -5,10 +5,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime
 
-from ...support.serialize import to_primitive, to_string_tuple
-from ...support.time import iso, parse_iso, utcnow
-from ...support.values import clamp, confidence_band
-from ...support.version import SCHEMA_VERSION
+from ....support.serialize import to_primitive, to_string_tuple
+from ....support.time import iso, parse_iso, utcnow
+from ....support.values import clamp, confidence_band
+from ....support.version import SCHEMA_VERSION
 
 
 @dataclass(frozen=True, slots=True)
