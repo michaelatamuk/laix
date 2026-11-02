@@ -8,7 +8,7 @@
  *   node --experimental-strip-types scripts/conformance.mjs
  */
 import { readFileSync, writeFileSync } from "node:fs";
-import { decide } from "../src/index.ts";
+import { decideAttention } from "../src/index.ts";
 
 const source = new URL("../../../contracts/attention.v1.json", import.meta.url);
 const fixture = JSON.parse(readFileSync(source, "utf8"));
@@ -17,7 +17,7 @@ const rows = [];
 let pass = 0;
 
 for (const testCase of fixture.cases) {
-  const decisions = decide(testCase.context, testCase.signals);
+  const decisions = decideAttention(testCase.context, testCase.signals);
   const byId = new Map(decisions.map((decision) => [decision.signalId, decision]));
 
   for (const expected of testCase.expected) {
@@ -26,9 +26,9 @@ for (const testCase of fixture.cases) {
     if (!actual) {
       problems.push("missing decision");
     } else {
-      if (actual.action !== expected.action) problems.push(`action ${actual.action} != ${expected.action}`);
-      if (expected.reason !== undefined && actual.reason !== expected.reason) {
-        problems.push(`reason ${actual.reason} != ${expected.reason}`);
+      if (actual.verb !== expected.verb) problems.push(`verb ${actual.verb} != ${expected.verb}`);
+      if (expected.reason_code !== undefined && actual.reasonCode !== expected.reason_code) {
+        problems.push(`reason ${actual.reasonCode} != ${expected.reason_code}`);
       }
       if (expected.deliver !== undefined && actual.deliver !== expected.deliver) {
         problems.push(`deliver ${actual.deliver} != ${expected.deliver}`);
