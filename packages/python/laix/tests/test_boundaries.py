@@ -83,10 +83,11 @@ def test_a_core_only_host_never_loads_the_app_kit() -> None:
     script = """
 import sys
 
-import laix.core
-from laix.core import ActionOption, DecisionRequest, Situation, decide
+import laix
+from laix import ActionOption, DecisionRequest, Situation, decide
 
-assert "laix.appkit" not in sys.modules, "importing laix.core loaded laix.appkit"
+assert "laix.appkit" not in sys.modules, "importing laix loaded laix.appkit"
+assert laix.decide is laix.core.decide
 
 request = DecisionRequest(
     subject="room-1",

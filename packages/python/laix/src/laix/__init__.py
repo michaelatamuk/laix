@@ -6,6 +6,9 @@ approval, should it wait, observe, guide, ask, act, verify or escalate?*
 
 It is intentionally standard-library only.  The host application provides
 domain adapters; the decision layer never imports them.
+
+A host that only needs the answer calls ``decide(request)``.  Execution,
+records, delivery and the rest of the app kit are optional and load lazily.
 """
 
 from .core import RECORD_NAMES
@@ -61,6 +64,7 @@ from .core.engines.policies import (
 )
 from .core.sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from .core.dispatch import decide, select
 
 # The app kit is optional and is imported on first use.  A host that only needs
 # the decision core can ``import laix.core`` or ``from laix import Decision`` and
@@ -240,9 +244,11 @@ __all__ = [
     "Verb",
     "VerificationPolicy",
     "confidence_band",
+    "decide",
     "decide_action",
     "decide_attention",
     "iso",
     "parse_iso",
+    "select",
     "utcnow",
 ]
