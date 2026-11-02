@@ -51,11 +51,11 @@ examples/
 | File | Class | Output |
 |---|---|---|
 | `policies/active_perception.py` | Active perception | `observe observe_for_information look-1` |
-| `policies/safety.py` | Safety-constrained action | `act safe_action valve` |
+| `policies/safety_constrained.py` | Safety-constrained action | `act safe_action valve` |
 | `policies/replanning.py` | Replanning | `act replan plan-fast` |
 | `policies/allocation.py` | Allocation | `act allocate ['a', 'b']` |
 | `policies/negotiation.py` | Negotiation | `act counter_offer 12.5` |
-| `policies/preference.py` | Preference elicitation | `ask ask_preference q2` |
+| `policies/preference_elicitation.py` | Preference elicitation | `ask ask_preference q2` |
 | `policies/verification.py` | Verification | `verify verify_outcome api` |
 | `policies/escalation.py` | Escalation | `escalate escalate_to_target manager` |
 | `policies/bandit.py` | Outcome learning | `manual automatic 0.75` |
