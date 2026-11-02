@@ -42,7 +42,7 @@ decisions = layer.decide(
 `DecisionRequest` carries either:
 
 - `signals` and `context` for attention allocation; or
-- `situation` and `options` for action selection.
+- `situation` and `options` for action decisions.
 
 Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`, `rationale`,
 `evidence`, `intent`, `requires_approval`, `score`, `breakdown`, `cost_of_waiting`, `reversible`,
@@ -74,7 +74,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/engines/attention/input/`, `output/`, `attention.v1.json` | attention records and decision cases |
 | `core/engines/attention/gates/implementations/` | one file per gate, ordered by `rules.py` |
 | `core/engines/attention/decide.py`, `timing.py` | attention loop and quiet hours |
-| `appkit/runtime/decision_runtime.py` | the action runtime |
+| `appkit/runtime/decision_runtime.py` | the action-decision runtime |
 | `appkit/runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
 | `core/sensing/` | detector, detection and frame records |
 | `appkit/live_context/` | host-driven detector loop and function-backed detector |

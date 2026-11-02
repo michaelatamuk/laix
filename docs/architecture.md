@@ -6,7 +6,7 @@ LAIX answers one question:
 
 > Given this situation, what should the app do next?
 
-It returns a **decision**. The app runs the action.
+It returns a **decision**. The app runs the chosen option.
 
 ## Terms used in this documentation
 
@@ -15,8 +15,8 @@ It returns a **decision**. The app runs the action.
 | **Request** | A description of the situation sent to LAIX. |
 | **Signal** | One item that might need attention, such as a deadline or a risk. |
 | **Situation** | The current state: what is believed, what the goal is, and what actions exist. |
-| **Decision** | LAIX's answer: one verb, a reason, and optional action details. |
-| **Verb** | The action word in a decision: `wait`, `observe`, `guide`, `ask`, `act`, `verify` or `escalate`. |
+| **Decision** | LAIX's answer: one verb, a reason, and optional execution details. |
+| **Verb** | The word that says what to do: `wait`, `observe`, `guide`, `ask`, `act`, `verify` or `escalate`. |
 | **Policy** | A rule set with a `name` and a `decide(request)` method. It turns a request into a decision. |
 | **Adapter** | App code that translates app events into requests and decisions into app actions. |
 | **Platform** | The software below LAIX that runs skills, approvals, state and events. |
@@ -32,7 +32,7 @@ LAIX
  │  returns a decision
  ▼
 app
- │  runs the action
+ │  runs the chosen option
  ▼
 receipt / outcome
  │
@@ -81,7 +81,7 @@ adds the app-kit parts.
 
 ## The seven verbs
 
-A verb is the action word in a decision.
+A verb is the word that says what to do in a decision.
 
 | Verb | Meaning |
 |---|---|
@@ -89,8 +89,8 @@ A verb is the action word in a decision.
 | `observe` | Get more information before deciding. |
 | `guide` | Show the situation to a person and let them choose. |
 | `ask` | Ask a person or another agent for information or a decision. |
-| `act` | Run the chosen action now. |
-| `verify` | Check whether an earlier action worked. |
+| `act` | Run the chosen option now. |
+| `verify` | Check whether an earlier step worked. |
 | `escalate` | Hand the decision to a person with more authority. |
 
 A notification is a `guide` decision plus an app delivery channel. Approval is the
@@ -167,7 +167,7 @@ Selection then uses the request shape:
 
 | Request has | Engine |
 |---|---|
-| `situation` + `options` | built-in action |
+| `situation` + `options` | built-in action policy |
 | `signals` + `context` | built-in attention |
 
 To use a packaged policy, pass it to `decide` or to `Layer`, or select it with `use_policy`.
@@ -178,7 +178,7 @@ Attributes are input to the active policy.
 | # | Class | Input | Policy | Selected by |
 |---|---|---|---|---|
 | 1 | Attention | `signals` + `context` | built-in attention | request shape |
-| 2 | Action | `situation` + `options` | built-in action | request shape |
+| 2 | Action decision | `situation` + `options` | built-in action policy | request shape |
 | 3 | Active perception | `attributes` | `ActivePerceptionPolicy` | explicit policy |
 | 4 | Safety-constrained action | `attributes` | `SafetyConstrainedPolicy` | explicit policy |
 | 5 | Replanning | `attributes` | `ReplanningPolicy` | explicit policy |
@@ -193,14 +193,14 @@ request shapes LAIX understands. The other eight are ordinary policy objects tha
 from `DecisionRequest.attributes`.
 
 The split is about selection. All ten return the same decision shape. See
-[policy packs](core/policy-packs.md).
+[policy packs](core/04-policy-packs.md).
 
 ## Other parts
 
 - **Live Context** is the perception part. A detector looks at events. Cheap detectors run always;
   deep detectors run under a budget. See [live context](appkit/live-context.md).
 - **Outcome learning** uses measured outcomes to improve the next choice. See
-  [outcome learning](core/outcome-learning.md).
+  [outcome learning](core/05-outcome-learning.md).
 - **LAIX-Bench** runs the same test cases for every class. See [bench](appkit/bench.md).
 
 LAIX is a decision layer. It can host a decision model such as JEV inside a policy. See
@@ -226,6 +226,6 @@ LAIX is a decision layer. It can host a decision model such as JEV inside a poli
 | New channel | Implement `DeliveryPort` |
 
 The next step is a decision-engine core. It is tracked in
-[the engine roadmap](core/engine-roadmap.md).
+[the engine roadmap](core/07-engine-roadmap.md).
 
 Core vs app kit vs host is defined in [boundaries](boundaries.md).

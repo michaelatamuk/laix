@@ -10,7 +10,7 @@ allowed. LAIX uses records for requests, decisions, outcomes and the lifecycle a
 | **Record** | One data object, such as a decision or an outcome. |
 | **Schema** | A machine-readable description of a record. |
 | **Vector** | A fixed input and its expected output, used as a test case. |
-| **Policy version** | The label of the rule set that produced a decision. |
+| **Rule-set version** (`policy_version`) | The label of the rule set that produced a decision. |
 
 ## One version
 
@@ -20,7 +20,7 @@ Everything in this release uses the same version: **0.8.0**.
 |---|---|
 | Package | `0.8.0` |
 | Record schema | `0.8.0` |
-| Policy | `0.8.0` |
+| Rule set | `0.8.0` |
 | Attention vectors | `0.8.0` |
 
 The repository carries one current shape and one current rule set. Tags keep history. When a change
@@ -48,12 +48,24 @@ vectors are hand-written and shared by both packages.
 | `Constraint` | kind, value, hard flag, statement |
 | `ActionOption` | verb, name, benefit, cost, risk, reversibility, approval |
 | `Situation` | observations, beliefs, goals, constraints, phase, horizon |
-| `Decision` | verb, action, rationale, alternatives, approval, audit ids |
+| `Decision` | verb, chosen option, rationale, alternatives, approval, audit ids |
 | `Outcome` | metric, before/after, direction, attribution, label |
-| `ExecutionReceipt` | action, status, actor, result, error |
+| `ExecutionReceipt` | chosen option, status, actor, result, error |
 | `Trace` | ordered events for one decision |
 
 Every record carries `schema_version = "0.8.0"`.
+
+## Decision record lifecycle
+
+A decision record moves through:
+
+```text
+draft -> approved -> executed -> undone
+  |
+  +-> rejected
+```
+
+`executed True` means the record ran and its fingerprint still matches.
 
 ## JSON
 
@@ -78,15 +90,8 @@ py -m pytest tests/test_laix.py -k schema
 
 1. Change a record shape → bump the version and regenerate the schema.
 2. Change a rule or threshold → bump the version.
-3. Change an attention case or weight → bump the version.
-4. Add a decision class → add a policy with a name and version. The decision shape stays the same.
+3. Change a rule-set case or weight → bump the version.
+4. Add a decision class → add a rule set with a name and version. The decision shape stays the same.
 
 The seven verbs are part of the contract: `wait`, `observe`, `guide`, `ask`, `act`, `verify`,
 `escalate`.
-
-## Where the rules live
-
-- Action policy: `packages/python/laix/src/laix/core/policies/action.py`
-- Attention policy: `packages/python/laix/src/laix/core/attention/decide.py`
-- Policy pack inputs: [policy packs](policy-packs.md)
-- Decision fields: [reading a decision](decisions.md)

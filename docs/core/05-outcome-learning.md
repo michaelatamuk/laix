@@ -1,6 +1,6 @@
 # Outcome learning
 
-LAIX measures what happened, turns the result into a reward, and improves the next choice.
+LAIX learns from measured outcomes, turns the result into a reward, and improves the next choice.
 
 | Word | Meaning |
 |---|---|
@@ -8,6 +8,7 @@ LAIX measures what happened, turns the result into a reward, and improves the ne
 | **Reward** | A number from `0` to `1` that says how good the outcome was. |
 | **Arm** | One choice the learner can pick. |
 | **Learner** | Code that updates its choice from rewards. |
+| **Ledger** | A store of measured outcomes. |
 
 ```text
 decision -> outcome -> reward -> learner -> next decision
@@ -30,8 +31,9 @@ measures it. LAIX learns from the label.
 ## Learner
 
 ```python
-from laix import Arm, UCBBandit
+from laix import Arm, OutcomeLedger, UCBBandit
 
+ledger = OutcomeLedger()
 bandit = UCBBandit([Arm("manual"), Arm("automatic")])
 bandit.choose()          # tries an untried arm first
 bandit.update("manual", 0.0)
@@ -62,10 +64,10 @@ used = bandit.learn(
 ## Policy
 
 ```python
-from laix import BanditPolicy, Layer
+from laix import BanditPolicy, decide
 
 policy = BanditPolicy(bandit)
-decision = Layer(policy=policy).decide(request)[0]
+decision = decide(request, policy=policy)[0]
 
 policy.record("automatic", 1.0)
 policy.learn(ledger.all(), lambda decision_id: arm_by_decision[decision_id])
@@ -77,7 +79,7 @@ The policy reads arms from `DecisionRequest.attributes["arms"]` or from the band
 No arms returns `wait` with `no_arms`. All arms outside the limits returns `wait` with
 `no_arm_within_limits`.
 
-## App and layer
+## App and LAIX
 
 The app owns the metric, the measurement and the decision-to-arm map. LAIX owns the reward contract,
 the learner and the policy shape.

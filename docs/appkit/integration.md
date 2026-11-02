@@ -1,12 +1,12 @@
 # Integrating LAIX
 
-The app sends a request. LAIX returns a decision. The app performs the action.
+The app sends a request. LAIX returns a decision. The app runs the chosen option.
 
 | Word | Meaning |
 |---|---|
 | **Request** | The app's description of what is happening. |
-| **Decision** | LAIX's answer: one verb plus reasons and action details. |
-| **Verb** | The action word: `wait`, `observe`, `guide`, `ask`, `act`, `verify` or `escalate`. |
+| **Decision** | LAIX's answer: one verb plus reasons and execution details. |
+| **Verb** | The word that says what to do: `wait`, `observe`, `guide`, `ask`, `act`, `verify` or `escalate`. |
 | **Adapter** | App code that builds requests and turns decisions into app actions. |
 
 ## Install
@@ -40,7 +40,7 @@ The release page also has a packed `laix-0.8.0.tgz`.
 The adapter does two things:
 
 1. Turn the app's event into a `DecisionRequest`.
-2. Turn the returned `Decision` into an app action.
+2. Turn the returned `Decision` into an app step.
 
 ### Attention
 
@@ -59,7 +59,7 @@ decision = Layer().decide(
 )[0]
 ```
 
-### Action options
+### Options
 
 ```python
 from laix import ActionOption, Belief, DecisionRequest, Layer, Situation
@@ -108,17 +108,17 @@ const [decision] = new Layer().decide({
 | `requires_approval` | Ask a person first. |
 | `deliver` / `record` | Show now / keep it. |
 
-| Verb | App action |
+| Verb | App response |
 |---|---|
 | `wait` | Hold for now. |
 | `observe` | Get more information. |
 | `guide` | Show it to the user. |
 | `ask` | Ask a person or agent. |
-| `act` | Run the action. |
-| `verify` | Check an earlier action. |
+| `act` | Run the chosen option. |
+| `verify` | Check an earlier step. |
 | `escalate` | Hand over to someone else. |
 
-Full fields: [reading a decision](../core/decisions.md).
+Full fields: [reading a decision](../core/01-decisions.md).
 
 ## Host confidence
 

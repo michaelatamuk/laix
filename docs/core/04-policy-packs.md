@@ -3,13 +3,13 @@
 A **policy** is a rule set that reads a request and returns a decision. A **decision class** is a
 kind of question, such as “should we look first?” or “which plan fits?”
 
-Attention and action are built in because `Layer` uses their request shapes to choose a policy. The
+Attention and action decisions are built in because `decide` uses their request shapes to choose a policy. The
 other eight are ordinary policy objects selected explicitly. LAIX ships them as packaged policies:
 
 ```python
-from laix import Layer, ReplanningPolicy
+from laix import ReplanningPolicy, decide
 
-decision = Layer(policy=ReplanningPolicy()).decide(request)[0]
+decision = decide(request, policy=ReplanningPolicy())[0]
 ```
 
 Inputs come from `DecisionRequest.attributes`. The packs use generic words only.
@@ -26,14 +26,14 @@ Inputs come from `DecisionRequest.attributes`. The packs use generic words only.
 | Escalation | `EscalationPolicy` | `escalate`, `ask` or `wait` |
 
 TypeScript exports the same classes. Verb meanings are in
-[reading a decision](decisions.md).
+[reading a decision](01-decisions.md).
 
 ## Packaged policies
 
 These classes are part of the `laix` package. They run when you select them and are covered by tests.
 
 `examples/policies/safety.py` is a usage example that calls `SafetyConstrainedPolicy`. The
-policy itself lives in `packages/python/laix/src/laix/core/policies/safety.py`.
+policy itself lives in `packages/python/laix/src/laix/core/engines/policies/implementations/safety_constrained.py`.
 
 The packaged policies are simple deterministic defaults. Replace one when your domain has better
 rules.
@@ -90,10 +90,9 @@ rules.
 ## Use a pack
 
 ```python
-from laix import AllocationPolicy, DecisionRequest, Layer
+from laix import AllocationPolicy, DecisionRequest, decide
 
-layer = Layer(policy=AllocationPolicy())
-decision = layer.decide(
+decision = decide(
     DecisionRequest(
         subject="weekly work",
         at="2026-11-01T10:00:00+00:00",
@@ -104,22 +103,33 @@ decision = layer.decide(
                 {"id": "b", "value": 5, "cost": 6},
             ],
         },
-    )
+    ),
+    policy=AllocationPolicy(),
 )[0]
 ```
 
 Register several and choose one:
 
 ```python
-layer.register_policy("safety", SafetyConstrainedPolicy())  # store
-layer.register_policy("replan", ReplanningPolicy())         # store
-layer.use_policy("replan")                                  # activate
+from laix import PolicyRegistry, ReplanningPolicy, SafetyConstrainedPolicy, decide
+
+registry = PolicyRegistry()
+registry.register("safety", SafetyConstrainedPolicy())
+registry.register("replan", ReplanningPolicy())
+
+decision = decide(request, policy=registry.get("replan"))[0]
 ```
 
-`register_policy` stores a policy. `use_policy` makes it active.
+`register` stores a policy. `get` returns the active one.
 
 ## Replace a pack
 
 Keep the policy name, return the same decision shape, and add bench cases before changing behaviour.
 
-The packs are starting points. Your domain policy can replace one without changing the layer.
+The packs are starting points. Your domain policy can replace one without changing the decision shape.
+
+## Where the rules live
+
+- Action policy: `packages/python/laix/src/laix/core/engines/policies/implementations/action.py`
+- Attention policy: `packages/python/laix/src/laix/core/engines/attention/decide.py`
+- Decision fields: [Reading a decision](01-decisions.md)

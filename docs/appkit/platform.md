@@ -27,7 +27,7 @@ class MyPlatform:
 | Method | Purpose |
 |---|---|
 | `run_skill` | run a named skill |
-| `cancel` | stop a running action |
+| `cancel` | stop a running step |
 | `request_approval` | ask a person |
 | `read_state` / `write_state` | keep session state |
 | `events` | return events for a trace |

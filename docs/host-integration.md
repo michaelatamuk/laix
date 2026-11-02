@@ -81,7 +81,7 @@ Approval is a flag on the decision:
 decision.requires_approval
 ```
 
-The host asks a person if the flag is true, then runs the action through its own
+The host asks a person if the flag is true, then runs the chosen option through its own
 execution path. LAIX can provide an execution bridge for a task, but that is part
 of the optional app kit.
 

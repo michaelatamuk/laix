@@ -50,14 +50,14 @@ Both exit `0` when agreement meets `--fail-under`, otherwise `1`.
 | Suite | Question |
 |---|---|
 | `attention` | Which signal deserves attention now? |
-| `action` | Which action should we take? |
+| `action` | Which option should we choose? |
 | `active-perception` | Should we look first? |
-| `safety` | Is any action inside the risk limit? |
+| `safety` | Is any option inside the risk limit? |
 | `replanning` | Which replacement plan fits? |
 | `allocation` | What fits the budget? |
 | `negotiation` | Accept, counter or escalate? |
 | `preference` | Which question should we ask? |
-| `verification` | Did the action work? |
+| `verification` | Did the chosen option work? |
 | `escalation` | Should we hand over? |
 
 ## Case

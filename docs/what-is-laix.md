@@ -50,7 +50,7 @@ Water is coming under the bathroom door.
 
 Water is under the bathroom door and has reached a socket. The water valve is out of reach. A dry
 service corridor reaches the main breaker in 4 minutes. In about 6 minutes the water may reach the
-consumer unit, so the next action has to fit inside that window.
+consumer unit, so the next option has to fit inside that window.
 
 What LAIX sees:
 
@@ -66,8 +66,8 @@ What LAIX sees:
 Two hard gates run before any score:
 
 1. **Risk above 0.20** leaves the set. Crossing the wet floor is out.
-2. **Delay above 6 minutes** leaves the set. A safe action that arrives too late is not the next
-   action. It can still be the follow-up.
+2. **Delay above 6 minutes** leaves the set. A safe option that arrives too late is not the next
+   option. It can still be the follow-up.
 
 The remaining options are scored:
 
@@ -106,7 +106,7 @@ The decision is:
 - **follow-up** — call an electrician to check the socket and the consumer unit.
 
 The wet route is removed because risk 0.90 is above the hard limit. The electrician is safe and
-cheap in risk, but 15 minutes is outside the window, so it cannot be the next action. Evacuation is
+cheap in risk, but 15 minutes is outside the window, so it cannot be the next option. Evacuation is
 fast and safe, but it does not stop the water and it disrupts the building. Looking is cheap, but at
 confidence 0.80 it delays a known problem.
 
@@ -158,4 +158,4 @@ LAIX keeps the decision and its record.
 
 - [Architecture](architecture.md) — the full picture.
 - [Host integration](host-integration.md) — the six things a host team checks first.
-- [Reading a decision](core/decisions.md) — every field in plain language.
+- [Reading a decision](core/01-decisions.md) — every field in plain language.

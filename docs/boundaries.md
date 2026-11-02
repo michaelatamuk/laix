@@ -71,7 +71,7 @@ LAIX supplies:
 - the task verb and reason code;
 - the rationale and confidence;
 - the score and breakdown;
-- the action id and intent;
+- the `action_id` field and intent;
 - `requires_approval`, `reversible` and `undo_hint`;
 - the task decision id and trace id.
 

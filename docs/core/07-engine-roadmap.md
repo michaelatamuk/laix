@@ -1,7 +1,7 @@
 # Decision engine roadmap
 
-This page describes the next major step for LAIX: adding a real decision-engine core while keeping
-LAIX usable as a decision layer.
+This page describes the next step for LAIX: a planner and engine contract on top of the existing
+policy layer, while keeping LAIX usable as a decision layer.
 
 The goal is:
 
@@ -56,7 +56,7 @@ The contracts to add:
 | Contract | Purpose |
 |---|---|
 | `DecisionProblem` | states, actions, utility, limits and uncertainty |
-| `Plan` | chosen action, expected value, confidence and alternatives |
+| `Plan` | chosen option, expected value, confidence and alternatives |
 | `DecisionEngine` | `solve(problem) -> Plan` |
 | `EnginePolicy` | turns a plan into a `Decision` |
 | `Simulator` | runs a policy in a model and returns outcomes |
@@ -67,7 +67,7 @@ The contracts to add:
 | # | Capability | Piece |
 |---|---|---|
 | 1 | State and uncertainty | `StateEstimate`, distributions, observation model |
-| 2 | Action model | `ActionEffect`, preconditions, costs, transitions |
+| 2 | Option model | `ActionEffect`, preconditions, costs, transitions |
 | 3 | Utility model | `UtilityModel`, weights, risk attitude, constraints |
 | 4 | Planning | `DecisionEngine.solve(problem) -> Plan` |
 | 5 | Calibration | reliability report and confidence adjustment |
@@ -78,9 +78,9 @@ The contracts to add:
 ## Path A: external engine
 
 ```python
-layer = Layer(policy=EnginePolicy(JevEngine(...)))
-layer = Layer(policy=EnginePolicy(OrToolsEngine(...)))
-layer = Layer(policy=EnginePolicy(MDPEngine(...)))
+decision = decide(request, policy=EnginePolicy(JevEngine(...)))[0]
+decision = decide(request, policy=EnginePolicy(OrToolsEngine(...)))[0]
+decision = decide(request, policy=EnginePolicy(MDPEngine(...)))[0]
 ```
 
 The external engine can be a classifier, an optimizer, a planner or a model service. The adapter maps
@@ -100,13 +100,13 @@ class MDPEngine:
             explanation="...",
         )
 
-layer = Layer(policy=EnginePolicy(MDPEngine()))
+decision = decide(request, policy=EnginePolicy(MDPEngine()))[0]
 ```
 
 A convenience constructor may follow:
 
 ```python
-layer = Layer(engine=MDPEngine())
+decision = decide(request, engine=MDPEngine())[0]
 ```
 
 Internally this is still an engine-backed policy.
@@ -114,7 +114,7 @@ Internally this is still an engine-backed policy.
 ## Design rules
 
 1. Every engine returns a `Decision`.
-2. Approval, execution, verification and outcome recording stay in the layer.
+2. Approval, execution, verification and outcome recording stay outside the core.
 3. The app supplies the domain model. LAIX supplies the decision method.
 4. Engines are optional. The rule policies remain.
 5. An engine can be replaced without changing the app adapter.

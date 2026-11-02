@@ -4,7 +4,7 @@ Attention answers one question inside a task:
 
 > Which signal should be shown now, and how?
 
-It is a decision policy like action. It is a **task-level** policy. The host owns global proactivity
+It is a built-in rule set. It is a **task-level** rule set. The product owns global proactivity
 and interruption.
 
 ## Inputs
@@ -22,10 +22,10 @@ and interruption.
 A decision with a verb such as `guide`, `wait`, `observe` or `escalate`.
 
 ```python
-from laix import Context, DecisionRequest, Layer, Signal
-```
+from laix.core.engines.attention import Context, decide_attention
 
-`Layer` is in the app kit; a task can also use the attention policy directly.
+decisions = decide_attention(signals, context)
+```
 
 ## Example
 
@@ -37,14 +37,9 @@ The bill is important, it is daytime, and the user can decide when to pay.
 
 ## Scope
 
-- **Task attention:** this page. LAIX decides about the signals the host gives it.
-- **Product proactivity:** the host. The host decides whether the product may interrupt the user at
+- **Task attention:** this page. LAIX decides about the signals the product gives it.
+- **Product proactivity:** the product. The product decides whether it may interrupt the user at
   all, across apps and tasks.
 
-A host that already has a global interruption policy should keep it and use LAIX
+A product that already has a global interruption rule should keep it and use LAIX
 only for task-level signal decisions.
-
-## Related
-
-- [Reading a decision](decisions.md)
-- [Host integration](../host-integration.md)

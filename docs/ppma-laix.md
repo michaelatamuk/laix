@@ -42,7 +42,7 @@ PPMA issues `ui.ask`, records the decision, commits the outcome and acts.
 
 The two vocabularies describe different scopes.
 
-- `NOOP`: no action.
+- `NOOP`: no operation.
 - `UPDATE_STATE`: a memory change.
 - `ISSUE_COMMAND`: one or more commands to apps or tools.
 - `DISPATCH`: start a mission.
@@ -123,7 +123,7 @@ Interface:
 | Subject and moment | Verb and reason code |
 | Situation and options, or signals and context | Confidence, score and breakdown |
 | Goals, beliefs and constraints | Evidence, alternatives and constraints applied |
-| Attributes and confidence source | Action id, intent, approval and reversibility |
+| Attributes and confidence source | `action_id`, intent, approval and reversibility |
 
 PPMA records the LAIX decision id as a reference. LAIX confidence is a source estimate; PPMA emits the calibrated confidence.
 

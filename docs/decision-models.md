@@ -34,7 +34,7 @@ LAIX takes a request and returns one decision:
 ```text
 situation + options + limits
               ↓
-one verb + reason + approval + action details
+one verb + reason + approval + execution details
               ↓
 the host executes, approves and records
 ```
@@ -51,7 +51,7 @@ to the optional app kit when the host chooses it.
 |---|---|---|
 | Kind | Decision model | Decision layer |
 | Input | State + typed question | Request + options + limits |
-| Output | Typed answer + probabilities | Verb + reason + action and approval |
+| Output | Typed answer + probabilities | Verb + reason + chosen option and approval |
 | Main value | calibrated judgment | decision semantics; optional lifecycle with the app kit |
 | Execution | host | host |
 | Approval, undo, receipts | host policy | LAIX app kit (optional) |
@@ -67,7 +67,7 @@ Both can choose among a fixed set of options. In the leak example:
 - the options are “wait, look closer, ask the owner, turn off the valve, call the manager”;
 - both LAIX and JEV can return “turn off the valve”.
 
-So the action choice itself is the same kind of problem.
+So the choice among options is the same kind of problem.
 
 The difference is how the choice is made and what happens around it.
 
@@ -118,7 +118,7 @@ The app maps the domain into those pieces:
 |---|---|
 | Options | `pay`, `ask`, `verify`, `escalate` |
 | Constraints | amount ≥ £500 needs approval |
-| Action names | `pay_invoice` |
+| Option names | `pay_invoice` |
 | Verification | `bank_status` |
 | Escalation target | `owner` |
 | Outcome metric | payment cleared or failed |
@@ -131,7 +131,7 @@ LAIX supplies the generic decision:
 - policy selection;
 - `verify` and `escalate` verbs.
 
-The optional app kit adds execution receipts, records and the bench. The host runs the action.
+The optional app kit adds execution receipts, records and the bench. The host runs the chosen option.
 
 Could the app do all of this without LAIX? **Yes.** For one payment flow, direct app code is simpler.
 LAIX pays off when several flows or apps need the same decision contract, with the optional app kit
@@ -215,7 +215,7 @@ class JevPolicy:
     def decide(self, request):
         result = self.client.decide(
             state=request.subject,
-            question="Which action fits?",
+            question="Which option fits?",
             options=["wait", "observe", "act", "ask"],
         )
         if result.confidence < 0.6:
@@ -256,7 +256,7 @@ LAIX core stays model-neutral.
 A model can be confident and wrong. LAIX adds the task decision around a judgment:
 
 - risk limits;
-- action choice among the options the app can afford;
+- choice among the options the app can afford;
 - verification and escalation verbs.
 
 The host, or the optional app kit, adds approval, execution and records.

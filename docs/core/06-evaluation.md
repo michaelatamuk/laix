@@ -32,7 +32,7 @@ Conformance compares the attention decisions with the shared vector file.
 - A held-out set.
 - Real user outcomes.
 - A causal study.
-- Live perception and sub-second cases.
+- Live sensing and sub-second cases.
 
 Today the checks show whether a change altered behaviour. User studies show how the layer performs in
 the real world.

@@ -4,8 +4,8 @@ If you are new to LAIX, start with [What is LAIX?](what-is-laix.md) — plain
 English, no code. Then read [Host integration](host-integration.md) for the six
 things a product team checks first.
 
-For the design: [architecture](architecture.md), then
-[reading a decision](core/decisions.md), then [records](core/records.md).
+For the design: [architecture](architecture.md), then the core pages in numeric order,
+starting with [reading a decision](core/01-decisions.md) and [records](core/02-records.md).
 
 The split follows the code:
 
@@ -25,17 +25,17 @@ The split follows the code:
 | [ppma-laix.md](ppma-laix.md) | Why use LAIX in PPMA? |
 | [decision-models.md](decision-models.md) | How does LAIX relate to decision models? |
 
-## Core
+## Core (read in order)
 
 | Page | Covers |
 |---|---|
-| [core/records.md](core/records.md) | record shapes and the `0.8.0` version |
-| [core/decisions.md](core/decisions.md) | verbs, fields and examples |
-| [core/attention.md](core/attention.md) | task-level attention and its scope |
-| [core/policy-packs.md](core/policy-packs.md) | the eight packaged policies |
-| [core/outcome-learning.md](core/outcome-learning.md) | rewards, UCB and `BanditPolicy` |
-| [core/evaluation.md](core/evaluation.md) | vectors, conformance and bench |
-| [core/engine-roadmap.md](core/engine-roadmap.md) | the next decision-engine work |
+| [core/01-decisions.md](core/01-decisions.md) | verbs, fields and examples |
+| [core/02-records.md](core/02-records.md) | record shapes and the `0.8.0` version |
+| [core/03-attention.md](core/03-attention.md) | task-level attention and its scope |
+| [core/04-policy-packs.md](core/04-policy-packs.md) | the eight packaged policies |
+| [core/05-outcome-learning.md](core/05-outcome-learning.md) | rewards, UCB and `BanditPolicy` |
+| [core/06-evaluation.md](core/06-evaluation.md) | vectors, conformance and bench |
+| [core/07-engine-roadmap.md](core/07-engine-roadmap.md) | the next planner and engine work |
 
 ## App kit
 
