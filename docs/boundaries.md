@@ -162,13 +162,11 @@ PPMA keeps the domain nouns in how it builds the request and reads the decision.
 
 ## 4. Ids, confidence, provenance and commit
 
-**Ids.** LAIX's `decision_id` identifies the LAIX task decision. PPMA's decision id identifies PPMA's activation decision or command. They are different namespaces. PPMA records the LAIX id as an external reference when it uses the decision.
+Each decision keeps the id of the system that made it. A LAIX task decision carries LAIX's `decision_id`; a PPMA activation decision or command carries PPMA's id. PPMA's provenance record holds the request, the LAIX decision id and how PPMA used the decision.
 
-**Confidence.** LAIX returns a confidence for its task decision. PPMA calibrates the confidence it emits to apps. LAIX's value is a source estimate; PPMA's calibrated claim is the one PPMA emits.
+LAIX returns a confidence for its task decision. PPMA treats it as one source estimate and emits its own calibrated confidence to apps.
 
-**Provenance.** PPMA records the request, the LAIX decision id and whether it used, modified or rejected the decision. LAIX returns the decision shape and keeps no PPMA record.
-
-**Commit.** PPMA commits its own state through its own path. LAIX returns a decision; PPMA records and applies it. PPMA's commit path stays inside PPMA.
+PPMA commits its own state. The LAIX decision is recorded and applied within that commit.
 
 ## 5. Roles
 
