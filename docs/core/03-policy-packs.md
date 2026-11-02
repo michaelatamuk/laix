@@ -25,8 +25,7 @@ Inputs come from `DecisionRequest.attributes`. The packs use generic words only.
 | Verification | `VerificationPolicy` | `verify`, `wait` or `escalate` |
 | Escalation | `EscalationPolicy` | `escalate`, `ask` or `wait` |
 
-TypeScript exports the same classes. Verb meanings are in
-[the Decision response](01-decisions.md).
+TypeScript exports the same classes.
 
 ## Packaged policies
 
@@ -132,4 +131,3 @@ The packs are starting points. Your domain policy can replace one without changi
 
 - Action policy: `packages/python/laix/src/laix/core/engines/policies/implementations/action.py`
 - Attention policy: `packages/python/laix/src/laix/core/engines/attention/decide.py`
-- Response fields: [The Decision response](01-decisions.md)

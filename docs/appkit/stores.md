@@ -53,4 +53,4 @@ Keep transcripts, images, customer data and secrets in the app.
 
 TypeScript exports `StateStore`, `InMemoryStateStore`, `OutcomeStore` and `OutcomeLedger`.
 
-Learning uses outcome labels: [outcome learning](../core/05-outcome-learning.md).
+Learning uses outcome labels: [outcome learning](../core/04-outcome-learning.md).

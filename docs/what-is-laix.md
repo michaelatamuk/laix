@@ -158,4 +158,4 @@ LAIX keeps the decision and its record.
 
 - [Architecture](architecture.md) — the full picture.
 - [Host integration](host-integration.md) — the six things a host team checks first.
-- [The Decision response](core/01-decisions.md) — every field in plain language.
+- [The Decision response](core/01-decision-contract.md) — every field in plain language.

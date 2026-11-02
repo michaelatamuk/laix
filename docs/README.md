@@ -5,7 +5,7 @@ English, no code. Then read [Host integration](host-integration.md) for the six
 things a product team checks first.
 
 For the design: [architecture](architecture.md), then the core pages in numeric order,
-starting with [the Decision response](core/01-decisions.md) and [records](core/02-records.md).
+starting with [the decision contract](core/01-decision-contract.md).
 
 The split follows the code:
 
@@ -29,13 +29,12 @@ The split follows the code:
 
 | Page | Covers |
 |---|---|
-| [core/01-decisions.md](core/01-decisions.md) | the Decision response: verbs, fields and examples |
-| [core/02-records.md](core/02-records.md) | record shapes and the `0.8.0` version |
-| [core/03-attention.md](core/03-attention.md) | task-level attention and its scope |
-| [core/04-policy-packs.md](core/04-policy-packs.md) | the eight packaged policies |
-| [core/05-outcome-learning.md](core/05-outcome-learning.md) | rewards, UCB and `BanditPolicy` |
-| [core/06-evaluation.md](core/06-evaluation.md) | vectors, conformance and bench |
-| [core/07-engine-roadmap.md](core/07-engine-roadmap.md) | the next planner and engine work |
+| [core/01-decision-contract.md](core/01-decision-contract.md) | the decision contract: request, response and records |
+| [core/02-attention.md](core/02-attention.md) | task-level attention and its scope |
+| [core/03-policy-packs.md](core/03-policy-packs.md) | the eight packaged policies |
+| [core/04-outcome-learning.md](core/04-outcome-learning.md) | rewards, UCB and `BanditPolicy` |
+| [core/05-evaluation.md](core/05-evaluation.md) | vectors, conformance and bench |
+| [core/06-engine-roadmap.md](core/06-engine-roadmap.md) | the next planner and engine work |
 
 ## App kit
 
