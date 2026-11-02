@@ -168,30 +168,13 @@ LAIX returns a confidence for its task decision. PPMA treats it as one source es
 
 PPMA commits its own state. The LAIX decision is recorded and applied within that commit.
 
-## 5. Roles
+## 5. The optional app kit
 
-| Role | What it owns |
-|---|---|
-| **LAIX core** (`laix.core`) | The decision contract, the task policies and the engines that produce a task decision. Stateless, standard-library only; host state stays with the host. |
-| **LAIX app kit** (`laix.appkit`) | The optional integration around a core decision: `Layer`, runtime, execution, records, delivery and platform. |
-| **Host** | The product: memory, ingestion, connectors, orchestration, proactivity, permissions, missions, app policy, calibration, commit, execution and UI. |
+Above `laix` there is `laix.appkit`, the optional package for hosts that want the integration surface around a decision: `Layer`, the runtime, execution, records, delivery and platform.
 
-The dependency direction is fixed:
+`laix.appkit` depends on `laix`. A host uses the core alone or adds the app kit. The app kit provides the runtime around a core decision.
 
-```text
-host
- ├── laix.core
- └── laix.appkit
-        └── laix.core
-```
-
-Core imports only the standard library and its own modules. App kit imports the standard library, `laix.core` and its own modules. The host imports LAIX. Dependencies point from the host to LAIX.
-
-## 6. Core and app kit are separate surfaces
-
-A host chooses its surface.
-
-**Core only.**
+PPMA uses the core alone: it already has execution, records and commit, so it calls `laix` directly:
 
 ```python
 from laix import decide
@@ -199,9 +182,7 @@ from laix import decide
 decision = decide(request)[0]
 ```
 
-The host brings its own execution, records, delivery and persistence. This is the surface for PPMA: PPMA already has execution, records and commit, so it uses the core only.
-
-**Core plus app kit.**
+A host that wants the app kit's runtime calls `Layer`:
 
 ```python
 from laix import Layer
@@ -210,11 +191,9 @@ layer = Layer()
 decision = layer.decide(request)[0]
 ```
 
-`Layer` uses core selection and adds the runtime: ids, traces, state, execution, records and delivery. The host still owns its memory, connectors, permissions and app policy.
+The app kit is a separate surface. Packaging may ship the two together or separately; the boundary is the same.
 
-The app kit is optional. The core is the stable integration surface. Packaging may ship them together or separately; the boundary is the same.
-
-## 7. Rules
+## 6. Rules
 
 1. A decision is bounded to one task. The host defines the task.
 2. LAIX chooses the task's next move. The host owns activation, commit, execution and persistence.
