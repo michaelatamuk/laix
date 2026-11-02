@@ -4,7 +4,7 @@ If you are new to LAIX, start with [What is LAIX?](what-is-laix.md) — plain
 English, no code. Then read [Host integration](host-integration.md) for the six
 things a product team checks first.
 
-For the design: [architecture](architecture.md), then [the core map](core/00-core-map.md),
+For the design: [architecture](architecture.md), then [the core architecture](core/00-core-architecture.md),
 then the core pages in numeric order, starting with [the decision contract](core/01-decision-contract.md).
 
 The split follows the code:
@@ -29,7 +29,7 @@ The split follows the code:
 
 | Page | Covers |
 |---|---|
-| [core/00-core-map.md](core/00-core-map.md) | the core packages and what each depends on |
+| [core/00-core-architecture.md](core/00-core-architecture.md) | the core in one picture |
 | [core/01-decision-contract.md](core/01-decision-contract.md) | the decision contract: request, response and records |
 | [core/02-attention.md](core/02-attention.md) | task-level attention and its scope |
 | [core/03-packaged-policies.md](core/03-packaged-policies.md) | the eight packaged policies |
