@@ -31,7 +31,7 @@ block-beta
         columns 3
         schema["Schema<br/>records · validation"]
         sensing["Sensing<br/>detector · event · frame"]
-        support["Support<br/>ids · time · verbs · errors · version"]
+        support["Support<br/>shared types and helpers"]
     end
 
     style capabilities font-size:22px,font-weight:bold
@@ -82,7 +82,7 @@ outcome → label → feedback → better attention
 | **Resources** | budget, sensing options, limits | Support |
 | **Schema** | records, validation | Contract, learning, support |
 | **Sensing** | detector, detection, event, frame | Support |
-| **Support** | ids, time, verbs, errors, version | — |
+| **Support** | shared types and helpers: ids, time, verbs, errors, version | — |
 
 ## Reading the stack
 
