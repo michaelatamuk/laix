@@ -15,7 +15,7 @@ block-beta
 
     block:contract["Contract"]
         columns 3
-        request["Decision request<br/>signals/context or situation/options"]
+        request["Decision request<br/>what is happening + what the app can do"]
         response["Decision response<br/>verb · reason · confidence · action"]
         trail["Execution trail<br/>receipt · trace"]
     end
@@ -73,7 +73,7 @@ outcome → label → feedback → better attention
 | **Decide** | `policy=...` or automatic; return the response | Contract, engines, support |
 | **Learn from outcomes** | outcome → reward → ledger → bandit → better policy; outcome → label → feedback → better attention | Support |
 | **Evaluate** | cases, parity, report, bench | Contract, engines, support |
-| **Decision request** | signals + context or situation + options | Support |
+| **Decision request** | what is happening and what the app can do; signals + context, or situation + options | Support |
 | **Decision response** | verb, reason, confidence, action, evidence, approval | Support |
 | **Execution trail** | execution receipt, trace | Support |
 | **Attention** | signals, priority, timing | Contract, support |
