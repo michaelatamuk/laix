@@ -6,7 +6,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass, field
 
 from .model.outcome import AttentionOutcome
-from .labels import HELPED, HURT, NEUTRAL, UNKNOWN
+from .outcome_mapping import HELPED, HURT, NEUTRAL, UNKNOWN
 
 
 @dataclass

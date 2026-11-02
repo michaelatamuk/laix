@@ -1,14 +1,19 @@
-"""Outcome labels and the mapping from reasons or feedback to a label.
+"""Map attention feedback and dismissal reasons to outcome labels.
 
-This is the smallest honest version. It maps a reason code to a result; the
-recording contract stays the same no matter which learner consumes it.
+The labels themselves are generic and live in outcome_learning. This module
+knows only the attention-specific vocabulary.
 """
 
 from __future__ import annotations
 
-SEVERITY_RANK: dict[str, int] = {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}
-RESULTS: tuple[str, ...] = ("helped", "neutral", "hurt", "unknown")
-FEEDBACK_STATES: tuple[str, ...] = ("accepted", "dismissed", "snoozed", "wrong", "assigned")
+from ...outcome_learning.record import OUTCOME_LABELS, OutcomeLabel
+
+RESULTS: tuple[str, ...] = OUTCOME_LABELS
+HELPED = OutcomeLabel.HELPED
+NEUTRAL = OutcomeLabel.NEUTRAL
+HURT = OutcomeLabel.HURT
+UNKNOWN = OutcomeLabel.UNKNOWN
+
 REASON_CODES: tuple[str, ...] = (
     "false_alarm",
     "design_change",
@@ -18,16 +23,11 @@ REASON_CODES: tuple[str, ...] = (
     "data_error",
 )
 
-HELPED = "helped"
-NEUTRAL = "neutral"
-HURT = "hurt"
-UNKNOWN = "unknown"
-
 _HURT_CODES = {"false_alarm", "data_error"}
 _NEUTRAL_CODES = {"design_change", "operational", "duplicate", "no_action"}
 
 
-def result_for_reason(reason_code: str | None) -> str:
+def result_for_reason(reason_code: str | None) -> OutcomeLabel:
     """Map an app's dismissal reason to a learning label."""
     if not reason_code:
         return UNKNOWN
@@ -39,7 +39,7 @@ def result_for_reason(reason_code: str | None) -> str:
     return UNKNOWN
 
 
-def label_for_feedback(state: str, reason_code: str | None = None) -> str:
+def label_for_feedback(state: str, reason_code: str | None = None) -> OutcomeLabel:
     """A UI feedback state (accepted, dismissed, snoozed, wrong) to a result."""
     state = (state or "").strip().lower()
     if state in {"accepted", "confirmed", "signed"}:
@@ -52,13 +52,11 @@ def label_for_feedback(state: str, reason_code: str | None = None) -> str:
 
 
 __all__ = [
-    "FEEDBACK_STATES",
     "HELPED",
     "HURT",
     "NEUTRAL",
     "REASON_CODES",
     "RESULTS",
-    "SEVERITY_RANK",
     "UNKNOWN",
     "label_for_feedback",
     "result_for_reason",

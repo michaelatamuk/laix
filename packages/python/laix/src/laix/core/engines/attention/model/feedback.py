@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+FEEDBACK_STATES: tuple[str, ...] = ("accepted", "dismissed", "snoozed", "wrong", "assigned")
+
 
 @dataclass(frozen=True, slots=True)
 class Feedback:
@@ -19,4 +21,4 @@ class Feedback:
     note: str | None = None
 
 
-__all__ = ["Feedback"]
+__all__ = ["FEEDBACK_STATES", "Feedback"]

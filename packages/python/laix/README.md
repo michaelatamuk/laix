@@ -55,7 +55,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/engines/policies/policy.py`, `core/engines/policies/registry.py` | policy plugin protocol and registry |
 | `core/engines/attention/model/`, `core/engines/attention/ports/`, `core/engines/attention/vectors/` | attention records, ports and test vectors |
 | `core/engines/attention/gates/implementations/` | one file per gate, ordered by `rules.py` |
-| `core/engines/attention/decide.py`, `timing.py`, `replay.py`, `labels.py`, `outcome_log.py` | attention loop, quiet hours, replay and labels |
+| `core/engines/attention/decide.py`, `outcome_mapping.py`, `timing.py`, `replay.py`, `outcome_log.py` | attention loop, feedback-to-label mapping, quiet hours, replay and log |
 | `appkit/runtime/decision_runtime.py` | the action runtime |
 | `appkit/runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
 | `core/sensing/` | detector, detection and frame records |

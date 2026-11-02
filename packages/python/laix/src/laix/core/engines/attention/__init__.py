@@ -15,15 +15,14 @@ from .model.decision import AttentionDecision
 from .model.outcome import AttentionOutcome
 from .ports.clock import Clock
 from .model.context import Context
-from .model.feedback import Feedback
-from .labels import (
-    FEEDBACK_STATES,
+from .model.feedback import FEEDBACK_STATES, Feedback
+from .model.severity import SEVERITY_RANK
+from .outcome_mapping import (
     HELPED,
     HURT,
     NEUTRAL,
     REASON_CODES,
     RESULTS,
-    SEVERITY_RANK,
     UNKNOWN,
     label_for_feedback,
     result_for_reason,

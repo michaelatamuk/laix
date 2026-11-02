@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from ..labels import SEVERITY_RANK
+from ..model.severity import SEVERITY_RANK
 from ..model.feedback import Feedback
 from ..model.signal import Signal
 from .reasons import FEEDBACK_REASONS, ReasonCode
