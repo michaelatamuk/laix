@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from ....decisions import Decision, Intent
+from ....support.verbs import Verb
 from ._helpers import decision, number, value
 
 
@@ -28,7 +29,7 @@ class ReplanningPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="ask",
+                    verb=Verb.ASK,
                     reason_code="no_feasible_plan",
                     rationale="no plan meets the success and cost limits; ask for a changed constraint",
                     confidence=0.8,
@@ -45,7 +46,7 @@ class ReplanningPolicy:
         return [
             decision(
                 policy=self.name,
-                verb="act",
+                verb=Verb.ACT,
                 reason_code="replan",
                 rationale=f"adopt {best.get('id', '?')} with success probability {success:.2f}",
                 confidence=min(0.98, 0.5 + success * 0.4),

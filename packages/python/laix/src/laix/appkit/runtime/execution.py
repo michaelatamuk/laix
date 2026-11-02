@@ -14,6 +14,7 @@ from typing import Any, Callable
 
 from ...core.decisions import ActionOption, Decision, ExecutionReceipt
 from ...core.support.ids import new_execution_receipt_id
+from ...core.support.verbs import Verb
 from .approval_required import ApprovalRequired
 
 Handler = Callable[[ActionOption, dict[str, Any]], dict[str, Any]]
@@ -128,7 +129,7 @@ class ExecutionBridge:
         if handler is None:
             raise ValueError(f"no undo handler for {receipt.action_name}")
         try:
-            detail = handler(ActionOption(id=receipt.id, verb="act", name=receipt.action_name), {"receipt": receipt.to_dict()}) or {}
+            detail = handler(ActionOption(id=receipt.id, verb=Verb.ACT, name=receipt.action_name), {"receipt": receipt.to_dict()}) or {}
         except Exception as exc:  # noqa: BLE001
             raise ValueError(f"undo failed: {type(exc).__name__}: {exc}") from exc
         undone = ExecutionReceipt(

@@ -11,12 +11,13 @@ import hashlib
 from collections.abc import Iterable, Sequence
 from datetime import datetime
 
-from .gates import feedback_blocks, rank
+from .gates import ReasonCode, feedback_blocks, rank
 from .model.context import Context
 from .model.decision import AttentionDecision
 from .model.signal import Signal
 from .score import cost_of_waiting, score, undo_hint
 from .timing import hours_until, is_quiet
+from ...support.verbs import Verb
 
 
 def dedupe_key(signal: Signal, now: datetime) -> str:
@@ -34,31 +35,31 @@ def decide_one(signal: Signal, context: Context, delivered: int = 0) -> Attentio
     breakdown = score(signal, context)
     blocked = feedback_blocks(context.feedback.get(signal.id), context.now)
 
-    verb, reason_code, record, deliver = "guide", "worth_surfacing", True, True
+    verb, reason_code, record, deliver = Verb.GUIDE, ReasonCode.WORTH_SURFACING, True, True
     delivered_now = delivered
 
     if context.stopped:
-        verb, reason_code, record, deliver = "wait", "kill_switch", False, False
+        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.KILL_SWITCH, False, False
     elif signal.kind in context.muted_kinds:
-        verb, reason_code, record, deliver = "wait", "muted", False, False
+        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.MUTED, False, False
     elif blocked is not None:
-        verb, reason_code, record, deliver = "wait", blocked, False, False
+        verb, reason_code, record, deliver = Verb.WAIT, blocked, False, False
     elif signal.confidence < context.min_confidence:
-        verb, reason_code, record, deliver = "wait", "low_confidence", False, False
+        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.LOW_CONFIDENCE, False, False
     elif rank(signal.severity) > rank(context.min_severity):
-        verb, reason_code, record, deliver = "wait", "below_floor", False, False
+        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.BELOW_FLOOR, False, False
     elif dedupe_key(signal, context.now) in context.sent:
-        verb, reason_code, record, deliver = "wait", "already_sent", False, False
+        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.ALREADY_SENT, False, False
     elif is_quiet(context.now, context.quiet_hours) and signal.severity != "critical":
-        verb, reason_code, record, deliver = "wait", "quiet_hours", True, False
+        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.QUIET_HOURS, True, False
     elif context.interruption_budget is not None and delivered_now >= context.interruption_budget:
-        verb, reason_code, record, deliver = "wait", "budget", False, False
+        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.BUDGET, False, False
     elif context.escalate_after_hours is not None and signal.severity == "critical":
         hours = hours_until(context.now, signal.due)
         if hours is not None and -hours > context.escalate_after_hours:
-            verb, reason_code, record, deliver = "escalate", "overdue_escalation", True, True
+            verb, reason_code, record, deliver = Verb.ESCALATE, ReasonCode.OVERDUE_ESCALATION, True, True
     elif context.allow_act and signal.intent is not None and signal.reversible:
-        verb, reason_code = "act", "act"
+        verb, reason_code = Verb.ACT, ReasonCode.ACT
     else:
         delivered_now += 1
 
@@ -74,7 +75,7 @@ def decide_one(signal: Signal, context: Context, delivered: int = 0) -> Attentio
         evidence_refs=signal.evidence_refs,
         breakdown=breakdown,
         trace_id=trace_id(signal, context.now, verb),
-        intent=signal.handover if verb == "escalate" else (signal.intent if verb in {"act", "ask"} else None),
+        intent=signal.handover if verb == Verb.ESCALATE else (signal.intent if verb in {Verb.ACT, Verb.ASK} else None),
         cost_of_waiting=cost_of_waiting(signal, context),
         reversible=signal.reversible,
         undo_hint=undo_hint(verb, signal.reversible),

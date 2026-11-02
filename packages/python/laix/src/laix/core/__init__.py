@@ -48,7 +48,7 @@ from .sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .support.time import iso, parse_iso, utcnow
 from .support.values import confidence_band
 from .support.version import SCHEMA_VERSION
-from .support.verbs import VERBS
+from .support.verbs import VERBS, Verb
 from .evaluation import Case, Report, Row, compare, load_cases
 from .engines.policies import (
     ACTION_POLICY_VERSION,
@@ -129,6 +129,7 @@ __all__ = [
     "Trace",
     "UCBBandit",
     "VERBS",
+    "Verb",
     "VerificationPolicy",
     "compare",
     "confidence_band",

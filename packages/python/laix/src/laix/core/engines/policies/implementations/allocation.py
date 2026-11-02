@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from ....decisions import Decision, Intent
+from ....support.verbs import Verb
 from ._helpers import decision, number, value
 
 
@@ -42,7 +43,7 @@ class AllocationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="nothing_affordable",
                     rationale="no request fits the budget and risk limit",
                     confidence=0.8,
@@ -51,7 +52,7 @@ class AllocationPolicy:
         return [
             decision(
                 policy=self.name,
-                verb="act",
+                verb=Verb.ACT,
                 reason_code="allocate",
                 rationale=f"fund {len(chosen)} request(s) for value {total_value:.2f} within budget {budget:.2f}",
                 confidence=min(0.95, 0.5 + total_value / max(budget, 1.0) * 0.2),

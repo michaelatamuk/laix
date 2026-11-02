@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any, Iterable
 
 from ..support.errors import PolicyError
+from ..support.verbs import Verb
 from .response import EvidenceRef, Intent, ScoreBreakdown
 from .response.decision import Decision
 
@@ -78,7 +79,7 @@ def coerce(value: Any) -> Decision:
         return from_attention(value)
     if isinstance(value, dict):
         return Decision(
-            verb=str(value.get("verb") or "wait"),
+            verb=str(value.get("verb") or Verb.WAIT),
             confidence=float(value.get("confidence", 0.0)),
             reason_code=str(value.get("reason_code") or "policy_rule"),
             rationale=str(value.get("rationale") or ""),

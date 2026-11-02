@@ -11,6 +11,7 @@ from __future__ import annotations
 from typing import Any, Callable, Iterable
 
 from ....decisions import Decision, Intent
+from ....support.verbs import Verb
 from ....outcome_learning import Arm, Outcome, UCBBandit
 from ._helpers import decision, number, value
 
@@ -51,7 +52,7 @@ class BanditPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="no_arms",
                     rationale="the learner has no arm to choose",
                     confidence=0.5,
@@ -67,7 +68,7 @@ class BanditPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="no_arm_within_limits",
                     rationale="every arm breaks the risk or budget limit",
                     confidence=0.7,
@@ -78,7 +79,7 @@ class BanditPolicy:
         return [
             decision(
                 policy=self.name,
-                verb="act",
+                verb=Verb.ACT,
                 reason_code="bandit_choice",
                 rationale=f"choose arm {chosen.id} with learned reward {mean:.2f}",
                 confidence=min(0.98, 0.5 + mean * 0.4),

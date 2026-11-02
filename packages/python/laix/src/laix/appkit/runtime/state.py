@@ -20,6 +20,7 @@ from ...core.decisions import (
     Observation,
 )
 from ...core.support.time import iso, parse_iso, utcnow
+from ...core.support.verbs import Verb
 from ...core.support.values import clamp, confidence_band
 
 
@@ -133,7 +134,7 @@ class ExperienceState:
                 "note": note,
             }
         )
-        self.phase = "act" if decision.verb in {"act", "guide", "ask"} else "decide"
+        self.phase = "act" if decision.verb in {Verb.ACT, Verb.GUIDE, Verb.ASK} else "decide"
 
     # ----------------------------------------------------------- persistence
     def snapshot(self) -> dict[str, Any]:

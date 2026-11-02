@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from ....decisions import Decision, Intent
+from ....support.verbs import Verb
 from ._helpers import decision, number, value
 
 
@@ -21,7 +22,7 @@ class PreferenceElicitationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="act",
+                    verb=Verb.ACT,
                     reason_code="preference_known",
                     rationale="uncertainty is low enough to choose without another question",
                     confidence=1.0 - uncertainty,
@@ -31,7 +32,7 @@ class PreferenceElicitationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="no_question",
                     rationale="no useful question is available",
                     confidence=0.5,
@@ -47,7 +48,7 @@ class PreferenceElicitationPolicy:
         return [
             decision(
                 policy=self.name,
-                verb="ask",
+                verb=Verb.ASK,
                 reason_code="ask_preference",
                 rationale=f"ask {best.get('id', '?')} to reduce preference uncertainty",
                 confidence=min(0.95, 0.5 + gain),

@@ -31,7 +31,7 @@ from .core.outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
 from .core.outcome_learning import Outcome
 from .core.support.time import iso, parse_iso, utcnow
 from .core.support.values import confidence_band
-from .core.support.verbs import VERBS
+from .core.support.verbs import VERBS, Verb
 from .core.support.version import SCHEMA_VERSION
 from .core import evaluation
 from .core.engines import attention
@@ -188,6 +188,7 @@ __all__ = [
     "UCBBandit",
     "UnknownAction",
     "VERBS",
+    "Verb",
     "VerificationPolicy",
     "confidence_band",
     "decide_action",

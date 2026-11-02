@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Any
 
 from ....decisions import Decision, Intent
+from ....support.verbs import Verb
 from ._helpers import decision, number, value
 
 
@@ -22,7 +23,7 @@ class EscalationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="resolved",
                     rationale="the situation is resolved; no escalation is needed",
                     confidence=1.0,
@@ -51,7 +52,7 @@ class EscalationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="within_limits",
                     rationale="severity, attempts and confidence are still within limits",
                     confidence=confidence,
@@ -64,7 +65,7 @@ class EscalationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="ask",
+                    verb=Verb.ASK,
                     reason_code="target_required",
                     rationale=f"{rationale}; no escalation target is known",
                     confidence=0.7,
@@ -74,7 +75,7 @@ class EscalationPolicy:
         return [
             decision(
                 policy=self.name,
-                verb="escalate",
+                verb=Verb.ESCALATE,
                 reason_code="escalate_to_target",
                 rationale=f"{rationale}; hand over to {target}",
                 confidence=min(0.98, max(severity, 1.0 - confidence)),

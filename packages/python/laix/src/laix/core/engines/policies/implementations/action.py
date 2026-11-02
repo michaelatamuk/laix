@@ -11,7 +11,7 @@ from typing import Any
 from ....decisions import ActionOption, Decision, Situation
 from ....support.time import iso
 from ....support.values import clamp
-from ....support.verbs import VERBS
+from ....support.verbs import VERBS, Verb
 
 
 ACTION_POLICY_VERSION = "0.8.0"
@@ -78,7 +78,7 @@ class ActionPolicy:
         blocked: dict[str, str] = {}
 
         admitted = self._admit(situation, request.options, applied, blocked)
-        by_verb = {verb: [item for item in admitted if item.verb == verb] for verb in VERBS}
+        by_verb = {verb: [item for item in admitted if item.verb == verb] for verb in Verb}
 
         confidence = situation.confidence()
         if "confidence" in attributes:
@@ -95,53 +95,53 @@ class ActionPolicy:
         rationale: str
 
         if self._safety_blocked(situation):
-            verb, rationale = "wait", "hard safety constraint blocks action"
-        elif (deadline_breached or safety_breached) and by_verb["escalate"]:
-            verb, chosen = "escalate", self._best(by_verb["escalate"])
+            verb, rationale = Verb.WAIT, "hard safety constraint blocks action"
+        elif (deadline_breached or safety_breached) and by_verb[Verb.ESCALATE]:
+            verb, chosen = Verb.ESCALATE, self._best(by_verb[Verb.ESCALATE])
             rationale = (
                 "a hard safety boundary is already breached"
                 if safety_breached
                 else "a hard deadline or commitment is already breached"
             )
-        elif (needs_more_info or uncertainty >= self.config.ask_uncertainty) and by_verb["observe"]:
-            verb, chosen = "observe", self._best(by_verb["observe"])
+        elif (needs_more_info or uncertainty >= self.config.ask_uncertainty) and by_verb[Verb.OBSERVE]:
+            verb, chosen = Verb.OBSERVE, self._best(by_verb[Verb.OBSERVE])
             rationale = "more information is available from a cheap check; look before asking anyone else"
-        elif (uncertainty >= self.config.ask_uncertainty or confidence < self.config.min_confidence) and by_verb["ask"]:
-            verb, chosen = "ask", self._best(by_verb["ask"])
+        elif (uncertainty >= self.config.ask_uncertainty or confidence < self.config.min_confidence) and by_verb[Verb.ASK]:
+            verb, chosen = Verb.ASK, self._best(by_verb[Verb.ASK])
             rationale = (
                 f"uncertainty {uncertainty:.2f} is at or above {self.config.ask_uncertainty:.2f}"
                 if uncertainty >= self.config.ask_uncertainty
                 else f"confidence {confidence:.2f} is below the floor {self.config.min_confidence:.2f}"
             )
-        elif verification_due and by_verb["verify"]:
-            verb, chosen = "verify", self._best(by_verb["verify"])
+        elif verification_due and by_verb[Verb.VERIFY]:
+            verb, chosen = Verb.VERIFY, self._best(by_verb[Verb.VERIFY])
             rationale = "a previous action has an unverified outcome"
         elif (
             urgency >= self.config.act_urgency
             and confidence >= self.config.act_confidence
-            and by_verb["act"]
+            and by_verb[Verb.ACT]
         ):
-            verb, chosen = "act", self._best(by_verb["act"])
+            verb, chosen = Verb.ACT, self._best(by_verb[Verb.ACT])
             rationale = (
                 f"urgency {urgency:.2f} and confidence {confidence:.2f} both clear the act thresholds "
                 f"({self.config.act_urgency:.2f}, {self.config.act_confidence:.2f})"
             )
-        elif urgency >= self.config.guide_urgency and by_verb["guide"]:
-            verb, chosen = "guide", self._best(by_verb["guide"])
+        elif urgency >= self.config.guide_urgency and by_verb[Verb.GUIDE]:
+            verb, chosen = Verb.GUIDE, self._best(by_verb[Verb.GUIDE])
             rationale = f"urgency {urgency:.2f} clears the guide threshold {self.config.guide_urgency:.2f} but not act"
-        elif by_verb["wait"]:
-            verb, chosen = "wait", self._best(by_verb["wait"])
+        elif by_verb[Verb.WAIT]:
+            verb, chosen = Verb.WAIT, self._best(by_verb[Verb.WAIT])
             rationale = "no higher verb is admissible; keep observing"
         elif admitted:
             chosen = self._best(admitted)
-            verb = chosen.verb if chosen else "wait"
+            verb = chosen.verb if chosen else Verb.WAIT
             rationale = "higher verbs were unavailable; best admissible option selected"
         else:
-            verb, rationale = "wait", "no admissible option; keep observing"
+            verb, rationale = Verb.WAIT, "no admissible option; keep observing"
 
         requires_approval = bool(
             chosen
-            and verb == "act"
+            and verb == Verb.ACT
             and (
                 chosen.requires_approval
                 or chosen.destructive
@@ -189,7 +189,7 @@ class ActionPolicy:
             applied.append("safety:blocked")
             for option in options:
                 blocked[option.id] = "blocked by a hard safety constraint"
-            return [item for item in options if item.verb == "wait"]
+            return [item for item in options if item.verb == Verb.WAIT]
 
         admitted: list[ActionOption] = []
         for option in options:

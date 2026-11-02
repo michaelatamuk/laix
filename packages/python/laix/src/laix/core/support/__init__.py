@@ -7,13 +7,14 @@ from .ids import new_id, new_execution_receipt_id
 from .serialize import to_primitive, to_string_tuple
 from .time import iso, parse_iso, utcnow
 from .values import clamp, confidence_band
-from .verbs import VERBS
+from .verbs import VERBS, Verb
 from .version import SCHEMA_VERSION
 
 __all__ = [
     "PolicyError",
     "SCHEMA_VERSION",
     "VERBS",
+    "Verb",
     "clamp",
     "confidence_band",
     "iso",

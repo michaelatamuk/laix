@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Any
 
 from ....decisions import Decision, Intent
+from ....support.verbs import Verb
 from ._helpers import decision, number, value
 
 
@@ -22,7 +23,7 @@ class VerificationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="already_verified",
                     rationale="the outcome is already confirmed",
                     confidence=1.0,
@@ -39,7 +40,7 @@ class VerificationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="verification_not_needed",
                     rationale=f"confidence {confidence:.2f} meets the requirement {required:.2f}",
                     confidence=confidence,
@@ -50,7 +51,7 @@ class VerificationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="escalate",
+                    verb=Verb.ESCALATE,
                     reason_code="no_verification_path",
                     rationale="no check can confirm the outcome; ask a person",
                     confidence=0.6,
@@ -69,7 +70,7 @@ class VerificationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="escalate",
+                    verb=Verb.ESCALATE,
                     reason_code="no_verification_budget",
                     rationale="every check costs more than the verification budget",
                     confidence=0.6,
@@ -93,7 +94,7 @@ class VerificationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="escalate",
+                    verb=Verb.ESCALATE,
                     reason_code="no_verification_path",
                     rationale="no available check would raise confidence",
                     confidence=0.6,
@@ -110,7 +111,7 @@ class VerificationPolicy:
         return [
             decision(
                 policy=self.name,
-                verb="verify",
+                verb=Verb.VERIFY,
                 reason_code="verify_outcome",
                 rationale=f"run check {best.get('id', '?')} to confirm the outcome",
                 confidence=min(0.95, confidence + gain),

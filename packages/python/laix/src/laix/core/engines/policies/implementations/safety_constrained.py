@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from ....decisions import Decision, Intent
+from ....support.verbs import Verb
 from ._helpers import decision, number, value
 
 
@@ -17,7 +18,7 @@ class SafetyConstrainedPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="safety_blocked",
                     rationale="a hard safety constraint blocks action",
                     confidence=1.0,
@@ -31,7 +32,7 @@ class SafetyConstrainedPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="no_safe_option",
                     rationale="every available option exceeds the risk limit",
                     confidence=0.9,
@@ -50,7 +51,7 @@ class SafetyConstrainedPolicy:
         return [
             decision(
                 policy=self.name,
-                verb="act" if benefit >= 0.5 else "guide",
+                verb=Verb.ACT if benefit >= 0.5 else Verb.GUIDE,
                 reason_code="safe_action" if benefit >= 0.5 else "safe_to_show",
                 rationale=f"choose {best.get('id', '?')} with risk {risk:.2f} inside the limit {risk_limit:.2f}",
                 confidence=min(0.98, 0.55 + benefit * 0.4),

@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from ....decisions import Decision, Intent
+from ....support.verbs import Verb
 from ._helpers import decision, number, value
 
 
@@ -22,7 +23,7 @@ class ActivePerceptionPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="uncertainty_low",
                     rationale="uncertainty is low enough to decide without another look",
                     confidence=1.0 - uncertainty,
@@ -32,7 +33,7 @@ class ActivePerceptionPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="no_observation",
                     rationale="no observation is available",
                     confidence=0.4,
@@ -50,7 +51,7 @@ class ActivePerceptionPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="wait",
+                    verb=Verb.WAIT,
                     reason_code="observation_not_worth_it",
                     rationale="the available observation costs more than it is expected to resolve",
                     confidence=0.5,
@@ -59,7 +60,7 @@ class ActivePerceptionPolicy:
         return [
             decision(
                 policy=self.name,
-                verb="observe",
+                verb=Verb.OBSERVE,
                 reason_code="observe_for_information",
                 rationale=f"take observation {best.get('id', '?')} to reduce uncertainty",
                 confidence=min(0.95, 0.5 + gain),

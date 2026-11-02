@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from ....decisions import Decision, Intent
+from ....support.verbs import Verb
 from ._helpers import decision, number, value
 
 
@@ -23,7 +24,7 @@ class NegotiationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="act",
+                    verb=Verb.ACT,
                     reason_code="accept_offer",
                     rationale=f"the offer {offer:.2f} meets the reservation {reservation:.2f}",
                     confidence=0.95,
@@ -35,7 +36,7 @@ class NegotiationPolicy:
             return [
                 decision(
                     policy=self.name,
-                    verb="escalate",
+                    verb=Verb.ESCALATE,
                     reason_code="round_limit",
                     rationale="the round limit is reached without an acceptable offer",
                     confidence=0.8,
@@ -45,7 +46,7 @@ class NegotiationPolicy:
         return [
             decision(
                 policy=self.name,
-                verb="act",
+                verb=Verb.ACT,
                 reason_code="counter_offer",
                 rationale=f"counter at {counter:.2f}, between the offer {offer:.2f} and target {target:.2f}",
                 confidence=0.7,
