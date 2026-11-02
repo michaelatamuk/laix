@@ -2,12 +2,6 @@
 
 PPMA decides what a trigger becomes. LAIX decides what one bounded task does next.
 
-| | PPMA activation decision | LAIX task decision |
-|---|---|---|
-| Question | What does this trigger become? | What is the next move for this task? |
-| Output | `NOOP` · `UPDATE_STATE` · `ISSUE_COMMAND` · `DISPATCH` | `wait` · `observe` · `guide` · `ask` · `act` · `verify` · `escalate` |
-| Scope | PPMA's next cycle | One bounded task |
-
 ## 1. What LAIX decides
 
 A LAIX policy is a small object with a `name` and a `decide(request)` method. It can use deterministic rules, a model judgment, or both. It receives a bounded task and returns one decision:
@@ -38,7 +32,15 @@ LAIX returns:
 
 PPMA issues `ui.ask`, records the decision, commits the outcome and acts.
 
-## 2. Who owns what
+## 2. Two decision scopes
+
+| | PPMA activation decision | LAIX task decision |
+|---|---|---|
+| Question | What does this trigger become? | What is the next move for this task? |
+| Output | `NOOP` · `UPDATE_STATE` · `ISSUE_COMMAND` · `DISPATCH` | `wait` · `observe` · `guide` · `ask` · `act` · `verify` · `escalate` |
+| Scope | PPMA's next cycle | One bounded task |
+
+## 3. Who owns what
 
 | Area | Owner |
 |---|---|
@@ -52,7 +54,7 @@ PPMA issues `ui.ask`, records the decision, commits the outcome and acts.
 
 PPMA supplies the task. LAIX returns the decision. PPMA acts on it.
 
-## 3. Why PPMA uses it
+## 4. Why PPMA uses it
 
 - **One task-decision contract** across the Commander, missions and apps.
 - **Decision semantics** — constraints, approval, escalation and verification travel with the decision.
@@ -62,7 +64,7 @@ PPMA supplies the task. LAIX returns the decision. PPMA acts on it.
 - **Model independence** — swap the model behind the same contract.
 - **Reuse without Core changes** — a policy lives outside `ppma.core`; PPMA adds decision classes without new Core modules.
 
-## 4. How the call works
+## 5. How the call works
 
 ```text
 PPMA trigger
@@ -102,26 +104,11 @@ Interface:
 
 PPMA records the LAIX decision id as a reference. LAIX confidence is a source estimate; PPMA emits the calibrated confidence.
 
-## 5. First proof
+## 6. First proof
 
-Start with one bounded decision class:
+Pick one bounded decision class — a mission step or a Commander subtask. Implement it as a LAIX policy and expose it as an `effect: none` tool. Measure calls, latency, determinism and decision quality. Extend where it wins.
 
-- a mission step; or
-- a Commander subtask that currently needs a full LLM ask.
-
-Implement it as a LAIX policy with a model judgment when needed. Expose it as an `effect: none` tool or a mission tool.
-
-Measure:
-
-- model calls and tokens;
-- latency;
-- determinism and replay;
-- decision quality;
-- audit clarity.
-
-Use the result to choose the next decision class.
-
-## 6. If you already use a judgment model
+## 7. If you already use a judgment model
 
 JEV is a judgment engine: one closed question in, an answer with probabilities out. It can sit inside a LAIX policy.
 
@@ -129,7 +116,7 @@ Put it there when the judgment must become a task decision with constraints, app
 
 If you need one closed judgment, JEV is enough. When you need the layer around many bounded decisions, LAIX is the layer.
 
-## 7. One-slide version
+## 8. One-slide version
 
 ```text
 PPMA + LAIX — the task-decision layer
