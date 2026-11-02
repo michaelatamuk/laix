@@ -10,10 +10,18 @@ from pathlib import Path
 import pytest
 
 import laix.core.engines.attention as laix
-from laix.core.engines.attention import (
+from laix.core.outcome_learning.attention import (
+    HELPED,
+    HURT,
+    NEUTRAL,
+    UNKNOWN,
     AttentionOutcome,
-    Context,
     OutcomeLog,
+    label_for_feedback,
+    result_for_reason,
+)
+from laix.core.engines.attention import (
+    Context,
     Signal,
     compare,
     decide_attention,
@@ -99,9 +107,9 @@ def test_rollup_orders_by_severity_then_due() -> None:
 def test_outcome_log_precision_needs_evidence() -> None:
     log = OutcomeLog()
     assert log.precision() is None
-    log.record(AttentionOutcome("a", "kind-a", "guide", laix.HELPED, score=80))
-    log.record(AttentionOutcome("b", "kind-a", "guide", laix.HURT, reason_code="false_alarm", score=70))
-    log.record(AttentionOutcome("c", "kind-b", "guide", laix.NEUTRAL, reason_code="design_change", score=40))
+    log.record(AttentionOutcome("a", "kind-a", "guide", HELPED, score=80))
+    log.record(AttentionOutcome("b", "kind-a", "guide", HURT, reason_code="false_alarm", score=70))
+    log.record(AttentionOutcome("c", "kind-b", "guide", NEUTRAL, reason_code="design_change", score=40))
     assert log.precision() == pytest.approx(1 / 3)
     assert log.hazard_rate() == pytest.approx(1 / 3)
     assert log.precision("kind-a") == pytest.approx(0.5)
@@ -109,19 +117,19 @@ def test_outcome_log_precision_needs_evidence() -> None:
 
 
 def test_reason_codes_map_to_labels() -> None:
-    assert laix.result_for_reason("false_alarm") == laix.HURT
-    assert laix.result_for_reason("data_error") == laix.HURT
-    assert laix.result_for_reason("design_change") == laix.NEUTRAL
-    assert laix.result_for_reason("no_action") == laix.NEUTRAL
-    assert laix.result_for_reason(None) == laix.UNKNOWN
-    assert laix.label_for_feedback("accepted") == laix.HELPED
-    assert laix.label_for_feedback("dismissed", "false_alarm") == laix.HURT
+    assert result_for_reason("false_alarm") == HURT
+    assert result_for_reason("data_error") == HURT
+    assert result_for_reason("design_change") == NEUTRAL
+    assert result_for_reason("no_action") == NEUTRAL
+    assert result_for_reason(None) == UNKNOWN
+    assert label_for_feedback("accepted") == HELPED
+    assert label_for_feedback("dismissed", "false_alarm") == HURT
 
 
 def test_calibration_has_one_row_per_bucket() -> None:
     log = OutcomeLog()
-    log.record(AttentionOutcome("a", "k", "guide", laix.HELPED, score=10))
-    log.record(AttentionOutcome("b", "k", "guide", laix.HURT, score=90))
+    log.record(AttentionOutcome("a", "k", "guide", HELPED, score=10))
+    log.record(AttentionOutcome("b", "k", "guide", HURT, score=90))
     rows = log.calibration()
     assert len(rows) == 4
     assert rows[0]["n"] == 1 and rows[0]["rate"] == 1.0

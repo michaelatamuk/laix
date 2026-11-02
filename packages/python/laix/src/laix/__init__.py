@@ -28,20 +28,20 @@ from .core.decisions import (
     Trace,
 )
 from .core.outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
-from .core.outcome_learning import Outcome
+from .core.outcome_learning import AttentionOutcome, Outcome
 from .core.support.time import iso, parse_iso, utcnow
 from .core.support.values import confidence_band
 from .core.support.verbs import VERBS, Verb
 from .core.support.version import SCHEMA_VERSION
 from .core import evaluation
 from .core.engines import attention
-from .core.engines.attention import AttentionDecision, AttentionOutcome, Context, Feedback, Signal, decide_attention
+from .core.engines.attention import AttentionDecision, Context, Feedback, Signal, decide_attention
 from .appkit.delivery import DeliveryPort, DeliveryReceipt, NullDelivery
 from .appkit.layer import Layer
 from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
 from .core.evaluation import load_cases
-from .core.outcome_learning import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
+from .core.outcome_learning import AttentionOutcome, Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
 from .appkit.platform import (
     ApprovalDecision,
     ApprovalRequest,

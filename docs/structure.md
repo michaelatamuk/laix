@@ -43,7 +43,7 @@ packages/python/laix/src/laix/
 │   │   ├── policies/        policy.py, registry.py, implementations/
 │   │   ├── attention/       model, ports, vectors, decide, gates/, score, replay
 │   │   └── resources/       budget, sensing option, plan, scheduler
-│   ├── outcome_learning/    record, ledger, store, arm, bandit, rewards
+│   ├── outcome_learning/    record, ledger, store, bandit, rewards, attention/
 │   ├── evaluation/          case, row, report, compare
 │   ├── sensing/             detection, detector, event, frame
 │   ├── schema/              build, check, records and laix-v1.schema.json

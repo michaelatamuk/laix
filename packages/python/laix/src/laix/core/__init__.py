@@ -8,7 +8,6 @@ from .schema.records import RECORDS, RECORD_NAMES
 from .engines.attention import (
     Context,
     Feedback,
-    OutcomeLog,
     Signal,
     decide_attention,
     is_quiet,
@@ -74,6 +73,7 @@ __all__ = [
     "ActionOption",
     "ActivePerceptionPolicy",
     "AllocationPolicy",
+    "AttentionOutcome",
     "Arm",
     "BanditPolicy",
     "Belief",

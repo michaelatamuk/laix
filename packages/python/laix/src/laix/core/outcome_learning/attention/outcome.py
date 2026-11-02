@@ -1,4 +1,4 @@
-"""What happened after an attention decision. The label the learner needs."""
+"""What happened after an attention decision."""
 
 from __future__ import annotations
 

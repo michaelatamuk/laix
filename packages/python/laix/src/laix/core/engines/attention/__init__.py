@@ -12,23 +12,11 @@ from __future__ import annotations
 from ...decisions import ScoreBreakdown, Intent
 from ...support.verbs import VERBS
 from .model.decision import AttentionDecision
-from .model.outcome import AttentionOutcome
 from .ports.clock import Clock
 from .model.context import Context
 from .model.feedback import FEEDBACK_STATES, Feedback
 from .model.severity import SEVERITY_RANK
-from .outcome_mapping import (
-    HELPED,
-    HURT,
-    NEUTRAL,
-    REASON_CODES,
-    RESULTS,
-    UNKNOWN,
-    label_for_feedback,
-    result_for_reason,
-)
 from .ports.null_sink import NullSink
-from .outcome_log import OutcomeLog
 from .decide import decide_attention, decide_one, dedupe_key, rollup, trace_id
 from .gates import GATES, GATE_RULES, REASONS, Gate, ReasonCode, feedback_blocks, rank
 from .score import SEVERITY_POINTS, WAIT_FACTOR, cost_of_waiting, score, undo_hint
@@ -58,25 +46,17 @@ __all__ = [
     "GATE_RULES",
     "Gate",
     "ReasonCode",
-    "HELPED",
-    "HURT",
-    "NEUTRAL",
     "POLICIES",
     "REASONS",
-    "REASON_CODES",
-    "RESULTS",
     "SEVERITY_RANK",
-    "UNKNOWN",
     "VERBS",
     "ScoreBreakdown",
     "Clock",
     "Context",
     "AttentionDecision",
-    "AttentionOutcome",
     "Feedback",
     "Intent",
     "NullSink",
-    "OutcomeLog",
     "Recorder",
     "Signal",
     "Sink",
@@ -90,11 +70,9 @@ __all__ = [
     "dedupe_key",
     "hours_until",
     "is_quiet",
-    "label_for_feedback",
     "load_vectors",
     "parse_range",
     "precision_recall",
-    "result_for_reason",
     "rollup",
     "run_case",
     "run_vectors",

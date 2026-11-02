@@ -1,12 +1,8 @@
-"""Map attention feedback and dismissal reasons to outcome labels.
-
-The labels themselves are generic and live in outcome_learning. This module
-knows only the attention-specific vocabulary.
-"""
+"""Map attention feedback and dismissal reasons to outcome labels."""
 
 from __future__ import annotations
 
-from ...outcome_learning.record import OUTCOME_LABELS, OutcomeLabel
+from ..record import OUTCOME_LABELS, OutcomeLabel
 
 RESULTS: tuple[str, ...] = OUTCOME_LABELS
 HELPED = OutcomeLabel.HELPED

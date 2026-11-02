@@ -55,7 +55,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/engines/policies/policy.py`, `core/engines/policies/registry.py` | policy plugin protocol and registry |
 | `core/engines/attention/model/`, `core/engines/attention/ports/`, `core/engines/attention/vectors/` | attention records, ports and test vectors |
 | `core/engines/attention/gates/implementations/` | one file per gate, ordered by `rules.py` |
-| `core/engines/attention/decide.py`, `outcome_mapping.py`, `timing.py`, `replay.py`, `outcome_log.py` | attention loop, feedback-to-label mapping, quiet hours, replay and log |
+| `core/engines/attention/decide.py`, `timing.py`, `replay.py` | attention loop, quiet hours and contract replay |
 | `appkit/runtime/decision_runtime.py` | the action runtime |
 | `appkit/runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
 | `core/sensing/` | detector, detection and frame records |
@@ -64,7 +64,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `appkit/runtime/state_store.py`, `in_memory_state_store.py` | state store contract and in-memory store |
 | `core/engines/resources/` | cheap/deep call admission under budget |
 | `appkit/platform/` | south platform interface, records and in-memory platform |
-| `core/outcome_learning/` | directed metric ledger, outcome store protocol and UCB learner |
+| `core/outcome_learning/` | directed metric ledger, store, UCB learner, and attention feedback learning |
 | `appkit/audit/decision_record.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
 | `appkit/audit/proposal.py` | storage-free proposal and approval lifecycle |
 | `appkit/delivery/` | delivery port, receipt and null delivery |
