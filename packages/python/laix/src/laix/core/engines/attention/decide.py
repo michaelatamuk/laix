@@ -15,7 +15,8 @@ from .gates import GATE_RULES, GateResult, ReasonCode, dedupe_key, feedback_bloc
 from .model.context import Context
 from .model.decision import AttentionDecision
 from .model.signal import Signal
-from .score import cost_of_waiting, score, undo_hint
+from .score import cost_of_waiting, score
+from .undo import undo_hint
 from ...support.verbs import Verb
 
 

@@ -19,7 +19,8 @@ from .model.severity import SEVERITY_RANK
 from .ports.null_sink import NullSink
 from .decide import decide_attention, decide_one, dedupe_key, rollup, trace_id
 from .gates import GATES, GATE_RULES, REASONS, Gate, ReasonCode, feedback_blocks, rank
-from .score import SEVERITY_POINTS, WAIT_FACTOR, cost_of_waiting, score, undo_hint
+from .score import SEVERITY_POINTS, WAIT_FACTOR, cost_of_waiting, score
+from .undo import undo_hint
 from .ports.recorder import Recorder
 from .model.signal import Signal
 from .ports.sink import Sink

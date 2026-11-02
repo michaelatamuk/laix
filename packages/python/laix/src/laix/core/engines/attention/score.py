@@ -13,7 +13,6 @@ from ...decisions import ScoreBreakdown
 from .model.context import Context
 from .model.signal import Signal
 from .timing import hours_until
-from ...support.verbs import Verb
 
 SEVERITY_POINTS = {"critical": 60.0, "high": 45.0, "medium": 30.0, "low": 15.0, "info": 5.0}
 #: How much an hour of silence costs, relative to severity.
@@ -49,11 +48,3 @@ def cost_of_waiting(signal: Signal, context: Context) -> float:
     """Points at stake if the decision is silence. Zero without a deadline."""
     factor = WAIT_FACTOR.get(signal.severity, 0.25)
     return round(due_points(context.now, signal.due) * factor, 2)
-
-
-def undo_hint(verb: str, reversible: bool) -> str | None:
-    if verb in {Verb.GUIDE, Verb.ASK}:
-        return "withdraw"
-    if verb == Verb.ACT:
-        return "cancel" if reversible else None
-    return None
