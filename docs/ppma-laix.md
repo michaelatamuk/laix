@@ -69,9 +69,9 @@ PPMA trigger
   → Commander / ActivationDecision
   → bounded task
   → LAIX task policy
-       ├── model judgment when needed
-       ├── constraints / approval / escalation / verification
-       └── Decision
+       reads    situation · options · constraints
+       applies  rules, model judgment, or both
+       returns  decision — verb · reason · confidence · action · approval
   → PPMA calibrates, records, commits, executes
 ```
 
