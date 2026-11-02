@@ -133,6 +133,34 @@ Pick one bounded decision class where the Commander currently uses an LLM ask �
 
 JEV is a judgment engine: one closed question in, an answer with probabilities out. It can sit inside a LAIX policy.
 
+### Example: paying a supplier invoice
+
+JEV answers one question:
+
+```text
+Does this invoice match the purchase order?
+→ yes, 0.93 confidence
+```
+
+That is not the task decision. The task is: **pay, hold, ask or escalate?**
+
+The invoice is €4,800, above the €2,000 approval limit. Payment is irreversible. The supplier is new. JEV can be told these facts, but its answer is still a judgment. It does not choose the task move or carry the approval, reversibility and verification semantics.
+
+A LAIX policy takes the JEV judgment plus the options and constraints and returns:
+
+```text
+verb = ask
+reason_code = over_approval_limit
+action_id = pay_invoice
+requires_approval = true
+reversible = false
+confidence = 0.93
+```
+
+PPMA issues `ui.ask`, records the decision, pays on approval and verifies the bank confirmation.
+
+JEV plus app code can encode this. LAIX is the reusable layer that does it once, with the same decision shape across tasks.
+
 Put it there when the judgment must become a task decision with constraints, approval, escalation, verification and a record. That is the work LAIX does.
 
 If you need one closed judgment, JEV is enough. When you need the layer around many bounded decisions, LAIX is the layer.
