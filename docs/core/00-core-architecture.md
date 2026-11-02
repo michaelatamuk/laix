@@ -21,10 +21,9 @@ block-beta
     end
 
     block:engines["Engines"]
-        columns 4
+        columns 3
         attention["Attention<br/>signals · priority"]
         policies["Policies<br/>action · safety · replanning · allocation<br/>negotiation · preference · verification · escalation"]
-        registry["Registry<br/>name → policy"]
         resources["Resources<br/>budget · admission"]
     end
 
@@ -45,7 +44,7 @@ block-beta
 |---|---|---|
 | **Capabilities** | Decide · Learn from outcomes · Evaluate | What the core can do. |
 | **Contract** | Decision request · Decision response · Execution trail | The boundary and its records. |
-| **Engines** | Attention · Policies · Registry · Resources | What produces a decision. |
+| **Engines** | Attention · Policies · Resources | What produces a decision. |
 | **Foundation** | Schema · Sensing · Support | The shared records and foundations. |
 
 ## What each part contains
@@ -60,7 +59,6 @@ block-beta
 | **Execution trail** | execution receipt, trace | Support |
 | **Attention** | signals, priority, timing | Contract, support |
 | **Policies** | action, safety, replanning, allocation, negotiation, preference, verification, escalation | Contract, learning, support |
-| **Registry** | policy name → policy object | Policies, support |
 | **Resources** | budget, sensing option, admission | Support |
 | **Schema** | records, build, check | Contract, learning, support |
 | **Sensing** | detector, detection, event, frame | Support |
@@ -74,5 +72,5 @@ block-beta
 - **Decision request** and **Decision response** are the boundary.
 - **Decision response** carries the verb, reason, confidence, action and approval.
 - **Execution trail** records what happened after the response.
-- **Attention**, **Policies**, **Registry** and **Resources** are the engines.
+- **Attention**, **Policies** and **Resources** are the engines.
 - **Schema**, **Sensing** and **Support** are the shared foundations.
