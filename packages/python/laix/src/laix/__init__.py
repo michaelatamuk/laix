@@ -8,39 +8,39 @@ It is intentionally standard-library only.  The host application provides
 domain adapters; the decision layer never imports them.
 """
 
-from .core import CONTRACT_NAMES
-from .core.contracts import (
-    CONTRACTS,
-    CONSTRAINT_KINDS,
-    HORIZONS,
-    OUTCOME_DIRECTIONS,
-    OUTCOME_LABELS,
-    PHASES,
-    RECEIPT_STATUSES,
-    SCHEMA_VERSION,
-    VERBS,
+from .core import RECORD_NAMES
+from .core.decisions import (
     ActionOption,
     Belief,
     Constraint,
+    Decision,
+    DecisionRequest,
+    Escalation,
+    EvidenceRef,
     Goal,
+    HORIZONS,
+    Intent,
     Observation,
-    Outcome,
+    PHASES,
+    RECEIPT_STATUSES,
     Receipt,
     Situation,
     Trace,
-    confidence_band,
-    iso,
-    parse_iso,
-    utcnow,
 )
+from .core.decisions.constraint import CONSTRAINT_KINDS
+from .core.outcome.outcome import OUTCOME_DIRECTIONS, OUTCOME_LABELS
+from .core.outcome import Outcome
+from .core.time import iso, parse_iso, utcnow
+from .core.values import confidence_band
+from .core.verbs import VERBS
+from .core.version import SCHEMA_VERSION
 from .core import attention, evaluation
 from .core.attention import AttentionDecision, AttentionOutcome, Context, Feedback, Signal, decide_attention
 from .appkit.delivery import DeliveryPort, DeliveryReceipt, NullDelivery
+from .appkit.layer import Layer
 from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
 from .core.evaluation import load_cases
-from .core.decisions import Decision, DecisionRequest, Escalation
-from .appkit.layer import Layer
 from .core.outcome import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
 from .appkit.platform import (
     ApprovalDecision,
@@ -151,8 +151,7 @@ __all__ = [
     "Belief",
     "BanditPolicy",
     "Budget",
-    "CONTRACT_NAMES",
-    "CONTRACTS",
+    "RECORD_NAMES",
     "CONSTRAINT_KINDS",
     "CallableDetector",
     "Constraint",

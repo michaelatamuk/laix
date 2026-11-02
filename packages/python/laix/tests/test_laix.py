@@ -13,16 +13,15 @@ from pathlib import Path
 import pytest
 
 import laix
-from laix.core.contracts import (
+from laix.core.decisions import (
     ActionOption,
     Belief,
     Constraint,
     Goal,
     Observation,
     Situation,
-    iso,
-    utcnow,
 )
+from laix.core.time import iso, utcnow
 from laix.core.decisions import Decision
 from laix.appkit.runtime import ApprovalRequired, ExecutionBridge
 from laix.core.policies import ActionPolicy, ActionPolicyConfig, ActionPolicyRequest
@@ -61,7 +60,7 @@ def options(**overrides: object) -> tuple[ActionOption, ...]:
 
 def test_package_exposes_versioned_contracts() -> None:
     assert laix.SCHEMA_VERSION == "0.8.0"
-    assert set(laix.CONTRACT_NAMES) == {
+    assert set(laix.RECORD_NAMES) == {
         "Observation",
         "Belief",
         "Goal",
@@ -98,7 +97,7 @@ def test_committed_schema_is_current() -> None:
 
 def test_schema_covers_every_contract() -> None:
     document = build_schema()
-    assert set(document["$defs"]) == set(laix.CONTRACT_NAMES)
+    assert set(document["$defs"]) == set(laix.RECORD_NAMES)
     assert document["version"] == laix.SCHEMA_VERSION
 
 

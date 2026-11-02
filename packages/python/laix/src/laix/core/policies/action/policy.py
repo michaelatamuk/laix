@@ -20,19 +20,15 @@ never hidden in a model score.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from typing import Any
 
-from ..contracts import (
-    VERBS,
-    ActionOption,
-    Situation,
-    clamp,
-    iso,
-)
-from ..decisions import Decision
-
-ACTION_POLICY_VERSION = "0.8.0"
+from ...decisions import ActionOption, Decision, Situation
+from ...time import iso
+from ...values import clamp
+from ...verbs import VERBS
+from .config import ActionPolicyConfig
+from .constants import ACTION_POLICY_VERSION
+from .request import ActionPolicyRequest
 
 
 def _number(payload: dict[str, Any], key: str, default: float) -> float:
@@ -46,33 +42,6 @@ def _truthy(value: Any) -> bool:
     if isinstance(value, str):
         return value.strip().lower() in {"1", "true", "yes", "required", "always", "blocked", "on"}
     return bool(value)
-
-
-@dataclass(frozen=True)
-class ActionPolicyConfig:
-    """Thresholds are explicit so a host can audit and tune them.
-
-    The defaults reproduce a conservative operating posture: act only when both
-    urgency and confidence are high, ask when the evidence is weak, and never
-    interrupt for a low-urgency event.
-    """
-
-    min_confidence: float = 0.55
-    act_confidence: float = 0.80
-    ask_uncertainty: float = 0.45
-    act_urgency: float = 0.75
-    guide_urgency: float = 0.45
-    max_risk: float = 0.90
-    max_interrupt: float = 0.90
-    approval_kinds: tuple[str, ...] = ("approval", "safety")
-    max_alternatives: int = 6
-
-
-@dataclass(frozen=True)
-class ActionPolicyRequest:
-    situation: Situation
-    options: tuple[ActionOption, ...]
-    attributes: dict[str, Any] = field(default_factory=dict)
 
 
 class ActionPolicy:
@@ -304,3 +273,6 @@ class ActionPolicy:
 def decide_action(request: ActionPolicyRequest, *, config: ActionPolicyConfig | None = None, **kwargs: Any) -> Decision:
     """Functional shortcut for hosts that do not need a policy object."""
     return ActionPolicy(config).decide(request, **kwargs)
+
+
+__all__ = ["ActionPolicy", "decide_action"]

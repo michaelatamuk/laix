@@ -1,48 +1,12 @@
-"""Outcome learning: did the interruption help?
-
-This is the smallest honest version. It stores labelled outcomes, maps a reason
-code to a result, and reports precision and calibration. A LAIX bandit can
-replace ``adjustment`` later; the recording contract stays the same.
-"""
+"""A bounded, serialisable log of labelled attention outcomes."""
 
 from __future__ import annotations
 
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 
-from .model import AttentionOutcome
-
-HELPED = "helped"
-NEUTRAL = "neutral"
-HURT = "hurt"
-UNKNOWN = "unknown"
-
-_HURT_CODES = {"false_alarm", "data_error"}
-_NEUTRAL_CODES = {"design_change", "operational", "duplicate", "no_action"}
-
-
-def result_for_reason(reason_code: str | None) -> str:
-    """Map an app's dismissal reason to a learning label."""
-    if not reason_code:
-        return UNKNOWN
-    code = reason_code.strip().lower()
-    if code in _HURT_CODES:
-        return HURT
-    if code in _NEUTRAL_CODES:
-        return NEUTRAL
-    return UNKNOWN
-
-
-def label_for_feedback(state: str, reason_code: str | None = None) -> str:
-    """A UI feedback state (accepted, dismissed, snoozed, wrong) to a result."""
-    state = (state or "").strip().lower()
-    if state in {"accepted", "confirmed", "signed"}:
-        return HELPED
-    if state in {"wrong", "false_alarm"}:
-        return HURT
-    if state in {"dismissed", "snoozed", "assigned"}:
-        return result_for_reason(reason_code)
-    return UNKNOWN
+from .attention_outcome import AttentionOutcome
+from .labels import HELPED, HURT, NEUTRAL, UNKNOWN
 
 
 @dataclass
@@ -126,3 +90,6 @@ class OutcomeLog:
             }
             for kind in sorted(kinds)
         }
+
+
+__all__ = ["OutcomeLog"]

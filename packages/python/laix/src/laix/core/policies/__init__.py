@@ -4,8 +4,12 @@ The packaged packs are loaded lazily. ``decisions`` imports the registry, and
 the packs import ``decisions``; lazy loading keeps that cycle out of import time.
 """
 
+from __future__ import annotations
+
+from ..errors import PolicyError
 from .action import ACTION_POLICY_VERSION, ActionPolicy, ActionPolicyConfig, ActionPolicyRequest, decide_action
-from .registry import Policy, PolicyError, PolicyRegistry
+from .policy import Policy
+from .registry import PolicyRegistry
 
 _LAZY = {
     "ActivePerceptionPolicy": "active_perception",

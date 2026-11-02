@@ -152,7 +152,7 @@ def test_compare_reports_a_mismatch() -> None:
 
 
 #: The only file allowed to read the clock: the clock port the host supplies.
-CLOCK_ALLOWED = {"ports.py"}
+CLOCK_ALLOWED = {"ports.py", "system_clock.py"}
 LOCAL_PACKAGES = {"laix"}
 
 

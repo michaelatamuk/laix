@@ -9,30 +9,29 @@ network, no database, no clock of its own.
 
 from __future__ import annotations
 
-from ..contracts import VERBS
 from ..decisions import Breakdown, Escalation, Intent
-from .model import (
+from ..verbs import VERBS
+from .attention_decision import AttentionDecision
+from .attention_outcome import AttentionOutcome
+from .clock import Clock
+from .context import Context
+from .feedback import Feedback
+from .labels import (
     FEEDBACK_STATES,
-    REASON_CODES,
-    RESULTS,
-    SEVERITY_RANK,
-    AttentionDecision,
-    AttentionOutcome,
-    Context,
-    Feedback,
-    Signal,
-)
-from .outcomes import (
     HELPED,
     HURT,
     NEUTRAL,
+    REASON_CODES,
+    RESULTS,
+    SEVERITY_RANK,
     UNKNOWN,
-    OutcomeLog,
     label_for_feedback,
     result_for_reason,
 )
+from .null_sink import NullSink
+from .outcome_log import OutcomeLog
 from .policy import GATES, REASONS, cost_of_waiting, decide_attention, dedupe_key, rollup, score, trace_id, undo_hint
-from .ports import Clock, NullSink, Recorder, Sink, SystemClock
+from .recorder import Recorder
 from .replay import (
     POLICIES,
     benchmark,
@@ -45,6 +44,9 @@ from .replay import (
     signal_from,
     validate_document,
 )
+from .signal import Signal
+from .sink import Sink
+from .system_clock import SystemClock
 from .timing import hours_until, is_quiet, parse_range
 
 __version__ = "0.8.0"

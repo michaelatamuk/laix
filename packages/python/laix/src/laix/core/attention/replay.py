@@ -12,9 +12,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from ..contracts import VERBS
-from .model import FEEDBACK_STATES, SEVERITY_RANK, Context, Escalation, Feedback, Intent, Signal
+from ..verbs import VERBS
+from ..decisions import Escalation, Intent
+from .context import Context
+from .feedback import Feedback
+from .labels import FEEDBACK_STATES, SEVERITY_RANK
 from .policy import REASONS, decide_attention
+from .signal import Signal
 from .timing import parse_range
 
 FIELDS = ("verb", "reason_code", "deliver", "record", "requires_approval", "score", "cost_of_waiting", "undo_hint", "reversible")

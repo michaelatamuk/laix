@@ -13,7 +13,12 @@ import hashlib
 from collections.abc import Iterable, Sequence
 from datetime import datetime
 
-from .model import SEVERITY_RANK, AttentionDecision, Breakdown, Context, Feedback, Signal
+from .attention_decision import AttentionDecision
+from .context import Context
+from .feedback import Feedback
+from .labels import SEVERITY_RANK
+from .signal import Signal
+from ..decisions import Breakdown
 from .timing import hours_until, is_quiet
 
 SEVERITY_POINTS = {"critical": 60.0, "high": 45.0, "medium": 30.0, "low": 15.0, "info": 5.0}

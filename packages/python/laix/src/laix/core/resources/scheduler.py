@@ -12,51 +12,12 @@ rather than claimed.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from typing import Any, Iterable
 
-from .contracts import clamp
-
-
-@dataclass(frozen=True)
-class Budget:
-    max_deep_calls: int = 4
-    max_cost: float = 1.0
-    max_latency_ms: int = 2_000
-
-
-@dataclass(frozen=True)
-class SensingOption:
-    name: str
-    tier: str = "cheap"  # cheap | deep
-    cost: float = 0.0
-    latency_ms: int = 0
-    information_gain: float = 0.0
-
-    def __post_init__(self) -> None:
-        if self.tier not in {"cheap", "deep"}:
-            raise ValueError(f"unknown sensing tier: {self.tier}")
-        object.__setattr__(self, "information_gain", clamp(self.information_gain))
-
-
-@dataclass(frozen=True)
-class ResourcePlan:
-    allowed: tuple[str, ...]
-    skipped: tuple[dict[str, Any], ...]
-    deep_calls: int
-    cost: float
-    reason: str
-    attributes: dict[str, Any] = field(default_factory=dict)
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "allowed": list(self.allowed),
-            "skipped": [dict(item) for item in self.skipped],
-            "deepCalls": self.deep_calls,
-            "cost": round(self.cost, 6),
-            "reason": self.reason,
-            "attributes": dict(self.attributes),
-        }
+from ..values import clamp
+from .budget import Budget
+from .plan import ResourcePlan
+from .sensing_option import SensingOption
 
 
 class ResourceScheduler:
@@ -112,3 +73,6 @@ class ResourceScheduler:
     def should_escalate(confidence: float, *, required: float = 0.75) -> bool:
         """The cheap model is not sure enough; ask for the expensive one."""
         return clamp(confidence) < clamp(required)
+
+
+__all__ = ["ResourceScheduler"]

@@ -10,7 +10,7 @@ from dataclasses import asdict, replace
 from typing import Any
 
 from ..core import attention
-from ..core.contracts import SCHEMA_VERSION
+from ..core.version import SCHEMA_VERSION
 from ..core.decisions import (
     Breakdown,
     Decision,

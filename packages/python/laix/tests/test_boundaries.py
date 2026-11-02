@@ -11,18 +11,7 @@ import laix.core
 
 PACKAGE = Path(laix.__file__).resolve().parent
 CORE = PACKAGE / "core"
-CORE_FILES = [
-    CORE / "contracts.py",
-    CORE / "decisions.py",
-    CORE / "outcome.py",
-    CORE / "evaluation.py",
-    CORE / "perception.py",
-    CORE / "resources.py",
-    CORE / "schema.py",
-    CORE / "__init__.py",
-    *sorted((CORE / "attention").glob("*.py")),
-    *sorted((CORE / "policies").glob("*.py")),
-]
+CORE_FILES = sorted((CORE).rglob("*.py"))
 APP_KIT_MODULES = {
     "runtime",
     "records",
@@ -39,22 +28,31 @@ def imported_modules(path: Path) -> set[str]:
     found: set[str] = set()
     for node in ast.walk(tree):
         if isinstance(node, ast.ImportFrom) and node.module:
-            found.add(node.module)
-            found.update(f"{node.module}.{item.name}" for item in node.names)
+            prefix = "." * node.level
+            found.add(prefix + node.module)
+            found.update(f"{prefix}{node.module}.{item.name}" for item in node.names)
         elif isinstance(node, ast.Import):
             found.update(item.name for item in node.names)
     return found
 
 
+def _reaches_app_kit(name: str, modules: set[str]) -> bool:
+    if name.startswith(".") and not name.startswith(".."):
+        # A single dot only reaches another module inside ``core`` itself.
+        return False
+    candidate = name.lstrip(".")
+    return any(
+        candidate == module
+        or candidate.startswith(f"{module}.")
+        or f".{module}." in candidate
+        for module in modules
+    )
+
+
 def test_core_files_do_not_import_the_app_kit() -> None:
     for path in CORE_FILES:
         imports = imported_modules(path)
-        offenders = {
-            name
-            for name in imports
-            for module in APP_KIT_MODULES
-            if name == module or name.startswith(f"{module}.") or f".{module}." in name
-        }
+        offenders = {name for name in imports if _reaches_app_kit(name, APP_KIT_MODULES)}
         assert not offenders, f"{path.name} imports app kit modules: {sorted(offenders)}"
 
 

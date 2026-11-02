@@ -1,6 +1,6 @@
 """Live Context loop: run detectors under a resource budget.
 
-The contracts live in :mod:`laix.core.perception`; the host supplies detectors
+The records live in :mod:`laix.core.perception`; the host supplies detectors
 and drives the clock. This module runs cheap detectors always and admits deep
 detectors only when gain, cost and latency allow.
 """
@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Iterable
 
-from ..core.contracts import clamp
+from ..core.values import clamp
 from ..core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
 from ..core.resources import Budget, ResourceScheduler, SensingOption
 

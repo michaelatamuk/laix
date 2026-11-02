@@ -1,28 +1,10 @@
-"""LAIX core: contracts, decisions, policies, outcomes and evaluation.
+"""LAIX core: decisions, policies, attention, outcomes and evaluation.
 
 This surface is domain-neutral and does not load the app kit. Use it from a
 mission, agent or another application that only needs the decision layer.
 """
 
-from .contracts import (
-    CONTRACTS,
-    CONSTRAINT_KINDS,
-    HORIZONS,
-    OUTCOME_DIRECTIONS,
-    OUTCOME_LABELS,
-    PHASES,
-    SCHEMA_VERSION,
-    VERBS,
-    ActionOption,
-    Belief,
-    Constraint,
-    Goal,
-    Observation,
-    Outcome,
-    Receipt,
-    Situation,
-    Trace,
-)
+from .records import RECORDS, RECORD_NAMES
 from .attention import (
     Context,
     Feedback,
@@ -33,9 +15,42 @@ from .attention import (
     score,
 )
 from .resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
-from .decisions import Breakdown, Decision, DecisionRequest, Escalation, EvidenceRef, Intent
+from .decisions import (
+    ActionOption,
+    Belief,
+    Breakdown,
+    CONSTRAINT_KINDS,
+    Constraint,
+    Decision,
+    DecisionRequest,
+    Escalation,
+    EvidenceRef,
+    Goal,
+    HORIZONS,
+    Intent,
+    Observation,
+    PHASES,
+    RECEIPT_STATUSES,
+    Receipt,
+    Situation,
+    Trace,
+)
+from .outcome import (
+    OUTCOME_DIRECTIONS,
+    OUTCOME_LABELS,
+    Arm,
+    Outcome,
+    OutcomeLedger,
+    OutcomeStore,
+    UCBBandit,
+    reward_for_label,
+)
+from .perception import Detection, Detector, PerceptionEvent, PerceptionFrame
+from .time import iso, parse_iso, utcnow
+from .values import confidence_band
+from .version import SCHEMA_VERSION
+from .verbs import VERBS
 from .evaluation import Case, Report, Row, compare, load_cases
-from .outcome import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
 from .policies import (
     ACTION_POLICY_VERSION,
     ActivePerceptionPolicy,
@@ -56,8 +71,6 @@ from .policies import (
     decide_action,
 )
 
-CONTRACT_NAMES = tuple(item.__name__ for item in (*CONTRACTS, Decision))
-
 __all__ = [
     "ActionOption",
     "ActivePerceptionPolicy",
@@ -67,14 +80,16 @@ __all__ = [
     "Belief",
     "Breakdown",
     "Budget",
-    "CONTRACT_NAMES",
-    "CONTRACTS",
+    "RECORD_NAMES",
     "CONSTRAINT_KINDS",
     "Case",
     "Constraint",
     "Context",
     "ActionPolicy",
+    "Decision",
     "DecisionRequest",
+    "Detection",
+    "Detector",
     "Escalation",
     "EscalationPolicy",
     "EvidenceRef",
@@ -91,6 +106,8 @@ __all__ = [
     "OutcomeLog",
     "OutcomeStore",
     "PHASES",
+    "PerceptionEvent",
+    "PerceptionFrame",
     "ACTION_POLICY_VERSION",
     "Policy",
     "ActionPolicyConfig",
@@ -98,6 +115,8 @@ __all__ = [
     "PolicyRegistry",
     "ActionPolicyRequest",
     "PreferenceElicitationPolicy",
+    "RECEIPT_STATUSES",
+    "RECORDS",
     "Receipt",
     "ReplanningPolicy",
     "Report",
@@ -114,10 +133,14 @@ __all__ = [
     "VERBS",
     "VerificationPolicy",
     "compare",
+    "confidence_band",
     "decide_action",
     "decide_attention",
     "is_quiet",
+    "iso",
     "load_cases",
+    "parse_iso",
     "reward_for_label",
     "score",
+    "utcnow",
 ]

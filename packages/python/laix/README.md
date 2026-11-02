@@ -35,10 +35,11 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 
 | Piece | Role |
 |---|---|
-| `core/contracts.py` | nine shared records, enums and helpers |
-| `core/decisions.py` | `Decision`, `DecisionRequest` and normalisation into the one answer |
+| `core/decisions/` | shared records, decision shapes and normalisation, one class per file |
+| `core/records.py` | `RECORDS` and `RECORD_NAMES` |
+| `core/version.py`, `core/verbs.py`, `core/values.py`, `core/time.py` | version, verb, numeric and clock helpers |
 | `appkit/layer.py` | the public `Layer` orchestrator |
-| `core/policies/action.py` | built-in action-selection policy |
+| `core/policies/action/` | built-in action-selection policy |
 | `core/policies/active_perception.py` | packaged `observe` policy |
 | `core/policies/safety.py` | risk-limited action policy |
 | `core/policies/replanning.py` | feasible-plan selection policy |
@@ -48,21 +49,21 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/policies/verification.py` | outcome confirmation policy |
 | `core/policies/escalation.py` | hand-over policy |
 | `core/policies/bandit.py` | learned bandit policy |
-| `core/policies/registry.py` | policy plugin protocol and registry |
+| `core/policies/policy.py`, `core/policies/registry.py` | policy plugin protocol and registry |
 | `core/attention/` | attention policy: gates, score, quiet hours, budget, feedback, replay |
 | `appkit/runtime/decision_runtime.py` | the action runtime |
 | `appkit/runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
-| `core/perception.py` | detector, detection and frame contracts |
+| `core/perception/` | detector, detection and frame records |
 | `appkit/live_context.py` | host-driven detector loop |
 | `appkit/runtime/state.py` | experience state: goals, phase, beliefs, decay, expiry |
 | `appkit/runtime/state_store.py` | storage-free state store contract and in-memory store |
-| `core/resources.py` | cheap/deep call admission under budget |
+| `core/resources/` | cheap/deep call admission under budget |
 | `appkit/platform.py` | south platform interface and in-memory platform |
-| `core/outcome.py` | directed metric ledger, outcome store contract and UCB learner |
+| `core/outcome/` | directed metric ledger, outcome store protocol and UCB learner |
 | `appkit/records/decision.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
 | `appkit/records/proposal.py` | storage-free proposal and approval lifecycle |
 | `appkit/delivery.py` | delivery port and receipt |
-| `core/evaluation.py` | policy parity and replay harness |
+| `core/evaluation/` | policy parity and replay harness |
 | `appkit/bench.py` | LAIX-Bench suites, report and `python -m laix.appkit.bench` |
 | `core/schema.py` | generated JSON Schema |
 

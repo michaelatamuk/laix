@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://laix.dev/contracts/laix-v1.schema.json",
-  "title": "LAIX contracts",
-  "description": "Domain-neutral decision-layer contracts. Generated from laix.contracts.",
+  "$id": "https://laix.dev/records/laix-v1.schema.json",
+  "title": "LAIX records",
+  "description": "Domain-neutral decision-layer records. Generated from laix.core.records.",
   "version": "0.8.0",
   "$defs": {
     "Observation": {

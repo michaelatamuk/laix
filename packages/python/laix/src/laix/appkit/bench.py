@@ -17,8 +17,7 @@ from datetime import datetime, timezone
 from typing import Any, Callable, Iterable, Mapping, Sequence
 
 from ..core.attention import Context, Feedback, Signal
-from ..core.contracts import ActionOption, Belief, Situation
-from ..core.decisions import DecisionRequest
+from ..core.decisions import ActionOption, Belief, DecisionRequest, Situation
 from .layer import Layer
 from ..core.policies import (
     ActivePerceptionPolicy,

@@ -1,30 +1,9 @@
-"""Policy plugins.
-
-A policy is any object with a name and a ``decide`` method. It receives a
-``DecisionRequest`` and returns decisions. The layer does not care how the policy
-is implemented: rules, a learned model, a remote service or a test double.
-
-A custom policy returns ``laix.appkit.layer.Decision``. The layer also accepts the core
-or attention decision shapes and normalises them, so a policy can reuse the
-existing contracts without rewriting them.
-"""
+"""A small name-to-policy map used by ``Layer``."""
 
 from __future__ import annotations
 
-from typing import Any, Protocol, runtime_checkable
-
 from ..errors import PolicyError
-
-
-@runtime_checkable
-class Policy(Protocol):
-    """The smallest contract a policy plugin implements."""
-
-    name: str
-
-    def decide(self, request: Any) -> list[Any]:
-        ...
-
+from .policy import Policy
 
 
 class PolicyRegistry:
@@ -52,4 +31,4 @@ class PolicyRegistry:
         return tuple(sorted(self._policies))
 
 
-__all__ = ["Policy", "PolicyError", "PolicyRegistry"]
+__all__ = ["PolicyRegistry"]

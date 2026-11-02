@@ -1,4 +1,4 @@
-"""JSON schema generation and structural validation for the contracts.
+"""JSON schema generation and structural validation for the core records.
 
 The schema is derived from the dataclasses, so it cannot drift from the code.
 ``laix/core/laix-v1.schema.json`` is the committed, versioned artefact; the
@@ -13,10 +13,10 @@ from dataclasses import MISSING, fields
 from pathlib import Path
 from typing import Any, Union, get_args, get_origin, get_type_hints
 
-from .contracts import CONTRACTS, SCHEMA_VERSION
-from .decisions import Decision
+from .records import RECORDS
+from .version import SCHEMA_VERSION
 
-SCHEMA_ID = "https://laix.dev/contracts/laix-v1.schema.json"
+SCHEMA_ID = "https://laix.dev/records/laix-v1.schema.json"
 SCHEMA_PATH = Path(__file__).resolve().parent / "laix-v1.schema.json"
 
 _ENUMS: dict[str, list[str]] = {
@@ -59,7 +59,7 @@ def _schema_for(value: Any) -> dict[str, Any]:
     return {}
 
 
-def _field_schema(contract: type, name: str, annotation: Any, required: bool) -> dict[str, Any]:
+def _field_schema(record: type, name: str, annotation: Any, required: bool) -> dict[str, Any]:
     schema = _schema_for(annotation)
     if name in _ENUMS and _ENUMS[name]:
         schema = {**schema, "enum": _ENUMS[name]}
@@ -74,18 +74,18 @@ def _field_schema(contract: type, name: str, annotation: Any, required: bool) ->
 
 def build_schema() -> dict[str, Any]:
     definitions: dict[str, Any] = {}
-    for contract in (*CONTRACTS, Decision):
-        hints = get_type_hints(contract)
+    for record in RECORDS:
+        hints = get_type_hints(record)
         properties: dict[str, Any] = {}
         required: list[str] = []
-        for item in fields(contract):
+        for item in fields(record):
             has_default = item.default is not MISSING or item.default_factory is not MISSING  # type: ignore[misc]
             if not has_default:
                 required.append(item.name)
-            properties[item.name] = _field_schema(contract, item.name, hints.get(item.name, Any), not has_default)
-        definitions[contract.__name__] = {
+            properties[item.name] = _field_schema(record, item.name, hints.get(item.name, Any), not has_default)
+        definitions[record.__name__] = {
             "type": "object",
-            "title": contract.__name__,
+            "title": record.__name__,
             "additionalProperties": False,
             "properties": properties,
             "required": required,
@@ -93,8 +93,8 @@ def build_schema() -> dict[str, Any]:
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": SCHEMA_ID,
-        "title": "LAIX contracts",
-        "description": "Domain-neutral decision-layer contracts. Generated from laix.contracts.",
+        "title": "LAIX records",
+        "description": "Domain-neutral decision-layer records. Generated from laix.core.records.",
         "version": SCHEMA_VERSION,
         "$defs": definitions,
     }
@@ -111,17 +111,17 @@ def write_schema(path: Path | None = None) -> Path:
     return target
 
 
-def check(contract_name: str, payload: dict[str, Any]) -> list[str]:
+def check(record_name: str, payload: dict[str, Any]) -> list[str]:
     """Minimal structural validation.
 
     This is intentionally not a general JSON Schema implementation.  It checks
-    required keys, primitive types and enums for the committed contracts so the
+    required keys, primitive types and enums for the committed records so the
     package stays standard-library only.
     """
     document = build_schema()
-    definition = document["$defs"].get(contract_name)
+    definition = document["$defs"].get(record_name)
     if definition is None:
-        return [f"unknown contract: {contract_name}"]
+        return [f"unknown record: {record_name}"]
     errors: list[str] = []
     for key in definition["required"]:
         if key not in payload:
