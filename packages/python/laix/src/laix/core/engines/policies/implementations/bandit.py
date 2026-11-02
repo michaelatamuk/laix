@@ -12,7 +12,7 @@ from typing import Any, Callable, Iterable
 
 from ....decisions import Decision, Intent
 from ....outcome_learning import Arm, Outcome, UCBBandit
-from ._support import decision, number, value
+from ._helpers import decision, number, value
 
 
 def _arm(item: Any) -> Arm:

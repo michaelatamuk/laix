@@ -17,9 +17,9 @@ _LAZY = {
     "BanditPolicy": "implementations.bandit",
     "EscalationPolicy": "implementations.escalation",
     "NegotiationPolicy": "implementations.negotiation",
-    "PreferenceElicitationPolicy": "implementations.preference",
+    "PreferenceElicitationPolicy": "implementations.preference_elicitation",
     "ReplanningPolicy": "implementations.replanning",
-    "SafetyConstrainedPolicy": "implementations.safety",
+    "SafetyConstrainedPolicy": "implementations.safety_constrained",
     "VerificationPolicy": "implementations.verification",
 }
 

@@ -44,11 +44,11 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `appkit/layer.py` | the public `Layer` orchestrator |
 | `core/engines/policies/implementations/action.py` | built-in action-selection policy |
 | `core/engines/policies/implementations/active_perception.py` | packaged `observe` policy |
-| `core/engines/policies/implementations/safety.py` | risk-limited action policy |
+| `core/engines/policies/implementations/safety_constrained.py` | risk-limited action policy |
 | `core/engines/policies/implementations/replanning.py` | feasible-plan selection policy |
 | `core/engines/policies/implementations/allocation.py` | budgeted allocation policy |
 | `core/engines/policies/implementations/negotiation.py` | accept, counter or escalate policy |
-| `core/engines/policies/implementations/preference.py` | preference-question selection policy |
+| `core/engines/policies/implementations/preference_elicitation.py` | preference-question selection policy |
 | `core/engines/policies/implementations/verification.py` | outcome confirmation policy |
 | `core/engines/policies/implementations/escalation.py` | hand-over policy |
 | `core/engines/policies/implementations/bandit.py` | learned bandit policy |
