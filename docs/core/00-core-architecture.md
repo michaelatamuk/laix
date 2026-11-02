@@ -4,30 +4,29 @@ LAIX core only. Read bottom-up: each block depends on the blocks below it. Arrow
 to what it depends on.
 
 ```mermaid
-flowchart BT
-    foundation["Foundation<br/>support · ids · time · values · verbs · errors"]
-    contracts["Decision contract<br/>request · response · trail"]
-    learning["Outcome learning<br/>outcome · reward · ledger · bandit"]
-    sensing["Sensing<br/>detector · detection · event · frame"]
-    engines["Decision engines<br/>attention · policies · resources"]
-    evaluation["Evaluation<br/>cases · parity · bench"]
-    schema["Schema<br/>records · build · check"]
-    entry["Core entry<br/>select · decide"]
+block-beta
+    columns 3
 
-    foundation --> contracts
+    entry["Core entry<br/>select · decide"]:3
+    evaluation["Evaluation<br/>cases · parity · bench"] schema["Schema<br/>records · build · check"] space
+    engines["Decision engines<br/>attention · policies · resources"]:3
+    contract["Decision contract<br/>request · response · trail"] learning["Outcome learning<br/>outcome · reward · ledger · bandit"] sensing["Sensing<br/>detector · detection · event · frame"]
+    foundation["Foundation<br/>support · ids · time · values · verbs · errors"]:3
+
+    foundation --> contract
     foundation --> learning
     foundation --> sensing
 
-    contracts --> engines
+    contract --> engines
     learning --> engines
 
-    contracts --> evaluation
+    contract --> evaluation
     engines --> evaluation
 
-    contracts --> schema
+    contract --> schema
     learning --> schema
 
-    contracts --> entry
+    contract --> entry
     engines --> entry
 ```
 
