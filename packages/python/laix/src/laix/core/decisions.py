@@ -1,113 +1,25 @@
-"""The one decision shape every policy returns, and conversions into it.
+"""The request shape and the conversion helpers for the one decision shape.
 
-Keeping the shape separate from ``Layer`` makes the public contract easy to read
-and lets the runtime, policies and adapters share it without importing the
-orchestrator.
+``Decision`` itself is a core record in :mod:`laix.core.contracts`, next to the
+situation, the options and the outcome it belongs with. This module adds the
+request the host sends and the normalisation used by ``Layer``.
 """
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from typing import Any, Iterable
 
-from .contracts import Decision as CoreDecision
-from .contracts import Situation
-from .policies.registry import PolicyError
-
-
-@dataclass(frozen=True, slots=True)
-class EvidenceRef:
-    id: str
-    kind: str = "reference"
-    quote: str | None = None
-    source: str | None = None
-    confidence: float | None = None
-
-
-@dataclass(frozen=True, slots=True)
-class Intent:
-    capability: str
-    args: dict[str, Any] = field(default_factory=dict)
-
-
-@dataclass(frozen=True, slots=True)
-class Escalation:
-    target: str
-    reason: str = ""
-
-
-@dataclass(frozen=True, slots=True)
-class Breakdown:
-    severity: float = 0.0
-    due: float = 0.0
-    confidence: float = 0.0
-    interruption: float = 0.0
-    learned: float = 0.0
-    total: float = 0.0
-
-
-@dataclass(frozen=True, slots=True)
-class Decision:
-    """The one decision shape returned by every policy."""
-
-    verb: str
-    confidence: float
-    reason_code: str
-    rationale: str
-    decision_id: str = ""
-    policy_version: str = ""
-    action_id: str | None = None
-    evidence: tuple[EvidenceRef, ...] = ()
-    requires_approval: bool = False
-    score: float | None = None
-    breakdown: Breakdown | None = None
-    intent: Intent | None = None
-    escalation: Escalation | None = None
-    cost_of_waiting: float = 0.0
-    reversible: bool = False
-    undo_hint: str | None = None
-    trace_id: str = ""
-    deliver: bool = True
-    record: bool = True
-    created_at: str | None = None
-    confidence_source: str = ""
-    calibrated: bool = False
-    alternatives: tuple[dict[str, Any], ...] = ()
-    constraints_applied: tuple[str, ...] = ()
-
-    def __post_init__(self) -> None:
-        if self.verb not in {"wait", "observe", "guide", "ask", "act", "verify", "escalate"}:
-            raise ValueError(f"unknown verb: {self.verb!r}")
-        object.__setattr__(self, "confidence", max(0.0, min(1.0, float(self.confidence))))
-
-    def basis(self) -> tuple[dict[str, Any], ...]:
-        """A host-neutral basis for a decision record or explain view."""
-        rows: list[dict[str, Any]] = [
-            {"kind": "reason", "ref": self.reason_code, "note": self.rationale}
-        ]
-        for item in self.evidence:
-            rows.append(
-                {
-                    "kind": item.kind,
-                    "ref": item.id,
-                    "note": item.quote or "",
-                    "source": item.source or "",
-                }
-            )
-        if self.escalation is not None:
-            rows.append(
-                {
-                    "kind": "escalation",
-                    "ref": self.escalation.target,
-                    "note": self.escalation.reason,
-                }
-            )
-        for item in self.constraints_applied:
-            rows.append({"kind": "constraint", "ref": item, "note": ""})
-        return tuple(rows)
-
-    def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+from .contracts import (
+    ActionOption,
+    Breakdown,
+    Decision,
+    Escalation,
+    EvidenceRef,
+    Intent,
+    Situation,
+)
+from .errors import PolicyError
 
 
 @dataclass(frozen=True, slots=True)
@@ -123,7 +35,7 @@ class DecisionRequest:
     signals: tuple[Any, ...] = ()
     context: Any = None
     situation: Situation | None = None
-    options: tuple[Any, ...] = ()
+    options: tuple[ActionOption, ...] = ()
     attributes: dict[str, Any] = field(default_factory=dict)
     confidence: float | None = None
     confidence_source: str = ""
@@ -180,32 +92,13 @@ def _breakdown(value: Any) -> Breakdown | None:
     )
 
 
-def from_core(decision: CoreDecision) -> Decision:
+def from_attention(decision: Any) -> Decision:
+    """Convert an ``AttentionDecision`` without importing the attention package."""
     return Decision(
         verb=decision.verb,
         confidence=decision.confidence,
-        reason_code="policy_rule",
-        rationale=decision.rationale,
-        decision_id=decision.id,
-        policy_version=decision.policy_version,
-        action_id=decision.action_id,
-        requires_approval=decision.requires_approval,
-        score=decision.utility,
-        trace_id=decision.trace_id,
-        created_at=decision.created_at,
-        alternatives=tuple(dict(item) for item in decision.alternatives),
-        constraints_applied=tuple(decision.constraints_applied),
-    )
-
-
-def from_attention(decision: Any) -> Decision:
-    """Convert an attention-policy decision without importing the attention package."""
-    verb = "guide" if decision.action == "notify" else decision.action
-    return Decision(
-        verb=verb,
-        confidence=decision.confidence,
-        reason_code=decision.reason,
-        rationale=decision.reason,
+        reason_code=decision.reason_code,
+        rationale=decision.reason_code,
         evidence=_evidence(decision.evidence_refs),
         requires_approval=decision.requires_approval,
         score=decision.score,
@@ -222,20 +115,18 @@ def from_attention(decision: Any) -> Decision:
 
 
 def coerce(value: Any) -> Decision:
-    """Normalise a policy result to the one layer decision shape."""
+    """Normalise a policy result to the one public decision shape."""
     if isinstance(value, Decision):
         return value
-    if isinstance(value, CoreDecision):
-        return from_core(value)
-    if hasattr(value, "action") and hasattr(value, "reason"):
+    if hasattr(value, "signal_id") and hasattr(value, "verb"):
         return from_attention(value)
     if isinstance(value, dict):
         return Decision(
-            verb=str(value.get("verb") or value.get("action") or "wait"),
+            verb=str(value.get("verb") or "wait"),
             confidence=float(value.get("confidence", 0.0)),
-            reason_code=str(value.get("reason_code") or value.get("reason") or "policy_rule"),
-            rationale=str(value.get("rationale") or value.get("reason") or ""),
-            decision_id=str(value.get("decision_id", "")),
+            reason_code=str(value.get("reason_code") or "policy_rule"),
+            rationale=str(value.get("rationale") or ""),
+            decision_id=str(value.get("decision_id") or value.get("id") or ""),
             requires_approval=bool(value.get("requires_approval", False)),
             score=value.get("score"),
             trace_id=str(value.get("trace_id", "")),
@@ -254,5 +145,4 @@ __all__ = [
     "Intent",
     "coerce",
     "from_attention",
-    "from_core",
 ]

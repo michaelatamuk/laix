@@ -6,21 +6,20 @@ memory, ingestion, proactivity, permissions and missions belong to the host.
 """
 
 from .delivery import DeliveryPort, DeliveryReceipt, NullDelivery
-from .layer import Decision as LayerDecision
-from .layer import DecisionRequest, Layer
+from .layer import Decision, DecisionRequest, Layer
 from .platform import (
     ApprovalDecision,
     ApprovalRequest,
     CAPABILITY_LEVELS,
     Capability,
-    Event,
+    PlatformEvent,
     InMemoryPlatform,
     Platform,
     SkillCall,
 )
 from .records.decision import (
     DecisionRecord,
-    EvidenceRef as RecordEvidenceRef,
+    EvidenceRef,
     approve as approve_record,
     create_record,
     mark_executed,
@@ -35,7 +34,7 @@ from .records.proposal import (
     undo as undo_proposal,
 )
 from ..core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
-from ..core.resources import Budget, ResourcePlan, ResourcePolicy, SensingOption
+from ..core.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .live_context import CallableDetector, LiveContext
 from .runtime import (
     ApprovalRequired,
@@ -62,23 +61,22 @@ __all__ = [
     "DeliveryReceipt",
     "Detection",
     "Detector",
-    "Event",
+    "PlatformEvent",
     "EvidenceRef",
     "ExecutionBridge",
     "ExperienceState",
     "InMemoryPlatform",
     "InMemoryStateStore",
     "Layer",
-    "LayerDecision",
     "LiveContext",
     "NullDelivery",
     "PerceptionEvent",
     "PerceptionFrame",
     "Platform",
     "Proposal",
-    "RecordEvidenceRef",
+    "EvidenceRef",
     "ResourcePlan",
-    "ResourcePolicy",
+    "ResourceScheduler",
     "SensingOption",
     "SkillCall",
     "StateStore",

@@ -1,6 +1,6 @@
 import { clamp } from "../core/contracts.ts";
 import type { Detection, Detector, PerceptionEvent, PerceptionFrame } from "../core/perception.ts";
-import { ResourcePolicy, type Budget, type SensingOption } from "../core/resources.ts";
+import { ResourceScheduler, type Budget, type SensingOption } from "../core/resources.ts";
 
 export class CallableDetector implements Detector {
   name: string;
@@ -70,13 +70,13 @@ class Frame implements PerceptionFrame {
 
 export class LiveContext {
   budget: Required<Budget>;
-  policy: ResourcePolicy;
+  policy: ResourceScheduler;
   frames: PerceptionFrame[] = [];
   private detectors = new Map<string, Detector>();
 
-  constructor(detectors: Detector[] = [], options: { budget?: Budget; policy?: ResourcePolicy } = {}) {
+  constructor(detectors: Detector[] = [], options: { budget?: Budget; policy?: ResourceScheduler } = {}) {
     this.budget = { maxDeepCalls: 2, maxCost: 1, maxLatencyMs: 500, ...options.budget };
-    this.policy = options.policy ?? new ResourcePolicy();
+    this.policy = options.policy ?? new ResourceScheduler();
     for (const detector of detectors) this.register(detector);
   }
 

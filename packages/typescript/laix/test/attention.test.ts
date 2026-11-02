@@ -1,23 +1,23 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { OutcomeLog, decide, isQuietHours } from "../src/index.ts";
+import { OutcomeLog, decideAttention, isQuietHours } from "../src/index.ts";
 
 describe("canonical attention policy", () => {
   it("uses guide as the canonical verb", () => {
-    const [decision] = decide(
+    const [decision] = decideAttention(
       { now: "2026-11-01T10:00:00+02:00", quietHours: null },
       [{ id: "a", kind: "kind-a", severity: "high", confidence: 0.9, due: "2026-11-02T09:00:00+02:00" }],
     );
-    assert.equal(decision.action, "guide");
-    assert.equal(decision.reason, "worth_surfacing");
+    assert.equal(decision.verb, "guide");
+    assert.equal(decision.reasonCode, "worth_surfacing");
   });
 
   it("passes quiet hours for a critical signal", () => {
-    const [decision] = decide(
+    const [decision] = decideAttention(
       { now: "2026-11-01T23:30:00+02:00", quietHours: "22:00-06:00" },
       [{ id: "b", kind: "kind-e", severity: "critical", confidence: 0.9 }],
     );
-    assert.equal(decision.action, "guide");
+    assert.equal(decision.verb, "guide");
     assert.equal(decision.deliver, true);
   });
 
@@ -27,7 +27,7 @@ describe("canonical attention policy", () => {
   });
 
   it("keeps approval as a flag on a reversible action", () => {
-    const [decision] = decide(
+    const [decision] = decideAttention(
       { now: "2026-11-01T10:00:00+02:00", quietHours: null, allowAct: true },
       [
         {
@@ -41,8 +41,8 @@ describe("canonical attention policy", () => {
         },
       ],
     );
-    assert.equal(decision.action, "act");
-    assert.equal(decision.reason, "act");
+    assert.equal(decision.verb, "act");
+    assert.equal(decision.reasonCode, "act");
     assert.equal(decision.requiresApproval, true);
     assert.equal(decision.undoHint, "cancel");
   });
@@ -50,7 +50,7 @@ describe("canonical attention policy", () => {
   it("learns from outcomes", () => {
     const log = new OutcomeLog();
     assert.equal(log.adjustment("kind-a"), 0);
-    log.record({ candidateId: "kind-a:1", action: "guide", result: "helped", at: "2026-11-01T10:00:00Z" });
+    log.record({ candidateId: "kind-a:1", verb: "guide", result: "helped", at: "2026-11-01T10:00:00Z" });
     assert.ok(log.adjustment("kind-a") > 0);
     assert.equal(log.acceptanceRate(), 1);
   });

@@ -11,7 +11,7 @@ DecisionRuntime ties the policy, the execution bridge and the trace together.
 """
 
 from laix import (
-    Action,
+    ActionOption,
     Belief,
     DecisionRuntime,
     ExecutionBridge,
@@ -20,8 +20,8 @@ from laix import (
 )
 
 options = (
-    Action(id="option-wait", verb="wait", name="keep watching", expected_benefit=0.1),
-    Action(
+    ActionOption(id="option-wait", verb="wait", name="keep watching", expected_benefit=0.1),
+    ActionOption(
         id="option-close-valve",
         verb="act",
         name="close the valve",

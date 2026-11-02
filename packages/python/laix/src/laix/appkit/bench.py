@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from typing import Any, Callable, Iterable, Mapping, Sequence
 
 from ..core.attention import Context, Feedback, Signal
-from ..core.contracts import Action, Belief, Situation
+from ..core.contracts import ActionOption, Belief, Situation
 from ..core.decisions import DecisionRequest
 from .layer import Layer
 from ..core.policies import (
@@ -150,7 +150,7 @@ def _attention(signal: Signal, moment: datetime, **context: Any) -> DecisionRequ
     )
 
 
-def _action(situation: Situation, options: Sequence[Action]) -> DecisionRequest:
+def _action(situation: Situation, options: Sequence[ActionOption]) -> DecisionRequest:
     return DecisionRequest(subject=situation.subject, at=AT, situation=situation, options=tuple(options))
 
 
@@ -198,8 +198,8 @@ def _action_suite() -> Suite:
         attributes={"urgency": 0.9},
     )
     sink_options = (
-        Action(id="option-wait", verb="wait", name="keep watching", expected_benefit=0.1),
-        Action(id="option-close-valve", verb="act", name="close the valve", expected_benefit=0.95, risk=0.05, reversible=True),
+        ActionOption(id="option-wait", verb="wait", name="keep watching", expected_benefit=0.1),
+        ActionOption(id="option-close-valve", verb="act", name="close the valve", expected_benefit=0.95, risk=0.05, reversible=True),
     )
     payment = Situation(
         id="payment-1",
@@ -209,8 +209,8 @@ def _action_suite() -> Suite:
         attributes={"urgency": 0.9},
     )
     payment_options = (
-        Action(id="option-wait", verb="wait", name="pay later", expected_benefit=0.1),
-        Action(id="option-pay", verb="act", name="pay the bill", expected_benefit=0.9, requires_approval=True),
+        ActionOption(id="option-wait", verb="wait", name="pay later", expected_benefit=0.1),
+        ActionOption(id="option-pay", verb="act", name="pay the bill", expected_benefit=0.9, requires_approval=True),
     )
     parcel = Situation(
         id="parcel-1",
@@ -220,9 +220,9 @@ def _action_suite() -> Suite:
         attributes={"urgency": 0.8, "needs_more_info": True},
     )
     parcel_options = (
-        Action(id="option-wait", verb="wait", name="keep waiting", expected_benefit=0.2),
-        Action(id="option-check-tracking", verb="observe", name="read the tracking page", expected_benefit=0.6),
-        Action(id="option-ask-courier", verb="ask", name="ask the courier", expected_benefit=0.4),
+        ActionOption(id="option-wait", verb="wait", name="keep waiting", expected_benefit=0.2),
+        ActionOption(id="option-check-tracking", verb="observe", name="read the tracking page", expected_benefit=0.6),
+        ActionOption(id="option-ask-courier", verb="ask", name="ask the courier", expected_benefit=0.4),
     )
     return Suite(
         name="action",

@@ -27,7 +27,7 @@ decisions = layer.decide(
 - `signals` and `context` for attention allocation; or
 - `situation` and `options` for action selection.
 
-Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_code`, `rationale`,
+Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`, `rationale`,
 `evidence`, `requires_approval`, `score`, `breakdown`, `intent`, `escalation`,
 `cost_of_waiting`, `reversible`, `undo_hint`, `trace_id`, `deliver`, `record` and `created_at`.
 
@@ -35,7 +35,7 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 
 | Piece | Role |
 |---|---|
-| `core/contracts.py` | versioned records: observation, belief, goal, constraint, action, situation, decision, outcome, receipt, trace |
+| `core/contracts.py` | versioned records: observation, belief, goal, constraint, action option, situation, decision, outcome, receipt, trace |
 | `core/decisions.py` | the one decision shape, request shape and policy-result conversions |
 | `appkit/layer.py` | the public `Layer` orchestrator |
 | `core/policies/action.py` | built-in action-selection policy |
@@ -71,14 +71,14 @@ Both return `laix.LayerDecision`, one shape with `verb`, `confidence`, `reason_c
 A policy is any object with a name and a `decide` method:
 
 ```python
-from laix import DecisionRequest, Layer, LayerDecision
+from laix import DecisionRequest, Layer, Decision
 
 class MyPolicy:
     name = "my-policy"
     version = "1.0"
 
     def decide(self, request):
-        return [LayerDecision(verb="wait", confidence=0.5, reason_code="policy_rule", rationale="wait")]
+        return [Decision(verb="wait", confidence=0.5, reason_code="policy_rule", rationale="wait")]
 
 layer = Layer(policy=MyPolicy())
 decision = layer.decide(

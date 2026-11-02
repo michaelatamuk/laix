@@ -36,7 +36,7 @@ def test_platform_approval_and_capability() -> None:
     platform = InMemoryPlatform(
         approver=lambda request: ApprovalDecision(approved=True, by="owner", note="ok")
     )
-    decision = platform.request_approval(ApprovalRequest(decision_id="d-1", action="assign"))
+    decision = platform.request_approval(ApprovalRequest(decision_id="d-1", action_name="assign"))
     assert decision.approved is True
     assert decision.by == "owner"
     assert platform.capability("fast").level == "fast"

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
-import { decide } from "../src/index.ts";
+import { decideAttention } from "../src/index.ts";
 
 const fixture = JSON.parse(
   readFileSync(new URL("../../../contracts/attention.v1.json", import.meta.url), "utf8"),
@@ -10,14 +10,14 @@ const fixture = JSON.parse(
 describe("canonical attention contract", () => {
   for (const testCase of fixture.cases) {
     it(testCase.id, () => {
-      const decisions = decide(testCase.context, testCase.signals);
+      const decisions = decideAttention(testCase.context, testCase.signals);
       const byId = new Map(decisions.map((decision) => [decision.signalId, decision]));
       for (const expected of testCase.expected) {
         const actual = byId.get(expected.signalId);
         assert.ok(actual, `${testCase.id}: no decision for ${expected.signalId}`);
-        assert.equal(actual.action, expected.action, `${testCase.id}/${expected.signalId}: action`);
-        if (expected.reason !== undefined) {
-          assert.equal(actual.reason, expected.reason, `${testCase.id}/${expected.signalId}: reason`);
+        assert.equal(actual.verb, expected.verb, `${testCase.id}/${expected.signalId}: action`);
+        if (expected.reason_code !== undefined) {
+          assert.equal(actual.reasonCode, expected.reason_code, `${testCase.id}/${expected.signalId}: reason`);
         }
         if (expected.deliver !== undefined) {
           assert.equal(actual.deliver, expected.deliver, `${testCase.id}/${expected.signalId}: deliver`);

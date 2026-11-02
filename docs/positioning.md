@@ -201,7 +201,7 @@ The plan for adding a real engine core is in [the engine roadmap](core/engine-ro
 A JEV-style model can be an app-side policy:
 
 ```python
-from laix import LayerDecision
+from laix import Decision
 
 class JevPolicy:
     name = "jev.v1"
@@ -216,13 +216,13 @@ class JevPolicy:
             options=["wait", "observe", "act", "ask"],
         )
         if result.confidence < 0.6:
-            return [LayerDecision(
+            return [Decision(
                 verb="ask",
                 confidence=result.confidence,
                 reason_code="low_confidence",
                 rationale="the model is unsure",
             )]
-        return [LayerDecision(
+        return [Decision(
             verb=result.choice,
             confidence=result.confidence,
             reason_code="model_choice",

@@ -10,10 +10,10 @@ from __future__ import annotations
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 
-from .model import Outcome
+from .model import AttentionOutcome
 
 HELPED = "helped"
-NO_EFFECT = "no_effect"
+NEUTRAL = "neutral"
 HURT = "hurt"
 UNKNOWN = "unknown"
 
@@ -29,7 +29,7 @@ def result_for_reason(reason_code: str | None) -> str:
     if code in _HURT_CODES:
         return HURT
     if code in _NEUTRAL_CODES:
-        return NO_EFFECT
+        return NEUTRAL
     return UNKNOWN
 
 
@@ -50,19 +50,19 @@ class OutcomeLog:
     """A bounded, serialisable log. No database, no clock, no app types."""
 
     limit: int = 500
-    records: list[Outcome] = field(default_factory=list)
+    records: list[AttentionOutcome] = field(default_factory=list)
 
-    def record(self, outcome: Outcome) -> None:
+    def record(self, outcome: AttentionOutcome) -> None:
         self.records.append(outcome)
         if len(self.records) > self.limit:
             del self.records[: len(self.records) - self.limit]
 
-    def extend(self, outcomes: Iterable[Outcome]) -> None:
+    def extend(self, outcomes: Iterable[AttentionOutcome]) -> None:
         for outcome in outcomes:
             self.record(outcome)
 
     def _counts(self, kind: str | None = None) -> dict[str, int]:
-        counts = {HELPED: 0, NO_EFFECT: 0, HURT: 0, UNKNOWN: 0}
+        counts = {HELPED: 0, NEUTRAL: 0, HURT: 0, UNKNOWN: 0}
         for item in self.records:
             if kind is not None and item.kind != kind:
                 continue

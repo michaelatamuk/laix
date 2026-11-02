@@ -13,7 +13,7 @@ import hashlib
 from collections.abc import Iterable, Sequence
 from datetime import datetime
 
-from .model import SEVERITY_RANK, Breakdown, Context, Decision, Feedback, Signal
+from .model import SEVERITY_RANK, AttentionDecision, Breakdown, Context, Feedback, Signal
 from .timing import hours_until, is_quiet
 
 SEVERITY_POINTS = {"critical": 60.0, "high": 45.0, "medium": 30.0, "low": 15.0, "info": 5.0}
@@ -59,8 +59,8 @@ def dedupe_key(signal: Signal, now) -> str:
     return f"{signal.id}:{now.date().isoformat()}"
 
 
-def trace_id(signal: Signal, now, action: str) -> str:
-    raw = f"{signal.id}|{now.date().isoformat()}|{action}".encode()
+def trace_id(signal: Signal, now, verb: str) -> str:
+    raw = f"{signal.id}|{now.date().isoformat()}|{verb}".encode()
     return "tr-" + hashlib.sha1(raw).hexdigest()[:12]
 
 
@@ -124,71 +124,71 @@ def cost_of_waiting(signal: Signal, context: Context) -> float:
     return round(_due_points(context.now, signal.due) * factor, 2)
 
 
-def undo_hint(action: str, reversible: bool) -> str | None:
-    if action in {"guide", "ask"}:
+def undo_hint(verb: str, reversible: bool) -> str | None:
+    if verb in {"guide", "ask"}:
         return "withdraw"
-    if action == "act":
+    if verb == "act":
         return "cancel" if reversible else None
     return None
 
 
-def _decide_one(signal: Signal, context: Context, delivered: int) -> Decision:
+def _decide_one(signal: Signal, context: Context, delivered: int) -> AttentionDecision:
     breakdown = score(signal, context)
     blocked = _feedback_blocks(context.feedback.get(signal.id), context.now)
 
-    action, reason, record, deliver = "guide", "worth_surfacing", True, True
+    verb, reason_code, record, deliver = "guide", "worth_surfacing", True, True
     delivered_now = delivered
 
     if context.stopped:
-        action, reason, record, deliver = "wait", "kill_switch", False, False
+        verb, reason_code, record, deliver = "wait", "kill_switch", False, False
     elif signal.kind in context.muted_kinds:
-        action, reason, record, deliver = "wait", "muted", False, False
+        verb, reason_code, record, deliver = "wait", "muted", False, False
     elif blocked is not None:
-        action, reason, record, deliver = "wait", blocked, False, False
+        verb, reason_code, record, deliver = "wait", blocked, False, False
     elif signal.confidence < context.min_confidence:
-        action, reason, record, deliver = "wait", "low_confidence", False, False
+        verb, reason_code, record, deliver = "wait", "low_confidence", False, False
     elif _rank(signal.severity) > _rank(context.min_severity):
-        action, reason, record, deliver = "wait", "below_floor", False, False
+        verb, reason_code, record, deliver = "wait", "below_floor", False, False
     elif dedupe_key(signal, context.now) in context.sent:
-        action, reason, record, deliver = "wait", "already_sent", False, False
+        verb, reason_code, record, deliver = "wait", "already_sent", False, False
     elif is_quiet(context.now, context.quiet_hours) and signal.severity != "critical":
-        action, reason, record, deliver = "wait", "quiet_hours", True, False
+        verb, reason_code, record, deliver = "wait", "quiet_hours", True, False
     elif context.interruption_budget is not None and delivered_now >= context.interruption_budget:
-        action, reason, record, deliver = "wait", "budget", False, False
+        verb, reason_code, record, deliver = "wait", "budget", False, False
     elif context.escalate_after_hours is not None and signal.severity == "critical":
         hours = hours_until(context.now, signal.due)
         if hours is not None and -hours > context.escalate_after_hours:
-            action, reason, record, deliver = "escalate", "overdue_escalation", True, True
+            verb, reason_code, record, deliver = "escalate", "overdue_escalation", True, True
     elif context.allow_act and signal.intent is not None and signal.reversible:
         # The app declared a reversible action it is prepared to take. The policy
         # may execute it, or ask first when approval is required.
-        action, reason = "act", "act"
+        verb, reason_code = "act", "act"
     else:
         delivered_now += 1
 
-    return Decision(
+    return AttentionDecision(
         signal_id=signal.id,
-        action=action,
+        verb=verb,
         score=breakdown.total,
-        reason=reason,
+        reason_code=reason_code,
         confidence=signal.confidence,
         deliver=deliver,
         record=record,
         requires_approval=signal.requires_approval,
         evidence_refs=signal.evidence_refs,
         breakdown=breakdown,
-        trace_id=trace_id(signal, context.now, action),
-        intent=signal.intent if action in {"act", "ask"} else None,
-        escalation=signal.escalation if action == "escalate" else None,
+        trace_id=trace_id(signal, context.now, verb),
+        intent=signal.intent if verb in {"act", "ask"} else None,
+        escalation=signal.escalation if verb == "escalate" else None,
         cost_of_waiting=cost_of_waiting(signal, context),
         reversible=signal.reversible,
-        undo_hint=undo_hint(action, signal.reversible),
+        undo_hint=undo_hint(verb, signal.reversible),
     )
 
 
-def decide(signals: Iterable[Signal], context: Context) -> list[Decision]:
+def decide_attention(signals: Iterable[Signal], context: Context) -> list[AttentionDecision]:
     """Return one decision per signal, in input order."""
-    out: list[Decision] = []
+    out: list[AttentionDecision] = []
     delivered = 0
     for signal in signals:
         decision = _decide_one(signal, context, delivered)

@@ -9,9 +9,10 @@
  * It reads no clock, performs no I/O and names no app.
  */
 
-export type DecisionAction = "wait" | "observe" | "guide" | "ask" | "act" | "verify" | "escalate";
+import type { Escalation, Intent, Verb } from "./contracts.ts";
+
 export type Severity = "critical" | "high" | "medium" | "low" | "info";
-export type OutcomeResult = "helped" | "no_effect" | "hurt" | "unknown";
+export type OutcomeResult = "helped" | "neutral" | "hurt" | "unknown";
 export type FeedbackState = "accepted" | "dismissed" | "snoozed" | "wrong" | "assigned";
 
 export interface Feedback {
@@ -19,16 +20,6 @@ export interface Feedback {
   at?: string;
   until?: string;
   note?: string;
-}
-
-export interface Intent {
-  capability: string;
-  args?: Record<string, unknown>;
-}
-
-export interface Escalation {
-  target: string;
-  reason?: string;
 }
 
 export interface Signal {
@@ -74,11 +65,11 @@ export interface ScoreBreakdown {
   total: number;
 }
 
-export interface Decision {
+export interface AttentionDecision {
   signalId: string;
-  action: DecisionAction;
+  verb: Verb;
   score: number;
-  reason: string;
+  reasonCode: string;
   confidence: number;
   deliver: boolean;
   record: boolean;
@@ -93,9 +84,9 @@ export interface Decision {
   undoHint: "withdraw" | "cancel" | null;
 }
 
-export interface Outcome {
+export interface AttentionOutcome {
   candidateId: string;
-  action: DecisionAction;
+  verb: Verb;
   result: OutcomeResult;
   at: string;
   note?: string;
@@ -224,9 +215,9 @@ export function costOfWaiting(signal: Signal, context: Context): number {
   return dueScore(context.now, signal.due) * factor;
 }
 
-export function undoHint(action: DecisionAction, reversible: boolean): "withdraw" | "cancel" | null {
-  if (action === "guide" || action === "ask") return "withdraw";
-  if (action === "act") return reversible ? "cancel" : null;
+export function undoHint(verb: Verb, reversible: boolean): "withdraw" | "cancel" | null {
+  if (verb === "guide" || verb === "ask") return "withdraw";
+  if (verb === "act") return reversible ? "cancel" : null;
   return null;
 }
 
@@ -244,8 +235,8 @@ function fnv1a(value: string): string {
   return hash.toString(16).padStart(16, "0");
 }
 
-export function traceId(signal: Signal, now: string | Date, action: DecisionAction): string {
-  return `tr-${fnv1a(`${signal.id}|${localDate(now)}|${action}`).slice(0, 12)}`;
+export function traceId(signal: Signal, now: string | Date, verb: Verb): string {
+  return `tr-${fnv1a(`${signal.id}|${localDate(now)}|${verb}`).slice(0, 12)}`;
 }
 
 function feedbackBlocks(feedback: Feedback | undefined, now: string | Date): string | null {
@@ -261,92 +252,92 @@ function feedbackBlocks(feedback: Feedback | undefined, now: string | Date): str
   return BLOCKING_FEEDBACK[feedback.state] ?? null;
 }
 
-function decideOne(signal: Signal, context: Context, delivered: number): Decision {
+function decideOne(signal: Signal, context: Context, delivered: number): AttentionDecision {
   const breakdown = score(signal, context);
   const severity = severityOf(signal.severity);
   const blocked = feedbackBlocks(context.feedback?.[signal.id], context.now);
-  let action: DecisionAction = "guide";
-  let reason = "worth_surfacing";
+  let verb: Verb = "guide";
+  let reasonCode = "worth_surfacing";
   let record = true;
   let deliver = true;
   let deliveredNow = delivered;
 
   if (context.stopped) {
-    action = "wait";
-    reason = "kill_switch";
+    verb = "wait";
+    reasonCode = "kill_switch";
     record = false;
     deliver = false;
   } else if (context.mutedKinds?.includes(signal.kind)) {
-    action = "wait";
-    reason = "muted";
+    verb = "wait";
+    reasonCode = "muted";
     record = false;
     deliver = false;
   } else if (blocked !== null) {
-    action = "wait";
-    reason = blocked;
+    verb = "wait";
+    reasonCode = blocked;
     record = false;
     deliver = false;
   } else if ((signal.confidence ?? 0.5) < (context.minConfidence ?? 0)) {
-    action = "wait";
-    reason = "low_confidence";
+    verb = "wait";
+    reasonCode = "low_confidence";
     record = false;
     deliver = false;
   } else if (SEVERITY_RANK[severity] > SEVERITY_RANK[context.minSeverity ?? "high"]) {
-    action = "wait";
-    reason = "below_floor";
+    verb = "wait";
+    reasonCode = "below_floor";
     record = false;
     deliver = false;
   } else if (context.sent?.includes(dedupeKey(signal, context.now))) {
-    action = "wait";
-    reason = "already_sent";
+    verb = "wait";
+    reasonCode = "already_sent";
     record = false;
     deliver = false;
   } else if (isQuietHours(context.now, context.quietHours ?? ["22:00", "06:00"]) && severity !== "critical") {
-    action = "wait";
-    reason = "quiet_hours";
+    verb = "wait";
+    reasonCode = "quiet_hours";
     record = true;
     deliver = false;
   } else if (context.interruptionBudget !== null && context.interruptionBudget !== undefined && deliveredNow >= context.interruptionBudget) {
-    action = "wait";
-    reason = "budget";
+    verb = "wait";
+    reasonCode = "budget";
     record = false;
     deliver = false;
   } else if (context.escalateAfterHours !== null && context.escalateAfterHours !== undefined && severity === "critical") {
     const hours = hoursUntil(signal.due, context.now);
     if (hours !== null && -hours > context.escalateAfterHours) {
-      action = "escalate";
-      reason = "overdue_escalation";
+      verb = "escalate";
+      reasonCode = "overdue_escalation";
     }
   } else if (context.allowAct && signal.intent && signal.reversible) {
-    action = "act";
-    reason = "act";
+    verb = "act";
+    reasonCode = "act";
   } else {
     deliveredNow += 1;
   }
 
   return {
     signalId: signal.id,
-    action,
+    verb,
     score: breakdown.total,
-    reason,
+    reasonCode,
     confidence: clamp(signal.confidence ?? 0.5),
     deliver,
     record,
     requiresApproval: Boolean(signal.requiresApproval),
     evidenceRefs: signal.evidenceRefs ?? [],
     breakdown,
-    traceId: traceId(signal, context.now, action),
-    intent: action === "act" ? signal.intent ?? null : null,
-    escalation: action === "escalate" ? signal.escalation ?? null : null,
+    traceId: traceId(signal, context.now, verb),
+    intent: verb === "act" ? signal.intent ?? null : null,
+    escalation: verb === "escalate" ? signal.escalation ?? null : null,
     costOfWaiting: costOfWaiting(signal, context),
     reversible: Boolean(signal.reversible),
-    undoHint: undoHint(action, Boolean(signal.reversible)),
+    undoHint: undoHint(verb, Boolean(signal.reversible)),
   };
 }
 
 /** One decision per signal, in input order. */
-export function decide(context: Context, signals: Signal[]): Decision[] {
-  const decisions: Decision[] = [];
+export function decideAttention(context: Context, signals: Signal[]): AttentionDecision[] {
+  const decisions: AttentionDecision[] = [];
   let delivered = 0;
   for (const signal of signals) {
     const decision = decideOne(signal, context, delivered);
@@ -358,18 +349,18 @@ export function decide(context: Context, signals: Signal[]): Decision[] {
 
 /** A bounded outcome learner. A bandit can replace it behind the same method. */
 export class OutcomeLog {
-  private readonly outcomes: Outcome[] = [];
+  private readonly outcomes: AttentionOutcome[] = [];
 
-  constructor(initial: Outcome[] = []) {
+  constructor(initial: AttentionOutcome[] = []) {
     this.outcomes = [...initial];
   }
 
-  record(outcome: Outcome): void {
+  record(outcome: AttentionOutcome): void {
     this.outcomes.push(outcome);
     if (this.outcomes.length > 500) this.outcomes.shift();
   }
 
-  all(): Outcome[] {
+  all(): AttentionOutcome[] {
     return [...this.outcomes];
   }
 
@@ -382,7 +373,7 @@ export class OutcomeLog {
     for (const outcome of relevant.slice(-30)) {
       if (outcome.result === "helped") value += 0.04;
       else if (outcome.result === "hurt") value -= 0.08;
-      else if (outcome.result === "no_effect") value -= 0.04;
+      else if (outcome.result === "neutral") value -= 0.04;
     }
     return Math.max(-0.2, Math.min(0.2, value));
   }

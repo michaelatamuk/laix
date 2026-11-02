@@ -14,7 +14,7 @@ The parcel looks late, but a cheap check can settle it. The rule prefers that
 check before asking the courier.
 """
 
-from laix import Action, Belief, DecisionRequest, Layer, Situation, iso
+from laix import ActionOption, Belief, DecisionRequest, Layer, Situation, iso
 
 layer = Layer()
 decision = layer.decide(
@@ -35,9 +35,9 @@ decision = layer.decide(
             attributes={"urgency": 0.8, "needs_more_info": True},
         ),
         options=(
-            Action(id="option-wait", verb="wait", name="keep waiting", expected_benefit=0.2),
-            Action(id="option-check-tracking", verb="observe", name="read the tracking page", expected_benefit=0.6),
-            Action(id="option-ask-courier", verb="ask", name="ask the courier", expected_benefit=0.4),
+            ActionOption(id="option-wait", verb="wait", name="keep waiting", expected_benefit=0.2),
+            ActionOption(id="option-check-tracking", verb="observe", name="read the tracking page", expected_benefit=0.6),
+            ActionOption(id="option-ask-courier", verb="ask", name="ask the courier", expected_benefit=0.4),
         ),
     )
 )[0]

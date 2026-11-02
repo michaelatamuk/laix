@@ -130,7 +130,7 @@ class ExperienceState:
             {
                 "at": decision.created_at,
                 "event": "decision",
-                "decision": decision.id,
+                "decision": decision.decision_id,
                 "verb": decision.verb,
                 "action": decision.action_id,
                 "note": note,

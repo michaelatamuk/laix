@@ -83,7 +83,7 @@ def _decision_dict(decision: Any) -> dict[str, Any]:
     if callable(as_dict):
         return dict(as_dict())
     return {
-        "verb": getattr(decision, "verb", None) or getattr(decision, "action", None),
+        "verb": getattr(decision, "verb", None),
         "reason_code": getattr(decision, "reason_code", None) or getattr(decision, "reason", None),
         "deliver": getattr(decision, "deliver", True),
         "record": getattr(decision, "record", True),

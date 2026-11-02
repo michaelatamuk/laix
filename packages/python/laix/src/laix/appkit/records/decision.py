@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from typing import Any
+
+from ...core.contracts import EvidenceRef
 
 
 def _now() -> str:
@@ -19,14 +21,6 @@ def _canonical(value: Any) -> str:
 
 def _hash(payload: dict[str, Any]) -> str:
     return "sha256:" + hashlib.sha256(_canonical(payload).encode("utf-8")).hexdigest()
-
-
-@dataclass(frozen=True)
-class EvidenceRef:
-    id: str
-    quote: str
-    kind: str = "reference"
-    source: str | None = None
 
 
 @dataclass(frozen=True)
@@ -49,7 +43,7 @@ class Undo:
 class AuditEvent:
     at: str
     actor: str
-    action: str
+    event: str
     detail: str = ""
 
 
@@ -76,13 +70,13 @@ class DecisionRecord:
             "title": self.title,
             "summary": self.summary,
             "decision": dict(self.decision),
-            "evidence": [item.__dict__ for item in self.evidence],
-            "approval": self.approval.__dict__,
+            "evidence": [asdict(item) for item in self.evidence],
+            "approval": asdict(self.approval),
             "status": self.status,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
-            "audit": [item.__dict__ for item in self.audit],
-            "undo": self.undo.__dict__,
+            "audit": [asdict(item) for item in self.audit],
+            "undo": asdict(self.undo),
             "metadata": dict(self.metadata),
             "hash": self.hash,
         }
@@ -94,9 +88,9 @@ def _seal(record: DecisionRecord) -> DecisionRecord:
     return DecisionRecord(**{**record.__dict__, "hash": _hash(payload)})
 
 
-def _event(record: DecisionRecord, actor: str, action: str, detail: str) -> DecisionRecord:
+def _event(record: DecisionRecord, actor: str, event: str, detail: str) -> DecisionRecord:
     at = _now()
-    audit = (*record.audit, AuditEvent(at=at, actor=actor, action=action, detail=detail))
+    audit = (*record.audit, AuditEvent(at=at, actor=actor, event=event, detail=detail))
     return DecisionRecord(**{**record.__dict__, "audit": audit, "updated_at": at})
 
 
@@ -127,7 +121,7 @@ def create_record(
         status="draft" if requires_approval else "approved",
         created_at=moment,
         updated_at=moment,
-        audit=(AuditEvent(at=moment, actor="agent", action="created"),),
+        audit=(AuditEvent(at=moment, actor="agent", event="created"),),
         undo=Undo(),
         metadata=dict(metadata or {}),
         hash="",

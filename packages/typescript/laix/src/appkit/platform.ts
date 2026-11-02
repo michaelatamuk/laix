@@ -9,7 +9,7 @@ export interface SkillCall {
 
 export interface ApprovalRequest {
   decisionId: string;
-  action: string;
+  actionName: string;
   rationale?: string;
   risk?: number;
   reversible?: boolean;
@@ -23,7 +23,7 @@ export interface ApprovalDecision {
   note?: string;
 }
 
-export interface Event {
+export interface PlatformEvent {
   traceId: string;
   kind: string;
   at?: string;
@@ -43,14 +43,14 @@ export interface Platform {
   requestApproval(request: ApprovalRequest): ApprovalDecision;
   readState(key: string): unknown;
   writeState(key: string, value: unknown): void;
-  events(traceId: string): Event[];
+  events(traceId: string): PlatformEvent[];
   capability(level: string): Capability;
 }
 
 export class InMemoryPlatform implements Platform {
   private skills = new Map<string, (call: SkillCall) => unknown>();
   private state = new Map<string, unknown>();
-  private log: Event[] = [];
+  private log: PlatformEvent[] = [];
   private approver?: (request: ApprovalRequest) => ApprovalDecision;
   private capabilities = new Map<string, Capability>([
     ["fast", { level: "fast", modalities: ["text"], maxLatencyMs: 200, maxCost: 0.001 }],
@@ -95,7 +95,7 @@ export class InMemoryPlatform implements Platform {
     this.state.set(key, value);
   }
 
-  events(traceId: string): Event[] {
+  events(traceId: string): PlatformEvent[] {
     return this.log.filter((event) => event.traceId === traceId);
   }
 

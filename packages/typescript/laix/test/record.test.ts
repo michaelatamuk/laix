@@ -48,7 +48,7 @@ describe("decision record contract", () => {
   it("approves, audits and seals", () => {
     const approved = approveRecord(record(), { by: "owner", at: "2026-11-04T10:05:00Z" });
     assert.equal(approved.status, "approved");
-    assert.ok(approved.audit.some((event) => event.action === "approved"));
+    assert.ok(approved.audit.some((event) => event.event === "approved"));
     assert.equal(verifyRecord(approved), true);
   });
 

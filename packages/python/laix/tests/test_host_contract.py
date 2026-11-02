@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from laix import Action, Belief, DecisionRequest, Layer, Situation
+from laix import ActionOption, Belief, DecisionRequest, Layer, Situation
 
 
 def request(**kwargs) -> DecisionRequest:
@@ -17,8 +17,8 @@ def request(**kwargs) -> DecisionRequest:
             attributes={"urgency": 0.9},
         ),
         options=(
-            Action(id="a-wait", verb="wait", name="wait", expected_benefit=0.1),
-            Action(id="a-act", verb="act", name="act", expected_benefit=0.9),
+            ActionOption(id="a-wait", verb="wait", name="wait", expected_benefit=0.1),
+            ActionOption(id="a-act", verb="act", name="act", expected_benefit=0.9),
         ),
         **kwargs,
     )

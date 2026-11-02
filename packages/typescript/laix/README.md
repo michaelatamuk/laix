@@ -19,7 +19,7 @@ const decisions = layer.decide({
 ```
 
 `Layer.decide` accepts either `signals` + `context` or `situation` + `options`, and returns the same
-`LayerDecision` shape for both. A policy plugin can be supplied with `new Layer({ policy })`, or
+`Decision` shape for both. A policy plugin can be supplied with `new Layer({ policy })`, or
 registered with `registerPolicy` and selected with `usePolicy`.
 
 ## Capabilities
@@ -31,7 +31,7 @@ registered with `registerPolicy` and selected with `usePolicy`.
 | Policy packs | `ActivePerceptionPolicy`, `SafetyConstrainedPolicy`, `ReplanningPolicy`, `AllocationPolicy`, `NegotiationPolicy`, `PreferenceElicitationPolicy`, `VerificationPolicy`, `EscalationPolicy` |
 | Learned policy | `BanditPolicy`, `UCBBandit`, `Arm`, `rewardForLabel` |
 | Live Context | `LiveContext`, `CallableDetector`, `Detector`, `Detection`, `PerceptionEvent` |
-| Runtime | `DecisionRuntime`, `ExecutionBridge`, `ExperienceState`, `ResourcePolicy` |
+| Runtime | `DecisionRuntime`, `ExecutionBridge`, `ExperienceState`, `ResourceScheduler` |
 | Platform | `Platform`, `InMemoryPlatform`, `SkillCall` |
 | Stores | `StateStore`, `InMemoryStateStore`, `OutcomeLedger`, `OutcomeStore` |
 | Proposals | `createProposal`, `approveProposal`, `rejectProposal`, `applyProposal`, `undoProposal` |

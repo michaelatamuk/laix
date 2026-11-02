@@ -5,7 +5,7 @@ Two runs show how confidence changes the answer. The hard risk limit and the
 delay, money, disruption and the value of looking first.
 """
 
-from laix import DecisionRequest, Escalation, Layer, LayerDecision
+from laix import DecisionRequest, Escalation, Layer, Decision
 
 WINDOW_MINUTES = 6
 RISK_LIMIT = 0.20
@@ -87,7 +87,7 @@ class TradeoffPolicy:
     name = "water-electricity.v2"
     version = "2.0"
 
-    def decide(self, request: DecisionRequest) -> list[LayerDecision]:
+    def decide(self, request: DecisionRequest) -> list[Decision]:
         confidence = float(request.attributes.get("confidence", 0.80))
         applied: list[str] = []
         eligible: list[dict] = []
@@ -125,7 +125,7 @@ class TradeoffPolicy:
             {
                 "action_id": option["id"],
                 "score": round(score(option), 4),
-                "reason": (
+                "rejected_because": (
                     "selected"
                     if option["id"] == best["id"]
                     else f"outranked by {best['id']}"
@@ -135,7 +135,7 @@ class TradeoffPolicy:
         )
 
         return [
-            LayerDecision(
+            Decision(
                 verb=best["verb"],
                 confidence=confidence,
                 reason_code="tradeoff_score",
@@ -173,7 +173,7 @@ def run(confidence: float) -> None:
         f"{decision.verb} {decision.action_id} {decision.score}"
     )
     for item in decision.alternatives:
-        print(" ", item["action_id"], item["score"], item["reason"])
+        print(" ", item["action_id"], item["score"], item["rejected_because"])
     for item in decision.constraints_applied:
         print("  gate", item)
     print()

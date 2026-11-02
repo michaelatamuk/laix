@@ -11,21 +11,19 @@ from typing import Any
 
 from ..core import attention
 from ..core.contracts import SCHEMA_VERSION
-from ..core.contracts import Decision as CoreDecision
+from ..core.contracts import Decision
 from ..core.decisions import (
     Breakdown,
-    Decision,
     DecisionRequest,
     Escalation,
     EvidenceRef,
     Intent,
     coerce,
     from_attention,
-    from_core,
 )
 from .delivery import DeliveryPort, DeliveryReceipt
 from ..core.policies import Policy, PolicyRegistry
-from ..core.policies.action import POLICY_VERSION
+from ..core.policies.action import ACTION_POLICY_VERSION
 from .runtime import DecisionRuntime
 from .runtime.execution import ExecutionBridge
 
@@ -35,7 +33,6 @@ class Layer:
 
     def __init__(self, runtime: DecisionRuntime | None = None, policy: Policy | None = None) -> None:
         self.runtime = runtime or DecisionRuntime()
-        self._core_decisions: dict[str, CoreDecision] = {}
         self._decisions: list[Decision] = []
         self._registry = PolicyRegistry()
         self._policy: Policy | None = None
@@ -71,14 +68,13 @@ class Layer:
             if request.situation is None:
                 raise ValueError("action selection needs a situation")
             decision = self.runtime.decide(request.situation, request.options, attributes=attributes)
-            self._core_decisions[decision.id] = decision
-            result = [self._annotate(from_core(decision), request)]
+            result = [self._annotate(decision, request)]
         else:
             if request.context is None:
                 raise ValueError("attention allocation needs a context with now")
             result = [
                 self._annotate(from_attention(item), request)
-                for item in attention.decide(request.signals, request.context)
+                for item in attention.decide_attention(request.signals, request.context)
             ]
         self._decisions.extend(result)
         return result
@@ -99,10 +95,7 @@ class Layer:
         approver: str | None = None,
         context: dict[str, Any] | None = None,
     ) -> Any:
-        core = self._core_decisions.get(decision.decision_id)
-        if core is None:
-            raise ValueError("this decision has no executable action in this layer")
-        return self.runtime.execute(core, actor=actor, approver=approver, context=context)
+        return self.runtime.execute(decision, actor=actor, approver=approver, context=context)
 
     def measure(self, decision: Decision, **kwargs: Any) -> Any:
         return self.runtime.measure(decision.decision_id, **kwargs)
@@ -119,7 +112,7 @@ class Layer:
 
     def status(self) -> dict[str, Any]:
         policy = getattr(self._policy, "name", None) if self._policy is not None else "builtin"
-        version = getattr(self._policy, "version", None) if self._policy is not None else POLICY_VERSION
+        version = getattr(self._policy, "version", None) if self._policy is not None else ACTION_POLICY_VERSION
         return {
             "schemaVersion": SCHEMA_VERSION,
             "policy": policy,
@@ -156,5 +149,4 @@ __all__ = [
     "Intent",
     "Layer",
     "from_attention",
-    "from_core",
 ]

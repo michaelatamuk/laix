@@ -4,11 +4,11 @@ LAIX decides. The host asks a person when the decision needs approval and runs
 the action through its own execution bridge.
 """
 
-from laix import Action, Belief, DecisionRequest, Layer, Situation
+from laix import ActionOption, Belief, DecisionRequest, Layer, Situation
 
 options = (
-    Action(id="wait", verb="wait", name="wait", expected_benefit=0.1),
-    Action(
+    ActionOption(id="wait", verb="wait", name="wait", expected_benefit=0.1),
+    ActionOption(
         id="approve",
         verb="act",
         name="approve the repair",

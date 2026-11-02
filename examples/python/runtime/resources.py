@@ -9,9 +9,9 @@ The result is:
 - full-audio: skipped because its cost exceeds the budget.
 """
 
-from laix import Budget, ResourcePolicy, SensingOption
+from laix import Budget, ResourceScheduler, SensingOption
 
-plan = ResourcePolicy().schedule(
+plan = ResourceScheduler().schedule(
     [
         SensingOption(name="camera", tier="cheap", cost=0.0),
         SensingOption(

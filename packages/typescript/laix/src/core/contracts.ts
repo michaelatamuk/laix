@@ -1,7 +1,7 @@
 export type Verb = "wait" | "observe" | "guide" | "ask" | "act" | "verify" | "escalate";
 
-export const SCHEMA_VERSION = "0.7.0";
-export const POLICY_VERSION = "0.7.0";
+export const SCHEMA_VERSION = "0.8.0";
+export const POLICY_VERSION = "0.8.0";
 
 export const VERBS: Verb[] = ["wait", "observe", "guide", "ask", "act", "verify", "escalate"];
 export const PHASES = ["observe", "understand", "decide", "act", "verify", "adapt"] as const;
@@ -40,6 +40,7 @@ export interface Decision {
   reasonCode: string;
   rationale: string;
   decisionId?: string;
+  situationId?: string;
   policyVersion?: string;
   actionId?: string | null;
   evidence?: EvidenceRef[];
@@ -57,6 +58,7 @@ export interface Decision {
   createdAt?: string;
   confidenceSource?: string;
   calibrated?: boolean;
+  attributes?: Record<string, unknown>;
 }
 
 export interface DecisionRequest {
@@ -65,11 +67,12 @@ export interface DecisionRequest {
   signals?: unknown[];
   context?: unknown;
   situation?: Situation;
-  options?: Action[];
+  options?: ActionOption[];
   attributes?: Record<string, unknown>;
   confidence?: number;
   confidenceSource?: string;
   calibrated?: boolean;
+  attributes?: Record<string, unknown>;
 }
 
 export interface Observation {
@@ -108,7 +111,7 @@ export interface Constraint {
   note?: string;
 }
 
-export interface Action {
+export interface ActionOption {
   id: string;
   verb: Verb;
   name: string;

@@ -3,7 +3,7 @@ import { makeDecision, numberValue, value } from "./support.ts";
 
 export class AllocationPolicy {
   name = "allocation.v1";
-  version = "0.7.0";
+  version = "0.8.0";
 
   decide(request: DecisionRequest): Decision[] {
     const requests = (value(request, "requests", []) as Record<string, unknown>[]) ?? [];

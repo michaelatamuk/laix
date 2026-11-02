@@ -15,7 +15,7 @@ The layer makes the choice; the application asks for approval because the
 chosen action requires it.
 """
 
-from laix import Action, Belief, DecisionRequest, Layer, Situation, iso
+from laix import ActionOption, Belief, DecisionRequest, Layer, Situation, iso
 
 layer = Layer()
 decision = layer.decide(
@@ -36,8 +36,8 @@ decision = layer.decide(
             attributes={"urgency": 0.9},
         ),
         options=(
-            Action(id="option-wait", verb="wait", name="pay later", expected_benefit=0.1),
-            Action(
+            ActionOption(id="option-wait", verb="wait", name="pay later", expected_benefit=0.1),
+            ActionOption(
                 id="option-pay",
                 verb="act",
                 name="pay the bill",

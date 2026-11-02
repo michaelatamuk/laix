@@ -63,7 +63,7 @@ def test_core_surface_has_no_app_kit_objects() -> None:
     assert not hasattr(laix.core, "ExecutionBridge")
     assert hasattr(laix.core, "Signal")
     assert hasattr(laix.core, "DecisionRequest")
-    assert hasattr(laix.core, "PolicyDecision")
+    assert hasattr(laix.core, "Decision")
 
 
 def test_app_kit_exposes_the_integration_surface() -> None:
@@ -72,7 +72,7 @@ def test_app_kit_exposes_the_integration_surface() -> None:
 
 
 def test_versions_are_aligned() -> None:
-    assert laix.SCHEMA_VERSION == "0.7.0"
-    assert laix.POLICY_VERSION == "0.7.0"
-    assert laix.core.SCHEMA_VERSION == "0.7.0"
-    assert laix.core.POLICY_VERSION == "0.7.0"
+    assert laix.SCHEMA_VERSION == "0.8.0"
+    assert laix.ACTION_POLICY_VERSION == "0.8.0"
+    assert laix.core.SCHEMA_VERSION == "0.8.0"
+    assert laix.core.ACTION_POLICY_VERSION == "0.8.0"

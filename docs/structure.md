@@ -23,7 +23,9 @@ laix/
 └── .github/               CI and release workflows
 ```
 
-`packages/contracts/` is the shared source of truth for data shapes and test vectors.
+`packages/contracts/` is the shared source of truth for the decision record shape and the test
+vectors. The core record schema is generated from the Python dataclasses and ships inside the
+package.
 
 ## Python package
 
@@ -88,7 +90,6 @@ entry point, `laix`.
 
 | File | Contents |
 |---|---|
-| `packages/contracts/decision.v1.schema.json` | decision and record shapes |
 | `packages/contracts/decision-record.v1.schema.json` | decision record shape |
 | `packages/contracts/attention.v1.json` | attention test cases |
 | `packages/contracts/attention-bench.v1.json` | attention outcome cases |

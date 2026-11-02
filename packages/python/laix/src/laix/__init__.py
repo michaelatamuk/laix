@@ -19,7 +19,7 @@ from .core.contracts import (
     RECEIPT_STATUSES,
     SCHEMA_VERSION,
     VERBS,
-    Action,
+    ActionOption,
     Belief,
     Constraint,
     Decision,
@@ -35,13 +35,12 @@ from .core.contracts import (
     utcnow,
 )
 from .core import attention, evaluation
-from .core.attention import Context, Feedback, Signal
+from .core.attention import AttentionDecision, AttentionOutcome, Context, Feedback, Signal, decide_attention
 from .appkit.delivery import DeliveryPort, DeliveryReceipt, NullDelivery
 from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
 from .core.evaluation import load_cases
 from .core.decisions import Escalation
-from .appkit.layer import Decision as LayerDecision
 from .appkit.layer import DecisionRequest, Layer
 from .core.outcome import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
 from .appkit.platform import (
@@ -49,7 +48,7 @@ from .appkit.platform import (
     ApprovalRequest,
     CAPABILITY_LEVELS,
     Capability,
-    Event,
+    PlatformEvent,
     InMemoryPlatform,
     Platform,
     SkillCall,
@@ -58,20 +57,20 @@ from .core.policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
     BanditPolicy,
-    DecisionPolicy,
+    ActionPolicy,
     EscalationPolicy,
     NegotiationPolicy,
-    POLICY_VERSION,
+    ACTION_POLICY_VERSION,
     Policy,
-    PolicyConfig,
+    ActionPolicyConfig,
     PolicyError,
     PolicyRegistry,
-    PolicyRequest,
+    ActionPolicyRequest,
     PreferenceElicitationPolicy,
     ReplanningPolicy,
     SafetyConstrainedPolicy,
     VerificationPolicy,
-    decide,
+    decide_action,
 )
 from .appkit.records.decision import (
     DecisionRecord,
@@ -94,10 +93,12 @@ from .appkit.runtime import (
     UnknownAction,
 )
 from .core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
-from .core.resources import Budget, ResourcePlan, ResourcePolicy, SensingOption
+from .core.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 
 __all__ = [
-    "Action",
+    "ActionOption",
+    "AttentionDecision",
+    "AttentionOutcome",
     "ActivePerceptionPolicy",
     "AllocationPolicy",
     "ApprovalDecision",
@@ -112,7 +113,7 @@ __all__ = [
     "DecisionRequest",
     "DeliveryPort",
     "DeliveryReceipt",
-    "Event",
+    "PlatformEvent",
     "Escalation",
     "EscalationPolicy",
     "EvidenceRef",
@@ -120,7 +121,6 @@ __all__ = [
     "InMemoryPlatform",
     "InMemoryStateStore",
     "Layer",
-    "LayerDecision",
     "LiveContext",
     "NullDelivery",
     "NegotiationPolicy",
@@ -158,7 +158,7 @@ __all__ = [
     "CallableDetector",
     "Constraint",
     "Decision",
-    "DecisionPolicy",
+    "ActionPolicy",
     "DecisionRuntime",
     "Detection",
     "Detector",
@@ -172,16 +172,16 @@ __all__ = [
     "OUTCOME_DIRECTIONS",
     "OUTCOME_LABELS",
     "PHASES",
-    "POLICY_VERSION",
+    "ACTION_POLICY_VERSION",
     "PerceptionEvent",
     "PerceptionFrame",
-    "PolicyConfig",
-    "PolicyRequest",
+    "ActionPolicyConfig",
+    "ActionPolicyRequest",
     "PreferenceElicitationPolicy",
     "RECEIPT_STATUSES",
     "Receipt",
     "ResourcePlan",
-    "ResourcePolicy",
+    "ResourceScheduler",
     "ReplanningPolicy",
     "SCHEMA_VERSION",
     "SafetyConstrainedPolicy",
@@ -193,7 +193,8 @@ __all__ = [
     "VERBS",
     "VerificationPolicy",
     "confidence_band",
-    "decide",
+    "decide_action",
+    "decide_attention",
     "iso",
     "parse_iso",
     "utcnow",

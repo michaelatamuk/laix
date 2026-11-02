@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from laix import Action, Belief, Constraint, DecisionRequest, Layer, Situation
+from laix import ActionOption, Belief, Constraint, DecisionRequest, Layer, Situation
 
 
 def decision(**attributes):
@@ -19,10 +19,10 @@ def decision(**attributes):
                 attributes={"urgency": 0.9, **attributes},
             ),
             options=(
-                Action(id="wait", verb="wait", name="wait", expected_benefit=0.1),
-                Action(id="look", verb="observe", name="look", expected_benefit=0.5),
-                Action(id="breaker", verb="act", name="cross wet floor", expected_benefit=1.0, risk=0.9),
-                Action(id="manager", verb="escalate", name="call the manager", expected_benefit=0.7),
+                ActionOption(id="wait", verb="wait", name="wait", expected_benefit=0.1),
+                ActionOption(id="look", verb="observe", name="look", expected_benefit=0.5),
+                ActionOption(id="breaker", verb="act", name="cross wet floor", expected_benefit=1.0, risk=0.9),
+                ActionOption(id="manager", verb="escalate", name="call the manager", expected_benefit=0.7),
             ),
         )
     )[0]

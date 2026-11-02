@@ -14,7 +14,7 @@ import pytest
 
 import laix
 from laix.core.contracts import (
-    Action,
+    ActionOption,
     Belief,
     Constraint,
     Decision,
@@ -25,8 +25,8 @@ from laix.core.contracts import (
     utcnow,
 )
 from laix.appkit.runtime import ApprovalRequired, ExecutionBridge
-from laix.core.policies import DecisionPolicy, PolicyConfig, PolicyRequest
-from laix.core.resources import Budget, ResourcePolicy, SensingOption
+from laix.core.policies import ActionPolicy, ActionPolicyConfig, ActionPolicyRequest
+from laix.core.resources import Budget, ResourceScheduler, SensingOption
 from laix.appkit.runtime import DecisionRuntime
 from laix.core.schema import SCHEMA_PATH, build_schema, check, dumps_schema
 from laix.appkit.runtime import ExperienceState
@@ -43,14 +43,14 @@ def situation(**attributes: object) -> Situation:
     )
 
 
-def options(**overrides: object) -> tuple[Action, ...]:
+def options(**overrides: object) -> tuple[ActionOption, ...]:
     base = {
-        "wait": Action(id="a-wait", verb="wait", name="observe", expected_benefit=0.2),
-        "ask": Action(id="a-ask", verb="ask", name="request_evidence", expected_benefit=0.5),
-        "guide": Action(id="a-guide", verb="guide", name="present_options", expected_benefit=0.6),
-        "act": Action(id="a-act", verb="act", name="assign_team", expected_benefit=0.9),
-        "verify": Action(id="a-verify", verb="verify", name="check_outcome", expected_benefit=0.5),
-        "escalate": Action(id="a-escalate", verb="escalate", name="escalate_commitment", expected_benefit=0.9),
+        "wait": ActionOption(id="a-wait", verb="wait", name="observe", expected_benefit=0.2),
+        "ask": ActionOption(id="a-ask", verb="ask", name="request_evidence", expected_benefit=0.5),
+        "guide": ActionOption(id="a-guide", verb="guide", name="present_options", expected_benefit=0.6),
+        "act": ActionOption(id="a-act", verb="act", name="assign_team", expected_benefit=0.9),
+        "verify": ActionOption(id="a-verify", verb="verify", name="check_outcome", expected_benefit=0.5),
+        "escalate": ActionOption(id="a-escalate", verb="escalate", name="escalate_commitment", expected_benefit=0.9),
     }
     base.update(overrides)
     return tuple(base.values())
@@ -60,13 +60,13 @@ def options(**overrides: object) -> tuple[Action, ...]:
 
 
 def test_package_exposes_versioned_contracts() -> None:
-    assert laix.SCHEMA_VERSION == "0.7.0"
+    assert laix.SCHEMA_VERSION == "0.8.0"
     assert set(laix.CONTRACT_NAMES) == {
         "Observation",
         "Belief",
         "Goal",
         "Constraint",
-        "Action",
+        "ActionOption",
         "Situation",
         "Decision",
         "Outcome",
@@ -143,8 +143,8 @@ def test_state_round_trips_through_snapshot() -> None:
 
 
 def test_policy_acts_when_urgency_and_confidence_are_high() -> None:
-    request = PolicyRequest(situation(urgency=0.9), options())
-    decision = DecisionPolicy().decide(request, decision_id="D1", trace_id="T1")
+    request = ActionPolicyRequest(situation(urgency=0.9), options())
+    decision = ActionPolicy().decide(request, decision_id="D1", trace_id="T1")
     assert decision.verb == "act"
     assert decision.action_id == "a-act"
     assert decision.requires_approval is False
@@ -152,9 +152,9 @@ def test_policy_acts_when_urgency_and_confidence_are_high() -> None:
 
 
 def test_policy_observes_when_more_information_is_cheap() -> None:
-    observe = Action(id="a-observe", verb="observe", name="take_another_look", expected_benefit=0.6)
-    decision = DecisionPolicy().decide(
-        PolicyRequest(situation(urgency=0.9, needs_more_info=True), (*options(), observe))
+    observe = ActionOption(id="a-observe", verb="observe", name="take_another_look", expected_benefit=0.6)
+    decision = ActionPolicy().decide(
+        ActionPolicyRequest(situation(urgency=0.9, needs_more_info=True), (*options(), observe))
     )
     assert decision.verb == "observe"
     assert decision.action_id == "a-observe"
@@ -166,29 +166,29 @@ def test_policy_asks_when_uncertain() -> None:
         beliefs=(Belief(id="b", proposition="weak", confidence=0.3),),
         attributes={"urgency": 0.9},
     )
-    decision = DecisionPolicy().decide(PolicyRequest(weak, options()))
+    decision = ActionPolicy().decide(ActionPolicyRequest(weak, options()))
     assert decision.verb == "ask"
 
 
 def test_policy_escalates_before_acting_on_breach() -> None:
-    decision = DecisionPolicy().decide(PolicyRequest(situation(urgency=0.99, deadline_breached=True), options()))
+    decision = ActionPolicy().decide(ActionPolicyRequest(situation(urgency=0.99, deadline_breached=True), options()))
     assert decision.verb == "escalate"
 
 
 def test_policy_verifies_pending_outcome() -> None:
-    decision = DecisionPolicy().decide(
-        PolicyRequest(situation(urgency=0.99, verification_due=True), options())
+    decision = ActionPolicy().decide(
+        ActionPolicyRequest(situation(urgency=0.99, verification_due=True), options())
     )
     assert decision.verb == "verify"
 
 
 def test_policy_guides_a_mid_urgency_event() -> None:
-    decision = DecisionPolicy().decide(PolicyRequest(situation(urgency=0.6), options()))
+    decision = ActionPolicy().decide(ActionPolicyRequest(situation(urgency=0.6), options()))
     assert decision.verb == "guide"
 
 
 def test_policy_waits_when_nothing_clears_the_threshold() -> None:
-    decision = DecisionPolicy().decide(PolicyRequest(situation(urgency=0.1), options()))
+    decision = ActionPolicy().decide(ActionPolicyRequest(situation(urgency=0.1), options()))
     assert decision.verb == "wait"
 
 
@@ -199,8 +199,8 @@ def test_policy_blocks_actions_that_break_hard_constraints() -> None:
         constraints=(Constraint(id="c-lat", kind="latency", value=100, hard=True),),
         attributes=sit.attributes,
     )
-    slow = Action(id="a-slow", verb="act", name="slow_act", latency_ms=500, expected_benefit=0.99)
-    decision = DecisionPolicy().decide(PolicyRequest(sit, (*options(), slow)))
+    slow = ActionOption(id="a-slow", verb="act", name="slow_act", latency_ms=500, expected_benefit=0.99)
+    decision = ActionPolicy().decide(ActionPolicyRequest(sit, (*options(), slow)))
     assert decision.action_id != "a-slow"
     assert any("latency" in item for item in decision.constraints_applied)
     assert any(item["action_id"] == "a-slow" for item in decision.alternatives)
@@ -215,7 +215,7 @@ def test_approval_flag_is_scoped_to_actions() -> None:
         constraints=(Constraint(id="approve", kind="approval", value="required", hard=True),),
         attributes={"urgency": 0.6},
     )
-    guide = DecisionPolicy().decide(PolicyRequest(sit, options()))
+    guide = ActionPolicy().decide(ActionPolicyRequest(sit, options()))
     assert guide.verb == "guide"
     assert guide.requires_approval is False
 
@@ -227,14 +227,14 @@ def test_approval_flag_is_scoped_to_actions() -> None:
         constraints=sit.constraints,
         attributes={"urgency": 0.99},
     )
-    act = DecisionPolicy().decide(PolicyRequest(act_sit, options()))
+    act = ActionPolicy().decide(ActionPolicyRequest(act_sit, options()))
     assert act.verb == "act"
     assert act.requires_approval is True
 
 
 def test_policy_requires_approval_for_destructive_actions() -> None:
-    destructive = Action(id="a-delete", verb="act", name="delete", destructive=True, expected_benefit=0.99)
-    decision = DecisionPolicy().decide(PolicyRequest(situation(urgency=0.99), (*options(), destructive)))
+    destructive = ActionOption(id="a-delete", verb="act", name="delete", destructive=True, expected_benefit=0.99)
+    decision = ActionPolicy().decide(ActionPolicyRequest(situation(urgency=0.99), (*options(), destructive)))
     assert decision.verb == "act"
     assert decision.requires_approval is True
     assert "approval:human-required" in decision.constraints_applied
@@ -246,22 +246,22 @@ def test_policy_safety_constraint_forces_wait() -> None:
         constraints=(Constraint(id="safe", kind="safety", value="blocked", hard=True),),
         attributes={"urgency": 0.99},
     )
-    decision = DecisionPolicy().decide(PolicyRequest(sit, options()))
+    decision = ActionPolicy().decide(ActionPolicyRequest(sit, options()))
     assert decision.verb == "wait"
     assert "safety" in decision.rationale
 
 
 def test_policy_is_deterministic() -> None:
-    request = PolicyRequest(situation(urgency=0.9), options())
-    policy = DecisionPolicy()
+    request = ActionPolicyRequest(situation(urgency=0.9), options())
+    policy = ActionPolicy()
     first = policy.decide(request, decision_id="D", trace_id="T", created_at="2026-01-01T00:00:00+00:00")
     second = policy.decide(request, decision_id="D", trace_id="T", created_at="2026-01-01T00:00:00+00:00")
     assert first.to_dict() == second.to_dict()
 
 
 def test_policy_config_is_tunable() -> None:
-    strict = DecisionPolicy(PolicyConfig(act_urgency=0.99, act_confidence=0.99))
-    assert strict.decide(PolicyRequest(situation(urgency=0.9), options())).verb == "guide"
+    strict = ActionPolicy(ActionPolicyConfig(act_urgency=0.99, act_confidence=0.99))
+    assert strict.decide(ActionPolicyRequest(situation(urgency=0.9), options())).verb == "guide"
 
 
 # -------------------------------------------------------------------- runtime
@@ -270,7 +270,7 @@ def test_policy_config_is_tunable() -> None:
 def test_runtime_records_trace_and_receipt() -> None:
     calls: list[dict] = []
 
-    def assign(action: Action, context: dict) -> dict:
+    def assign(action: ActionOption, context: dict) -> dict:
         calls.append({"name": action.name, "context": context})
         return {"assigned": True}
 
@@ -281,14 +281,14 @@ def test_runtime_records_trace_and_receipt() -> None:
     assert receipt.status == "executed"
     assert receipt.detail == {"assigned": True}
     assert calls and calls[0]["name"] == "assign_team"
-    stages = [event["stage"] for event in runtime.trace(decision.id).events]
+    stages = [event["stage"] for event in runtime.trace(decision.decision_id).events]
     assert stages[0] == "situation"
     assert "decided" in stages
     assert "execution.executed" in stages
 
 
 def test_runtime_refuses_destructive_action_without_approval() -> None:
-    destructive = Action(id="a-delete", verb="act", name="delete", destructive=True, expected_benefit=0.99)
+    destructive = ActionOption(id="a-delete", verb="act", name="delete", destructive=True, expected_benefit=0.99)
     bridge = ExecutionBridge(handlers={"delete": lambda action, context: {"deleted": True}})
     runtime = DecisionRuntime(bridge=bridge)
     decision = runtime.decide(situation(urgency=0.99), (*options(), destructive))
@@ -312,7 +312,7 @@ def test_runtime_cancels_and_undoes() -> None:
     assert undone.status == "undone"
     assert undone.detail["undo"] == {"unassigned": True}
 
-    pending = bridge._store(type(receipt)(id="RCT-X", decision_id=decision.id, action_name="assign_team", status="pending", actor="a"))
+    pending = bridge._store(type(receipt)(id="RCT-X", decision_id=decision.decision_id, action_name="assign_team", status="pending", actor="a"))
     cancelled = runtime.cancel(pending.id, actor="operator", reason="situation changed")
     assert cancelled.status == "cancelled"
 
@@ -322,7 +322,7 @@ def test_runtime_measures_outcome() -> None:
     decision = runtime.decide(situation(urgency=0.9), options())
     runtime.execute(decision, actor="operator")
     outcome = runtime.measure(
-        decision.id,
+        decision.decision_id,
         metric="time_to_assessment",
         before=120.0,
         after=42.0,
@@ -339,7 +339,7 @@ def test_runtime_measures_outcome() -> None:
 
 
 def test_resource_policy_skips_deep_calls_when_uncertainty_is_low() -> None:
-    policy = ResourcePolicy(min_information_gain=0.35)
+    policy = ResourceScheduler(min_information_gain=0.35)
     plan = policy.schedule(
         [
             SensingOption(name="cheap-diff", tier="cheap"),
@@ -355,7 +355,7 @@ def test_resource_policy_skips_deep_calls_when_uncertainty_is_low() -> None:
 
 
 def test_resource_policy_admits_deep_calls_within_budget() -> None:
-    policy = ResourcePolicy()
+    policy = ResourceScheduler()
     plan = policy.schedule(
         [SensingOption(name="deep", tier="deep", cost=0.3, latency_ms=500, information_gain=0.9)],
         budget=Budget(max_deep_calls=1, max_cost=1.0, max_latency_ms=1000),
@@ -366,7 +366,7 @@ def test_resource_policy_admits_deep_calls_within_budget() -> None:
 
 
 def test_resource_policy_enforces_latency_budget() -> None:
-    plan = ResourcePolicy().schedule(
+    plan = ResourceScheduler().schedule(
         [SensingOption(name="deep", tier="deep", latency_ms=5000, information_gain=0.99)],
         budget=Budget(max_latency_ms=1000),
         uncertainty=1.0,

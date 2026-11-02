@@ -4,7 +4,7 @@ The packaged packs are loaded lazily. ``decisions`` imports the registry, and
 the packs import ``decisions``; lazy loading keeps that cycle out of import time.
 """
 
-from .action import POLICY_VERSION, DecisionPolicy, PolicyConfig, PolicyRequest, decide
+from .action import ACTION_POLICY_VERSION, ActionPolicy, ActionPolicyConfig, ActionPolicyRequest, decide_action
 from .registry import Policy, PolicyError, PolicyRegistry
 
 _LAZY = {
@@ -33,18 +33,18 @@ __all__ = [
     "ActivePerceptionPolicy",
     "AllocationPolicy",
     "BanditPolicy",
-    "DecisionPolicy",
+    "ActionPolicy",
     "EscalationPolicy",
     "NegotiationPolicy",
     "PreferenceElicitationPolicy",
     "ReplanningPolicy",
     "SafetyConstrainedPolicy",
     "VerificationPolicy",
-    "POLICY_VERSION",
+    "ACTION_POLICY_VERSION",
     "Policy",
-    "PolicyConfig",
+    "ActionPolicyConfig",
     "PolicyError",
     "PolicyRegistry",
-    "PolicyRequest",
-    "decide",
+    "ActionPolicyRequest",
+    "decide_action",
 ]

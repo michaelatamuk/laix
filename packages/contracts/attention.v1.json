@@ -1,6 +1,6 @@
 {
   "contract": "laix",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "note": "Behavioural contract. Any implementation that passes every case is a valid LAIX attention runtime. Scores are part of the contract in v1; changing a weight is a major version.",
   "cases": [
     {
@@ -26,8 +26,8 @@
       "expected": [
         {
           "signalId": "signal-1",
-          "action": "guide",
-          "reason": "worth_surfacing",
+          "verb": "guide",
+          "reason_code": "worth_surfacing",
           "deliver": true,
           "record": true,
           "score": 94.0,
@@ -56,8 +56,8 @@
       "expected": [
         {
           "signalId": "signal-2",
-          "action": "wait",
-          "reason": "quiet_hours",
+          "verb": "wait",
+          "reason_code": "quiet_hours",
           "deliver": false,
           "record": true,
           "score": 81.0
@@ -82,8 +82,8 @@
       "expected": [
         {
           "signalId": "signal-3",
-          "action": "wait",
-          "reason": "below_floor",
+          "verb": "wait",
+          "reason_code": "below_floor",
           "deliver": false,
           "record": false,
           "score": 44.0
@@ -109,8 +109,8 @@
       "expected": [
         {
           "signalId": "signal-4",
-          "action": "wait",
-          "reason": "low_confidence",
+          "verb": "wait",
+          "reason_code": "low_confidence",
           "deliver": false,
           "record": false,
           "score": 51.0
@@ -137,8 +137,8 @@
       "expected": [
         {
           "signalId": "signal-5",
-          "action": "wait",
-          "reason": "muted",
+          "verb": "wait",
+          "reason_code": "muted",
           "deliver": false,
           "record": false,
           "score": 63.0
@@ -165,8 +165,8 @@
       "expected": [
         {
           "signalId": "signal-6",
-          "action": "wait",
-          "reason": "already_sent",
+          "verb": "wait",
+          "reason_code": "already_sent",
           "deliver": false,
           "record": false,
           "score": 63.0
@@ -190,8 +190,8 @@
       "expected": [
         {
           "signalId": "signal-7",
-          "action": "wait",
-          "reason": "kill_switch",
+          "verb": "wait",
+          "reason_code": "kill_switch",
           "deliver": false,
           "record": false,
           "score": 79.8
@@ -222,16 +222,16 @@
       "expected": [
         {
           "signalId": "signal-8a",
-          "action": "guide",
-          "reason": "worth_surfacing",
+          "verb": "guide",
+          "reason_code": "worth_surfacing",
           "deliver": true,
           "record": true,
           "score": 78.0
         },
         {
           "signalId": "signal-8b",
-          "action": "wait",
-          "reason": "budget",
+          "verb": "wait",
+          "reason_code": "budget",
           "deliver": false,
           "record": false,
           "score": 78.0
@@ -258,8 +258,8 @@
       "expected": [
         {
           "signalId": "signal-9",
-          "action": "escalate",
-          "reason": "overdue_escalation",
+          "verb": "escalate",
+          "reason_code": "overdue_escalation",
           "deliver": true,
           "record": true,
           "score": 109.0,
@@ -286,8 +286,8 @@
       "expected": [
         {
           "signalId": "signal-10",
-          "action": "wait",
-          "reason": "quiet_hours",
+          "verb": "wait",
+          "reason_code": "quiet_hours",
           "deliver": false,
           "record": true,
           "score": 61.0
@@ -311,8 +311,8 @@
       "expected": [
         {
           "signalId": "signal-11",
-          "action": "guide",
-          "reason": "worth_surfacing",
+          "verb": "guide",
+          "reason_code": "worth_surfacing",
           "deliver": true,
           "record": true,
           "score": 61.0
@@ -339,8 +339,8 @@
       "expected": [
         {
           "signalId": "signal-12",
-          "action": "guide",
-          "reason": "worth_surfacing",
+          "verb": "guide",
+          "reason_code": "worth_surfacing",
           "deliver": true,
           "record": true,
           "score": 71.0
@@ -371,8 +371,8 @@
       "expected": [
         {
           "signalId": "signal-13",
-          "action": "wait",
-          "reason": "snoozed",
+          "verb": "wait",
+          "reason_code": "snoozed",
           "deliver": false,
           "record": false,
           "score": 61.0
@@ -402,8 +402,8 @@
       "expected": [
         {
           "signalId": "signal-14",
-          "action": "guide",
-          "reason": "worth_surfacing",
+          "verb": "guide",
+          "reason_code": "worth_surfacing",
           "deliver": true,
           "record": true,
           "score": 61.0
@@ -432,8 +432,8 @@
       "expected": [
         {
           "signalId": "signal-15",
-          "action": "wait",
-          "reason": "wrong",
+          "verb": "wait",
+          "reason_code": "wrong",
           "deliver": false,
           "record": false,
           "score": 61.0
@@ -462,8 +462,8 @@
       "expected": [
         {
           "signalId": "signal-16",
-          "action": "wait",
-          "reason": "assigned",
+          "verb": "wait",
+          "reason_code": "assigned",
           "deliver": false,
           "record": false,
           "score": 61.0
@@ -492,8 +492,8 @@
       "expected": [
         {
           "signalId": "signal-17",
-          "action": "wait",
-          "reason": "dismissed",
+          "verb": "wait",
+          "reason_code": "dismissed",
           "deliver": false,
           "record": false,
           "score": 61.0
@@ -522,8 +522,8 @@
       "expected": [
         {
           "signalId": "signal-18",
-          "action": "guide",
-          "reason": "worth_surfacing",
+          "verb": "guide",
+          "reason_code": "worth_surfacing",
           "deliver": true,
           "record": true,
           "score": 61.0
@@ -555,8 +555,8 @@
       "expected": [
         {
           "signalId": "signal-19",
-          "action": "act",
-          "reason": "act",
+          "verb": "act",
+          "reason_code": "act",
           "deliver": true,
           "record": true,
           "score": 63.0,
@@ -592,8 +592,8 @@
       "expected": [
         {
           "signalId": "signal-20",
-          "action": "act",
-          "reason": "act",
+          "verb": "act",
+          "reason_code": "act",
           "deliver": true,
           "record": true,
           "requires_approval": true,
@@ -626,8 +626,8 @@
       "expected": [
         {
           "signalId": "signal-21",
-          "action": "guide",
-          "reason": "worth_surfacing",
+          "verb": "guide",
+          "reason_code": "worth_surfacing",
           "deliver": true,
           "record": true,
           "score": 63.0
@@ -650,15 +650,15 @@
           "due": "2026-11-01T10:00:00+02:00",
           "escalation": {
             "target": "target-a",
-            "reason": "overdue item unchanged for three days"
+            "reason_code": "overdue item unchanged for three days"
           }
         }
       ],
       "expected": [
         {
           "signalId": "signal-22",
-          "action": "escalate",
-          "reason": "overdue_escalation",
+          "verb": "escalate",
+          "reason_code": "overdue_escalation",
           "deliver": true,
           "record": true,
           "score": 109.0
@@ -682,8 +682,8 @@
       "expected": [
         {
           "signalId": "signal-23",
-          "action": "guide",
-          "reason": "worth_surfacing",
+          "verb": "guide",
+          "reason_code": "worth_surfacing",
           "deliver": true,
           "record": true,
           "score": 63.0

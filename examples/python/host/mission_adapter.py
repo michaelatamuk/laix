@@ -4,13 +4,13 @@ The host owns the task. LAIX only sees the generic request and returns the
 decision, the confidence source and a portable basis.
 """
 
-from laix import Action, Belief, Constraint, DecisionRequest, Layer, Situation
+from laix import ActionOption, Belief, Constraint, DecisionRequest, Layer, Situation
 
 options = (
-    Action(id="wait", verb="wait", name="wait", expected_benefit=0.1),
-    Action(id="look", verb="observe", name="look closer", expected_benefit=0.5),
-    Action(id="ask", verb="ask", name="call the owner", expected_benefit=0.4),
-    Action(
+    ActionOption(id="wait", verb="wait", name="wait", expected_benefit=0.1),
+    ActionOption(id="look", verb="observe", name="look closer", expected_benefit=0.5),
+    ActionOption(id="ask", verb="ask", name="call the owner", expected_benefit=0.4),
+    ActionOption(
         id="valve",
         verb="act",
         name="turn off the valve",
@@ -18,7 +18,7 @@ options = (
         risk=0.05,
         reversible=True,
     ),
-    Action(id="manager", verb="escalate", name="call the manager", expected_benefit=0.7),
+    ActionOption(id="manager", verb="escalate", name="call the manager", expected_benefit=0.7),
 )
 
 request = DecisionRequest(

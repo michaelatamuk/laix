@@ -59,7 +59,7 @@ class ResourcePlan:
         }
 
 
-class ResourcePolicy:
+class ResourceScheduler:
     def __init__(self, *, min_information_gain: float = 0.35) -> None:
         self.min_information_gain = min_information_gain
 

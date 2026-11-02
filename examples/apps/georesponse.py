@@ -13,7 +13,7 @@ The result is:
 - True: a person approves the assignment before it runs.
 """
 
-from laix import Action, Belief, DecisionRequest, Layer, Situation, iso
+from laix import ActionOption, Belief, DecisionRequest, Layer, Situation, iso
 
 layer = Layer()
 decision = layer.decide(
@@ -34,9 +34,9 @@ decision = layer.decide(
             attributes={"urgency": 0.9},
         ),
         options=(
-            Action(id="wait", verb="wait", name="keep watching", expected_benefit=0.2),
-            Action(id="request-check", verb="ask", name="request a better view", expected_benefit=0.6),
-            Action(
+            ActionOption(id="wait", verb="wait", name="keep watching", expected_benefit=0.2),
+            ActionOption(id="request-check", verb="ask", name="request a better view", expected_benefit=0.6),
+            ActionOption(
                 id="assign-owner",
                 verb="act",
                 name="assign an analyst",

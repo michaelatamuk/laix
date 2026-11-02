@@ -4,7 +4,7 @@ LAIX has three layers:
 
 | Layer | What it is |
 |---|---|
-| **LAIX core** | contracts, decision shape, policies, engines, outcomes and bench |
+| **LAIX core** | contracts, decision shape, policies, engines, outcomes and evaluation |
 | **LAIX app kit** | optional integration: Layer, execution, records, delivery, platform, state and live context |
 | **Host** | the product that uses LAIX: memory, ingestion, connectors, orchestration, permissions and user settings |
 
@@ -19,7 +19,7 @@ The rule is simple:
 Use this from a mission, agent or service that needs a decision.
 
 ```python
-from laix.core import DecisionRequest, PolicyDecision, PolicyRegistry
+from laix.core import DecisionRequest, Decision, PolicyRegistry
 ```
 
 It contains:
@@ -86,7 +86,7 @@ LAIX owns:
 | Decision engines | utility, planning and learned policies |
 | Task lifecycle | execute, cancel, undo, receipt |
 | Task outcomes | measured outcome and learning |
-| Evaluation | policy comparison, parity and bench |
+| Evaluation | policy comparison and parity |
 
 LAIX sees the request and its options. The host keeps the task and its reason.
 

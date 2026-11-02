@@ -14,7 +14,7 @@ The app sends a request. LAIX returns a decision. The app performs the action.
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.7.0#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.8.0#subdirectory=packages/python/laix"
 ```
 
 Local checkout:
@@ -33,7 +33,7 @@ TypeScript:
 }
 ```
 
-The release page also has a packed `laix-0.7.0.tgz`.
+The release page also has a packed `laix-0.8.0.tgz`.
 
 ## Build the adapter
 
@@ -59,10 +59,10 @@ decision = Layer().decide(
 )[0]
 ```
 
-### Action
+### Action options
 
 ```python
-from laix import Action, Belief, DecisionRequest, Layer, Situation
+from laix import ActionOption, Belief, DecisionRequest, Layer, Situation
 
 decision = Layer().decide(
     DecisionRequest(
@@ -78,8 +78,8 @@ decision = Layer().decide(
             attributes={"urgency": 0.9},
         ),
         options=(
-            Action(id="a-wait", verb="wait", name="keep observing", expected_benefit=0.2),
-            Action(id="a-act", verb="act", name="apply change", expected_benefit=0.9),
+            ActionOption(id="a-wait", verb="wait", name="keep observing", expected_benefit=0.2),
+            ActionOption(id="a-act", verb="act", name="apply change", expected_benefit=0.9),
         ),
     )
 )[0]
@@ -152,7 +152,7 @@ The production adapter stays in the app. `examples/apps/` shows caller examples.
 Use a tag:
 
 ```text
-v0.7.0
+v0.8.0
 ```
 
 The Python subdirectory is `packages/python/laix`. The TypeScript path is
@@ -161,15 +161,15 @@ The Python subdirectory is `packages/python/laix`. The TypeScript path is
 ## Custom policy
 
 ```python
-from laix import Layer, LayerDecision
+from laix import Layer, Decision
 
 class QualityPolicy:
     name = "quality"
-    version = "0.7.0"
+    version = "0.8.0"
 
     def decide(self, request):
         return [
-            LayerDecision(
+            Decision(
                 verb="guide",
                 confidence=0.8,
                 reason_code="policy_rule",

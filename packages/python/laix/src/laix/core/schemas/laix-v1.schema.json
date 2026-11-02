@@ -3,7 +3,7 @@
   "$id": "https://laix.local/schemas/laix-v1.schema.json",
   "title": "LAIX contracts",
   "description": "Domain-neutral decision-layer contracts. Generated from laix.contracts.",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "$defs": {
     "Observation": {
       "type": "object",
@@ -270,9 +270,9 @@
         "value"
       ]
     },
-    "Action": {
+    "ActionOption": {
       "type": "object",
-      "title": "Action",
+      "title": "ActionOption",
       "additionalProperties": false,
       "properties": {
         "id": {
@@ -554,12 +554,6 @@
       "title": "Decision",
       "additionalProperties": false,
       "properties": {
-        "id": {
-          "type": "string"
-        },
-        "situation_id": {
-          "type": "string"
-        },
         "verb": {
           "type": "string",
           "enum": [
@@ -572,6 +566,47 @@
             "escalate"
           ]
         },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "reason_code": {
+          "type": "string"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "situation_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "policy_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "action_id": {
           "anyOf": [
             {
@@ -582,13 +617,150 @@
             }
           ]
         },
-        "rationale": {
-          "type": "string"
+        "evidence": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {}
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
-        "confidence": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
+        "requires_approval": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "breakdown": {
+          "anyOf": [
+            {},
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "intent": {
+          "anyOf": [
+            {},
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "escalation": {
+          "anyOf": [
+            {},
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cost_of_waiting": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reversible": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "undo_hint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "trace_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "deliver": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "record": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence_source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "calibrated": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "alternatives": {
           "anyOf": [
@@ -610,56 +782,6 @@
               "items": {
                 "type": "string"
               }
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "requires_approval": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "policy_version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "created_at": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "trace_id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "utility": {
-          "anyOf": [
-            {
-              "type": "number"
             },
             {
               "type": "null"
@@ -688,12 +810,10 @@
         }
       },
       "required": [
-        "id",
-        "situation_id",
         "verb",
-        "action_id",
-        "rationale",
-        "confidence"
+        "confidence",
+        "reason_code",
+        "rationale"
       ]
     },
     "Outcome": {

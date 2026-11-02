@@ -20,7 +20,7 @@ platform.register("lookup", lambda call: call.args["value"])
 result = platform.run_skill(SkillCall("lookup", {"value": 7}, trace_id="tr-1"))
 kinds = ",".join(event.kind for event in platform.events("tr-1"))
 approval = platform.request_approval(
-    ApprovalRequest(decision_id="d-1", action="assign", rationale="owner asked")
+    ApprovalRequest(decision_id="d-1", action_name="assign", rationale="owner asked")
 )
 
 print(result, kinds, platform.capability("fast").level, approval.approved)

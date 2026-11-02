@@ -12,7 +12,7 @@ The result is:
 - open-watch: the chosen action.
 """
 
-from laix import Action, Belief, DecisionRequest, Layer, Situation, iso
+from laix import ActionOption, Belief, DecisionRequest, Layer, Situation, iso
 
 layer = Layer()
 decision = layer.decide(
@@ -38,9 +38,9 @@ decision = layer.decide(
             },
         ),
         options=(
-            Action(id="wait", verb="wait", name="keep observing", expected_benefit=0.2),
-            Action(id="open-watch", verb="guide", name="open a watch", expected_benefit=0.6),
-            Action(id="notify-engineer", verb="act", name="notify the engineer", expected_benefit=0.9),
+            ActionOption(id="wait", verb="wait", name="keep observing", expected_benefit=0.2),
+            ActionOption(id="open-watch", verb="guide", name="open a watch", expected_benefit=0.6),
+            ActionOption(id="notify-engineer", verb="act", name="notify the engineer", expected_benefit=0.9),
         ),
     )
 )[0]

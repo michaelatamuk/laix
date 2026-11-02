@@ -10,9 +10,10 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
 
+from ..contracts import VERBS, Breakdown, Escalation, Intent
+
 SEVERITY_RANK: dict[str, int] = {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}
-ACTIONS: tuple[str, ...] = ("wait", "observe", "guide", "ask", "act", "verify", "escalate")
-RESULTS: tuple[str, ...] = ("helped", "no_effect", "hurt", "unknown")
+RESULTS: tuple[str, ...] = ("helped", "neutral", "hurt", "unknown")
 FEEDBACK_STATES: tuple[str, ...] = ("accepted", "dismissed", "snoozed", "wrong", "assigned")
 REASON_CODES: tuple[str, ...] = (
     "false_alarm",
@@ -22,32 +23,6 @@ REASON_CODES: tuple[str, ...] = (
     "no_action",
     "data_error",
 )
-
-
-@dataclass(frozen=True, slots=True)
-class Intent:
-    """What the app would run if the policy decides to act.
-
-    LAIX's south contract asks for "a named skill with typed arguments". The
-    policy does not execute it; it carries it, so an execution bridge can.
-    """
-
-    capability: str
-    args: dict[str, Any] = field(default_factory=dict)
-
-    def as_dict(self) -> dict[str, Any]:
-        return {"capability": self.capability, "args": dict(self.args)}
-
-
-@dataclass(frozen=True, slots=True)
-class Escalation:
-    """Who to hand it to, if the policy decides to escalate."""
-
-    target: str
-    reason: str = ""
-
-    def as_dict(self) -> dict[str, str]:
-        return {"target": self.target, "reason": self.reason}
 
 
 @dataclass(frozen=True, slots=True)
@@ -114,33 +89,13 @@ class Context:
 
 
 @dataclass(frozen=True, slots=True)
-class Breakdown:
-    severity: float
-    due: float
-    confidence: float
-    interruption: float
-    learned: float
-    total: float
-
-    def as_dict(self) -> dict[str, float]:
-        return {
-            "severity": round(self.severity, 2),
-            "due": round(self.due, 2),
-            "confidence": round(self.confidence, 2),
-            "interruption": round(self.interruption, 2),
-            "learned": round(self.learned, 2),
-            "total": round(self.total, 2),
-        }
-
-
-@dataclass(frozen=True, slots=True)
-class Decision:
-    """What the product should do about one signal, and why."""
+class AttentionDecision:
+    """What the attention policy recommends for one signal, and why."""
 
     signal_id: str
-    action: str
+    verb: str
     score: float
-    reason: str
+    reason_code: str
     confidence: float
     deliver: bool
     record: bool
@@ -162,9 +117,9 @@ class Decision:
     def as_dict(self) -> dict[str, object]:
         return {
             "signal_id": self.signal_id,
-            "action": self.action,
+            "verb": self.verb,
             "score": round(self.score, 2),
-            "reason": self.reason,
+            "reason_code": self.reason_code,
             "confidence": round(self.confidence, 3),
             "deliver": self.deliver,
             "record": self.record,
@@ -181,12 +136,12 @@ class Decision:
 
 
 @dataclass(frozen=True, slots=True)
-class Outcome:
-    """What happened after a decision. The label the learner needs."""
+class AttentionOutcome:
+    """What happened after an attention decision. The label the learner needs."""
 
     signal_id: str
     kind: str
-    action: str
+    verb: str
     result: str
     reason_code: str | None = None
     score: float | None = None
@@ -196,7 +151,7 @@ class Outcome:
         return {
             "signal_id": self.signal_id,
             "kind": self.kind,
-            "action": self.action,
+            "verb": self.verb,
             "result": self.result,
             "reason_code": self.reason_code,
             "score": self.score,

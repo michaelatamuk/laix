@@ -15,7 +15,7 @@ from collections import Counter
 from typing import Any, Callable, Iterable
 
 from ...core.contracts import (
-    Action,
+    ActionOption,
     Decision,
     Observation,
     Outcome,
@@ -27,8 +27,8 @@ from ...core.contracts import (
 )
 from .execution import ApprovalRequired, ExecutionBridge
 from ...core.outcome import OutcomeLedger
-from ...core.policies.action import DecisionPolicy, PolicyRequest
-from ...core.resources import Budget, ResourcePlan, ResourcePolicy, SensingOption
+from ...core.policies.action import ActionPolicy, ActionPolicyRequest
+from ...core.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .state import ExperienceState
 
 IdFactory = Callable[[str], str]
@@ -39,19 +39,19 @@ class DecisionRuntime:
         self,
         *,
         state: ExperienceState | None = None,
-        policy: DecisionPolicy | None = None,
+        policy: ActionPolicy | None = None,
         bridge: ExecutionBridge | None = None,
         outcomes: OutcomeLedger | None = None,
-        resources: ResourcePolicy | None = None,
+        resources: ResourceScheduler | None = None,
         id_factory: IdFactory | None = None,
     ) -> None:
         self.state = state or ExperienceState(subject="")
-        self.policy = policy or DecisionPolicy()
+        self.policy = policy or ActionPolicy()
         self.bridge = bridge or ExecutionBridge()
         self.outcomes = outcomes or OutcomeLedger()
-        self.resources = resources or ResourcePolicy()
+        self.resources = resources or ResourceScheduler()
         self._id = id_factory or new_id
-        self._actions: dict[str, Action] = {}
+        self._actions: dict[str, ActionOption] = {}
         self._decisions: dict[str, Decision] = {}
         self._traces: dict[str, Trace] = {}
         self._trace_by_decision: dict[str, str] = {}
@@ -64,19 +64,19 @@ class DecisionRuntime:
     def decide(
         self,
         situation: Situation,
-        options: Iterable[Action],
+        options: Iterable[ActionOption],
         *,
         attributes: dict[str, Any] | None = None,
     ) -> Decision:
         decision_id = self._id("DEC")
         trace_id = self._id("TRC")
-        request = PolicyRequest(situation=situation, options=tuple(options), attributes=dict(attributes or {}))
+        request = ActionPolicyRequest(situation=situation, options=tuple(options), attributes=dict(attributes or {}))
         decision = self.policy.decide(request, decision_id=decision_id, trace_id=trace_id)
-        self._decisions[decision.id] = decision
+        self._decisions[decision.decision_id] = decision
         for option in request.options:
             self._actions[option.id] = option
         self.state.record(decision)
-        self._traces[trace_id] = Trace(id=trace_id, decision_id=decision.id).with_event(
+        self._traces[trace_id] = Trace(id=trace_id, decision_id=decision.decision_id).with_event(
             "situation",
             {
                 "subject": situation.subject,
@@ -101,7 +101,7 @@ class DecisionRuntime:
                 "requiresApproval": decision.requires_approval,
             },
         )
-        self._trace_by_decision[decision.id] = trace_id
+        self._trace_by_decision[decision.decision_id] = trace_id
         return decision
 
     # ---------------------------------------------------------------- execute
@@ -112,7 +112,7 @@ class DecisionRuntime:
         actor: str,
         approver: str | None = None,
         context: dict[str, Any] | None = None,
-        action: Action | None = None,
+        action: ActionOption | None = None,
     ) -> Receipt:
         resolved = action or (self._actions.get(decision.action_id) if decision.action_id else None)
         try:
@@ -197,7 +197,7 @@ class DecisionRuntime:
     def decision(self, decision_id: str) -> Decision:
         return self._decisions[decision_id]
 
-    def action_for(self, decision: Decision) -> Action | None:
+    def action_for(self, decision: Decision) -> ActionOption | None:
         if not decision.action_id:
             return None
         return self._actions.get(decision.action_id)
@@ -220,6 +220,6 @@ class DecisionRuntime:
         trace_id = decision.trace_id
         trace = self._traces.get(trace_id)
         if trace is None:
-            trace = Trace(id=trace_id or self._id("TRC"), decision_id=decision.id)
+            trace = Trace(id=trace_id or self._id("TRC"), decision_id=decision.decision_id)
         self._traces[trace.id] = trace.with_event(stage, detail)
-        self._trace_by_decision[decision.id] = trace.id
+        self._trace_by_decision[decision.decision_id] = trace.id

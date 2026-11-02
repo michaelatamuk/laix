@@ -9,31 +9,28 @@ network, no database, no clock of its own.
 
 from __future__ import annotations
 
+from ..contracts import VERBS, Breakdown, Escalation, Intent
 from .model import (
-    ACTIONS,
     FEEDBACK_STATES,
     REASON_CODES,
     RESULTS,
     SEVERITY_RANK,
-    Breakdown,
+    AttentionDecision,
+    AttentionOutcome,
     Context,
-    Decision,
-    Escalation,
     Feedback,
-    Intent,
-    Outcome,
     Signal,
 )
 from .outcomes import (
     HELPED,
     HURT,
-    NO_EFFECT,
+    NEUTRAL,
     UNKNOWN,
     OutcomeLog,
     label_for_feedback,
     result_for_reason,
 )
-from .policy import GATES, REASONS, cost_of_waiting, decide, dedupe_key, rollup, score, trace_id, undo_hint
+from .policy import GATES, REASONS, cost_of_waiting, decide_attention, dedupe_key, rollup, score, trace_id, undo_hint
 from .ports import Clock, NullSink, Recorder, Sink, SystemClock
 from .replay import (
     POLICIES,
@@ -49,30 +46,30 @@ from .replay import (
 )
 from .timing import hours_until, is_quiet, parse_range
 
-__version__ = "0.7.0"
+__version__ = "0.8.0"
 
 __all__ = [
-    "ACTIONS",
     "FEEDBACK_STATES",
     "GATES",
     "HELPED",
     "HURT",
-    "NO_EFFECT",
+    "NEUTRAL",
     "POLICIES",
     "REASONS",
     "REASON_CODES",
     "RESULTS",
     "SEVERITY_RANK",
     "UNKNOWN",
+    "VERBS",
     "Breakdown",
     "Clock",
     "Context",
-    "Decision",
+    "AttentionDecision",
+    "AttentionOutcome",
     "Escalation",
     "Feedback",
     "Intent",
     "NullSink",
-    "Outcome",
     "OutcomeLog",
     "Recorder",
     "Signal",
@@ -82,7 +79,7 @@ __all__ = [
     "compare",
     "context_from",
     "cost_of_waiting",
-    "decide",
+    "decide_attention",
     "dedupe_key",
     "hours_until",
     "is_quiet",

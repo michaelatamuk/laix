@@ -13,6 +13,8 @@ from __future__ import annotations
 
 from typing import Any, Protocol, runtime_checkable
 
+from ..errors import PolicyError
+
 
 @runtime_checkable
 class Policy(Protocol):
@@ -23,9 +25,6 @@ class Policy(Protocol):
     def decide(self, request: Any) -> list[Any]:
         ...
 
-
-class PolicyError(ValueError):
-    """Raised when a policy name is unknown or a policy returns an invalid result."""
 
 
 class PolicyRegistry:

@@ -12,11 +12,12 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from .model import ACTIONS, FEEDBACK_STATES, SEVERITY_RANK, Context, Escalation, Feedback, Intent, Signal
-from .policy import REASONS, decide
+from ..contracts import VERBS
+from .model import FEEDBACK_STATES, SEVERITY_RANK, Context, Escalation, Feedback, Intent, Signal
+from .policy import REASONS, decide_attention
 from .timing import parse_range
 
-FIELDS = ("action", "reason", "deliver", "record", "requires_approval", "score", "cost_of_waiting", "undo_hint", "reversible")
+FIELDS = ("verb", "reason_code", "deliver", "record", "requires_approval", "score", "cost_of_waiting", "undo_hint", "reversible")
 
 
 def context_from(payload: Mapping[str, Any]) -> Context:
@@ -70,7 +71,7 @@ def signal_from(payload: Mapping[str, Any]) -> Signal:
 def run_case(case: Mapping[str, Any]) -> list[dict[str, Any]]:
     context = context_from(case["context"])
     signals = [signal_from(item) for item in case.get("signals", [])]
-    return [decision.as_dict() for decision in decide(signals, context)]
+    return [decision.as_dict() for decision in decide_attention(signals, context)]
 
 
 def compare(case: Mapping[str, Any]) -> list[str]:
@@ -157,10 +158,10 @@ def validate_document(document: Mapping[str, Any]) -> list[str]:
             problems.append(f"{where}: expected must have one decision per signal")
             continue
         for want in expected:
-            if want.get("action") not in ACTIONS:
-                problems.append(f"{where}: unknown action {want.get('action')!r}")
-            if want.get("reason") not in REASONS:
-                problems.append(f"{where}: unknown reason {want.get('reason')!r}")
+            if want.get("verb") not in VERBS:
+                problems.append(f"{where}: unknown verb {want.get('verb')!r}")
+            if want.get("reason_code") not in REASONS:
+                problems.append(f"{where}: unknown reason {want.get('reason_code')!r}")
             if not isinstance(want.get("score"), (int, float)):
                 problems.append(f"{where}: expected score must be numeric")
             for field in ("deliver", "record"):
@@ -177,7 +178,7 @@ def _delivers(name: str, signal: Signal, context: Context) -> bool:
         return True
     if name == "severity_only":
         return SEVERITY_RANK.get(signal.severity, 9) <= SEVERITY_RANK.get(context.min_severity, 9)
-    return decide([signal], context)[0].deliver
+    return decide_attention([signal], context)[0].deliver
 
 
 POLICIES: tuple[str, ...] = ("policy", "severity_only", "always_notify")

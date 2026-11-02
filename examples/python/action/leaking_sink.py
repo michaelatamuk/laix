@@ -14,7 +14,7 @@ The belief says the sink is about to overflow with 95% confidence. Urgency is
 0.9. Closing the valve has high benefit and low risk, so the rule chooses it.
 """
 
-from laix import Action, Belief, DecisionRequest, Layer, Situation, iso
+from laix import ActionOption, Belief, DecisionRequest, Layer, Situation, iso
 
 layer = Layer()
 decision = layer.decide(
@@ -35,8 +35,8 @@ decision = layer.decide(
             attributes={"urgency": 0.9},
         ),
         options=(
-            Action(id="option-wait", verb="wait", name="keep-watching", expected_benefit=0.1),
-            Action(
+            ActionOption(id="option-wait", verb="wait", name="keep-watching", expected_benefit=0.1),
+            ActionOption(
                 id="option-close-valve",
                 verb="act",
                 name="close the valve",

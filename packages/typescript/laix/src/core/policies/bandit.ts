@@ -18,7 +18,7 @@ function toArm(item: Arm | Record<string, unknown>): Arm {
 
 export class BanditPolicy {
   name = "bandit.v1";
-  version = "0.7.0";
+  version = "0.8.0";
   bandit: UCBBandit;
   maxRisk: number;
   budget: number;

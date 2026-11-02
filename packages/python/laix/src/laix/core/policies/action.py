@@ -25,14 +25,14 @@ from typing import Any
 
 from ..contracts import (
     VERBS,
-    Action,
+    ActionOption,
     Decision,
     Situation,
     clamp,
     iso,
 )
 
-POLICY_VERSION = "0.7.0"
+ACTION_POLICY_VERSION = "0.8.0"
 
 
 def _number(payload: dict[str, Any], key: str, default: float) -> float:
@@ -49,7 +49,7 @@ def _truthy(value: Any) -> bool:
 
 
 @dataclass(frozen=True)
-class PolicyConfig:
+class ActionPolicyConfig:
     """Thresholds are explicit so a host can audit and tune them.
 
     The defaults reproduce a conservative operating posture: act only when both
@@ -69,21 +69,21 @@ class PolicyConfig:
 
 
 @dataclass(frozen=True)
-class PolicyRequest:
+class ActionPolicyRequest:
     situation: Situation
-    options: tuple[Action, ...]
+    options: tuple[ActionOption, ...]
     attributes: dict[str, Any] = field(default_factory=dict)
 
 
-class DecisionPolicy:
-    def __init__(self, config: PolicyConfig | None = None) -> None:
-        self.config = config or PolicyConfig()
-        self.version = POLICY_VERSION
+class ActionPolicy:
+    def __init__(self, config: ActionPolicyConfig | None = None) -> None:
+        self.config = config or ActionPolicyConfig()
+        self.version = ACTION_POLICY_VERSION
 
     # ------------------------------------------------------------------ decide
     def decide(
         self,
-        request: PolicyRequest,
+        request: ActionPolicyRequest,
         *,
         decision_id: str = "",
         trace_id: str = "",
@@ -108,7 +108,7 @@ class DecisionPolicy:
         needs_more_info = _truthy(attributes.get("needs_more_info", False))
 
         verb: str
-        chosen: Action | None = None
+        chosen: ActionOption | None = None
         rationale: str
 
         if self._safety_blocked(situation):
@@ -170,19 +170,20 @@ class DecisionPolicy:
 
         alternatives = self._alternatives(request.options, chosen, blocked, applied, verb)
         decision = Decision(
-            id=decision_id,
-            situation_id=situation.id,
             verb=verb,
-            action_id=chosen.id if chosen else None,
-            rationale=rationale,
             confidence=confidence,
+            reason_code="policy_rule",
+            rationale=rationale,
+            decision_id=decision_id,
+            situation_id=situation.id,
+            action_id=chosen.id if chosen else None,
             alternatives=alternatives,
             constraints_applied=tuple(dict.fromkeys(applied)),
             requires_approval=requires_approval,
             policy_version=self.version,
             created_at=created_at or iso(),
             trace_id=trace_id,
-            utility=chosen.utility if chosen else 0.0,
+            score=chosen.utility if chosen else 0.0,
             attributes={
                 "urgency": round(urgency, 4),
                 "uncertainty": round(uncertainty, 4),
@@ -197,17 +198,17 @@ class DecisionPolicy:
     def _admit(
         self,
         situation: Situation,
-        options: tuple[Action, ...],
+        options: tuple[ActionOption, ...],
         applied: list[str],
         blocked: dict[str, str],
-    ) -> list[Action]:
+    ) -> list[ActionOption]:
         if self._safety_blocked(situation):
             applied.append("safety:blocked")
             for option in options:
                 blocked[option.id] = "blocked by a hard safety constraint"
             return [item for item in options if item.verb == "wait"]
 
-        admitted: list[Action] = []
+        admitted: list[ActionOption] = []
         for option in options:
             reason = self._violation(situation, option)
             if reason:
@@ -217,7 +218,7 @@ class DecisionPolicy:
                 admitted.append(option)
         return admitted
 
-    def _violation(self, situation: Situation, option: Action) -> str | None:
+    def _violation(self, situation: Situation, option: ActionOption) -> str | None:
         pairs = (
             ("latency", option.latency_ms, "ms"),
             ("cost", option.cost, ""),
@@ -265,14 +266,14 @@ class DecisionPolicy:
         return False
 
     @staticmethod
-    def _best(options: list[Action]) -> Action:
+    def _best(options: list[ActionOption]) -> ActionOption:
         return sorted(options, key=lambda item: (-item.utility, item.id))[0]
 
     # ----------------------------------------------------------- explanation
     def _alternatives(
         self,
-        options: tuple[Action, ...],
-        chosen: Action | None,
+        options: tuple[ActionOption, ...],
+        chosen: ActionOption | None,
         blocked: dict[str, str],
         applied: list[str],
         chosen_verb: str,
@@ -293,13 +294,13 @@ class DecisionPolicy:
                     "verb": option.verb,
                     "name": option.name,
                     "utility": option.utility,
-                    "reason": reason,
+                    "rejected_because": reason,
                 }
             )
         rows.sort(key=lambda item: (-float(item["utility"]), str(item["action_id"])))
         return tuple(rows[: self.config.max_alternatives])
 
 
-def decide(request: PolicyRequest, *, config: PolicyConfig | None = None, **kwargs: Any) -> Decision:
+def decide_action(request: ActionPolicyRequest, *, config: ActionPolicyConfig | None = None, **kwargs: Any) -> Decision:
     """Functional shortcut for hosts that do not need a policy object."""
-    return DecisionPolicy(config).decide(request, **kwargs)
+    return ActionPolicy(config).decide(request, **kwargs)

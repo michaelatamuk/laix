@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from laix import (
-    Action,
+    ActionOption,
     Belief,
     Context,
     DecisionRequest,
@@ -42,8 +42,8 @@ def test_action_request_returns_the_same_shape() -> None:
         attributes={"urgency": 0.9},
     )
     options = (
-        Action(id="a-wait", verb="wait", name="keep_observing", expected_benefit=0.2),
-        Action(id="a-act", verb="act", name="apply_change", expected_benefit=0.9),
+        ActionOption(id="a-wait", verb="wait", name="keep_observing", expected_benefit=0.2),
+        ActionOption(id="a-act", verb="act", name="apply_change", expected_benefit=0.9),
     )
     decisions = layer.decide(
         DecisionRequest(subject="one situation", at=iso(), situation=situation, options=options)

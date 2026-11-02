@@ -16,7 +16,7 @@ from dataclasses import asdict, dataclass, field, fields, is_dataclass
 from datetime import datetime, timezone
 from typing import Any
 
-SCHEMA_VERSION = "0.7.0"
+SCHEMA_VERSION = "0.8.0"
 
 # The seven verbs are the whole north interface. An app receives one of these
 # decisions, with approval carried as a flag rather than as its own verb.
@@ -224,7 +224,7 @@ class Constraint:
 
 
 @dataclass(frozen=True, slots=True)
-class Action:
+class ActionOption:
     """A candidate action the app can afford to offer LAIX.
 
     The app describes cost, risk and benefit in its own units; LAIX only needs
@@ -269,7 +269,7 @@ class Action:
         return payload
 
     @classmethod
-    def from_dict(cls, payload: dict) -> "Action":
+    def from_dict(cls, payload: dict) -> "ActionOption":
         data = dict(payload)
         data.pop("utility", None)
         if "addresses" in data:
@@ -318,37 +318,6 @@ class Situation:
             return clamp(float(self.attributes.get("uncertainty", 1.0 - self.confidence())))
         except (TypeError, ValueError):
             return 1.0 - self.confidence()
-
-    def to_dict(self) -> dict:
-        return to_primitive(self)
-
-
-@dataclass(frozen=True, slots=True)
-class Decision:
-    """One of the seven verbs, with the reason and the rejected options."""
-
-    id: str
-    situation_id: str
-    verb: str
-    action_id: str | None
-    rationale: str
-    confidence: float
-    alternatives: tuple[dict[str, Any], ...] = ()
-    constraints_applied: tuple[str, ...] = ()
-    requires_approval: bool = False
-    policy_version: str = ""
-    created_at: str = field(default_factory=iso)
-    trace_id: str = ""
-    utility: float = 0.0
-    attributes: dict[str, Any] = field(default_factory=dict)
-    schema_version: str = SCHEMA_VERSION
-
-    def __post_init__(self) -> None:
-        if self.verb not in VERBS:
-            raise ValueError(f"unknown verb: {self.verb}")
-        object.__setattr__(self, "confidence", clamp(self.confidence))
-        object.__setattr__(self, "alternatives", tuple(dict(item) for item in self.alternatives))
-        object.__setattr__(self, "constraints_applied", _tuple_of_str(self.constraints_applied))
 
     def to_dict(self) -> dict:
         return to_primitive(self)
@@ -424,12 +393,126 @@ class Trace:
         return to_primitive(self)
 
 
+@dataclass(frozen=True, slots=True)
+class EvidenceRef:
+    id: str
+    kind: str = "reference"
+    quote: str | None = None
+    source: str | None = None
+    confidence: float | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class Intent:
+    capability: str
+    args: dict[str, Any] = field(default_factory=dict)
+
+    def as_dict(self) -> dict[str, Any]:
+        return {"capability": self.capability, "args": dict(self.args)}
+
+
+@dataclass(frozen=True, slots=True)
+class Escalation:
+    target: str
+    reason: str = ""
+
+    def as_dict(self) -> dict[str, Any]:
+        return {"target": self.target, "reason": self.reason}
+
+
+@dataclass(frozen=True, slots=True)
+class Breakdown:
+    severity: float = 0.0
+    due: float = 0.0
+    confidence: float = 0.0
+    interruption: float = 0.0
+    learned: float = 0.0
+    total: float = 0.0
+
+    def as_dict(self) -> dict[str, float]:
+        return {
+            "severity": round(self.severity, 2),
+            "due": round(self.due, 2),
+            "confidence": round(self.confidence, 2),
+            "interruption": round(self.interruption, 2),
+            "learned": round(self.learned, 2),
+            "total": round(self.total, 2),
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class Decision:
+    """The one decision shape returned by every policy and by ``Layer``."""
+
+    verb: str
+    confidence: float
+    reason_code: str
+    rationale: str
+    decision_id: str = ""
+    situation_id: str = ""
+    policy_version: str = ""
+    action_id: str | None = None
+    evidence: tuple[EvidenceRef, ...] = ()
+    requires_approval: bool = False
+    score: float | None = None
+    breakdown: Breakdown | None = None
+    intent: Intent | None = None
+    escalation: Escalation | None = None
+    cost_of_waiting: float = 0.0
+    reversible: bool = False
+    undo_hint: str | None = None
+    trace_id: str = ""
+    deliver: bool = True
+    record: bool = True
+    created_at: str | None = None
+    confidence_source: str = ""
+    calibrated: bool = False
+    alternatives: tuple[dict[str, Any], ...] = ()
+    constraints_applied: tuple[str, ...] = ()
+    attributes: dict[str, Any] = field(default_factory=dict)
+    schema_version: str = SCHEMA_VERSION
+
+    def __post_init__(self) -> None:
+        if self.verb not in VERBS:
+            raise ValueError(f"unknown verb: {self.verb!r}")
+        object.__setattr__(self, "confidence", max(0.0, min(1.0, float(self.confidence))))
+
+    def basis(self) -> tuple[dict[str, Any], ...]:
+        """A host-neutral basis for a decision record or explain view."""
+        rows: list[dict[str, Any]] = [
+            {"kind": "reason", "ref": self.reason_code, "note": self.rationale}
+        ]
+        for item in self.evidence:
+            rows.append(
+                {
+                    "kind": item.kind,
+                    "ref": item.id,
+                    "note": item.quote or "",
+                    "source": item.source or "",
+                }
+            )
+        if self.escalation is not None:
+            rows.append(
+                {
+                    "kind": "escalation",
+                    "ref": self.escalation.target,
+                    "note": self.escalation.reason,
+                }
+            )
+        for item in self.constraints_applied:
+            rows.append({"kind": "constraint", "ref": item, "note": ""})
+        return tuple(rows)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
 CONTRACTS = (
     Observation,
     Belief,
     Goal,
     Constraint,
-    Action,
+    ActionOption,
     Situation,
     Decision,
     Outcome,

@@ -10,7 +10,7 @@ from ._support import decision, number, value
 
 class PreferenceElicitationPolicy:
     name = "preference-elicitation.v1"
-    version = "0.7.0"
+    version = "0.8.0"
 
     def decide(self, request: Any) -> list[Decision]:
         uncertainty = number(request, "uncertainty", 0.5)

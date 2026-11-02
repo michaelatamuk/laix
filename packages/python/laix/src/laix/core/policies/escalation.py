@@ -15,7 +15,7 @@ from ._support import decision, number, value
 
 class EscalationPolicy:
     name = "escalation.v1"
-    version = "0.7.0"
+    version = "0.8.0"
 
     def decide(self, request: Any) -> list[Decision]:
         if bool(value(request, "resolved", False)):

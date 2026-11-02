@@ -12,7 +12,7 @@ from typing import Callable, Iterable
 
 from ..core.contracts import clamp
 from ..core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
-from ..core.resources import Budget, ResourcePolicy, SensingOption
+from ..core.resources import Budget, ResourceScheduler, SensingOption
 
 
 @dataclass(frozen=True, slots=True)
@@ -35,11 +35,11 @@ class LiveContext:
         detectors: Iterable[Detector] = (),
         *,
         budget: Budget | None = None,
-        policy: ResourcePolicy | None = None,
+        policy: ResourceScheduler | None = None,
     ) -> None:
         self._detectors: dict[str, Detector] = {}
         self.budget = budget or Budget(max_deep_calls=2, max_cost=1.0, max_latency_ms=500)
-        self.policy = policy or ResourcePolicy()
+        self.policy = policy or ResourceScheduler()
         self.frames: list[PerceptionFrame] = []
         for detector in detectors:
             self.register(detector)

@@ -4,7 +4,7 @@ The breaker crosses water and the valve is out of reach. The safe action set is
 empty, so the safety boundary escalates to a qualified person.
 """
 
-from laix import Action, Belief, Constraint, DecisionRequest, Layer, Situation
+from laix import ActionOption, Belief, Constraint, DecisionRequest, Layer, Situation
 
 decision = Layer().decide(
     DecisionRequest(
@@ -24,18 +24,18 @@ decision = Layer().decide(
             attributes={"urgency": 0.9, "safety_breached": True},
         ),
         options=(
-            Action(id="wait", verb="wait", name="wait", expected_benefit=0.1),
-            Action(id="look", verb="observe", name="look from the doorway", expected_benefit=0.5),
-            Action(id="guide", verb="guide", name="keep people out", expected_benefit=0.6),
-            Action(id="ask", verb="ask", name="call the owner", expected_benefit=0.4),
-            Action(
+            ActionOption(id="wait", verb="wait", name="wait", expected_benefit=0.1),
+            ActionOption(id="look", verb="observe", name="look from the doorway", expected_benefit=0.5),
+            ActionOption(id="guide", verb="guide", name="keep people out", expected_benefit=0.6),
+            ActionOption(id="ask", verb="ask", name="call the owner", expected_benefit=0.4),
+            ActionOption(
                 id="breaker",
                 verb="act",
                 name="cross the wet floor to the breaker",
                 expected_benefit=1.0,
                 risk=0.9,
             ),
-            Action(id="manager", verb="escalate", name="call a qualified person", expected_benefit=0.7),
+            ActionOption(id="manager", verb="escalate", name="call a qualified person", expected_benefit=0.7),
         ),
     )
 )[0]

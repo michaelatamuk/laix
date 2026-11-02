@@ -1,7 +1,7 @@
-import type { Action, Decision, Receipt } from "../../core/contracts.ts";
+import type { ActionOption, Decision, Receipt } from "../../core/contracts.ts";
 import { newId } from "../../core/contracts.ts";
 
-export type Handler = (action: Action, context: Record<string, unknown>) => Record<string, unknown>;
+export type Handler = (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>;
 
 export class ApprovalRequired extends Error {}
 export class UnknownAction extends Error {}
@@ -31,7 +31,7 @@ export class ExecutionBridge {
     return this.handlers.has(name);
   }
 
-  execute(decision: DecisionLike, options: { action: Action | null; actor: string; approver?: string | null; context?: Record<string, unknown> }): Receipt {
+  execute(decision: DecisionLike, options: { action: ActionOption | null; actor: string; approver?: string | null; context?: Record<string, unknown> }): Receipt {
     const decisionId = decision.decisionId ?? decision.id ?? "";
     const action = options.action;
     if (!action) {
@@ -52,7 +52,7 @@ export class ExecutionBridge {
     }
   }
 
-  refuse(decision: DecisionLike, options: { action: Action | null; actor: string; reason: string }): Receipt {
+  refuse(decision: DecisionLike, options: { action: ActionOption | null; actor: string; reason: string }): Receipt {
     return this.store({
       id: newId("RCT"),
       decisionId: decision.decisionId ?? decision.id ?? "",

@@ -11,12 +11,12 @@ import pytest
 
 import laix.core.attention as laix
 from laix.core.attention import (
+    AttentionOutcome,
     Context,
-    Outcome,
     OutcomeLog,
     Signal,
     compare,
-    decide,
+    decide_attention,
     dedupe_key,
     is_quiet,
     load_vectors,
@@ -45,22 +45,22 @@ def test_contract_version_is_declared() -> None:
 
 def test_decisions_keep_input_order_and_identity() -> None:
     signals = [Signal(id=f"s-{i}", kind="k", severity="high", confidence=0.9) for i in range(3)]
-    decisions = decide(signals, Context(now=at(10), quiet_hours=None))
+    decisions = decide_attention(signals, Context(now=at(10), quiet_hours=None))
     assert [d.signal_id for d in decisions] == ["s-0", "s-1", "s-2"]
-    assert all(d.action == "guide" for d in decisions)
+    assert all(d.verb == "guide" for d in decisions)
 
 
 def test_trace_ids_are_stable_and_distinct_per_action() -> None:
     signal = Signal(id="s-1", kind="k", severity="high", confidence=0.9)
-    first = decide([signal], Context(now=at(10), quiet_hours=None))[0]
-    second = decide([signal], Context(now=at(10), quiet_hours=None))[0]
+    first = decide_attention([signal], Context(now=at(10), quiet_hours=None))[0]
+    second = decide_attention([signal], Context(now=at(10), quiet_hours=None))[0]
     assert first.trace_id == second.trace_id
     assert first.trace_id.startswith("tr-") and len(first.trace_id) == 15
 
 
 def test_score_breakdown_adds_up() -> None:
     signal = Signal(id="s", kind="k", severity="high", confidence=0.5, due=at(12).isoformat(), interruption_cost=0.5)
-    decision = decide([signal], Context(now=at(10), quiet_hours=None))[0]
+    decision = decide_attention([signal], Context(now=at(10), quiet_hours=None))[0]
     breakdown = decision.breakdown
     assert breakdown.total == pytest.approx(
         breakdown.severity + breakdown.due + breakdown.confidence + breakdown.interruption + breakdown.learned
@@ -99,9 +99,9 @@ def test_rollup_orders_by_severity_then_due() -> None:
 def test_outcome_log_precision_needs_evidence() -> None:
     log = OutcomeLog()
     assert log.precision() is None
-    log.record(Outcome("a", "kind-a", "guide", laix.HELPED, score=80))
-    log.record(Outcome("b", "kind-a", "guide", laix.HURT, reason_code="false_alarm", score=70))
-    log.record(Outcome("c", "kind-b", "guide", laix.NO_EFFECT, reason_code="design_change", score=40))
+    log.record(AttentionOutcome("a", "kind-a", "guide", laix.HELPED, score=80))
+    log.record(AttentionOutcome("b", "kind-a", "guide", laix.HURT, reason_code="false_alarm", score=70))
+    log.record(AttentionOutcome("c", "kind-b", "guide", laix.NEUTRAL, reason_code="design_change", score=40))
     assert log.precision() == pytest.approx(1 / 3)
     assert log.hazard_rate() == pytest.approx(1 / 3)
     assert log.precision("kind-a") == pytest.approx(0.5)
@@ -111,8 +111,8 @@ def test_outcome_log_precision_needs_evidence() -> None:
 def test_reason_codes_map_to_labels() -> None:
     assert laix.result_for_reason("false_alarm") == laix.HURT
     assert laix.result_for_reason("data_error") == laix.HURT
-    assert laix.result_for_reason("design_change") == laix.NO_EFFECT
-    assert laix.result_for_reason("no_action") == laix.NO_EFFECT
+    assert laix.result_for_reason("design_change") == laix.NEUTRAL
+    assert laix.result_for_reason("no_action") == laix.NEUTRAL
     assert laix.result_for_reason(None) == laix.UNKNOWN
     assert laix.label_for_feedback("accepted") == laix.HELPED
     assert laix.label_for_feedback("dismissed", "false_alarm") == laix.HURT
@@ -120,8 +120,8 @@ def test_reason_codes_map_to_labels() -> None:
 
 def test_calibration_has_one_row_per_bucket() -> None:
     log = OutcomeLog()
-    log.record(Outcome("a", "k", "guide", laix.HELPED, score=10))
-    log.record(Outcome("b", "k", "guide", laix.HURT, score=90))
+    log.record(AttentionOutcome("a", "k", "guide", laix.HELPED, score=10))
+    log.record(AttentionOutcome("b", "k", "guide", laix.HURT, score=90))
     rows = log.calibration()
     assert len(rows) == 4
     assert rows[0]["n"] == 1 and rows[0]["rate"] == 1.0
@@ -207,28 +207,28 @@ def test_a_snooze_holds_until_it_expires() -> None:
     signal = Signal(id="s", kind="k", severity="high", confidence=0.9)
     future = Context(now=at(10), quiet_hours=None, feedback={"s": laix.Feedback("snoozed", until="2026-11-02T08:00:00+02:00")})
     past = Context(now=at(10), quiet_hours=None, feedback={"s": laix.Feedback("snoozed", until="2026-10-31T08:00:00+02:00")})
-    assert decide([signal], future)[0].reason == "snoozed"
-    assert decide([signal], past)[0].action == "guide"
+    assert decide_attention([signal], future)[0].reason_code == "snoozed"
+    assert decide_attention([signal], past)[0].verb == "guide"
 
 
 def test_a_snooze_without_an_expiry_stays_closed() -> None:
     signal = Signal(id="s", kind="k", severity="high", confidence=0.9)
     context = Context(now=at(10), quiet_hours=None, feedback={"s": laix.Feedback("snoozed")})
-    assert decide([signal], context)[0].reason == "snoozed"
+    assert decide_attention([signal], context)[0].reason_code == "snoozed"
 
 
 @pytest.mark.parametrize("state,reason", [("wrong", "wrong"), ("assigned", "assigned"), ("dismissed", "dismissed")])
 def test_negative_feedback_suppresses(state: str, reason: str) -> None:
     signal = Signal(id="s", kind="k", severity="high", confidence=0.9)
     context = Context(now=at(10), quiet_hours=None, feedback={"s": laix.Feedback(state)})
-    decision = decide([signal], context)[0]
-    assert (decision.action, decision.reason, decision.record) == ("wait", reason, False)
+    decision = decide_attention([signal], context)[0]
+    assert (decision.verb, decision.reason_code, decision.record) == ("wait", reason, False)
 
 
 def test_accepted_feedback_does_not_suppress() -> None:
     signal = Signal(id="s", kind="k", severity="high", confidence=0.9)
     context = Context(now=at(10), quiet_hours=None, feedback={"s": laix.Feedback("accepted")})
-    assert decide([signal], context)[0].action == "guide"
+    assert decide_attention([signal], context)[0].verb == "guide"
 
 
 # --------------------------------------------------------------------------- execution seam
@@ -249,28 +249,28 @@ def intent_signal(**overrides) -> Signal:
 
 def test_act_needs_an_explicit_opt_in() -> None:
     signal = intent_signal()
-    off = decide([signal], Context(now=at(10), quiet_hours=None))[0]
-    on = decide([signal], Context(now=at(10), quiet_hours=None, allow_act=True))[0]
-    assert (off.action, off.intent) == ("guide", None)
-    assert on.action == "act" and on.intent is not None and on.intent.capability == "apply_variant"
+    off = decide_attention([signal], Context(now=at(10), quiet_hours=None))[0]
+    on = decide_attention([signal], Context(now=at(10), quiet_hours=None, allow_act=True))[0]
+    assert (off.verb, off.intent) == ("guide", None)
+    assert on.verb == "act" and on.intent is not None and on.intent.capability == "apply_variant"
 
 
 def test_an_irreversible_intent_is_only_notified() -> None:
     signal = intent_signal(reversible=False)
-    decision = decide([signal], Context(now=at(10), quiet_hours=None, allow_act=True))[0]
-    assert decision.action == "guide"
+    decision = decide_attention([signal], Context(now=at(10), quiet_hours=None, allow_act=True))[0]
+    assert decision.verb == "guide"
 
 
 def test_approval_keeps_the_act_flag() -> None:
     signal = intent_signal(requires_approval=True)
-    decision = decide([signal], Context(now=at(10), quiet_hours=None, allow_act=True))[0]
-    assert (decision.action, decision.reason, decision.requires_approval) == ("act", "act", True)
+    decision = decide_attention([signal], Context(now=at(10), quiet_hours=None, allow_act=True))[0]
+    assert (decision.verb, decision.reason_code, decision.requires_approval) == ("act", "act", True)
 
 
 def test_a_blocked_signal_never_acts() -> None:
     signal = intent_signal()
     context = Context(now=at(23, 30), quiet_hours=("22:00", "06:00"), allow_act=True)
-    assert decide([signal], context)[0].action == "wait"
+    assert decide_attention([signal], context)[0].verb == "wait"
 
 
 def test_escalation_is_carried_only_when_escalating() -> None:
@@ -282,13 +282,13 @@ def test_escalation_is_carried_only_when_escalating() -> None:
         escalation=laix.Escalation("target-a", "overdue"),
     )
     context = Context(now=at(10), quiet_hours=None, escalate_after_hours=24)
-    decision = decide([signal], context)[0]
-    assert decision.action == "guide" and decision.escalation is None
+    decision = decide_attention([signal], context)[0]
+    assert decision.verb == "guide" and decision.escalation is None
 
     overdue = {"due": "2026-10-30T10:00:00+02:00"}
     signal = intent_signal(severity="critical", intent=None, reversible=False, escalation=laix.Escalation("target-a", "overdue"), **overdue)
-    decision = decide([signal], context)[0]
-    assert decision.action == "escalate" and decision.escalation is not None
+    decision = decide_attention([signal], context)[0]
+    assert decision.verb == "escalate" and decision.escalation is not None
     assert decision.escalation.target == "target-a"
 
 
@@ -318,7 +318,7 @@ def test_undo_hint_matches_the_action() -> None:
 
 def test_every_decision_carries_cost_and_undo() -> None:
     signal = Signal(id="s", kind="k", severity="high", confidence=0.9, due="2026-11-02T09:00:00+02:00")
-    decision = decide([signal], Context(now=at(10), quiet_hours=None))[0]
+    decision = decide_attention([signal], Context(now=at(10), quiet_hours=None))[0]
     assert decision.cost_of_waiting > 0
     assert decision.undo_hint == "withdraw"
     assert decision.as_dict()["cost_of_waiting"] == round(decision.cost_of_waiting, 2)
@@ -332,8 +332,8 @@ def test_the_schema_and_the_module_agree() -> None:
 
     document = json.loads((PACKAGE / "contract" / "schema.json").read_text(encoding="utf-8"))
     defs = document["$defs"]
-    assert tuple(defs["action"]["enum"]) == laix.ACTIONS
-    assert tuple(defs["reason"]["enum"]) == laix.REASONS
+    assert tuple(defs["verb"]["enum"]) == laix.VERBS
+    assert tuple(defs["reason_code"]["enum"]) == laix.REASONS
     assert tuple(defs["feedbackState"]["enum"]) == laix.FEEDBACK_STATES
     assert tuple(defs["severity"]["enum"]) == tuple(laix.SEVERITY_RANK)
 
@@ -342,7 +342,7 @@ def test_validate_document_accepts_the_contract() -> None:
     assert laix.validate_document(VECTORS) == []
 
 
-def test_validate_document_rejects_an_invented_action() -> None:
+def test_validate_document_rejects_an_invented_verb() -> None:
     broken = {
         "contract": "laix",
         "version": "1.1.0",
@@ -351,12 +351,12 @@ def test_validate_document_rejects_an_invented_action() -> None:
                 "id": "broken",
                 "context": {"now": "2026-11-01T10:00:00+02:00"},
                 "signals": [{"id": "s", "kind": "k", "severity": "high"}],
-                "expected": [{"action": "notify_now", "reason": "worth_surfacing", "deliver": True, "record": True, "score": 1}],
+                "expected": [{"verb": "notify_now", "reason_code": "worth_surfacing", "deliver": True, "record": True, "score": 1}],
             }
         ],
     }
     problems = laix.validate_document(broken)
-    assert any("unknown action" in problem for problem in problems)
+    assert any("unknown verb" in problem for problem in problems)
 
 
 def test_the_bench_beats_both_baselines() -> None:

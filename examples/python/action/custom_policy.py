@@ -1,6 +1,6 @@
 """Use a custom policy with the same Layer API."""
 
-from laix import DecisionRequest, Layer, LayerDecision
+from laix import DecisionRequest, Layer, Decision
 
 
 class AlwaysWait:
@@ -9,7 +9,7 @@ class AlwaysWait:
 
     def decide(self, request):
         return [
-            LayerDecision(
+            Decision(
                 verb="wait",
                 confidence=0.5,
                 reason_code="policy_rule",

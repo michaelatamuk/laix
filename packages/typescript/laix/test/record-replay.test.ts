@@ -19,13 +19,13 @@ describe("decision record replay", () => {
       id: fixture.create.id,
     });
     for (const step of fixture.steps) {
-      if (step.action === "create") {
+      if (step.op === "create") {
         // already created above
-      } else if (step.action === "approve") {
+      } else if (step.op === "approve") {
         record = approveRecord(record, { by: step.by, at: step.at });
-      } else if (step.action === "execute") {
+      } else if (step.op === "execute") {
         record = markExecuted(record, { by: step.by, at: step.at });
-      } else if (step.action === "undo") {
+      } else if (step.op === "undo") {
         record = undoRecord(record, { by: step.by, at: step.at, reason: step.reason });
       }
       assert.equal(record.status, step.expectedStatus);
@@ -33,6 +33,6 @@ describe("decision record replay", () => {
     }
     assert.equal(record.evidence.length, 1);
     assert.equal(record.metadata.sourceRef, "ref-1");
-    assert.ok(record.audit.some((event) => event.action === "undone"));
+    assert.ok(record.audit.some((event) => event.event === "undone"));
   });
 });

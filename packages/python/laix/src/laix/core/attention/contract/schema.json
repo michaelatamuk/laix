@@ -14,8 +14,8 @@
   },
   "$defs": {
     "severity": { "enum": ["critical", "high", "medium", "low", "info"] },
-    "action": { "enum": ["wait", "observe", "guide", "ask", "act", "verify", "escalate"] },
-    "reason": {
+    "verb": { "enum": ["wait", "observe", "guide", "ask", "act", "verify", "escalate"] },
+    "reason_code": {
       "enum": [
         "worth_surfacing",
         "kill_switch",
@@ -105,12 +105,12 @@
     },
     "expected": {
       "type": "object",
-      "required": ["signalId", "action", "reason", "deliver", "record", "score"],
+      "required": ["signalId", "verb", "reason_code", "deliver", "record", "score"],
       "additionalProperties": true,
       "properties": {
         "signalId": { "type": "string" },
-        "action": { "$ref": "#/$defs/action" },
-        "reason": { "$ref": "#/$defs/reason" },
+        "verb": { "$ref": "#/$defs/verb" },
+        "reason_code": { "$ref": "#/$defs/reason_code" },
         "deliver": { "type": "boolean" },
         "record": { "type": "boolean" },
         "score": { "type": "number" }

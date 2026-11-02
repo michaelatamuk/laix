@@ -19,16 +19,18 @@ export type { Policy } from "./core/policies/registry.ts";
 
 export { PHASES, POLICY_VERSION, SCHEMA_VERSION, VERBS, clamp, confidenceBand, iso, newId } from "./core/contracts.ts";
 export type {
-  Action,
+  ActionOption,
   Belief,
   Breakdown,
   Constraint,
+  Decision,
+  DecisionRequest,
   Goal,
   Observation,
+  Outcome,
   Phase,
   Receipt,
+  Situation,
   Trace,
   TraceEvent,
 } from "./core/contracts.ts";
-export type { Decision as PolicyDecision } from "./core/contracts.ts";
-export type { Outcome as MetricOutcome } from "./core/contracts.ts";

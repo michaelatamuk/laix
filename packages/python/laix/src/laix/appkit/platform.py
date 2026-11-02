@@ -31,7 +31,7 @@ class SkillCall:
 @dataclass(frozen=True, slots=True)
 class ApprovalRequest:
     decision_id: str
-    action: str
+    action_name: str
     rationale: str = ""
     risk: float = 0.0
     reversible: bool = True
@@ -47,7 +47,7 @@ class ApprovalDecision:
 
 
 @dataclass(frozen=True, slots=True)
-class Event:
+class PlatformEvent:
     trace_id: str
     kind: str
     at: str = ""
@@ -85,7 +85,7 @@ class Platform(Protocol):
     def write_state(self, key: str, value: Any) -> None:
         ...
 
-    def events(self, trace_id: str) -> Iterable[Event]:
+    def events(self, trace_id: str) -> Iterable[PlatformEvent]:
         ...
 
     def capability(self, level: str) -> Capability:
@@ -102,7 +102,7 @@ class InMemoryPlatform:
     ) -> None:
         self._skills: dict[str, Callable[[SkillCall], Any]] = {}
         self._state: dict[str, Any] = {}
-        self._events: list[Event] = []
+        self._events: list[PlatformEvent] = []
         self._approver = approver
         self._capabilities = {
             "fast": Capability("fast", ("text",), 200, 0.001),
@@ -117,13 +117,13 @@ class InMemoryPlatform:
         handler = self._skills.get(call.capability)
         if handler is None:
             raise KeyError(f"no skill registered for {call.capability!r}")
-        self._events.append(Event(call.trace_id, "skill.started", _now(), {"capability": call.capability}))
+        self._events.append(PlatformEvent(call.trace_id, "skill.started", _now(), {"capability": call.capability}))
         result = handler(call)
-        self._events.append(Event(call.trace_id, "skill.finished", _now(), {"capability": call.capability}))
+        self._events.append(PlatformEvent(call.trace_id, "skill.finished", _now(), {"capability": call.capability}))
         return result
 
     def cancel(self, run_id: str, reason: str = "") -> bool:
-        self._events.append(Event(run_id, "skill.cancelled", _now(), {"reason": reason}))
+        self._events.append(PlatformEvent(run_id, "skill.cancelled", _now(), {"reason": reason}))
         return True
 
     def request_approval(self, request: ApprovalRequest) -> ApprovalDecision:
@@ -132,7 +132,7 @@ class InMemoryPlatform:
         else:
             decision = ApprovalDecision(approved=False, by="", at=_now(), note="no approver configured")
         self._events.append(
-            Event(request.decision_id, "approval.decided", _now(), {"approved": decision.approved, "by": decision.by})
+            PlatformEvent(request.decision_id, "approval.decided", _now(), {"approved": decision.approved, "by": decision.by})
         )
         return decision
 
@@ -142,7 +142,7 @@ class InMemoryPlatform:
     def write_state(self, key: str, value: Any) -> None:
         self._state[key] = value
 
-    def events(self, trace_id: str) -> Iterable[Event]:
+    def events(self, trace_id: str) -> Iterable[PlatformEvent]:
         return tuple(event for event in self._events if event.trace_id == trace_id)
 
     def capability(self, level: str) -> Capability:
@@ -157,7 +157,7 @@ __all__ = [
     "ApprovalRequest",
     "CAPABILITY_LEVELS",
     "Capability",
-    "Event",
+    "PlatformEvent",
     "InMemoryPlatform",
     "Platform",
     "SkillCall",

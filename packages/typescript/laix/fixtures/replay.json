@@ -21,9 +21,9 @@
     }
   },
   "steps": [
-    { "action": "create", "expectedStatus": "draft" },
-    { "action": "approve", "by": "owner", "at": "2026-11-04T10:05:00Z", "expectedStatus": "approved" },
-    { "action": "execute", "by": "owner", "at": "2026-11-04T10:06:00Z", "expectedStatus": "executed" },
-    { "action": "undo", "by": "owner", "at": "2026-11-04T10:07:00Z", "reason": "Incorrect decision.", "expectedStatus": "undone" }
+    { "op": "create", "expectedStatus": "draft" },
+    { "op": "approve", "by": "owner", "at": "2026-11-04T10:05:00Z", "expectedStatus": "approved" },
+    { "op": "execute", "by": "owner", "at": "2026-11-04T10:06:00Z", "expectedStatus": "executed" },
+    { "op": "undo", "by": "owner", "at": "2026-11-04T10:07:00Z", "reason": "Incorrect decision.", "expectedStatus": "undone" }
   ]
 }

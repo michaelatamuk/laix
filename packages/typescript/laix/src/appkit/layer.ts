@@ -3,86 +3,20 @@
  *
  * A request carries either signals + context for attention allocation, or a
  * situation + options for action selection. Both use generic rules and return
- * the same LayerDecision.
+ * the same Decision.
  */
 
-import { decide as decideAttention, type Context, type Signal } from "../core/attention.ts";
-import type { Decision, Verb } from "../core/contracts.ts";
+import { decideAttention } from "../core/attention.ts";
+import type {
+  ActionOption,
+  Decision,
+  DecisionRequest,
+  Situation,
+  Verb,
+} from "../core/contracts.ts";
 import { PolicyRegistry, type Policy } from "../core/policies/registry.ts";
 
 
-
-export interface LayerDecision {
-  verb: Verb;
-  confidence: number;
-  reasonCode: string;
-  rationale: string;
-  actionId: string | null;
-  requiresApproval: boolean;
-  score: number | null;
-  traceId: string;
-  deliver: boolean;
-  record: boolean;
-  decisionId?: string;
-  policyVersion?: string;
-  evidence?: Decision["evidence"];
-  breakdown?: Decision["breakdown"];
-  intent?: Decision["intent"];
-  escalation?: Decision["escalation"];
-  costOfWaiting?: number;
-  reversible?: boolean;
-  undoHint?: string | null;
-  createdAt?: string;
-  confidenceSource?: string;
-  calibrated?: boolean;
-}
-
-export interface LayerRequest {
-  subject: string;
-  at: string;
-  signals?: Signal[];
-  context?: Context;
-  situation?: Situation;
-  options?: ActionOption[];
-  attributes?: Record<string, unknown>;
-  confidence?: number;
-  confidenceSource?: string;
-  calibrated?: boolean;
-}
-
-export interface BeliefLike {
-  confidence: number;
-}
-
-export interface ConstraintLike {
-  kind: string;
-  value: unknown;
-  hard?: boolean;
-}
-
-export interface Situation {
-  id: string;
-  at: string;
-  subject: string;
-  beliefs?: BeliefLike[];
-  constraints?: ConstraintLike[];
-  attributes?: Record<string, unknown>;
-}
-
-export interface ActionOption {
-  id: string;
-  verb: Verb;
-  name: string;
-  params?: Record<string, unknown>;
-  expectedBenefit?: number;
-  cost?: number;
-  risk?: number;
-  latencyMs?: number;
-  interruptCost?: number;
-  destructive?: boolean;
-  reversible?: boolean;
-  requiresApproval?: boolean;
-}
 
 const VERB_ORDER: Verb[] = ["wait", "observe", "ask", "guide", "act", "verify", "escalate"];
 
@@ -135,7 +69,7 @@ function blockedByConstraint(option: ActionOption, situation: Situation): boolea
   });
 }
 
-export function decideAction(situation: Situation, options: ActionOption[]): LayerDecision {
+export function decideAction(situation: Situation, options: ActionOption[]): Decision {
   const confidence = constraintScore(situation);
   const uncertainty = typeof situation.attributes?.uncertainty === "number"
     ? clamp(situation.attributes.uncertainty)
@@ -239,7 +173,7 @@ export class Layer {
     return { policy: this.policy?.name ?? "built-in", registered: this.registry.names() };
   }
 
-  explain(decision: LayerDecision): Record<string, unknown> {
+  explain(decision: Decision): Record<string, unknown> {
     return {
       verb: decision.verb,
       reasonCode: decision.reasonCode,
@@ -252,14 +186,14 @@ export class Layer {
     };
   }
 
-  decide(request: LayerRequest): LayerDecision[] {
-    const annotate = (decision: LayerDecision): LayerDecision => ({
+  decide(request: DecisionRequest): Decision[] {
+    const annotate = (decision: Decision): Decision => ({
       ...decision,
       confidenceSource: request.confidenceSource ?? decision.confidenceSource,
       calibrated: request.calibrated ?? decision.calibrated,
     });
     if (this.policy) {
-      return this.policy.decide(request as unknown as import("../core/contracts.ts").DecisionRequest).map((decision) => annotate({
+      return this.policy.decide(request).map((decision: Decision) => annotate({
         verb: decision.verb,
         confidence: decision.confidence,
         reasonCode: decision.reasonCode,
@@ -296,10 +230,10 @@ export class Layer {
     }
     if (!request.context) throw new Error("attention allocation needs a context with now");
     return decideAttention(request.context, request.signals ?? []).map((decision) => annotate({
-      verb: decision.action,
+      verb: decision.verb,
       confidence: decision.confidence,
-      reasonCode: decision.reason,
-      rationale: decision.reason,
+      reasonCode: decision.reasonCode,
+      rationale: decision.reasonCode,
       actionId: null,
       requiresApproval: decision.requiresApproval,
       score: decision.score,

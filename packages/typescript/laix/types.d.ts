@@ -8,9 +8,8 @@
  *
  * It is types only: no runtime code, no second policy.
  */
-  export type DecisionAction = "wait" | "observe" | "guide" | "ask" | "act" | "verify" | "escalate";
   export type Severity = "critical" | "high" | "medium" | "low" | "info";
-  export type OutcomeResult = "helped" | "no_effect" | "hurt" | "unknown";
+  export type OutcomeResult = "helped" | "neutral" | "hurt" | "unknown";
   export type FeedbackState = "accepted" | "dismissed" | "snoozed" | "wrong" | "assigned";
 
   export interface Feedback {
@@ -73,11 +72,11 @@
     total: number;
   }
 
-  export interface Decision {
+  export interface AttentionDecision {
     signalId: string;
-    action: DecisionAction;
+    verb: Verb;
     score: number;
-    reason: string;
+    reasonCode: string;
     confidence: number;
     deliver: boolean;
     record: boolean;
@@ -92,9 +91,9 @@
     undoHint: "withdraw" | "cancel" | null;
   }
 
-  export interface Outcome {
+  export interface AttentionOutcome {
     candidateId: string;
-    action: DecisionAction;
+    verb: Verb;
     result: OutcomeResult;
     at: string;
     note?: string;
@@ -118,8 +117,8 @@
 
   export interface EvidenceRef {
     id: string;
-    kind: string;
-    quote: string;
+    kind?: string;
+    quote?: string;
     confidence?: number;
     source?: string;
   }
@@ -127,7 +126,7 @@
   export interface AuditEvent {
     at: string;
     actor: string;
-    action: string;
+    event: string;
     detail: string;
   }
 
@@ -203,41 +202,17 @@
   export function canonical(value: unknown): string;
 
   export type Verb = "wait" | "observe" | "guide" | "ask" | "act" | "verify" | "escalate";
-  export interface LayerDecision {
-    verb: Verb;
-    confidence: number;
-    reasonCode: string;
-    rationale: string;
-    actionId: string | null;
-    requiresApproval: boolean;
-    score: number | null;
-    traceId: string;
-    deliver: boolean;
-    record: boolean;
-    confidenceSource?: string;
-    calibrated?: boolean;
-    decisionId?: string;
-    policyVersion?: string;
-    evidence?: unknown[];
-    breakdown?: Record<string, number>;
-    intent?: Intent | null;
-    escalation?: Escalation | null;
-    costOfWaiting?: number;
-    reversible?: boolean;
-    undoHint?: string | null;
-    createdAt?: string;
-  }
   export interface Policy {
     name: string;
-    decide(request: DecisionRequest): PolicyDecision[];
+    decide(request: DecisionRequest): Decision[];
   }
   export class Layer {
     constructor(options?: { policy?: Policy });
     registerPolicy(name: string, policy: Policy): void;
     usePolicy(name: string): void;
-    decide(request: DecisionRequest): LayerDecision[];
+    decide(request: DecisionRequest): Decision[];
     status(): Record<string, unknown>;
-    explain(decision: LayerDecision): Record<string, unknown>;
+    explain(decision: Decision): Record<string, unknown>;
   }
 
   export interface DecisionRequest {
@@ -245,22 +220,23 @@
     at: string;
     signals?: Signal[];
     context?: Context;
-    situation?: unknown;
-    options?: unknown[];
+    situation?: Situation;
+    options?: ActionOption[];
     attributes?: Record<string, unknown>;
     confidence?: number;
     confidenceSource?: string;
     calibrated?: boolean;
   }
-  export interface PolicyDecision {
+  export interface Decision {
     verb: Verb;
     confidence: number;
     reasonCode: string;
     rationale: string;
     decisionId?: string;
+    situationId?: string;
     policyVersion?: string;
     actionId?: string | null;
-    evidence?: unknown[];
+    evidence?: EvidenceRef[];
     requiresApproval?: boolean;
     score?: number | null;
     breakdown?: Record<string, number>;
@@ -275,8 +251,9 @@
     createdAt?: string;
     confidenceSource?: string;
     calibrated?: boolean;
+    attributes?: Record<string, unknown>;
   }
-  export interface Action {
+  export interface ActionOption {
     id: string;
     verb: Verb;
     name: string;
@@ -354,42 +331,42 @@
   export class ActivePerceptionPolicy implements Policy {
     name: string;
     version: string;
-    decide(request: DecisionRequest): PolicyDecision[];
+    decide(request: DecisionRequest): Decision[];
   }
   export class SafetyConstrainedPolicy implements Policy {
     name: string;
     version: string;
-    decide(request: DecisionRequest): PolicyDecision[];
+    decide(request: DecisionRequest): Decision[];
   }
   export class ReplanningPolicy implements Policy {
     name: string;
     version: string;
-    decide(request: DecisionRequest): PolicyDecision[];
+    decide(request: DecisionRequest): Decision[];
   }
   export class AllocationPolicy implements Policy {
     name: string;
     version: string;
-    decide(request: DecisionRequest): PolicyDecision[];
+    decide(request: DecisionRequest): Decision[];
   }
   export class NegotiationPolicy implements Policy {
     name: string;
     version: string;
-    decide(request: DecisionRequest): PolicyDecision[];
+    decide(request: DecisionRequest): Decision[];
   }
   export class PreferenceElicitationPolicy implements Policy {
     name: string;
     version: string;
-    decide(request: DecisionRequest): PolicyDecision[];
+    decide(request: DecisionRequest): Decision[];
   }
   export class VerificationPolicy implements Policy {
     name: string;
     version: string;
-    decide(request: DecisionRequest): PolicyDecision[];
+    decide(request: DecisionRequest): Decision[];
   }
   export class EscalationPolicy implements Policy {
     name: string;
     version: string;
-    decide(request: DecisionRequest): PolicyDecision[];
+    decide(request: DecisionRequest): Decision[];
   }
 
   export interface Arm {
@@ -405,7 +382,7 @@
     add(arm: Arm): void;
     arms(): Array<Required<Arm>>;
     update(armId: string, reward: number): Arm;
-    learn(outcomes: MetricOutcome[], armOf: (decisionId: string) => string): number;
+    learn(outcomes: Outcome[], armOf: (decisionId: string) => string): number;
     pulls(armId: string): number;
     mean(armId: string): number;
     score(armId: string): number;
@@ -417,11 +394,11 @@
     name: string;
     version: string;
     bandit: UCBBandit;
-    decide(request: DecisionRequest): PolicyDecision[];
+    decide(request: DecisionRequest): Decision[];
     record(armId: string, reward: number): Arm;
-    learn(outcomes: MetricOutcome[], armOf: (decisionId: string) => string): number;
+    learn(outcomes: Outcome[], armOf: (decisionId: string) => string): number;
   }
-  export interface MetricOutcome {
+  export interface Outcome {
     id: string;
     decisionId: string;
     metric: string;
@@ -436,17 +413,17 @@
     note?: string;
   }
   export interface OutcomeStore {
-    add(outcome: MetricOutcome): MetricOutcome;
-    forDecision(decisionId: string): MetricOutcome[];
-    all(): MetricOutcome[];
+    add(outcome: Outcome): Outcome;
+    forDecision(decisionId: string): Outcome[];
+    all(): Outcome[];
     summary(): Record<string, unknown>;
   }
   export class OutcomeLedger implements OutcomeStore {
-    records: MetricOutcome[];
+    records: Outcome[];
     tolerance: number;
-    add(outcome: MetricOutcome): MetricOutcome;
-    forDecision(decisionId: string): MetricOutcome[];
-    all(): MetricOutcome[];
+    add(outcome: Outcome): Outcome;
+    forDecision(decisionId: string): Outcome[];
+    all(): Outcome[];
     summary(): Record<string, unknown>;
     byMetric(): Record<string, Record<string, number>>;
     toDict(): Record<string, unknown>;
@@ -454,7 +431,7 @@
   export function rewardForLabel(label: string): number | null;
 
   export interface SkillCall { capability: string; args?: Record<string, unknown>; traceId?: string; }
-  export interface ApprovalRequest { decisionId: string; action: string; rationale?: string; risk?: number; reversible?: boolean; evidence?: string[]; }
+  export interface ApprovalRequest { decisionId: string; actionName: string; rationale?: string; risk?: number; reversible?: boolean; evidence?: string[]; }
   export interface ApprovalDecision { approved: boolean; by?: string; at?: string; note?: string; }
   export interface PlatformEvent { traceId: string; kind: string; at?: string; payload?: Record<string, unknown>; }
   export interface Capability { level: "fast" | "balanced" | "deep"; modalities?: string[]; maxLatencyMs?: number | null; maxCost?: number | null; }
@@ -519,7 +496,7 @@
     detect(event: PerceptionEvent): Detection[];
   }
   export class LiveContext {
-    constructor(detectors?: Detector[], options?: { budget?: Budget; policy?: ResourcePolicy });
+    constructor(detectors?: Detector[], options?: { budget?: Budget; policy?: ResourceScheduler });
     register(detector: Detector): void;
     perceive(event: PerceptionEvent, uncertainty?: number): PerceptionFrame;
     feed(events: PerceptionEvent[], uncertainty?: number): PerceptionFrame[];
@@ -527,7 +504,7 @@
   }
   export interface Budget { maxDeepCalls?: number; maxCost?: number; maxLatencyMs?: number; }
   export interface SensingOption { name: string; tier?: "cheap" | "deep"; cost?: number; latencyMs?: number; informationGain?: number; }
-  export class ResourcePolicy {
+  export class ResourceScheduler {
     constructor(options?: { minInformationGain?: number });
     schedule(options: SensingOption[], settings?: { budget?: Budget; uncertainty?: number }): Record<string, unknown>;
   }
@@ -555,19 +532,19 @@
   export class ApprovalRequired extends Error {}
   export class UnknownAction extends Error {}
   export class ExecutionBridge {
-    constructor(options?: { handlers?: Record<string, (action: Action, context: Record<string, unknown>) => Record<string, unknown>>; undoHandlers?: Record<string, (action: Action, context: Record<string, unknown>) => Record<string, unknown>> });
-    register(name: string, handler: (action: Action, context: Record<string, unknown>) => Record<string, unknown>, undo?: (action: Action, context: Record<string, unknown>) => Record<string, unknown>): void;
-    execute(decision: LayerDecision, options: { action: Action | null; actor: string; approver?: string | null; context?: Record<string, unknown> }): Receipt;
+    constructor(options?: { handlers?: Record<string, (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>>; undoHandlers?: Record<string, (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>> });
+    register(name: string, handler: (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>, undo?: (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>): void;
+    execute(decision: Decision, options: { action: ActionOption | null; actor: string; approver?: string | null; context?: Record<string, unknown> }): Receipt;
     cancel(receiptId: string, options: { actor: string; reason?: string }): Receipt;
     undo(receiptId: string, options: { actor: string }): Receipt;
   }
   export class DecisionRuntime {
-    constructor(options?: { state?: ExperienceState; bridge?: ExecutionBridge; outcomes?: OutcomeLedger; resources?: ResourcePolicy });
-    decide(situation: unknown, options: unknown[], attributes?: Record<string, unknown>): LayerDecision & { decisionId: string };
-    execute(decision: LayerDecision, options: { actor: string; approver?: string | null; context?: Record<string, unknown>; action?: Action | null }): Receipt;
+    constructor(options?: { state?: ExperienceState; bridge?: ExecutionBridge; outcomes?: OutcomeLedger; resources?: ResourceScheduler });
+    decide(situation: unknown, options: unknown[], attributes?: Record<string, unknown>): Decision & { decisionId: string };
+    execute(decision: Decision, options: { actor: string; approver?: string | null; context?: Record<string, unknown>; action?: ActionOption | null }): Receipt;
     cancel(receiptId: string, options: { actor: string; reason?: string }): Receipt;
     undo(receiptId: string, options: { actor: string }): Receipt;
-    measure(decisionId: string, options: { metric: string; before: number; after: number; attributed?: boolean; direction?: MetricOutcome["direction"]; note?: string }): MetricOutcome;
+    measure(decisionId: string, options: { metric: string; before: number; after: number; attributed?: boolean; direction?: Outcome["direction"]; note?: string }): Outcome;
     trace(decisionId: string): Trace;
   }
 
@@ -582,7 +559,7 @@
     agreementRate: number;
     toDict(): Record<string, unknown>;
   }
-  export function compare(cases: Case[], decide: (request: unknown) => PolicyDecision[], fields?: string[]): Report;
+  export function compare(cases: Case[], decide: (request: unknown) => Decision[], fields?: string[]): Report;
   export function loadCases(document: { cases?: Record<string, unknown>[] }): Case[];
 
   export interface BenchReport {

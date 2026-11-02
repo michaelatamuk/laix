@@ -3,7 +3,7 @@ import { makeDecision, numberValue, value } from "./support.ts";
 
 export class EscalationPolicy {
   name = "escalation.v1";
-  version = "0.7.0";
+  version = "0.8.0";
 
   decide(request: DecisionRequest): Decision[] {
     if (Boolean(value(request, "resolved", false))) {

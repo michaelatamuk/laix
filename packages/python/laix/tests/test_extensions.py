@@ -9,7 +9,7 @@ from laix import (
     DecisionRequest,
     DeliveryReceipt,
     Layer,
-    LayerDecision,
+    Decision,
     NullDelivery,
     PolicyError,
     Proposal,
@@ -27,7 +27,7 @@ class FixedPolicy:
 
     def decide(self, request):
         return [
-            LayerDecision(
+            Decision(
                 verb="guide",
                 confidence=0.8,
                 reason_code="worth_surfacing",
@@ -91,7 +91,7 @@ def test_proposal_rejection_and_invalid_transition() -> None:
 
 def test_delivery_port_returns_a_receipt() -> None:
     port = NullDelivery()
-    receipt = port.deliver(LayerDecision(verb="guide", confidence=0.8, reason_code="x", rationale="x"), "hello")
+    receipt = port.deliver(Decision(verb="guide", confidence=0.8, reason_code="x", rationale="x"), "hello")
     assert isinstance(receipt, DeliveryReceipt)
     assert receipt.status == "skipped"
     assert len(port.receipts) == 1

@@ -4,23 +4,10 @@
  * The app decides where to store the returned JSON.
  */
 
+import type { EvidenceRef } from "../core/contracts.ts";
+
 export type RecordStatus = "draft" | "approved" | "rejected" | "executed" | "undone";
 export type ApprovalState = "pending" | "approved" | "rejected";
-
-export interface EvidenceRef {
-  id: string;
-  kind: string;
-  quote: string;
-  confidence?: number;
-  source?: string;
-}
-
-export interface AuditEvent {
-  at: string;
-  actor: string;
-  action: string;
-  detail: string;
-}
 
 export interface Approval {
   required: boolean;
@@ -161,7 +148,7 @@ export function createDecisionRecord(input: CreateDecisionInput, options: Create
     status: requiresApproval ? "draft" : "approved",
     createdAt: now,
     updatedAt: now,
-    audit: [{ at: now, actor: "agent", action: "created", detail: `Draft with ${input.evidence.length} evidence refs.` }],
+    audit: [{ at: now, actor: "agent", event: "created", detail: `Draft with ${input.evidence.length} evidence refs.` }],
     undo: { available: false },
     metadata: input.metadata ?? {},
     hash: "",
@@ -180,7 +167,7 @@ export function approveRecord(record: DecisionRecord, input: ApprovalInput): Dec
       updatedAt: at,
       undo: { available: true, how: "Undo the approved decision before it is executed." },
     },
-    { at, actor: input.by, action: "approved", detail: input.note ?? "Human approved the decision." },
+    { at, actor: input.by, event: "approved", detail: input.note ?? "Human approved the decision." },
   );
   return seal(next);
 }
@@ -195,7 +182,7 @@ export function rejectRecord(record: DecisionRecord, input: ApprovalInput): Deci
       status: "rejected",
       updatedAt: at,
     },
-    { at, actor: input.by, action: "rejected", detail: input.note ?? "Human rejected the decision." },
+    { at, actor: input.by, event: "rejected", detail: input.note ?? "Human rejected the decision." },
   );
   return seal(next);
 }
@@ -205,7 +192,7 @@ export function markExecuted(record: DecisionRecord, input: { by: string; at?: s
   const at = input.at ?? new Date().toISOString();
   const next = audit(
     { ...record, status: "executed", updatedAt: at, undo: { available: true, how: record.undo.how } },
-    { at, actor: input.by, action: "executed", detail: input.note ?? "Approved decision executed." },
+    { at, actor: input.by, event: "executed", detail: input.note ?? "Approved decision executed." },
   );
   return seal(next);
 }
@@ -221,7 +208,7 @@ export function undoRecord(record: DecisionRecord, input: UndoInput): DecisionRe
       updatedAt: at,
       undo: { available: false, how: input.how ?? record.undo.how, at },
     },
-    { at, actor: input.by, action: "undone", detail: input.reason ?? "Decision undone by a human." },
+    { at, actor: input.by, event: "undone", detail: input.reason ?? "Decision undone by a human." },
   );
   return seal(next);
 }

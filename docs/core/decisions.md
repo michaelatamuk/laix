@@ -73,6 +73,8 @@ guide worth_surfacing 84.0
 | `evidence` | References that support the decision. |
 | `escalation` | `{target, reason}` when handing over. |
 | `decision_id` | Id for records and outcomes. |
+| `situation_id` | The situation this decision answered, when there is one. |
+| `attributes` | Policy-specific values used to reach the decision. |
 | `policy_version` | Which policy produced it. |
 | `trace_id` | Correlates execution and platform events. |
 | `deliver` | Show now. |

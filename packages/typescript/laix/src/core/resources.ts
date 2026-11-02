@@ -23,7 +23,7 @@ export interface ResourcePlan {
   attributes: Record<string, unknown>;
 }
 
-export class ResourcePolicy {
+export class ResourceScheduler {
   minInformationGain: number;
 
   constructor(options: { minInformationGain?: number } = {}) {

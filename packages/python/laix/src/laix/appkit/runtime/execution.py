@@ -12,9 +12,9 @@ from __future__ import annotations
 
 from typing import Any, Callable
 
-from ...core.contracts import Action, Decision, Receipt, new_receipt_id
+from ...core.contracts import ActionOption, Decision, Receipt, new_receipt_id
 
-Handler = Callable[[Action, dict[str, Any]], dict[str, Any]]
+Handler = Callable[[ActionOption, dict[str, Any]], dict[str, Any]]
 
 
 class ApprovalRequired(RuntimeError):
@@ -43,7 +43,7 @@ class ExecutionBridge:
         self,
         decision: Decision,
         *,
-        action: Action | None,
+        action: ActionOption | None,
         actor: str,
         approver: str | None = None,
         context: dict[str, Any] | None = None,
@@ -52,7 +52,7 @@ class ExecutionBridge:
             return self._store(
                 Receipt(
                     id=new_receipt_id(),
-                    decision_id=decision.id,
+                    decision_id=decision.decision_id,
                     action_name="",
                     status="refused",
                     actor=actor,
@@ -65,7 +65,7 @@ class ExecutionBridge:
             return self._store(
                 Receipt(
                     id=new_receipt_id(),
-                    decision_id=decision.id,
+                    decision_id=decision.decision_id,
                     action_name=action.name,
                     status="failed",
                     actor=actor,
@@ -79,7 +79,7 @@ class ExecutionBridge:
             return self._store(
                 Receipt(
                     id=new_receipt_id(),
-                    decision_id=decision.id,
+                    decision_id=decision.decision_id,
                     action_name=action.name,
                     status="failed",
                     actor=actor,
@@ -90,7 +90,7 @@ class ExecutionBridge:
         return self._store(
             Receipt(
                 id=new_receipt_id(),
-                decision_id=decision.id,
+                decision_id=decision.decision_id,
                 action_name=action.name,
                 status="executed",
                 actor=actor,
@@ -99,11 +99,11 @@ class ExecutionBridge:
             )
         )
 
-    def refuse(self, decision: Decision, *, action: Action | None, actor: str, reason: str) -> Receipt:
+    def refuse(self, decision: Decision, *, action: ActionOption | None, actor: str, reason: str) -> Receipt:
         return self._store(
             Receipt(
                 id=new_receipt_id(),
-                decision_id=decision.id,
+                decision_id=decision.decision_id,
                 action_name=action.name if action else "",
                 status="refused",
                 actor=actor,
@@ -134,7 +134,7 @@ class ExecutionBridge:
         if handler is None:
             raise ValueError(f"no undo handler for {receipt.action_name}")
         try:
-            detail = handler(Action(id=receipt.id, verb="act", name=receipt.action_name), {"receipt": receipt.to_dict()}) or {}
+            detail = handler(ActionOption(id=receipt.id, verb="act", name=receipt.action_name), {"receipt": receipt.to_dict()}) or {}
         except Exception as exc:  # noqa: BLE001
             raise ValueError(f"undo failed: {type(exc).__name__}: {exc}") from exc
         undone = Receipt(

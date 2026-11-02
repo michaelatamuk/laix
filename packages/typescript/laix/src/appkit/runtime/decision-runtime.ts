@@ -1,12 +1,13 @@
-import type { Action, Decision, Outcome, Receipt, Trace } from "../../core/contracts.ts";
+import type { ActionOption, Decision, Outcome, Receipt, Trace } from "../../core/contracts.ts";
 import { clamp, iso, newId } from "../../core/contracts.ts";
-import { decideAction, type ActionOption, type LayerDecision, type Situation } from "../layer.ts";
+import { decideAction } from "../layer.ts";
+import type { ActionOption, Decision, Situation } from "../../core/contracts.ts";
 import { OutcomeLedger } from "../../core/outcome.ts";
 import { ApprovalRequired, ExecutionBridge } from "./execution.ts";
-import { ResourcePolicy, type Budget, type ResourcePlan, type SensingOption } from "../../core/resources.ts";
+import { ResourceScheduler, type Budget, type ResourcePlan, type SensingOption } from "../../core/resources.ts";
 import { ExperienceState } from "./state.ts";
 
-export interface RuntimeDecision extends LayerDecision {
+export interface RuntimeDecision extends Decision {
   decisionId: string;
   createdAt: string;
 }
@@ -15,18 +16,18 @@ export class DecisionRuntime {
   state: ExperienceState;
   bridge: ExecutionBridge;
   outcomes: OutcomeLedger;
-  resources: ResourcePolicy;
+  resources: ResourceScheduler;
   private decisions = new Map<string, RuntimeDecision>();
-  private actions = new Map<string, Action>();
+  private actions = new Map<string, ActionOption>();
   private traces = new Map<string, Trace>();
   private traceByDecision = new Map<string, string>();
   private receiptIds: string[] = [];
 
-  constructor(options: { state?: ExperienceState; bridge?: ExecutionBridge; outcomes?: OutcomeLedger; resources?: ResourcePolicy } = {}) {
+  constructor(options: { state?: ExperienceState; bridge?: ExecutionBridge; outcomes?: OutcomeLedger; resources?: ResourceScheduler } = {}) {
     this.state = options.state ?? new ExperienceState("");
     this.bridge = options.bridge ?? new ExecutionBridge();
     this.outcomes = options.outcomes ?? new OutcomeLedger();
-    this.resources = options.resources ?? new ResourcePolicy();
+    this.resources = options.resources ?? new ResourceScheduler();
   }
 
   observe(observation: Parameters<ExperienceState["observe"]>[0]): void {
@@ -37,7 +38,7 @@ export class DecisionRuntime {
     const base = decideAction({ ...situation, attributes: { ...(situation.attributes ?? {}), ...attributes } }, options);
     const decision: RuntimeDecision = { ...base, decisionId: newId("DEC"), createdAt: iso() };
     this.decisions.set(decision.decisionId, decision);
-    for (const option of options) this.actions.set(option.id, option as unknown as Action);
+    for (const option of options) this.actions.set(option.id, option as unknown as ActionOption);
     this.state.record(decision as unknown as Decision);
     const traceId = decision.traceId || newId("TRC");
     const trace: Trace = { id: traceId, decisionId: decision.decisionId, events: [{ at: situation.at, stage: "situation", detail: { subject: situation.subject, options: options.map((item) => item.id), attributes } }] };
@@ -47,7 +48,7 @@ export class DecisionRuntime {
     return decision;
   }
 
-  execute(decision: RuntimeDecision, options: { actor: string; approver?: string | null; context?: Record<string, unknown>; action?: Action | null }): Receipt {
+  execute(decision: RuntimeDecision, options: { actor: string; approver?: string | null; context?: Record<string, unknown>; action?: ActionOption | null }): Receipt {
     const resolved = options.action ?? (decision.actionId ? this.actions.get(decision.actionId) ?? null : null);
     let receipt: Receipt;
     try {
@@ -104,7 +105,7 @@ export class DecisionRuntime {
     return decision;
   }
 
-  actionFor(decision: RuntimeDecision): Action | null {
+  actionFor(decision: RuntimeDecision): ActionOption | null {
     return decision.actionId ? this.actions.get(decision.actionId) ?? null : null;
   }
 

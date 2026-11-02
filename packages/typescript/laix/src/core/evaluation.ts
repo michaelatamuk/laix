@@ -30,7 +30,7 @@ function asDict(decision: unknown): Record<string, unknown> {
   }
   const item = decision as Record<string, unknown>;
   return {
-    verb: item.verb ?? item.action,
+    verb: item.verb,
     reasonCode: item.reasonCode ?? item.reason,
     deliver: item.deliver ?? true,
     record: item.record ?? true,

@@ -56,7 +56,7 @@
         "properties": {
           "at": { "type": "string", "format": "date-time" },
           "actor": { "type": "string" },
-          "action": { "type": "string" },
+          "event": { "type": "string" },
           "detail": { "type": "string" }
         }
       }
