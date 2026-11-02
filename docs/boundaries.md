@@ -104,6 +104,8 @@ PPMA activation core
 
 The activation core owns PPMA's reasoning path and final decision. LAIX operates as a task policy layer below it. LAIX can be exposed to the Commander as a query tool (`effect: none`) or to a mission as a tool; the Commander's `ask` or the mission agent calls it within the existing path. PPMA treats the result as one input: it accepts, modifies or rejects it.
 
+Today the Commander's `command.decide` ask is the general command chooser. LAIX adds a policy path for one bounded decision class.
+
 The clean deployment is a separate `ppma-laix` tool or service:
 
 - it imports only `laix` core and `ppma-contracts`;

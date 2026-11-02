@@ -63,6 +63,18 @@ The two vocabularies describe different scopes.
 
 PPMA supplies the task. LAIX returns the decision. PPMA acts on it.
 
+### How PPMA decides today
+
+| Path | What it does |
+|---|---|
+| `Commander.wake()` | One `command.decide` LLM ask. It chooses the commands, dispatch, plans, filters and missions. |
+| `Commander.exit_check()` | One `command.exit_check` LLM ask for an entry whose `until` passed. |
+| `Commander.effect_step()` | A plan's pre-approved step issues its stored command. No model call; the decision was made when the plan was installed. |
+| Mission agent | The agent decides inside its bounded mission. PPMA reviews the proposal. |
+| Core rules and filters | They validate, constrain, calibrate or hold. They do not choose a command. |
+
+Today the Commander's `command.decide` ask is the only general command chooser. LAIX adds a policy path for bounded task decisions alongside it. The comparison is Commander alone vs Commander + LAIX for one bounded decision class.
+
 ## 4. Why PPMA uses it
 
 - **One task-decision contract** across the Commander, missions and apps.
@@ -115,7 +127,7 @@ PPMA records the LAIX decision id as a reference. LAIX confidence is a source es
 
 ## 6. First proof
 
-Pick one bounded decision class — a mission step or a Commander subtask. Implement it as a LAIX policy and expose it as an `effect: none` tool. Measure calls, latency, determinism and decision quality. Extend where it wins.
+Pick one bounded decision class where the Commander currently uses an LLM ask — a mission step or a Commander subtask. Implement it as a LAIX policy and expose it as an `effect: none` tool. Measure calls, latency, determinism and decision quality. Extend where it wins.
 
 ## 7. If you already use a judgment model
 
@@ -132,6 +144,9 @@ PPMA + LAIX — the task-decision layer
 
 PPMA   → trigger, activation, memory, calibration, commit, execution
 LAIX   → one task decision: verb, reason, confidence, action, approval
+
+Today: Commander LLM ask chooses commands.
+With LAIX: a policy path for one bounded decision class.
 
 Example: €780 refund → ask, over_approval_limit, requires_approval
 

@@ -271,4 +271,8 @@ host / app kit          -> approval, execution, outcome
 
 LAIX is the layer that can use a decision model. It works alongside JEV and other models.
 
+## In PPMA, the comparison is different
+
+PPMA's Commander already chooses commands through an LLM ask. There, the relevant comparison is the Commander's LLM ask vs a LAIX policy for one bounded task, not JEV vs LAIX. JEV is a judgment engine that can sit inside either path.
+
 For the PPMA case, see [PPMA + LAIX](ppma-laix.md).
