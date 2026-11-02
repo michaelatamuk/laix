@@ -35,8 +35,8 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 
 | Piece | Role |
 |---|---|
-| `core/contracts.py` | versioned records: observation, belief, goal, constraint, action option, situation, decision, outcome, receipt, trace |
-| `core/decisions.py` | the one decision shape, request shape and policy-result conversions |
+| `core/contracts.py` | nine shared records, enums and helpers |
+| `core/decisions.py` | `Decision`, `DecisionRequest` and normalisation into the one answer |
 | `appkit/layer.py` | the public `Layer` orchestrator |
 | `core/policies/action.py` | built-in action-selection policy |
 | `core/policies/active_perception.py` | packaged `observe` policy |

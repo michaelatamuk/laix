@@ -8,7 +8,7 @@ from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
-from ...core.contracts import EvidenceRef
+from ...core.decisions import EvidenceRef
 
 
 def _now() -> str:

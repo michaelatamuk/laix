@@ -17,13 +17,13 @@ from laix.core.contracts import (
     ActionOption,
     Belief,
     Constraint,
-    Decision,
     Goal,
     Observation,
     Situation,
     iso,
     utcnow,
 )
+from laix.core.decisions import Decision
 from laix.appkit.runtime import ApprovalRequired, ExecutionBridge
 from laix.core.policies import ActionPolicy, ActionPolicyConfig, ActionPolicyRequest
 from laix.core.resources import Budget, ResourceScheduler, SensingOption

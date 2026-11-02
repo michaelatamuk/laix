@@ -10,7 +10,8 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
 
-from ..contracts import VERBS, Breakdown, Escalation, Intent
+from ..contracts import VERBS
+from ..decisions import Breakdown, Escalation, Intent
 
 SEVERITY_RANK: dict[str, int] = {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}
 RESULTS: tuple[str, ...] = ("helped", "neutral", "hurt", "unknown")

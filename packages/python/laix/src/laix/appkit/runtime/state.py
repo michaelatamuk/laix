@@ -15,7 +15,6 @@ from ...core.contracts import (
     PHASES,
     Belief,
     Constraint,
-    Decision,
     Goal,
     Observation,
     clamp,
@@ -24,6 +23,7 @@ from ...core.contracts import (
     parse_iso,
     utcnow,
 )
+from ...core.decisions import Decision
 
 
 @dataclass

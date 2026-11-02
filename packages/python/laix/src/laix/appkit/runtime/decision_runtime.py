@@ -16,7 +16,6 @@ from typing import Any, Callable, Iterable
 
 from ...core.contracts import (
     ActionOption,
-    Decision,
     Observation,
     Outcome,
     Receipt,
@@ -25,6 +24,7 @@ from ...core.contracts import (
     iso,
     new_id,
 )
+from ...core.decisions import Decision
 from .execution import ApprovalRequired, ExecutionBridge
 from ...core.outcome import OutcomeLedger
 from ...core.policies.action import ActionPolicy, ActionPolicyRequest

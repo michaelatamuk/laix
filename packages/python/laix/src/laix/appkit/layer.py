@@ -1,7 +1,7 @@
 """The public Layer: one request in, one decision shape out.
 
-The decision types live in ``laix.core.decisions``. This module keeps the
-orchestrator and the built-in request routing.
+This module keeps the orchestrator, the built-in request routing and the
+normalisation of custom policy results into the one ``Decision`` shape.
 """
 
 from __future__ import annotations
@@ -11,9 +11,9 @@ from typing import Any
 
 from ..core import attention
 from ..core.contracts import SCHEMA_VERSION
-from ..core.contracts import Decision
 from ..core.decisions import (
     Breakdown,
+    Decision,
     DecisionRequest,
     Escalation,
     EvidenceRef,
@@ -148,5 +148,4 @@ __all__ = [
     "EvidenceRef",
     "Intent",
     "Layer",
-    "from_attention",
 ]

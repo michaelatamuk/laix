@@ -8,8 +8,8 @@ It is intentionally standard-library only.  The host application provides
 domain adapters; the decision layer never imports them.
 """
 
+from .core import CONTRACT_NAMES
 from .core.contracts import (
-    CONTRACT_NAMES,
     CONTRACTS,
     CONSTRAINT_KINDS,
     HORIZONS,
@@ -22,7 +22,6 @@ from .core.contracts import (
     ActionOption,
     Belief,
     Constraint,
-    Decision,
     Goal,
     Observation,
     Outcome,
@@ -40,8 +39,8 @@ from .appkit.delivery import DeliveryPort, DeliveryReceipt, NullDelivery
 from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
 from .core.evaluation import load_cases
-from .core.decisions import Escalation
-from .appkit.layer import DecisionRequest, Layer
+from .core.decisions import Decision, DecisionRequest, Escalation
+from .appkit.layer import Layer
 from .core.outcome import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
 from .appkit.platform import (
     ApprovalDecision,

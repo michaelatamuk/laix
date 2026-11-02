@@ -12,7 +12,8 @@ from __future__ import annotations
 
 from typing import Any, Callable
 
-from ...core.contracts import ActionOption, Decision, Receipt, new_receipt_id
+from ...core.contracts import ActionOption, Receipt, new_receipt_id
+from ...core.decisions import Decision
 
 Handler = Callable[[ActionOption, dict[str, Any]], dict[str, Any]]
 

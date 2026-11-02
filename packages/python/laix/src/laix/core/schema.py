@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any, Union, get_args, get_origin, get_type_hints
 
 from .contracts import CONTRACTS, SCHEMA_VERSION
+from .decisions import Decision
 
 SCHEMA_ID = "https://laix.dev/contracts/laix-v1.schema.json"
 SCHEMA_PATH = Path(__file__).resolve().parent / "laix-v1.schema.json"
@@ -73,7 +74,7 @@ def _field_schema(contract: type, name: str, annotation: Any, required: bool) ->
 
 def build_schema() -> dict[str, Any]:
     definitions: dict[str, Any] = {}
-    for contract in CONTRACTS:
+    for contract in (*CONTRACTS, Decision):
         hints = get_type_hints(contract)
         properties: dict[str, Any] = {}
         required: list[str] = []

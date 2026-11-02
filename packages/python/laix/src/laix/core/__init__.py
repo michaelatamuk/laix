@@ -5,7 +5,6 @@ mission, agent or another application that only needs the decision layer.
 """
 
 from .contracts import (
-    CONTRACT_NAMES,
     CONTRACTS,
     CONSTRAINT_KINDS,
     HORIZONS,
@@ -17,7 +16,6 @@ from .contracts import (
     ActionOption,
     Belief,
     Constraint,
-    Decision,
     Goal,
     Observation,
     Outcome,
@@ -35,13 +33,7 @@ from .attention import (
     score,
 )
 from .resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
-from .decisions import (
-    Breakdown,
-    DecisionRequest,
-    Escalation,
-    EvidenceRef,
-    Intent,
-)
+from .decisions import Breakdown, Decision, DecisionRequest, Escalation, EvidenceRef, Intent
 from .evaluation import Case, Report, Row, compare, load_cases
 from .outcome import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
 from .policies import (
@@ -63,6 +55,8 @@ from .policies import (
     VerificationPolicy,
     decide_action,
 )
+
+CONTRACT_NAMES = tuple(item.__name__ for item in (*CONTRACTS, Decision))
 
 __all__ = [
     "ActionOption",

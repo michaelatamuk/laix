@@ -34,8 +34,8 @@ packages/python/laix/src/laix/
 ├── __init__.py              public API
 ├── core/
 │   ├── __init__.py          core surface
-│   ├── contracts.py         ten core records
-│   ├── decisions.py         request and decision shapes
+│   ├── contracts.py         nine shared records, enums and helpers
+│   ├── decisions.py         Decision, DecisionRequest and normalisation
 │   ├── outcome.py           outcome ledger, store and UCB learner
 │   ├── evaluation.py        parity harness
 │   ├── perception.py        detector, detection and frame contracts

@@ -26,11 +26,11 @@ from typing import Any
 from ..contracts import (
     VERBS,
     ActionOption,
-    Decision,
     Situation,
     clamp,
     iso,
 )
+from ..decisions import Decision
 
 ACTION_POLICY_VERSION = "0.8.0"
 

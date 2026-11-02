@@ -549,6 +549,261 @@
         "subject"
       ]
     },
+    "Outcome": {
+      "type": "object",
+      "title": "Outcome",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "decision_id": {
+          "type": "string"
+        },
+        "metric": {
+          "type": "string"
+        },
+        "before": {
+          "type": "number"
+        },
+        "after": {
+          "type": "number"
+        },
+        "delta": {
+          "type": "number"
+        },
+        "label": {
+          "type": "string",
+          "enum": [
+            "helped",
+            "neutral",
+            "hurt",
+            "unknown"
+          ]
+        },
+        "attributed": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "higher-better",
+                "lower-better"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "measured_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "schema_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "decision_id",
+        "metric",
+        "before",
+        "after",
+        "delta",
+        "label"
+      ]
+    },
+    "Receipt": {
+      "type": "object",
+      "title": "Receipt",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "decision_id": {
+          "type": "string"
+        },
+        "action_name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "approved",
+            "executed",
+            "refused",
+            "cancelled",
+            "failed",
+            "undone"
+          ]
+        },
+        "actor": {
+          "type": "string"
+        },
+        "at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "previous_state": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "approved_by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "schema_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "decision_id",
+        "action_name",
+        "status",
+        "actor"
+      ]
+    },
+    "Trace": {
+      "type": "object",
+      "title": "Trace",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "decision_id": {
+          "type": "string"
+        },
+        "created_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "events": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "schema_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "decision_id"
+      ]
+    },
     "Decision": {
       "type": "object",
       "title": "Decision",
@@ -814,261 +1069,6 @@
         "confidence",
         "reason_code",
         "rationale"
-      ]
-    },
-    "Outcome": {
-      "type": "object",
-      "title": "Outcome",
-      "additionalProperties": false,
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "decision_id": {
-          "type": "string"
-        },
-        "metric": {
-          "type": "string"
-        },
-        "before": {
-          "type": "number"
-        },
-        "after": {
-          "type": "number"
-        },
-        "delta": {
-          "type": "number"
-        },
-        "label": {
-          "type": "string",
-          "enum": [
-            "helped",
-            "neutral",
-            "hurt",
-            "unknown"
-          ]
-        },
-        "attributed": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "direction": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": [
-                "higher-better",
-                "lower-better"
-              ]
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "evidence": {
-          "anyOf": [
-            {
-              "type": "object"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "measured_at": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "note": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "schema_version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "id",
-        "decision_id",
-        "metric",
-        "before",
-        "after",
-        "delta",
-        "label"
-      ]
-    },
-    "Receipt": {
-      "type": "object",
-      "title": "Receipt",
-      "additionalProperties": false,
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "decision_id": {
-          "type": "string"
-        },
-        "action_name": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string",
-          "enum": [
-            "pending",
-            "approved",
-            "executed",
-            "refused",
-            "cancelled",
-            "failed",
-            "undone"
-          ]
-        },
-        "actor": {
-          "type": "string"
-        },
-        "at": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "detail": {
-          "anyOf": [
-            {
-              "type": "object"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "previous_state": {
-          "anyOf": [
-            {
-              "type": "object"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "error": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "approved_by": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "schema_version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "id",
-        "decision_id",
-        "action_name",
-        "status",
-        "actor"
-      ]
-    },
-    "Trace": {
-      "type": "object",
-      "title": "Trace",
-      "additionalProperties": false,
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "decision_id": {
-          "type": "string"
-        },
-        "created_at": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "events": {
-          "anyOf": [
-            {
-              "type": "array",
-              "items": {
-                "type": "object"
-              }
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "schema_version": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "required": [
-        "id",
-        "decision_id"
       ]
     }
   }

@@ -9,7 +9,8 @@ network, no database, no clock of its own.
 
 from __future__ import annotations
 
-from ..contracts import VERBS, Breakdown, Escalation, Intent
+from ..contracts import VERBS
+from ..decisions import Breakdown, Escalation, Intent
 from .model import (
     FEEDBACK_STATES,
     REASON_CODES,
