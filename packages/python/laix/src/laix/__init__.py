@@ -27,8 +27,8 @@ from .core.decisions import (
     Situation,
     Trace,
 )
-from .core.outcome.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
-from .core.outcome import Outcome
+from .core.outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
+from .core.outcome_learning import Outcome
 from .core.support.time import iso, parse_iso, utcnow
 from .core.support.values import confidence_band
 from .core.support.verbs import VERBS
@@ -41,7 +41,7 @@ from .appkit.layer import Layer
 from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
 from .core.evaluation import load_cases
-from .core.outcome import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
+from .core.outcome_learning import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
 from .appkit.platform import (
     ApprovalDecision,
     ApprovalRequest,
@@ -91,7 +91,7 @@ from .appkit.runtime import (
     StateStore,
     UnknownAction,
 )
-from .core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
+from .core.sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 
 __all__ = [

@@ -57,13 +57,13 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/engines/attention/decide.py`, `timing.py`, `replay.py`, `labels.py`, `outcome_log.py` | attention policy, gates, quiet hours, replay and labels |
 | `appkit/runtime/decision_runtime.py` | the action runtime |
 | `appkit/runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
-| `core/perception/` | detector, detection and frame records |
+| `core/sensing/` | detector, detection and frame records |
 | `appkit/live_context/` | host-driven detector loop and function-backed detector |
 | `appkit/runtime/state.py` | experience state: goals, phase, beliefs, decay, expiry |
 | `appkit/runtime/state_store.py`, `in_memory_state_store.py` | state store contract and in-memory store |
 | `core/engines/resources/` | cheap/deep call admission under budget |
 | `appkit/platform/` | south platform interface, records and in-memory platform |
-| `core/outcome/` | directed metric ledger, outcome store protocol and UCB learner |
+| `core/outcome_learning/` | directed metric ledger, outcome store protocol and UCB learner |
 | `appkit/audit/decision_record.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
 | `appkit/audit/proposal.py` | storage-free proposal and approval lifecycle |
 | `appkit/delivery/` | delivery port, receipt and null delivery |

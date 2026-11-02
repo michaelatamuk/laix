@@ -43,9 +43,9 @@ packages/python/laix/src/laix/
 │   │   ├── policies/        builtin action, packs, protocol, registry
 │   │   ├── attention/       model, ports, vectors, decide, gates, score, replay
 │   │   └── resources/       budget, sensing option, plan, scheduler
-│   ├── outcome/             record, ledger, store, arm, bandit, rewards
+│   ├── outcome_learning/    record, ledger, store, arm, bandit, rewards
 │   ├── evaluation/          case, row, report, compare
-│   ├── perception/          detection, detector, event, frame
+│   ├── sensing/             detection, detector, event, frame
 │   ├── schema/              build, check, records and laix-v1.schema.json
 │   └── support/             time, ids, values, serialize, errors, verbs, version
 └── appkit/

@@ -23,10 +23,10 @@ from ...core.decisions import (
     Trace,
 )
 from ...core.support.ids import new_id
-from ...core.outcome import Outcome
+from ...core.outcome_learning import Outcome
 from ...core.support.time import iso
 from .execution import ApprovalRequired, ExecutionBridge
-from ...core.outcome import OutcomeLedger
+from ...core.outcome_learning import OutcomeLedger
 from ...core.engines.policies.builtin.action import ActionPolicy, ActionPolicyRequest
 from ...core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .state import ExperienceState

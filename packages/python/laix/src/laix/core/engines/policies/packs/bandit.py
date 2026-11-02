@@ -11,7 +11,7 @@ from __future__ import annotations
 from typing import Any, Callable, Iterable
 
 from ....decisions import Decision, Intent
-from ....outcome import Arm, Outcome, UCBBandit
+from ....outcome_learning import Arm, Outcome, UCBBandit
 from .._support import decision, number, value
 
 

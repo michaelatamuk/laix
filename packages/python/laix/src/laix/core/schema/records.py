@@ -18,7 +18,7 @@ from ..decisions import (
     Situation,
     Trace,
 )
-from ..outcome import Outcome
+from ..outcome_learning import Outcome
 
 RECORDS = (
     Observation,

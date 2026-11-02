@@ -34,7 +34,7 @@ from .decisions import (
     Situation,
     Trace,
 )
-from .outcome import (
+from .outcome_learning import (
     OUTCOME_DIRECTIONS,
     OUTCOME_LABELS,
     Arm,
@@ -44,7 +44,7 @@ from .outcome import (
     UCBBandit,
     reward_for_label,
 )
-from .perception import Detection, Detector, PerceptionEvent, PerceptionFrame
+from .sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .support.time import iso, parse_iso, utcnow
 from .support.values import confidence_band
 from .support.version import SCHEMA_VERSION
