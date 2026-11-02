@@ -8,9 +8,9 @@ block-beta
 
     block:capabilities["Capabilities"]
         columns 3
-        decide["Decide<br/>policy=... or automatic"]
-        learn["Learn from outcomes<br/>outcome → reward → next choice"]
-        evaluate["Evaluate<br/>cases · parity · bench"]
+        decide["Decide<br/>explicit policy or automatic"]
+        learn["Learn from outcomes<br/>outcome → reward → learner → next choice"]
+        evaluate["Evaluate<br/>test cases · comparison · benchmarks"]
     end
 
     block:contract["Contract"]
@@ -24,14 +24,14 @@ block-beta
         columns 3
         attention["Attention<br/>signals · priority"]
         policies["Policies<br/>action · safety · replanning · allocation<br/>negotiation · preference · verification · escalation"]
-        resources["Resources<br/>budget · admission"]
+        resources["Resources<br/>budget · sensing limits"]
     end
 
     block:foundation["Foundation"]
         columns 3
-        schema["Schema<br/>records · build · check"]
+        schema["Schema<br/>records · validation"]
         sensing["Sensing<br/>detector · event · frame"]
-        support["Support<br/>ids · time · values · errors · version"]
+        support["Support<br/>ids · time · verbs · errors · version"]
     end
 
     style capabilities font-size:22px,font-weight:bold
@@ -44,12 +44,13 @@ block-beta
 |---|---|---|
 | **Capabilities** | Decide · Learn from outcomes · Evaluate | What the core can do. |
 | **Contract** | Decision request · Decision response · Execution trail | The boundary and its records. |
-| **Engines** | Attention · Policies · Resources | The engines and admission control. |
-| **Foundation** | Schema · Sensing · Support | The shared records and foundations. |
+| **Engines** | Attention · Policies · Resources | What produces a decision and limits sensing. |
+| **Foundation** | Schema · Sensing · Support | Shared records and utilities. |
 
 ## Automatic selection
 
-Without `policy=`, the request selects one of the two built-in engines:
+The call selects an engine in one of two ways. Without `policy=`, the request selects a built-in
+engine. With `policy=`, it uses the policy you pass.
 
 | The call has | The engine |
 |---|---|
@@ -62,7 +63,7 @@ Packaged and custom policies are always selected explicitly.
 ## Learning loop
 
 ```text
-outcome → reward → ledger → bandit → a better policy
+outcome → reward → learner → better policy
 outcome → label → feedback → better attention
 ```
 
@@ -70,22 +71,22 @@ outcome → label → feedback → better attention
 
 | Part | Contains | Built on |
 |---|---|---|
-| **Decide** | `policy=...` or automatic; return the response | Contract, engines, support |
-| **Learn from outcomes** | outcome → reward → ledger → bandit → better policy; outcome → label → feedback → better attention | Support |
-| **Evaluate** | cases, parity, report, bench | Contract, engines, support |
+| **Decide** | explicit policy or automatic; return the response | Contract, engines, support |
+| **Learn from outcomes** | outcome → reward → learner → better policy; outcome → label → feedback → better attention | Support |
+| **Evaluate** | test cases, comparison, reports, benchmarks | Contract, engines, support |
 | **Decision request** | what is happening and what the app can do; signals + context, or situation + options | Support |
 | **Decision response** | verb, reason, confidence, action, evidence, approval | Support |
 | **Execution trail** | execution receipt, trace | Support |
 | **Attention** | signals, priority, timing | Contract, support |
 | **Policies** | action, safety, replanning, allocation, negotiation, preference, verification, escalation | Contract, learning, support |
-| **Resources** | budget, sensing option, admission | Support |
-| **Schema** | records, build, check | Contract, learning, support |
+| **Resources** | budget, sensing options, limits | Support |
+| **Schema** | records, validation | Contract, learning, support |
 | **Sensing** | detector, detection, event, frame | Support |
-| **Support** | ids, time, values, errors, version | — |
+| **Support** | ids, time, verbs, errors, version | — |
 
 ## Reading the stack
 
-- **Decide** is the entry point. It takes `policy=...` or chooses automatically from the request and returns a response.
+- **Decide** is the entry point. It takes an explicit policy or chooses automatically from the request and returns a response.
 - **Learn from outcomes** turns a measured result into a better next choice for Policies and Attention.
 - **Evaluate** checks the engines; it is not on the request path.
 - **Decision request** and **Decision response** are the boundary.
@@ -94,4 +95,4 @@ outcome → label → feedback → better attention
 - **Decision response** carries the verb, reason, confidence, action and approval.
 - **Execution trail** records what happened after the response.
 - **Attention**, **Policies** and **Resources** are the engines.
-- **Schema**, **Sensing** and **Support** are the shared foundations.
+- **Schema**, **Sensing** and **Support** are the shared building blocks.
