@@ -37,8 +37,17 @@ PPMA issues `ui.ask`, records the decision, commits the outcome and acts.
 | | PPMA activation decision | LAIX task decision |
 |---|---|---|
 | Question | What does this trigger become? | What is the next move for this task? |
-| Output | `NOOP` · `UPDATE_STATE` · `ISSUE_COMMAND` · `DISPATCH` | `wait` · `observe` · `guide` · `ask` · `act` · `verify` · `escalate` |
+| Kind | `NOOP` · `UPDATE_STATE` · `ISSUE_COMMAND` · `DISPATCH` | `wait` · `observe` · `guide` · `ask` · `act` · `verify` · `escalate` |
 | Scope | PPMA's next cycle | One bounded task |
+
+The two vocabularies describe different scopes.
+
+- `NOOP`: no action.
+- `UPDATE_STATE`: a memory change.
+- `ISSUE_COMMAND`: one or more commands to apps or tools.
+- `DISPATCH`: start a mission.
+
+`ISSUE_COMMAND` carries a command type: `ui.notify` for guide, `ui.ask` for ask, `resources.read` for observe, a manifest tool for act. LAIX returns the task recommendation; PPMA chooses the command and issues it.
 
 ## 3. Who owns what
 
