@@ -87,6 +87,6 @@ The seven verbs are part of the contract: `wait`, `observe`, `guide`, `ask`, `ac
 ## Where the rules live
 
 - Action policy: `packages/python/laix/src/laix/core/policies/action.py`
-- Attention policy: `packages/python/laix/src/laix/attention/policy.py`
+- Attention policy: `packages/python/laix/src/laix/core/attention/decide.py`
 - Policy pack inputs: [policy packs](policy-packs.md)
 - Decision fields: [reading a decision](decisions.md)

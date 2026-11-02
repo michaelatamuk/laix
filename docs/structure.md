@@ -49,7 +49,9 @@ packages/python/laix/src/laix/
 │   │   ├── model/           signal, context, feedback, decision, outcome
 │   │   ├── ports/           clock, sink, recorder, defaults
 │   │   ├── vectors/         attention.v1.json, bench.v1.json, schema.json
-│   │   ├── policy.py        gates and decide_attention
+│   │   ├── decide.py        decide_one and decide_attention
+│   │   ├── gates.py         gate order and feedback suppression
+│   │   ├── score.py         score, cost of waiting, undo hint
 │   │   ├── timing.py        quiet hours and windows
 │   │   ├── replay.py        replay, validate and benchmark
 │   │   ├── labels.py        outcome labels

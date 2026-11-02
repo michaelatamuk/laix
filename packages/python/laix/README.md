@@ -54,7 +54,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/policies/packs/bandit.py` | learned bandit policy |
 | `core/policies/policy.py`, `core/policies/registry.py` | policy plugin protocol and registry |
 | `core/attention/model/`, `core/attention/ports/`, `core/attention/vectors/` | attention records, ports and test vectors |
-| `core/attention/policy.py`, `timing.py`, `replay.py`, `labels.py`, `outcome_log.py` | attention policy, gates, quiet hours, replay and labels |
+| `core/attention/decide.py`, `timing.py`, `replay.py`, `labels.py`, `outcome_log.py` | attention policy, gates, quiet hours, replay and labels |
 | `appkit/runtime/decision_runtime.py` | the action runtime |
 | `appkit/runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
 | `core/perception/` | detector, detection and frame records |

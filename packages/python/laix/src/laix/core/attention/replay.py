@@ -17,7 +17,8 @@ from ..decisions import Escalation, Intent
 from .model.context import Context
 from .model.feedback import Feedback
 from .labels import FEEDBACK_STATES, SEVERITY_RANK
-from .policy import REASONS, decide_attention
+from .decide import decide_attention
+from .gates import REASONS
 from .model.signal import Signal
 from .timing import parse_range
 
