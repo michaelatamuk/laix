@@ -71,6 +71,7 @@ from .core.engines.policies import (
     VerificationPolicy,
     decide_action,
 )
+from .appkit.audit import Approval, AuditEvent, Undo
 from .appkit.audit.decision_record import (
     DecisionRecord,
     EvidenceRef,
@@ -100,9 +101,11 @@ __all__ = [
     "AttentionOutcome",
     "ActivePerceptionPolicy",
     "AllocationPolicy",
+    "Approval",
     "ApprovalDecision",
     "ApprovalRequest",
     "ApprovalRequired",
+    "AuditEvent",
     "Arm",
     "CAPABILITY_LEVELS",
     "Capability",
@@ -187,6 +190,7 @@ __all__ = [
     "Trace",
     "UCBBandit",
     "UnknownAction",
+    "Undo",
     "VERBS",
     "Verb",
     "VerificationPolicy",

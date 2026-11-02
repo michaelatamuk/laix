@@ -56,8 +56,8 @@ for (const testCase of fixture.cases) {
     rows.push({
       case: testCase.id,
       signal: expected.signalId,
-      expected: expected.action,
-      actual: actual?.action ?? "missing",
+      expected: expected.verb,
+      actual: actual?.verb ?? "missing",
       pass: problems.length === 0,
       problems,
     });
