@@ -93,7 +93,7 @@ It shows a decision that needs approval, an owner approval, and a receipt.
 
 LAIX attention answers:
 
-> Which signal in this task should be shown now?
+> Which signal in this task deserves attention now?
 
 The product answers:
 

@@ -2,7 +2,7 @@
 
 Attention answers one question inside a task:
 
-> Which signal should be shown now, and how?
+> Which signal deserves attention now, and what should the app do with it?
 
 It is a built-in rule set. It is a **task-level** rule set. The product owns global proactivity
 and interruption.

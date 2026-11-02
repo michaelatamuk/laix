@@ -59,7 +59,7 @@ decisions = layer.decide(
 
 The layer holds one set of contracts and two built-in policies:
 
-- **attention**: which signal deserves attention now, and how?
+- **attention**: which signal deserves attention now, and what should the app do with it?
 - **action decision**: which option should the app choose?
 
 It also ships eight packaged policy packs for active perception, safety-constrained action, replanning,
