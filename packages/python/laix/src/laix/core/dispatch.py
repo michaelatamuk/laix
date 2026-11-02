@@ -25,6 +25,27 @@ def select(request: DecisionRequest, policy: Any = None) -> str:
     raise ValueError("request has neither a situation/options nor signals/context")
 
 
+def attributes_for(request: DecisionRequest) -> dict[str, Any]:
+    """Merge the request's confidence fields into policy attributes."""
+    attributes = dict(request.attributes)
+    if request.confidence is not None:
+        attributes.setdefault("confidence", request.confidence)
+    if request.confidence_source:
+        attributes.setdefault("confidence_source", request.confidence_source)
+    if request.calibrated:
+        attributes.setdefault("calibrated", True)
+    return attributes
+
+
+def annotate_confidence(decision: Decision, request: DecisionRequest) -> Decision:
+    """Carry the request's confidence provenance onto a decision."""
+    source = request.confidence_source or decision.confidence_source
+    calibrated = request.calibrated or decision.calibrated
+    if source == decision.confidence_source and calibrated == decision.calibrated:
+        return decision
+    return replace(decision, confidence_source=source, calibrated=calibrated)
+
+
 def decide(request: DecisionRequest, policy: Any = None) -> list[Decision]:
     """Return decisions without the app kit.
 
@@ -33,15 +54,7 @@ def decide(request: DecisionRequest, policy: Any = None) -> list[Decision]:
     """
     route = select(request, policy)
     if route == "policy":
-        return [_annotate(coerce(item), request) for item in policy.decide(request)]
-
-    attributes = dict(request.attributes)
-    if request.confidence is not None:
-        attributes.setdefault("confidence", request.confidence)
-    if request.confidence_source:
-        attributes.setdefault("confidence_source", request.confidence_source)
-    if request.calibrated:
-        attributes.setdefault("calibrated", True)
+        return [annotate_confidence(coerce(item), request) for item in policy.decide(request)]
 
     if route == "action":
         if request.situation is None:
@@ -49,24 +62,21 @@ def decide(request: DecisionRequest, policy: Any = None) -> list[Decision]:
         action_request = ActionPolicyRequest(
             situation=request.situation,
             options=request.options,
-            attributes=attributes,
+            attributes=attributes_for(request),
         )
-        return [_annotate(ActionPolicy().decide(action_request), request)]
+        return [annotate_confidence(ActionPolicy().decide(action_request), request)]
 
     if request.context is None:
         raise ValueError("attention allocation needs a context with now")
     return [
-        _annotate(from_attention(item), request)
+        annotate_confidence(from_attention(item), request)
         for item in decide_attention(request.signals, request.context)
     ]
 
 
-def _annotate(decision: Decision, request: DecisionRequest) -> Decision:
-    source = request.confidence_source or decision.confidence_source
-    calibrated = request.calibrated or decision.calibrated
-    if source == decision.confidence_source and calibrated == decision.calibrated:
-        return decision
-    return replace(decision, confidence_source=source, calibrated=calibrated)
-
-
-__all__ = ["decide", "select"]
+__all__ = [
+    "annotate_confidence",
+    "attributes_for",
+    "decide",
+    "select",
+]

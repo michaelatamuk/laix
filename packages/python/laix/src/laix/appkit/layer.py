@@ -6,10 +6,9 @@ normalisation of custom policy results into the one ``Decision`` shape.
 
 from __future__ import annotations
 
-from dataclasses import asdict, replace
+from dataclasses import asdict
 from typing import Any
 
-from ..core.engines import attention
 from ..core.support.version import SCHEMA_VERSION
 from ..core.decisions import (
     ScoreBreakdown,
@@ -17,8 +16,12 @@ from ..core.decisions import (
     DecisionRequest,
     EvidenceRef,
     Intent,
-    coerce,
-    from_attention,
+)
+from ..core.dispatch import (
+    annotate_confidence,
+    attributes_for,
+    decide as decide_core,
+    select,
 )
 from .delivery import DeliveryPort, DeliveryReceipt
 from ..core.engines.policies import Policy, PolicyRegistry
@@ -50,41 +53,22 @@ class Layer:
         return self._registry.names()
 
     def decide(self, request: DecisionRequest) -> list[Decision]:
-        if self._policy is not None:
-            decisions = [self._annotate(coerce(item), request) for item in self._policy.decide(request)]
-            self._decisions.extend(decisions)
-            return decisions
-
-        attributes = dict(request.attributes)
-        if request.confidence is not None:
-            attributes.setdefault("confidence", request.confidence)
-        if request.confidence_source:
-            attributes.setdefault("confidence_source", request.confidence_source)
-        if request.calibrated:
-            attributes.setdefault("calibrated", True)
-
-        if request.situation is not None or request.options:
+        route = select(request, self._policy)
+        if route == "action":
             if request.situation is None:
                 raise ValueError("action selection needs a situation")
-            decision = self.runtime.decide(request.situation, request.options, attributes=attributes)
-            result = [self._annotate(decision, request)]
+            decision = self.runtime.decide(
+                request.situation,
+                request.options,
+                attributes=attributes_for(request),
+            )
+            result = [annotate_confidence(decision, request)]
+        elif route == "policy":
+            result = decide_core(request, self._policy)
         else:
-            if request.context is None:
-                raise ValueError("attention allocation needs a context with now")
-            result = [
-                self._annotate(from_attention(item), request)
-                for item in attention.decide_attention(request.signals, request.context)
-            ]
+            result = decide_core(request)
         self._decisions.extend(result)
         return result
-
-    @staticmethod
-    def _annotate(decision: Decision, request: DecisionRequest) -> Decision:
-        source = request.confidence_source or decision.confidence_source
-        calibrated = request.calibrated or decision.calibrated
-        if source == decision.confidence_source and calibrated == decision.calibrated:
-            return decision
-        return replace(decision, confidence_source=source, calibrated=calibrated)
 
     def execute(
         self,
