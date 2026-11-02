@@ -29,7 +29,7 @@ The split follows the code:
 
 | Page | Covers |
 |---|---|
-| [core/00-core-architecture.md](core/00-core-architecture.md) | the core in one picture |
+| [core/00-core-architecture.md](core/00-core-architecture.md) | the core building blocks and how they stack |
 | [core/01-decision-contract.md](core/01-decision-contract.md) | the decision contract: request, response and records |
 | [core/02-attention.md](core/02-attention.md) | task-level attention and its scope |
 | [core/03-packaged-policies.md](core/03-packaged-policies.md) | the eight packaged policies |
