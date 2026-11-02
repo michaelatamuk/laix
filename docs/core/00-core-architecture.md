@@ -53,9 +53,9 @@ block-beta
 | **Engines** | Attention · Policies · Resources | What produces a decision and limits sensing. |
 | **Foundation** | Schema · Sensing · Support | Shared records and utilities. |
 
-## Automatic selection
+## Which engine runs
 
-The call selects an engine in one of two ways. Without `policy=`, the request selects a built-in
+The call picks an engine in one of two ways. Without `policy=`, the request selects a built-in
 engine. With `policy=`, it uses the policy you pass.
 
 | The call has | The engine |
@@ -94,6 +94,6 @@ outcome → label → feedback → better attention
 
 - **Capabilities** — Decide chooses explicitly or automatically; Learn turns outcomes into a better policy or attention; Evaluate checks the engines.
 - **Contract** — the request describes what is happening and what the app can do; the response carries the verb, reason, confidence, action and approval; the trail records what happened.
-- **Automatic routing** — `signals + context` → Attention; `situation + options` → Action policy. A packaged or custom policy is selected explicitly with `policy=...`.
+- **Engine choice** — `signals + context` → Attention; `situation + options` → Action policy. A packaged or custom policy is selected explicitly with `policy=...`.
 - **Engines** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation; Resources set sensing limits.
 - **Foundation** — Schema validates records; Sensing defines detectors, events and frames; Support provides shared types and helpers.
