@@ -59,9 +59,11 @@ PPMA keeps:
 - connectors, credentials and transports;
 - proactivity, permissions, clearances and owner settings;
 - missions, workers, lifecycle and budgets;
+- app and tool choice;
 - app execution policy;
 - command confidence and calibration;
-- provenance, commit and execution;
+- decision records, outcomes and provenance;
+- commit and execution;
 - the user interface.
 
 LAIX supplies:
@@ -156,22 +158,7 @@ The decision carries:
 - `action_id`, `intent`, `requires_approval`, `reversible`, `undo_hint`;
 - `decision_id`, `trace_id`, `policy_version`, `created_at`.
 
-PPMA keeps the domain nouns. LAIX keeps the generic vocabulary.
-
-| Concern | Owner |
-|---|---|
-| Whether a task exists | PPMA |
-| The task's goal, options and constraints | PPMA |
-| The next move inside the task | LAIX |
-| Activation: notice, remember, interrupt, act, dispatch | PPMA |
-| Which app or tool is called | PPMA |
-| Task lifecycle | PPMA |
-| Execution | PPMA, or the app through its execution policy |
-| Decision record, outcome and provenance | PPMA |
-| Memory, connectors, permissions, proactivity | PPMA |
-| Calibration of emitted confidence | PPMA |
-| Generic decision schema and task policies | LAIX |
-| Decision ids | Each owner, in its own namespace |
+PPMA keeps the domain nouns in how it builds the request and reads the decision. LAIX sees only the generic fields above.
 
 ## 4. Ids, confidence, provenance and commit
 
