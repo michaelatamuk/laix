@@ -41,7 +41,7 @@ packages/python/laix/src/laix/
 │   │   └── normalise.py     coerce and from_attention
 │   ├── engines/
 │   │   ├── policies/        policy.py, registry.py, implementations/
-│   │   ├── attention/       model, ports, vectors, decide, gates/, score
+│   │   ├── attention/       input, output, gates/, ports, vectors, decide, score
 │   │   └── resources/       budget, sensing option, plan, scheduler
 │   ├── outcome_learning/    record, ledger, store, bandit, rewards, attention/
 │   ├── evaluation/          case, row, report, compare, attention replay

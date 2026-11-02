@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import NamedTuple
 
 from ....support.verbs import Verb
-from .reasons import ReasonCode
+from .reason import ReasonCode
 
 
 class GateResult(NamedTuple):

@@ -10,8 +10,8 @@ from __future__ import annotations
 from datetime import datetime
 
 from ...decisions import ScoreBreakdown
-from .model.context import Context
-from .model.signal import Signal
+from .input.context import Context
+from .input.signal import Signal
 from .timing import hours_until
 
 SEVERITY_POINTS = {"critical": 60.0, "high": 45.0, "medium": 30.0, "low": 15.0, "info": 5.0}

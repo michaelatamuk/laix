@@ -1,23 +1,11 @@
-"""Shared helpers used by more than one gate."""
+"""Feedback suppression: has the user already rejected this signal?"""
 
 from __future__ import annotations
 
 from datetime import datetime
 
-from ..model.severity import SEVERITY_RANK
-from ..model.feedback import Feedback
-from ..model.signal import Signal
-from .reasons import FEEDBACK_REASONS, ReasonCode
-
-
-def rank(severity: str) -> int:
-    """Lower is more severe."""
-    return SEVERITY_RANK.get(severity, 9)
-
-
-def dedupe_key(signal: Signal, now: datetime) -> str:
-    """One interruption per signal per day, by default."""
-    return f"{signal.id}:{now.date().isoformat()}"
+from ..input.feedback import Feedback
+from .reason import FEEDBACK_REASONS, ReasonCode
 
 
 def snoozed_until_future(until: str | None, now: datetime) -> bool:
@@ -42,4 +30,4 @@ def feedback_blocks(feedback: Feedback | None, now: datetime) -> ReasonCode | No
     return FEEDBACK_REASONS.get(feedback.state)
 
 
-__all__ = ["dedupe_key", "feedback_blocks", "rank", "snoozed_until_future"]
+__all__ = ["feedback_blocks", "snoozed_until_future"]

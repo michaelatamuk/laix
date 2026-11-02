@@ -12,11 +12,11 @@ from collections.abc import Iterable, Sequence
 from datetime import datetime
 
 from .gates import GATE_RULES, GateResult, ReasonCode, dedupe_key, feedback_blocks, rank
-from .model.context import Context
-from .model.decision import AttentionDecision
-from .model.signal import Signal
+from .input.context import Context
+from .output.decision import AttentionDecision
+from .input.signal import Signal
 from .score import cost_of_waiting, score
-from .undo import undo_hint
+from .output.undo import undo_hint
 from ...support.verbs import Verb
 
 

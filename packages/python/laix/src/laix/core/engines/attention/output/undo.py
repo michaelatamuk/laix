@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ...support.verbs import Verb
+from ....support.verbs import Verb
 
 
 def undo_hint(verb: str, reversible: bool) -> str | None:

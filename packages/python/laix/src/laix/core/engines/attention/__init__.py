@@ -11,18 +11,18 @@ from __future__ import annotations
 
 from ...decisions import ScoreBreakdown, Intent
 from ...support.verbs import VERBS
-from .model.decision import AttentionDecision
+from .output.decision import AttentionDecision
 from .ports.clock import Clock
-from .model.context import Context
-from .model.feedback import FEEDBACK_STATES, Feedback
-from .model.severity import SEVERITY_RANK
+from .input.context import Context
+from .input.feedback import FEEDBACK_STATES, Feedback
+from .input.severity import SEVERITY_RANK
 from .ports.null_sink import NullSink
 from .decide import decide_attention, decide_one, dedupe_key, rollup, trace_id
 from .gates import GATES, GATE_RULES, REASONS, Gate, ReasonCode, feedback_blocks, rank
 from .score import SEVERITY_POINTS, WAIT_FACTOR, cost_of_waiting, score
-from .undo import undo_hint
+from .output.undo import undo_hint
 from .ports.recorder import Recorder
-from .model.signal import Signal
+from .input.signal import Signal
 from .ports.sink import Sink
 from .ports.system_clock import SystemClock
 from .timing import hours_until, is_quiet, parse_range

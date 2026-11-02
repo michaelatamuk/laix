@@ -53,7 +53,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/engines/policies/implementations/escalation.py` | hand-over policy |
 | `core/engines/policies/implementations/bandit.py` | learned bandit policy |
 | `core/engines/policies/policy.py`, `core/engines/policies/registry.py` | policy plugin protocol and registry |
-| `core/engines/attention/model/`, `core/engines/attention/ports/`, `core/engines/attention/vectors/` | attention records, ports and test vectors |
+| `core/engines/attention/input/`, `output/`, `ports/`, `vectors/` | attention records, ports and test vectors |
 | `core/engines/attention/gates/implementations/` | one file per gate, ordered by `rules.py` |
 | `core/engines/attention/decide.py`, `timing.py` | attention loop and quiet hours |
 | `appkit/runtime/decision_runtime.py` | the action runtime |
