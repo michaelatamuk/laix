@@ -1,7 +1,7 @@
 # Packaged policies
 
-A policy is a rule set with a name and a `decide(request)` method. LAIX ships eight packaged policies
-that you pass to `decide` explicitly.
+A policy is a rule set with a name and a `decide(request)` method. A **decision class** is the kind
+of question a policy answers. LAIX ships eight packaged policies that you pass to `decide` explicitly.
 
 ```python
 from laix import ReplanningPolicy, decide
@@ -13,16 +13,16 @@ The policy reads its inputs from `DecisionRequest.attributes`.
 
 ## The eight policies
 
-| Policy | Class | Result |
-|---|---|---|
-| Active perception | `ActivePerceptionPolicy` | `observe` or `wait` |
-| Safety-constrained action | `SafetyConstrainedPolicy` | `act`, `guide` or `wait` |
-| Replanning | `ReplanningPolicy` | `act` or `ask` |
-| Allocation | `AllocationPolicy` | `act` or `wait` |
-| Negotiation | `NegotiationPolicy` | `act` or `escalate` |
-| Preference elicitation | `PreferenceElicitationPolicy` | `ask`, `act` or `wait` |
-| Verification | `VerificationPolicy` | `verify`, `wait` or `escalate` |
-| Escalation | `EscalationPolicy` | `escalate`, `ask` or `wait` |
+| Decision class | Policy class | Question | Result |
+|---|---|---|---|
+| Active perception | `ActivePerceptionPolicy` | Should we look first? | `observe` / `wait` |
+| Safety-constrained action | `SafetyConstrainedPolicy` | Is the option safe? | `act` / `guide` / `wait` |
+| Replanning | `ReplanningPolicy` | Which plan fits? | `act` / `ask` |
+| Allocation | `AllocationPolicy` | What fits the budget? | `act` / `wait` |
+| Negotiation | `NegotiationPolicy` | Accept, counter or escalate? | `act` / `escalate` |
+| Preference elicitation | `PreferenceElicitationPolicy` | Which question should we ask? | `ask` / `act` / `wait` |
+| Verification | `VerificationPolicy` | Did the option work? | `verify` / `wait` / `escalate` |
+| Escalation | `EscalationPolicy` | Should we hand over? | `escalate` / `ask` / `wait` |
 
 TypeScript exports the same classes.
 
