@@ -4,8 +4,8 @@ Attention answers one question inside a task:
 
 > Which signal deserves attention now, and what should the app do with it?
 
-It is a built-in rule set. It is a **task-level** rule set. The product owns global proactivity
-and interruption.
+Attention is a built-in rule set at the task level. It decides which of the signals the product
+gives it deserves attention; the product decides whether it may interrupt the user at all.
 
 ## Inputs
 
