@@ -270,3 +270,5 @@ host / app kit          -> approval, execution, outcome
 ```
 
 LAIX is the layer that can use a decision model. It works alongside JEV and other models.
+
+For the PPMA case, see [PPMA + LAIX](ppma-laix.md).

@@ -15,6 +15,7 @@ laix/
 │   ├── host-integration.md six questions a host team asks
 │   ├── architecture.md    how LAIX fits together
 │   ├── boundaries.md      PPMA, LAIX and other hosts
+│   ├── ppma-laix.md       PPMA + LAIX integration
 │   ├── decision-models.md LAIX and decision models
 │   ├── structure.md       this page
 │   ├── core/              decisions, engines, outcome learning, evaluation, sensing
