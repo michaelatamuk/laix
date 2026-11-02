@@ -7,7 +7,7 @@ from pathlib import Path
 
 import laix.core.engines.attention as attention_pkg
 
-PACKAGES = Path(__file__).resolve().parents[5]
+PACKAGES = Path(__file__).resolve().parents[6]
 CANONICAL = PACKAGES / "contracts"
 PACKAGED = Path(attention_pkg.__file__).resolve().parent / "vectors"
 
