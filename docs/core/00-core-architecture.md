@@ -8,7 +8,7 @@ block-beta
 
     block:capabilities["Capabilities"]
         columns 3
-        decide["Decide<br/>select · decide"]
+        decide["Decide<br/>choose a policy or engine"]
         learn["Learn from outcomes<br/>outcome · reward"]
         evaluate["Evaluate<br/>cases · parity · bench"]
     end
@@ -52,7 +52,7 @@ block-beta
 
 | Part | Contains | Built on |
 |---|---|---|
-| **Decide** | `select` and `decide` | Contract, engines |
+| **Decide** | choose a policy or engine; return the response | Contract, engines |
 | **Learn from outcomes** | outcome, reward, ledger, bandit | Support |
 | **Evaluate** | cases, parity, report, bench | Contract, engines |
 | **Decision request** | signals, context, situation, options | Support |
