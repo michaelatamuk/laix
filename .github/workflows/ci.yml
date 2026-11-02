@@ -29,7 +29,7 @@ jobs:
         run: python -m laix.appkit.bench
       - name: Run examples
         run: |
-          for file in $(find examples/python -name '*.py'); do
+          for file in $(find examples -name '*.py'); do
             python "$file"
           done
 

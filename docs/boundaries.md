@@ -19,16 +19,25 @@ The rule is simple:
 Use this from a mission, agent or service that needs a decision.
 
 ```python
-from laix.core import DecisionRequest, Decision, PolicyRegistry
+from laix import DecisionRequest, decide
+
+decision = decide(request)[0]
+```
+
+or, from the core package directly:
+
+```python
+from laix.core import DecisionRequest, decide
 ```
 
 It contains:
 
+- the `decide()` entry point and request selection;
 - contracts;
 - request and decision shapes;
 - attention and the policy packs;
 - resource admission;
-- perception contracts;
+- sensing contracts;
 - the UCB learner and outcome ledger;
 - the parity harness.
 
@@ -44,7 +53,7 @@ from laix.appkit import Layer, ExecutionBridge
 
 It contains:
 
-- `Layer` and the built-in request routing;
+- `Layer`, which uses core selection and adds the runtime, execution and decisions;
 - execution and runtime;
 - decision records and proposals;
 - delivery;
@@ -96,7 +105,7 @@ LAIX sees the request and its options. The host keeps the task and its reason.
 host
   │  builds a DecisionRequest for a bounded task
   ▼
-laix.core
+laix.core decide()
   │  returns a Decision
   ▼
 host

@@ -57,6 +57,28 @@ A decision always contains:
 
 The `verb` is the core answer. The other fields explain it and help the app execute it.
 
+## Getting a decision
+
+For the answer alone, use the core:
+
+```python
+from laix import decide
+
+decision = decide(request)[0]
+```
+
+For the answer plus the runtime, traces, execution and records, use the app kit:
+
+```python
+from laix import Layer
+
+layer = Layer()
+decision = layer.decide(request)[0]
+```
+
+`decide` lives in core and never imports the app kit. `Layer` uses the same core selection and
+adds the app-kit parts.
+
 ## The seven verbs
 
 A verb is the action word in a decision.
@@ -76,8 +98,16 @@ A notification is a `guide` decision plus an app delivery channel. Approval is t
 
 ## Selecting a policy
 
-A `Layer` has **one active policy** at a time. Every `decide()` call uses that policy until you
-change it.
+Pass a policy explicitly to the core:
+
+```python
+from laix import DecisionRequest, SafetyConstrainedPolicy, decide
+
+decision = decide(request, policy=SafetyConstrainedPolicy())[0]
+```
+
+In the app kit, a `Layer` holds **one active policy** at a time. Every `decide()` call uses that
+policy until you change it.
 
 ### One policy for the life of the layer
 
@@ -123,17 +153,25 @@ decision = layer.decide(another_request)[0]
 ### If no policy is active
 
 ```python
-layer = Layer()
+decision = decide(request)[0]
 ```
 
-Then `Layer.decide()` uses the request shape:
+or, with the app kit:
 
-| Request has | Policy |
+```python
+layer = Layer()
+decision = layer.decide(request)[0]
+```
+
+Selection then uses the request shape:
+
+| Request has | Engine |
 |---|---|
 | `situation` + `options` | built-in action |
 | `signals` + `context` | built-in attention |
 
-To activate a packaged policy, pass it to `Layer` or select it with `use_policy`. Attributes are input to the active policy.
+To use a packaged policy, pass it to `decide` or to `Layer`, or select it with `use_policy`.
+Attributes are input to the active policy.
 
 ## The ten decision classes
 
@@ -150,9 +188,9 @@ To activate a packaged policy, pass it to `Layer` or select it with `use_policy`
 | 9 | Verification | `attributes` | `VerificationPolicy` | explicit policy |
 | 10 | Escalation | `attributes` | `EscalationPolicy` | explicit policy |
 
-There are ten classes. The first two are built into `Layer` because they define the two request
-shapes it understands. The other eight are ordinary policy objects that take their inputs from
-`DecisionRequest.attributes`.
+There are ten classes. The first two are built into `decide` and `Layer` because they define the two
+request shapes LAIX understands. The other eight are ordinary policy objects that take their inputs
+from `DecisionRequest.attributes`.
 
 The split is about selection. All ten return the same decision shape. See
 [policy packs](core/policy-packs.md).

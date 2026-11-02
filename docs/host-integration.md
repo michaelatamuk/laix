@@ -14,11 +14,22 @@ product decides a task exists
 task builds a DecisionRequest
         │
         ▼
-LAIX returns one Decision
+decide() returns one Decision
         │
         ▼
 task acts, asks, waits or escalates
 ```
+
+The simplest call is core:
+
+```python
+from laix import decide
+
+decision = decide(request)[0]
+```
+
+If the host also wants the runtime, execution and records, use `Layer` from the app kit. The
+examples below use the app kit because they show execution and audit.
 
 Runnable example: [`examples/appkit/runtime/mission_adapter.py`](../examples/appkit/runtime/mission_adapter.py).
 

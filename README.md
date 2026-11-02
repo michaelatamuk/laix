@@ -5,27 +5,44 @@
 LAIX is one decision layer for live apps. An app describes the moment and its limits. LAIX decides
 whether to **wait, observe, guide, ask, act, verify or escalate**, and records what happened.
 
-## One package, one API
+## One decision call
 
-There is one Python package and one TypeScript package. The main object is `Layer`:
+The core package answers a request without importing the app kit:
 
 ```python
-from laix import DecisionRequest, Layer
+from laix import DecisionRequest, decide
 
-layer = Layer()
-decisions = layer.decide(
+decision = decide(
     DecisionRequest(
         subject="one decision",
         at="2026-11-01T10:00:00+00:00",
         signals=(signal,),
         context=context,
     )
-)
+)[0]
 ```
 
 An app can ask LAIX to choose between actions in the same way:
 
 ```python
+decision = decide(
+    DecisionRequest(
+        subject="one decision",
+        at="2026-11-01T10:00:00+00:00",
+        situation=situation,
+        options=options,
+    )
+)[0]
+```
+
+Both requests return the same `Decision` shape, and every decision gets an id.
+
+When the app also needs execution, traces, records or delivery, use `Layer` from the app kit:
+
+```python
+from laix import DecisionRequest, Layer
+
+layer = Layer()
 decisions = layer.decide(
     DecisionRequest(
         subject="one decision",
@@ -36,8 +53,7 @@ decisions = layer.decide(
 )
 ```
 
-Both requests return the same `Decision` shape. The app sends one request, and LAIX uses a generic
-policy.
+`Layer` uses the same core selection and adds the runtime, execution and audit parts.
 
 ## Inside the layer
 
@@ -66,10 +82,11 @@ New apps send requests. Shared rules become generic policies. App rules stay in 
 
 ## Two surfaces
 
-- **`laix.core`** — contracts, decision shape, attention, policies, perception contracts, resource admission, outcomes and bench. Core uses only core modules.
+- **`laix.core`** — `decide(request)`, contracts, decision shape, attention, policies, sensing contracts, resource admission, outcomes and evaluation. Core uses only core modules.
 - **`laix.appkit`** — optional integration: Layer, execution, records, delivery, platform, live-context loop and state.
 
-A host imports LAIX. LAIX uses its own modules and generic vocabulary. See
+A host that only needs the answer calls `decide(request)`. A host that also executes, records or
+delivers calls `Layer`. LAIX uses its own modules and generic vocabulary. See
 [boundaries](docs/boundaries.md).
 
 ## Repository map

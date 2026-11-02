@@ -6,7 +6,24 @@ and decision records.
 The package uses the Python standard library and its own modules. It takes generic inputs and
 returns generic decisions.
 
-## The one API
+## The two entry points
+
+For a decision only, use the core:
+
+```python
+from laix import DecisionRequest, decide
+
+decision = decide(
+    DecisionRequest(
+        subject="one decision",
+        at="2026-11-01T10:00:00+00:00",
+        signals=(signal,),
+        context=context,
+    )
+)[0]
+```
+
+For a decision plus runtime, execution, traces and records, use the app kit:
 
 ```python
 from laix import DecisionRequest, Layer
@@ -28,20 +45,21 @@ decisions = layer.decide(
 - `situation` and `options` for action selection.
 
 Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`, `rationale`,
-`evidence`, `intent`, `requires_approval`, `score`, `breakdown`, `intent`, `escalation`,
-`cost_of_waiting`, `reversible`, `undo_hint`, `trace_id`, `deliver`, `record` and `created_at`.
+`evidence`, `intent`, `requires_approval`, `score`, `breakdown`, `cost_of_waiting`, `reversible`,
+`undo_hint`, `decision_id`, `trace_id`, `deliver`, `record` and `created_at`.
 
 ## Inside the package
 
 | Piece | Role |
 |---|---|
+| `core/dispatch.py` | `decide()` and `select()`: the core request-to-decision entry point |
 | `core/decisions/request/` | `decision_request.py` envelope and `payload/` records |
 | `core/decisions/response/` | `decision.py` and `payload/` (evidence ref, intent, score breakdown) |
 | `core/decisions/trail/` | execution receipt and trace |
 | `core/decisions/normalise.py` | `coerce` and `from_attention` |
 | `core/schema/` | `RECORDS`, `RECORD_NAMES`, schema generation, validation and `laix-v1.schema.json` |
 | `core/support/` | time, ids, values, serialization, errors, verb and version helpers |
-| `appkit/layer.py` | the public `Layer` orchestrator |
+| `appkit/layer.py` | the app-kit `Layer`: core selection plus runtime, execution and traces |
 | `core/engines/policies/implementations/action.py` | built-in action-selection policy |
 | `core/engines/policies/implementations/active_perception.py` | packaged `observe` policy |
 | `core/engines/policies/implementations/safety_constrained.py` | risk-limited action policy |
@@ -73,10 +91,10 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 
 ## Custom policies
 
-A policy is any object with a name and a `decide` method:
+A policy is any object with a name and a `decide` method. Pass it to the core:
 
 ```python
-from laix import DecisionRequest, Layer, Decision
+from laix import DecisionRequest, Decision, decide
 
 class MyPolicy:
     name = "my-policy"
@@ -85,15 +103,22 @@ class MyPolicy:
     def decide(self, request):
         return [Decision(verb="wait", confidence=0.5, reason_code="policy_rule", rationale="wait")]
 
+decision = decide(
+    DecisionRequest(subject="one decision", at="2026-11-01T10:00:00+00:00"),
+    policy=MyPolicy(),
+)[0]
+```
+
+The app kit keeps a policy registry:
+
+```python
+from laix import Layer
+
 layer = Layer(policy=MyPolicy())
 decision = layer.decide(
     DecisionRequest(subject="one decision", at="2026-11-01T10:00:00+00:00")
 )[0]
-```
 
-Register and select policies at runtime:
-
-```python
 layer.register_policy("my-policy", MyPolicy())
 layer.use_policy("my-policy")
 print(layer.status())

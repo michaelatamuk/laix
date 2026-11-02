@@ -1,7 +1,7 @@
 # Examples
 
-Each example sends one request to `Layer` or uses one LAIX contract, then prints a short result. The
-stories are small everyday situations, so the result is easy to picture.
+Each example sends one request to `decide` or `Layer`, or uses one LAIX contract, then prints a short
+result. The stories are small everyday situations, so the result is easy to picture.
 
 ## Layout
 
@@ -41,6 +41,7 @@ examples/
 | File | Story | Output |
 |---|---|---|
 | `decisions/action/leaking_sink.py` | The kitchen sink is about to overflow. | `act policy_rule option-close-valve` |
+| `decisions/action/core_decide.py` | The same sink, answered by core `decide` with no app kit. | `act policy_rule option-close-valve DEC-...` |
 | `decisions/action/water_electricity_no_valve.py` | No safe valve: the safety boundary escalates. | `escalate manager 0.7` |
 | `decisions/action/pay_bill.py` | A bill is due today and a person must approve the payment. | `act policy_rule option-pay True` |
 | `decisions/action/check_again.py` | A parcel is late; a tracking page can settle it. | `observe policy_rule option-check-tracking` |
