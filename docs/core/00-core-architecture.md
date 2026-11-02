@@ -8,42 +8,38 @@ block-beta
 
     block:capabilities
         columns 4
-        capabilities_title["Capabilities"]:4
+        capabilities_label["Capabilities"]
         decide["Decide<br/>explicit policy or automatic"]
         learn["Learn from outcomes<br/>outcome → reward → learner → next choice"]
         evaluate["Evaluate<br/>test cases · comparison · benchmarks"]
-        space
     end
 
     block:contract
         columns 4
-        contract_title["Contract"]:4
+        contract_label["Contract"]
         request["Decision request<br/>what is happening + what the app can do"]
         response["Decision response<br/>verb · reason · confidence · action"]
         trail["Execution trail<br/>receipt · trace"]
-        space
     end
 
     block:engines
         columns 4
-        engines_title["Engines"]:4
+        engines_label["Engines"]
         attention["Attention<br/>signals · priority"]
         policies["Policies<br/>action · safety · replanning · allocation<br/>negotiation · preference · verification · escalation"]
         resources["Resources<br/>budget · sensing limits"]
-        space
     end
 
     block:foundation
         columns 4
-        foundation_title["Foundation"]:4
+        foundation_label["Foundation"]
         schema["Schema<br/>records · validation"]
         sensing["Sensing<br/>detector · event · frame"]
         support["Support<br/>shared types and helpers"]
-        space
     end
 
-    style capabilities_title font-size:22px,font-weight:bold
-    style contract_title font-size:14px
+    style capabilities_label font-size:22px,font-weight:bold
+    style contract_label font-size:14px
 ```
 
 ## The rows
