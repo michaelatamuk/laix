@@ -36,22 +36,10 @@ from .core.support.version import SCHEMA_VERSION
 from .core import evaluation
 from .core.engines import attention
 from .core.engines.attention import AttentionDecision, Context, Feedback, Signal, decide_attention
-from .appkit.delivery import DeliveryPort, DeliveryReceipt, NullDelivery
-from .appkit.layer import Layer
 from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
 from .core.evaluation import load_cases
 from .core.outcome_learning import AttentionOutcome, Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
-from .appkit.platform import (
-    ApprovalDecision,
-    ApprovalRequest,
-    CAPABILITY_LEVELS,
-    Capability,
-    PlatformEvent,
-    InMemoryPlatform,
-    Platform,
-    SkillCall,
-)
 from .core.engines.policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
@@ -71,29 +59,86 @@ from .core.engines.policies import (
     VerificationPolicy,
     decide_action,
 )
-from .appkit.audit import Approval, AuditEvent, Undo
-from .appkit.audit.decision_record import (
-    DecisionRecord,
-    EvidenceRef,
-    approve as approve_record,
-    create_record,
-    mark_executed,
-    reject as reject_record,
-    verify as verify_record,
-)
-from .appkit.audit.proposal import Proposal, apply as apply_proposal, approve as approve_proposal, reject as reject_proposal, undo as undo_proposal
-from .appkit.live_context import CallableDetector, LiveContext
-from .appkit.runtime import (
-    ApprovalRequired,
-    DecisionRuntime,
-    ExecutionBridge,
-    ExperienceState,
-    InMemoryStateStore,
-    StateStore,
-    UnknownAction,
-)
 from .core.sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+
+# The app kit is optional and is imported on first use.  A host that only needs
+# the decision core can ``import laix.core`` or ``from laix import Decision`` and
+# never load execution, records, delivery or the platform surface.
+_APPKIT_NAMES: dict[str, dict[str, str]] = {
+    ".appkit.audit": {
+        "Approval": "Approval",
+        "AuditEvent": "AuditEvent",
+        "Undo": "Undo",
+    },
+    ".appkit.audit.decision_record": {
+        "DecisionRecord": "DecisionRecord",
+        "approve_record": "approve",
+        "create_record": "create_record",
+        "mark_executed": "mark_executed",
+        "reject_record": "reject",
+        "verify_record": "verify",
+    },
+    ".appkit.audit.proposal": {
+        "Proposal": "Proposal",
+        "apply_proposal": "apply",
+        "approve_proposal": "approve",
+        "reject_proposal": "reject",
+        "undo_proposal": "undo",
+    },
+    ".appkit.delivery": {
+        "DeliveryPort": "DeliveryPort",
+        "DeliveryReceipt": "DeliveryReceipt",
+        "NullDelivery": "NullDelivery",
+    },
+    ".appkit.layer": {"Layer": "Layer"},
+    ".appkit.live_context": {
+        "CallableDetector": "CallableDetector",
+        "LiveContext": "LiveContext",
+    },
+    ".appkit.platform": {
+        "ApprovalDecision": "ApprovalDecision",
+        "ApprovalRequest": "ApprovalRequest",
+        "CAPABILITY_LEVELS": "CAPABILITY_LEVELS",
+        "Capability": "Capability",
+        "InMemoryPlatform": "InMemoryPlatform",
+        "Platform": "Platform",
+        "PlatformEvent": "PlatformEvent",
+        "SkillCall": "SkillCall",
+    },
+    ".appkit.runtime": {
+        "ApprovalRequired": "ApprovalRequired",
+        "DecisionRuntime": "DecisionRuntime",
+        "ExecutionBridge": "ExecutionBridge",
+        "ExperienceState": "ExperienceState",
+        "InMemoryStateStore": "InMemoryStateStore",
+        "StateStore": "StateStore",
+        "UnknownAction": "UnknownAction",
+    },
+}
+_APPKIT_LOOKUP: dict[str, tuple[str, str]] = {
+    name: (module, attribute)
+    for module, names in _APPKIT_NAMES.items()
+    for name, attribute in names.items()
+}
+
+
+def __getattr__(name: str):
+    """Load an app kit name only when it is actually requested."""
+    entry = _APPKIT_LOOKUP.get(name)
+    if entry is None:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    module_path, attribute = entry
+    from importlib import import_module
+
+    value = getattr(import_module(module_path, __name__), attribute)
+    globals()[name] = value
+    return value
+
+
+def __dir__() -> list[str]:
+    return sorted(set(globals()) | set(_APPKIT_LOOKUP))
+
 
 __all__ = [
     "ActionOption",

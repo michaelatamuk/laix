@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import ast
+import os
+import subprocess
+import sys
 from pathlib import Path
 
 import laix
@@ -74,3 +77,34 @@ def test_versions_are_aligned() -> None:
     assert laix.ACTION_POLICY_VERSION == "0.8.0"
     assert laix.core.SCHEMA_VERSION == "0.8.0"
     assert laix.core.ACTION_POLICY_VERSION == "0.8.0"
+
+
+def test_a_core_only_host_never_loads_the_app_kit() -> None:
+    script = """
+import sys
+
+import laix.core
+from laix.core import ActionOption, DecisionRequest, Situation, decide
+
+assert "laix.appkit" not in sys.modules, "importing laix.core loaded laix.appkit"
+
+request = DecisionRequest(
+    subject="room-1",
+    at="2026-11-02T09:00:00+00:00",
+    situation=Situation(id="s-1", at="2026-11-02T09:00:00+00:00", subject="room-1"),
+    options=(ActionOption(id="a-1", verb="wait", name="wait"),),
+)
+assert decide(request)[0].verb == "wait"
+assert "laix.appkit" not in sys.modules, "deciding in core loaded laix.appkit"
+"""
+    env = dict(os.environ)
+    env["PYTHONPATH"] = os.pathsep.join(
+        [str(PACKAGE.parent), env.get("PYTHONPATH", "")]
+    ).rstrip(os.pathsep)
+    completed = subprocess.run(
+        [sys.executable, "-c", script],
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert completed.returncode == 0, completed.stderr

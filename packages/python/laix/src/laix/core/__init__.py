@@ -69,6 +69,8 @@ from .engines.policies import (
     decide_action,
 )
 
+from .dispatch import decide, select
+
 __all__ = [
     "ActionOption",
     "ActivePerceptionPolicy",
@@ -132,6 +134,7 @@ __all__ = [
     "Verb",
     "VerificationPolicy",
     "compare",
+    "decide",
     "confidence_band",
     "decide_action",
     "decide_attention",
@@ -141,5 +144,6 @@ __all__ = [
     "parse_iso",
     "reward_for_label",
     "score",
+    "select",
     "utcnow",
 ]
