@@ -44,7 +44,7 @@ block-beta
 |---|---|---|
 | **Capabilities** | Decide · Learn from outcomes · Evaluate | What the core can do. |
 | **Contract** | Decision request · Decision response · Execution trail | The boundary and its records. |
-| **Engines** | Attention · Policies · Resources | What produces a decision. |
+| **Engines** | Attention · Policies · Resources | The engines and admission control. |
 | **Foundation** | Schema · Sensing · Support | The shared records and foundations. |
 
 ## Request shapes
@@ -52,21 +52,22 @@ block-beta
 | The request carries | The engine |
 |---|---|
 | `signals` + `context` | Attention |
-| `situation` + `options` | Policies |
+| `situation` + `options` | Action policy |
 
 ## Learning loop
 
 ```text
-outcome → reward → ledger → bandit → a better next choice for Policies
+outcome → reward → ledger → bandit → a better policy
+outcome → label → feedback → better attention
 ```
 
 ## What each part contains
 
 | Part | Contains | Built on |
 |---|---|---|
-| **Decide** | choose a policy or engine; return the response | Contract, engines |
-| **Learn from outcomes** | outcome → reward → ledger → bandit → next choice; feeds Policies | Support |
-| **Evaluate** | cases, parity, report, bench | Contract, engines |
+| **Decide** | choose a policy or engine; return the response | Contract, engines, support |
+| **Learn from outcomes** | outcome → reward → ledger → bandit → better policy; outcome → label → feedback → better attention | Support |
+| **Evaluate** | cases, parity, report, bench | Contract, engines, support |
 | **Decision request** | signals + context or situation + options | Support |
 | **Decision response** | verb, reason, confidence, action, evidence, approval | Support |
 | **Execution trail** | execution receipt, trace | Support |
@@ -80,10 +81,10 @@ outcome → reward → ledger → bandit → a better next choice for Policies
 ## Reading the stack
 
 - **Decide** is the entry point. It chooses a policy or engine and returns a response.
-- **Learn from outcomes** turns a measured result into a reward and a better next choice for Policies.
+- **Learn from outcomes** turns a measured result into a better next choice for Policies and Attention.
 - **Evaluate** checks the engines; it is not on the request path.
 - **Decision request** and **Decision response** are the boundary.
-- The request shape routes: `signals + context` → Attention; `situation + options` → Policies.
+- The request shape routes: `signals + context` → Attention; `situation + options` → Action policy.
 - **Decision response** carries the verb, reason, confidence, action and approval.
 - **Execution trail** records what happened after the response.
 - **Attention**, **Policies** and **Resources** are the engines.
