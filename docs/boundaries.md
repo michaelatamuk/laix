@@ -1,99 +1,118 @@
-# Boundaries: core, app kit and host
+# Boundaries: LAIX and the host
 
-LAIX is a decision layer with two surfaces and one host-facing seam.
+LAIX produces a decision for one bounded task. A host owns the product around it.
 
-| Role | What it is | Package |
+The most important boundary is the one between PPMA and LAIX. PPMA keeps its activation core, its commit path and its execution lifecycle. LAIX supplies the task decision. The same boundary applies to any host; PPMA is the primary case because it already has its own decision vocabulary and lifecycle.
+
+- PPMA owns the activation decision, commit, execution and records.
+- LAIX owns the task decision inside one bounded task.
+- PPMA uses LAIX core only, as a task policy layer below its activation core.
+
+## 1. The PPMA–LAIX boundary
+
+PPMA owns the activation decision. LAIX owns the task decision.
+
+| | PPMA activation decision | LAIX task decision |
 |---|---|---|
-| **Core** | The decision contract and the task policies that produce a decision. | `laix.core` |
-| **App kit** | Optional integration: a facade, runtime, execution, records, delivery and platform. | `laix.appkit` |
-| **Host** | The product that owns the task, the state, the people and the apps. | the host |
+| Question | What should PPMA do with this trigger? | What should this bounded task do next? |
+| Output | `NOOP`, `UPDATE_STATE`, `ISSUE_COMMAND`, `DISPATCH` | `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` |
+| Scope | One trigger or one host cycle | One bounded task |
+| Creates work | Yes: tasks, commands, dispatches, plans, filters | No |
+| Commits state | PPMA's commit path | No |
+| Executes | PPMA, or an app through its execution policy | No |
+| Records | PPMA's decision, command, outcome and provenance | A decision shape only |
+| Authority | Final | Advisory input to PPMA's activation decision |
 
-The dependency direction is fixed:
+PPMA's activation core is its Epistemic Core: the Ingestor and Commander, with the single commit path.
+
+In one line:
 
 ```text
-host
- ├── laix.core
- └── laix.appkit
-        └── laix.core
+PPMA decides what the trigger becomes.
+LAIX decides what one bounded task does next.
 ```
 
-Core imports only the standard library and its own modules. App kit imports the standard library, `laix.core` and its own modules. The host imports LAIX. LAIX never imports the host.
+```text
+PPMA trigger
+  ▼
+PPMA Epistemic Core / Commander
+  │ activation decision: NOOP | UPDATE_STATE | ISSUE_COMMAND | DISPATCH
+  │
+  ├── no bounded task ──────────────────────────────► PPMA output
+  │
+  └── bounded task
+        │  builds a DecisionRequest
+        ▼
+      laix.core decide()
+        │  returns a task Decision
+        ▼
+      PPMA
+        │  accepts, modifies or rejects the task decision
+        │  calibrates, records, commits, executes
+        ▼
+      PPMA output
+```
 
-## 1. What each role owns
-
-### Core
-
-Core owns the decision itself:
-
-- the request and decision shapes;
-- the verbs and reason codes;
-- task policies: attention, action, active perception, safety, replanning, allocation, negotiation, preference elicitation, verification, escalation and bandit;
-- the routing between a policy, the action engine and the attention engine;
-- outcome learning and evaluation;
-- sensing contracts, resource admission and schema.
-
-Core is deterministic and uses only the standard library. It holds no host state. It receives a `DecisionRequest` and returns a `Decision`, or one decision per signal.
-
-### App kit
-
-App kit owns the optional integration around the decision:
-
-- `Layer`, the app-facing facade over core selection;
-- the runtime: ids, traces, state and stored decisions;
-- execution, approval, cancel, undo and receipts;
-- decision records, proposals and audit;
-- delivery ports and receipts;
-- the platform contract;
-- the live-context loop;
-- the bench.
-
-App kit is not the decision authority. It provides the runtime and records for the decisions a host chooses to run.
-
-### Host
-
-The host owns the product. It can be a single app, an agent, a service or a proactive system. It owns:
+PPMA keeps:
 
 - memory and history;
 - ingestion, filters, triggers and routing;
 - connectors, credentials and transports;
-- orchestration: whether to notice, remember, interrupt, act or dispatch;
-- proactivity: when the product may take the user's attention;
-- permissions, clearances, approvals and owner settings;
+- proactivity, permissions, clearances and owner settings;
 - missions, workers, lifecycle and budgets;
-- app policy: auto-execute versus ask, per app and tool;
+- app execution policy;
 - command confidence and calibration;
-- the user interface;
-- persistence of the host's own state.
+- provenance, commit and execution;
+- the user interface.
 
-The host defines the task. It decides when a task exists, what its goal is, which options are available, and what happens after the decision.
+LAIX supplies:
 
-## 2. Two decision scopes
+- the task verb and reason code;
+- the rationale and confidence;
+- the score and breakdown;
+- the action id and intent;
+- `requires_approval`, `reversible` and `undo_hint`;
+- the task decision id and trace id.
 
-LAIX decisions are **task decisions**. A host may also have **activation decisions**. These are different scopes, not different ranks. The host component that owns activation decisions is the host's **activation core**.
+The activation decision remains PPMA's. LAIX never produces `NOOP`, `UPDATE_STATE`, `ISSUE_COMMAND` or `DISPATCH`, and never commits, executes or delivers for PPMA.
 
-| | Task decision | Activation decision |
-|---|---|---|
-| Owner | LAIX | Host |
-| Unit | One bounded task | One trigger or one host cycle |
-| Question | What should this task do next? | What should the host do with this trigger? |
-| Output | `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` | Host-defined; may create, continue or stop work |
-| Creates a task | No | Yes |
-| Commits host state | No | The host core |
-| Executes an action | No | The host, or app kit when the host uses it |
-| Records the lifecycle | No | The host, or app kit when the host uses it |
-| Example | "Close the valve", "ask for the missing date", "escalate this case" | "Ignore this event", "update memory", "issue a command", "dispatch a mission" |
+## 2. The two integration shapes
 
-An activation decision can create the task in which a task decision runs. A task decision never creates the next task.
+Both shapes are first-class. The choice belongs to the host.
 
-The distinction is scope and authority, not importance. A host with an activation core keeps it; LAIX operates inside the tasks that core creates.
+### 2.1 PPMA with its own activation core
 
-## 3. Two integration shapes
+PPMA decides what the trigger becomes. When the work is a bounded task, PPMA asks LAIX for the task decision.
 
-Both shapes are first-class. The choice is a property of the host, not a version of LAIX.
+```text
+PPMA activation core
+  │  decides: NOOP | UPDATE_STATE | ISSUE_COMMAND | DISPATCH
+  ├── no bounded task ────────────────────────► PPMA output
+  └── bounded task
+        │  DecisionRequest
+        ▼
+      LAIX
+        │  Decision
+        ▼
+      PPMA activation core
+        │  accept | modify | reject
+        │  calibrate, record, commit, execute
+        ▼
+      PPMA output
+```
 
-### 3.1 LAIX supplies the task decision
+The activation core remains PPMA's sole reasoning path and sole authority. LAIX operates as a task policy layer below it. LAIX can be exposed to the Commander as a query tool (`effect: none`) or to a mission as a tool; the Commander's `ask` or the mission agent calls it within the existing path. PPMA treats the result as one input: it accepts, modifies or rejects it.
 
-The host builds a request, calls LAIX, and acts on the decision.
+The clean deployment is a separate `ppma-laix` tool or service:
+
+- it imports only `laix` core and `ppma-contracts`;
+- it exposes `laix.decide` as a query tool (`effect: none`) or a mission tool;
+- it receives a `DecisionRequest` and returns a `Decision`;
+- it has no PPMA memory, no PPMA commit path and no PPMA execution.
+
+### 2.2 LAIX supplies the task decision
+
+A host without its own activation core asks LAIX directly and acts on the answer.
 
 ```text
 host
@@ -108,62 +127,9 @@ host
 laix.core
 ```
 
-This is the default shape. The host may use `laix.appkit` for execution, records and delivery, or keep those in the host.
+The host may use `laix.appkit` for execution, records and delivery, or keep those in the host.
 
-### 3.2 The host has its own activation core
-
-The host core decides what the trigger becomes. When the work is a bounded task, the host core asks LAIX for the task decision.
-
-```text
-host trigger
-  ▼
-host activation core
-  │  decides: noop, update state, issue a command, dispatch a task
-  ├── no task ───────────────────────────────► host output
-  └── bounded task
-        │  builds a DecisionRequest
-        ▼
-      laix.core decide()
-        │  returns a task Decision
-        ▼
-      host activation core
-        │  accepts, modifies or rejects the task decision
-        │  commits, records, executes
-        ▼
-      host output
-```
-
-The host core remains the sole reasoning path and the sole authority for activation, commit and execution. LAIX operates as a task policy layer below it. The host core treats LAIX's decision as one input: it accepts, modifies or rejects it.
-
-This shape applies to a host that already has its own decision vocabulary and lifecycle, such as a proactive project agent with activation decisions like `NOOP`, `UPDATE_STATE`, `ISSUE_COMMAND` and `DISPATCH`. Those decisions stay in the host. LAIX answers the task-level question the host core asks.
-
-### A worked example
-
-A proactive host receives an email that mentions a deadline.
-
-```text
-1. Host activation core: UPDATE_STATE
-   The thread enters memory. No task yet.
-
-2. Host activation core: ISSUE_COMMAND / DISPATCH
-   The host creates a bounded task: "handle the deadline in this thread".
-
-3. LAIX task decision: ask
-   The email gives two possible dates, so the task needs the user's choice.
-
-4. Host: ui.ask
-   The question reaches the user. The answer returns as an event.
-
-5. LAIX task decision: act
-   The date is known. The host creates the calendar block.
-
-6. Host activation core: UPDATE_STATE
-   The outcome enters memory. The task closes.
-```
-
-The activation decisions are the host's. The task decisions are LAIX's. The host chooses when the task exists, what it contains and what happens after each answer.
-
-## 4. The seam
+## 3. The seam
 
 One request crosses the boundary. An action request returns one decision; an attention request returns one decision per signal.
 
@@ -187,34 +153,51 @@ The decision carries:
 - `action_id`, `intent`, `requires_approval`, `reversible`, `undo_hint`;
 - `decision_id`, `trace_id`, `policy_version`, `created_at`.
 
-The host keeps the domain nouns. LAIX keeps the generic vocabulary.
+PPMA keeps the domain nouns. LAIX keeps the generic vocabulary.
 
 | Concern | Owner |
 |---|---|
-| Whether a task exists | Host |
-| The task's goal, options and constraints | Host |
+| Whether a task exists | PPMA |
+| The task's goal, options and constraints | PPMA |
 | The next move inside the task | LAIX |
-| Activation: notice, remember, interrupt, act, dispatch | Host |
-| Which app or tool is called | Host |
-| Execution | Host, or app kit when the host chooses it |
-| Decision record and execution history | Host, or app kit when the host chooses it |
-| Task lifecycle | Host |
-| Memory, connectors, permissions, proactivity | Host |
-| Calibration of emitted confidence | Host |
+| Activation: notice, remember, interrupt, act, dispatch | PPMA |
+| Which app or tool is called | PPMA |
+| Task lifecycle | PPMA |
+| Execution | PPMA, or the app through its execution policy |
+| Decision record, outcome and provenance | PPMA |
+| Memory, connectors, permissions, proactivity | PPMA |
+| Calibration of emitted confidence | PPMA |
 | Generic decision schema and task policies | LAIX |
 | Decision ids | Each owner, in its own namespace |
 
-## 5. Ids, confidence, provenance and commit
+## 4. Ids, confidence, provenance and commit
 
-These are separate on purpose.
+**Ids.** LAIX's `decision_id` identifies the LAIX task decision. PPMA's decision id identifies PPMA's activation decision or command. They are different namespaces. PPMA records the LAIX id as an external reference when it uses the decision.
 
-**Ids.** LAIX's `decision_id` identifies the LAIX decision. The host's decision id identifies the host's activation decision or command. They are different namespaces. The host records the LAIX id as an external reference when it uses the decision.
+**Confidence.** LAIX returns a confidence for its task decision. PPMA calibrates the confidence it emits to apps. LAIX's value is a source estimate, not PPMA's calibrated claim.
 
-**Confidence.** LAIX returns a confidence for its decision. When the host emits a calibrated confidence to an app, the host calibrates it. LAIX's value is a source estimate, not the host's calibrated claim.
+**Provenance.** PPMA records the request, the LAIX decision id and whether it used, modified or rejected the decision. LAIX returns the decision shape and keeps no PPMA record.
 
-**Provenance.** The host records the request, the LAIX decision id and whether it used, modified or rejected the decision. LAIX returns the decision shape and keeps no host record.
+**Commit.** LAIX does not commit PPMA state. PPMA commits through its own path. The app kit is not part of this path.
 
-**Commit.** LAIX does not commit host state. The host commits through its own path. App kit keeps its own runtime records and does not write host state.
+## 5. Roles
+
+| Role | What it owns |
+|---|---|
+| **LAIX core** (`laix.core`) | The decision contract, the task policies and the engines that produce a task decision. Deterministic, standard-library only, no host state. |
+| **LAIX app kit** (`laix.appkit`) | The optional integration around a decision: `Layer`, runtime, execution, records, delivery and platform. It is not a decision authority. |
+| **Host** | The product: memory, ingestion, connectors, orchestration, proactivity, permissions, missions, app policy, calibration, commit, execution and UI. |
+
+The dependency direction is fixed:
+
+```text
+host
+ ├── laix.core
+ └── laix.appkit
+        └── laix.core
+```
+
+Core imports only the standard library and its own modules. App kit imports the standard library, `laix.core` and its own modules. The host imports LAIX. LAIX never imports the host.
 
 ## 6. Core and app kit are separate surfaces
 
@@ -228,7 +211,7 @@ from laix import decide
 decision = decide(request)[0]
 ```
 
-The host brings its own execution, records, delivery and persistence. `laix.appkit` is never imported. A host obtains a decision without the app kit.
+The host brings its own execution, records, delivery and persistence. `laix.appkit` is never imported. This is the surface for PPMA: PPMA already has execution, records and commit, so it uses the core only.
 
 **Core plus app kit.**
 
@@ -239,7 +222,7 @@ layer = Layer()
 decision = layer.decide(request)[0]
 ```
 
-`Layer` uses core selection and adds the runtime: ids, traces, state, execution, records and delivery. The host still owns its own memory, connectors, permissions and app policy.
+`Layer` uses core selection and adds the runtime: ids, traces, state, execution, records and delivery. The host still owns its memory, connectors, permissions and app policy.
 
 The app kit is optional. The core is the stable integration surface. Packaging may ship them together or separately; the boundary is the same.
 
@@ -247,11 +230,11 @@ The app kit is optional. The core is the stable integration surface. Packaging m
 
 1. A decision is bounded to one task. The host defines the task.
 2. LAIX chooses the task's next move. The host owns activation, commit, execution and persistence.
-3. The host maps its domain into generic request fields. LAIX returns generic vocabulary.
-4. Core imports only the standard library and its own modules. App kit imports the standard library, core and its own modules. The host imports LAIX.
-5. A host with its own activation core uses LAIX as a task policy below that core.
-6. The host core remains the sole reasoning path and the sole decision authority for activation, commit and execution.
-7. Each owner keeps its own decision ids. The host records a LAIX decision id as a reference, not as its own.
-8. LAIX confidence is an input to the host's calibration.
-9. Execution and records follow task ownership: app kit when the host chooses it, otherwise the host.
-10. Memory, connectors, permissions, proactivity, missions and app policy stay in the host.
+3. A host with its own activation core uses LAIX as a task policy layer below that core.
+4. The host core remains the sole reasoning path and the sole decision authority for activation, commit and execution.
+5. LAIX confidence is an input to the host's calibration.
+6. Each owner keeps its own decision ids. The host records a LAIX decision id as a reference, not as its own.
+7. Execution and records follow task ownership: the host, or the app kit when the host chooses it.
+8. Memory, connectors, permissions, proactivity, missions and app policy stay in the host.
+9. Core imports only the standard library and its own modules. App kit imports the standard library, core and its own modules. The host imports LAIX.
+10. A host that already has execution, records and commit uses the core only.
