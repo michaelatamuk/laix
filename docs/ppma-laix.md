@@ -1,7 +1,6 @@
 # PPMA + LAIX: the task-decision layer
 
-PPMA decides what to do with a trigger: no action, a memory update, an app command, or a dispatch.
-LAIX decides what one bounded task does next.
+PPMA decides what to do with a trigger. LAIX decides what one bounded task does next.
 
 ## 1. What LAIX decides
 
