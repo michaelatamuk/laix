@@ -19,14 +19,15 @@ gives it deserves attention; the product decides whether it may interrupt the us
 
 ## Output
 
-Attention returns a `Decision` with one of four verbs:
+Attention returns a `Decision` with one of four verbs. The first column is what attention sees; the
+second is its decision; the third is the app’s job.
 
-| Verb | When attention returns it | What the app does |
+| What you observe | Verb decision | What the app does |
 |---|---|---|
-| `guide` | the signal is worth surfacing now | show it |
-| `wait` | quiet hours, below floor, low confidence, muted, feedback, budget, already sent or kill switch | hold it |
-| `act` | `allow_act` is on, the signal carries an intent, and the intent is reversible | run the intent |
-| `escalate` | a critical signal passed `escalate_after_hours` | hand it over |
+| The signal is worth surfacing now | `guide` | show it |
+| Quiet hours, below floor, low confidence, muted, feedback, budget, already sent or kill switch | `wait` | hold it |
+| `allow_act` is on, the signal carries an intent, and the intent is reversible | `act` | run the intent |
+| A critical signal passed `escalate_after_hours` | `escalate` | hand it over |
 
 Attention does not return `observe`, `ask` or `verify`.
 
