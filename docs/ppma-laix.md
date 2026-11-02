@@ -170,8 +170,14 @@ If you need one closed judgment, JEV is enough. When you need the layer around m
 ```text
 PPMA + LAIX — the task-decision layer
 
-PPMA   → trigger, activation, memory, calibration, commit, execution
-LAIX   → one task decision: verb, reason, confidence, action, approval
+PPMA  → NOOP / UPDATE_STATE / ISSUE_COMMAND / DISPATCH
+         memory · calibration · commit · execution
+         chooses the concrete command: ui.notify, ui.ask, manifest tool, DISPATCH
+
+LAIX  → wait / observe / guide / ask / act / verify / escalate
+         reason · confidence · action · approval
+
+Flow: PPMA trigger → activation → bounded task → LAIX → PPMA acts
 
 Today: Commander LLM ask chooses commands.
 With LAIX: a policy path for one bounded decision class.
@@ -186,5 +192,5 @@ Why LAIX:
 - replay, comparison and model independence
 - reuse without Core changes
 
-Start: one bounded decision class. Measure calls, latency, determinism, quality.
+Proof: one class; measure calls, latency, determinism, quality.
 ```
