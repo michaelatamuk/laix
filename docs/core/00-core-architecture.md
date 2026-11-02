@@ -38,8 +38,10 @@ block-beta
         support["Support<br/>shared types and helpers"]
     end
 
-    style capabilities_label font-size:22px,font-weight:bold
-    style contract_label font-size:14px
+    style capabilities_label fill:transparent,stroke:transparent,font-size:22px,font-weight:bold
+    style contract_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
+    style engines_label fill:transparent,stroke:transparent,font-weight:bold
+    style foundation_label fill:transparent,stroke:transparent,font-weight:bold
 ```
 
 ## The rows
