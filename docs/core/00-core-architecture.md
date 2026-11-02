@@ -23,7 +23,7 @@ block-beta
     block:engines["Engines"]
         columns 4
         attention["Attention<br/>gates · score"]
-        policies["Policies<br/>action policy · packaged policies"]
+        policies["Policies<br/>action · safety · replanning · allocation<br/>negotiation · preference · verification · escalation"]
         registry["Registry<br/>name → policy"]
         resources["Resources<br/>budget · admission"]
     end
@@ -59,7 +59,7 @@ block-beta
 | **Decision response** | verb, reason, confidence, action, evidence, approval | Support |
 | **Execution trail** | execution receipt, trace | Support |
 | **Attention** | gates, score, timing | Contract, support |
-| **Policies** | action policy and packaged policies | Contract, learning, support |
+| **Policies** | action, safety, replanning, allocation, negotiation, preference, verification, escalation | Contract, learning, support |
 | **Registry** | policy name → policy object | Policies, support |
 | **Resources** | budget, sensing option, admission | Support |
 | **Schema** | records, build, check | Contract, learning, support |
