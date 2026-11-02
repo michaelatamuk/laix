@@ -8,7 +8,7 @@ block-beta
 
     block:capabilities["Capabilities"]
         columns 3
-        decide["Decide<br/>choose a policy or engine"]
+        decide["Decide<br/>by policy=... or request shape"]
         learn["Learn from outcomes<br/>outcome → reward → next choice"]
         evaluate["Evaluate<br/>cases · parity · bench"]
     end
@@ -70,7 +70,7 @@ outcome → label → feedback → better attention
 
 | Part | Contains | Built on |
 |---|---|---|
-| **Decide** | choose a policy or engine; return the response | Contract, engines, support |
+| **Decide** | `policy=...` or request shape; return the response | Contract, engines, support |
 | **Learn from outcomes** | outcome → reward → ledger → bandit → better policy; outcome → label → feedback → better attention | Support |
 | **Evaluate** | cases, parity, report, bench | Contract, engines, support |
 | **Decision request** | signals + context or situation + options | Support |
@@ -85,7 +85,7 @@ outcome → label → feedback → better attention
 
 ## Reading the stack
 
-- **Decide** is the entry point. It chooses a policy or engine and returns a response.
+- **Decide** is the entry point. It takes `policy=...` or a request shape and returns a response.
 - **Learn from outcomes** turns a measured result into a better next choice for Policies and Attention.
 - **Evaluate** checks the engines; it is not on the request path.
 - **Decision request** and **Decision response** are the boundary.
