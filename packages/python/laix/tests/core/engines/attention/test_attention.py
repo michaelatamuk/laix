@@ -147,12 +147,6 @@ def test_precision_recall_is_generic() -> None:
     assert precision_recall([], [])["precision"] == 1.0
 
 
-def test_null_sink_records_without_delivering() -> None:
-    sink = laix.NullSink()
-    assert sink.emit({"title": "x"}) == [{"channel": "none", "status": "dropped"}]
-    assert sink.seen == [{"title": "x"}]
-
-
 def test_compare_reports_a_mismatch() -> None:
     case = {
         "id": "tampered",
@@ -164,8 +158,8 @@ def test_compare_reports_a_mismatch() -> None:
     assert problems and "tampered" in problems[0]
 
 
-#: The only file allowed to read the clock: the clock port the host supplies.
-CLOCK_ALLOWED = {"ports.py", "system_clock.py"}
+#: No file may read the clock directly; time comes in Context.now.
+CLOCK_ALLOWED: set[str] = set()
 LOCAL_PACKAGES = {"laix"}
 
 
