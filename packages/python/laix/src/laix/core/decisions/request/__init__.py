@@ -5,7 +5,7 @@ from __future__ import annotations
 from .payload.action_option import ActionOption
 from .payload.belief import Belief
 from .payload.constraint import CONSTRAINT_KINDS, Constraint
-from .request import DecisionRequest
+from .decision_request import DecisionRequest
 from .payload.goal import Goal
 from .payload.observation import Observation
 from .payload.situation import HORIZONS, PHASES, Situation

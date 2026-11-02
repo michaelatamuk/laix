@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import Any, Iterable
 
 from ..support.errors import PolicyError
-from .answer import EvidenceRef, Intent, ScoreBreakdown
-from .answer.decision import Decision
+from .response import EvidenceRef, Intent, ScoreBreakdown
+from .response.decision import Decision
 
 
 def _evidence(items: Iterable[Any] | None) -> tuple[EvidenceRef, ...]:

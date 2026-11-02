@@ -1,4 +1,4 @@
-"""The answer: one decision with evidence, intent and scoring."""
+"""The response: one decision with evidence, intent and scoring."""
 
 from __future__ import annotations
 
