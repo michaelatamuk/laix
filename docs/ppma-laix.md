@@ -77,6 +77,8 @@ Today the Commander's `command.decide` ask is the only general command chooser. 
 
 ## 4. Why PPMA uses it
 
+LAIX wins for a bounded class when the policy beats the Commander's LLM ask on at least one of: calls and tokens, latency, determinism, constraint compliance, audit clarity or reuse. If it does not, keep the Commander.
+
 - **One task-decision contract** across the Commander, missions and apps.
 - **Decision semantics** — constraints, approval, escalation and verification travel with the decision.
 - **Policy composition** — models and deterministic rules sit inside one policy.
@@ -98,7 +100,7 @@ PPMA trigger
   → PPMA calibrates, records, commits, executes
 ```
 
-PPMA calls LAIX as a tool or task policy inside the Commander or a mission. LAIX returns a `Decision`. PPMA calibrates the confidence it emits, records the decision, commits the outcome and executes.
+PPMA calls LAIX as a tool or task policy inside the Commander or a mission. The call uses PPMA's existing Commander or mission path; JEV and LLM calls stay with PPMA's engines or the policy adapter. LAIX returns a `Decision`. PPMA calibrates the confidence it emits, records the decision, commits the outcome and executes.
 
 Deployment:
 
@@ -125,11 +127,7 @@ Interface:
 
 PPMA records the LAIX decision id as a reference. LAIX confidence is a source estimate; PPMA emits the calibrated confidence.
 
-## 6. First proof
-
-Pick one bounded decision class where the Commander currently uses an LLM ask — a mission step or a Commander subtask. Implement it as a LAIX policy and expose it as an `effect: none` tool. Measure calls, latency, determinism and decision quality. Extend where it wins.
-
-## 7. If you already use a judgment model
+## 6. If you already use a judgment model
 
 JEV is a judgment engine: one closed question in, an answer with probabilities out. It can sit inside a LAIX policy.
 
@@ -164,33 +162,3 @@ JEV plus app code can encode this. LAIX is the reusable layer that does it once,
 Put it there when the judgment must become a task decision with constraints, approval, escalation, verification and a record. That is the work LAIX does.
 
 If you need one closed judgment, JEV is enough. When you need the layer around many bounded decisions, LAIX is the layer.
-
-## 8. One-slide version
-
-```text
-PPMA + LAIX — the task-decision layer
-
-PPMA  → NOOP / UPDATE_STATE / ISSUE_COMMAND / DISPATCH
-         memory · calibration · commit · execution
-         chooses the concrete command: ui.notify, ui.ask, manifest tool, DISPATCH
-
-LAIX  → wait / observe / guide / ask / act / verify / escalate
-         reason · confidence · action · approval
-
-Flow: PPMA trigger → activation → bounded task → LAIX → PPMA acts
-
-Today: Commander LLM ask chooses commands.
-With LAIX: a policy path for one bounded decision class.
-
-Example: €780 refund → ask, over_approval_limit, requires_approval
-
-Why LAIX:
-- one task-decision contract across Commander, missions and apps
-- constraints, approval, escalation, verification
-- models and deterministic rules compose in one policy
-- fewer model calls for bounded decisions
-- replay, comparison and model independence
-- reuse without Core changes
-
-Proof: one class; measure calls, latency, determinism, quality.
-```
