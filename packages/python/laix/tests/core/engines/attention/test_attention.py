@@ -23,13 +23,18 @@ from laix.core.outcome_learning.attention import (
 from laix.core.engines.attention import (
     Context,
     Signal,
-    compare,
     decide_attention,
     dedupe_key,
     is_quiet,
+    rollup,
+)
+from laix.core.evaluation.attention import (
+    benchmark,
+    compare,
     load_vectors,
     precision_recall,
-    rollup,
+    run_vectors,
+    validate_document,
 )
 
 PACKAGE = Path(laix.__file__).resolve().parent
@@ -42,7 +47,7 @@ def at(hour: int, minute: int = 0, day: int = 1) -> datetime:
 
 
 def test_every_contract_vector_passes() -> None:
-    problems = laix.run_vectors(VECTORS)
+    problems = run_vectors(VECTORS)
     assert problems == []
     assert len(VECTORS["cases"]) >= 20
 
@@ -335,7 +340,7 @@ def test_every_decision_carries_cost_and_undo() -> None:
 
 
 def test_validate_document_accepts_the_contract() -> None:
-    assert laix.validate_document(VECTORS) == []
+    assert validate_document(VECTORS) == []
 
 
 def test_validate_document_rejects_an_invented_verb() -> None:
@@ -351,13 +356,13 @@ def test_validate_document_rejects_an_invented_verb() -> None:
             }
         ],
     }
-    problems = laix.validate_document(broken)
+    problems = validate_document(broken)
     assert any("unknown verb" in problem for problem in problems)
 
 
 def test_the_bench_beats_both_baselines() -> None:
     document = load_vectors(PACKAGE / "vectors" / "bench.v1.json")
-    result = laix.benchmark(document)
+    result = benchmark(document)
     rows = result["rows"]
     assert result["cases"] == 12
     assert rows["policy"]["precision"] > rows["severity_only"]["precision"]

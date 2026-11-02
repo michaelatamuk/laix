@@ -21,18 +21,6 @@ from .decide import decide_attention, decide_one, dedupe_key, rollup, trace_id
 from .gates import GATES, GATE_RULES, REASONS, Gate, ReasonCode, feedback_blocks, rank
 from .score import SEVERITY_POINTS, WAIT_FACTOR, cost_of_waiting, score, undo_hint
 from .ports.recorder import Recorder
-from .replay import (
-    POLICIES,
-    benchmark,
-    compare,
-    context_from,
-    load_vectors,
-    precision_recall,
-    run_case,
-    run_vectors,
-    signal_from,
-    validate_document,
-)
 from .model.signal import Signal
 from .ports.sink import Sink
 from .ports.system_clock import SystemClock
@@ -46,7 +34,6 @@ __all__ = [
     "GATE_RULES",
     "Gate",
     "ReasonCode",
-    "POLICIES",
     "REASONS",
     "SEVERITY_RANK",
     "VERBS",
@@ -61,24 +48,15 @@ __all__ = [
     "Signal",
     "Sink",
     "SystemClock",
-    "benchmark",
-    "compare",
-    "context_from",
     "cost_of_waiting",
     "decide_attention",
     "decide_one",
     "dedupe_key",
     "hours_until",
     "is_quiet",
-    "load_vectors",
     "parse_range",
-    "precision_recall",
     "rollup",
-    "run_case",
-    "run_vectors",
     "score",
-    "signal_from",
     "trace_id",
     "undo_hint",
-    "validate_document",
 ]

@@ -12,15 +12,15 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from ...support.verbs import VERBS
-from ...decisions import Intent
-from .model.context import Context
-from .model.feedback import FEEDBACK_STATES, Feedback
-from .model.severity import SEVERITY_RANK
-from .decide import decide_attention
-from .gates import REASONS
-from .model.signal import Signal
-from .timing import parse_range
+from ..support.verbs import VERBS
+from ..decisions import Intent
+from ..engines.attention.model.context import Context
+from ..engines.attention.model.feedback import FEEDBACK_STATES, Feedback
+from ..engines.attention.model.severity import SEVERITY_RANK
+from ..engines.attention.decide import decide_attention
+from ..engines.attention.gates import REASONS
+from ..engines.attention.model.signal import Signal
+from ..engines.attention.timing import parse_range
 
 FIELDS = ("verb", "reason_code", "deliver", "record", "requires_approval", "score", "cost_of_waiting", "undo_hint", "reversible")
 

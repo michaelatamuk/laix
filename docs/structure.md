@@ -41,10 +41,10 @@ packages/python/laix/src/laix/
 │   │   └── normalise.py     coerce and from_attention
 │   ├── engines/
 │   │   ├── policies/        policy.py, registry.py, implementations/
-│   │   ├── attention/       model, ports, vectors, decide, gates/, score, replay
+│   │   ├── attention/       model, ports, vectors, decide, gates/, score
 │   │   └── resources/       budget, sensing option, plan, scheduler
 │   ├── outcome_learning/    record, ledger, store, bandit, rewards, attention/
-│   ├── evaluation/          case, row, report, compare
+│   ├── evaluation/          case, row, report, compare, attention replay
 │   ├── sensing/             detection, detector, event, frame
 │   ├── schema/              build, check, records and laix-v1.schema.json
 │   └── support/             time, ids, values, serialize, errors, verbs, version
