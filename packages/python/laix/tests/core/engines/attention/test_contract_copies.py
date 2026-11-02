@@ -10,8 +10,8 @@ import laix.core.evaluation as evaluation_pkg
 
 PACKAGES = Path(__file__).resolve().parents[6]
 CANONICAL = PACKAGES / "contracts"
-PACKAGED = Path(attention_pkg.__file__).resolve().parent / "vectors"
-PACKAGED_BENCH = Path(evaluation_pkg.__file__).resolve().parent / "vectors"
+PACKAGED = Path(attention_pkg.__file__).resolve().parent
+PACKAGED_BENCH = Path(evaluation_pkg.__file__).resolve().parent
 
 
 def test_attention_vectors_are_in_sync() -> None:

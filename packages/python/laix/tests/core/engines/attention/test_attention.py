@@ -39,7 +39,7 @@ from laix.core.evaluation.attention import (
 )
 
 PACKAGE = Path(laix.__file__).resolve().parent
-VECTORS = load_vectors(PACKAGE / "vectors" / "attention.v1.json")
+VECTORS = load_vectors(PACKAGE / "attention.v1.json")
 TZ = timezone(timedelta(hours=2))
 
 
@@ -203,8 +203,8 @@ def test_the_guard_catches_a_direct_clock_read(tmp_path: Path) -> None:
 
 
 def test_the_contract_file_ships_with_the_package() -> None:
-    assert (PACKAGE / "vectors" / "attention.v1.json").is_file()
-    assert (Path(evaluation_pkg.__file__).resolve().parent / "vectors" / "attention-bench.v1.json").is_file()
+    assert (PACKAGE / "attention.v1.json").is_file()
+    assert (Path(evaluation_pkg.__file__).resolve().parent / "attention-bench.v1.json").is_file()
 
 
 # --------------------------------------------------------------------------- feedback
@@ -356,7 +356,7 @@ def test_validate_document_rejects_an_invented_verb() -> None:
 
 
 def test_the_bench_beats_both_baselines() -> None:
-    document = load_vectors(Path(evaluation_pkg.__file__).resolve().parent / "vectors" / "attention-bench.v1.json")
+    document = load_vectors(Path(evaluation_pkg.__file__).resolve().parent / "attention-bench.v1.json")
     result = benchmark(document)
     rows = result["rows"]
     assert result["cases"] == 12
