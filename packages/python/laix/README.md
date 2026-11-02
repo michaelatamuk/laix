@@ -53,7 +53,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/engines/policies/implementations/escalation.py` | hand-over policy |
 | `core/engines/policies/implementations/bandit.py` | learned bandit policy |
 | `core/engines/policies/policy.py`, `core/engines/policies/registry.py` | policy plugin protocol and registry |
-| `core/engines/attention/input/`, `output/`, `vectors/` | attention records and test vectors |
+| `core/engines/attention/input/`, `output/`, `vectors/` | attention records and decision cases |
 | `core/engines/attention/gates/implementations/` | one file per gate, ordered by `rules.py` |
 | `core/engines/attention/decide.py`, `timing.py` | attention loop and quiet hours |
 | `appkit/runtime/decision_runtime.py` | the action runtime |
@@ -68,7 +68,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `appkit/audit/decision_record.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
 | `appkit/audit/proposal.py` | storage-free proposal and approval lifecycle |
 | `appkit/delivery/` | delivery port, receipt and null delivery |
-| `core/evaluation/` | policy parity, and the attention contract replay/benchmark |
+| `core/evaluation/` | policy parity, attention replay, and `vectors/attention-bench.v1.json` |
 | `appkit/bench/` | LAIX-Bench cases, suites, report and `python -m laix.appkit.bench` |
 
 ## Custom policies

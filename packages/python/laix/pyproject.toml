@@ -18,6 +18,7 @@ include = ["laix*"]
 [tool.setuptools.package-data]
 "laix.core.schema" = ["*.json"]
 "laix.core.engines.attention" = ["vectors/*.json"]
+"laix.core.evaluation" = ["vectors/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
