@@ -22,7 +22,7 @@ from ..core.decisions import (
 )
 from .delivery import DeliveryPort, DeliveryReceipt
 from ..core.engines.policies import Policy, PolicyRegistry
-from ..core.engines.policies.action import ACTION_POLICY_VERSION
+from ..core.engines.policies.implementations.action import ACTION_POLICY_VERSION
 from .runtime import DecisionRuntime
 from .runtime.execution import ExecutionBridge
 

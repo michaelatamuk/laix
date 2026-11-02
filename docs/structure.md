@@ -40,7 +40,7 @@ packages/python/laix/src/laix/
 │   │   ├── trail/           execution receipt and trace
 │   │   └── normalise.py     coerce and from_attention
 │   ├── engines/
-│   │   ├── policies/        action, others, protocol, registry
+│   │   ├── policies/        policy.py, registry.py, implementations/
 │   │   ├── attention/       model, ports, vectors, decide, gates, score, replay
 │   │   └── resources/       budget, sensing option, plan, scheduler
 │   ├── outcome_learning/    record, ledger, store, arm, bandit, rewards

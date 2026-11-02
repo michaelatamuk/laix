@@ -1,33 +1,48 @@
-"""Deterministic decision policy: rules first, learned policy later.
+"""The built-in action policy: version, config, request and policy.
 
-The policy never calls a model.  It reads a ``Situation`` plus the actions the
-app can afford, removes options that violate hard constraints, and returns one
-of seven verbs with a written rationale and the rejected alternatives.
-
-Rule order (first admissible match wins):
-
-1. ``safety``   - a hard safety constraint blocks every action except wait
-2. ``escalate`` - a hard deadline or commitment is already breached
-3. ``ask``      - uncertainty is too high, or confidence is below the floor
-4. ``verify``   - a previous action still has an unverified outcome
-5. ``act``      - urgency and confidence both clear the act thresholds
-6. ``guide``    - the situation is worth surfacing, but not acting on
-7. ``wait``     - keep watching silently
-
-Inside one verb band the highest utility wins; utility is deterministic and
-never hidden in a model score.
+Config and request live here because they exist only for this policy.
 """
 
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from typing import Any
 
 from ....decisions import ActionOption, Decision, Situation
 from ....support.time import iso
 from ....support.values import clamp
 from ....support.verbs import VERBS
-from .config import ACTION_POLICY_VERSION, ActionPolicyConfig
-from .request import ActionPolicyRequest
+
+
+ACTION_POLICY_VERSION = "0.8.0"
+
+
+@dataclass(frozen=True)
+class ActionPolicyConfig:
+    """Thresholds are explicit so a host can audit and tune them.
+
+    The defaults reproduce a conservative operating posture: act only when both
+    urgency and confidence are high, ask when the evidence is weak, and never
+    interrupt for a low-urgency event.
+    """
+
+    min_confidence: float = 0.55
+    act_confidence: float = 0.80
+    ask_uncertainty: float = 0.45
+    act_urgency: float = 0.75
+    guide_urgency: float = 0.45
+    max_risk: float = 0.90
+    max_interrupt: float = 0.90
+    approval_kinds: tuple[str, ...] = ("approval", "safety")
+    max_alternatives: int = 6
+
+
+@dataclass(frozen=True)
+class ActionPolicyRequest:
+    situation: Situation
+    options: tuple[ActionOption, ...]
+    attributes: dict[str, Any] = field(default_factory=dict)
+
 
 
 def _number(payload: dict[str, Any], key: str, default: float) -> float:
@@ -274,4 +289,11 @@ def decide_action(request: ActionPolicyRequest, *, config: ActionPolicyConfig | 
     return ActionPolicy(config).decide(request, **kwargs)
 
 
-__all__ = ["ActionPolicy", "decide_action"]
+
+__all__ = [
+    "ACTION_POLICY_VERSION",
+    "ActionPolicy",
+    "ActionPolicyConfig",
+    "ActionPolicyRequest",
+    "decide_action",
+]

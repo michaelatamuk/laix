@@ -42,16 +42,16 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/schema/` | `RECORDS`, `RECORD_NAMES`, schema generation, validation and `laix-v1.schema.json` |
 | `core/support/` | time, ids, values, serialization, errors, verb and version helpers |
 | `appkit/layer.py` | the public `Layer` orchestrator |
-| `core/engines/policies/action/` | built-in action-selection policy |
-| `core/engines/policies/others/active_perception.py` | packaged `observe` policy |
-| `core/engines/policies/others/safety.py` | risk-limited action policy |
-| `core/engines/policies/others/replanning.py` | feasible-plan selection policy |
-| `core/engines/policies/others/allocation.py` | budgeted allocation policy |
-| `core/engines/policies/others/negotiation.py` | accept, counter or escalate policy |
-| `core/engines/policies/others/preference.py` | preference-question selection policy |
-| `core/engines/policies/others/verification.py` | outcome confirmation policy |
-| `core/engines/policies/others/escalation.py` | hand-over policy |
-| `core/engines/policies/others/bandit.py` | learned bandit policy |
+| `core/engines/policies/implementations/action.py` | built-in action-selection policy |
+| `core/engines/policies/implementations/active_perception.py` | packaged `observe` policy |
+| `core/engines/policies/implementations/safety.py` | risk-limited action policy |
+| `core/engines/policies/implementations/replanning.py` | feasible-plan selection policy |
+| `core/engines/policies/implementations/allocation.py` | budgeted allocation policy |
+| `core/engines/policies/implementations/negotiation.py` | accept, counter or escalate policy |
+| `core/engines/policies/implementations/preference.py` | preference-question selection policy |
+| `core/engines/policies/implementations/verification.py` | outcome confirmation policy |
+| `core/engines/policies/implementations/escalation.py` | hand-over policy |
+| `core/engines/policies/implementations/bandit.py` | learned bandit policy |
 | `core/engines/policies/policy.py`, `core/engines/policies/registry.py` | policy plugin protocol and registry |
 | `core/engines/attention/model/`, `core/engines/attention/ports/`, `core/engines/attention/vectors/` | attention records, ports and test vectors |
 | `core/engines/attention/decide.py`, `timing.py`, `replay.py`, `labels.py`, `outcome_log.py` | attention policy, gates, quiet hours, replay and labels |
