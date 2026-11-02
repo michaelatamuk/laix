@@ -1,7 +1,7 @@
 """JSON schema generation and structural validation for the contracts.
 
 The schema is derived from the dataclasses, so it cannot drift from the code.
-``laix/schemas/laix-v1.schema.json`` is the committed, versioned artefact; the
+``laix/core/laix-v1.schema.json`` is the committed, versioned artefact; the
 test suite regenerates it and fails if the committed file is stale.
 """
 
@@ -15,9 +15,8 @@ from typing import Any, Union, get_args, get_origin, get_type_hints
 
 from .contracts import CONTRACTS, SCHEMA_VERSION
 
-SCHEMA_ID = "https://laix.local/schemas/laix-v1.schema.json"
-SCHEMA_DIR = Path(__file__).resolve().parent / "schemas"
-SCHEMA_PATH = SCHEMA_DIR / "laix-v1.schema.json"
+SCHEMA_ID = "https://laix.dev/contracts/laix-v1.schema.json"
+SCHEMA_PATH = Path(__file__).resolve().parent / "laix-v1.schema.json"
 
 _ENUMS: dict[str, list[str]] = {
     "verb": ["wait", "observe", "guide", "ask", "act", "verify", "escalate"],

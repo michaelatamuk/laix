@@ -30,7 +30,7 @@ would break a caller, bump the package and update the callers in the same pass.
 
 | File | Contents |
 |---|---|
-| `packages/python/laix/src/laix/core/schemas/laix-v1.schema.json` | generated schema for all core records, including `Decision` |
+| `packages/python/laix/src/laix/core/laix-v1.schema.json` | generated schema for all core records, including `Decision` |
 | `packages/contracts/decision-record.v1.schema.json` | decision record shape |
 | `packages/contracts/attention.v1.json` | attention test cases |
 | `packages/contracts/attention-bench.v1.json` | attention outcome cases |

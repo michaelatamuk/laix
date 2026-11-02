@@ -9,7 +9,7 @@ The contract is the source of truth. Code follows it.
 | `attention-bench.v1.json` | 12 labelled cases for precision, hazard and recall |
 
 The decision shape is generated from the Python dataclasses in `laix.core.contracts` and committed
-as `packages/python/laix/src/laix/core/schemas/laix-v1.schema.json`. It ships inside the installed
+as `packages/python/laix/src/laix/core/laix-v1.schema.json`. It ships inside the installed
 package, so there is no second hand-written decision schema here.
 
 A runtime is valid when it passes the cases for the policy it implements. Scores are part of the

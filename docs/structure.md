@@ -41,7 +41,7 @@ packages/python/laix/src/laix/
 │   ├── perception.py        detector, detection and frame contracts
 │   ├── resources.py         budget and resource admission policy
 │   ├── schema.py            schema generator
-│   ├── schemas/             generated schema
+│   ├── laix-v1.schema.json  generated record schema
 │   ├── attention/           attention policy and vectors
 │   └── policies/            action policy, eight packs, bandit, registry
 └── appkit/

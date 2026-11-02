@@ -16,7 +16,7 @@ where = ["src"]
 include = ["laix*"]
 
 [tool.setuptools.package-data]
-"laix.core" = ["schemas/*.json"]
+"laix.core" = ["*.json"]
 "laix.core.attention" = ["contract/*.json"]
 
 [tool.pytest.ini_options]
