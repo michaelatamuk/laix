@@ -8,10 +8,10 @@ result. The stories are small everyday situations, so the result is easy to pict
 ```text
 examples/
 ├── decisions/
-│   ├── action/        action selection and custom policy
+│   ├── action/        action decisions and custom policy
 │   ├── attention/     surfacing, quiet hours, feedback
-│   └── records/       decision record, outcome store, parity
-├── policies/          packaged policy packs and learned bandit
+│   └── records/       DecisionRecord, outcome store, parity
+├── policies/          packaged policies and learned bandit
 ├── appkit/
 │   ├── runtime/       execution, resources, live context, stores
 │   ├── audit/         proposal lifecycle
@@ -47,7 +47,7 @@ examples/
 | `decisions/action/check_again.py` | A parcel is late; a tracking page can settle it. | `observe policy_rule option-check-tracking` |
 | `decisions/action/custom_policy.py` | A caller supplies its own policy. | `wait policy_rule` |
 
-## Policy packs
+## Packaged policies
 
 | File | Class | Output |
 |---|---|---|
@@ -106,7 +106,7 @@ examples/
 |---|---|---|
 | `typescript/attention/bill_due.mts` | The same bill, in TypeScript. | `guide worth_surfacing 84` |
 | `typescript/action/action.mts` | The leaking sink, in TypeScript. | `act policy_rule option-close-valve` |
-| `typescript/policies/packs.mts` | All eight packaged policy packs. | one line per pack |
+| `typescript/policies/packs.mts` | All eight packaged policies. | one line per policy |
 | `typescript/policies/bandit.mts` | Outcome learning changes the next choice. | `manual automatic 0.75` |
 | `typescript/runtime/live_context.mts` | Cheap and deep detectors under a budget. | `[ 'motion', 'read-label' ] [ 'transcribe' ] 2 0.097` |
 | `typescript/runtime/execution.mts` | Decide, execute, record a receipt. | `executed close the valve` |
@@ -186,7 +186,7 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object { node
 - `True` — the record fingerprint still matches its content.
 
 The full field list is in [`../docs/core/01-decision-contract.md`](../docs/core/01-decision-contract.md). The policy-pack contracts
-are in [`../docs/core/03-policy-packs.md`](../docs/core/03-policy-packs.md).
+are in [`../docs/core/03-packaged-policies.md`](../docs/core/03-packaged-policies.md).
 
 ## Real caller examples
 

@@ -1,4 +1,4 @@
-# Policy packs
+# Packaged policies
 
 A **policy** is a rule set that reads a request and returns a decision. A **decision class** is a
 kind of question, such as “should we look first?” or “which plan fits?”
@@ -12,7 +12,7 @@ from laix import ReplanningPolicy, decide
 decision = decide(request, policy=ReplanningPolicy())[0]
 ```
 
-Inputs come from `DecisionRequest.attributes`. The packs use generic words only.
+Inputs come from `DecisionRequest.attributes`. The policies use generic words only.
 
 | Class | Policy | Result |
 |---|---|---|
@@ -27,7 +27,7 @@ Inputs come from `DecisionRequest.attributes`. The packs use generic words only.
 
 TypeScript exports the same classes.
 
-## Packaged policies
+## The policies
 
 These classes are part of the `laix` package. They run when you select them and are covered by tests.
 
@@ -86,7 +86,7 @@ rules.
   `min_confidence`, `sla_breached`, `target`.
 - **Result:** `escalate` to the target. `ask` when the target is missing. `wait` inside the limits.
 
-## Use a pack
+## Use a policy
 
 ```python
 from laix import AllocationPolicy, DecisionRequest, decide
@@ -121,11 +121,11 @@ decision = decide(request, policy=registry.get("replan"))[0]
 
 `register` stores a policy. `get` returns the active one.
 
-## Replace a pack
+## Replace a policy
 
 Keep the policy name, return the same decision shape, and add bench cases before changing behaviour.
 
-The packs are starting points. Your domain policy can replace one without changing the decision shape.
+The packaged policies are starting points. Your domain policy can replace one without changing the decision shape.
 
 ## Where the rules live
 

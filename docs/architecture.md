@@ -193,7 +193,7 @@ request shapes LAIX understands. The other eight are ordinary policy objects tha
 from `DecisionRequest.attributes`.
 
 The split is about selection. All ten return the same decision shape. See
-[policy packs](core/03-policy-packs.md).
+[packaged policies](core/03-packaged-policies.md).
 
 ## Other parts
 

@@ -62,7 +62,7 @@ The layer holds one set of contracts and two built-in policies:
 - **attention**: which signal deserves attention now, and what should the app do with it?
 - **action decision**: which option should the app choose?
 
-It also ships eight packaged policy packs for active perception, safety-constrained action, replanning,
+It also ships eight packaged policies for active perception, safety-constrained action, replanning,
 allocation, negotiation, preference elicitation, verification and escalation. They use the same
 plugin interface and decision shape.
 
