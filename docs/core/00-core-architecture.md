@@ -8,7 +8,7 @@ block-beta
 
     block:capabilities["Capabilities"]
         columns 3
-        decide["Decide<br/>by policy=... or request shape"]
+        decide["Decide<br/>policy=... or automatic"]
         learn["Learn from outcomes<br/>outcome → reward → next choice"]
         evaluate["Evaluate<br/>cases · parity · bench"]
     end
@@ -47,9 +47,9 @@ block-beta
 | **Engines** | Attention · Policies · Resources | The engines and admission control. |
 | **Foundation** | Schema · Sensing · Support | The shared records and foundations. |
 
-## Request shapes
+## Automatic selection
 
-Without `policy=`, the request shape selects one of the two built-in engines:
+Without `policy=`, the request selects one of the two built-in engines:
 
 | The call has | The engine |
 |---|---|
@@ -70,7 +70,7 @@ outcome → label → feedback → better attention
 
 | Part | Contains | Built on |
 |---|---|---|
-| **Decide** | `policy=...` or request shape; return the response | Contract, engines, support |
+| **Decide** | `policy=...` or automatic; return the response | Contract, engines, support |
 | **Learn from outcomes** | outcome → reward → ledger → bandit → better policy; outcome → label → feedback → better attention | Support |
 | **Evaluate** | cases, parity, report, bench | Contract, engines, support |
 | **Decision request** | signals + context or situation + options | Support |
@@ -85,11 +85,11 @@ outcome → label → feedback → better attention
 
 ## Reading the stack
 
-- **Decide** is the entry point. It takes `policy=...` or a request shape and returns a response.
+- **Decide** is the entry point. It takes `policy=...` or chooses automatically from the request and returns a response.
 - **Learn from outcomes** turns a measured result into a better next choice for Policies and Attention.
 - **Evaluate** checks the engines; it is not on the request path.
 - **Decision request** and **Decision response** are the boundary.
-- The request shape routes: `signals + context` → Attention; `situation + options` → Action policy.
+- Automatic routing: `signals + context` → Attention; `situation + options` → Action policy.
 - A packaged or custom policy is selected explicitly with `policy=...`.
 - **Decision response** carries the verb, reason, confidence, action and approval.
 - **Execution trail** records what happened after the response.
