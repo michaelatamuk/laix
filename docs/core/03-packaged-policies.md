@@ -1,10 +1,7 @@
 # Packaged policies
 
-A **policy** is a rule set that reads a request and returns a decision. A **decision class** is a
-kind of question, such as “should we look first?” or “which plan fits?”
-
-Attention and action decisions are built in because `decide` uses their request shapes to choose a policy. The
-other eight are ordinary policy objects selected explicitly. LAIX ships them as packaged policies:
+A policy is a rule set with a name and a `decide(request)` method. LAIX ships eight packaged policies
+that you pass to `decide` explicitly.
 
 ```python
 from laix import ReplanningPolicy, decide
@@ -12,9 +9,11 @@ from laix import ReplanningPolicy, decide
 decision = decide(request, policy=ReplanningPolicy())[0]
 ```
 
-Inputs come from `DecisionRequest.attributes`. The policies use generic words only.
+The policy reads its inputs from `DecisionRequest.attributes`.
 
-| Class | Policy | Result |
+## The eight policies
+
+| Policy | Class | Result |
 |---|---|---|
 | Active perception | `ActivePerceptionPolicy` | `observe` or `wait` |
 | Safety-constrained action | `SafetyConstrainedPolicy` | `act`, `guide` or `wait` |
@@ -27,15 +26,46 @@ Inputs come from `DecisionRequest.attributes`. The policies use generic words on
 
 TypeScript exports the same classes.
 
-## The policies
+Attention and action decisions are built in: `decide` selects them from the request shape. The eight
+policies above are selected explicitly. They are deterministic defaults; replace one when your
+domain has better rules.
 
-These classes are part of the `laix` package. They run when you select them and are covered by tests.
+## Use a policy
 
-`examples/policies/safety.py` is a usage example that calls `SafetyConstrainedPolicy`. The
-policy itself lives in `packages/python/laix/src/laix/core/engines/policies/implementations/safety_constrained.py`.
+Pass the policy directly:
 
-The packaged policies are simple deterministic defaults. Replace one when your domain has better
-rules.
+```python
+from laix import AllocationPolicy, DecisionRequest, decide
+
+decision = decide(
+    DecisionRequest(
+        subject="weekly work",
+        at="2026-11-01T10:00:00+00:00",
+        attributes={
+            "budget": 10,
+            "requests": [
+                {"id": "a", "value": 6, "cost": 4},
+                {"id": "b", "value": 5, "cost": 6},
+            ],
+        },
+    ),
+    policy=AllocationPolicy(),
+)[0]
+```
+
+Or keep a registry and choose one by name:
+
+```python
+from laix import PolicyRegistry, ReplanningPolicy, SafetyConstrainedPolicy, decide
+
+registry = PolicyRegistry()
+registry.register("safety", SafetyConstrainedPolicy())
+registry.register("replan", ReplanningPolicy())
+
+decision = decide(request, policy=registry.get("replan"))[0]
+```
+
+`register` stores a policy. `get` returns it.
 
 ## Active perception
 
@@ -86,48 +116,15 @@ rules.
   `min_confidence`, `sla_breached`, `target`.
 - **Result:** `escalate` to the target. `ask` when the target is missing. `wait` inside the limits.
 
-## Use a policy
-
-```python
-from laix import AllocationPolicy, DecisionRequest, decide
-
-decision = decide(
-    DecisionRequest(
-        subject="weekly work",
-        at="2026-11-01T10:00:00+00:00",
-        attributes={
-            "budget": 10,
-            "requests": [
-                {"id": "a", "value": 6, "cost": 4},
-                {"id": "b", "value": 5, "cost": 6},
-            ],
-        },
-    ),
-    policy=AllocationPolicy(),
-)[0]
-```
-
-Register several and choose one:
-
-```python
-from laix import PolicyRegistry, ReplanningPolicy, SafetyConstrainedPolicy, decide
-
-registry = PolicyRegistry()
-registry.register("safety", SafetyConstrainedPolicy())
-registry.register("replan", ReplanningPolicy())
-
-decision = decide(request, policy=registry.get("replan"))[0]
-```
-
-`register` stores a policy. `get` returns the active one.
-
 ## Replace a policy
 
 Keep the policy name, return the same decision shape, and add bench cases before changing behaviour.
 
-The packaged policies are starting points. Your domain policy can replace one without changing the decision shape.
+The packaged policies are starting points. Your domain policy can replace one without changing the
+decision shape.
 
 ## Where the rules live
 
 - Action policy: `packages/python/laix/src/laix/core/engines/policies/implementations/action.py`
 - Attention policy: `packages/python/laix/src/laix/core/engines/attention/decide.py`
+- Packaged policies: `packages/python/laix/src/laix/core/engines/policies/implementations/`
