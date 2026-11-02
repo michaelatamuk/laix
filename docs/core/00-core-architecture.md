@@ -1,7 +1,6 @@
 # Core building blocks
 
-LAIX core only. Read bottom-up: each block depends on the blocks below it. Arrows point from a block
-to what it depends on.
+LAIX core only. Read bottom-up: each block builds on the blocks below it.
 
 ```mermaid
 block-beta
@@ -12,22 +11,6 @@ block-beta
     engines["Decision engines<br/>attention · policies · resources"]:3
     contract["Decision contract<br/>request · response · trail"] learning["Outcome learning<br/>outcome · reward · ledger · bandit"] sensing["Sensing<br/>detector · detection · event · frame"]
     foundation["Foundation<br/>support · ids · time · values · verbs · errors"]:3
-
-    foundation --> contract
-    foundation --> learning
-    foundation --> sensing
-
-    contract --> engines
-    learning --> engines
-
-    contract --> evaluation
-    engines --> evaluation
-
-    contract --> schema
-    learning --> schema
-
-    contract --> entry
-    engines --> entry
 ```
 
 ## The blocks
