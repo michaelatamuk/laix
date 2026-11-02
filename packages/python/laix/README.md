@@ -36,7 +36,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | Piece | Role |
 |---|---|
 | `core/decisions/request/` | `request.py` envelope and `payload/` records |
-| `core/decisions/answer/` | decision, evidence ref, intent and score breakdown |
+| `core/decisions/answer/` | `decision.py` and `payload/` (evidence ref, intent, score breakdown) |
 | `core/decisions/lifecycle/` | execution receipt and trace |
 | `core/decisions/normalise.py` | `coerce` and `from_attention` |
 | `core/schema/` | `RECORDS`, `RECORD_NAMES`, schema generation, validation and `laix-v1.schema.json` |

@@ -21,11 +21,9 @@ from .request import (
     Observation,
     Situation,
 )
-from .answer.score_breakdown import ScoreBreakdown
+from .answer import EvidenceRef, Intent, ScoreBreakdown
 from .normalise import coerce, from_attention
 from .answer.decision import Decision
-from .answer.evidence_ref import EvidenceRef
-from .answer.intent import Intent
 from .lifecycle.execution_receipt import EXECUTION_RECEIPT_STATUSES, ExecutionReceipt
 from .lifecycle.trace import Trace
 

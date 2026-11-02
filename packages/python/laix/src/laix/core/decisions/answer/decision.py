@@ -8,9 +8,9 @@ from typing import Any
 from ...support.values import clamp
 from ...support.verbs import VERBS
 from ...support.version import SCHEMA_VERSION
-from .score_breakdown import ScoreBreakdown
-from .evidence_ref import EvidenceRef
-from .intent import Intent
+from .payload.score_breakdown import ScoreBreakdown
+from .payload.evidence_ref import EvidenceRef
+from .payload.intent import Intent
 
 
 @dataclass(frozen=True, slots=True)

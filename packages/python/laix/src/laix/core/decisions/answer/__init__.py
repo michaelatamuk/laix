@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from .score_breakdown import ScoreBreakdown
+from .payload.score_breakdown import ScoreBreakdown
 from .decision import Decision
-from .evidence_ref import EvidenceRef
-from .intent import Intent
+from .payload.evidence_ref import EvidenceRef
+from .payload.intent import Intent
 
