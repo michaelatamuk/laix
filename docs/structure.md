@@ -14,8 +14,8 @@ laix/
 │   ├── what-is-laix.md    plain-English introduction
 │   ├── host-integration.md six questions a host team asks
 │   ├── architecture.md    how LAIX fits together
-│   ├── boundaries.md      core, app kit and host
-│   ├── positioning.md     LAIX and decision models
+│   ├── boundaries.md      PPMA, LAIX and other hosts
+│   ├── decision-models.md LAIX and decision models
 │   ├── structure.md       this page
 │   ├── core/              decisions, engines, outcome learning, evaluation, sensing
 │   └── appkit/            integration, live context, platform, stores, bench

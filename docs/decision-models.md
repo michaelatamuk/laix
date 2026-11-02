@@ -8,10 +8,9 @@ and they often work together.
 | Kind | Question it answers | Examples |
 |---|---|---|
 | **Decision model** | What is the answer to this question? | JEV, a classifier, an LLM judge, an expected-utility model |
-| **Decision layer** | What should the app do next, and what happened? | LAIX |
+| **Decision layer** | What should this task do next? | LAIX |
 
-A decision model produces a judgment. A decision layer turns a judgment into an action with approval,
-execution, verification and records.
+A decision model produces a judgment. A decision layer produces a task decision: what the task should do next, with a reason and evidence. The host owns execution, approval and records; the LAIX app kit supplies those surfaces when the host wants them.
 
 ## JEV
 
@@ -37,11 +36,14 @@ situation + options + limits
               ↓
 one verb + reason + approval + action details
               ↓
-execute -> receipt -> outcome
+the host executes, approves and records
 ```
 
 LAIX works with any model. Its built-in policies are deterministic rules. Its bandit policy is a
 small learner. A JEV call can sit behind a LAIX policy.
+
+The decision is the core product. Execution, approval, receipts and records belong to the host, or
+to the optional app kit when the host chooses it.
 
 ## Side by side
 
@@ -50,10 +52,10 @@ small learner. A JEV call can sit behind a LAIX policy.
 | Kind | Decision model | Decision layer |
 | Input | State + typed question | Request + options + limits |
 | Output | Typed answer + probabilities | Verb + reason + action and approval |
-| Main value | calibrated judgment | decision semantics and lifecycle |
+| Main value | calibrated judgment | decision semantics; optional lifecycle with the app kit |
 | Execution | host | host |
-| Approval, undo, receipts | host policy | LAIX app kit |
-| Records outcomes | host | LAIX ledger |
+| Approval, undo, receipts | host policy | LAIX app kit (optional) |
+| Records outcomes | host | host, or LAIX app kit |
 | Learns | The model is fixed or calibrated | Optional bandit policy |
 | Vendor | A specific model | Model-agnostic |
 
@@ -72,12 +74,12 @@ The difference is how the choice is made and what happens around it.
 | Step | LAIX action policy | JEV |
 |---|---|---|
 | Read the situation | beliefs, constraints, urgency | state text or context |
-| Read the options | `Action` objects | allowed answers |
+| Read the options | `ActionOption` objects | allowed answers |
 | Remove unsafe options | filters hard constraints first | states them in the question |
 | Choose | threshold rules plus utility | model probabilities |
 | Confidence | belief or attribute | calibrated confidence |
 | Output | full `Decision` | choice plus probabilities |
-| Lifecycle | approval, execution, verify | judgment only |
+| Around the choice | the host, or app kit, adds approval, execution and verification | judgment only |
 
 LAIX’s built-in action policy is itself a small decision model: a rule-based one. JEV is a different
 kind of decision model: a calibrated classifier over typed answers.
@@ -85,9 +87,11 @@ kind of decision model: a calibrated classifier over typed answers.
 The useful distinction:
 
 - **JEV can be the chooser** inside a policy.
-- **LAIX is the layer** that filters unsafe options, applies approval, executes, verifies and records.
+- **LAIX is the layer** that filters unsafe options and returns the task decision. The host, or the
+  optional app kit, handles approval, execution, verification and records.
 
-If JEV replaces the LAIX action policy, LAIX still adds the lifecycle around the choice.
+If JEV replaces the LAIX action policy, LAIX still supplies the decision contract; the host or app
+kit supplies the lifecycle around the choice.
 
 ## A decision that needs a host layer
 
@@ -119,24 +123,24 @@ The app maps the domain into those pieces:
 | Escalation target | `owner` |
 | Outcome metric | payment cleared or failed |
 
-LAIX supplies the generic layer:
+LAIX supplies the generic decision:
 
 - one decision shape;
 - hard-constraint filtering;
 - the `requires_approval` flag;
 - policy selection;
-- execution receipts;
-- `verify` and `escalate` verbs;
-- records and bench.
+- `verify` and `escalate` verbs.
+
+The optional app kit adds execution receipts, records and the bench. The host runs the action.
 
 Could the app do all of this without LAIX? **Yes.** For one payment flow, direct app code is simpler.
-LAIX pays off when several flows or apps need the same decision contract, approval rules, execution
-receipts and outcome records.
+LAIX pays off when several flows or apps need the same decision contract, with the optional app kit
+supplying shared approval rules, execution receipts and outcome records.
 
 JEV and LAIX both depend on the app for domain meaning:
 
 - JEV turns state into a judgment;
-- LAIX turns a request into a decision and a lifecycle;
+- LAIX turns a request into a decision; the host or app kit adds the lifecycle;
 - the app knows what “pay the invoice” means.
 
 ## When LAIX is actually needed
@@ -148,9 +152,9 @@ It matters when that layer would otherwise be written again in several apps:
 
 - several apps or agents;
 - several decision classes per app;
-- shared approval and audit rules;
+- shared approval and audit rules (the app kit);
 - policies that must be compared or swapped;
-- one place to record outcomes and run a bench.
+- one place to record outcomes and run a bench (the app kit).
 
 The question is: do you want every app to build and maintain the same decision layer?
 
@@ -176,8 +180,9 @@ technician, charge a card and send a message.
 Without a shared layer, the team writes eight separate decision paths, or one ad-hoc engine. Each
 path grows its own approval rule, audit format, verification step and tests. They drift apart.
 
-With LAIX, the app still keeps the jobs, technicians, photos and payments. LAIX supplies one layer
-for all eight decision classes. One approval rule, one execution receipt, one audit shape, one bench.
+With LAIX, the app still keeps the jobs, technicians, photos and payments. LAIX supplies one
+decision contract for all eight decision classes. The optional app kit adds one approval rule, one
+execution receipt, one audit shape and one bench.
 
 At this point the team would otherwise be building a decision layer themselves. LAIX is that layer,
 already built.
@@ -188,13 +193,11 @@ already built.
 |---|---|
 | One app, one decision | App code, possibly with JEV |
 | Many apps or many decision classes | LAIX |
-| Shared approval, audit, verification and bench | LAIX |
+| Shared approval, audit, verification and bench | LAIX app kit |
 | Policy experiments or shadow comparisons | LAIX |
 
 LAIX replaces the bespoke decision layer an app would otherwise write. JEV and the app’s domain
 logic stay in place.
-
-The plan for adding a real engine core is in [the engine roadmap](core/engine-roadmap.md).
 
 ## Using them together
 
@@ -230,14 +233,14 @@ class JevPolicy:
         )]
 ```
 
-LAIX still applies the rest:
+The host applies the rest:
 
 - approval when `requires_approval` is set;
 - execution through the app or platform;
-- verification when the outcome matters;
-- outcome recording and learning.
+- verification when the outcome matters.
 
-The adapter stays in the app. LAIX core stays model-neutral.
+The optional app kit records the decision, execution and outcome. The adapter stays in the app.
+LAIX core stays model-neutral.
 
 ## Which one to choose
 
@@ -245,23 +248,25 @@ The adapter stays in the app. LAIX core stays model-neutral.
 |---|---|
 | Classify text into one of a fixed set of labels | JEV or another classifier |
 | Score an item on a rubric | JEV or another scorer |
-| Decide whether to act, ask, wait or escalate, with approval and records | LAIX |
-| Both judgment and decision lifecycle | JEV inside a LAIX policy |
+| Decide whether to act, ask, wait or escalate, with approval and records | LAIX core, with the app kit for approval and records |
+| Both judgment and decision lifecycle | JEV inside a LAIX policy; app kit for the lifecycle |
 
 ## Why pair them
 
-A model can be confident and wrong. LAIX adds the parts around a judgment:
+A model can be confident and wrong. LAIX adds the task decision around a judgment:
 
-- risk limits and approval;
+- risk limits;
 - action choice among the options the app can afford;
-- verification of the outcome;
-- a record of what was decided and what happened.
+- verification and escalation verbs.
+
+The host, or the optional app kit, adds approval, execution and records.
 
 The useful comparison is:
 
 ```text
 JEV / classifier / LLM  -> judgment
-LAIX                    -> decision, approval, execution, outcome
+LAIX core               -> task decision
+host / app kit          -> approval, execution, outcome
 ```
 
 LAIX is the layer that can use a decision model. It works alongside JEV and other models.

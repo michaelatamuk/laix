@@ -204,7 +204,7 @@ The split is about selection. All ten return the same decision shape. See
 - **LAIX-Bench** runs the same test cases for every class. See [bench](appkit/bench.md).
 
 LAIX is a decision layer. It can host a decision model such as JEV inside a policy. See
-[LAIX and decision models](positioning.md).
+[LAIX and decision models](decision-models.md).
 
 ## Rules
 
