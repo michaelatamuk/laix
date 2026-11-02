@@ -11,12 +11,11 @@ import hashlib
 from collections.abc import Iterable, Sequence
 from datetime import datetime
 
-from .gates import ReasonCode, feedback_blocks, rank
+from .gates import GATE_RULES, GateResult, ReasonCode, dedupe_key, feedback_blocks, rank
 from .model.context import Context
 from .model.decision import AttentionDecision
 from .model.signal import Signal
 from .score import cost_of_waiting, score, undo_hint
-from .timing import hours_until, is_quiet
 from ...support.verbs import Verb
 
 
@@ -31,54 +30,38 @@ def trace_id(signal: Signal, now: datetime, verb: str) -> str:
 
 
 def decide_one(signal: Signal, context: Context, delivered: int = 0) -> AttentionDecision:
-    """Decide one signal. Gate order is the behaviour; score is the record."""
+    """Decide one signal by walking ``GATE_RULES`` in order."""
     breakdown = score(signal, context)
     blocked = feedback_blocks(context.feedback.get(signal.id), context.now)
 
-    verb, reason_code, record, deliver = Verb.GUIDE, ReasonCode.WORTH_SURFACING, True, True
-    delivered_now = delivered
-
-    if context.stopped:
-        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.KILL_SWITCH, False, False
-    elif signal.kind in context.muted_kinds:
-        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.MUTED, False, False
-    elif blocked is not None:
-        verb, reason_code, record, deliver = Verb.WAIT, blocked, False, False
-    elif signal.confidence < context.min_confidence:
-        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.LOW_CONFIDENCE, False, False
-    elif rank(signal.severity) > rank(context.min_severity):
-        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.BELOW_FLOOR, False, False
-    elif dedupe_key(signal, context.now) in context.sent:
-        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.ALREADY_SENT, False, False
-    elif is_quiet(context.now, context.quiet_hours) and signal.severity != "critical":
-        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.QUIET_HOURS, True, False
-    elif context.interruption_budget is not None and delivered_now >= context.interruption_budget:
-        verb, reason_code, record, deliver = Verb.WAIT, ReasonCode.BUDGET, False, False
-    elif context.escalate_after_hours is not None and signal.severity == "critical":
-        hours = hours_until(context.now, signal.due)
-        if hours is not None and -hours > context.escalate_after_hours:
-            verb, reason_code, record, deliver = Verb.ESCALATE, ReasonCode.OVERDUE_ESCALATION, True, True
-    elif context.allow_act and signal.intent is not None and signal.reversible:
-        verb, reason_code = Verb.ACT, ReasonCode.ACT
-    else:
-        delivered_now += 1
+    result: GateResult | None = None
+    for _gate, rule in GATE_RULES:
+        result = rule(signal, context, blocked, delivered)  # type: ignore[operator]
+        if result is not None:
+            break
+    if result is None:
+        result = GateResult(Verb.GUIDE, ReasonCode.WORTH_SURFACING, True, True)
 
     return AttentionDecision(
         signal_id=signal.id,
-        verb=verb,
+        verb=result.verb,
         score=breakdown.total,
-        reason_code=reason_code,
+        reason_code=result.reason_code,
         confidence=signal.confidence,
-        deliver=deliver,
-        record=record,
+        deliver=result.deliver,
+        record=result.record,
         requires_approval=signal.requires_approval,
         evidence_refs=signal.evidence_refs,
         breakdown=breakdown,
-        trace_id=trace_id(signal, context.now, verb),
-        intent=signal.handover if verb == Verb.ESCALATE else (signal.intent if verb in {Verb.ACT, Verb.ASK} else None),
+        trace_id=trace_id(signal, context.now, result.verb),
+        intent=(
+            signal.handover
+            if result.verb == Verb.ESCALATE
+            else (signal.intent if result.verb in {Verb.ACT, Verb.ASK} else None)
+        ),
         cost_of_waiting=cost_of_waiting(signal, context),
         reversible=signal.reversible,
-        undo_hint=undo_hint(verb, signal.reversible),
+        undo_hint=undo_hint(result.verb, signal.reversible),
     )
 
 
