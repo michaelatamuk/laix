@@ -37,6 +37,9 @@ block-beta
         support["Support<br/>ids · time · values · errors"]
         version["Version<br/>package · schema · rules"]
     end
+
+    style capabilities font-size:22px,font-weight:bold
+    style contract font-size:14px
 ```
 
 ## The rows
