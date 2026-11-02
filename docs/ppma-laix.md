@@ -47,7 +47,7 @@ The two vocabularies describe different scopes.
 - `ISSUE_COMMAND`: one or more commands to apps or tools.
 - `DISPATCH`: start a mission.
 
-`ISSUE_COMMAND` carries a command type: `ui.notify` for guide, `ui.ask` for ask, `resources.read` for observe, a manifest tool for act. LAIX returns the task recommendation; PPMA chooses the command and issues it.
+`ISSUE_COMMAND` carries one or more commands. The mapping from a LAIX verb to a command is not one-to-one: PPMA chooses the command type and target from the task move, the available manifests and the execution policy. A `guide` decision may become `ui.notify`, `ui.deliver_brief` or an app-specific message; an `act` decision may become a manifest tool, a plan step or a `DISPATCH`. LAIX returns the task move; PPMA chooses the command and issues it.
 
 ## 3. Who owns what
 
