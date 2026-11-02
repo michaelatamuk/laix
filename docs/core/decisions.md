@@ -63,7 +63,7 @@ guide worth_surfacing 84.0
 | `reason_code` | The rule that fired. Use this in app logic. |
 | `rationale` | Explanation for people. Use `reason_code` in app logic. |
 | `action_id` | The chosen option, if there is one. |
-| `intent` | `{capability, args}` the app can execute. |
+| `intent` | `{capability, args}` the app can execute; for `escalate`, `Intent("handover", {"target", "reason"})`. |
 | `requires_approval` | Ask a person before executing. |
 | `reversible` | Whether the action can be undone. |
 | `undo_hint` | How to undo it. |
@@ -71,7 +71,6 @@ guide worth_surfacing 84.0
 | `breakdown` | Score parts for attention decisions. |
 | `cost_of_waiting` | Cost of waiting in this situation. |
 | `evidence` | References that support the decision. |
-| `escalation` | `{target, reason}` when handing over. |
 | `decision_id` | Id for records and outcomes. |
 | `situation_id` | The situation this decision answered, when there is one. |
 | `attributes` | Policy-specific values used to reach the decision. |

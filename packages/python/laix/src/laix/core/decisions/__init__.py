@@ -16,7 +16,6 @@ from .request.constraint import CONSTRAINT_KINDS, Constraint
 from .normalise import coerce, from_attention
 from .answer.decision import Decision
 from .request.decision_request import DecisionRequest
-from .answer.escalation import Escalation
 from .answer.evidence_ref import EvidenceRef
 from .request.goal import Goal
 from .answer.intent import Intent
@@ -33,7 +32,6 @@ __all__ = [
     "Constraint",
     "Decision",
     "DecisionRequest",
-    "Escalation",
     "EvidenceRef",
     "Goal",
     "HORIZONS",

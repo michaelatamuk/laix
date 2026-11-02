@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from ..support.verbs import VERBS
-from ..decisions import Escalation, Intent
+from ..decisions import Intent
 from .model.context import Context
 from .model.feedback import Feedback
 from .labels import FEEDBACK_STATES, SEVERITY_RANK
@@ -69,7 +69,7 @@ def signal_from(payload: Mapping[str, Any]) -> Signal:
         requires_approval=bool(payload.get("requiresApproval", False)),
         intent=Intent(str(intent["capability"]), dict(intent.get("args", {}))) if intent else None,
         reversible=bool(payload.get("reversible", False)),
-        escalation=Escalation(str(escalation["target"]), str(escalation.get("reason", ""))) if escalation else None,
+        handover=Intent("handover", {"target": str(escalation["target"]), "reason": str(escalation.get("reason", ""))}) if escalation else None,
     )
 
 

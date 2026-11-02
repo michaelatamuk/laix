@@ -279,17 +279,17 @@ def test_escalation_is_carried_only_when_escalating() -> None:
         requires_approval=False,
         intent=None,
         reversible=False,
-        escalation=laix.Escalation("target-a", "overdue"),
+        handover=laix.Intent("handover", {"target": "target-a", "reason": "overdue"}),
     )
     context = Context(now=at(10), quiet_hours=None, escalate_after_hours=24)
     decision = decide_attention([signal], context)[0]
-    assert decision.verb == "guide" and decision.escalation is None
+    assert decision.verb == "guide" and decision.intent is None
 
     overdue = {"due": "2026-10-30T10:00:00+02:00"}
-    signal = intent_signal(severity="critical", intent=None, reversible=False, escalation=laix.Escalation("target-a", "overdue"), **overdue)
+    signal = intent_signal(severity="critical", intent=None, reversible=False, handover=laix.Intent("handover", {"target": "target-a", "reason": "overdue"}), **overdue)
     decision = decide_attention([signal], context)[0]
-    assert decision.verb == "escalate" and decision.escalation is not None
-    assert decision.escalation.target == "target-a"
+    assert decision.verb == "escalate" and decision.intent is not None
+    assert decision.intent.capability == "handover" and decision.intent.args["target"] == "target-a"
 
 
 # --------------------------------------------------------------------------- cost and undo

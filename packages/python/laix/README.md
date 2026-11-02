@@ -28,7 +28,7 @@ decisions = layer.decide(
 - `situation` and `options` for action selection.
 
 Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`, `rationale`,
-`evidence`, `requires_approval`, `score`, `breakdown`, `intent`, `escalation`,
+`evidence`, `intent`, `requires_approval`, `score`, `breakdown`, `intent`, `escalation`,
 `cost_of_waiting`, `reversible`, `undo_hint`, `trace_id`, `deliver`, `record` and `created_at`.
 
 ## Inside the package

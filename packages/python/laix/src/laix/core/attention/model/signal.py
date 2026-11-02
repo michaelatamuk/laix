@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ...decisions import Escalation, Intent
+from ...decisions import Intent
 
 
 @dataclass(frozen=True, slots=True)
@@ -27,7 +27,7 @@ class Signal:
     #: Whether an executed action can be taken back.
     reversible: bool = False
     #: Who to escalate to when the signal stays overdue.
-    escalation: Escalation | None = None
+    handover: Intent | None = None
 
 
 __all__ = ["Signal"]

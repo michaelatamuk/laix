@@ -9,7 +9,7 @@ network, no database, no clock of its own.
 
 from __future__ import annotations
 
-from ..decisions import Breakdown, Escalation, Intent
+from ..decisions import Breakdown, Intent
 from ..support.verbs import VERBS
 from .model.decision import AttentionDecision
 from .model.outcome import AttentionOutcome
@@ -71,7 +71,6 @@ __all__ = [
     "Context",
     "AttentionDecision",
     "AttentionOutcome",
-    "Escalation",
     "Feedback",
     "Intent",
     "NullSink",

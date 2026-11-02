@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ...decisions import Decision, Escalation
+from ...decisions import Decision, Intent
 from .._support import decision, number, value
 
 
@@ -78,7 +78,7 @@ class EscalationPolicy:
                 reason_code="escalate_to_target",
                 rationale=f"{rationale}; hand over to {target}",
                 confidence=min(0.98, max(severity, 1.0 - confidence)),
-                escalation=Escalation(target=target, reason=rationale),
+                intent=Intent("handover", {"target": target, "reason": rationale}),
                 score=round(severity, 6),
                 action_id=target,
             )

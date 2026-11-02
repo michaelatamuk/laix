@@ -5,7 +5,7 @@ Two runs show how confidence changes the answer. The hard risk limit and the
 delay, money, disruption and the value of looking first.
 """
 
-from laix import DecisionRequest, Escalation, Layer, Decision
+from laix import DecisionRequest, Intent, Layer, Decision
 
 WINDOW_MINUTES = 6
 RISK_LIMIT = 0.20
@@ -148,10 +148,13 @@ class TradeoffPolicy:
                 score=round(score(best), 4),
                 alternatives=alternatives,
                 constraints_applied=tuple(applied),
-                escalation=(
-                    Escalation(
-                        target="electrician",
-                        reason="check the socket after the immediate action",
+                intent=(
+                    Intent(
+                        "handover",
+                        {
+                            "target": "electrician",
+                            "reason": "check the socket after the immediate action",
+                        },
                     )
                     if best["id"] != "electrician"
                     else None

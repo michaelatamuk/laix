@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ..decisions import Decision, Escalation, Intent
+from ..decisions import Decision, Intent
 
 
 def value(request: Any, key: str, default: Any = None) -> Any:
@@ -26,7 +26,6 @@ def decision(
     rationale: str,
     confidence: float,
     intent: Intent | None = None,
-    escalation: Escalation | None = None,
     score: float | None = None,
     requires_approval: bool = False,
     action_id: str | None = None,
@@ -41,5 +40,4 @@ def decision(
         requires_approval=requires_approval,
         score=score,
         intent=intent,
-        escalation=escalation,
     )

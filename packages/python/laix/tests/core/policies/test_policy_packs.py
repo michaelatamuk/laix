@@ -142,8 +142,9 @@ def test_verification_escalates_without_a_path() -> None:
     decision = decide(VerificationPolicy(), confidence=0.3, required_confidence=0.8, checks=[])
     assert decision.verb == "escalate"
     assert decision.reason_code == "no_verification_path"
-    assert decision.escalation is not None
-    assert decision.escalation.target == "human"
+    assert decision.intent is not None
+    assert decision.intent.capability == "handover"
+    assert decision.intent.args["target"] == "human"
 
 
 def test_verification_is_not_needed_when_confident() -> None:
@@ -162,8 +163,9 @@ def test_escalation_hands_over_to_a_target() -> None:
     decision = decide(EscalationPolicy(), severity=0.9, severity_threshold=0.8, target="manager")
     assert decision.verb == "escalate"
     assert decision.action_id == "manager"
-    assert decision.escalation is not None
-    assert decision.escalation.target == "manager"
+    assert decision.intent is not None
+    assert decision.intent.capability == "handover"
+    assert decision.intent.args["target"] == "manager"
 
 
 def test_escalation_waits_within_limits() -> None:

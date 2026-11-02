@@ -7,7 +7,6 @@ from typing import Any, Iterable
 from ..support.errors import PolicyError
 from .answer.breakdown import Breakdown
 from .answer.decision import Decision
-from .answer.escalation import Escalation
 from .answer.evidence_ref import EvidenceRef
 from .answer.intent import Intent
 
@@ -34,16 +33,6 @@ def _intent(value: Any) -> Intent | None:
     if isinstance(value, dict):
         return Intent(str(value.get("capability", "")), dict(value.get("args") or {}))
     return Intent(str(getattr(value, "capability", "")), dict(getattr(value, "args", {}) or {}))
-
-
-def _escalation(value: Any) -> Escalation | None:
-    if value is None:
-        return None
-    if isinstance(value, Escalation):
-        return value
-    if isinstance(value, dict):
-        return Escalation(str(value.get("target", "")), str(value.get("reason", "")))
-    return Escalation(str(getattr(value, "target", "")), str(getattr(value, "reason", "")))
 
 
 def _breakdown(value: Any) -> Breakdown | None:
@@ -74,7 +63,6 @@ def from_attention(decision: Any) -> Decision:
         score=decision.score,
         breakdown=_breakdown(decision.breakdown),
         intent=_intent(decision.intent),
-        escalation=_escalation(decision.escalation),
         cost_of_waiting=decision.cost_of_waiting,
         reversible=decision.reversible,
         undo_hint=decision.undo_hint,

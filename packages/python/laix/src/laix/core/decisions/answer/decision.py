@@ -9,7 +9,6 @@ from ...support.values import clamp
 from ...support.verbs import VERBS
 from ...support.version import SCHEMA_VERSION
 from .breakdown import Breakdown
-from .escalation import Escalation
 from .evidence_ref import EvidenceRef
 from .intent import Intent
 
@@ -31,7 +30,6 @@ class Decision:
     score: float | None = None
     breakdown: Breakdown | None = None
     intent: Intent | None = None
-    escalation: Escalation | None = None
     cost_of_waiting: float = 0.0
     reversible: bool = False
     undo_hint: str | None = None
@@ -65,12 +63,12 @@ class Decision:
                     "source": item.source or "",
                 }
             )
-        if self.escalation is not None:
+        if self.intent is not None:
             rows.append(
                 {
-                    "kind": "escalation",
-                    "ref": self.escalation.target,
-                    "note": self.escalation.reason,
+                    "kind": "intent",
+                    "ref": self.intent.capability,
+                    "note": str(self.intent.args),
                 }
             )
         for item in self.constraints_applied:

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ...decisions import Decision, Escalation, Intent
+from ...decisions import Decision, Intent
 from .._support import decision, number, value
 
 
@@ -54,9 +54,12 @@ class VerificationPolicy:
                     reason_code="no_verification_path",
                     rationale="no check can confirm the outcome; ask a person",
                     confidence=0.6,
-                    escalation=Escalation(
-                        target=str(value(request, "escalation_target", "human")),
-                        reason="no verification path",
+                    intent=Intent(
+                        "handover",
+                        {
+                            "target": str(value(request, "escalation_target", "human")),
+                            "reason": "no verification path",
+                        },
                     ),
                 )
             ]
@@ -70,9 +73,12 @@ class VerificationPolicy:
                     reason_code="no_verification_budget",
                     rationale="every check costs more than the verification budget",
                     confidence=0.6,
-                    escalation=Escalation(
-                        target=str(value(request, "escalation_target", "human")),
-                        reason="verification budget exhausted",
+                    intent=Intent(
+                        "handover",
+                        {
+                            "target": str(value(request, "escalation_target", "human")),
+                            "reason": "verification budget exhausted",
+                        },
                     ),
                 )
             ]
@@ -91,9 +97,12 @@ class VerificationPolicy:
                     reason_code="no_verification_path",
                     rationale="no available check would raise confidence",
                     confidence=0.6,
-                    escalation=Escalation(
-                        target=str(value(request, "escalation_target", "human")),
-                        reason="no useful verification path",
+                    intent=Intent(
+                        "handover",
+                        {
+                            "target": str(value(request, "escalation_target", "human")),
+                            "reason": "no useful verification path",
+                        },
                     ),
                 )
             ]

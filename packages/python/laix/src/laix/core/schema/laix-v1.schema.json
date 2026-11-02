@@ -919,14 +919,6 @@
             }
           ]
         },
-        "escalation": {
-          "anyOf": [
-            {},
-            {
-              "type": "null"
-            }
-          ]
-        },
         "cost_of_waiting": {
           "anyOf": [
             {

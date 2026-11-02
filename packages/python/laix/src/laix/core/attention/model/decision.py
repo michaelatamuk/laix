@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ...decisions import Breakdown, Escalation, Intent
+from ...decisions import Breakdown, Intent
 
 
 @dataclass(frozen=True, slots=True)
@@ -25,7 +25,6 @@ class AttentionDecision:
     #: Carried for ``act`` and ``ask``; None otherwise.
     intent: Intent | None = None
     #: Carried for ``escalate``; None otherwise.
-    escalation: Escalation | None = None
     #: Points at stake per hour of silence. 0 when there is no deadline.
     cost_of_waiting: float = 0.0
     #: Whether the requested action can be taken back.
@@ -47,7 +46,6 @@ class AttentionDecision:
             "trace_id": self.trace_id,
             "breakdown": self.breakdown.as_dict(),
             "intent": self.intent.as_dict() if self.intent else None,
-            "escalation": self.escalation.as_dict() if self.escalation else None,
             "cost_of_waiting": round(self.cost_of_waiting, 2),
             "reversible": self.reversible,
             "undo_hint": self.undo_hint,

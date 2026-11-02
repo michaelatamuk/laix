@@ -52,7 +52,7 @@ A decision always contains:
 | What to do | `verb`, `confidence`, `reason_code`, `rationale` |
 | What to run | `action_id`, `intent`, `requires_approval`, `reversible`, `undo_hint` |
 | Ranking | `score`, `breakdown`, `cost_of_waiting` |
-| Support | `evidence`, `escalation` |
+| Support | `evidence`, `intent` |
 | Audit | `decision_id`, `policy_version`, `trace_id`, `deliver`, `record`, `created_at` |
 
 The `verb` is the core answer. The other fields explain it and help the app execute it.
