@@ -6,21 +6,21 @@ the packs import ``decisions``; lazy loading keeps that cycle out of import time
 
 from __future__ import annotations
 
-from ..errors import PolicyError
-from .action import ACTION_POLICY_VERSION, ActionPolicy, ActionPolicyConfig, ActionPolicyRequest, decide_action
+from ..support.errors import PolicyError
+from .builtin.action import ACTION_POLICY_VERSION, ActionPolicy, ActionPolicyConfig, ActionPolicyRequest, decide_action
 from .policy import Policy
 from .registry import PolicyRegistry
 
 _LAZY = {
-    "ActivePerceptionPolicy": "active_perception",
-    "AllocationPolicy": "allocation",
-    "BanditPolicy": "bandit",
-    "EscalationPolicy": "escalation",
-    "NegotiationPolicy": "negotiation",
-    "PreferenceElicitationPolicy": "preference",
-    "ReplanningPolicy": "replanning",
-    "SafetyConstrainedPolicy": "safety",
-    "VerificationPolicy": "verification",
+    "ActivePerceptionPolicy": "packs.active_perception",
+    "AllocationPolicy": "packs.allocation",
+    "BanditPolicy": "packs.bandit",
+    "EscalationPolicy": "packs.escalation",
+    "NegotiationPolicy": "packs.negotiation",
+    "PreferenceElicitationPolicy": "packs.preference",
+    "ReplanningPolicy": "packs.replanning",
+    "SafetyConstrainedPolicy": "packs.safety",
+    "VerificationPolicy": "packs.verification",
 }
 
 

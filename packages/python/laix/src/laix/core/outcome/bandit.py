@@ -5,9 +5,9 @@ from __future__ import annotations
 import math
 from typing import Any, Callable, Iterable
 
-from ..values import clamp
+from ..support.values import clamp
 from .arm import Arm
-from .outcome import Outcome
+from .record import Outcome
 from .rewards import reward_for_label
 
 

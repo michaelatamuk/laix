@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ..values import clamp
+from ..support.values import clamp
 
 
 @dataclass(frozen=True)

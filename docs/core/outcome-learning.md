@@ -86,7 +86,7 @@ TypeScript exports `UCBBandit`, `BanditPolicy`, `Arm` and `rewardForLabel`.
 
 ## Example
 
-`examples/python/policies/bandit.py`:
+`examples/policies/bandit.py`:
 
 ```text
 manual automatic 0.75

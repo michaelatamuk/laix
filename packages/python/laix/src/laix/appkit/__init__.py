@@ -17,7 +17,7 @@ from .platform import (
     Platform,
     SkillCall,
 )
-from .records.decision import (
+from .audit.decision_record import (
     DecisionRecord,
     EvidenceRef,
     approve as approve_record,
@@ -26,7 +26,7 @@ from .records.decision import (
     reject as reject_record,
     verify as verify_record,
 )
-from .records.proposal import (
+from .audit.proposal import (
     Proposal,
     apply as apply_proposal,
     approve as approve_proposal,

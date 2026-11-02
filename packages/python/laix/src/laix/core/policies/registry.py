@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ..errors import PolicyError
+from ..support.errors import PolicyError
 from .policy import Policy
 
 

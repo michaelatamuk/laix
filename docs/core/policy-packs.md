@@ -32,7 +32,7 @@ TypeScript exports the same classes. Verb meanings are in
 
 These classes are part of the `laix` package. They run when you select them and are covered by tests.
 
-`examples/python/policies/safety.py` is a usage example that calls `SafetyConstrainedPolicy`. The
+`examples/policies/safety.py` is a usage example that calls `SafetyConstrainedPolicy`. The
 policy itself lives in `packages/python/laix/src/laix/core/policies/safety.py`.
 
 The packaged policies are simple deterministic defaults. Replace one when your domain has better

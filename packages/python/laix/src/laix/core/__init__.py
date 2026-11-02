@@ -4,7 +4,7 @@ This surface is domain-neutral and does not load the app kit. Use it from a
 mission, agent or another application that only needs the decision layer.
 """
 
-from .records import RECORDS, RECORD_NAMES
+from .schema.records import RECORDS, RECORD_NAMES
 from .attention import (
     Context,
     Feedback,
@@ -46,10 +46,10 @@ from .outcome import (
     reward_for_label,
 )
 from .perception import Detection, Detector, PerceptionEvent, PerceptionFrame
-from .time import iso, parse_iso, utcnow
-from .values import confidence_band
-from .version import SCHEMA_VERSION
-from .verbs import VERBS
+from .support.time import iso, parse_iso, utcnow
+from .support.values import confidence_band
+from .support.version import SCHEMA_VERSION
+from .support.verbs import VERBS
 from .evaluation import Case, Report, Row, compare, load_cases
 from .policies import (
     ACTION_POLICY_VERSION,

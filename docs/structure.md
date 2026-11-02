@@ -1,7 +1,7 @@
 # Repository structure
 
 This page maps files. Concepts are defined in [architecture](architecture.md) and
-[contracts](core/contracts.md).
+[records](core/records.md).
 
 ```text
 laix/
@@ -17,7 +17,7 @@ laix/
 │   ├── boundaries.md      core, app kit and host
 │   ├── positioning.md     LAIX and decision models
 │   ├── structure.md       this page
-│   ├── core/              contracts, decisions, attention, policies, learning, evaluation
+│   ├── core/              records, decisions, attention, policies, learning, evaluation
 │   └── appkit/            integration, live context, platform, stores, bench
 ├── examples/              runnable Python and TypeScript examples
 └── .github/               CI and release workflows
@@ -34,25 +34,41 @@ packages/python/laix/src/laix/
 ├── __init__.py              public API
 ├── core/
 │   ├── __init__.py          core surface
-│   ├── contracts.py         nine shared records, enums and helpers
-│   ├── decisions.py         Decision, DecisionRequest and normalisation
-│   ├── outcome.py           outcome ledger, store and UCB learner
-│   ├── evaluation.py        parity harness
-│   ├── perception.py        detector, detection and frame contracts
-│   ├── resources.py         budget and resource admission policy
-│   ├── schema.py            schema generator
-│   ├── laix-v1.schema.json  generated record schema
-│   ├── attention/           attention policy and vectors
-│   └── policies/            action policy, eight packs, bandit, registry
+│   ├── decisions/
+│   │   ├── request/         situation, observation, belief, goal, constraint, option, request
+│   │   ├── answer/          decision, evidence ref, intent, escalation, breakdown
+│   │   ├── lifecycle/       receipt and trace
+│   │   └── normalise.py     coerce and from_attention
+│   ├── policies/
+│   │   ├── builtin/action/  version, config, request and policy
+│   │   ├── packs/           eight packs and the learned bandit
+│   │   ├── policy.py        Policy protocol
+│   │   ├── registry.py      PolicyRegistry
+│   │   └── _support.py      shared pack helpers
+│   ├── attention/
+│   │   ├── model/           signal, context, feedback, decision, outcome
+│   │   ├── ports/           clock, sink, recorder, defaults
+│   │   ├── vectors/         attention.v1.json, bench.v1.json, schema.json
+│   │   ├── policy.py        gates and decide_attention
+│   │   ├── timing.py        quiet hours and windows
+│   │   ├── replay.py        replay, validate and benchmark
+│   │   ├── labels.py        outcome labels
+│   │   └── outcome_log.py   bounded outcome log
+│   ├── outcome/             record, ledger, store, arm, bandit, rewards
+│   ├── evaluation/          case, row, report, compare
+│   ├── perception/          detection, detector, event, frame
+│   ├── resources/           budget, sensing option, plan, scheduler
+│   ├── schema/              build, check, records and laix-v1.schema.json
+│   └── support/             time, ids, values, serialize, errors, verbs, version
 └── appkit/
     ├── __init__.py          optional app surface
     ├── layer.py             public Layer
-    ├── live_context.py      host-driven detector loop
-    ├── platform.py          platform contract
-    ├── delivery.py          delivery port
-    ├── bench.py             LAIX-Bench implementation
-    ├── runtime/             execution, state and stores
-    └── records/             decision record and proposal
+    ├── runtime/             decision runtime, execution, state, stores
+    ├── audit/               decision record, proposal, approval, undo, audit event
+    ├── delivery/            port, receipt, null
+    ├── platform/            platform, in-memory, skill call, approvals, event, capability
+    ├── live_context/        loop and callable detector
+    └── bench/               case, suite, row, report, runner
 ```
 
 Import from `laix` in app code, or `laix.core` / `laix.appkit` when the boundary matters.
@@ -86,7 +102,7 @@ packages/typescript/laix/src/
 The TypeScript package mirrors the same folders under `src/core` and `src/appkit`. It exports one
 entry point, `laix`.
 
-## Shared contracts
+## Shared spec
 
 | File | Contents |
 |---|---|
@@ -99,7 +115,7 @@ and the canonical file differ.
 
 ## Rules
 
-- One file per clear responsibility, until it gets too large.
-- Group folders by role: `policies`, `runtime`, `records`, `attention`.
+- One class per file; functions may share a small module with their owner.
+- Group folders by role: `decisions`, `policies`, `attention`, `runtime`, `audit`.
 - Keep the public API in `__init__.py` and `index.ts`.
 - Use generic words and leave app, domain and vendor names out.

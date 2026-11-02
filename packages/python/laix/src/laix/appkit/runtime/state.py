@@ -19,8 +19,8 @@ from ...core.decisions import (
     Goal,
     Observation,
 )
-from ...core.time import iso, parse_iso, utcnow
-from ...core.values import clamp, confidence_band
+from ...core.support.time import iso, parse_iso, utcnow
+from ...core.support.values import clamp, confidence_band
 
 
 @dataclass

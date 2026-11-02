@@ -7,23 +7,23 @@ the one public ``Decision``.
 
 from __future__ import annotations
 
-from ..verbs import VERBS
-from ..version import SCHEMA_VERSION
-from .action_option import ActionOption
-from .belief import Belief
-from .breakdown import Breakdown
-from .constraint import CONSTRAINT_KINDS, Constraint
-from .convert import coerce, from_attention
-from .decision import Decision
-from .decision_request import DecisionRequest
-from .escalation import Escalation
-from .evidence_ref import EvidenceRef
-from .goal import Goal
-from .intent import Intent
-from .observation import Observation
-from .receipt import RECEIPT_STATUSES, Receipt
-from .situation import HORIZONS, PHASES, Situation
-from .trace import Trace
+from ..support.verbs import VERBS
+from ..support.version import SCHEMA_VERSION
+from .request.action_option import ActionOption
+from .request.belief import Belief
+from .answer.breakdown import Breakdown
+from .request.constraint import CONSTRAINT_KINDS, Constraint
+from .normalise import coerce, from_attention
+from .answer.decision import Decision
+from .request.decision_request import DecisionRequest
+from .answer.escalation import Escalation
+from .answer.evidence_ref import EvidenceRef
+from .request.goal import Goal
+from .answer.intent import Intent
+from .request.observation import Observation
+from .lifecycle.receipt import RECEIPT_STATUSES, Receipt
+from .request.situation import HORIZONS, PHASES, Situation
+from .lifecycle.trace import Trace
 
 __all__ = [
     "ActionOption",

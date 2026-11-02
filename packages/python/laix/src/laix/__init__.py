@@ -27,13 +27,13 @@ from .core.decisions import (
     Situation,
     Trace,
 )
-from .core.decisions.constraint import CONSTRAINT_KINDS
-from .core.outcome.outcome import OUTCOME_DIRECTIONS, OUTCOME_LABELS
+from .core.decisions.request.constraint import CONSTRAINT_KINDS
+from .core.outcome.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
 from .core.outcome import Outcome
-from .core.time import iso, parse_iso, utcnow
-from .core.values import confidence_band
-from .core.verbs import VERBS
-from .core.version import SCHEMA_VERSION
+from .core.support.time import iso, parse_iso, utcnow
+from .core.support.values import confidence_band
+from .core.support.verbs import VERBS
+from .core.support.version import SCHEMA_VERSION
 from .core import attention, evaluation
 from .core.attention import AttentionDecision, AttentionOutcome, Context, Feedback, Signal, decide_attention
 from .appkit.delivery import DeliveryPort, DeliveryReceipt, NullDelivery
@@ -71,7 +71,7 @@ from .core.policies import (
     VerificationPolicy,
     decide_action,
 )
-from .appkit.records.decision import (
+from .appkit.audit.decision_record import (
     DecisionRecord,
     EvidenceRef,
     approve as approve_record,
@@ -80,7 +80,7 @@ from .appkit.records.decision import (
     reject as reject_record,
     verify as verify_record,
 )
-from .appkit.records.proposal import Proposal, apply as apply_proposal, approve as approve_proposal, reject as reject_proposal, undo as undo_proposal
+from .appkit.audit.proposal import Proposal, apply as apply_proposal, approve as approve_proposal, reject as reject_proposal, undo as undo_proposal
 from .appkit.live_context import CallableDetector, LiveContext
 from .appkit.runtime import (
     ApprovalRequired,

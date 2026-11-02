@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 
-from .attention_outcome import AttentionOutcome
+from .model.outcome import AttentionOutcome
 from .labels import HELPED, HURT, NEUTRAL, UNKNOWN
 
 

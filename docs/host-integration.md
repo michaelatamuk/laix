@@ -20,7 +20,7 @@ LAIX returns one Decision
 task acts, asks, waits or escalates
 ```
 
-Runnable example: [`examples/python/host/mission_adapter.py`](../examples/python/host/mission_adapter.py).
+Runnable example: [`examples/appkit/runtime/mission_adapter.py`](../examples/appkit/runtime/mission_adapter.py).
 
 It shows:
 
@@ -74,7 +74,7 @@ The host asks a person if the flag is true, then runs the action through its own
 execution path. LAIX can provide an execution bridge for a task, but that is part
 of the optional app kit.
 
-Runnable example: [`examples/python/host/mission_execution.py`](../examples/python/host/mission_execution.py).
+Runnable example: [`examples/appkit/runtime/mission_execution.py`](../examples/appkit/runtime/mission_execution.py).
 
 It shows a decision that needs approval, an owner approval, and a receipt.
 
@@ -131,6 +131,6 @@ Run the two examples from the repository root:
 
 ```powershell
 $env:PYTHONPATH = "packages/python/laix/src"
-py examples/python/host/mission_adapter.py
-py examples/python/host/mission_execution.py
+py examples/appkit/runtime/mission_adapter.py
+py examples/appkit/runtime/mission_execution.py
 ```

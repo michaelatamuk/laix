@@ -10,7 +10,7 @@ from dataclasses import asdict, replace
 from typing import Any
 
 from ..core import attention
-from ..core.version import SCHEMA_VERSION
+from ..core.support.version import SCHEMA_VERSION
 from ..core.decisions import (
     Breakdown,
     Decision,
@@ -23,7 +23,7 @@ from ..core.decisions import (
 )
 from .delivery import DeliveryPort, DeliveryReceipt
 from ..core.policies import Policy, PolicyRegistry
-from ..core.policies.action import ACTION_POLICY_VERSION
+from ..core.policies.builtin.action import ACTION_POLICY_VERSION
 from .runtime import DecisionRuntime
 from .runtime.execution import ExecutionBridge
 

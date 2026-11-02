@@ -5,7 +5,7 @@ English, no code. Then read [Host integration](host-integration.md) for the six
 things a product team checks first.
 
 For the design: [architecture](architecture.md), then
-[reading a decision](core/decisions.md), then [contracts](core/contracts.md).
+[reading a decision](core/decisions.md), then [records](core/records.md).
 
 The split follows the code:
 
@@ -28,7 +28,7 @@ The split follows the code:
 
 | Page | Covers |
 |---|---|
-| [core/contracts.md](core/contracts.md) | record shapes and the `0.8.0` version |
+| [core/records.md](core/records.md) | record shapes and the `0.8.0` version |
 | [core/decisions.md](core/decisions.md) | verbs, fields and examples |
 | [core/attention.md](core/attention.md) | task-level attention and its scope |
 | [core/policy-packs.md](core/policy-packs.md) | the eight packaged policies |

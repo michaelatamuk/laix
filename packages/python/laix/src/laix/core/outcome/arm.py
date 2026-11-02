@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from typing import Any
 
-from ..values import clamp
+from ..support.values import clamp
 
 
 @dataclass(frozen=True, slots=True)

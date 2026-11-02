@@ -10,12 +10,12 @@ network, no database, no clock of its own.
 from __future__ import annotations
 
 from ..decisions import Breakdown, Escalation, Intent
-from ..verbs import VERBS
-from .attention_decision import AttentionDecision
-from .attention_outcome import AttentionOutcome
-from .clock import Clock
-from .context import Context
-from .feedback import Feedback
+from ..support.verbs import VERBS
+from .model.decision import AttentionDecision
+from .model.outcome import AttentionOutcome
+from .ports.clock import Clock
+from .model.context import Context
+from .model.feedback import Feedback
 from .labels import (
     FEEDBACK_STATES,
     HELPED,
@@ -28,10 +28,10 @@ from .labels import (
     label_for_feedback,
     result_for_reason,
 )
-from .null_sink import NullSink
+from .ports.null_sink import NullSink
 from .outcome_log import OutcomeLog
 from .policy import GATES, REASONS, cost_of_waiting, decide_attention, dedupe_key, rollup, score, trace_id, undo_hint
-from .recorder import Recorder
+from .ports.recorder import Recorder
 from .replay import (
     POLICIES,
     benchmark,
@@ -44,9 +44,9 @@ from .replay import (
     signal_from,
     validate_document,
 )
-from .signal import Signal
-from .sink import Sink
-from .system_clock import SystemClock
+from .model.signal import Signal
+from .ports.sink import Sink
+from .ports.system_clock import SystemClock
 from .timing import hours_until, is_quiet, parse_range
 
 __version__ = "0.8.0"

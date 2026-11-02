@@ -7,15 +7,16 @@ stories are small everyday situations, so the result is easy to picture.
 
 ```text
 examples/
-├── python/
-│   ├── attention/     surfacing, quiet hours, feedback
+├── decisions/
 │   ├── action/        action selection and custom policy
-│   ├── policies/      packaged policy packs and learned bandit
-│   ├── runtime/       execution, resources, platform
-│   ├── records/       decision record and proposal
-│   ├── stores/        state store and outcome store
-│   ├── host/          task adapter and approval/execution
-│   └── integration/   delivery and evaluation
+│   ├── attention/     surfacing, quiet hours, feedback
+│   └── records/       decision record, outcome store, parity
+├── policies/          packaged policy packs and learned bandit
+├── appkit/
+│   ├── runtime/       execution, resources, live context, stores
+│   ├── audit/         proposal lifecycle
+│   ├── platform/      platform interface
+│   └── bench/         LAIX-Bench
 ├── typescript/
 │   ├── attention/
 │   ├── action/
@@ -31,72 +32,72 @@ examples/
 
 | File | Story | Output |
 |---|---|---|
-| `python/attention/bill_due.py` | An electricity bill is due tomorrow, at 10:00. | `guide worth_surfacing 84.0` |
-| `python/attention/quiet_hours.py` | The same bill, now at 23:30. | `wait quiet_hours 84.0 True False` |
-| `python/attention/feedback.py` | The person already dismissed this signal. | `wait dismissed` |
+| `decisions/attention/bill_due.py` | An electricity bill is due tomorrow, at 10:00. | `guide worth_surfacing 84.0` |
+| `decisions/attention/quiet_hours.py` | The same bill, now at 23:30. | `wait quiet_hours 84.0 True False` |
+| `decisions/attention/feedback.py` | The person already dismissed this signal. | `wait dismissed` |
 
 ## Action
 
 | File | Story | Output |
 |---|---|---|
-| `python/action/leaking_sink.py` | The kitchen sink is about to overflow. | `act policy_rule option-close-valve` |
-| `python/action/water_electricity_no_valve.py` | No safe valve: the safety boundary escalates. | `escalate manager 0.7` |
-| `python/action/pay_bill.py` | A bill is due today and a person must approve the payment. | `act policy_rule option-pay True` |
-| `python/action/check_again.py` | A parcel is late; a tracking page can settle it. | `observe policy_rule option-check-tracking` |
-| `python/action/custom_policy.py` | A caller supplies its own policy. | `wait policy_rule` |
+| `decisions/action/leaking_sink.py` | The kitchen sink is about to overflow. | `act policy_rule option-close-valve` |
+| `decisions/action/water_electricity_no_valve.py` | No safe valve: the safety boundary escalates. | `escalate manager 0.7` |
+| `decisions/action/pay_bill.py` | A bill is due today and a person must approve the payment. | `act policy_rule option-pay True` |
+| `decisions/action/check_again.py` | A parcel is late; a tracking page can settle it. | `observe policy_rule option-check-tracking` |
+| `decisions/action/custom_policy.py` | A caller supplies its own policy. | `wait policy_rule` |
 
 ## Policy packs
 
 | File | Class | Output |
 |---|---|---|
-| `python/policies/active_perception.py` | Active perception | `observe observe_for_information look-1` |
-| `python/policies/safety.py` | Safety-constrained action | `act safe_action valve` |
-| `python/policies/replanning.py` | Replanning | `act replan plan-fast` |
-| `python/policies/allocation.py` | Allocation | `act allocate ['a', 'b']` |
-| `python/policies/negotiation.py` | Negotiation | `act counter_offer 12.5` |
-| `python/policies/preference.py` | Preference elicitation | `ask ask_preference q2` |
-| `python/policies/verification.py` | Verification | `verify verify_outcome api` |
-| `python/policies/escalation.py` | Escalation | `escalate escalate_to_target manager` |
-| `python/policies/bandit.py` | Outcome learning | `manual automatic 0.75` |
-| `python/policies/time_critical.py` | Gates, delay, cost, disruption and confidence | `act breaker-dry 0.44` |
+| `policies/active_perception.py` | Active perception | `observe observe_for_information look-1` |
+| `policies/safety.py` | Safety-constrained action | `act safe_action valve` |
+| `policies/replanning.py` | Replanning | `act replan plan-fast` |
+| `policies/allocation.py` | Allocation | `act allocate ['a', 'b']` |
+| `policies/negotiation.py` | Negotiation | `act counter_offer 12.5` |
+| `policies/preference.py` | Preference elicitation | `ask ask_preference q2` |
+| `policies/verification.py` | Verification | `verify verify_outcome api` |
+| `policies/escalation.py` | Escalation | `escalate escalate_to_target manager` |
+| `policies/bandit.py` | Outcome learning | `manual automatic 0.75` |
+| `policies/time_critical.py` | Gates, delay, cost, disruption and confidence | `act breaker-dry 0.44` |
 
 ## Runtime
 
 | File | Piece | Output |
 |---|---|---|
-| `python/runtime/execution.py` | Decision runtime and execution bridge | `executed close the valve` |
-| `python/runtime/resources.py` | Cheap/deep call admission | `('camera', 'read-page') ('full-audio',)` |
-| `python/runtime/live_context.py` | Detectors, admission and perception frames | `('motion', 'read-label') ('transcribe',) 2 0.097` |
-| `python/runtime/platform_interface.py` | Run a skill, approve, read events | `7 skill.started,skill.finished fast True` |
+| `appkit/runtime/execution.py` | Decision runtime and execution bridge | `executed close the valve` |
+| `appkit/runtime/resources.py` | Cheap/deep call admission | `('camera', 'read-page') ('full-audio',)` |
+| `appkit/runtime/live_context.py` | Detectors, admission and perception frames | `('motion', 'read-label') ('transcribe',) 2 0.097` |
+| `appkit/platform/platform_interface.py` | Run a skill, approve, read events | `7 skill.started,skill.finished fast True` |
 
 ## Records
 
 | File | Piece | Output |
 |---|---|---|
-| `python/records/record.py` | Record, approve, execute, verify | `executed True` |
-| `python/records/proposal.py` | Proposal lifecycle | `pending approved applied undone` |
+| `decisions/records/record.py` | Record, approve, execute, verify | `executed True` |
+| `appkit/audit/proposal.py` | Proposal lifecycle | `pending approved applied undone` |
 
 ## Stores
 
 | File | Piece | Output |
 |---|---|---|
-| `python/stores/state_store.py` | Save, load and delete an experience snapshot | `decide True` |
-| `python/stores/outcome_store.py` | Record what a decision changed | `helped -2.0 1` |
+| `appkit/runtime/state_store.py` | Save, load and delete an experience snapshot | `decide True` |
+| `decisions/records/outcome_store.py` | Record what a decision changed | `helped -2.0 1` |
 
 ## Host integration
 
 | File | Shows | Output |
 |---|---|---|
-| `python/host/mission_adapter.py` | Task → request → decision → basis | `act valve host-calibrated True reason` |
-| `python/host/mission_execution.py` | Approval → execution → receipt | `executed approve the repair True` |
+| `appkit/runtime/mission_adapter.py` | Task → request → decision → basis | `act valve host-calibrated True reason` |
+| `appkit/runtime/mission_execution.py` | Approval → execution → receipt | `executed approve the repair True` |
 
 ## Integration
 
 | File | Piece | Output |
 |---|---|---|
-| `python/integration/bench.py` | Run LAIX-Bench from Python | `25 25 1.0` |
-| `python/integration/delivery.py` | Delivery port and receipt | `skipped email` |
-| `python/integration/evaluation.py` | Parity harness over cases | `2 2 1.0` |
+| `appkit/bench/bench.py` | Run LAIX-Bench from Python | `25 25 1.0` |
+| `appkit/runtime/delivery.py` | Delivery port and receipt | `skipped email` |
+| `decisions/records/evaluation.py` | Parity harness over cases | `2 2 1.0` |
 
 ## TypeScript
 
@@ -124,7 +125,7 @@ From the repository root:
 
 ```powershell
 $env:PYTHONPATH = "packages/python/laix/src"
-Get-ChildItem examples/python -Recurse -Filter *.py | ForEach-Object { py $_.FullName }
+Get-ChildItem examples/decisions, examples/policies, examples/appkit -Recurse -Filter *.py | ForEach-Object { py $_.FullName }
 Get-ChildItem examples/apps/*.py | ForEach-Object { py $_.FullName }
 ```
 
@@ -132,7 +133,7 @@ A single example:
 
 ```powershell
 $env:PYTHONPATH = "packages/python/laix/src"
-py examples/python/policies/active_perception.py
+py examples/policies/active_perception.py
 ```
 
 The TypeScript examples run with Node's type stripping:

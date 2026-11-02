@@ -22,12 +22,12 @@ from ...core.decisions import (
     Situation,
     Trace,
 )
-from ...core.ids import new_id
+from ...core.support.ids import new_id
 from ...core.outcome import Outcome
-from ...core.time import iso
+from ...core.support.time import iso
 from .execution import ApprovalRequired, ExecutionBridge
 from ...core.outcome import OutcomeLedger
-from ...core.policies.action import ActionPolicy, ActionPolicyRequest
+from ...core.policies.builtin.action import ActionPolicy, ActionPolicyRequest
 from ...core.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .state import ExperienceState
 

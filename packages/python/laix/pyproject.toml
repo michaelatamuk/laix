@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "laix"
 version = "0.8.0"
-description = "LAIX: one generic decision layer for live apps. Contracts, policies, runtime, execution, outcomes and decision records."
+description = "LAIX: one generic decision layer for live apps. Decision shapes, policies, runtime, execution, outcomes and decision records."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
@@ -16,8 +16,8 @@ where = ["src"]
 include = ["laix*"]
 
 [tool.setuptools.package-data]
-"laix.core" = ["*.json"]
-"laix.core.attention" = ["contract/*.json"]
+"laix.core.schema" = ["*.json"]
+"laix.core.attention" = ["vectors/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

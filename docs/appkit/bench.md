@@ -83,7 +83,7 @@ ignored.
 
 ## Add a case
 
-1. Add it to `packages/python/laix/src/laix/appkit/bench.py`.
+1. Add it to `packages/python/laix/src/laix/appkit/bench/runner.py`.
 2. Add the same case to `packages/typescript/laix/src/bench.ts`.
 3. Run both benches.
 4. Keep the case as a regression.

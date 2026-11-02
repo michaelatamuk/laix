@@ -13,17 +13,10 @@ from __future__ import annotations
 from typing import Any, Callable
 
 from ...core.decisions import ActionOption, Decision, Receipt
-from ...core.ids import new_receipt_id
+from ...core.support.ids import new_receipt_id
+from .approval_required import ApprovalRequired
 
 Handler = Callable[[ActionOption, dict[str, Any]], dict[str, Any]]
-
-
-class ApprovalRequired(RuntimeError):
-    """Raised when a destructive decision has no approver."""
-
-
-class UnknownAction(RuntimeError):
-    """Raised when a decision names an option the bridge cannot execute."""
 
 
 class ExecutionBridge:

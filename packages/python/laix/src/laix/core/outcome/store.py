@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Protocol, runtime_checkable
 
-from .outcome import Outcome
+from .record import Outcome
 
 
 @runtime_checkable
