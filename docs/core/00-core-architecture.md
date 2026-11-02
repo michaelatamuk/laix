@@ -1,37 +1,60 @@
 # Core building blocks
 
-LAIX core only. Read bottom-up: each block builds on the blocks below it.
+LAIX core only. Read bottom-up: each row builds on the row below it.
 
 ```mermaid
 block-beta
     columns 3
 
-    entry["Core entry<br/>select · decide"]:3
-    evaluation["Evaluation<br/>cases · parity · bench"] schema["Schema<br/>records · build · check"] space
-    engines["Decision engines<br/>attention · policies · resources"]:3
-    contract["Decision contract<br/>request · response · trail"] learning["Outcome learning<br/>outcome · reward · ledger · bandit"] sensing["Sensing<br/>detector · detection · event · frame"]
-    foundation["Foundation<br/>support · ids · time · values · verbs · errors"]:3
+    decide["Decide<br/>select · decide"]
+    learn["Learn from outcomes<br/>outcome · reward · ledger · bandit"]
+    evaluate["Evaluate<br/>cases · parity · bench"]
+
+    request["Decision request<br/>signals · context · options"]
+    response["Decision response<br/>verb · reason · confidence · action"]
+    trail["Execution trail<br/>receipt · trace"]
+
+    attention["Attention<br/>gates · score"]
+    policies["Policies<br/>action · packaged"]
+    resources["Resources<br/>budget · admission"]
+
+    schema["Schema<br/>records · build · check"]
+    sensing["Sensing<br/>detector · event · frame"]
+    support["Support<br/>ids · time · values · verbs · errors"]
 ```
 
-## The blocks
+## The rows
 
-| Block | What it contains | Built on |
+| Row | Blocks | What it is |
 |---|---|---|
-| **Foundation** | `support`: ids, time, values, verbs, errors | — |
-| **Decision contract** | request, response and trail records | Foundation |
-| **Outcome learning** | outcomes, rewards, ledger, UCB bandit | Foundation |
-| **Sensing** | detector, detection, event and frame contracts | Foundation |
-| **Decision engines** | attention, policies and resource admission | Decision contract, outcome learning |
-| **Evaluation** | cases, parity, reports and bench | Decision contract, decision engines |
-| **Schema** | record list, schema build and checks | Decision contract, outcome learning |
-| **Core entry** | `select` and `decide` | Decision contract, decision engines |
+| **Top** | Decide · Learn from outcomes · Evaluate | What the core can do. |
+| **Second** | Decision request · Decision response · Execution trail | The contract and its records. |
+| **Third** | Attention · Policies · Resources | The engines that produce a decision. |
+| **Bottom** | Schema · Sensing · Support | The shared records and foundations. |
+
+## What each block contains
+
+| Block | Contains | Built on |
+|---|---|---|
+| **Decide** | `select` and `decide` | Decision request, decision response, engines |
+| **Learn from outcomes** | outcome, reward, ledger, bandit | Support |
+| **Evaluate** | cases, parity, report, bench | Decision request, decision response, engines |
+| **Decision request** | signals, context, situation, options | Support |
+| **Decision response** | verb, reason, confidence, action, evidence | Support |
+| **Execution trail** | execution receipt, trace | Support |
+| **Attention** | gates, score, timing | Decision request, decision response, support |
+| **Policies** | action and packaged policies | Decision request, decision response, learning, support |
+| **Resources** | budget, sensing option, admission | Support |
+| **Schema** | records, build, check | Decision request, decision response, learning, support |
+| **Sensing** | detector, detection, event, frame | Support |
+| **Support** | ids, time, values, verbs, errors | — |
 
 ## Reading the stack
 
-- **Foundation** is the base. Nothing below it.
-- **Decision contract** is the boundary: request in, response out.
-- **Outcome learning** and **sensing** are independent capabilities on the foundation.
-- **Decision engines** turn a contract request into a response, using learning when a policy learns.
-- **Evaluation** checks the engines; it is not on the request path.
-- **Schema** reads the records from the contract and learning blocks.
-- **Core entry** is the single call: it chooses a policy or engine and returns the response.
+- **Decide** is the entry point. It chooses a policy or engine and returns a response.
+- **Learn from outcomes** turns a measured result into a better next choice.
+- **Evaluate** checks the engines; it is not on the request path.
+- **Decision request** and **Decision response** are the boundary: one request in, one response out.
+- **Execution trail** records what happened after the response.
+- **Attention**, **Policies** and **Resources** are the engines.
+- **Schema**, **Sensing** and **Support** are the shared foundations.
