@@ -22,7 +22,7 @@ The split follows the code:
 | [architecture.md](architecture.md) | What is LAIX and how do the parts fit? |
 | [structure.md](structure.md) | Where does each file live? |
 | [boundaries.md](boundaries.md) | Where does PPMA end and LAIX begin, and what belongs to core, app kit and host? |
-| [ppma-laix.md](ppma-laix.md) | Why use LAIX in PPMA, and where does JEV fit? |
+| [ppma-laix.md](ppma-laix.md) | Why use LAIX in PPMA? |
 | [decision-models.md](decision-models.md) | How does LAIX relate to decision models? |
 
 ## Core
