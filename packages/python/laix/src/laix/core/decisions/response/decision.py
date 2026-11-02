@@ -1,4 +1,4 @@
-"""The one decision shape returned by every policy and by ``Layer``."""
+"""The one decision shape returned by every policy, ``decide`` and ``Layer``."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from .payload.intent import Intent
 
 @dataclass(frozen=True, slots=True)
 class Decision:
-    """The one decision shape returned by every policy and by ``Layer``."""
+    """The one decision shape returned by every policy, ``decide`` and ``Layer``."""
 
     verb: str
     confidence: float

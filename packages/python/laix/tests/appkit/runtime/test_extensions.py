@@ -68,7 +68,7 @@ def test_explain_returns_the_decision_record_fields() -> None:
     assert explained["verb"] == "guide"
     assert explained["reasonCode"] == "worth_surfacing"
     assert explained["evidence"] == []
-    assert explained["traceId"] == ""
+    assert explained["traceId"].startswith("TRC-")
 
 
 def test_proposal_lifecycle() -> None:
