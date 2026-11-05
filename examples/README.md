@@ -116,7 +116,7 @@ py examples/python/01-decide/attention_bill_due.py
 | Bridge execution with receipts | `execution_saga.py` | `execution_saga.mts` | `('reserve',) ('reserve',) RuntimeError: declined` |
 | Perception loop | `live_context.py` | `live_context.mts` | `('motion', 'read-label') ('transcribe',) 2 0.097` |
 | Resource admission | `resources.py` | `resources.mts` | `('camera', 'read-page') ('full-audio',)` |
-| Platform skills and approvals | `platform.py` | `platform.mts` | `7 skill.started,skill.finished fast True` |
+| Platform skills and approvals | `platform_interface.py` | `platform.mts` | `7 skill.started,skill.finished fast True` |
 | Delivery port | `delivery.py` | `delivery.mts` | `skipped email` |
 | Host adapter | `host_adapter.py` | — | `act valve host-calibrated True reason` |
 | Host execution | `host_execution.py` | — | `executed approve the repair True` |
