@@ -82,7 +82,7 @@ no model training or fine-tuning; planning runs over a model the host supplies.
 | 3 | Execution-aware planning | Does modelling receipts, unknown outcomes and reversibility reduce irreversible errors? | planner done |
 | 4 | Human approval and attention | Is human attention a scarce resource that planning should spend explicitly? | planner done |
 | 5 | Decision-level calibration | Does calibrating the decision beat calibrating the prediction? | done |
-| 6 | Streaming decision semantics | What are the correct semantics for decisions over event time, revisions and checkpoints? | planned |
+| 6 | Streaming decision semantics | What are the correct semantics for decisions over event time, revisions and checkpoints? | done |
 
 A track becomes a paper only with a precise problem, strong baselines (including published trained
 models where relevant), ablations, reproducible code, and honest limitations. Training-free does not

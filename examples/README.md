@@ -106,6 +106,7 @@ py examples/python/01-decide/attention_bill_due.py
 | Aggregate events into windows | `windows.py` | `windows.mts` | `['2 events', '1 events']` |
 | Cooldown, budget and replay | `flow_control.py` | `flow_control.mts` | `1 0 0 1 1 ['d', 'e']` |
 | Save and resume a stream | `checkpoint.py` | `checkpoint.mts` | `True 1 1` / `true 1 a b` |
+| Keep a decision timeline | `decision_timeline.py` | `decision_timeline.mts` | `2 1 d2 d1,d2` |
 | Read NDJSON into requests | `sources.py` | `sources.mts` | `a b` |
 | Retain malformed source frames | `dead_letter.py` | `dead_letter.mts` | `a b 1 True` |
 | Export Prometheus counters | `metrics.py` | `metrics.mts` | `1 True` / `1 true` |

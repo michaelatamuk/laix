@@ -38,7 +38,7 @@ Read in order.
 |---|---|
 | [App-kit architecture](03-appkit/00-architecture.md) | surface, runtime, state, result, ports and proof |
 | [Integration](03-appkit/01-integration.md) | adapters, confidence, rollout and custom policies |
-| [Streaming](03-appkit/02-streaming.md) | event time, cadence, backpressure, checkpoints and sources |
+| [Streaming](03-appkit/02-streaming.md) | event time, cadence, backpressure, checkpoints, timeline and sources |
 | [Live Context](03-appkit/03-live-context.md) | detectors, admission and frames |
 | [Execution](03-appkit/04-execution.md) | receipts, idempotency, multi-step recovery, records |
 | [Stores](03-appkit/05-stores.md) | state, checkpoints, commitments and outcomes |

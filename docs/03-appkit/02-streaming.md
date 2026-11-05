@@ -132,6 +132,31 @@ print(result.decisions, result.elapsed_ms, result.throughput_per_second)
 | **Operations** | `prometheus(stats)` exports counters; `run_stream_bench(session, requests)` reports throughput. |
 | **Stats** | `stats` counts observed, decided, late, throttled, dropped, expired, suppressed, shed, duplicates, refine timeouts, provisional and revised, and reports p50/p95/p99 decision latency. |
 
+## Decision timeline
+
+`DecisionTimeline` keeps the decisions a session emits and enforces the revision semantics:
+
+- a root decision has revision 0 and no predecessor;
+- a revision points to the decision it supersedes and uses the next number;
+- a revision cannot move backwards in event time or switch streams;
+- duplicate ids are rejected.
+
+```python
+from laix import DecisionTimeline
+
+timeline = DecisionTimeline()
+for decision in decisions:
+    timeline.add(decision)
+
+print(timeline.report().to_dict())
+print(timeline.current())
+print(timeline.history("d2"))
+```
+
+`report()` returns the number of decisions, open chains, superseded decisions and any issues.
+`current()` returns the latest decision in each chain; `late(watermark)` returns decisions before
+the watermark. The timeline is append-only and trains nothing.
+
 ## Contract fields
 
 `Decision` carries the stream fields, all additive:

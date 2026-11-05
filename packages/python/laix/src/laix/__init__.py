@@ -203,6 +203,7 @@ _APPKIT_NAMES: dict[str, dict[str, str]] = {
     ".appkit.streaming": {
         "DeadLetter": "DeadLetter",
         "DeadLetterQueue": "DeadLetterQueue",
+        "DecisionTimeline": "DecisionTimeline",
         "FileStreamCheckpointStore": "FileStreamCheckpointStore",
         "InMemoryStreamCheckpointStore": "InMemoryStreamCheckpointStore",
         "ManualClock": "ManualClock",
@@ -210,6 +211,8 @@ _APPKIT_NAMES: dict[str, dict[str, str]] = {
         "StreamCheckpointStore": "StreamCheckpointStore",
         "StreamSession": "StreamSession",
         "StreamStats": "StreamStats",
+        "TimelineError": "TimelineError",
+        "TimelineReport": "TimelineReport",
         "TumblingWindow": "TumblingWindow",
         "WindowBatch": "WindowBatch",
         "from_queue": "from_queue",

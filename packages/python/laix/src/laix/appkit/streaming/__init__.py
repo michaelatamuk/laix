@@ -16,12 +16,14 @@ from .checkpoint import (
     InMemoryStreamCheckpointStore,
     StreamCheckpointStore,
 )
+from .timeline import DecisionTimeline, TimelineError, TimelineReport
 
 __all__ = [
     "FULL_POLICIES",
     "LATE_POLICIES",
     "DeadLetter",
     "DeadLetterQueue",
+    "DecisionTimeline",
     "ManualClock",
     "Refiner",
     "StreamBenchResult",
@@ -30,6 +32,8 @@ __all__ = [
     "InMemoryStreamCheckpointStore",
     "StreamSession",
     "StreamStats",
+    "TimelineError",
+    "TimelineReport",
     "TumblingWindow",
     "WindowBatch",
     "from_queue",

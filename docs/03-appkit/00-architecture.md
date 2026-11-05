@@ -14,7 +14,7 @@ block-beta
         columns 4
         surface_label["Surface"]
         layer["Single decision<br/>one call"]
-        stream["Stream<br/>live decisions"]
+        stream["Stream<br/>live decisions · timeline"]
         live["Perception<br/>detectors · frames"]
     end
 
@@ -82,7 +82,7 @@ block-beta
 | Row | Part | Code | Contains |
 |---|---|---|---|
 | Surface | **Single decision** | `Layer` | decide, execute, measure, deliver one decision |
-| Surface | **Stream** | `StreamSession` | observe, decisions, feed, windows, revisions, checkpoints |
+| Surface | **Stream** | `StreamSession` | observe, decisions, feed, windows, revisions, checkpoints, timeline |
 | Surface | **Perception** | `LiveContext` | detectors, admission, frames |
 | Runtime | **Decision loop** | `DecisionRuntime` | policy, state, execution, outcome |
 | Runtime | **Execution** | `ExecutionBridge` | approval, idempotency, execute, cancel, undo, unknown, reconcile, run_steps |
@@ -103,8 +103,8 @@ block-beta
 ## Reading the app kit
 
 - **Surface** — **Single decision** (`Layer`) answers one request. **Stream** (`StreamSession`)
-  answers a stream over time and keeps checkpoints. **Perception** (`LiveContext`) runs detectors
-  over incoming context and returns frames.
+  answers a stream over time, keeps checkpoints and can feed a decision timeline. **Perception**
+  (`LiveContext`) runs detectors over incoming context and returns frames.
 - **Runtime** — **Decision loop** (`DecisionRuntime`) links a policy to state, execution and
   outcome. **Execution** (`ExecutionBridge`) is the write boundary: it checks approval, enforces
   idempotency (a retry does not repeat the effect), calls the host skill and records a receipt.
