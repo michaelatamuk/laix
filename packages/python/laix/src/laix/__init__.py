@@ -98,6 +98,15 @@ from .core.engines.execution_planner import (
     ExecutionWeights,
     execution_effect,
 )
+from .core.engines.live_bench import (
+    LiveBenchReport,
+    LiveBenchRow,
+    LiveCase,
+    PlannerMetrics,
+    default_cases,
+    default_planners,
+    run_live_bench,
+)
 from .core.engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
 from .core.engines.calibration import (
     CalibrationBin,
@@ -402,6 +411,13 @@ __all__ = [
     "ExecutionScore",
     "ExecutionWeights",
     "execution_effect",
+    "LiveBenchReport",
+    "LiveBenchRow",
+    "LiveCase",
+    "PlannerMetrics",
+    "default_cases",
+    "default_planners",
+    "run_live_bench",
     "ResourcePlan",
     "ResourceScheduler",
     "ReplanningPolicy",

@@ -74,14 +74,14 @@ A patent-level claim would also need a prior-art search.
 Six training-free tracks could become papers once built and evaluated. They share one constraint:
 no model training or fine-tuning; planning runs over a model the host supplies.
 
-| # | Track | Question |
-|---|---|---|
-| 1 | Training-free live decisions | When are training-free decisions enough, and where do they fail? |
-| 2 | Commitment-aware planning | Do promises, deadlines and dependencies change the optimal decision? |
-| 3 | Execution-aware planning | Does modelling receipts, unknown outcomes and reversibility reduce irreversible errors? |
-| 4 | Human approval and attention | Is human attention a scarce resource that planning should spend explicitly? |
-| 5 | Decision-level calibration | Does calibrating the decision beat calibrating the prediction? |
-| 6 | Streaming decision semantics | What are the correct semantics for decisions over event time, revisions and checkpoints? |
+| # | Track | Question | Status |
+|---|---|---|---|
+| 1 | Training-free live decisions | When are training-free decisions enough, and where do they fail? | done |
+| 2 | Commitment-aware planning | Do promises, deadlines and dependencies change the optimal decision? | planner done |
+| 3 | Execution-aware planning | Does modelling receipts, unknown outcomes and reversibility reduce irreversible errors? | planner done |
+| 4 | Human approval and attention | Is human attention a scarce resource that planning should spend explicitly? | planned |
+| 5 | Decision-level calibration | Does calibrating the decision beat calibrating the prediction? | planned |
+| 6 | Streaming decision semantics | What are the correct semantics for decisions over event time, revisions and checkpoints? | planned |
 
 A track becomes a paper only with a precise problem, strong baselines (including published trained
 models where relevant), ablations, reproducible code, and honest limitations. Training-free does not

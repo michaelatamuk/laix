@@ -143,6 +143,7 @@ py examples/python/01-decide/attention_bill_due.py
 |---|---|---|---|
 | Run LAIX-Bench | `bench.py` | `bench.mts` | `25 25 1.0` / `25 25 1` |
 | Compare cases with the parity harness | `evaluation.py` | `evaluation.mts` | `2 2 1.0` / `2 2 1` |
+| Training-free live decisions | `live_bench.py` | — | `utility 0.33 0` / `commitment 0.50 0` / `execution 0.83 0` |
 
 ## 08 Stores
 

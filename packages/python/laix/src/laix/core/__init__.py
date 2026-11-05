@@ -36,6 +36,15 @@ from .engines.execution_planner import (
     ExecutionWeights,
     execution_effect,
 )
+from .engines.live_bench import (
+    LiveBenchReport,
+    LiveBenchRow,
+    LiveCase,
+    PlannerMetrics,
+    default_cases,
+    default_planners,
+    run_live_bench,
+)
 from .engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
 from .engines.mdp import (
     MDPEngine,
@@ -263,6 +272,13 @@ __all__ = [
     "ExecutionScore",
     "ExecutionWeights",
     "execution_effect",
+    "LiveBenchReport",
+    "LiveBenchRow",
+    "LiveCase",
+    "PlannerMetrics",
+    "default_cases",
+    "default_planners",
+    "run_live_bench",
     "ReplanningPolicy",
     "Report",
     "ResourcePlan",

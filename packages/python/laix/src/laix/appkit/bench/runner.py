@@ -16,6 +16,7 @@ from datetime import datetime, timezone
 from typing import Any, Mapping, Sequence
 
 from ...core.engines.attention import Context, Feedback, Signal
+from ...core.engines.live_bench import run_live_bench
 from ...core.decisions import ActionOption, Belief, DecisionRequest, Situation
 from ...core.engines.policies import (
     ActivePerceptionPolicy,
@@ -349,6 +350,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="laix.appkit.bench", description="Run the LAIX decision-class bench.")
     parser.add_argument("--suite", action="append", choices=suite_names(), help="run one or more suites")
     parser.add_argument("--engines", action="store_true", help="compare decision engines on a chain")
+    parser.add_argument("--live", action="store_true", help="compare training-free live planners")
     parser.add_argument("--json", action="store_true", help="print the report as JSON")
     parser.add_argument("--list", action="store_true", help="list suites and exit")
     parser.add_argument("--fail-under", type=float, default=1.0, help="minimum agreement, default 1.0")
@@ -357,6 +359,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.list:
         for suite in all_suites():
             print(f"{suite.name:24} {suite.description}")
+        return 0
+
+    if args.live:
+        live_report = run_live_bench()
+        if args.json:
+            print(json.dumps(live_report.to_dict(), indent=2))
+        else:
+            print(live_report.summary())
         return 0
 
     if args.engines:

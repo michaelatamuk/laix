@@ -7,6 +7,7 @@ LAIX has three kinds of checks.
 | Attention behaviour | `packages/contracts/attention.v1.json` |
 | Attention outcomes | `packages/contracts/attention-bench.v1.json` |
 | Every decision class | `python -m laix.appkit.bench`, `npm run bench` |
+| Training-free live decisions | `python -m laix.appkit.bench --live` |
 
 The JSON schemas in `packages/contracts/` describe the record shapes.
 
