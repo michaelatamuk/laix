@@ -29,6 +29,13 @@ from .engines.commitment_planner import (
     CommitmentWeights,
     commitment_effect,
 )
+from .engines.execution_planner import (
+    ExecutionAwareEngine,
+    ExecutionEffect,
+    ExecutionScore,
+    ExecutionWeights,
+    execution_effect,
+)
 from .engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
 from .engines.mdp import (
     MDPEngine,
@@ -251,6 +258,11 @@ __all__ = [
     "EXECUTION_RECEIPT_STATUSES",
     "RECORDS",
     "ExecutionReceipt",
+    "ExecutionAwareEngine",
+    "ExecutionEffect",
+    "ExecutionScore",
+    "ExecutionWeights",
+    "execution_effect",
     "ReplanningPolicy",
     "Report",
     "ResourcePlan",

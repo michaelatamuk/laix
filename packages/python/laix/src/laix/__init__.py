@@ -91,6 +91,13 @@ from .core.engines.commitment_planner import (
     CommitmentWeights,
     commitment_effect,
 )
+from .core.engines.execution_planner import (
+    ExecutionAwareEngine,
+    ExecutionEffect,
+    ExecutionScore,
+    ExecutionWeights,
+    execution_effect,
+)
 from .core.engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
 from .core.engines.calibration import (
     CalibrationBin,
@@ -390,6 +397,11 @@ __all__ = [
     "PreferenceElicitationPolicy",
     "EXECUTION_RECEIPT_STATUSES",
     "ExecutionReceipt",
+    "ExecutionAwareEngine",
+    "ExecutionEffect",
+    "ExecutionScore",
+    "ExecutionWeights",
+    "execution_effect",
     "ResourcePlan",
     "ResourceScheduler",
     "ReplanningPolicy",

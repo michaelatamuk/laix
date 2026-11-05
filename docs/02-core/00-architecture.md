@@ -30,7 +30,7 @@ block-beta
         block:policy_group
             columns 1
             policies["Policies<br/>what should I do?"]
-            planners["Planners<br/>utility · MDP · POMDP · commitment"]
+            planners["Planners<br/>utility · MDP · POMDP<br/>commitment · execution"]
         end
     end
 
@@ -107,7 +107,7 @@ outcome → label → feedback → better attention
 | Contract | **Execution trail** | execution receipt, trace | Support |
 | Decide | **Attention** | signals, priority, timing | Contract, support |
 | Decide | **Policies** | eight packs, planner adapter, rule, target, planning wrapper, group and shadow wrappers | Contract, learning, support |
-| Decide | **Planners** (in a policy) | expected utility, [MDP](06-engines.md#what-an-mdp-is) value iteration, POMDP belief planning, commitment-aware selection | Contract, support |
+| Decide | **Planners** (in a policy) | expected utility, [MDP](06-engines.md#what-an-mdp-is) value iteration, POMDP belief planning, commitment-aware and execution-aware selection | Contract, support |
 | Constrain | **Limits** | risk, approval, safety and policy constraints | Contract, support |
 | Constrain | **Commitments** | promises, due times, dependencies and stores | Support |
 | Constrain | **Resources** | budget, latency, sensing options and schedule | Support |
@@ -120,7 +120,7 @@ outcome → label → feedback → better attention
 - **Capabilities** — Decide chooses explicitly or automatically; Learn turns outcomes into a better policy or attention; Evaluate checks the decision layers.
 - **Contract** — the request describes what is happening and what the app can do; the response carries the verb, reason, confidence, action, approval and target; the trail records what happened.
 - **Path choice** — `signals + context` → Attention; `situation + options` → Action policy. A packaged or custom policy is selected explicitly with `policy=...`.
-- **Decide** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation, plus `EnginePolicy`, `RulePolicy`, `TargetedPolicy`, `PlanningPolicy`, `GroupPolicy` and `ShadowPolicy`. Planners sit inside a policy via `EnginePolicy`; `UtilityEngine`, `MDPEngine`, `POMDPEngine` and `CommitmentAwareEngine` add expected utility, value iteration, belief planning and commitment-aware selection, with simulator, calibration and model learning.
+- **Decide** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation, plus `EnginePolicy`, `RulePolicy`, `TargetedPolicy`, `PlanningPolicy`, `GroupPolicy` and `ShadowPolicy`. Planners sit inside a policy via `EnginePolicy`; `UtilityEngine`, `MDPEngine`, `POMDPEngine`, `CommitmentAwareEngine` and `ExecutionAwareEngine` add expected utility, value iteration, belief planning, commitment-aware and execution-aware selection, with simulator, calibration and model learning.
 - **Constrain** — Limits declare risk, approval, safety and policy constraints; Commitments track promises and dependencies; Resources cover budget, latency and sensing options.
 - **Foundation** — Schema validates records; Sensing defines detectors, events and frames; Support provides shared types and helpers.
 

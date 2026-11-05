@@ -78,7 +78,7 @@ const [decision] = new Layer().decide({
 | Attention | which signal deserves attention now, and what to do with it |
 | Action policies | the next move from the options the app can afford |
 | Packaged policies | active perception, safety, replanning, allocation, negotiation, preference, verification and escalation |
-| Planners | [utility, commitment, MDP and POMDP](docs/02-core/06-engines.md#what-an-mdp-is) behind `EnginePolicy` |
+| Planners | [utility, commitment, execution, MDP and POMDP](docs/02-core/06-engines.md#what-an-mdp-is) behind `EnginePolicy` |
 | Learning | outcome labels, rewards, bandits, causal attribution, calibration and model learning |
 | Streaming | event time, cadence, backpressure, revisions, checkpoints and sources |
 | Execution | receipts, idempotency, unknown outcomes, reconciliation, multi-step recovery and records |

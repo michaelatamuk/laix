@@ -1,0 +1,33 @@
+import {
+  ExecutionAwareEngine,
+} from "../../../packages/typescript/laix/src/index.ts";
+import type {
+  ActionOption,
+  DecisionProblem,
+} from "../../../packages/typescript/laix/src/index.ts";
+
+const options: ActionOption[] = [
+  {
+    id: "delete-now",
+    verb: "act",
+    name: "delete now",
+    expectedBenefit: 0.8,
+    reversible: false,
+  },
+  {
+    id: "archive",
+    verb: "act",
+    name: "archive",
+    expectedBenefit: 0.7,
+  },
+];
+
+const problem: DecisionProblem = {
+  subject: "choose",
+  at: "2026-11-01T10:00:00Z",
+  options,
+  attributes: {},
+};
+
+const plan = new ExecutionAwareEngine().solve(problem);
+console.log(plan.actionId, plan.reasonCode, plan.reversible);

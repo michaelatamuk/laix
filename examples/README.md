@@ -90,6 +90,7 @@ py examples/python/01-decide/attention_bill_due.py
 |---|---|---|---|
 | Utility with hard limits | `utility_engine.py` | `engines.mts` | `act bold 0.75` |
 | Commitment-aware planning | `commitment_planner.py` | `commitment_planner.mts` | `send-later commitment_aware c1` |
+| Execution-aware planning | `execution_planner.py` | `execution_planner.mts` | `archive execution_aware True` / `true` |
 | One-step MDP plan | `mdp_engine.py` | `engines.mts` | `act go 2.8` |
 | POMDP belief planning | `pomdp.py` | `pomdp.mts` | `act go 2.8` |
 | Compare planners on one scenario | `simulator.py` | `engines.mts` | `right 4.0 1.0` |

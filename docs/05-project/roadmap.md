@@ -13,6 +13,7 @@ still open.
 | Planner contract | done |
 | Utility planner | done |
 | Commitment-aware planner | done |
+| Execution-aware planner | done |
 | MDP planner | done |
 | Simulator and planner comparison | done |
 | Planner bench CLI | done |

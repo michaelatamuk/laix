@@ -124,6 +124,7 @@ decision = decide(
   `neutral` / `averse` / `seeking` risk attitudes. Hard `Situation` constraints for risk, cost,
   budget, latency, interruption and safety are enforced before scoring.
 - **`CommitmentAwareEngine`** — utility plus promise keeping, violations and due commitments.
+- **`ExecutionAwareEngine`** — utility plus irreversibility, unknown outcomes and recovery cost.
 - **`MDPEngine`** — value iteration over a finite `MdpModel`, with a discount and horizon. See
   [what an MDP is](06-engines.md#what-an-mdp-is).
 - **`POMDPEngine`** — belief update and finite-horizon expectimax over a small `PomdpModel`.

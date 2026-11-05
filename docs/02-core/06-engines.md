@@ -64,6 +64,7 @@ The contracts:
 | `EnginePolicy` | turns a plan into a `Decision` |
 | `UtilityEngine` | expected utility with hard limits and risk attitude |
 | `CommitmentAwareEngine` | utility plus promise keeping, violations and due commitments |
+| `ExecutionAwareEngine` | utility plus irreversibility, unknown outcomes and recovery cost |
 | `MdpModel`, `MDPEngine` | finite MDP, value iteration and a greedy plan |
 | `PomdpModel`, `POMDPEngine` | belief update and finite-horizon planning |
 | `Simulator` | runs a planner in a model |
@@ -78,7 +79,7 @@ The contracts:
 | 1 | Problem shape | `DecisionProblem`, request projection |
 | 2 | Option model | `ActionOption`, costs, risks and hard limits |
 | 3 | Utility model | `UtilityModel`, weights, risk attitude |
-| 4 | Planner choice | `DecisionEngine.solve`, `UtilityEngine`, `CommitmentAwareEngine`, `MDPEngine`, `POMDPEngine` |
+| 4 | Planner choice | `DecisionEngine.solve`, `UtilityEngine`, `CommitmentAwareEngine`, `ExecutionAwareEngine`, `MDPEngine`, `POMDPEngine` |
 | 5 | Calibration | `CalibrationReport` and confidence adjustment |
 | 6 | Learning | `ModelLearner` for transitions and rewards |
 | 7 | Explanation | chosen plan, alternatives, expected value |
@@ -207,6 +208,33 @@ The engine adds:
 `CommitmentAwareEngine` returns the same `Plan`. It is deterministic and training-free; the
 commitments and due times come from the host. The effect can be written under `commitments` or at
 the top level of `params`.
+
+## Execution-aware planning
+
+The execution-aware planner adds the cost of acting. An option may be irreversible, may have an
+unknown outcome, may need approval and may cost time or money to recover from.
+
+An option declares its facts in `params`:
+
+```python
+ActionOption(
+    id="archive",
+    verb="act",
+    name="archive",
+    expected_benefit=0.7,
+    params={"unknown_risk": 0.2, "recovery_cost": 0.1},
+)
+```
+
+The engine subtracts:
+
+- a penalty for an irreversible action;
+- a penalty for unknown outcome risk;
+- a penalty for an approval step;
+- a penalty for recovery cost.
+
+`ExecutionAwareEngine` returns the same `Plan`. It is deterministic and training-free; the
+execution facts come from the option and the host's constraints.
 
 ## Path A: external planner
 
