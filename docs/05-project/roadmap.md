@@ -42,6 +42,50 @@ still open.
 - File-backed state and outcome stores for hosts that want an adapter out of the box.
 - Generated API reference once the public surface is stable.
 
+## Candidate planners
+
+The current planners — Utility, MDP and POMDP — are standard methods. A differentiated planner can
+be built without training a model: it can plan over a model the app supplies, enforce hard
+constraints and use state LAIX already carries.
+
+| Candidate | What would be different | Training |
+|---|---|---|
+| **Deadline and attention planner** | timing and attention are actions in the same plan | none |
+| **Commitment-aware planner** | promises, due times and dependencies are part of the state | none |
+| **Execution-aware planner** | receipts, unknown outcomes, reversibility and undo cost are part of the state | none |
+| **Risk-bounded planner** | hard limits plus worst-case or CVaR guarantees, with an explanation | none |
+| **Case-based planner** | reuse and adapt similar past decisions instead of learning a model | none |
+
+The strongest fit is the commitment/execution-aware planner: commitments, receipts, idempotency,
+recovery and outcomes already exist in the app kit.
+
+A candidate only counts as differentiated when it has:
+
+1. a precise problem statement;
+2. a benchmark against Utility, MDP and POMDP on live tasks;
+3. an explanation of why the result is different, not just a new feature.
+
+A patent-level claim would also need a prior-art search.
+
+## Research
+
+Six training-free tracks could become papers once built and evaluated. They share one constraint:
+no model training or fine-tuning; planning runs over a model the host supplies.
+
+| # | Track | Question |
+|---|---|---|
+| 1 | Training-free live decisions | When are training-free decisions enough, and where do they fail? |
+| 2 | Commitment-aware planning | Do promises, deadlines and dependencies change the optimal decision? |
+| 3 | Execution-aware planning | Does modelling receipts, unknown outcomes and reversibility reduce irreversible errors? |
+| 4 | Human approval and attention | Is human attention a scarce resource that planning should spend explicitly? |
+| 5 | Decision-level calibration | Does calibrating the decision beat calibrating the prediction? |
+| 6 | Streaming decision semantics | What are the correct semantics for decisions over event time, revisions and checkpoints? |
+
+A track becomes a paper only with a precise problem, strong baselines (including published trained
+models where relevant), ablations, reproducible code, and honest limitations. Training-free does not
+mean learning-free: outcome labels, calibration sets and causal inference are allowed; training or
+fine-tuning a model is not.
+
 ## Limits
 
 - A planner needs a world model. The app supplies transitions; LAIX plans over them.
