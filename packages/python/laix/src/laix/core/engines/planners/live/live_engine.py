@@ -25,7 +25,7 @@ from ..commitment.commitment_planner import (
     _score_option as commitment_score,
 )
 from ._live_row import _Row
-from ...engine import DecisionProblem, Plan
+from ...contract.engine import DecisionProblem, Plan
 from .live_score import LiveScore
 from ..execution.execution_planner import (
     ExecutionWeights,

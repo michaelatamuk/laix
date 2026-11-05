@@ -13,7 +13,7 @@ from typing import Any
 from ....decisions import ActionOption
 from ....support.values import clamp
 from ._execution_row import _Row
-from ...engine import DecisionProblem, Plan
+from ...contract.engine import DecisionProblem, Plan
 from .execution_effect import ExecutionEffect
 from .execution_score import ExecutionScore
 from .execution_weights import ExecutionWeights

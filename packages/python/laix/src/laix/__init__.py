@@ -107,7 +107,7 @@ from .core.engines.planners.execution.execution_planner import (
     ExecutionWeights,
     execution_effect,
 )
-from .core.engines.live_bench import (
+from .core.engines.bench.live_bench import (
     LiveBenchReport,
     LiveBenchRow,
     LiveCase,
@@ -117,7 +117,7 @@ from .core.engines.live_bench import (
     run_live_bench,
 )
 from .core.engines.planners.live.live_engine import LiveDecisionEngine, LiveScore
-from .core.engines.decision_calibration import (
+from .core.engines.learning.decision_calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
     DecisionCalibrationSample,
@@ -125,8 +125,8 @@ from .core.engines.decision_calibration import (
     decision_calibration_report,
     decision_samples_from_outcomes,
 )
-from .core.engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
-from .core.engines.calibration import (
+from .core.engines.contract.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
+from .core.engines.learning.calibration import (
     CalibrationBin,
     CalibrationReport,
     CalibrationSample,
@@ -142,7 +142,7 @@ from .core.engines.planners.mdp.mdp import (
     plan_actions,
     value_iteration,
 )
-from .core.engines.model_learning import LearnedTransition, ModelLearner
+from .core.engines.learning.model_learning import LearnedTransition, ModelLearner
 from .core.engines.planners.pomdp.pomdp import (
     ObservationProbability,
     POMDPEngine,
@@ -157,7 +157,7 @@ from .core.engines.planners.pomdp.pomdp import (
     observation_probability,
     pomdp_value,
 )
-from .core.engines.simulator import (
+from .core.engines.simulation.simulator import (
     EngineScore,
     Scenario,
     SimulationReport,

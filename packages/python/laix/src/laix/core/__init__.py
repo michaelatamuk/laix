@@ -14,7 +14,7 @@ from .engines.signals import (
     score,
 )
 from .engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
-from .engines.calibration import (
+from .engines.learning.calibration import (
     CalibrationBin,
     CalibrationReport,
     CalibrationSample,
@@ -45,7 +45,7 @@ from .engines.planners.execution.execution_planner import (
     ExecutionWeights,
     execution_effect,
 )
-from .engines.live_bench import (
+from .engines.bench.live_bench import (
     LiveBenchReport,
     LiveBenchRow,
     LiveCase,
@@ -55,7 +55,7 @@ from .engines.live_bench import (
     run_live_bench,
 )
 from .engines.planners.live.live_engine import LiveDecisionEngine, LiveScore
-from .engines.decision_calibration import (
+from .engines.learning.decision_calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
     DecisionCalibrationSample,
@@ -63,7 +63,7 @@ from .engines.decision_calibration import (
     decision_calibration_report,
     decision_samples_from_outcomes,
 )
-from .engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
+from .engines.contract.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
 from .engines.planners.mdp.mdp import (
     MDPEngine,
     MdpModel,
@@ -72,7 +72,7 @@ from .engines.planners.mdp.mdp import (
     plan_actions,
     value_iteration,
 )
-from .engines.model_learning import LearnedTransition, ModelLearner
+from .engines.learning.model_learning import LearnedTransition, ModelLearner
 from .engines.planners.pomdp.pomdp import (
     ObservationProbability,
     POMDPEngine,
@@ -87,7 +87,7 @@ from .engines.planners.pomdp.pomdp import (
     observation_probability,
     pomdp_value,
 )
-from .engines.simulator import (
+from .engines.simulation.simulator import (
     EngineScore,
     Scenario,
     SimulationReport,

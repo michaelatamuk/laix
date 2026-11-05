@@ -1,4 +1,4 @@
-import type { DecisionEngine, DecisionProblem } from "../core/engine.ts";
+import type { DecisionEngine, DecisionProblem } from "../core/contract/engine.ts";
 import type { MdpModel } from "../core/planners/mdp/mdp.ts";
 import { SimulationReport } from "./simulation-report.ts";
 

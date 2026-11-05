@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from ...core.engines.engine import DecisionProblem, Plan
+from ...core.engines.contract.engine import DecisionProblem, Plan
 from ...core.engines.planners.mdp.mdp import MDPEngine, MdpModel, MdpTransition
-from ...core.engines.simulator import Scenario, SimulationReport, Simulator, compare_engines
+from ...core.engines.simulation.simulator import Scenario, SimulationReport, Simulator, compare_engines
 
 
 class FixedActionEngine:

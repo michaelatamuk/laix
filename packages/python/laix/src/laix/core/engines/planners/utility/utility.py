@@ -12,7 +12,7 @@ from typing import Any
 
 from ....decisions import ActionOption
 from ....support.values import clamp
-from ...engine import DecisionProblem, Plan
+from ...contract.engine import DecisionProblem, Plan
 from .utility_model import RISK_ATTITUDES, UtilityModel
 from .utility_weights import UtilityWeights
 

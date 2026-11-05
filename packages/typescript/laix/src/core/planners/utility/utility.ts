@@ -1,5 +1,5 @@
 import type { ActionOption } from "../../contracts.ts";
-import type { DecisionProblem, Plan } from "../../engine.ts";
+import type { DecisionProblem, Plan } from "../../contract/engine.ts";
 import { UtilityModel } from "./utility-model.ts";
 import type { RiskAttitude } from "./utility-model.ts";
 

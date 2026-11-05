@@ -44,9 +44,7 @@ packages/python/laix/src/laix/
 │   │   ├── trail/           execution receipt and trace
 │   │   └── normalise.py     coerce and from_attention
 │   ├── engines/
-│   │   ├── engine.py        DecisionEngine, DecisionProblem, Plan, EnginePolicy, to_decision
-│   │   ├── decision_engine.py the solver protocol
-│   │   ├── decision_problem.py and plan.py  engine input and output values
+│   │   ├── contract/       engine.py, decision_engine.py, decision_problem.py, plan.py
 │   │   ├── planners/
 │   │   │   ├── utility/     utility engine, model and weights
 │   │   │   ├── mdp/         MDP model, transitions, value iteration and engine
@@ -55,14 +53,12 @@ packages/python/laix/src/laix/
 │   │   │   ├── execution/   execution-aware planner, effects and weights
 │   │   │   ├── attention/   attention-aware planner, budget and effects
 │   │   │   └── live/        integrated live planner and score
-│   │   ├── simulator.py     Simulator, scenarios and engine comparison
-│   │   ├── calibration.py   CalibrationReport and confidence adjustment
-│   │   ├── decision_calibration.py decision-level calibration
-│   │   ├── live_bench.py    training-free live decision benchmark
-│   │   ├── model_learning.py ModelLearner and rollback
-│   │   ├── policies/        policy.py, registry.py, simulation.py, implementations/ (packs, rules, target, planning, group)
-│   │   ├── signals/         input, output, gates/, attention.v1.json, decide, score
-│   │   └── resources/       budget, sensing option, plan, scheduler
+│   │   ├── simulation/     simulator, scenario, step, result, report and engine score
+│   │   ├── learning/       calibration, decision calibration and model learning
+│   │   ├── bench/          live benchmark, cases, rows, metrics and baselines
+│   │   ├── signals/        input, output, gates/, attention.v1.json, decide, score
+│   │   ├── policies/       policy.py, registry.py, simulation.py, implementations/ (packs, rules, target, planning, group)
+│   │   └── resources/      budget, sensing option, plan, scheduler
 │   ├── outcome_learning/    record, ledger, store, bandit, causal, rewards, attention/
 │   ├── planning/            commitment ledger, stores and planning state
 │   ├── evaluation/          case, row, report, compare, attention replay, attention-bench.v1.json
@@ -91,7 +87,7 @@ packages/typescript/laix/src/
 ├── core/
 │   ├── index.ts       core surface
 │   ├── contracts.ts   core records
-│   ├── engine.ts      DecisionEngine, EnginePolicy and to_decision
+│   ├── contract/engine.ts DecisionEngine, EnginePolicy and to_decision
 │   ├── causal.ts      causal ledger
 │   ├── planning.ts    commitment ledger
 │   ├── planning-store.ts commitment stores
@@ -103,10 +99,8 @@ packages/typescript/laix/src/
 │   │   ├── execution/ execution-aware planner
 │   │   ├── attention/ attention-aware planner and budget
 │   │   └── live/      integrated live planner
-│   ├── calibration.ts calibration report and smoothing
-│   ├── decision-calibration.ts decision-level calibration
-│   ├── live-bench.ts training-free live benchmark
-│   ├── model-learning.ts count-based learner and MDP export
+│   ├── learning/      calibration, decision calibration and model learning
+│   ├── bench/         live benchmark and baselines
 │   ├── outcome.ts     outcome ledger and UCB learner
 │   ├── evaluation.ts  parity harness
 │   ├── perception.ts  detector and frame contracts
@@ -151,7 +145,7 @@ and the canonical file differ.
 ## Rules
 
 - One class per file; functions may share a small module with their owner.
-- Group folders by role: `decisions`, `planners`, `policies`, `signals`, `runtime`, `audit`.
-- Mirror source folders in tests: `planners/` and `signals/`.
+- Group folders by role: `contract`, `planners`, `simulation`, `learning`, `bench`, `policies`, `signals`.
+- Mirror source folders in tests: `contract/`, `planners/`, `simulation/`, `learning/`, `bench/`, `signals/`.
 - Keep the public API in `__init__.py` and `index.ts`.
 - Use generic words and leave app, domain and vendor names out.

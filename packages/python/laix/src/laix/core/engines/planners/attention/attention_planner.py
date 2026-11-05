@@ -17,7 +17,7 @@ from .attention_budget import AttentionBudget
 from .attention_effect import AttentionEffect
 from .attention_score import AttentionScore
 from .attention_weights import AttentionWeights
-from ...engine import DecisionProblem, Plan
+from ...contract.engine import DecisionProblem, Plan
 from ..utility.utility import (
     UtilityEngine,
     UtilityModel,

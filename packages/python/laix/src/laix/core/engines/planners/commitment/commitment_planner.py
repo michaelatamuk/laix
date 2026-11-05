@@ -20,7 +20,7 @@ from ._commitment_row import _Row
 from .commitment_effect import CommitmentEffect
 from .commitment_score import CommitmentScore
 from .commitment_weights import CommitmentWeights
-from ...engine import DecisionProblem, Plan
+from ...contract.engine import DecisionProblem, Plan
 from ..utility.utility import (
     UtilityEngine,
     UtilityModel,
