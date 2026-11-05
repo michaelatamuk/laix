@@ -1,8 +1,8 @@
 # LAIX documentation
 
-LAIX — **Live AI Experience** — is the decision layer for live AI experiences. Given what is
-happening, what the app can do and what the host allows, it decides whether the experience should
-**wait, observe, guide, ask, act, verify or escalate**.
+LAIX — **Live AI Experience** — is the decision layer for live AI experiences. A live experience
+stays present: it notices the moment, chooses the next move and learns from what happened. LAIX
+gives that loop one decision contract. The host owns the experience; LAIX owns the decision.
 
 ## Start here
 

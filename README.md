@@ -4,12 +4,18 @@
 
 **LAIX is the decision layer for live AI experiences.**
 
-A live experience notices the moment, chooses whether to intervene and knows when to wait. LAIX
-makes that choice explicit: it returns one decision, with the reason, confidence, action, approval,
-target and trail the host needs. The experience belongs to the host; LAIX owns the decision.
+A live experience stays present: it notices the moment, chooses the next move and learns from what
+happened. LAIX gives that loop one decision contract. The host owns the experience; LAIX owns the
+decision.
 
-> Given what is happening, what the app can do and what the host allows, should this experience
-> **wait, observe, guide, ask, act, verify or escalate**?
+> **What should this experience do next?**
+
+LAIX reads what is happening, what the host can do and what the host allows, then returns one
+decision: **wait, observe, guide, ask, act, verify or escalate**.
+
+Today that decision can be one-shot or streamed, executed with receipts and sagas, and improved with
+outcomes, causal attribution and calibration. The direction is a layer that stays live across the
+whole experience: every signal, every decision, every outcome in one coherent loop.
 
 | Start | |
 |---|---|
