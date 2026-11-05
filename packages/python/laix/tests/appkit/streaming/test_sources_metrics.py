@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import asyncio
 
+import pytest
+
 from laix import (
     Decision,
     DecisionRequest,
@@ -98,3 +100,37 @@ def test_from_sse_reads_data_frames() -> None:
 
     requests = asyncio.run(run())
     assert [item.subject for item in requests] == ["a", "b"]
+
+
+def test_ndjson_reports_and_skips_bad_lines() -> None:
+    errors: list[tuple[str, Exception]] = []
+
+    async def lines():
+        yield '{"subject":"a","at":"2026-11-01T10:00:00+00:00"}\n'
+        yield '{"subject":\n'
+        yield '{"subject":"b","at":"2026-11-01T10:00:01+00:00"}\n'
+
+    async def run() -> list[str]:
+        return [
+            item.subject
+            async for item in from_ndjson(
+                lines(),
+                on_error=lambda raw, exc: errors.append((raw, exc)),
+                strict=False,
+            )
+        ]
+
+    assert asyncio.run(run()) == ["a", "b"]
+    assert len(errors) == 1
+    assert errors[0][0] == '{"subject":'
+
+
+def test_ndjson_is_strict_by_default() -> None:
+    async def lines():
+        yield '{"subject":\n'
+
+    async def run() -> list[DecisionRequest]:
+        return [item async for item in from_ndjson(lines())]
+
+    with pytest.raises(ValueError):
+        asyncio.run(run())

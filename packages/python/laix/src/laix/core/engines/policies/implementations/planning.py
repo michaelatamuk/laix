@@ -21,19 +21,20 @@ class PlanningPolicy:
 
     def decide(self, request: Any) -> list[Decision]:
         now = parse_iso(getattr(request, "at", None)) or utcnow()
-        commitment = self.ledger.next(now)
+        commitment = self.ledger.next_actionable(now)
         if commitment is None:
+            blocked = self.ledger.next(now)
+            if blocked is not None:
+                return [
+                    self._decision(
+                        Verb.ASK,
+                        "blocked_commitment",
+                        f"{blocked.id} waits on another commitment",
+                        0.7,
+                        action_id=blocked.id,
+                    )
+                ]
             return [self._decision(Verb.WAIT, "no_commitment", "there is no open commitment", 0.8)]
-        if self.ledger.blocked(commitment):
-            return [
-                self._decision(
-                    Verb.ASK,
-                    "blocked_commitment",
-                    f"{commitment.id} waits on another commitment",
-                    0.7,
-                    action_id=commitment.id,
-                )
-            ]
         if commitment.is_due(now):
             return [
                 self._decision(

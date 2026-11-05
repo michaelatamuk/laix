@@ -89,3 +89,27 @@ def test_seeded_scenarios_are_repeatable() -> None:
     assert [item.optimum for item in first] == [item.optimum for item in second]
     report = compare_engines({"a": FixedEngine("a")}, first)
     assert report.best() == "a"
+
+
+def test_seeded_mdp_simulation_is_repeatable() -> None:
+    model = MdpModel(
+        states=("s0", "s1", "s2"),
+        actions=("go",),
+        transitions=(
+            MdpTransition("s0", "go", "s1", 0.5, 1.0),
+            MdpTransition("s0", "go", "s2", 0.5, 2.0),
+        ),
+        start="s0",
+        horizon=1,
+    )
+    simulator = Simulator.from_mdp(model, seed=7)
+    first = simulator.run(FixedEngine("go"))
+    second = simulator.run(FixedEngine("go"))
+
+    assert first == second
+    assert first.final_state in {"s1", "s2"}
+    endings = {
+        Simulator.from_mdp(model, seed=seed).run(FixedEngine("go")).final_state
+        for seed in range(1, 20)
+    }
+    assert endings == {"s1", "s2"}

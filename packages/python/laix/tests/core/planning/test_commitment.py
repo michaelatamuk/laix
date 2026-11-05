@@ -8,6 +8,8 @@ from laix import (
     Commitment,
     CommitmentLedger,
     DecisionRequest,
+    FileCommitmentStore,
+    InMemoryCommitmentStore,
     PlanningPolicy,
 )
 
@@ -58,3 +60,60 @@ def test_planning_policy_asks_when_blocked() -> None:
     decision = PlanningPolicy(ledger).decide(_request())[0]
     assert decision.verb == "ask"
     assert decision.reason_code == "blocked_commitment"
+
+
+def test_planning_policy_skips_a_blocked_commitment() -> None:
+    ledger = CommitmentLedger(
+        (
+            Commitment(
+                id="a",
+                subject="blocked first",
+                due="2026-11-01T09:00:00+00:00",
+                depends_on=("missing",),
+            ),
+            Commitment(id="b", subject="ready second", due="2026-11-01T09:30:00+00:00"),
+        )
+    )
+
+    assert ledger.blocked_open() == (ledger.get("a"),)
+    assert ledger.next_actionable(NOW).id == "b"
+    decision = PlanningPolicy(ledger).decide(_request())[0]
+    assert decision.verb == "act"
+    assert decision.action_id == "b"
+
+
+def test_commitment_ledger_round_trips_through_a_store() -> None:
+    ledger = CommitmentLedger(
+        (
+            Commitment(
+                id="a",
+                subject="first",
+                due="2026-11-01T09:00:00+00:00",
+                priority=0.8,
+                payload={"owner": "alice"},
+            ),
+        )
+    )
+    store = InMemoryCommitmentStore()
+    store.save("task-1", ledger)
+
+    restored = store.load("task-1")
+    assert restored is not None
+    assert restored.get("a").payload == {"owner": "alice"}
+    assert restored.get("a").priority == 0.8
+
+    store.delete("task-1")
+    assert store.load("task-1") is None
+
+
+def test_file_commitment_store_round_trips(tmp_path) -> None:
+    ledger = CommitmentLedger((Commitment(id="a", subject="first"),))
+    store = FileCommitmentStore(tmp_path)
+    store.save("task-1", ledger)
+
+    restored = store.load("task-1")
+    assert restored is not None
+    assert restored.get("a").subject == "first"
+
+    store.delete("task-1")
+    assert store.load("task-1") is None

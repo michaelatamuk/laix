@@ -14,6 +14,7 @@ from laix import (
     belief_entropy,
     belief_from_state,
     belief_update,
+    compare_pomdp_to_mdp,
     normalize_belief,
     observation_probability,
     pomdp_value,
@@ -108,5 +109,8 @@ def test_fully_observable_pomdp_matches_the_mdp_path() -> None:
         horizon=2,
     )
     belief = belief_from_state("s0", pomdp.states)
+    comparison = compare_pomdp_to_mdp(pomdp, mdp, belief, horizon=2)
 
-    assert pomdp_value(pomdp, belief, horizon=2) == value_iteration(mdp)["s0"]
+    assert comparison.state == "s0"
+    assert comparison.pomdp == comparison.mdp == value_iteration(mdp)["s0"]
+    assert comparison.gap == 0.0

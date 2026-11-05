@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from .approval_required import ApprovalRequired
 from .decision_runtime import DecisionRuntime
-from .execution import ExecutionBridge
+from .execution import ExecutionBridge, ExecutionSagaResult, ExecutionStep
 from .in_memory_state_store import InMemoryStateStore
 from .saga import Saga, SagaResult, SagaStep
 from .state import ExperienceState
@@ -15,6 +15,8 @@ __all__ = [
     "ApprovalRequired",
     "DecisionRuntime",
     "ExecutionBridge",
+    "ExecutionSagaResult",
+    "ExecutionStep",
     "ExperienceState",
     "InMemoryStateStore",
     "Saga",

@@ -83,7 +83,14 @@ No arms returns `wait` with `no_arms`. All arms outside the limits returns `wait
 
 `CausalLedger` compares a treatment arm with a control arm. It uses difference in means, or inverse
 propensity weighting when every observation carries a propensity strictly between zero and one. It
-returns a `CausalEffect` with the estimate, the sample sizes and the method.
+returns a `CausalEffect` with the estimate, the sample sizes, the method, a standard error and a 95%
+interval.
+
+`CausalLedger.add_outcome(outcome, arm=...)` maps an `Outcome` into an observation; for
+`lower-better` metrics it flips the sign so positive always means improvement.
+`CausalLedger.from_outcomes(outcomes, arms)` builds a ledger from a decision-to-arm map.
+`effect_by_context(..., key="stratum")` estimates one effect per context value and skips strata
+missing an arm.
 
 `OutcomeLedger` records whether a decision helped; `CausalLedger` estimates whether one arm caused a
 better outcome. They answer different questions.
@@ -95,7 +102,7 @@ better outcome. They answer different questions.
   maps a future confidence onto the observed rate.
 - **`ModelLearner`** — learns transition probabilities and expected rewards from observed
   transitions. `commit(validation)` keeps the model only when it beats the best one and rolls back
-  otherwise.
+  otherwise. `to_mdp_model()` feeds the learned table to `MDPEngine`.
 
 Both are Python-first. TypeScript exposes the engine contract, utility and MDP engines, and the
 simulator.

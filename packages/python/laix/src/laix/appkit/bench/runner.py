@@ -29,6 +29,7 @@ from ...core.engines.policies import (
 )
 from ..layer import Layer
 from .case import BenchCase
+from .engine_bench import run_engine_bench
 from .report import BenchReport
 from .row import BenchRow
 from .suite import Suite
@@ -331,9 +332,23 @@ def _print_table(report: BenchReport) -> None:
             print(f"FAIL {row.suite}/{row.case}: {'; '.join(row.mismatches)}")
 
 
+def _print_engine_table(report: Any) -> None:
+    print(f"{'engine':24} {'scenario':20} {'reward':>8} {'steps':>6} {'gap':>8}")
+    print("-" * 70)
+    for row in report.rows:
+        gap = "n/a" if row.optimality_gap is None else f"{row.optimality_gap:.3f}"
+        print(
+            f"{row.engine:24} {row.scenario:20} {row.total_reward:>8.3f} "
+            f"{row.steps:>6} {gap:>8}"
+        )
+    print("-" * 70)
+    print(f"{'best':24} {report.best() or 'none'}")
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="laix.appkit.bench", description="Run the LAIX decision-class bench.")
     parser.add_argument("--suite", action="append", choices=suite_names(), help="run one or more suites")
+    parser.add_argument("--engines", action="store_true", help="compare decision engines on a chain")
     parser.add_argument("--json", action="store_true", help="print the report as JSON")
     parser.add_argument("--list", action="store_true", help="list suites and exit")
     parser.add_argument("--fail-under", type=float, default=1.0, help="minimum agreement, default 1.0")
@@ -342,6 +357,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.list:
         for suite in all_suites():
             print(f"{suite.name:24} {suite.description}")
+        return 0
+
+    if args.engines:
+        engine_report = run_engine_bench()
+        if args.json:
+            print(json.dumps(engine_report.to_dict(), indent=2))
+        else:
+            _print_engine_table(engine_report)
         return 0
 
     report = run_bench(args.suite)
@@ -360,5 +383,6 @@ __all__ = [
     "all_suites",
     "main",
     "run_bench",
+    "run_engine_bench",
     "suite_names",
 ]

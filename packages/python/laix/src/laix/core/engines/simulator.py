@@ -16,6 +16,7 @@ from .engine import DecisionEngine, DecisionProblem
 from .mdp import MdpModel
 
 Step = Callable[[str, str], tuple[str, float]]
+RandomStep = Callable[[str, str, random.Random], tuple[str, float]]
 
 
 @dataclass(frozen=True, slots=True)
@@ -58,6 +59,8 @@ class Simulator:
         start: str,
         horizon: int = 10,
         name: str = "scenario",
+        random_step: RandomStep | None = None,
+        seed: int | None = None,
     ) -> None:
         if not actions:
             raise ValueError("a simulator needs at least one action")
@@ -68,11 +71,18 @@ class Simulator:
         self.start = start
         self.horizon = horizon
         self.name = name
+        self.random_step = random_step
+        self.seed = seed
 
     def run(self, engine: DecisionEngine) -> SimulationResult:
         state = self.start
         steps: list[SimulationStep] = []
         total = 0.0
+        rng = (
+            random.Random(self.seed)
+            if self.random_step is not None and self.seed is not None
+            else None
+        )
         for index in range(self.horizon):
             problem = DecisionProblem(
                 subject=self.name,
@@ -92,7 +102,10 @@ class Simulator:
                     )
                 )
                 break
-            next_state, reward = self.step(state, action)
+            if self.random_step is not None and rng is not None:
+                next_state, reward = self.random_step(state, action, rng)
+            else:
+                next_state, reward = self.step(state, action)
             steps.append(
                 SimulationStep(
                     step=index,
@@ -112,8 +125,21 @@ class Simulator:
         )
 
     @classmethod
-    def from_mdp(cls, model: MdpModel, *, start: str | None = None) -> "Simulator":
-        """Build a repeatable simulator from an MDP's most likely transitions."""
+    def from_mdp(
+        cls,
+        model: MdpModel,
+        *,
+        start: str | None = None,
+        seed: int | None = None,
+    ) -> "Simulator":
+        """Build a simulator from an MDP.
+
+        Without ``seed`` the run follows the most likely transition and is
+        repeatable. With ``seed`` it samples transitions, and each run resets
+        the generator so the same seed gives the same trace.
+        """
+        resolved_start = start or model.start
+        horizon = 10 if model.horizon is None else model.horizon
 
         def step(state: str, action: str) -> tuple[str, float]:
             rows = model.outgoing(state, action)
@@ -122,12 +148,30 @@ class Simulator:
             chosen = sorted(rows, key=lambda item: (-item.probability, item.next_state))[0]
             return chosen.next_state, chosen.reward
 
+        def random_step(
+            state: str,
+            action: str,
+            rng: random.Random,
+        ) -> tuple[str, float]:
+            rows = model.outgoing(state, action)
+            if not rows:
+                return state, 0.0
+            roll = rng.random()
+            cumulative = 0.0
+            for item in rows:
+                cumulative += item.probability
+                if roll <= cumulative:
+                    return item.next_state, item.reward
+            return rows[-1].next_state, rows[-1].reward
+
         return cls(
             step,
             model.actions,
-            start=start or model.start,
-            horizon=10 if model.horizon is None else model.horizon,
+            start=resolved_start,
+            horizon=horizon,
             name=f"mdp:{model.start}",
+            random_step=random_step if seed is not None else None,
+            seed=seed,
         )
 
 
@@ -200,6 +244,13 @@ class SimulationReport:
             summary,
             key=lambda engine: (-summary[engine]["mean_reward"], engine),
         )[0]
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "rows": [row.to_dict() for row in self.rows],
+            "summary": self.summary(),
+            "best": self.best(),
+        }
 
 
 def compare_engines(

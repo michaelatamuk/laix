@@ -45,7 +45,7 @@ The split follows the code:
 | [appkit/integration.md](appkit/integration.md) | install, adapter, rollout and pinning |
 | [appkit/live-context.md](appkit/live-context.md) | detectors, admission and frames |
 | [appkit/platform.md](appkit/platform.md) | the platform contract |
-| [appkit/stores.md](appkit/stores.md) | state, stream checkpoint and outcome stores |
+| [appkit/stores.md](appkit/stores.md) | state, stream checkpoint, commitment and outcome stores |
 | [appkit/streaming.md](appkit/streaming.md) | stream sessions: event time, cadence, backpressure and revisions |
 | [appkit/bench.md](appkit/bench.md) | LAIX-Bench suites and CLI |
 

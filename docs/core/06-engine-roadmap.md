@@ -154,7 +154,9 @@ Internally this is still an engine-backed policy.
 
 - [x] `Simulator`
 - [x] seeded scenarios
+- [x] seeded stochastic rollouts
 - [x] engine comparison
+- [x] engine bench CLI (`--engines`)
 - [x] regression cases
 
 ### 5. Calibration
@@ -168,6 +170,7 @@ Internally this is still an engine-backed policy.
 - [x] learn transitions and rewards from outcomes
 - [x] keep the UCB bandit as a simple learner
 - [x] rollback when a learned model gets worse
+- [x] export a learned model as an `MdpModel`
 
 ### 7. POMDP
 
@@ -175,6 +178,7 @@ Internally this is still an engine-backed policy.
 - [x] belief update
 - [x] small solver
 - [x] benchmark against the MDP path
+- [x] `compare_pomdp_to_mdp` diagnostic
 
 ### 8. TypeScript parity
 
@@ -204,6 +208,7 @@ Internally this is still an engine-backed policy.
 | Utility engine | done |
 | MDP planner | done |
 | Simulator and engine comparison | done |
+| Engine bench CLI | done |
 | Calibration | done |
 | Model learning | done |
 | POMDP | done |

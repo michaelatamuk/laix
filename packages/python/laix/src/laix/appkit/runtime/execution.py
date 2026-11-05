@@ -10,14 +10,47 @@ action hangs, the situation changes, or a human rejects the request.
 
 from __future__ import annotations
 
-from typing import Any, Callable
+from dataclasses import dataclass, field
+from typing import Any, Callable, Iterable
 
 from ...core.decisions import ActionOption, Decision, ExecutionReceipt
 from ...core.support.ids import new_execution_receipt_id
 from ...core.support.verbs import Verb
 from .approval_required import ApprovalRequired
+from .saga import Saga, SagaStep
 
 Handler = Callable[[ActionOption, dict[str, Any]], dict[str, Any]]
+
+
+@dataclass(frozen=True, slots=True)
+class ExecutionStep:
+    """One forward action and its optional compensation."""
+
+    action: ActionOption
+    decision: Decision | None = None
+    actor: str | None = None
+    approver: str | None = None
+    context: dict[str, Any] = field(default_factory=dict)
+    idempotency_key: str | None = None
+    compensate: Callable[[ExecutionReceipt], dict[str, Any]] | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class ExecutionSagaResult:
+    """The outcome of a multi-step execution, including every receipt."""
+
+    completed: tuple[str, ...]
+    compensated: tuple[str, ...]
+    receipts: tuple[ExecutionReceipt, ...]
+    error: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "completed": list(self.completed),
+            "compensated": list(self.compensated),
+            "receipts": [item.to_dict() for item in self.receipts],
+            "error": self.error,
+        }
 
 
 class ExecutionBridge:
@@ -34,6 +67,9 @@ class ExecutionBridge:
 
     def can_handle(self, name: str) -> bool:
         return name in self.handlers
+
+    def can_undo(self, name: str) -> bool:
+        return name in self.undo_handlers
 
     def execute(
         self,
@@ -116,6 +152,78 @@ class ExecutionBridge:
         if idempotency_key:
             self._by_key[idempotency_key] = receipt.id
         return receipt
+
+    def run_steps(
+        self,
+        steps: Iterable[ExecutionStep],
+        *,
+        actor: str = "system",
+    ) -> ExecutionSagaResult:
+        """Execute steps in order and compensate completed ones on failure."""
+        receipts: list[ExecutionReceipt] = []
+        completed: dict[str, ExecutionReceipt] = {}
+        failure: list[str] = []
+        saga_steps: list[SagaStep] = []
+        for index, step in enumerate(steps):
+            key = str(index)
+            decision = step.decision or Decision(
+                verb=step.action.verb,
+                confidence=1.0,
+                reason_code="execution_step",
+                rationale=step.action.name,
+            )
+
+            def forward(
+                step: ExecutionStep = step,
+                decision: Decision = decision,
+                key: str = key,
+            ) -> dict[str, Any]:
+                receipt = self.execute(
+                    decision,
+                    action=step.action,
+                    actor=step.actor or actor,
+                    approver=step.approver,
+                    context=step.context,
+                    idempotency_key=step.idempotency_key,
+                )
+                receipts.append(receipt)
+                if receipt.status in {"executed", "duplicate"}:
+                    completed[key] = receipt
+                    return dict(receipt.detail)
+                failure.append(
+                    receipt.error or f"{step.action.name} did not execute"
+                )
+                raise RuntimeError(failure[-1])
+
+            compensate = None
+            if step.compensate is not None:
+
+                def compensate(
+                    step: ExecutionStep = step,
+                    key: str = key,
+                ) -> dict[str, Any]:
+                    receipt = completed.get(key)
+                    if receipt is None:
+                        return {}
+                    return step.compensate(receipt) or {}
+
+            elif self.can_undo(step.action.name):
+
+                def compensate(key: str = key) -> dict[str, Any]:
+                    receipt = completed.get(key)
+                    if receipt is None:
+                        return {}
+                    return dict(self.undo(receipt.id, actor=actor).detail)
+
+            saga_steps.append(SagaStep(step.action.name, forward, compensate))
+
+        result = Saga().run(saga_steps)
+        return ExecutionSagaResult(
+            completed=result.completed,
+            compensated=result.compensated,
+            receipts=tuple(receipts),
+            error=failure[0] if failure else result.error,
+        )
 
     def refuse(self, decision: Decision, *, action: ActionOption | None, actor: str, reason: str) -> ExecutionReceipt:
         return self._store(

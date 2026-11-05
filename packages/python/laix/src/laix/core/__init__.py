@@ -35,11 +35,13 @@ from .engines.model_learning import LearnedTransition, ModelLearner
 from .engines.pomdp import (
     ObservationProbability,
     POMDPEngine,
+    PlannerComparison,
     PomdpModel,
     PomdpTransition,
     belief_entropy,
     belief_from_state,
     belief_update,
+    compare_pomdp_to_mdp,
     normalize_belief,
     observation_probability,
     pomdp_value,
@@ -91,7 +93,14 @@ from .outcome_learning import (
     UCBBandit,
     reward_for_label,
 )
-from .planning import COMMITMENT_STATUSES, Commitment, CommitmentLedger
+from .planning import (
+    COMMITMENT_STATUSES,
+    Commitment,
+    CommitmentLedger,
+    CommitmentStore,
+    FileCommitmentStore,
+    InMemoryCommitmentStore,
+)
 from .sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .support.time import iso, parse_iso, utcnow
 from .support.values import confidence_band
@@ -150,6 +159,9 @@ __all__ = [
     "COMMITMENT_STATUSES",
     "Commitment",
     "CommitmentLedger",
+    "CommitmentStore",
+    "FileCommitmentStore",
+    "InMemoryCommitmentStore",
     "Constraint",
     "Context",
     "ActionPolicy",
@@ -170,6 +182,7 @@ __all__ = [
     "LearnedTransition",
     "ObservationProbability",
     "POMDPEngine",
+    "PlannerComparison",
     "PomdpModel",
     "PomdpTransition",
     "RISK_ATTITUDES",
@@ -188,6 +201,7 @@ __all__ = [
     "calibration_by_policy",
     "calibration_report",
     "compare_engines",
+    "compare_pomdp_to_mdp",
     "normalize_belief",
     "observation_probability",
     "plan_actions",

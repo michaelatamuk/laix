@@ -18,6 +18,7 @@ Python:
 python -m laix.appkit.bench
 python -m laix.appkit.bench --list
 python -m laix.appkit.bench --suite safety
+python -m laix.appkit.bench --engines
 python -m laix.appkit.bench --json
 ```
 
@@ -100,4 +101,9 @@ decisions, elapsed time, throughput and stream counters. See [streaming](streami
 
 `Simulator` runs an engine in a deterministic model. `compare_engines(engines, scenarios)` returns
 reward and optimality gap per engine and scenario; `seeded_scenarios(seed)` builds repeatable chains
-with a known optimum. See [the engine roadmap](../core/06-engine-roadmap.md).
+with a known optimum. `Simulator.from_mdp(model, seed=...)` gives repeatable stochastic rollouts.
+
+`python -m laix.appkit.bench --engines` compares `MDPEngine` with a do-nothing baseline on a chain
+and prints reward, steps and optimality gap. `--json` returns the same rows as JSON.
+
+See [the engine roadmap](../core/06-engine-roadmap.md).

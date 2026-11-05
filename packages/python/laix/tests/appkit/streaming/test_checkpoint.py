@@ -52,3 +52,29 @@ def test_in_memory_checkpoint_round_trips() -> None:
     restored = StreamSession(_decider, clock=ManualClock())
     assert restored.resume(store, "case-2") is True
     assert restored.pending == 1
+
+
+def test_explicit_stream_id_rejects_another_stream() -> None:
+    store = InMemoryStreamCheckpointStore()
+    session = StreamSession(_decider, stream_id="stream-a", clock=ManualClock())
+    session.observe(_request("a", 0))
+    session.save(store, "case-3")
+
+    restored = StreamSession(_decider, stream_id="stream-b", clock=ManualClock())
+    try:
+        restored.resume(store, "case-3")
+    except ValueError as exc:
+        assert "stream-a" in str(exc)
+    else:
+        raise AssertionError("expected ValueError")
+
+
+def test_generated_stream_id_adopts_the_checkpoint() -> None:
+    store = InMemoryStreamCheckpointStore()
+    session = StreamSession(_decider, stream_id="stream-a", clock=ManualClock())
+    session.observe(_request("a", 0))
+    session.save(store, "case-4")
+
+    restored = StreamSession(_decider, clock=ManualClock())
+    assert restored.resume(store, "case-4") is True
+    assert restored.stream_id == "stream-a"

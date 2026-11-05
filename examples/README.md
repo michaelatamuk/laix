@@ -66,6 +66,7 @@ examples/
 | `policies/bandit.py` | Outcome learning | `manual automatic 0.75` |
 | `policies/time_critical.py` | Gates, delay, cost, disruption and confidence | `act breaker-dry 0.44` |
 | `policies/planning.py` | Commitment-based next move | `act due_commitment a` |
+| `policies/planning_store.py` | Persist and restore a commitment ledger | `send the draft` |
 | `policies/group.py` | Target, recipients and private masking | `all ('alice', 'ben', 'chris') {'topic': 'math'}` |
 | `policies/shadow.py` | Shadow policy records a disagreement | `ask 1 act` |
 | `policies/pomdp.py` | Belief update and finite-horizon planning | `act go 2.8` |
@@ -78,6 +79,7 @@ examples/
 | `appkit/runtime/resources.py` | Cheap/deep call admission | `('camera', 'read-page') ('full-audio',)` |
 | `appkit/runtime/live_context.py` | Detectors, admission and perception frames | `('motion', 'read-label') ('transcribe',) 2 0.097` |
 | `appkit/runtime/saga.py` | Forward steps and reverse compensation | `('first',) ('first',) RuntimeError: boom` |
+| `appkit/runtime/execution_saga.py` | Bridge execution with receipt-linked compensation | `('reserve',) ('reserve',) RuntimeError: declined` |
 | `appkit/runtime/simulator.py` | Compare engines on one scenario | `right 4.0 1.0` |
 | `appkit/platform/platform_interface.py` | Run a skill, approve, read events | `7 skill.started,skill.finished fast True` |
 
@@ -88,6 +90,7 @@ examples/
 | `decisions/records/record.py` | Record, approve, execute, verify | `executed True` |
 | `appkit/audit/proposal.py` | Proposal lifecycle | `pending approved applied undone` |
 | `decisions/records/causal.py` | Estimate a treatment effect | `1.0 difference-in-means` |
+| `decisions/records/causal_outcomes.py` | Build a causal ledger from outcomes | `6.0 6.0 6.0` |
 | `decisions/records/calibration.py` | Compare confidence with accuracy | `0.9 0.5 0.4 0.5` |
 | `decisions/records/model_learning.py` | Learn transitions and reward | `{'s1': 1.0} 2.0` |
 
@@ -113,6 +116,7 @@ examples/
 | File | Piece | Output |
 |---|---|---|
 | `appkit/bench/bench.py` | Run LAIX-Bench from Python | `25 25 1.0` |
+| `appkit/bench/engine_bench.py` | Compare the MDP planner with a baseline | `mdp 4.0 1.0` |
 | `appkit/runtime/delivery.py` | Delivery port and receipt | `skipped email` |
 | `decisions/records/evaluation.py` | Parity harness over cases | `2 2 1.0` |
 

@@ -18,6 +18,68 @@ from .engine import DecisionProblem, Plan
 RISK_ATTITUDES: tuple[str, ...] = ("neutral", "averse", "seeking")
 
 
+def _truthy(value: Any) -> bool:
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "yes", "required", "always", "blocked", "on"}
+    return bool(value)
+
+
+def _limit(kind: str, value: Any) -> float | None:
+    if isinstance(value, dict):
+        value = value.get("max", value.get("value"))
+    if isinstance(value, bool) or value is None:
+        return None
+    try:
+        numeric = float(value)
+    except (TypeError, ValueError):
+        return None
+    if kind == "interruption":
+        return numeric if numeric <= 1.0 else numeric / 100.0
+    return numeric
+
+
+def _constraint_blocker(problem: DecisionProblem, option: ActionOption) -> str | None:
+    """Return a reason when a hard situation constraint rejects the option."""
+    situation = getattr(problem, "situation", None)
+    if situation is None:
+        return None
+    amounts = {
+        "risk": option.risk,
+        "cost": option.cost,
+        "budget": option.cost,
+        "latency": option.latency_ms,
+        "interruption": option.interrupt_cost,
+    }
+    for constraint in getattr(situation, "constraints", ()) or ():
+        if not getattr(constraint, "hard", False):
+            continue
+        kind = str(getattr(constraint, "kind", ""))
+        value = getattr(constraint, "value", None)
+        if kind == "safety":
+            if _truthy(value):
+                return "safety"
+            continue
+        if kind not in amounts:
+            continue
+        limit = _limit(kind, value)
+        if limit is not None and amounts[kind] > limit:
+            identifier = getattr(constraint, "id", kind)
+            return f"{kind}:{identifier}"
+    return None
+
+
+def _approval_required(problem: DecisionProblem) -> bool:
+    situation = getattr(problem, "situation", None)
+    if situation is None:
+        return False
+    for constraint in getattr(situation, "constraints", ()) or ():
+        if getattr(constraint, "kind", "") == "approval" and _truthy(
+            getattr(constraint, "value", False)
+        ):
+            return True
+    return False
+
+
 @dataclass(frozen=True, slots=True)
 class UtilityWeights:
     """How much each cost subtracts from expected benefit."""
@@ -90,7 +152,11 @@ class UtilityEngine:
             return self._wait("no_options", "there are no options to score")
 
         model = self._model_for(problem)
-        feasible = [option for option in options if model.feasible(option)]
+        feasible = [
+            option
+            for option in options
+            if model.feasible(option) and _constraint_blocker(problem, option) is None
+        ]
         if not feasible:
             return self._wait(
                 "no_feasible_option",
@@ -109,10 +175,12 @@ class UtilityEngine:
             reason_code="expected_utility",
             rationale=f"{best.id} has the highest expected utility {best_score:.3f}",
             action_id=best.id,
-            requires_approval=best.requires_approval or best.destructive,
+            requires_approval=(
+                best.requires_approval or best.destructive or _approval_required(problem)
+            ),
             reversible=best.reversible,
             score=best_score,
-            alternatives=self._alternatives(options, model, best),
+            alternatives=self._alternatives(problem, options, model, best),
             attributes={
                 "utility": best_score,
                 "risk_attitude": model.risk_attitude,
@@ -150,6 +218,7 @@ class UtilityEngine:
 
     @staticmethod
     def _alternatives(
+        problem: DecisionProblem,
         options: list[ActionOption],
         model: UtilityModel,
         best: ActionOption,
@@ -158,8 +227,11 @@ class UtilityEngine:
         for option in options:
             if option.id == best.id:
                 continue
+            blocker = _constraint_blocker(problem, option)
             if not model.feasible(option):
                 reason = "outside the hard limits"
+            elif blocker is not None:
+                reason = f"blocked by {blocker}"
             else:
                 reason = "lower expected utility"
             rows.append(

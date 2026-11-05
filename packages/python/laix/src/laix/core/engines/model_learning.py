@@ -11,6 +11,8 @@ import math
 from dataclasses import dataclass
 from typing import Any, Iterable
 
+from .mdp import MdpModel, MdpTransition
+
 Transition = tuple[str, str, str, float]
 
 
@@ -94,6 +96,52 @@ class ModelLearner:
                 count=self._totals[(state, action)],
             )
             for state, action in pairs
+        )
+
+    def to_mdp_model(
+        self,
+        *,
+        states: Iterable[str] | None = None,
+        actions: Iterable[str] | None = None,
+        start: str | None = None,
+        discount: float = 0.9,
+        horizon: int | None = 20,
+    ) -> MdpModel:
+        """Turn the learned table into a finite MDP for ``MDPEngine``."""
+        learned = self.learned()
+        if not learned:
+            raise ValueError("no transitions have been learned")
+        next_states = {
+            next_state
+            for item in learned
+            for next_state in item.probabilities
+        }
+        known_states = list(states or sorted({item.state for item in learned} | next_states))
+        known_actions = list(actions or sorted({item.action for item in learned}))
+        transitions: list[MdpTransition] = []
+        for item in learned:
+            total = sum(item.probabilities.values())
+            if total <= 0:
+                continue
+            for next_state, probability in item.probabilities.items():
+                if probability <= 0:
+                    continue
+                transitions.append(
+                    MdpTransition(
+                        state=item.state,
+                        action=item.action,
+                        next_state=next_state,
+                        probability=probability / total,
+                        reward=item.expected_reward,
+                    )
+                )
+        return MdpModel(
+            states=tuple(known_states),
+            actions=tuple(known_actions),
+            transitions=tuple(transitions),
+            start=start or known_states[0],
+            discount=discount,
+            horizon=horizon,
         )
 
     def evaluate(self, validation: Iterable[Transition]) -> float:

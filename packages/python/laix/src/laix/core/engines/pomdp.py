@@ -13,6 +13,7 @@ from typing import Any, Iterable, Mapping
 
 from ..support.values import clamp
 from .engine import DecisionProblem, Plan
+from .mdp import MdpModel, value_iteration
 
 
 @dataclass(frozen=True, slots=True)
@@ -318,6 +319,40 @@ def pomdp_value(
     return round(_best_value(model, resolved, steps - 1, {}), 6)
 
 
+@dataclass(frozen=True, slots=True)
+class PlannerComparison:
+    """A sanity check between a POMDP belief and its most likely MDP state."""
+
+    pomdp: float
+    mdp: float
+    gap: float
+    state: str
+
+
+def compare_pomdp_to_mdp(
+    pomdp: PomdpModel,
+    mdp: MdpModel,
+    belief: Mapping[str, float],
+    *,
+    horizon: int | None = None,
+) -> PlannerComparison:
+    """Compare the belief value with the MDP value of the most likely state.
+
+    This is a diagnostic, not an optimality proof: a POMDP can be worth less
+    than the fully observable MDP because uncertainty is real.
+    """
+    resolved = normalize_belief(belief, pomdp.states)
+    state = max(resolved, key=lambda item: (resolved[item], item))
+    pomdp_score = pomdp_value(pomdp, resolved, horizon=horizon)
+    mdp_score = round(value_iteration(mdp)[state], 6)
+    return PlannerComparison(
+        pomdp=pomdp_score,
+        mdp=mdp_score,
+        gap=round(abs(pomdp_score - mdp_score), 6),
+        state=state,
+    )
+
+
 class POMDPEngine:
     """Choose the action with the highest belief-state value."""
 
@@ -407,11 +442,13 @@ class POMDPEngine:
 __all__ = [
     "ObservationProbability",
     "POMDPEngine",
+    "PlannerComparison",
     "PomdpModel",
     "PomdpTransition",
     "belief_entropy",
     "belief_from_state",
     "belief_update",
+    "compare_pomdp_to_mdp",
     "normalize_belief",
     "observation_probability",
     "pomdp_value",

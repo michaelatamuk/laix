@@ -96,9 +96,13 @@ accepts `target="request"` to take the mode from the request.
 
 ## Planning, group and shadow
 
-- **`PlanningPolicy`** — reads a `CommitmentLedger`: act on a due commitment, ask when it is blocked,
-  wait otherwise.
-- **`GroupPolicy`** — sets the target and recipients and strips attributes marked private.
+- **`PlanningPolicy`** — reads a `CommitmentLedger`: act on the next actionable commitment,
+  ask when every open commitment is blocked, wait otherwise. Blocked commitments are skipped when a
+  later one is ready.
+- **`GroupPolicy`** — sets the target and recipients and removes private data before sharing.
+  `private_attributes` masks nested attribute keys; `private_evidence` drops matching evidence;
+  `rationale=` replaces the rationale. Apply it outermost when you want its target and recipients to
+  win; its masking applies either way.
 - **`ShadowPolicy`** — runs a second policy beside the primary, returns the primary decision and
   records every disagreement for comparison.
 
@@ -117,10 +121,15 @@ decision = decide(
 ```
 
 - **`UtilityEngine`** — expected utility over the offered options, with hard limits and
-  `neutral` / `averse` / `seeking` risk attitudes.
+  `neutral` / `averse` / `seeking` risk attitudes. Hard `Situation` constraints for risk, cost,
+  budget, latency, interruption and safety are enforced before scoring.
 - **`MDPEngine`** — value iteration over a finite `MdpModel`, with a discount and horizon.
 - **`POMDPEngine`** — belief update and finite-horizon expectimax over a small `PomdpModel`.
+  `compare_pomdp_to_mdp` is a sanity check against the most likely MDP state.
 - **`Simulator`** — runs an engine in a model; `compare_engines` reports reward and optimality gap.
+  `Simulator.from_mdp(..., seed=...)` gives repeatable stochastic rollouts.
+- **`ModelLearner`** — learns transitions and rewards; `to_mdp_model()` turns the table into an
+  `MdpModel` for `MDPEngine`.
 
 `to_decision(plan, request)` is the shared plan-to-decision conversion. See
 [the engine roadmap](06-engine-roadmap.md).

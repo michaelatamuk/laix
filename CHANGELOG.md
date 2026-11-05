@@ -8,6 +8,16 @@
   with value iteration, and `POMDPEngine` with belief update and finite-horizon planning.
 - **Engine proof.** `Simulator`, seeded scenarios, `compare_engines` with reward and optimality gap,
   `CalibrationReport` and `ModelLearner` with rollback.
+- **Python planning and execution depth.** `CommitmentStore` with in-memory and file stores,
+  `PlanningPolicy` skipping blocked commitments, and `ExecutionBridge.run_steps` with
+  receipt-linked compensation.
+- **Causal depth.** `add_outcome`, `from_outcomes`, standard errors, 95% intervals and
+  `effect_by_context`.
+- **Engine and stream depth.** `ModelLearner.to_mdp_model`, seeded stochastic MDP rollouts,
+  `compare_pomdp_to_mdp`, a Python `--engines` bench, NDJSON/SSE error policies and checkpoint
+  stream-id validation.
+- **Privacy depth.** `GroupPolicy` masks nested attributes, drops matching evidence and can replace
+  the rationale.
 - **TypeScript parity for the 0.9.0 depth work.** Checkpoint stores, NDJSON/SSE sources,
   `CausalLedger`, commitments and `PlanningPolicy`, `GroupPolicy`, `ShadowPolicy` / `simulate` and
   `Saga`.

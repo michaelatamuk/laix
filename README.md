@@ -78,7 +78,8 @@ ones are admitted under a sub-second cost and latency budget, and each event pro
 `Layer.stream` adds the live loop around decisions: event time, cadence, backpressure and revisions.
 `StreamSession` saves and resumes through a `StreamCheckpointStore` and reads NDJSON or SSE sources.
 The execution bridge adds idempotency keys, unknown outcomes and reconciliation around a write, and
-`Saga` compensates completed steps when a later step fails.
+`ExecutionBridge.run_steps` or `Saga` compensate completed steps when a later step fails.
+`CommitmentLedger` can persist through a `CommitmentStore`.
 
 Outcome learning turns measured labels into rewards. `UCBBandit` learns which arm works and
 `BanditPolicy` puts that learner behind the policy interface. `CausalLedger` estimates a treatment

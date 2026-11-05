@@ -137,6 +137,7 @@ class StreamSession:
             raise ValueError("latency_samples must be positive")
 
         self._decide = decide
+        self._explicit_stream_id = bool(stream_id)
         self.stream_id = stream_id or (id_factory or (lambda: new_id("STR")))()
         self._capacity = capacity
         self._on_full = on_full
@@ -419,10 +420,21 @@ class StreamSession:
         }
 
     def restore(self, snapshot: dict[str, object]) -> None:
-        """Restore watermark, cadence, counters and buffered decisions."""
+        """Restore watermark, cadence, counters and buffered decisions.
+
+        A session created with an explicit ``stream_id`` refuses a checkpoint
+        from another stream. A session with a generated id adopts the snapshot's
+        id, which is the common resume path.
+        """
         if self._closed:
             raise RuntimeError("stream session is closed")
-        self.stream_id = str(snapshot.get("stream_id") or self.stream_id)
+        snapshot_id = snapshot.get("stream_id")
+        if isinstance(snapshot_id, str) and snapshot_id:
+            if self._explicit_stream_id and snapshot_id != self.stream_id:
+                raise ValueError(
+                    f"checkpoint belongs to stream {snapshot_id!r}, not {self.stream_id!r}"
+                )
+            self.stream_id = snapshot_id
         self._watermark = parse_iso(snapshot.get("watermark") if isinstance(snapshot.get("watermark"), str) else None)
         self._last_decision = parse_iso(
             snapshot.get("last_decision") if isinstance(snapshot.get("last_decision"), str) else None

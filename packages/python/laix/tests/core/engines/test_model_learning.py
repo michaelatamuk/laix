@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 
-from laix import ModelLearner
+from laix import ModelLearner, value_iteration
 
 
 def test_learner_estimates_transitions_and_reward() -> None:
@@ -46,3 +46,12 @@ def test_snapshot_round_trips() -> None:
 
     assert restored.transition_probabilities("s0", "go") == {"s1": 1.0}
     assert restored.expected_reward("s0", "go") == 2.0
+
+
+def test_learned_model_feeds_the_mdp_engine() -> None:
+    learner = ModelLearner()
+    learner.observe("s0", "go", "s1", 1.0)
+    learner.observe("s1", "go", "s1", 2.0)
+    model = learner.to_mdp_model(start="s0", horizon=2)
+
+    assert value_iteration(model)["s0"] == 2.8

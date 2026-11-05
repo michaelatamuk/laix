@@ -52,7 +52,7 @@ packages/python/laix/src/laix/
 │   │   ├── attention/       input, output, gates/, attention.v1.json, decide, score
 │   │   └── resources/       budget, sensing option, plan, scheduler
 │   ├── outcome_learning/    record, ledger, store, bandit, causal, rewards, attention/
-│   ├── planning/            commitment ledger and planning state
+│   ├── planning/            commitment ledger, stores and planning state
 │   ├── evaluation/          case, row, report, compare, attention replay, attention-bench.v1.json
 │   ├── sensing/             detection, detector, event, frame
 │   ├── schema/              build, check, records and laix-v1.schema.json
@@ -66,7 +66,7 @@ packages/python/laix/src/laix/
     ├── platform/            platform, in-memory, skill call, approvals, event, capability
     ├── live_context/        loop and callable detector
     ├── streaming/           session, window, sources, checkpoint, bench
-    └── bench/               case, suite, row, report, runner
+    └── bench/               case, suite, row, report, runner, engine bench
 ```
 
 Import from `laix` in app code, or `laix.core` / `laix.appkit` when the boundary matters.

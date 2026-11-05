@@ -36,7 +36,14 @@ from .core.decisions import (
 from .core.outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
 from .core.outcome_learning import AttentionOutcome, Outcome
 from .core.outcome_learning import CausalEffect, CausalLedger, CausalObservation
-from .core.planning import COMMITMENT_STATUSES, Commitment, CommitmentLedger
+from .core.planning import (
+    COMMITMENT_STATUSES,
+    Commitment,
+    CommitmentLedger,
+    CommitmentStore,
+    FileCommitmentStore,
+    InMemoryCommitmentStore,
+)
 from .core.support.time import iso, parse_iso, utcnow
 from .core.support.values import confidence_band
 from .core.support.verbs import VERBS, Verb
@@ -98,11 +105,13 @@ from .core.engines.model_learning import LearnedTransition, ModelLearner
 from .core.engines.pomdp import (
     ObservationProbability,
     POMDPEngine,
+    PlannerComparison,
     PomdpModel,
     PomdpTransition,
     belief_entropy,
     belief_from_state,
     belief_update,
+    compare_pomdp_to_mdp,
     normalize_belief,
     observation_probability,
     pomdp_value,
@@ -185,6 +194,8 @@ _APPKIT_NAMES: dict[str, dict[str, str]] = {
         "ApprovalRequired": "ApprovalRequired",
         "DecisionRuntime": "DecisionRuntime",
         "ExecutionBridge": "ExecutionBridge",
+        "ExecutionSagaResult": "ExecutionSagaResult",
+        "ExecutionStep": "ExecutionStep",
         "ExperienceState": "ExperienceState",
         "InMemoryStateStore": "InMemoryStateStore",
         "Saga": "Saga",
@@ -242,6 +253,9 @@ __all__ = [
     "COMMITMENT_STATUSES",
     "Commitment",
     "CommitmentLedger",
+    "CommitmentStore",
+    "FileCommitmentStore",
+    "InMemoryCommitmentStore",
     "Context",
     "DecisionRecord",
     "DecisionRequest",
@@ -279,6 +293,7 @@ __all__ = [
     "LearnedTransition",
     "ObservationProbability",
     "POMDPEngine",
+    "PlannerComparison",
     "PomdpModel",
     "PomdpTransition",
     "RISK_ATTITUDES",
@@ -297,6 +312,7 @@ __all__ = [
     "calibration_by_policy",
     "calibration_report",
     "compare_engines",
+    "compare_pomdp_to_mdp",
     "normalize_belief",
     "observation_probability",
     "plan_actions",
@@ -339,6 +355,8 @@ __all__ = [
     "Detection",
     "Detector",
     "ExecutionBridge",
+    "ExecutionSagaResult",
+    "ExecutionStep",
     "ExperienceState",
     "Goal",
     "HORIZONS",

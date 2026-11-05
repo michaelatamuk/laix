@@ -5,6 +5,7 @@ LAIX defines the contracts. The app owns the database.
 | Word | Meaning |
 |---|---|
 | **State** | Short-lived experience data: goal, phase, beliefs and open items. |
+| **Commitment** | A promised step with a due time, status and dependencies. |
 | **Outcome** | A measured result of a decision. |
 
 ## State store
@@ -45,6 +46,24 @@ In TypeScript, `FileStreamCheckpointStore` takes a small `CheckpointFiles` adapt
 (`join`, `read`, `write`, `remove`), so the package does not import a Node-only filesystem. A Node
 host can pass `node:fs` and `node:path` wrappers.
 
+## Commitment store
+
+Use it for a task's promised steps. The ledger keeps due time, status, dependencies and payload.
+
+```python
+from laix import Commitment, CommitmentLedger, FileCommitmentStore
+
+ledger = CommitmentLedger(
+    (Commitment(id="a", subject="send the draft", due="2026-11-01T09:00:00+00:00"),)
+)
+store = FileCommitmentStore("./commitments")
+store.save("task-1", ledger)
+restored = store.load("task-1")
+```
+
+`InMemoryCommitmentStore` is included for tests. The host can implement `CommitmentStore` with its
+own storage.
+
 ## Outcome store
 
 Use it for decision consequences.
@@ -73,5 +92,6 @@ Keep transcripts, images, customer data and secrets in the app.
 
 TypeScript exports `StateStore`, `InMemoryStateStore`, `StreamCheckpointStore`,
 `InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`, `OutcomeStore` and `OutcomeLedger`.
+Python also exports `CommitmentStore`, `InMemoryCommitmentStore` and `FileCommitmentStore`.
 
 Learning uses outcome labels: [outcome learning](../core/04-outcome-learning.md).

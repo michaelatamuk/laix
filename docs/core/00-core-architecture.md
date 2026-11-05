@@ -23,11 +23,12 @@ block-beta
     end
 
     block:engines
-        columns 5
+        columns 6
         engines_label["Engines"]
         attention["Attention<br/>signals · priority"]
         policies["Policies<br/>action · safety · replanning · allocation<br/>negotiation · preference · verification · escalation"]
         planners["Decision engines<br/>utility · MDP · POMDP"]
+        planning["Planning<br/>commitments · dependencies"]
         resources["Resources<br/>budget · sensing limits"]
     end
 
@@ -51,7 +52,7 @@ block-beta
 |---|---|---|
 | **Capabilities** | Decide · Learn from outcomes · Evaluate | What the core can do. |
 | **Contract** | Decision request · Decision response · Execution trail | The boundary and its records. |
-| **Engines** | Attention · Policies · Decision engines · Resources | What produces a decision and limits sensing. |
+| **Engines** | Attention · Policies · Decision engines · Planning · Resources | What produces a decision and limits sensing. |
 | **Foundation** | Schema · Sensing · Support | Shared records and utilities. |
 
 ## Which engine runs
@@ -90,6 +91,7 @@ outcome → label → feedback → better attention
 | Engines | **Attention** | signals, priority, timing | Contract, support |
 | Engines | **Policies** | eight packs, engine adapter, rule, target, planning, group and shadow wrappers | Contract, learning, support |
 | Engines | **Decision engines** | expected utility, MDP value iteration, POMDP belief planning | Contract, support |
+| Engines | **Planning** | commitments, due times, dependencies and stores | Support |
 | Engines | **Resources** | budget, sensing options, limits | Support |
 | Foundation | **Schema** | records, validation | Contract, learning, support |
 | Foundation | **Sensing** | detector, detection, event, frame | Support |
@@ -100,7 +102,7 @@ outcome → label → feedback → better attention
 - **Capabilities** — Decide chooses explicitly or automatically; Learn turns outcomes into a better policy or attention; Evaluate checks the engines.
 - **Contract** — the request describes what is happening and what the app can do; the response carries the verb, reason, confidence, action, approval and target; the trail records what happened.
 - **Engine choice** — `signals + context` → Attention; `situation + options` → Action policy. A packaged or custom policy is selected explicitly with `policy=...`.
-- **Engines** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation, plus `EnginePolicy`, `RulePolicy`, `TargetedPolicy`, `PlanningPolicy`, `GroupPolicy` and `ShadowPolicy`; Decision engines add `UtilityEngine`, `MDPEngine` and `POMDPEngine`, with simulator, calibration and model learning; Resources set sensing limits.
+- **Engines** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation, plus `EnginePolicy`, `RulePolicy`, `TargetedPolicy`, `PlanningPolicy`, `GroupPolicy` and `ShadowPolicy`; Decision engines add `UtilityEngine`, `MDPEngine` and `POMDPEngine`, with simulator, calibration and model learning; Planning tracks commitments and dependencies; Resources set sensing limits.
 - **Foundation** — Schema validates records; Sensing defines detectors, events and frames; Support provides shared types and helpers.
 
 Streaming, execution, records and delivery are app-kit blocks, not core: see

@@ -73,7 +73,7 @@ block-beta
 | Surface | **Layer** | API | decide, execute, measure, deliver |
 | Surface | **StreamSession** | API | observe, decisions, feed, windows, revisions, checkpoints |
 | Runtime | **DecisionRuntime** | Component | policy, state, execution, outcome |
-| Runtime | **ExecutionBridge** | Component | approval, idempotency, execute, cancel, undo, unknown, reconcile |
+| Runtime | **ExecutionBridge** | Component | approval, idempotency, execute, cancel, undo, unknown, reconcile, run_steps |
 | Runtime | **LiveContext** | Component | detectors, admission, frames |
 | Runtime | **Saga** | Component | steps, compensation, recovery |
 | Data | **ExperienceState** | Shape | goals, phase, beliefs, TTL, history |
@@ -93,8 +93,8 @@ block-beta
 - **Surface** — `Layer` answers one request; `StreamSession` answers a stream over time. Both use the
   same core decision.
 - **Runtime** — `DecisionRuntime` links a policy to state, execution and outcome; `ExecutionBridge` is
-  the write boundary; `LiveContext` runs detectors and returns frames; `Saga` compensates completed
-  steps when a later step fails.
+  the write boundary and `run_steps` compensates completed steps when one fails; `LiveContext` runs
+  detectors and returns frames; `Saga` compensates completed steps when a later step fails.
 - **Data** — `ExperienceState` is live state, `DecisionRecord` is the audit lifecycle, `Outcome` is
   what was measured, `ExecutionReceipt` is what the host returned.
 - **Ports** — the host supplies a state store, a stream checkpoint store, a platform and a delivery
