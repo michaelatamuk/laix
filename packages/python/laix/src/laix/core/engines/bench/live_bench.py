@@ -12,7 +12,7 @@ import time
 from typing import Iterable, Mapping
 
 from ...decisions import ActionOption, Constraint, Situation
-from ...planning import Commitment
+from ...commitments import Commitment
 from ..planners.attention.attention_planner import AttentionAwareEngine
 from ..planners.commitment.commitment_planner import CommitmentAwareEngine
 from ..contract.decision_engine import DecisionEngine
