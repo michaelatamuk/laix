@@ -2,8 +2,8 @@
 
 One package for the LAIX decision layer: contracts, attention, action, the ten decision classes,
 Live Context, streaming, outcome learning, bench, platform, stores, proposals, delivery, execution
-and records. It mirrors the Python decision surface; calibration, model learning and POMDP are
-Python-first.
+and records. It mirrors the Python decision surface, including calibration, model learning and
+POMDP planning.
 
 The source is split into `src/core` and `src/appkit`. The package exports one entry point, `laix`.
 
@@ -29,16 +29,16 @@ registered with `registerPolicy` and selected with `usePolicy`.
 |---|---|
 | Attention | `decide`, `score`, `costOfWaiting`, `OutcomeLog` |
 | Action | `Layer`, `decideAction` |
-| Engine | `EnginePolicy`, `DecisionEngine`, `DecisionProblem`, `Plan`, `toDecision`, `UtilityEngine`, `MDPEngine`, `MdpModel`, `Simulator`, `compareEngines` |
+| Engine | `EnginePolicy`, `DecisionEngine`, `DecisionProblem`, `Plan`, `toDecision`, `UtilityEngine`, `MDPEngine`, `MdpModel`, `POMDPEngine`, `PomdpModel`, `Simulator`, `compareEngines`, `runEngineBench` |
 | Policy packs | `ActivePerceptionPolicy`, `SafetyConstrainedPolicy`, `ReplanningPolicy`, `AllocationPolicy`, `NegotiationPolicy`, `PreferenceElicitationPolicy`, `VerificationPolicy`, `EscalationPolicy` |
 | Authoring and target | `RulePolicy`, `Rule`, `TargetedPolicy`, `PlanningPolicy`, `GroupPolicy`, `ShadowPolicy`, `simulate` |
-| Learned policy | `BanditPolicy`, `UCBBandit`, `Arm`, `rewardForLabel`, `CausalLedger` |
+| Learned policy | `BanditPolicy`, `UCBBandit`, `Arm`, `rewardForLabel`, `CausalLedger`, `ModelLearner`, `CalibrationReport` |
 | Live Context | `LiveContext`, `CallableDetector`, `Detector`, `Detection`, `PerceptionEvent` |
-| Streaming | `StreamSession`, `StreamStats`, `ManualClock`, `TumblingWindow`, `WindowBatch`, `fromNdjson`, `fromSse` |
+| Streaming | `StreamSession`, `StreamStats`, `ManualClock`, `TumblingWindow`, `WindowBatch`, `fromNdjson`, `fromSse`, `DeadLetterQueue` |
 | Runtime | `DecisionRuntime`, `ExecutionBridge`, `ExperienceState`, `ResourceScheduler`, `Saga` |
-| Execution | `ExecutionBridge` idempotency, unknown outcomes and reconciliation |
+| Execution | `ExecutionBridge` idempotency, unknown outcomes, reconciliation and `runSteps` |
 | Platform | `Platform`, `InMemoryPlatform`, `SkillCall` |
-| Stores | `StateStore`, `InMemoryStateStore`, `StreamCheckpointStore`, `InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`, `OutcomeLedger`, `OutcomeStore` |
+| Stores | `StateStore`, `InMemoryStateStore`, `StreamCheckpointStore`, `InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`, `CommitmentStore`, `InMemoryCommitmentStore`, `FileCommitmentStore`, `OutcomeLedger`, `OutcomeStore` |
 | Proposals | `createProposal`, `approveProposal`, `rejectProposal`, `applyProposal`, `undoProposal` |
 | Delivery | `DeliveryPort`, `NullDelivery`, `DeliveryReceipt` |
 | Evaluation | `compare`, `loadCases`, `Case`, `Report` |

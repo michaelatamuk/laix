@@ -9,6 +9,7 @@ import {
   actionValues,
   compareEngines,
   planActions,
+  runEngineBench,
   seededScenarios,
   toDecision,
   valueIteration,
@@ -103,6 +104,38 @@ describe("utility engine", () => {
     assert.equal(plan.actionId, "safe");
     assert.equal(plan.alternatives?.[0]?.rejected_because, "outside the hard limits");
   });
+
+  it("enforces Situation constraints and approval", () => {
+    const options: ActionOption[] = [
+      { id: "safe", verb: "act", name: "safe", expectedBenefit: 0.6, risk: 0.1 },
+      { id: "bold", verb: "act", name: "bold", expectedBenefit: 0.9, risk: 0.6 },
+    ];
+    const plan = new UtilityEngine().solve({
+      ...problem(),
+      situation: {
+        id: "sit-1",
+        at: "2026-11-01T10:00:00Z",
+        subject: "leak",
+        constraints: [{ kind: "risk", value: 0.2, hard: true }],
+      },
+      options,
+    });
+
+    assert.equal(plan.actionId, "safe");
+    assert.equal(plan.alternatives?.[0]?.rejected_because, "blocked by risk:risk");
+
+    const approval = new UtilityEngine().solve({
+      ...problem(),
+      situation: {
+        id: "sit-2",
+        at: "2026-11-01T10:00:00Z",
+        subject: "payment",
+        constraints: [{ kind: "approval", value: true, hard: true }],
+      },
+      options: [{ id: "pay", verb: "act", name: "pay" }],
+    });
+    assert.equal(approval.requiresApproval, true);
+  });
 });
 
 describe("MDP engine", () => {
@@ -196,6 +229,41 @@ describe("engine simulator", () => {
       compareEngines({ a: new FixedEngine("a") }, first).best(),
       "a",
     );
+  });
+
+  it("runs repeatable stochastic MDP simulations", () => {
+    const model = new MdpModel({
+      states: ["s0", "s1", "s2"],
+      actions: ["go"],
+      transitions: [
+        { state: "s0", action: "go", nextState: "s1", probability: 0.5, reward: 1 },
+        { state: "s0", action: "go", nextState: "s2", probability: 0.5, reward: 2 },
+      ],
+      start: "s0",
+      horizon: 1,
+    });
+    const simulator = Simulator.fromMdp(model, { seed: 7 });
+    const first = simulator.run(new FixedEngine("go"));
+    const second = simulator.run(new FixedEngine("go"));
+
+    assert.deepEqual(first, second);
+    assert.ok(["s1", "s2"].includes(first.finalState));
+    const endings = new Set(
+      Array.from({ length: 20 }, (_, seed) =>
+        Simulator.fromMdp(model, { seed: seed + 1 }).run(new FixedEngine("go")).finalState,
+      ),
+    );
+    assert.deepEqual([...endings].sort(), ["s1", "s2"]);
+  });
+
+  it("runs the engine bench", () => {
+    const report = runEngineBench();
+    const summary = report.summary();
+
+    assert.equal(summary.mdp!.meanReward, 4);
+    assert.equal(summary.mdp!.meanGap, 0);
+    assert.equal(summary["stay-baseline"]!.meanGap, 1);
+    assert.equal(report.best(), "mdp");
   });
 });
 

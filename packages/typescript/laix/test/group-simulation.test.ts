@@ -42,6 +42,49 @@ describe("group policy", () => {
     assert.deepEqual(decision.recipients, ["alice", "ben", "chris"]);
     assert.deepEqual(decision.attributes, { topic: "math" });
   });
+
+  it("masks intent, alternatives, evidence and undo hints", () => {
+    const policy = new GroupPolicy(
+      {
+        decide: (): Decision[] => [
+          {
+            verb: "guide",
+            confidence: 0.9,
+            reasonCode: "share",
+            rationale: "private health",
+            undoHint: "health record",
+            evidence: [
+              { id: "e1", kind: "note", source: "health" },
+              { id: "e2", kind: "note", source: "catalog" },
+            ],
+            intent: { capability: "share", args: { health: "private", topic: "math" } },
+            alternatives: [{ health: "private", ok: 1 }],
+            attributes: {
+              topic: "math",
+              nested: { health: "private", visible: 1 },
+            },
+          },
+        ],
+      },
+      {
+        privateAttributes: ["health"],
+        privateEvidence: ["health"],
+        rationale: "shared summary",
+        undoHint: "shared undo",
+      },
+    );
+    const decision = policy.decide(request(1))[0]!;
+
+    assert.equal(decision.rationale, "shared summary");
+    assert.equal(decision.undoHint, "shared undo");
+    assert.deepEqual(decision.evidence?.map((item) => item.id), ["e2"]);
+    assert.deepEqual(decision.intent?.args, { topic: "math" });
+    assert.deepEqual(decision.alternatives, [{ ok: 1 }]);
+    assert.deepEqual(decision.attributes, {
+      topic: "math",
+      nested: { visible: 1 },
+    });
+  });
 });
 
 describe("policy simulation and shadow mode", () => {

@@ -1,4 +1,4 @@
-import type { ActionOption } from "./layer.ts";
+import type { ActionOption } from "../core/contracts.ts";
 import { Layer } from "./layer.ts";
 import type { Decision, DecisionRequest } from "../core/contracts.ts";
 import { ActivePerceptionPolicy } from "../core/policies/active-perception.ts";

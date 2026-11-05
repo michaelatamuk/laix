@@ -273,6 +273,7 @@
     confidenceSource?: string;
     calibrated?: boolean;
     attributes?: Record<string, unknown>;
+    alternatives?: Array<Record<string, unknown>>;
     streamId?: string;
     eventTime?: string | null;
     deadline?: string | null;
@@ -337,6 +338,9 @@
     treated: number;
     controlSize: number;
     method: CausalMethod;
+    standardError?: number;
+    ciLow?: number;
+    ciHigh?: number;
   }
   export class CausalLedger {
     records: CausalObservation[];
@@ -349,7 +353,31 @@
         context?: Record<string, unknown>;
       },
     ): CausalObservation;
+    addOutcome(
+      outcome: Outcome,
+      options: {
+        arm: string;
+        propensity?: number | null;
+        context?: Record<string, unknown>;
+        signed?: boolean;
+      },
+    ): CausalObservation;
+    static fromOutcomes(
+      outcomes: Outcome[],
+      arms: Record<string, string>,
+      options?: {
+        defaultArm?: string;
+        propensities?: Record<string, number>;
+        contexts?: Record<string, Record<string, unknown>>;
+        signed?: boolean;
+      },
+    ): CausalLedger;
     effect(treatment: string, control: string): CausalEffect;
+    effectByContext(
+      treatment: string,
+      control: string,
+      options?: { key?: string },
+    ): Record<string, CausalEffect>;
   }
 
   export type CommitmentStatus = "open" | "done" | "cancelled";
@@ -373,7 +401,34 @@
     open(): Required<Commitment>[];
     due(now: Date): Required<Commitment>[];
     next(now?: Date): Required<Commitment> | null;
+    nextActionable(now?: Date): Required<Commitment> | null;
+    blockedOpen(): Required<Commitment>[];
     blocked(commitment: Commitment): boolean;
+    toDict(): { commitments: Commitment[] };
+    static fromDict(payload: { commitments?: Commitment[] }): CommitmentLedger;
+  }
+  export interface CommitmentStore {
+    save(key: string, ledger: CommitmentLedger): void;
+    load(key: string): CommitmentLedger | null;
+    delete(key: string): void;
+  }
+  export interface CommitmentFiles {
+    join(directory: string, name: string): string;
+    read(path: string): string | null;
+    write(path: string, text: string): void;
+    remove(path: string): void;
+  }
+  export class InMemoryCommitmentStore implements CommitmentStore {
+    save(key: string, ledger: CommitmentLedger): void;
+    load(key: string): CommitmentLedger | null;
+    delete(key: string): void;
+  }
+  export class FileCommitmentStore implements CommitmentStore {
+    readonly directory: string;
+    constructor(directory: string, files: CommitmentFiles);
+    save(key: string, ledger: CommitmentLedger): void;
+    load(key: string): CommitmentLedger | null;
+    delete(key: string): void;
   }
 
   export type RiskAttitude = "neutral" | "averse" | "seeking";
@@ -452,6 +507,149 @@
     solve(problem: DecisionProblem): Plan;
   }
   export function planActions(model: MdpModel, state?: string): string[];
+
+  export interface CalibrationSample {
+    confidence: number;
+    correct: boolean;
+    policy?: string;
+  }
+  export interface CalibrationBin {
+    lower: number;
+    upper: number;
+    predicted: number;
+    observed: number;
+    count: number;
+  }
+  export class CalibrationReport {
+    readonly samples: number;
+    readonly accuracy: number;
+    readonly expected: number;
+    readonly error: number;
+    readonly bins: CalibrationBin[];
+    readonly policy: string;
+    readonly smoothing: number;
+    adjust(confidence: number): number;
+    toDict(): Record<string, unknown>;
+  }
+  export function calibrationReport(
+    samples: CalibrationSample[],
+    options?: { bins?: number; policy?: string; smoothing?: number },
+  ): CalibrationReport;
+  export function calibrationByPolicy(
+    samples: CalibrationSample[],
+    options?: { bins?: number; smoothing?: number },
+  ): Record<string, CalibrationReport>;
+  export function samplesFromOutcomes(
+    outcomes: Outcome[],
+    confidences: Record<string, number>,
+    options?: { policies?: Record<string, string> },
+  ): CalibrationSample[];
+
+  export type Transition = [string, string, string, number];
+  export interface LearnedTransition {
+    state: string;
+    action: string;
+    probabilities: Record<string, number>;
+    expectedReward: number;
+    count: number;
+  }
+  export class ModelLearner {
+    readonly prior: number;
+    history: Array<[number, boolean]>;
+    constructor(options?: { prior?: number });
+    readonly bestScore: number | null;
+    observe(state: string, action: string, nextState: string, reward: number): void;
+    transitionProbabilities(state: string, action: string): Record<string, number>;
+    expectedReward(state: string, action: string): number;
+    learned(): LearnedTransition[];
+    evaluate(validation: Transition[]): number;
+    commit(validation: Transition[]): boolean;
+    snapshot(): Record<string, unknown>;
+    restore(snapshot: Record<string, unknown>): void;
+    toMdpModel(options?: {
+      states?: string[];
+      actions?: string[];
+      start?: string;
+      discount?: number;
+      horizon?: number | null;
+    }): MdpModel;
+  }
+
+  export interface PomdpTransition {
+    state: string;
+    action: string;
+    nextState: string;
+    probability?: number;
+    reward?: number;
+  }
+  export interface ObservationProbability {
+    nextState: string;
+    action: string;
+    observation: string;
+    probability?: number;
+  }
+  export interface PomdpModelOptions {
+    states: string[];
+    actions: string[];
+    observations: string[];
+    transitions: PomdpTransition[];
+    observationTable: ObservationProbability[];
+    discount?: number;
+    horizon?: number;
+  }
+  export type BeliefState = Record<string, number>;
+  export class PomdpModel {
+    readonly states: string[];
+    readonly actions: string[];
+    readonly observations: string[];
+    readonly transitions: Required<PomdpTransition>[];
+    readonly observationTable: Required<ObservationProbability>[];
+    readonly discount: number;
+    readonly horizon: number;
+    constructor(options: PomdpModelOptions);
+    transitionRows(state: string, action: string): Required<PomdpTransition>[];
+    observationRows(nextState: string, action: string): Required<ObservationProbability>[];
+    actionAvailable(state: string, action: string): boolean;
+  }
+  export function normalizeBelief(belief: BeliefState, states: string[]): BeliefState;
+  export function beliefFromState(state: string, states: string[]): BeliefState;
+  export function beliefUpdate(
+    model: PomdpModel,
+    belief: BeliefState,
+    action: string,
+    observation: string,
+  ): BeliefState;
+  export function observationProbability(
+    model: PomdpModel,
+    belief: BeliefState,
+    action: string,
+    observation: string,
+  ): number;
+  export function beliefEntropy(belief: BeliefState): number;
+  export function pomdpValue(
+    model: PomdpModel,
+    belief: BeliefState,
+    options?: { horizon?: number },
+  ): number;
+  export interface PlannerComparison {
+    pomdp: number;
+    mdp: number;
+    gap: number;
+    state: string;
+  }
+  export function comparePomdpToMdp(
+    pomdp: PomdpModel,
+    mdp: MdpModel,
+    belief: BeliefState,
+    options?: { horizon?: number },
+  ): PlannerComparison;
+  export class POMDPEngine implements DecisionEngine {
+    readonly name: string;
+    readonly model: PomdpModel;
+    readonly belief: BeliefState;
+    constructor(model: PomdpModel, options?: { belief?: BeliefState });
+    solve(problem: DecisionProblem): Plan;
+  }
   export interface ActionOption {    id: string;
     verb: Verb;
     name: string;
@@ -602,6 +800,9 @@
     target?: TargetMode;
     recipients?: string[];
     privateAttributes?: string[];
+    privateEvidence?: string[];
+    rationale?: string;
+    undoHint?: string;
   }
   export class GroupPolicy implements Policy {
     readonly name: string;
@@ -817,9 +1018,27 @@
   }
   export class ApprovalRequired extends Error {}
   export class UnknownAction extends Error {}
+  export interface ExecutionStep {
+    action: ActionOption;
+    decision?: Decision;
+    actor?: string;
+    approver?: string | null;
+    context?: Record<string, unknown>;
+    idempotencyKey?: string;
+    compensate?: (receipt: Receipt) => Record<string, unknown>;
+  }
+  export interface ExecutionSagaResult {
+    completed: string[];
+    compensated: string[];
+    receipts: Receipt[];
+    error?: string | null;
+    toDict(): Record<string, unknown>;
+  }
   export class ExecutionBridge {
     constructor(options?: { handlers?: Record<string, (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>>; undoHandlers?: Record<string, (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>> });
     register(name: string, handler: (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>, undo?: (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>): void;
+    canUndo(name: string): boolean;
+    runSteps(steps: ExecutionStep[], options?: { actor?: string }): ExecutionSagaResult;
     execute(decision: Decision, options: { action: ActionOption | null; actor: string; approver?: string | null; context?: Record<string, unknown>; idempotencyKey?: string }): Receipt;
     cancel(receiptId: string, options: { actor: string; reason?: string }): Receipt;
     undo(receiptId: string, options: { actor: string }): Receipt;
@@ -855,6 +1074,11 @@
   }
 
   export type Step = (state: string, action: string) => [string, number];
+  export type RandomStep = (
+    state: string,
+    action: string,
+    rng: () => number,
+  ) => [string, number];
   export interface SimulationStep {
     step: number;
     state: string;
@@ -872,6 +1096,8 @@
     start: string;
     horizon?: number;
     name?: string;
+    seed?: number;
+    randomStep?: RandomStep;
   }
   export class Simulator {
     readonly step: Step;
@@ -879,9 +1105,14 @@
     readonly start: string;
     readonly horizon: number;
     readonly name: string;
+    readonly seed: number | undefined;
+    readonly randomStep: RandomStep | undefined;
     constructor(step: Step, actions: string[], options: SimulatorOptions);
     run(engine: DecisionEngine): SimulationResult;
-    static fromMdp(model: MdpModel, options?: { start?: string }): Simulator;
+    static fromMdp(
+      model: MdpModel,
+      options?: { start?: string; seed?: number },
+    ): Simulator;
   }
   export interface Scenario {
     name: string;
@@ -900,6 +1131,7 @@
     constructor(rows: EngineScore[]);
     summary(): Record<string, { runs: number; meanReward: number; meanGap: number }>;
     best(): string | null;
+    toDict(): Record<string, unknown>;
   }
   export function compareEngines(
     engines: Record<string, DecisionEngine>,
@@ -910,16 +1142,43 @@
     options?: { count?: number; horizon?: number; actions?: string[] },
   ): Scenario[];
 
+  export class FixedActionEngine implements DecisionEngine {
+    readonly action: string;
+    constructor(action: string);
+    solve(problem: DecisionProblem): Plan;
+  }
+  export function runEngineBench(horizon?: number): SimulationReport;
+
   export type DecisionStatus = "final" | "provisional" | "superseded";
   export type TargetMode = "one" | "some" | "all" | "peer" | "gather";
   export const TARGET_MODES: readonly TargetMode[];
+  export interface DeadLetter {
+    raw: string;
+    error: string;
+    at: string;
+  }
+  export class DeadLetterQueue {
+    readonly limit: number;
+    constructor(limit?: number);
+    add(raw: string, error: unknown): void;
+    errorHandler(): (raw: string, error: unknown) => void;
+    all(): DeadLetter[];
+    clear(): void;
+    readonly length: number;
+  }
+  export interface SourceOptions {
+    onError?: (raw: string, error: unknown) => void;
+    strict?: boolean;
+  }
   export function fromQueue<T>(queue: AsyncIterable<T | null>): AsyncIterable<T>;
   export function fromSync<T>(items: Iterable<T>): AsyncIterable<T>;
   export function fromNdjson(
     lines: AsyncIterable<string> | Iterable<string>,
+    options?: SourceOptions,
   ): AsyncIterable<DecisionRequest>;
   export function fromSse(
     lines: AsyncIterable<string> | Iterable<string>,
+    options?: SourceOptions,
   ): AsyncIterable<DecisionRequest>;
   export function prometheus(stats: StreamStats, prefix?: string): string;
   export interface StreamBenchResult {

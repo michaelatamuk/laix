@@ -10,8 +10,6 @@ from __future__ import annotations
 from datetime import timedelta
 from pathlib import Path
 
-import pytest
-
 import laix
 from laix.core.decisions import (
     ActionOption,
@@ -22,8 +20,7 @@ from laix.core.decisions import (
     Situation,
 )
 from laix.core.support.time import iso, utcnow
-from laix.core.decisions import Decision
-from laix.appkit.runtime import ApprovalRequired, ExecutionBridge
+from laix.appkit.runtime import ExecutionBridge
 from laix.core.engines.policies import ActionPolicy, ActionPolicyConfig, ActionPolicyRequest
 from laix.core.engines.resources import Budget, ResourceScheduler, SensingOption
 from laix.appkit.runtime import DecisionRuntime

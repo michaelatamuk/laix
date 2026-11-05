@@ -17,6 +17,13 @@ export interface Approval {
   note?: string;
 }
 
+export interface AuditEvent {
+  at: string;
+  actor: string;
+  event: string;
+  detail: string;
+}
+
 export interface Undo {
   available: boolean;
   how?: string;

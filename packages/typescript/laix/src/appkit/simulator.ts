@@ -2,6 +2,22 @@ import type { DecisionEngine, DecisionProblem } from "../core/engine.ts";
 import type { MdpModel } from "../core/mdp.ts";
 
 export type Step = (state: string, action: string) => [string, number];
+export type RandomStep = (
+  state: string,
+  action: string,
+  rng: () => number,
+) => [string, number];
+
+function seededRandom(seed: number): () => number {
+  let value = seed >>> 0;
+  return () => {
+    value = (value + 0x6d2b79f5) >>> 0;
+    let t = value;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
 
 export interface SimulationStep {
   step: number;
@@ -22,6 +38,8 @@ export interface SimulatorOptions {
   start: string;
   horizon?: number;
   name?: string;
+  seed?: number;
+  randomStep?: RandomStep;
 }
 
 function round(value: number): number {
@@ -34,6 +52,8 @@ export class Simulator {
   readonly start: string;
   readonly horizon: number;
   readonly name: string;
+  readonly seed: number | undefined;
+  readonly randomStep: RandomStep | undefined;
 
   constructor(step: Step, actions: string[], options: SimulatorOptions) {
     if (!actions.length) throw new Error("a simulator needs at least one action");
@@ -44,16 +64,23 @@ export class Simulator {
     this.start = options.start;
     this.horizon = horizon;
     this.name = options.name ?? "scenario";
+    this.seed = options.seed;
+    this.randomStep = options.randomStep;
   }
 
   run(engine: DecisionEngine): SimulationResult {
     let state = this.start;
     const steps: SimulationStep[] = [];
     let total = 0;
+    const rng =
+      this.randomStep !== undefined && this.seed !== undefined
+        ? seededRandom(this.seed)
+        : undefined;
     for (let index = 0; index < this.horizon; index += 1) {
       const problem: DecisionProblem = {
         subject: this.name,
         at: new Date().toISOString(),
+        options: [],
         attributes: { state },
       };
       const plan = engine.solve(problem);
@@ -62,7 +89,10 @@ export class Simulator {
         steps.push({ step: index, state, action, reward: 0, nextState: state });
         break;
       }
-      const [nextState, reward] = this.step(state, action);
+      const [nextState, reward] =
+        this.randomStep !== undefined && rng !== undefined
+          ? this.randomStep(state, action, rng)
+          : this.step(state, action);
       steps.push({ step: index, state, action, reward, nextState });
       total += reward;
       state = nextState;
@@ -75,7 +105,12 @@ export class Simulator {
     };
   }
 
-  static fromMdp(model: MdpModel, options: { start?: string } = {}): Simulator {
+  static fromMdp(
+    model: MdpModel,
+    options: { start?: string; seed?: number } = {},
+  ): Simulator {
+    const resolvedStart = options.start ?? model.start;
+    const horizon = model.horizon ?? 10;
     const step: Step = (state, action) => {
       const rows = model.outgoing(state, action);
       if (!rows.length) return [state, 0];
@@ -88,10 +123,24 @@ export class Simulator {
       )[0]!;
       return [chosen.nextState, chosen.reward];
     };
+    const randomStep: RandomStep = (state, action, rng) => {
+      const rows = model.outgoing(state, action);
+      if (!rows.length) return [state, 0];
+      const roll = rng();
+      let cumulative = 0;
+      for (const item of rows) {
+        cumulative += item.probability;
+        if (roll <= cumulative) return [item.nextState, item.reward];
+      }
+      const last = rows[rows.length - 1]!;
+      return [last.nextState, last.reward];
+    };
     return new Simulator(step, model.actions, {
-      start: options.start ?? model.start,
-      horizon: model.horizon ?? 10,
+      start: resolvedStart,
+      horizon,
       name: `mdp:${model.start}`,
+      seed: options.seed,
+      randomStep: options.seed === undefined ? undefined : randomStep,
     });
   }
 }
@@ -154,6 +203,14 @@ export class SimulationReport {
           ? -1
           : 1,
     )[0]!;
+  }
+
+  toDict(): Record<string, unknown> {
+    return {
+      rows: this.rows.map((item) => ({ ...item })),
+      summary: this.summary(),
+      best: this.best(),
+    };
   }
 }
 

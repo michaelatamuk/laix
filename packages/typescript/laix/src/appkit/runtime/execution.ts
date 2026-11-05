@@ -1,10 +1,29 @@
 import type { ActionOption, Decision, Receipt } from "../../core/contracts.ts";
 import { newId } from "../../core/contracts.ts";
+import { Saga, type SagaStep } from "./saga.ts";
 
 export type Handler = (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>;
 
 export class ApprovalRequired extends Error {}
 export class UnknownAction extends Error {}
+
+export interface ExecutionStep {
+  action: ActionOption;
+  decision?: Decision;
+  actor?: string;
+  approver?: string | null;
+  context?: Record<string, unknown>;
+  idempotencyKey?: string;
+  compensate?: (receipt: Receipt) => Record<string, unknown>;
+}
+
+export interface ExecutionSagaResult {
+  completed: string[];
+  compensated: string[];
+  receipts: Receipt[];
+  error?: string | null;
+  toDict(): Record<string, unknown>;
+}
 
 interface DecisionLike {
   decisionId?: string;
@@ -30,6 +49,71 @@ export class ExecutionBridge {
 
   canHandle(name: string): boolean {
     return this.handlers.has(name);
+  }
+
+  canUndo(name: string): boolean {
+    return this.undoHandlers.has(name);
+  }
+
+  runSteps(steps: ExecutionStep[], options: { actor?: string } = {}): ExecutionSagaResult {
+    const actor = options.actor ?? "system";
+    const receipts: Receipt[] = [];
+    const completed = new Map<number, Receipt>();
+    const failure: string[] = [];
+    const sagaSteps: SagaStep[] = steps.map((step, index) => {
+      const decision: Decision = step.decision ?? {
+        verb: step.action.verb,
+        confidence: 1,
+        reasonCode: "execution_step",
+        rationale: step.action.name,
+      };
+      const forward = (): Record<string, unknown> => {
+        const receipt = this.execute(decision, {
+          action: step.action,
+          actor: step.actor ?? actor,
+          approver: step.approver,
+          context: step.context,
+          idempotencyKey: step.idempotencyKey,
+        });
+        receipts.push(receipt);
+        if (receipt.status === "executed" || receipt.status === "duplicate") {
+          completed.set(index, receipt);
+          return { ...(receipt.detail ?? {}) };
+        }
+        failure.push(receipt.error ?? `${step.action.name} did not execute`);
+        throw new Error(failure[failure.length - 1]!);
+      };
+      let compensate: (() => Record<string, unknown>) | undefined;
+      if (step.compensate) {
+        compensate = () => {
+          const receipt = completed.get(index);
+          return receipt ? step.compensate!(receipt) : {};
+        };
+      } else if (this.canUndo(step.action.name)) {
+        compensate = () => {
+          const receipt = completed.get(index);
+          if (!receipt) return {};
+          return { ...(this.undo(receipt.id, { actor: step.actor ?? actor }).detail ?? {}) };
+        };
+      }
+      return { name: step.action.name, forward, compensate };
+    });
+
+    const result = new Saga().run(sagaSteps);
+    return {
+      completed: result.completed,
+      compensated: result.compensated,
+      receipts,
+      error: failure[0] ?? result.error,
+      toDict(): Record<string, unknown> {
+        return {
+          completed: [...result.completed],
+          compensated: [...result.compensated],
+          receipts: receipts.map((item) => ({ ...item })),
+          error: failure[0] ?? result.error ?? null,
+        };
+      },
+    };
   }
 
   execute(decision: DecisionLike, options: { action: ActionOption | null; actor: string; approver?: string | null; context?: Record<string, unknown>; idempotencyKey?: string }): Receipt {

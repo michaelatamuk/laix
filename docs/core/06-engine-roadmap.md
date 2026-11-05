@@ -187,6 +187,8 @@ Internally this is still an engine-backed policy.
 - [x] `EnginePolicy`
 - [x] utility engine
 - [x] MDP engine
+- [x] POMDP engine
+- [x] calibration and model learning
 - [x] simulator and bench
 
 ## Limits
@@ -213,7 +215,7 @@ Internally this is still an engine-backed policy.
 | Calibration | done |
 | Model learning | done |
 | POMDP | done |
-| TypeScript parity: contract, `EnginePolicy`, utility, MDP, simulator | done |
+| TypeScript parity: contract, `EnginePolicy`, utility, MDP, POMDP, calibration, model learning, simulator | done |
 
-Calibration, model learning and POMDP are Python-first. Their contracts are small and can be
-ported when a TypeScript host needs them.
+The Python and TypeScript packages now expose the same engine, planning, calibration, model-learning
+and POMDP surface.

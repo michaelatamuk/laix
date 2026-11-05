@@ -1,22 +1,44 @@
 /** LAIX-Bench for the TypeScript package. */
 import { runBench, suiteNames } from "../src/appkit/bench.ts";
+import { runEngineBench } from "../src/appkit/engine-bench.ts";
 
 const args = process.argv.slice(2);
 const suites = [];
 let json = false;
 let list = false;
+let engines = false;
 let failUnder = 1;
 
 for (let index = 0; index < args.length; index += 1) {
   const arg = args[index];
   if (arg === "--json") json = true;
   else if (arg === "--list") list = true;
+  else if (arg === "--engines") engines = true;
   else if (arg === "--suite") suites.push(args[++index]);
   else if (arg === "--fail-under") failUnder = Number(args[++index]);
   else {
     console.error(`unknown argument: ${arg}`);
     process.exit(2);
   }
+}
+
+if (engines) {
+  const report = runEngineBench();
+  if (json) {
+    console.log(JSON.stringify(report.toDict(), null, 2));
+  } else {
+    console.log("engine                   scenario               reward  steps      gap");
+    console.log("-".repeat(70));
+    for (const row of report.rows) {
+      const gap = row.optimalityGap === null ? "n/a" : row.optimalityGap.toFixed(3);
+      console.log(
+        `${row.engine.padEnd(24)} ${row.scenario.padEnd(20)} ${row.totalReward.toFixed(3).padStart(8)} ${String(row.steps).padStart(6)} ${gap.padStart(8)}`,
+      );
+    }
+    console.log("-".repeat(70));
+    console.log(`${"best".padEnd(24)} ${report.best() ?? "none"}`);
+  }
+  process.exit(0);
 }
 
 if (list) {

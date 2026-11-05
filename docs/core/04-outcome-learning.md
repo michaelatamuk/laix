@@ -105,7 +105,7 @@ better outcome. They answer different questions.
   transitions. `commit(validation)` keeps the model only when it beats the best one and rolls back
   otherwise. `to_mdp_model()` feeds the learned table to `MDPEngine`.
 
-Both are Python-first. TypeScript exposes the engine contract, utility and MDP engines, and the
+Both are available in Python and TypeScript, alongside the utility, MDP and POMDP engines and the
 simulator.
 
 ## App and LAIX
@@ -113,7 +113,8 @@ simulator.
 The app owns the metric, the measurement and the decision-to-arm map. LAIX owns the reward contract,
 the learner and the policy shape.
 
-TypeScript exports `UCBBandit`, `BanditPolicy`, `Arm` and `rewardForLabel`.
+TypeScript exports `UCBBandit`, `BanditPolicy`, `Arm`, `rewardForLabel`, `CausalLedger`,
+`CalibrationReport` and `ModelLearner`.
 
 ## Example
 

@@ -211,6 +211,7 @@ __all__ = [
     "value_iteration",
     "Detection",
     "Detector",
+    "EngineScore",
     "EvidenceRef",
     "Feedback",
     "Goal",

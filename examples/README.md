@@ -11,10 +11,10 @@ examples/
 │   ├── action/        action decisions, engines and custom policy
 │   ├── attention/     surfacing, quiet hours, feedback
 │   └── records/       DecisionRecord, outcome store, causal, calibration, model learning
-├── policies/          packaged policies, planning, group, shadow, POMDP and learned bandit
+├── policies/          packaged policies, authoring, planning, group, shadow, POMDP and learned bandit
 ├── appkit/
-│   ├── runtime/       execution, resources, live context, stores, saga, simulator
-│   ├── streaming/     event time, cadence, backpressure, revisions, checkpoints, sources
+│   ├── runtime/       execution, resources, live context, stores, sagas, simulator, file stores, engine depth
+│   ├── streaming/     event time, cadence, backpressure, revisions, windows, checkpoints, sources
 │   ├── audit/         proposal lifecycle
 │   ├── platform/      platform interface
 │   └── bench/         LAIX-Bench
@@ -65,6 +65,7 @@ examples/
 | `policies/escalation.py` | Escalation | `escalate escalate_to_target manager` |
 | `policies/bandit.py` | Outcome learning | `manual automatic 0.75` |
 | `policies/time_critical.py` | Gates, delay, cost, disruption and confidence | `act breaker-dry 0.44` |
+| `policies/authoring.py` | Rule policy with a target and recipients | `ask over_limit some ('alice', 'ben')` |
 | `policies/planning.py` | Commitment-based next move | `act due_commitment a` |
 | `policies/planning_store.py` | Persist and restore a commitment ledger | `send the draft` |
 | `policies/group.py` | Target, recipients and private masking | `all ('alice', 'ben', 'chris') {'topic': 'math'}` |
@@ -81,6 +82,8 @@ examples/
 | `appkit/runtime/saga.py` | Forward steps and reverse compensation | `('first',) ('first',) RuntimeError: boom` |
 | `appkit/runtime/execution_saga.py` | Bridge execution with receipt-linked compensation | `('reserve',) ('reserve',) RuntimeError: declined` |
 | `appkit/runtime/simulator.py` | Compare engines on one scenario | `right 4.0 1.0` |
+| `appkit/runtime/file_stores.py` | Persist a checkpoint and a commitment ledger | `1 send the draft` |
+| `appkit/runtime/engine_depth.py` | Constraints, stochastic simulation and POMDP comparison | `safe blocked by risk:risk-limit` / `s1 1.0` / `s0 0.0 go` |
 | `appkit/platform/platform_interface.py` | Run a skill, approve, read events | `7 skill.started,skill.finished fast True` |
 
 ## Records
@@ -91,6 +94,7 @@ examples/
 | `appkit/audit/proposal.py` | Proposal lifecycle | `pending approved applied undone` |
 | `decisions/records/causal.py` | Estimate a treatment effect | `1.0 difference-in-means` |
 | `decisions/records/causal_outcomes.py` | Build a causal ledger from outcomes | `6.0 6.0 6.0` |
+| `decisions/records/causal_strata.py` | Causal intervals and strata | `1.0 -1.771859 3.771859 ['east', 'west']` |
 | `decisions/records/calibration.py` | Compare confidence with accuracy | `0.9 0.5 0.4 0.5` |
 | `decisions/records/model_learning.py` | Learn transitions and reward | `{'s1': 1.0} 2.0` |
 
@@ -111,6 +115,8 @@ examples/
 | `appkit/streaming/checkpoint.py` | Save and resume a stream | `True 1 1` |
 | `appkit/streaming/sources.py` | Read NDJSON into requests | `a b` |
 | `appkit/streaming/dead_letter.py` | Retain a malformed frame and continue | `a b 1 True` |
+| `appkit/streaming/windows.py` | Aggregate events into tumbling windows | `['2 events', '1 events']` |
+| `appkit/streaming/flow_control.py` | Cooldown, budget and replay | `1 0 0 1 1 ['d', 'e']` |
 
 ## Integration
 
@@ -146,6 +152,18 @@ examples/
 | `typescript/policies/group_shadow.mts` | Group masking and shadow comparison. | `ask act all {"topic":"math"}` |
 | `typescript/runtime/saga.mts` | Forward steps and reverse compensation. | `first first Error: boom` |
 | `typescript/integration/engines.mts` | Utility, MDP, simulator and comparison. | `bold 0.75 go 2.8 right 0` |
+| `typescript/integration/engine_bench.mts` | Engine bench baseline comparison. | `mdp 4 1` |
+| `typescript/records/calibration.mts` | Confidence vs accuracy. | `0.9 0.5 0.4 0.5` |
+| `typescript/records/model_learning.mts` | Learn transitions and reward. | `{"s1":1} 2` |
+| `typescript/policies/pomdp.mts` | Belief planning. | `act go 2.8` |
+| `typescript/policies/planning_store.mts` | Persist a commitment ledger. | `send the draft` |
+| `typescript/streaming/dead_letter.mts` | Retain a malformed frame. | `a b 1 true` |
+| `typescript/runtime/execution_saga.mts` | Bridge execution with compensation. | `reserve reserve Error: declined` |
+| `typescript/policies/authoring.mts` | Rule policy with a target. | `ask over_limit some alice,ben` |
+| `typescript/streaming/windows.mts` | Tumbling windows. | `[ '2 events', '1 events' ]` |
+| `typescript/streaming/flow_control.mts` | Cooldown, budget and replay. | `1 0 0 1 1 [ 'd', 'e' ]` |
+| `typescript/records/causal_strata.mts` | Causal intervals and strata. | `1 -1.771859 3.771859 [ 'east', 'west' ]` |
+| `typescript/runtime/file_stores.mts` | File-backed checkpoint and commitment stores. | `1 send the draft` |
 
 ## Run
 

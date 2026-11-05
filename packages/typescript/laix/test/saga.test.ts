@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { Saga } from "../src/index.ts";
+import { ExecutionBridge, Saga } from "../src/index.ts";
+import type { ActionOption, ExecutionStep } from "../src/index.ts";
 
 describe("execution saga", () => {
   it("compensates completed steps in reverse", () => {
@@ -38,5 +39,42 @@ describe("execution saga", () => {
     assert.deepEqual(result.completed, ["first"]);
     assert.deepEqual(result.compensated, []);
     assert.equal(result.error, undefined);
+  });
+});
+
+describe("execution bridge saga", () => {
+  it("compensates completed receipts", () => {
+    const log: string[] = [];
+    const bridge = new ExecutionBridge({
+      handlers: {
+        reserve: () => ({ reserved: true }),
+        charge: () => {
+          throw new Error("declined");
+        },
+      },
+      undoHandlers: {
+        reserve: () => {
+          log.push("released");
+          return { released: true };
+        },
+      },
+    });
+    const result = bridge.runSteps(
+      [
+        {
+          action: { id: "a1", verb: "act", name: "reserve" } satisfies ActionOption,
+        },
+        {
+          action: { id: "a2", verb: "act", name: "charge" } satisfies ActionOption,
+        },
+      ] satisfies ExecutionStep[],
+      { actor: "checkout" },
+    );
+
+    assert.deepEqual(result.completed, ["reserve"]);
+    assert.deepEqual(result.compensated, ["reserve"]);
+    assert.equal(result.error, "Error: declined");
+    assert.deepEqual(result.receipts.map((item) => item.status), ["executed", "failed"]);
+    assert.deepEqual(log, ["released"]);
   });
 });

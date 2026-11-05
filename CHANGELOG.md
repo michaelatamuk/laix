@@ -31,6 +31,12 @@
 ### Changed
 
 - Added `to_decision` / `toDecision` as the one plan-to-decision conversion.
+- TypeScript now mirrors the Python calibration, model-learning and POMDP surface.
+
+### Tooling
+
+- CI runs `ruff check` for Python and `tsc --noEmit` for TypeScript; TypeScript uses a committed
+  `package-lock.json`.
 
 ## 0.9.0 — 2026-11-05
 

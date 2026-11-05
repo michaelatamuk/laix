@@ -6,7 +6,7 @@
  * the same Decision.
  */
 
-import { decideAttention } from "../core/attention.ts";
+import { decideAttention, type Context, type Signal } from "../core/attention.ts";
 import type {
   ActionOption,
   Decision,
@@ -234,7 +234,7 @@ export class Layer {
       return [annotate(decideAction({ ...request.situation, attributes }, request.options ?? []))];
     }
     if (!request.context) throw new Error("attention allocation needs a context with now");
-    return decideAttention(request.context, request.signals ?? []).map((decision) => annotate({
+    return decideAttention(request.context as Context, (request.signals ?? []) as Signal[]).map((decision) => annotate({
       verb: decision.verb,
       confidence: decision.confidence,
       reasonCode: decision.reasonCode,

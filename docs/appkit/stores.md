@@ -91,7 +91,7 @@ Store:
 Keep transcripts, images, customer data and secrets in the app.
 
 TypeScript exports `StateStore`, `InMemoryStateStore`, `StreamCheckpointStore`,
-`InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`, `OutcomeStore` and `OutcomeLedger`.
-Python also exports `CommitmentStore`, `InMemoryCommitmentStore` and `FileCommitmentStore`.
+`InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`, `CommitmentStore`,
+`InMemoryCommitmentStore`, `FileCommitmentStore`, `OutcomeStore` and `OutcomeLedger`.
 
 Learning uses outcome labels: [outcome learning](../core/04-outcome-learning.md).

@@ -72,7 +72,7 @@ class UCBBandit:
         return clamp(total / max(arm.prior_weight + pulls, 1e-9))
 
     def score(self, arm_id: str) -> float:
-        arm = self.get(arm_id)
+        self.get(arm_id)
         pulls = self._pulls[arm_id]
         if pulls == 0:
             return float("inf")

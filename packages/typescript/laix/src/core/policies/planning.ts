@@ -12,20 +12,21 @@ export class PlanningPolicy {
   decide(request: DecisionRequest): Decision[] {
     const parsed = request.at ? new Date(request.at) : new Date();
     const now = Number.isNaN(parsed.getTime()) ? new Date() : parsed;
-    const commitment = this.ledger.next(now);
+    const commitment = this.ledger.nextActionable(now);
     if (!commitment) {
+      const blocked = this.ledger.next(now);
+      if (blocked) {
+        return [
+          this.decision(
+            "ask",
+            "blocked_commitment",
+            `${blocked.id} waits on another commitment`,
+            0.7,
+            blocked.id,
+          ),
+        ];
+      }
       return [this.decision("wait", "no_commitment", "there is no open commitment", 0.8)];
-    }
-    if (this.ledger.blocked(commitment)) {
-      return [
-        this.decision(
-          "ask",
-          "blocked_commitment",
-          `${commitment.id} waits on another commitment`,
-          0.7,
-          commitment.id,
-        ),
-      ];
     }
     if (commitmentDue(commitment, now)) {
       return [

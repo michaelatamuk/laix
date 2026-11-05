@@ -61,6 +61,7 @@ export interface Decision {
   confidenceSource?: string;
   calibrated?: boolean;
   attributes?: Record<string, unknown>;
+  alternatives?: Array<Record<string, unknown>>;
   streamId?: string;
   eventTime?: string | null;
   deadline?: string | null;

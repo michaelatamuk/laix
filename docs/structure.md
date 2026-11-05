@@ -82,8 +82,12 @@ packages/typescript/laix/src/
 │   ├── engine.ts      DecisionEngine, EnginePolicy and to_decision
 │   ├── causal.ts      causal ledger
 │   ├── planning.ts    commitment ledger
+│   ├── planning-store.ts commitment stores
 │   ├── utility.ts     utility engine
 │   ├── mdp.ts         MDP model, value iteration and engine
+│   ├── pomdp.ts       POMDP model, belief update and engine
+│   ├── calibration.ts calibration report and smoothing
+│   ├── model-learning.ts count-based learner and MDP export
 │   ├── outcome.ts     outcome ledger and UCB learner
 │   ├── evaluation.ts  parity harness
 │   ├── perception.ts  detector and frame contracts
@@ -97,6 +101,7 @@ packages/typescript/laix/src/
     ├── streaming.ts   stream session and checkpoints
     ├── checkpoint.ts  in-memory and file checkpoint stores
     ├── simulator.ts   engine simulator and comparison
+    ├── engine-bench.ts engine bench baseline
     ├── window.ts      tumbling windows
     ├── sources.ts     queue, sync, NDJSON and SSE sources
     ├── metrics.ts     Prometheus counters

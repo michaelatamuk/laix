@@ -1,7 +1,6 @@
-import type { ActionOption, Decision, Outcome, Receipt, Trace } from "../../core/contracts.ts";
+import type { ActionOption, Decision, Outcome, Receipt, Situation, Trace } from "../../core/contracts.ts";
 import { clamp, iso, newId } from "../../core/contracts.ts";
 import { decideAction } from "../layer.ts";
-import type { ActionOption, Decision, Situation } from "../../core/contracts.ts";
 import { OutcomeLedger } from "../../core/outcome.ts";
 import { ApprovalRequired, ExecutionBridge } from "./execution.ts";
 import { ResourceScheduler, type Budget, type ResourcePlan, type SensingOption } from "../../core/resources.ts";

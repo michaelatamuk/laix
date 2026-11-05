@@ -54,7 +54,7 @@ from .core.engines.attention import AttentionDecision, Context, Feedback, Signal
 from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
 from .core.evaluation import load_cases
-from .core.outcome_learning import AttentionOutcome, Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
+from .core.outcome_learning import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
 from .core.engines.policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
@@ -264,10 +264,12 @@ __all__ = [
     "DeliveryPort",
     "DeliveryReceipt",
     "PlatformEvent",
+    "EngineScore",
     "EvidenceRef",
     "Feedback",
     "InMemoryPlatform",
     "InMemoryStateStore",
+    "Intent",
     "Layer",
     "LiveContext",
     "ManualClock",

@@ -104,6 +104,7 @@ export interface StreamSessionOptions {
 
 export class StreamSession {
   private streamIdValue: string;
+  private readonly explicitStreamId: boolean;
   private readonly decide: Decider;
   private readonly capacity: number;
   private readonly onFull: FullPolicy;
@@ -155,6 +156,7 @@ export class StreamSession {
 
     this.decide = decide;
     this.streamIdValue = options.streamId ?? (options.idFactory ?? (() => newId("STR")))();
+    this.explicitStreamId = Boolean(options.streamId);
     this.capacity = capacity;
     this.onFull = onFull;
     this.late = late;
@@ -318,7 +320,18 @@ export class StreamSession {
 
   restore(snapshot: Record<string, unknown>): void {
     if (this.closedFlag) throw new Error("stream session is closed");
-    this.streamIdValue = typeof snapshot.streamId === "string" ? snapshot.streamId : this.streamId;
+    const snapshotStreamId =
+      typeof snapshot.streamId === "string" && snapshot.streamId
+        ? snapshot.streamId
+        : null;
+    if (snapshotStreamId) {
+      if (this.explicitStreamId && snapshotStreamId !== this.streamId) {
+        throw new Error(
+          `checkpoint belongs to stream ${snapshotStreamId}, not ${this.streamId}`,
+        );
+      }
+      this.streamIdValue = snapshotStreamId;
+    }
     this.watermark = typeof snapshot.watermark === "string" ? Date.parse(snapshot.watermark) : null;
     this.lastDecision =
       typeof snapshot.lastDecision === "string" ? new Date(snapshot.lastDecision) : null;

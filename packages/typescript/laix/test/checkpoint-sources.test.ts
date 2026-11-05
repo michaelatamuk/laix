@@ -11,6 +11,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, it } from "node:test";
 import {
+  DeadLetterQueue,
   FileStreamCheckpointStore,
   InMemoryStreamCheckpointStore,
   StreamSession,
@@ -85,6 +86,16 @@ describe("stream checkpoints", () => {
       rmSync(directory, { recursive: true, force: true });
     }
   });
+
+  it("rejects a checkpoint from another explicit stream", () => {
+    const store = new InMemoryStreamCheckpointStore();
+    const session = new StreamSession(decider, { streamId: "stream-a" });
+    session.observe(request("a", 0));
+    session.save(store, "case-2");
+
+    const restored = new StreamSession(decider, { streamId: "stream-b" });
+    assert.throws(() => restored.resume(store, "case-2"), /stream-a/);
+  });
 });
 
 describe("stream sources", () => {
@@ -114,5 +125,24 @@ describe("stream sources", () => {
       requests.push(item);
     }
     assert.deepEqual(requests.map((item) => item.subject), ["a", "b"]);
+  });
+
+  it("retains malformed NDJSON frames", async () => {
+    const dead = new DeadLetterQueue(1);
+    const requests: DecisionRequest[] = [];
+    for await (const item of fromNdjson(
+      lines(
+        '{"subject":\n',
+        '{"subject":"a","at":"2026-11-01T10:00:00Z"}\n',
+      ),
+      { onError: dead.errorHandler(), strict: false },
+    )) {
+      requests.push(item);
+    }
+
+    assert.deepEqual(requests.map((item) => item.subject), ["a"]);
+    assert.equal(dead.length, 1);
+    assert.equal(dead.all()[0]!.raw, '{"subject":');
+    assert.match(dead.all()[0]!.error, /SyntaxError|JSON/);
   });
 });

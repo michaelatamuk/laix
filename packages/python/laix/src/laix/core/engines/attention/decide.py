@@ -11,7 +11,7 @@ import hashlib
 from collections.abc import Iterable, Sequence
 from datetime import datetime
 
-from .gates import GATE_RULES, GateResult, ReasonCode, dedupe_key, feedback_blocks, rank
+from .gates import GATE_RULES, GateResult, ReasonCode, feedback_blocks, rank
 from .input.context import Context
 from .output.decision import AttentionDecision
 from .input.signal import Signal

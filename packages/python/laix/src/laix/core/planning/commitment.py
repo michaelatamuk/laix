@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
-from ..support.time import parse_iso, utcnow
+from ..support.time import parse_iso
 
 COMMITMENT_STATUSES = ("open", "done", "cancelled")
 _NEVER = datetime.max.replace(tzinfo=timezone.utc)

@@ -6,7 +6,7 @@ from typing import Any
 
 from ....decisions import Decision, Intent
 from ....support.verbs import Verb
-from ._helpers import decision, number, value
+from ._helpers import decision, number
 
 
 class NegotiationPolicy:

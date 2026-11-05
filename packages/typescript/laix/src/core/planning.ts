@@ -74,7 +74,21 @@ export class CommitmentLedger {
   next(now: Date = new Date()): Required<Commitment> | null {
     const open = this.open();
     if (!open.length) return null;
-    return [...open].sort((left, right) => {
+    return this.first(open);
+  }
+
+  nextActionable(now: Date = new Date()): Required<Commitment> | null {
+    const open = this.open().filter((item) => !this.blocked(item));
+    if (!open.length) return null;
+    return this.first(open);
+  }
+
+  blockedOpen(): Required<Commitment>[] {
+    return this.open().filter((item) => this.blocked(item));
+  }
+
+  private first(items: Required<Commitment>[]): Required<Commitment> {
+    return [...items].sort((left, right) => {
       const leftDue = left.due ? Date.parse(left.due) : Number.POSITIVE_INFINITY;
       const rightDue = right.due ? Date.parse(right.due) : Number.POSITIVE_INFINITY;
       const leftAt = Number.isNaN(leftDue) ? Number.POSITIVE_INFINITY : leftDue;
@@ -83,6 +97,20 @@ export class CommitmentLedger {
       if (left.priority !== right.priority) return right.priority - left.priority;
       return left.id < right.id ? -1 : left.id > right.id ? 1 : 0;
     })[0]!;
+  }
+
+  toDict(): { commitments: Commitment[] } {
+    return {
+      commitments: [...this.items.values()].map((item) => ({
+        ...item,
+        dependsOn: [...item.dependsOn],
+        payload: { ...item.payload },
+      })),
+    };
+  }
+
+  static fromDict(payload: { commitments?: Commitment[] }): CommitmentLedger {
+    return new CommitmentLedger([...(payload.commitments ?? [])]);
   }
 
   blocked(commitment: Commitment): boolean {

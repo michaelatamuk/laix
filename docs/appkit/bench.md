@@ -27,6 +27,7 @@ TypeScript:
 ```powershell
 npm.cmd run bench
 npm.cmd run bench -- --suite safety --json
+npm.cmd run bench -- --engines
 ```
 
 ```text
