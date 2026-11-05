@@ -1,8 +1,7 @@
 # Decision engines
 
 The engine contract, the built-in engines and the simulator are implemented in
-`core/engines/`. The layer stays usable without any engine: rule policies and the
-packaged policies still return the same decision shape.
+`core/engines/`. Rule policies and packaged policies work on their own; engines are optional.
 
 The goal is:
 
@@ -112,8 +111,7 @@ class MDPEngine:
 decision = decide(request, policy=EnginePolicy(MDPEngine()))[0]
 ```
 
-A convenience constructor is intentionally not added: pass the engine through
-`EnginePolicy(engine)` so every path shares one conversion.
+Pass the engine through `EnginePolicy(engine)` so every path shares one conversion.
 
 Internally this is still an engine-backed policy.
 

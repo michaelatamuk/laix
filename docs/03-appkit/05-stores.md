@@ -28,7 +28,7 @@ or user memory belongs in the app or a manager service.
 
 ## Stream checkpoint store
 
-Use it to resume a `StreamSession` without giving LAIX a database. The snapshot keeps the watermark,
+Use it to resume a `StreamSession` while the app keeps its database. The snapshot keeps the watermark,
 cadence, counters, buffered decisions and traces.
 
 ```python
@@ -43,8 +43,8 @@ stream.resume(store, "case-1")
 with its own storage.
 
 In TypeScript, `FileStreamCheckpointStore` takes a small `CheckpointFiles` adapter
-(`join`, `read`, `write`, `remove`), so the package does not import a Node-only filesystem. A Node
-host can pass `node:fs` and `node:path` wrappers.
+(`join`, `read`, `write`, `remove`), so the package stays runtime-neutral. A Node host can pass
+`node:fs` and `node:path` wrappers.
 
 ## Commitment store
 

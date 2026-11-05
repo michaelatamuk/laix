@@ -23,8 +23,9 @@ Receipt statuses: `pending`, `approved`, `executed`, `refused`, `failed`, `cance
 
 ## Idempotency and unknown outcomes
 
-- A repeated `idempotency_key` returns a `duplicate` receipt instead of running the handler again.
-- `mark_unknown` records that the action may have happened; do not retry blindly.
+- A repeated `idempotency_key` returns a `duplicate` receipt.
+- `mark_unknown` records that the action may have happened; reconcile with provider evidence before
+  retrying.
 - `reconcile` resolves an unknown outcome with provider evidence.
 - `cancel` and `undo` require the right lifecycle state and a registered undo handler.
 

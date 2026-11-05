@@ -30,7 +30,8 @@ print(receipt.status, receipt.channel)
 - the receipt store;
 - retries and channel fallback.
 
-LAIX only says whether the decision should be delivered. The app decides how.
+LAIX provides the delivery decision. The app chooses the channel, template, credentials, receipt
+store, retries and channel fallback.
 
 ## Examples
 

@@ -6,7 +6,7 @@
 | **Decision** | The one response shape: verb, confidence, reason, rationale, action, approval, target and trail. |
 | **Verb** | `wait`, `observe`, `guide`, `ask`, `act`, `verify` or `escalate`. |
 | **Policy** | A callable with `decide(request)` that returns decisions. |
-| **Engine** | A planner behind `EnginePolicy`; it returns a `Plan`, not a `Decision`. |
+| **Engine** | A planner behind `EnginePolicy`; it returns a `Plan`, and the policy converts it to a `Decision`. |
 | **Plan** | An engine's answer: verb, confidence, reason, action, score and alternatives. |
 | **Target** | Who receives a decision: `one`, `some`, `all`, `peer` or `gather`. |
 | **Stream** | A `StreamSession` that applies event time, cadence, backpressure and revisions to many requests. |

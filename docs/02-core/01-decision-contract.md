@@ -118,7 +118,7 @@ guide worth_surfacing 84.0
 | `alternatives` | Other options, their score and why they lost. |
 | `constraints_applied` | Hard limits that changed the option set. |
 | `stream_id` | The stream session that produced it; empty for a one-shot decision. |
-| `event_time` | When the event happened, not when it was processed. |
+| `event_time` | When the event happened. |
 | `deadline` | When the decision had to be made. |
 | `valid_until` | How long the decision applies. |
 | `supersedes` | The decision this one replaces. |
@@ -218,7 +218,7 @@ Two versions travel with a decision, and they mean different things:
 
 `ExecutionReceipt` statuses are `pending`, `approved`, `executed`, `refused`, `cancelled`,
 `failed`, `undone`, `unknown` and `duplicate`. A bridge may mark an action `unknown` and
-reconcile it with provider evidence; a duplicate key never runs the handler twice.
+reconcile it with provider evidence; a duplicate key returns a duplicate receipt.
 
 Every core record carries `schema_version`.
 

@@ -1,10 +1,8 @@
 # What is LAIX?
 
-**LAIX stands for Live AI Experience.** It is the decision layer for live AI experiences.
+**LAIX — Live AI Experience — is the decision layer for live AI experiences.**
 
-A live AI experience is not a chat transcript. It is a product that notices the moment, decides
-whether to intervene and knows when to wait. LAIX does not generate the experience. It decides what
-the experience should do next:
+The host builds the experience. LAIX decides what the experience should do next:
 
 > Given this situation, what should happen next?
 
@@ -16,19 +14,14 @@ wait    observe    guide    ask    act    verify    escalate
 
 Then the product does the work.
 
-| | |
-|---|---|
-| **Is** | the decision layer for live AI experiences |
-| **Is not** | an AI model, agent framework, workflow engine, chatbot platform, database or UI kit |
-| **Replaces** | scattered decision logic for when and how an AI experience should intervene |
+LAIX provides one decision shape, explicit reasons, confidence, approval and a trail. The host
+provides the experience, data, UI, execution and delivery.
 
 ## Why a live experience needs a decision layer
 
-Generating a response is cheap. Knowing whether to interrupt, wait, ask, act or verify is not.
+A live experience needs timing, restraint, safety, coherence and a record:
 
-A live experience needs to be:
-
-- **timely** — act inside the window, not after it;
+- **timely** — act inside the window;
 - **restrained** — stay silent when the moment is wrong;
 - **safe** — respect hard risk and approval limits;
 - **coherent** — one decision shape across attention, action and follow-up;
@@ -51,7 +44,7 @@ LAIX returns one decision
 product acts, asks, waits or escalates
 ```
 
-LAIX is a **tool inside a task**. The product keeps its own orchestration.
+LAIX works inside one task. The product keeps its own orchestration.
 
 ## A simple example
 
@@ -90,8 +83,8 @@ What LAIX sees:
 Two hard gates run before any score:
 
 1. **Risk above 0.20** leaves the set. Crossing the wet floor is out.
-2. **Delay above 6 minutes** leaves the set. A safe option that arrives too late is not the next
-   option. It can still be the follow-up.
+2. **Delay above 6 minutes** leaves the set. A safe option that arrives too late becomes a
+   follow-up.
 
 The remaining options are scored:
 
@@ -106,8 +99,8 @@ score = confidence × benefit
 
 Each term has a meaning:
 
-- **confidence × benefit** — the benefit only counts if the socket is really live;
-- **risk** — personal injury, not property damage;
+- **confidence × benefit** — benefit weighted by the chance the socket is live;
+- **risk** — personal injury risk;
 - **delay** — time lost inside a 6-minute window;
 - **cost** — money, such as a callout fee;
 - **disruption** — alarms, power off, people moved;
@@ -130,8 +123,8 @@ The decision is:
 - **follow-up** — call an electrician to check the socket and the consumer unit.
 
 The wet route is removed because risk 0.90 is above the hard limit. The electrician is safe and
-cheap in risk, but 15 minutes is outside the window, so it cannot be the next option. Evacuation is
-fast and safe, but it does not stop the water and it disrupts the building. Looking is cheap, but at
+cheap in risk, but 15 minutes is outside the window, so it becomes a follow-up. Evacuation is fast
+and safe, but it leaves the water running and it disrupts the building. Looking is cheap, but at
 confidence 0.80 it delays a known problem.
 
 ### When confidence changes, the answer changes
@@ -151,7 +144,7 @@ Now the decision is:
 - **observe** — look from the doorway;
 - **then** — re-decide with better information.
 
-A 2-minute look is cheaper than a 4-minute trip to cut power for a socket that may not be live.
+A 2-minute look is cheaper than a 4-minute trip to cut power for a socket whose state is uncertain.
 That is the point of the information term: when confidence is low, buying information can beat
 acting.
 

@@ -1,38 +1,41 @@
-# LAIX
+# LAIX — Live AI Experience
 
 [![CI](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml)
 
-LAIX is **Live AI Experience**: the decision layer for live AI experiences. A live experience is not
-a chat transcript. It notices the moment, decides whether to intervene and knows when to wait. LAIX
-does not generate the experience; it decides what the experience should do next.
+**LAIX is the decision layer for live AI experiences.**
+
+A live experience notices the moment, chooses whether to intervene and knows when to wait. LAIX
+makes that choice explicit: it returns one decision, with the reason, confidence, action, approval,
+target and trail the host needs. The experience belongs to the host; LAIX owns the decision.
 
 > Given what is happening, what the app can do and what the host allows, should this experience
 > **wait, observe, guide, ask, act, verify or escalate**?
 
-| | |
+| Start | |
 |---|---|
-| **Is** | the decision layer for live AI experiences |
-| **Is not** | an agent framework, workflow engine, chatbot platform, database or UI kit |
-| **Replaces** | scattered decision logic for when and how an AI experience should intervene |
-
-The app owns the experience, data, UI and execution. LAIX owns the moment-to-decision loop and
-records what happened.
+| [Quickstart](docs/01-start/quickstart.md) | install and make one decision |
+| [Documentation](docs/README.md) | start, core, app kit, concepts and project |
+| [Examples](examples/README.md) | runnable Python and TypeScript examples |
 
 ## One decision call
 
-The core package answers a request without importing the app kit:
+The core package answers a request directly:
 
 ```python
-from laix import DecisionRequest, decide
+from laix import Context, DecisionRequest, Signal, decide
 
 decision = decide(
     DecisionRequest(
         subject="one decision",
         at="2026-11-01T10:00:00+00:00",
-        signals=(signal,),
-        context=context,
+        signals=(
+            Signal(id="s-1", kind="deadline", severity="high", confidence=0.9),
+        ),
+        context=Context(now="2026-11-01T10:00:00+00:00", quiet_hours=None),
     )
 )[0]
+
+print(decision.verb, decision.reason_code, decision.score)
 ```
 
 An app can ask LAIX to choose between actions in the same way:
@@ -48,83 +51,55 @@ decision = decide(
 )[0]
 ```
 
-Both requests return the same `Decision` shape, and every decision gets an id.
+Both requests return the same `Decision` shape, and every decision gets an id. TypeScript exposes the
+same surface:
 
-When the app also needs execution, traces, records or delivery, use `Layer` from the app kit:
+```ts
+import { Layer } from "laix";
 
-```python
-from laix import DecisionRequest, Layer
-
-layer = Layer()
-decisions = layer.decide(
-    DecisionRequest(
-        subject="one decision",
-        at="2026-11-01T10:00:00+00:00",
-        situation=situation,
-        options=options,
-    )
-)
+const [decision] = new Layer().decide({
+  subject: "one decision",
+  at: "2026-11-01T10:00:00Z",
+  situation,
+  options,
+});
 ```
 
-`Layer` uses the same core selection and adds the runtime, execution and audit parts.
+## What LAIX provides
 
-## Inside the layer
+| Capability | What it gives the host |
+|---|---|
+| Decision contract | one `Decision` shape for attention, action and follow-up |
+| Attention | which signal deserves attention now, and what to do with it |
+| Action policies | the next move from the options the app can afford |
+| Packaged policies | active perception, safety, replanning, allocation, negotiation, preference, verification and escalation |
+| Decision engines | utility, MDP and POMDP planners behind `EnginePolicy` |
+| Learning | outcome labels, rewards, bandits, causal attribution, calibration and model learning |
+| Streaming | event time, cadence, backpressure, revisions, checkpoints and sources |
+| Execution | receipts, idempotency, unknown outcomes, reconciliation, sagas and records |
+| Stores | state, checkpoints, commitments and outcomes through host-owned ports |
+| Delivery | a port and a receipt for the app’s own channel |
+| Proof | LAIX-Bench, conformance vectors, simulator, engine bench and metrics |
 
-The layer holds one set of contracts and two built-in policies:
+## Core and app kit
 
-- **attention**: which signal deserves attention now, and what should the app do with it?
-- **action decision**: which option should the app choose?
+- **`laix.core`** — `decide(request)`, contracts, decision shape, attention, policies, engines,
+  sensing contracts, resource admission, outcomes, causal attribution, calibration and evaluation.
+- **`laix.appkit`** — optional integration: `Layer`, streams and checkpoints, execution and sagas,
+  records, delivery, platform, live-context loop and state.
 
-It also ships eight packaged policies for active perception, safety-constrained action, replanning,
-allocation, negotiation, preference elicitation, verification and escalation. They use the same
-plugin interface and decision shape. `EnginePolicy` wraps an external engine — JEV, an optimizer or a
-planner — behind that same interface, and `RulePolicy` / `TargetedPolicy` cover authored rules and
-group targets.
-
-Built-in engines add `UtilityEngine`, `MDPEngine` and `POMDPEngine`. `Simulator` compares engines on
-the same scenario, `CalibrationReport` compares confidence with accuracy, and `ModelLearner` learns
-transitions and rewards with rollback.
-
-Live Context adds a detector contract and a perception loop: cheap detectors run continuously, deep
-ones are admitted under a sub-second cost and latency budget, and each event produces a frame.
-
-`Layer.stream` adds the live loop around decisions: event time, cadence, backpressure and revisions.
-`StreamSession` saves and resumes through a `StreamCheckpointStore` and reads NDJSON or SSE sources.
-The execution bridge adds idempotency keys, unknown outcomes and reconciliation around a write, and
-`ExecutionBridge.run_steps` or `Saga` compensate completed steps when a later step fails.
-`CommitmentLedger` can persist through a `CommitmentStore`.
-
-Outcome learning turns measured labels into rewards. `UCBBandit` learns which arm works and
-`BanditPolicy` puts that learner behind the policy interface. `CausalLedger` estimates a treatment
-effect, `CommitmentLedger` and `PlanningPolicy` plan the next step, `GroupPolicy` masks private
-state, and `ShadowPolicy` compares a second policy without changing the primary decision.
-
-LAIX-Bench runs deterministic cases for every decision class:
-
-```powershell
-python -m laix.appkit.bench
-```
-
-New apps send requests. Shared rules become generic policies. App rules stay in the app adapter.
-
-## Two surfaces
-
-- **`laix.core`** — `decide(request)`, contracts, decision shape, attention, policies, decision engines, sensing contracts, resource admission, outcomes, causal attribution, calibration and evaluation. Core uses only core modules.
-- **`laix.appkit`** — optional integration: Layer, streams and checkpoints, execution and sagas, records, delivery, platform, live-context loop and state.
-
-A host that only needs the answer calls `decide(request)`. A host that also executes, records or
-delivers calls `Layer`. LAIX uses its own modules and generic vocabulary. See
-[boundaries](docs/04-concepts/boundaries.md).
+A host that needs the answer calls `decide(request)`. A host that also executes, records or delivers
+calls `Layer`. See [boundaries](docs/04-concepts/boundaries.md).
 
 ## Repository map
 
 | Path | Contents |
 |---|---|
-| `packages/python/laix` | one Python package: contracts, policies, engines, runtime, execution, outcomes, records |
-| `packages/typescript/laix` | one TypeScript package: the decision contract, policies, engines and app kit |
+| `packages/python/laix` | the Python package: contracts, policies, engines, runtime, execution, outcomes and records |
+| `packages/typescript/laix` | the TypeScript package with the same decision surface |
 | `packages/contracts/` | the JSON Schema and behavioural vectors |
-| `examples/` | small runnable requests in Python and TypeScript |
-| `docs/` | [design notes, guides and the integration guide](docs/README.md) |
+| `examples/` | runnable Python and TypeScript examples, grouped by lifecycle |
+| `docs/` | [start, core, app kit, concepts and project](docs/README.md) |
 
 ## Test
 
@@ -136,11 +111,13 @@ py -m laix.appkit.bench
 cd ../../packages/typescript/laix
 npm test
 npm run conformance
+npm run bench
 ```
 
-CI runs the same checks in `.github/workflows/ci.yml`.
+CI runs the same checks in `.github/workflows/ci.yml`. Python and TypeScript examples run there too.
 
 ## Status
 
-Early seed. The contracts, policies and engines pass their vectors. The 2027 figures in the LAIX
-notes are goals.
+Current release: `0.9.0`. Python and TypeScript share the same decision contract, policies, engines,
+streaming, execution, learning and app-kit surface. LAIX-Bench passes 25/25 cases; attention
+conformance passes 24/24 decisions.

@@ -77,7 +77,7 @@ layer = Layer()
 decision = layer.decide(request)[0]
 ```
 
-`decide` lives in core and never imports the app kit. `Layer` uses the same core selection and
+`decide` lives in core and loads without the app kit. `Layer` uses the same core selection and
 adds the app-kit parts.
 
 ## The seven verbs
@@ -151,7 +151,7 @@ decision = layer.decide(another_request)[0]
 
 `register_policy` adds a policy to the registry. `use_policy` makes one active.
 
-### If no policy is active
+### The default policy
 
 ```python
 decision = decide(request)[0]

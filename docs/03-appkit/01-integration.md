@@ -9,7 +9,7 @@ The app sends a request. LAIX returns a decision. The app runs the chosen option
 | **Verb** | The word that says what to do. |
 | **Adapter** | App code that builds requests and turns decisions into app actions. |
 
-Start with [the quickstart](../01-start/quickstart.md) if LAIX is not installed yet.
+Start with [the quickstart](../01-start/quickstart.md) to install LAIX.
 
 ## Build the adapter
 
@@ -144,6 +144,5 @@ LAIX:    whether to act now, how, with what approval, and whether it worked
 
 ## Privacy
 
-Do not put secrets or raw customer data in `attributes`, `evidence` or `intent.args` unless the
-decision is allowed to carry them. `GroupPolicy` masks configured fields before sharing; see
-[privacy](../04-concepts/privacy.md).
+Keep secrets and raw customer data in the host. Pass references where possible. `GroupPolicy` masks
+configured fields before sharing; see [privacy](../04-concepts/privacy.md).

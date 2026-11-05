@@ -29,7 +29,7 @@ second is its decision; the third is the app’s job.
 | `allow_act` is on, the signal carries an intent, and the intent is reversible | `act` | run the intent |
 | A critical signal passed `escalate_after_hours` | `escalate` | hand it over |
 
-Attention does not return `observe`, `ask` or `verify`.
+Attention returns `wait`, `guide`, `act` or `escalate`; action policies cover the other verbs.
 
 ```python
 from laix.core.engines.attention import Context, decide_attention

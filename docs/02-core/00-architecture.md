@@ -105,5 +105,5 @@ outcome → label → feedback → better attention
 - **Engines** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation, plus `EnginePolicy`, `RulePolicy`, `TargetedPolicy`, `PlanningPolicy`, `GroupPolicy` and `ShadowPolicy`; Decision engines add `UtilityEngine`, `MDPEngine` and `POMDPEngine`, with simulator, calibration and model learning; Planning tracks commitments and dependencies; Resources set sensing limits.
 - **Foundation** — Schema validates records; Sensing defines detectors, events and frames; Support provides shared types and helpers.
 
-Streaming, execution, records and delivery are app-kit blocks, not core: see
+Streaming, execution, records and delivery live in the app kit: see
 [App-kit building blocks](../03-appkit/00-architecture.md).

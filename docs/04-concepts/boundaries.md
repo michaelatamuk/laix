@@ -37,7 +37,7 @@ PPMA input
 PPMA Epistemic Core / Commander
   │ activation decision: NOOP | UPDATE_STATE | ISSUE_COMMAND | DISPATCH
   │
-  ├── no bounded task ──────────────────────────────► PPMA output
+  ├── system-level work ──────────────────────────────► PPMA output
   │
   └── bounded task
         │  builds a DecisionRequest
@@ -88,7 +88,7 @@ PPMA decides what the system does next. When the work is a bounded task, PPMA as
 ```text
 PPMA activation core
   │  decides: NOOP | UPDATE_STATE | ISSUE_COMMAND | DISPATCH
-  ├── no bounded task ────────────────────────► PPMA output
+  ├── system-level work ────────────────────────► PPMA output
   └── bounded task
         │  DecisionRequest
         ▼
@@ -132,7 +132,7 @@ host
 host state
 ```
 
-`decide` is stateless between calls. The outcome belongs to the host: the host records it, and its next request can carry what it learned. When the host uses LAIX's outcome learning, it passes the outcome to that learner explicitly; `decide` itself does not receive it.
+`decide` is stateless between calls. The outcome belongs to the host: the host records it, and its next request can carry what it learned. When the host uses LAIX's outcome learning, it passes the outcome to that learner explicitly.
 
 The host owns execution, records and delivery. The next request carries the result.
 
@@ -202,7 +202,7 @@ The app kit is a separate surface. Packaging may ship the two together or separa
 3. A host with its own activation core uses LAIX as a task policy layer below that core.
 4. The host core owns the reasoning path and the decision authority for activation, commit and execution.
 5. LAIX confidence is an input to the host's calibration.
-6. Each owner keeps its own decision ids. The host records a LAIX decision id as a reference, not as its own.
+6. Each owner keeps its own decision ids. The host records a LAIX decision id as a reference.
 7. Execution and records follow task ownership: the host, or the app kit when the host chooses it.
 8. Memory, connectors, permissions, proactivity, missions and app policy stay in the host.
 9. Core imports only the standard library and its own modules. App kit imports the standard library, core and its own modules. The host imports LAIX.

@@ -43,16 +43,18 @@ Every activation decision is one of four kinds: `NOOP` (no operation), `UPDATE_S
 |---|---|---|---|
 | `Commander.wake()` | South | One `command.decide` LLM ask | `NOOP`, `UPDATE_STATE`, `ISSUE_COMMAND` or `DISPATCH` |
 | `Commander.exit_check()` | South | One `command.exit_check` LLM ask for a due entry | `UPDATE_STATE` or `NOOP` |
-| `Commander.effect_step()` | Neither | No model call; a scheduled command is re-checked and issued | `ISSUE_COMMAND` |
-| Mission agent | East | An agent run on JiuwenSwarm, Claude Code or another harness | A proposal (`DispatchResult`), not a command |
+| `Commander.effect_step()` | Timer | A scheduled command is re-checked and issued | `ISSUE_COMMAND` |
+| Mission agent | East | An agent run on JiuwenSwarm, Claude Code or another harness | A proposal (`DispatchResult`); PPMA turns it into a command |
 
 The `command.decide` ask is the only general chooser: it picks the commands, dispatch, plans, filters and missions. The other three paths handle a narrower case.
 
-An effect step is a scheduled command. The command was chosen by the `command.decide` ask when the plan was installed; the timer only executes it. When the timer fires, PPMA re-checks it against the current manifests, permissions, holders and health rules and issues it as `ISSUE_COMMAND`. No model runs at fire time.
+An effect step is a scheduled command. The command was chosen by the `command.decide` ask when the plan was installed; the timer executes it. When the timer fires, PPMA re-checks it against the current manifests, permissions, holders and health rules and issues it as `ISSUE_COMMAND`. Fire time stays deterministic.
 
-A mission agent returns a proposal, not a command: its `DispatchResult` carries the report, evidence and artifacts it produced, plus an optional state delta. PPMA reviews it before committing.
+A mission agent returns a proposal; PPMA turns it into a command. Its `DispatchResult` carries the
+report, evidence and artifacts it produced, plus an optional state delta. PPMA reviews it before
+committing.
 
-PPMA's core rules and filters do not choose a command. They validate, constrain or hold it, and calibrate its confidence.
+PPMA's core rules and filters validate, constrain, hold and calibrate the command.
 
 ## 3. The PPMA–LAIX boundary
 
@@ -65,7 +67,10 @@ The two decisions differ in vocabulary and scope:
 | Kind | `NOOP` · `UPDATE_STATE` · `ISSUE_COMMAND` · `DISPATCH` | `wait` · `observe` · `guide` · `ask` · `act` · `verify` · `escalate` |
 | Scope | Across the system | Inside one task |
 
-The mapping from a LAIX verb to a command is not one-to-one. PPMA chooses the command type and target from the task move, the available manifests and the execution policy. A `guide` decision may become `ui.notify`, `ui.deliver_brief` or an app-specific message; an `act` decision may become a manifest tool, a plan step or a `DISPATCH`.
+The mapping from a LAIX verb to a command is many-to-many. PPMA chooses the command type and target
+from the task move, the available manifests and the execution policy. A `guide` decision may become
+`ui.notify`, `ui.deliver_brief` or an app-specific message; an `act` decision may become a manifest
+tool, a plan step or a `DISPATCH`.
 
 ### What each side owns
 
@@ -83,14 +88,14 @@ The mapping from a LAIX verb to a command is not one-to-one. PPMA chooses the co
 
 LAIX adds a policy path alongside the Commander. For a bounded decision class, compare a LAIX policy with the Commander's `command.decide` ask on calls and tokens, latency, determinism, constraint compliance, audit clarity and reuse. If the policy improves on none of them, keep the Commander.
 
-The difference is clearest in latency. PPMA's command choice is taken when the model answers: `command.decide` is an LLM ask. A rules-only LAIX policy decides locally, with no model round-trip; a model-backed policy pays the model, but on a smaller question. For a decision taken inside a loop, that is the difference that matters.
+The difference is clearest in latency. PPMA's command choice is taken when the model answers: `command.decide` is an LLM ask. A rules-only LAIX policy decides locally; a model-backed policy pays the model, on a smaller question. For a decision taken inside a loop, that is the difference that matters.
 
 It also adds:
 
 - **One task-decision contract** across the Commander, missions and apps.
 - **Decision semantics** — constraints, approval, escalation and verification travel with the decision.
 - **Policy composition** — models and deterministic rules sit inside one policy.
-- **Fewer model calls** — a bounded decision that does not need a full Commander prompt runs as a policy.
+- **Fewer model calls** - a bounded decision that fits a policy runs as a policy.
 - **Replay and comparison** — policies can be tested, replayed and benchmarked.
 - **Model independence** — swap the model behind the same contract.
 - **Reuse without Core changes** — a policy lives outside `ppma.core`; PPMA adds decision classes without new Core modules.
@@ -148,7 +153,8 @@ Pay, hold, ask or escalate this invoice?
 → pay, 0.87
 ```
 
-That is a proposed move, not the decision. JEV returns a probability over options: no reason code, no action, no approval flag, no reversibility, no verification step, and no shared decision record.
+That is a proposed move; LAIX turns it into a decision. JEV returns a probability over options. LAIX
+adds the reason code, action, approval flag, reversibility, verification step and decision record.
 
 **JEV inside a LAIX policy.** The invoice is €4,800, above the €2,000 approval limit. Payment is irreversible. The supplier is new. The policy takes the JEV answer plus the options and constraints and returns:
 
@@ -161,7 +167,9 @@ reversible = false
 confidence = 0.95
 ```
 
-The judgment said `pay`; the limit says `ask`. The policy does not average them: the rule takes precedence and the decision records why. A prompt can carry the limit too; a policy makes it a rule that fires whenever the condition holds. The judgment still matters where no rule fires — the PO match, the new supplier, the delivery.
+The judgment said `pay`; the limit says `ask`. The policy applies the rule with precedence and the
+decision records why. A prompt can carry the limit too; a policy makes it a rule that fires whenever
+the condition holds. The judgment still carries the PO match, the new supplier and the delivery.
 
 PPMA issues `ui.ask`, records the decision, pays on approval and verifies the bank confirmation.
 

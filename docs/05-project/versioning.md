@@ -17,7 +17,7 @@ Several things move independently.
   contract page.
 - **Rule sets or attention vectors** — a rule, threshold or labelled vector changes behaviour.
 
-A code change that does not alter a record shape does not bump the schema.
+A code change that leaves a record shape unchanged leaves the schema unchanged.
 
 ## Releases
 

@@ -98,7 +98,7 @@ block-beta
 - **Data** — `ExperienceState` is live state, `DecisionRecord` is the audit lifecycle, `Outcome` is
   what was measured, `ExecutionReceipt` is what the host returned.
 - **Ports** — the host supplies a state store, a stream checkpoint store, a platform and a delivery
-  port. They are interfaces, not implementations.
+  port. The host supplies the implementations.
 - **Proof** — the bench checks decisions; metrics exposes stream counters; the simulator runs
   engines in a model and reports reward and optimality gap.
 

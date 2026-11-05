@@ -133,9 +133,7 @@ LAIX supplies the generic decision:
 
 The optional app kit adds execution receipts, records and the bench. The host runs the chosen option.
 
-Could the app do all of this without LAIX? **Yes.** For one payment flow, direct app code is simpler.
-LAIX pays off when several flows or apps need the same decision contract, with the optional app kit
-supplying shared approval rules, execution receipts and outcome records.
+The app can implement every functional step in its own code. For one payment flow, direct app code is simpler. LAIX pays off when several flows or apps need the same decision contract, with the optional app kit supplying shared approval rules, execution receipts and outcome records.
 
 JEV and LAIX both depend on the app for domain meaning:
 
@@ -177,8 +175,7 @@ system must decide:
 JEV can judge “is this a gas leak?” or “does this photo show mould?”. The app can dispatch a
 technician, charge a card and send a message.
 
-Without a shared layer, the team writes eight separate decision paths, or one ad-hoc engine. Each
-path grows its own approval rule, audit format, verification step and tests. They drift apart.
+Across eight decision classes, the team otherwise writes eight separate decision paths, or one ad-hoc engine. Each path grows its own approval rule, audit format, verification step and tests. They drift apart.
 
 With LAIX, the app still keeps the jobs, technicians, photos and payments. LAIX supplies one
 decision contract for all eight decision classes. The optional app kit adds one approval rule, one
@@ -273,6 +270,7 @@ LAIX is the layer that can use a decision model. It works alongside JEV and othe
 
 ## In PPMA, the comparison is different
 
-PPMA's Commander already chooses commands through an LLM ask. There, the relevant comparison is the Commander's LLM ask vs a LAIX policy for one bounded task, not JEV vs LAIX. JEV is a judgment engine that can sit inside either path.
+In PPMA, the comparison is the Commander's LLM ask vs a LAIX policy for one bounded task. JEV is a
+judgment engine that can sit inside either path.
 
 For the PPMA case, see [PPMA + LAIX](ppma.md).

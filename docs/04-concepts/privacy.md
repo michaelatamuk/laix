@@ -7,11 +7,11 @@ storage.
 
 - generic subjects, verbs and reasons;
 - comparable numbers for benefit, cost, risk and urgency;
-- references to evidence, not the raw evidence itself when possible;
+- references to evidence;
 - limits the app is willing to accept.
 
-Do not put secrets, credentials or raw customer data in `attributes`, `evidence`, `intent.args` or
-`rationale` unless the decision is allowed to carry them.
+Keep secrets, credentials and raw customer data in the host. Pass references in `attributes`,
+`evidence`, `intent.args` or `rationale`.
 
 ## Sharing a decision
 
@@ -29,16 +29,16 @@ order.
 ## Stored data
 
 Decision records, checkpoints, commitment ledgers, experience state and outcomes can contain
-sensitive fields. The host secures them. LAIX defines the shapes and the save/load contracts; it does
-not own a database.
+sensitive fields. The host secures them. LAIX defines the shapes and the save/load contracts; the
+host owns the database.
 
 ## Telemetry
 
 `prometheus(stats)` exports counters such as decided, dropped, suppressed, duplicates, shed and
-latency percentiles. It does not include request payloads. Traces can contain ids and reasons; treat
-them as metadata with the same care as records.
+latency percentiles. It exports counters only. Traces can contain ids and reasons; treat them as
+metadata with the same care as records.
 
 ## Trust boundary
 
-The core has no network, database or clock of its own. The optional app kit adds execution,
+The core runs on standard-library data and an injected clock. The optional app kit adds execution,
 streaming, stores, delivery and platform ports. Every external effect stays in host code.

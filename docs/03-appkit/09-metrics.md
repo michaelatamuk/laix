@@ -1,6 +1,6 @@
 # Metrics
 
-The app kit exposes stream counters and latency percentiles. There is no exporter dependency.
+The app kit exposes stream counters and latency percentiles. It renders Prometheus text with the standard library.
 
 ## Counters
 
@@ -44,5 +44,5 @@ counters. See [bench](08-bench.md).
 
 ## Boundary
 
-Metrics describe the stream, not the user. Do not label a metric with a subject, customer id or
-message content.
+Metrics describe stream behavior. Use generic labels and keep subject, customer id and message
+content out of metric names.

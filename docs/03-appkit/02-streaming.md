@@ -100,7 +100,7 @@ print(result.decisions, result.elapsed_ms, result.throughput_per_second)
 | **Late events** | An event behind the watermark is dropped by default; pass `late="accept"` to keep it. |
 | **Cadence** | `cooldown_ms` suppresses a decision that arrives too soon. `force=True` bypasses it. |
 | **Buffer** | `capacity` bounds the queue. `on_full` is `latest_wins`, `drop_oldest` or `drop_newest`. |
-| **Backpressure** | `await observe_wait(request)` waits for buffer space instead of dropping. |
+| **Backpressure** | `await observe_wait(request)` waits for buffer space. |
 | **Hysteresis** | `hysteresis_ms` suppresses the same decision batch inside the window. |
 | **Budget** | `max_decisions_per_window` + `budget_window_ms`; `force=True` bypasses it and `stats.shed` counts the rest. |
 | **Revisions** | `revise(previous, request)` returns a decision with `revision + 1` and `supersedes`. |
@@ -123,7 +123,7 @@ print(result.decisions, result.elapsed_ms, result.throughput_per_second)
 | Field | Meaning |
 |---|---|
 | `stream_id` | The session that produced the decision. |
-| `event_time` | When the event happened, not when it was processed. |
+| `event_time` | When the event happened. |
 | `deadline` | When the decision had to be made. |
 | `valid_until` | How long the decision applies. |
 | `supersedes` | The decision this one replaces. |
@@ -135,15 +135,15 @@ copies the deadline and validity onto the decisions it produces.
 
 ## Boundary
 
-`StreamSession` is not a faster `decide`. The core stays stateless, and every
-decision still goes through one policy and one contract. The session adds the
-live-loop concerns around it: time, cadence, buffering and revision.
+`StreamSession` wraps `decide` in event-time and flow control. The core stays stateless, and every
+decision still goes through one policy and one contract. The session adds the live-loop concerns
+around it: time, cadence, buffering and revision.
 
 Use `decide` or `Layer.decide` for a one-shot answer. Use `Layer.stream` when
 the host has a stream of events and needs decisions over time.
 
 Call `observe` from the event loop that consumes `decisions`. `replay` is for
 a fresh session or an incident review: it uses event time as the clock and
-does not fill the buffer.
+returns decisions without buffering.
 
 Python and TypeScript both expose `StreamSession`; `Layer.stream` returns one.
