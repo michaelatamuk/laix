@@ -132,7 +132,7 @@ decision = decide(
   `MdpModel` for `MDPEngine`.
 
 `to_decision(plan, request)` is the shared plan-to-decision conversion. See
-[the engine roadmap](06-engine-roadmap.md).
+[the engine reference](06-engines.md).
 
 ## Active perception
 

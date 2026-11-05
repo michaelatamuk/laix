@@ -1,7 +1,7 @@
 # Repository structure
 
-This page maps files. Concepts are defined in [architecture](architecture.md),
-[the Decision response](core/01-decision-contract.md) and [records](core/01-decision-contract.md).
+This page maps files. Concepts are defined in [architecture](../04-concepts/architecture.md),
+[the Decision response](../02-core/01-decision-contract.md) and [records](../02-core/01-decision-contract.md).
 
 ```text
 laix/
@@ -10,17 +10,15 @@ laix/
 │   ├── python/laix/       Python package and tests
 │   └── typescript/laix/   TypeScript package and tests
 ├── docs/
-│   ├── README.md          index
-│   ├── what-is-laix.md    plain-English introduction
-│   ├── host-integration.md six questions a host team asks
-│   ├── architecture.md    how LAIX fits together
-│   ├── boundaries.md      PPMA, LAIX and other hosts
-│   ├── ppma-laix.md       PPMA + LAIX integration
-│   ├── decision-models.md LAIX and decision models
-│   ├── structure.md       this page
-│   ├── core/              decisions, engines, outcome learning, evaluation, sensing
-│   └── appkit/            integration, live context, platform, stores, bench
-├── examples/              runnable Python and TypeScript examples
+│   ├── README.md          audience-first index
+│   ├── 01-start/          quickstart, what-is, host integration
+│   ├── 02-core/           contract, attention, policies, learning, evaluation, engines
+│   ├── 03-appkit/         architecture, integration, streaming, execution, stores, bench
+│   ├── 04-concepts/       architecture, boundaries, PPMA, decision models, privacy, glossary
+│   └── 05-project/        structure, testing, versioning, roadmap
+├── examples/
+│   ├── python/            numbered lifecycle stages
+│   └── typescript/        the same numbered stages
 └── .github/               CI and release workflows
 ```
 

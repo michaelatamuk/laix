@@ -1,6 +1,6 @@
 # App-kit building blocks
 
-The core map is [Core building blocks](../core/00-core-architecture.md). This page is the optional
+The core map is [Core building blocks](../02-core/00-architecture.md). This page is the optional
 layer around it, grouped by what each piece is: an API, a runtime, a data shape, a port or a tool.
 
 ```mermaid

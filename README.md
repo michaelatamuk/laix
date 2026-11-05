@@ -101,7 +101,7 @@ New apps send requests. Shared rules become generic policies. App rules stay in 
 
 A host that only needs the answer calls `decide(request)`. A host that also executes, records or
 delivers calls `Layer`. LAIX uses its own modules and generic vocabulary. See
-[boundaries](docs/boundaries.md).
+[boundaries](docs/04-concepts/boundaries.md).
 
 ## Repository map
 

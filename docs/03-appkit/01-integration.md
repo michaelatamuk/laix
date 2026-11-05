@@ -6,34 +6,10 @@ The app sends a request. LAIX returns a decision. The app runs the chosen option
 |---|---|
 | **Request** | The app's description of what is happening. |
 | **Decision** | LAIX's answer: one verb plus reasons and execution details. |
-| **Verb** | The word that says what to do: `wait`, `observe`, `guide`, `ask`, `act`, `verify` or `escalate`. |
+| **Verb** | The word that says what to do. |
 | **Adapter** | App code that builds requests and turns decisions into app actions. |
 
-## Install
-
-Python:
-
-```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.9.0#subdirectory=packages/python/laix"
-```
-
-Local checkout:
-
-```powershell
-pip install -e C:\Workspace\laix\packages\python\laix
-```
-
-TypeScript:
-
-```json
-{
-  "dependencies": {
-    "laix": "file:../../laix/packages/typescript/laix"
-  }
-}
-```
-
-The release page also has a packed `laix-0.9.0.tgz`.
+Start with [the quickstart](../01-start/quickstart.md) if LAIX is not installed yet.
 
 ## Build the adapter
 
@@ -98,28 +74,6 @@ const [decision] = new Layer().decide({
 });
 ```
 
-## Use the decision
-
-| Field | Use |
-|---|---|
-| `verb` | What to do. |
-| `reason_code` | Why this rule fired. |
-| `action_id` | Which option was chosen. |
-| `requires_approval` | Ask a person first. |
-| `deliver` / `record` | Show now / keep it. |
-
-| Verb | App response |
-|---|---|
-| `wait` | Hold for now. |
-| `observe` | Get more information. |
-| `guide` | Show it to the user. |
-| `ask` | Ask a person or agent. |
-| `act` | Run the chosen option. |
-| `verify` | Check an earlier step. |
-| `escalate` | Hand over to someone else. |
-
-Full fields: [the Decision response](../core/01-decision-contract.md).
-
 ## Host confidence
 
 If the host calculates confidence, pass it in:
@@ -148,21 +102,10 @@ The returned decision carries the same source and calibration flag. A rule score
 The production adapter stays in the app. `examples/python/05-execute/host_adapter.py` shows a
 generic adapter.
 
-## Pin a version
-
-Use a tag:
-
-```text
-v0.9.0
-```
-
-The Python subdirectory is `packages/python/laix`. The TypeScript path is
-`packages/typescript/laix`. App imports stay the same.
-
 ## Custom policy
 
 ```python
-from laix import Layer, Decision
+from laix import Decision, Layer
 
 class QualityPolicy:
     name = "quality"
@@ -198,3 +141,9 @@ A manager service keeps memory and long-lived plans. LAIX returns the decision f
 manager: memory, plans, commitments, missions
 LAIX:    whether to act now, how, with what approval, and whether it worked
 ```
+
+## Privacy
+
+Do not put secrets or raw customer data in `attributes`, `evidence` or `intent.args` unless the
+decision is allowed to carry them. `GroupPolicy` masks configured fields before sharing; see
+[privacy](../04-concepts/privacy.md).

@@ -94,4 +94,4 @@ TypeScript exports `StateStore`, `InMemoryStateStore`, `StreamCheckpointStore`,
 `InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`, `CommitmentStore`,
 `InMemoryCommitmentStore`, `FileCommitmentStore`, `OutcomeStore` and `OutcomeLedger`.
 
-Learning uses outcome labels: [outcome learning](../core/04-outcome-learning.md).
+Learning uses outcome labels: [outcome learning](../02-core/04-outcome-learning.md).

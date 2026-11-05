@@ -1,55 +1,79 @@
 # LAIX documentation
 
-If you are new to LAIX, start with [What is LAIX?](what-is-laix.md) — plain
-English, no code. Then read [Host integration](host-integration.md) for the six
-things a product team checks first.
+LAIX answers one question for a live app: given what is happening, what the app can do and what the
+host allows, should it **wait, observe, guide, ask, act, verify or escalate**?
 
-For the design: [architecture](architecture.md), then [the core architecture](core/00-core-architecture.md),
-then the core pages in numeric order, starting with [the decision contract](core/01-decision-contract.md).
-
-The split follows the code:
-
-- **Core** — the decision layer.
-- **App kit** — optional integration.
-- **Boundaries** — PPMA, LAIX and other hosts.
-
-## Understand LAIX
+## Start here
 
 | Page | Answers |
 |---|---|
-| [what-is-laix.md](what-is-laix.md) | What is LAIX, in plain language? |
-| [host-integration.md](host-integration.md) | Where does a host call it, and what does the host keep? |
-| [architecture.md](architecture.md) | What is LAIX and how do the parts fit? |
-| [structure.md](structure.md) | Where does each file live? |
-| [boundaries.md](boundaries.md) | Where does PPMA end and LAIX begin, and what belongs to core, app kit and host? |
-| [ppma-laix.md](ppma-laix.md) | Why use LAIX in PPMA? |
-| [decision-models.md](decision-models.md) | How does LAIX relate to decision models? |
+| [What is LAIX?](01-start/what-is-laix.md) | What problem does it solve, in plain language? |
+| [Quickstart](01-start/quickstart.md) | How do I install it and make one decision? |
+| [Host integration](01-start/host-integration.md) | Where does LAIX plug in, and what does the host keep? |
 
-## Core (read in order)
+## Core
+
+Read in order.
 
 | Page | Covers |
 |---|---|
-| [core/00-core-architecture.md](core/00-core-architecture.md) | the core building blocks and how they stack |
-| [core/01-decision-contract.md](core/01-decision-contract.md) | the decision contract: request, response and records |
-| [core/02-attention.md](core/02-attention.md) | task-level attention and its scope |
-| [core/03-packaged-policies.md](core/03-packaged-policies.md) | the eight packaged policies, wrappers and decision engines |
-| [core/04-outcome-learning.md](core/04-outcome-learning.md) | rewards, UCB, causal attribution, calibration and `BanditPolicy` |
-| [core/05-evaluation.md](core/05-evaluation.md) | vectors, conformance and bench |
-| [core/06-engine-roadmap.md](core/06-engine-roadmap.md) | the engine contract, built-in engines, simulation, calibration and learning |
+| [Core architecture](02-core/00-architecture.md) | the core building blocks and how they stack |
+| [Decision contract](02-core/01-decision-contract.md) | request, response, records and schema |
+| [Attention](02-core/02-attention.md) | task-level attention and its scope |
+| [Policies](02-core/03-policies.md) | packaged policies, authoring, planning, group and shadow |
+| [Outcome learning](02-core/04-outcome-learning.md) | rewards, UCB, causal attribution, calibration and model learning |
+| [Evaluation](02-core/05-evaluation.md) | cases, comparison and parity |
+| [Engines](02-core/06-engines.md) | utility, MDP, POMDP, simulation and calibration |
 
 ## App kit
 
 | Page | Covers |
 |---|---|
-| [appkit/00-appkit-architecture.md](appkit/00-appkit-architecture.md) | the app-kit building blocks and how they stack |
-| [appkit/integration.md](appkit/integration.md) | install, adapter, rollout and pinning |
-| [appkit/live-context.md](appkit/live-context.md) | detectors, admission and frames |
-| [appkit/platform.md](appkit/platform.md) | the platform contract |
-| [appkit/stores.md](appkit/stores.md) | state, stream checkpoint, commitment and outcome stores |
-| [appkit/streaming.md](appkit/streaming.md) | stream sessions: event time, cadence, backpressure and revisions |
-| [appkit/bench.md](appkit/bench.md) | LAIX-Bench suites and CLI |
+| [App-kit architecture](03-appkit/00-architecture.md) | runtime, data, ports and proof tools |
+| [Integration](03-appkit/01-integration.md) | adapters, confidence, rollout and custom policies |
+| [Streaming](03-appkit/02-streaming.md) | event time, cadence, backpressure, checkpoints and sources |
+| [Live Context](03-appkit/03-live-context.md) | detectors, admission and frames |
+| [Execution](03-appkit/04-execution.md) | receipts, idempotency, sagas, records and recovery |
+| [Stores](03-appkit/05-stores.md) | state, checkpoints, commitments and outcomes |
+| [Platform](03-appkit/06-platform.md) | skills, events and approvals |
+| [Delivery](03-appkit/07-delivery.md) | ports, receipts and the host transport |
+| [Bench](03-appkit/08-bench.md) | LAIX-Bench, stream bench and engine simulation |
+| [Metrics](03-appkit/09-metrics.md) | stream counters, Prometheus and latency |
+
+## Concepts
+
+| Page | Answers |
+|---|---|
+| [Architecture](04-concepts/architecture.md) | how the whole system fits together |
+| [Boundaries](04-concepts/boundaries.md) | where PPMA, LAIX, core, app kit and host end |
+| [Decision models](04-concepts/decision-models.md) | how LAIX relates to judgment and decision models |
+| [PPMA](04-concepts/ppma.md) | why and how PPMA would use LAIX |
+| [Privacy](04-concepts/privacy.md) | what may be shared, stored or exported |
+| [Glossary](04-concepts/glossary.md) | the vocabulary used across the docs |
+
+## Project
+
+| Page | Covers |
+|---|---|
+| [Structure](05-project/structure.md) | where each package, module and test lives |
+| [Testing](05-project/testing.md) | pytest, ruff, tsc, bench, conformance and CI |
+| [Versioning](05-project/versioning.md) | package, schema and vector versions |
+| [Roadmap](05-project/roadmap.md) | what is done and what is next |
 
 ## Examples
 
-Runnable examples live in [`../examples/README.md`](../examples/README.md). Every Python and
-TypeScript capability has an example, and CI runs both example sets.
+Runnable examples are organized by language and lifecycle in
+[`../examples/README.md`](../examples/README.md). Every Python and TypeScript example is run by CI.
+
+## Which page do I need?
+
+| I want to… | Read |
+|---|---|
+| make one decision | [Quickstart](01-start/quickstart.md) |
+| plug LAIX into an app | [Host integration](01-start/host-integration.md), then [Integration](03-appkit/01-integration.md) |
+| write my own policy | [Policies](02-core/03-policies.md) |
+| stream events | [Streaming](03-appkit/02-streaming.md) |
+| execute and recover | [Execution](03-appkit/04-execution.md) |
+| learn from outcomes | [Outcome learning](02-core/04-outcome-learning.md) |
+| understand the engine contract | [Engines](02-core/06-engines.md) |
+| work on the repository | [Testing](05-project/testing.md), then [Structure](05-project/structure.md) |

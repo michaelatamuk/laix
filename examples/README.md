@@ -105,6 +105,7 @@ py examples/python/01-decide/attention_bill_due.py
 | Save and resume a stream | `checkpoint.py` | `checkpoint.mts` | `True 1 1` / `true 1 a b` |
 | Read NDJSON into requests | `sources.py` | `sources.mts` | `a b` |
 | Retain malformed source frames | `dead_letter.py` | `dead_letter.mts` | `a b 1 True` |
+| Export Prometheus counters | `metrics.py` | `metrics.mts` | `1 True` / `1 true` |
 
 ## 05 Execute
 

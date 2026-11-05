@@ -193,15 +193,15 @@ request shapes LAIX understands. The other eight are ordinary policy objects tha
 from `DecisionRequest.attributes`.
 
 The split is about selection. All ten return the same decision shape. See
-[packaged policies](core/03-packaged-policies.md).
+[packaged policies](../02-core/03-policies.md).
 
 ## Other parts
 
 - **Live Context** is the perception part. A detector looks at events. Cheap detectors run always;
-  deep detectors run under a budget. See [live context](appkit/live-context.md).
+  deep detectors run under a budget. See [live context](../03-appkit/03-live-context.md).
 - **Outcome learning** uses measured outcomes to improve the next choice. See
-  [outcome learning](core/04-outcome-learning.md).
-- **LAIX-Bench** runs the same test cases for every class. See [bench](appkit/bench.md).
+  [outcome learning](../02-core/04-outcome-learning.md).
+- **LAIX-Bench** runs the same test cases for every class. See [bench](../03-appkit/08-bench.md).
 
 LAIX is a decision layer. It can host a decision model such as JEV inside a policy. See
 [LAIX and decision models](decision-models.md).
@@ -228,6 +228,6 @@ LAIX is a decision layer. It can host a decision model such as JEV inside a poli
 The engine contract is in place: `EnginePolicy` wraps JEV, an optimizer or a planner. Built-in
 `UtilityEngine`, `MDPEngine` and `POMDPEngine` planners are available behind the same adapter;
 simulation, calibration and model learning support them. See
-[the engine roadmap](core/06-engine-roadmap.md).
+[the engine reference](../02-core/06-engines.md).
 
 Core vs app kit vs host is defined in [boundaries](boundaries.md).

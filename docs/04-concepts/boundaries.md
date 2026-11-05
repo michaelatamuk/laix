@@ -208,4 +208,4 @@ The app kit is a separate surface. Packaging may ship the two together or separa
 9. Core imports only the standard library and its own modules. App kit imports the standard library, core and its own modules. The host imports LAIX.
 10. A host that already has execution, records and commit uses the core only.
 
-For the PPMA integration in practice, see [PPMA + LAIX](ppma-laix.md).
+For the PPMA integration in practice, see [PPMA + LAIX](ppma.md).

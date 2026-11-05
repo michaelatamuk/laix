@@ -106,4 +106,4 @@ outcome → label → feedback → better attention
 - **Foundation** — Schema validates records; Sensing defines detectors, events and frames; Support provides shared types and helpers.
 
 Streaming, execution, records and delivery are app-kit blocks, not core: see
-[App-kit building blocks](../appkit/00-appkit-architecture.md).
+[App-kit building blocks](../03-appkit/00-architecture.md).

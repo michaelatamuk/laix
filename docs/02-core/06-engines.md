@@ -1,4 +1,4 @@
-# Decision engine contract
+# Decision engines
 
 The engine contract, the built-in engines and the simulator are implemented in
 `core/engines/`. The layer stays usable without any engine: rule policies and the
@@ -11,6 +11,8 @@ The goal is:
 - adapters for external engines;
 - every engine returns the same `Plan`; the adapter returns the same `Decision` and uses the same
   lifecycle.
+
+Build order and current status live in [the project roadmap](../05-project/roadmap.md).
 
 ## Architecture
 
@@ -71,14 +73,14 @@ The contracts:
 
 | # | Capability | Piece |
 |---|---|---|
-| 1 | State and uncertainty | `StateEstimate`, distributions, observation model |
-| 2 | Option model | `ActionEffect`, preconditions, costs, transitions |
-| 3 | Utility model | `UtilityModel`, weights, risk attitude, constraints |
-| 4 | Planning | `DecisionEngine.solve(problem) -> Plan` |
-| 5 | Calibration | reliability report and confidence adjustment |
-| 6 | Learning | `ModelLearner` for transitions and utilities |
+| 1 | Problem shape | `DecisionProblem`, request projection |
+| 2 | Option model | `ActionOption`, costs, risks and hard limits |
+| 3 | Utility model | `UtilityModel`, weights, risk attitude |
+| 4 | Planning | `DecisionEngine.solve`, `MDPEngine`, `POMDPEngine` |
+| 5 | Calibration | `CalibrationReport` and confidence adjustment |
+| 6 | Learning | `ModelLearner` for transitions and rewards |
 | 7 | Explanation | chosen plan, alternatives, expected value |
-| 8 | Simulator and bench | optimality gap and engine comparison |
+| 8 | Simulator and bench | `Simulator`, engine comparison, optimality gap |
 
 ## Path A: external engine
 
@@ -125,72 +127,6 @@ Internally this is still an engine-backed policy.
 6. A planner result must be explainable: chosen plan, alternatives, expected value.
 7. Bench compares engines on the same cases.
 
-## Build order
-
-### 1. Engine contract
-
-- [x] `DecisionProblem`
-- [x] `Plan`
-- [x] `DecisionEngine`
-- [x] `EnginePolicy`
-- [x] `to_problem` and `to_decision`
-
-### 2. Utility and constraint engine
-
-- [x] expected utility
-- [x] hard constraints
-- [x] risk attitude
-- [x] explanation
-- [x] tests against the existing action policy
-
-### 3. MDP planner
-
-- [x] states, actions and transitions
-- [x] discount and horizon
-- [x] known-optimal bench cases
-- [x] optimality gap report
-
-### 4. Simulator and bench
-
-- [x] `Simulator`
-- [x] seeded scenarios
-- [x] seeded stochastic rollouts
-- [x] engine comparison
-- [x] engine bench CLI (`--engines`)
-- [x] regression cases
-
-### 5. Calibration
-
-- [x] predicted vs observed confidence
-- [x] per-policy report
-- [x] confidence adjustment
-
-### 6. Model learning
-
-- [x] learn transitions and rewards from outcomes
-- [x] keep the UCB bandit as a simple learner
-- [x] rollback when a learned model gets worse
-- [x] export a learned model as an `MdpModel`
-
-### 7. POMDP
-
-- [x] observation model
-- [x] observation model required for every reachable state/action pair
-- [x] belief update
-- [x] small solver
-- [x] benchmark against the MDP path
-- [x] `compare_pomdp_to_mdp` diagnostic
-
-### 8. TypeScript parity
-
-- [x] engine contracts
-- [x] `EnginePolicy`
-- [x] utility engine
-- [x] MDP engine
-- [x] POMDP engine
-- [x] calibration and model learning
-- [x] simulator and bench
-
 ## Limits
 
 - A planner needs a world model. The app supplies the domain transitions; LAIX plans over them.
@@ -200,22 +136,4 @@ Internally this is still an engine-backed policy.
 - Planner explanations are harder than rule traces.
 - The API grows. Keep every piece optional.
 
-## Current state
-
-| Piece | Status |
-|---|---|
-| Rule policies | done |
-| UCB bandit | done |
-| Bench | done |
-| Engine contract | done |
-| Utility engine | done |
-| MDP planner | done |
-| Simulator and engine comparison | done |
-| Engine bench CLI | done |
-| Calibration | done |
-| Model learning | done |
-| POMDP | done |
-| TypeScript parity: contract, `EnginePolicy`, utility, MDP, POMDP, calibration, model learning, simulator | done |
-
-The Python and TypeScript packages now expose the same engine, planning, calibration, model-learning
-and POMDP surface.
+See [the project roadmap](../05-project/roadmap.md) for status and next work.
