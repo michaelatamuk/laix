@@ -83,7 +83,8 @@ decision.requires_approval
 
 The host asks a person if the flag is true, then runs the chosen option through its own
 execution path. LAIX can provide an execution bridge for a task, but that is part
-of the optional app kit.
+of the optional app kit. The bridge also accepts an idempotency key and can mark an
+unknown outcome and reconcile it with provider evidence.
 
 Runnable example: [`examples/appkit/runtime/mission_execution.py`](../examples/appkit/runtime/mission_execution.py).
 

@@ -203,7 +203,7 @@ Two versions travel with a decision, and they mean different things:
 
 | Record | Carries |
 |---|---|
-| `Decision` | verb, chosen option, reason, confidence, alternatives, approval and ids |
+| `Decision` | verb, chosen option, reason, confidence, alternatives, approval, target and ids |
 | `EvidenceRef` | id, kind, quote, source and confidence |
 | `Intent` | capability and args |
 | `ScoreBreakdown` | severity, due, confidence, interruption, learned and total |
@@ -213,8 +213,12 @@ Two versions travel with a decision, and they mean different things:
 | Record | Carries |
 |---|---|
 | `Outcome` | decision id, metric, before/after, direction, attribution and label |
-| `ExecutionReceipt` | chosen option, status, actor, result and error |
+| `ExecutionReceipt` | chosen option, status, actor, result, idempotency key and error |
 | `Trace` | ordered events for one decision |
+
+`ExecutionReceipt` statuses are `pending`, `approved`, `executed`, `refused`, `cancelled`,
+`failed`, `undone`, `unknown` and `duplicate`. A bridge may mark an action `unknown` and
+reconcile it with provider evidence; a duplicate key never runs the handler twice.
 
 Every core record carries `schema_version`.
 

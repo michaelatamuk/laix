@@ -41,7 +41,8 @@ packages/python/laix/src/laix/
 │   │   ├── trail/           execution receipt and trace
 │   │   └── normalise.py     coerce and from_attention
 │   ├── engines/
-│   │   ├── policies/        policy.py, registry.py, implementations/
+│   │   ├── engine.py        DecisionEngine, DecisionProblem, Plan, EnginePolicy
+│   │   ├── policies/        policy.py, registry.py, implementations/ (packs, rules, target)
 │   │   ├── attention/       input, output, gates/, attention.v1.json, decide, score
 │   │   └── resources/       budget, sensing option, plan, scheduler
 │   ├── outcome_learning/    record, ledger, store, bandit, rewards, attention/
@@ -57,6 +58,7 @@ packages/python/laix/src/laix/
     ├── delivery/            port, receipt, null
     ├── platform/            platform, in-memory, skill call, approvals, event, capability
     ├── live_context/        loop and callable detector
+    ├── streaming/           session, window, sources, bench
     └── bench/               case, suite, row, report, runner
 ```
 
@@ -70,16 +72,22 @@ packages/typescript/laix/src/
 ├── core/
 │   ├── index.ts       core surface
 │   ├── contracts.ts   core records
+│   ├── engine.ts      DecisionEngine and EnginePolicy
 │   ├── outcome.ts     outcome ledger and UCB learner
 │   ├── evaluation.ts  parity harness
 │   ├── perception.ts  detector and frame contracts
 │   ├── resources.ts   budget and resource admission
 │   ├── attention.ts   attention policy
-│   └── policies/      eight packs, bandit, registry
+│   └── policies/      eight packs, bandit, rules, target, registry
 └── appkit/
     ├── index.ts       optional app surface
     ├── layer.ts       public Layer and action policy
     ├── live-context.ts host-driven detector loop
+    ├── streaming.ts   stream session
+    ├── window.ts      tumbling windows
+    ├── sources.ts     queue and sync sources
+    ├── metrics.ts     Prometheus counters
+    ├── bench-stream.ts stream bench
     ├── record.ts      decision record
     ├── platform.ts    platform contract
     ├── proposal.ts    proposal lifecycle
