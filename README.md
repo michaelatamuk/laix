@@ -2,19 +2,19 @@
 
 [![CI](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml)
 
-**LAIX is the decision layer for live AI experiences.**
+**LAIX — Live AI Experience — is the decision layer for live AI experiences.**
 
 A live experience stays present: it notices the moment, chooses the next move and learns from what
-happened. LAIX gives that loop one decision contract. The host owns the experience; LAIX owns the
-decision.
+happened. LAIX gives that loop a single decision contract. The host owns the experience; LAIX owns
+the decision.
 
 > **What should this experience do next?**
 
-LAIX reads what is happening, what the host can do and what the host allows, then returns one
-decision: **wait, observe, guide, ask, act, verify or escalate**.
+LAIX turns the moment, the options the host can offer and the limits the host sets into one decision:
+**wait, observe, guide, ask, act, verify or escalate**.
 
-LAIX keeps that loop coherent: the same reason, confidence, action and trail follow the experience
-as the moment changes. The experience keeps moving; LAIX keeps the next move decidable.
+The same reason, confidence, action and trail travel with every decision. The experience keeps
+moving; LAIX keeps the next move decidable.
 
 | Start | |
 |---|---|

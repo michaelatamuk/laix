@@ -2,7 +2,11 @@
 
 LAIX — **Live AI Experience** — is the decision layer for live AI experiences. A live experience
 stays present: it notices the moment, chooses the next move and learns from what happened. LAIX
-gives that loop one decision contract. The host owns the experience; LAIX owns the decision.
+gives that loop a single decision contract. The host owns the experience; LAIX owns the decision.
+
+> **What should this experience do next?**
+
+LAIX turns the moment, the options the host can offer and the limits the host sets into one decision.
 
 ## Start here
 
