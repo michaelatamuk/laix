@@ -47,6 +47,7 @@ class CalibrationReport:
     error: float
     bins: tuple[CalibrationBin, ...]
     policy: str = ""
+    smoothing: float = 0.0
 
     def adjust(self, confidence: float) -> float:
         """Map one confidence value onto the observed rate."""
@@ -64,6 +65,7 @@ class CalibrationReport:
             "expected": self.expected,
             "error": self.error,
             "policy": self.policy,
+            "smoothing": self.smoothing,
             "bins": [
                 {
                     "lower": item.lower,
@@ -82,10 +84,18 @@ def calibration_report(
     *,
     bins: int = 10,
     policy: str = "",
+    smoothing: float = 0.0,
 ) -> CalibrationReport:
-    """Compare stated confidence with observed accuracy."""
+    """Compare stated confidence with observed accuracy.
+
+    ``smoothing`` applies Laplace smoothing to each bin's observed rate:
+    ``(correct + smoothing) / (count + 2 * smoothing)``. Zero keeps the raw
+    rate; a small positive value is useful for small samples.
+    """
     if bins < 1:
         raise ValueError("bins must be at least one")
+    if smoothing < 0:
+        raise ValueError("smoothing must not be negative")
     items = list(samples)
     if not items:
         return CalibrationReport(
@@ -95,6 +105,7 @@ def calibration_report(
             error=0.0,
             bins=(),
             policy=policy,
+            smoothing=smoothing,
         )
 
     buckets: list[list[CalibrationSample]] = [[] for _ in range(bins)]
@@ -106,6 +117,10 @@ def calibration_report(
     for index, bucket in enumerate(buckets):
         if not bucket:
             continue
+        correct = sum(1 for item in bucket if item.correct)
+        observed = (
+            correct + smoothing
+        ) / (len(bucket) + 2.0 * smoothing)
         rows.append(
             CalibrationBin(
                 lower=round(index / bins, 6),
@@ -113,9 +128,7 @@ def calibration_report(
                 predicted=round(
                     sum(item.confidence for item in bucket) / len(bucket), 6
                 ),
-                observed=round(
-                    sum(1 for item in bucket if item.correct) / len(bucket), 6
-                ),
+                observed=round(observed, 6),
                 count=len(bucket),
             )
         )
@@ -129,6 +142,7 @@ def calibration_report(
         error=round(abs(expected - accuracy), 6),
         bins=tuple(rows),
         policy=policy,
+        smoothing=smoothing,
     )
 
 
@@ -136,13 +150,19 @@ def calibration_by_policy(
     samples: Iterable[CalibrationSample],
     *,
     bins: int = 10,
+    smoothing: float = 0.0,
 ) -> dict[str, CalibrationReport]:
     """Build one report per policy name."""
     buckets: dict[str, list[CalibrationSample]] = {}
     for item in samples:
         buckets.setdefault(item.policy, []).append(item)
     return {
-        policy: calibration_report(items, bins=bins, policy=policy)
+        policy: calibration_report(
+            items,
+            bins=bins,
+            policy=policy,
+            smoothing=smoothing,
+        )
         for policy, items in sorted(buckets.items())
     }
 

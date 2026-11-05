@@ -110,6 +110,7 @@ examples/
 | `appkit/streaming/stream_session.py` | One event → a decision stream → close | `guide worth_surfacing STR-DEMO final` |
 | `appkit/streaming/checkpoint.py` | Save and resume a stream | `True 1 1` |
 | `appkit/streaming/sources.py` | Read NDJSON into requests | `a b` |
+| `appkit/streaming/dead_letter.py` | Retain a malformed frame and continue | `a b 1 True` |
 
 ## Integration
 

@@ -99,16 +99,23 @@ class PomdpModel:
                         raise ValueError(
                             f"transitions for {state!r}/{action!r} sum to {total:.6f}"
                         )
-        for next_state in self.states:
-            for action in self.actions:
-                rows = self.observation_rows(next_state, action)
-                if rows:
-                    total = sum(item.probability for item in rows)
-                    if abs(total - 1.0) > 1e-6:
-                        raise ValueError(
-                            f"observations for {next_state!r}/{action!r} "
-                            f"sum to {total:.6f}"
-                        )
+        reachable = {
+            (item.next_state, item.action)
+            for item in self.transitions
+            if item.probability > 0
+        }
+        for next_state, action in sorted(reachable):
+            rows = self.observation_rows(next_state, action)
+            if not rows:
+                raise ValueError(
+                    f"missing observations for {next_state!r}/{action!r}"
+                )
+            total = sum(item.probability for item in rows)
+            if abs(total - 1.0) > 1e-6:
+                raise ValueError(
+                    f"observations for {next_state!r}/{action!r} "
+                    f"sum to {total:.6f}"
+                )
 
     def transition_rows(
         self,

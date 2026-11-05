@@ -98,8 +98,9 @@ better outcome. They answer different questions.
 ## Calibration and model learning
 
 - **`CalibrationReport`** — bins stated confidence and compares each bin with observed accuracy.
-  `calibration_report(samples)` and `calibration_by_policy(samples)` expose the report; `adjust()`
-  maps a future confidence onto the observed rate.
+  `calibration_report(samples, smoothing=...)` and `calibration_by_policy(samples, smoothing=...)`
+  expose the report; Laplace smoothing regularizes small bins. `adjust()` maps a future confidence
+  onto the observed rate.
 - **`ModelLearner`** — learns transition probabilities and expected rewards from observed
   transitions. `commit(validation)` keeps the model only when it beats the best one and rolls back
   otherwise. `to_mdp_model()` feeds the learned table to `MDPEngine`.

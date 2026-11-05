@@ -22,6 +22,7 @@ class GroupPolicy:
         private_attributes: Iterable[str] = (),
         private_evidence: Iterable[str] = (),
         rationale: str | None = None,
+        undo_hint: str | None = None,
     ) -> None:
         if target not in TARGET_MODES:
             raise ValueError(f"unknown target mode: {target!r}")
@@ -31,6 +32,7 @@ class GroupPolicy:
         self.private_attributes = frozenset(private_attributes)
         self.private_evidence = frozenset(private_evidence)
         self.rationale = rationale
+        self.undo_hint = undo_hint
         self.version = getattr(policy, "version", self.name)
 
     def decide(self, request: Any) -> list[Decision]:
@@ -44,12 +46,18 @@ class GroupPolicy:
             for item in decision.evidence
             if not ({item.id, item.kind, item.source or ""} & self.private_evidence)
         )
+        intent = decision.intent
+        if intent is not None:
+            intent = replace(intent, args=self._mask_value(intent.args))
         return replace(
             decision,
             target=self.target,
             recipients=recipients,
             rationale=self.rationale if self.rationale is not None else decision.rationale,
+            undo_hint=self.undo_hint if self.undo_hint is not None else decision.undo_hint,
             evidence=evidence,
+            intent=intent,
+            alternatives=tuple(self._mask_value(item) for item in decision.alternatives),
             attributes=self._mask_value(decision.attributes),
         )
 

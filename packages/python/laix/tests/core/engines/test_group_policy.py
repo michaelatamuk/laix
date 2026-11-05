@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from laix import Decision, DecisionRequest, EvidenceRef, GroupPolicy
+from laix import Decision, DecisionRequest, EvidenceRef, GroupPolicy, Intent
 
 
 class FakePolicy:
@@ -45,6 +45,9 @@ def test_group_policy_masks_nested_attributes_evidence_and_rationale() -> None:
                         EvidenceRef(id="e1", kind="note", source="health"),
                         EvidenceRef(id="e2", kind="note", source="catalog"),
                     ),
+                    intent=Intent("share", {"health": "private", "topic": "math"}),
+                    undo_hint="health record",
+                    alternatives=({"health": "private", "ok": 1},),
                     attributes={
                         "topic": "math",
                         "nested": {"health": "private", "visible": 1},
@@ -58,13 +61,18 @@ def test_group_policy_masks_nested_attributes_evidence_and_rationale() -> None:
         private_attributes=("health",),
         private_evidence=("health",),
         rationale="shared summary",
+        undo_hint="shared undo",
     )
     decision = policy.decide(
         DecisionRequest(subject="a task", at="2026-11-01T10:00:00+00:00")
     )[0]
 
     assert decision.rationale == "shared summary"
+    assert decision.undo_hint == "shared undo"
     assert [item.id for item in decision.evidence] == ["e2"]
+    assert decision.intent is not None
+    assert decision.intent.args == {"topic": "math"}
+    assert decision.alternatives == ({"ok": 1},)
     assert decision.attributes == {
         "topic": "math",
         "nested": {"visible": 1},

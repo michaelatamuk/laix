@@ -4,11 +4,62 @@ from __future__ import annotations
 
 import asyncio
 import json
-from typing import AsyncIterator, Callable, Iterable
+from dataclasses import dataclass, field
+from typing import AsyncIterable, AsyncIterator, Callable, Iterable
 
 from ...core.decisions import DecisionRequest
+from ...core.support.time import iso
 
 ErrorHandler = Callable[[str, Exception], None]
+
+
+@dataclass(frozen=True, slots=True)
+class DeadLetter:
+    """One malformed source frame, kept for inspection."""
+
+    raw: str
+    error: str
+    at: str = field(default_factory=iso)
+
+
+class DeadLetterQueue:
+    """A bounded, callable error sink for NDJSON and SSE sources."""
+
+    def __init__(self, limit: int = 100) -> None:
+        if limit <= 0:
+            raise ValueError("limit must be positive")
+        self.limit = limit
+        self._items: list[DeadLetter] = []
+
+    def __call__(self, raw: str, exc: Exception) -> None:
+        self.add(raw, exc)
+
+    def add(self, raw: str, exc: Exception) -> None:
+        self._items.append(
+            DeadLetter(raw=raw, error=f"{type(exc).__name__}: {exc}")
+        )
+        if len(self._items) > self.limit:
+            del self._items[: len(self._items) - self.limit]
+
+    def all(self) -> tuple[DeadLetter, ...]:
+        return tuple(self._items)
+
+    def clear(self) -> None:
+        self._items.clear()
+
+    def __len__(self) -> int:
+        return len(self._items)
+
+
+async def _iter_lines(
+    lines: AsyncIterable[str] | Iterable[str],
+) -> AsyncIterator[str]:
+    if hasattr(lines, "__aiter__"):
+        async for line in lines:
+            yield line
+    else:
+        for line in lines:
+            yield line
 
 
 def _request(
@@ -46,17 +97,18 @@ async def from_sync(events: Iterable[DecisionRequest]) -> AsyncIterator[Decision
 
 
 async def from_ndjson(
-    lines: AsyncIterator[str],
+    lines: AsyncIterable[str] | Iterable[str],
     *,
     on_error: ErrorHandler | None = None,
     strict: bool = True,
 ) -> AsyncIterator[DecisionRequest]:
     """Read one request per JSON line.
 
-    A malformed line raises by default. Pass ``on_error`` to collect the bad
-    line, and ``strict=False`` to continue with the next line.
+    A malformed line raises by default. Pass ``on_error`` (for example a
+    ``DeadLetterQueue``) to collect the bad line, and ``strict=False`` to
+    continue with the next line.
     """
-    async for line in lines:
+    async for line in _iter_lines(lines):
         text = line.strip()
         if not text:
             continue
@@ -66,14 +118,14 @@ async def from_ndjson(
 
 
 async def from_sse(
-    lines: AsyncIterator[str],
+    lines: AsyncIterable[str] | Iterable[str],
     *,
     on_error: ErrorHandler | None = None,
     strict: bool = True,
 ) -> AsyncIterator[DecisionRequest]:
     """Read `data:` frames from a text/event-stream source."""
     data: list[str] = []
-    async for line in lines:
+    async for line in _iter_lines(lines):
         if line.startswith("data:"):
             data.append(line[5:].strip())
         elif not line.strip() and data:
@@ -89,4 +141,12 @@ async def from_sse(
             yield request
 
 
-__all__ = ["ErrorHandler", "from_ndjson", "from_queue", "from_sse", "from_sync"]
+__all__ = [
+    "DeadLetter",
+    "DeadLetterQueue",
+    "ErrorHandler",
+    "from_ndjson",
+    "from_queue",
+    "from_sse",
+    "from_sync",
+]

@@ -8,7 +8,7 @@ from .session import (
     StreamSession,
     StreamStats,
 )
-from .sources import from_ndjson, from_queue, from_sse, from_sync
+from .sources import DeadLetter, DeadLetterQueue, from_ndjson, from_queue, from_sse, from_sync
 from .window import TumblingWindow, WindowBatch
 from .bench import StreamBenchResult, prometheus, run_stream_bench
 from .checkpoint import (
@@ -20,6 +20,8 @@ from .checkpoint import (
 __all__ = [
     "FULL_POLICIES",
     "LATE_POLICIES",
+    "DeadLetter",
+    "DeadLetterQueue",
     "ManualClock",
     "Refiner",
     "StreamBenchResult",

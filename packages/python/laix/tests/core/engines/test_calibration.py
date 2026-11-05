@@ -35,6 +35,17 @@ def test_adjust_uses_the_observed_rate() -> None:
     assert report.adjust(0.9) == 0.5
 
 
+def test_smoothing_regularizes_small_bins() -> None:
+    report = calibration_report(
+        [CalibrationSample(confidence=0.9, correct=True)],
+        smoothing=1.0,
+    )
+
+    assert report.smoothing == 1.0
+    assert report.bins[0].observed == 0.666667
+    assert report.adjust(0.9) == 0.666667
+
+
 def test_reports_are_grouped_by_policy() -> None:
     reports = calibration_by_policy(_samples("rules") + _samples("bandit"))
 

@@ -37,6 +37,8 @@ from ..core.sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from ..core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .live_context import CallableDetector, LiveContext
 from .streaming import (
+    DeadLetter,
+    DeadLetterQueue,
     FileStreamCheckpointStore,
     InMemoryStreamCheckpointStore,
     ManualClock,
@@ -115,6 +117,8 @@ __all__ = [
     "StreamCheckpointStore",
     "FileStreamCheckpointStore",
     "InMemoryStreamCheckpointStore",
+    "DeadLetter",
+    "DeadLetterQueue",
     "TumblingWindow",
     "WindowBatch",
     "from_ndjson",

@@ -89,6 +89,23 @@ def test_pomdp_engine_defaults_to_a_uniform_belief() -> None:
     assert plan.attributes["belief"] == {"s0": 0.5, "s1": 0.5}
 
 
+def test_observation_model_is_required() -> None:
+    try:
+        PomdpModel(
+            states=("s0", "s1"),
+            actions=("go",),
+            observations=("o0", "o1"),
+            transitions=(
+                PomdpTransition("s0", "go", "s1", 1.0, 1.0),
+            ),
+            observation_table=(),
+        )
+    except ValueError as exc:
+        assert "missing observations" in str(exc)
+    else:
+        raise AssertionError("expected ValueError")
+
+
 def test_fully_observable_pomdp_matches_the_mdp_path() -> None:
     pomdp = _model()
     mdp = MdpModel(

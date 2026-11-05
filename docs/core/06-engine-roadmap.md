@@ -175,6 +175,7 @@ Internally this is still an engine-backed policy.
 ### 7. POMDP
 
 - [x] observation model
+- [x] observation model required for every reachable state/action pair
 - [x] belief update
 - [x] small solver
 - [x] benchmark against the MDP path

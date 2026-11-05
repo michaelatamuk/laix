@@ -7,6 +7,7 @@ import asyncio
 import pytest
 
 from laix import (
+    DeadLetterQueue,
     Decision,
     DecisionRequest,
     ManualClock,
@@ -134,3 +135,30 @@ def test_ndjson_is_strict_by_default() -> None:
 
     with pytest.raises(ValueError):
         asyncio.run(run())
+
+
+def test_dead_letter_queue_retains_bad_frames() -> None:
+    dead = DeadLetterQueue(limit=1)
+
+    async def lines():
+        yield '{"subject":\n'
+        yield '{"subject":"a","at":"2026-11-01T10:00:00+00:00"}\n'
+
+    async def run() -> list[str]:
+        return [
+            item.subject
+            async for item in from_ndjson(lines(), on_error=dead, strict=False)
+        ]
+
+    assert asyncio.run(run()) == ["a"]
+    assert len(dead) == 1
+    assert dead.all()[0].raw == '{"subject":'
+    assert "JSONDecodeError" in dead.all()[0].error
+
+
+def test_ndjson_accepts_a_sync_iterable() -> None:
+    async def run() -> list[str]:
+        lines = ['{"subject":"a","at":"2026-11-01T10:00:00+00:00"}\n']
+        return [item.subject async for item in from_ndjson(lines)]
+
+    assert asyncio.run(run()) == ["a"]

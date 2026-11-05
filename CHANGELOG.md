@@ -16,8 +16,11 @@
 - **Engine and stream depth.** `ModelLearner.to_mdp_model`, seeded stochastic MDP rollouts,
   `compare_pomdp_to_mdp`, a Python `--engines` bench, NDJSON/SSE error policies and checkpoint
   stream-id validation.
-- **Privacy depth.** `GroupPolicy` masks nested attributes, drops matching evidence and can replace
-  the rationale.
+- **Privacy depth.** `GroupPolicy` masks nested attributes, intent arguments, alternatives and
+  evidence, and can replace the rationale and undo hint.
+- **Stream depth.** `DeadLetterQueue` retains malformed source frames; NDJSON and SSE accept sync
+  or async lines.
+- **Calibration depth.** Optional Laplace smoothing for small bins.
 - **TypeScript parity for the 0.9.0 depth work.** Checkpoint stores, NDJSON/SSE sources,
   `CausalLedger`, commitments and `PlanningPolicy`, `GroupPolicy`, `ShadowPolicy` / `simulate` and
   `Saga`.

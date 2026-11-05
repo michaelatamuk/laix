@@ -100,9 +100,9 @@ accepts `target="request"` to take the mode from the request.
   ask when every open commitment is blocked, wait otherwise. Blocked commitments are skipped when a
   later one is ready.
 - **`GroupPolicy`** — sets the target and recipients and removes private data before sharing.
-  `private_attributes` masks nested attribute keys; `private_evidence` drops matching evidence;
-  `rationale=` replaces the rationale. Apply it outermost when you want its target and recipients to
-  win; its masking applies either way.
+  `private_attributes` masks nested attribute keys plus `intent.args` and alternative payloads;
+  `private_evidence` drops matching evidence; `rationale=` and `undo_hint=` replace those fields.
+  Apply it outermost when you want its target and recipients to win; its masking applies either way.
 - **`ShadowPolicy`** — runs a second policy beside the primary, returns the primary decision and
   records every disagreement for comparison.
 

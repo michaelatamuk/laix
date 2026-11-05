@@ -164,6 +164,8 @@ _APPKIT_NAMES: dict[str, dict[str, str]] = {
         "LiveContext": "LiveContext",
     },
     ".appkit.streaming": {
+        "DeadLetter": "DeadLetter",
+        "DeadLetterQueue": "DeadLetterQueue",
         "FileStreamCheckpointStore": "FileStreamCheckpointStore",
         "InMemoryStreamCheckpointStore": "InMemoryStreamCheckpointStore",
         "ManualClock": "ManualClock",
@@ -386,6 +388,8 @@ __all__ = [
     "StreamStats",
     "StreamBenchResult",
     "StreamCheckpointStore",
+    "DeadLetter",
+    "DeadLetterQueue",
     "FileStreamCheckpointStore",
     "InMemoryStreamCheckpointStore",
     "TumblingWindow",

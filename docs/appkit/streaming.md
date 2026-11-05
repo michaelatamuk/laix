@@ -112,7 +112,7 @@ print(result.decisions, result.elapsed_ms, result.throughput_per_second)
 | **Replay** | `replay(requests)` runs the same sequence with event time as the clock, without filling the buffer. |
 | **Trace and record** | Each decision gets a `trace_id` and a trace; a `recorder` callback receives every emitted decision for a `DecisionRecord`. |
 | **Checkpoint** | `snapshot()` / `restore()` keep the watermark, cadence, counters, buffered decisions and traces. `StreamCheckpointStore` saves a snapshot; in-memory and file stores are included. A session created with an explicit `stream_id` refuses a checkpoint from another stream. |
-| **Sources** | `from_queue`, `from_sync`, `from_ndjson` and `from_sse` adapt a queue, iterable or event stream to `feed`. NDJSON and SSE are strict by default; pass `on_error` and `strict=False` to report and skip a malformed frame. |
+| **Sources** | `from_queue`, `from_sync`, `from_ndjson` and `from_sse` adapt a queue, iterable or event stream to `feed`. NDJSON and SSE accept async or sync iterables, are strict by default, and can retain malformed frames in a `DeadLetterQueue` with `strict=False`. |
 | **Operations** | `prometheus(stats)` exports counters; `run_stream_bench(session, requests)` reports throughput. |
 | **Stats** | `stats` counts observed, decided, late, throttled, dropped, expired, suppressed, shed, duplicates, refine timeouts, provisional and revised, and reports p50/p95/p99 decision latency. |
 
