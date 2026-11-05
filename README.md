@@ -1,6 +1,7 @@
 # LAIX — Live AI Experience
 
 [![CI](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
 **LAIX — Live AI Experience — is the decision layer for live AI experiences.**
 
@@ -19,17 +20,44 @@ present; LAIX keeps the next move timely.
 LAIX is **training-free**. The current layer uses policies, rules and planners over a model the host
 supplies.
 
-| Start | |
-|---|---|
-| [Quickstart](docs/01-start/quickstart.md) | install and make one decision |
-| [Lifecycle](docs/01-start/decision-lifecycle.md) | moment to outcome in one loop |
-| [Documentation](docs/README.md) | start, core, app kit, concepts and project |
-| [FAQ](docs/04-concepts/faq.md) | models, execution and novelty |
-| [Examples](examples/README.md) | runnable Python and TypeScript examples |
+## Contents
 
-## One decision call
+- [Install](#install)
+- [One decision](#one-decision)
+- [Integrated live decision](#integrated-live-decision)
+- [Why LAIX](#why-laix)
+- [What you get](#what-you-get)
+- [Checks](#checks)
+- [Documentation](#documentation)
+- [Requirements](#requirements)
+- [Contributing](#contributing)
+- [License](#license)
+- [Changelog](#changelog)
+- [Status](#status)
 
-The core package answers a request directly:
+## Install
+
+Python:
+
+```powershell
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.9.0#subdirectory=packages/python/laix"
+```
+
+From a local checkout, at the repository root:
+
+```powershell
+pip install -e packages/python/laix
+```
+
+TypeScript, from a local checkout:
+
+```powershell
+npm install file:../path/to/laix/packages/typescript/laix
+```
+
+See the [quickstart](docs/01-start/quickstart.md) for the full setup.
+
+## One decision
 
 ```python
 from laix import Context, DecisionRequest, Signal, decide
@@ -45,26 +73,10 @@ decision = decide(
     )
 )[0]
 
-print(decision.verb, decision.reason_code, decision.score)
+print(decision.verb, decision.reason_code, decision.confidence)
 ```
 
-The snippets assume the app has already built `situation` and `options`.
-
-An app can ask LAIX to choose between actions in the same way:
-
-```python
-decision = decide(
-    DecisionRequest(
-        subject="one decision",
-        at="2026-11-01T10:00:00+00:00",
-        situation=situation,
-        options=options,
-    )
-)[0]
-```
-
-Both requests return the same `Decision` shape, and every decision gets an id. TypeScript exposes the
-same surface:
+TypeScript:
 
 ```ts
 import { Layer } from "laix";
@@ -72,18 +84,57 @@ import { Layer } from "laix";
 const [decision] = new Layer().decide({
   subject: "one decision",
   at: "2026-11-01T10:00:00Z",
-  situation,
-  options,
+  signals: [{ id: "s-1", kind: "deadline", severity: "high", confidence: 0.9 }],
+  context: { now: "2026-11-01T10:00:00Z", quietHours: ["22:00", "06:00"] },
 });
 ```
 
-For the integrated live decision, the same `DecisionProblem` goes to `LiveDecisionEngine`:
+## Integrated live decision
+
+`LiveDecisionEngine` scores the options on utility, promises, execution risk and human attention,
+then returns one plan with the full breakdown.
 
 ```python
-from laix import LiveDecisionEngine
+from laix import ActionOption, Commitment, DecisionProblem, LiveDecisionEngine
 
-plan = LiveDecisionEngine().solve(problem)
+plan = LiveDecisionEngine().solve(
+    DecisionProblem(
+        subject="one live decision",
+        at="2026-11-01T10:00:00+00:00",
+        options=(
+            ActionOption(
+                id="fast",
+                verb="act",
+                name="fast",
+                expected_benefit=1.0,
+                reversible=False,
+                params={"commitments": {"violates": ["c1"]}},
+            ),
+            ActionOption(
+                id="safe",
+                verb="act",
+                name="safe",
+                expected_benefit=0.6,
+                params={"commitments": {"fulfills": ["c1"]}},
+            ),
+        ),
+        attributes={
+            "commitments": (
+                Commitment(
+                    id="c1",
+                    subject="send the report",
+                    due="2026-11-01T09:00:00+00:00",
+                ),
+            )
+        },
+    )
+)
+
+print(plan.action_id, plan.reason_code)  # safe live_decision
 ```
+
+The plan keeps the promise, avoids the irreversible action and carries the commitment, execution
+and attention scores.
 
 ## Why LAIX
 
@@ -103,74 +154,74 @@ risk, human attention, calibration and decision time as one contract.
 and respect an attention budget at the same time. Calibration and the decision timeline complete the
 loop around that plan.
 
-## What LAIX provides
+## What you get
 
 | Capability | What it gives the host |
 |---|---|
-| Decision contract | one `Decision` shape for attention, action and follow-up |
-| Attention | which signal deserves attention now, and what to do with it |
-| Action policies | the next move from the options the app can afford |
-| Packaged policies | active perception, safety, replanning, allocation, negotiation, preference, verification and escalation |
-| Planners | [utility, commitment, execution, attention, integrated live, MDP and POMDP](docs/02-core/06-engines.md) behind `EnginePolicy` |
-| Learning | outcome labels, rewards, bandits, causal attribution, calibration, decision calibration and model learning |
-| Streaming | event time, cadence, backpressure, revisions, checkpoints, timeline and sources |
-| Execution | receipts, idempotency, unknown outcomes, reconciliation, multi-step recovery and records |
-| Stores | state, checkpoints, commitments and outcomes through host-owned ports |
-| Delivery | a port and a receipt for the app’s own channel |
+| Decision contract | one `Decision` shape for attention, action, follow-up and execution |
+| Policies | action, safety, replanning, allocation, negotiation, preference, verification and escalation |
+| Planners | utility, commitment, execution, attention, integrated live, MDP and POMDP |
+| Learning | rewards, bandits, causal attribution, calibration and decision calibration |
+| Streaming and execution | event time, checkpoints, timeline, receipts, recovery and records |
+| App kit | stores, platform, delivery, live context and bench |
 
-## Proof
+## Checks
 
-| Check | Result |
+CI runs the full Python and TypeScript suites, examples, bench, conformance and docs links.
+
+Current: **conformance 24/24 · LAIX-Bench 25/25 · live bench 7/7 · 172 TypeScript tests**.
+
+See [Testing](docs/05-project/testing.md) for the full check list and how to run it.
+
+## Documentation
+
+| Start | |
 |---|---|
-| Python tests | passed |
-| TypeScript tests | 172 passed |
-| Attention conformance | 24/24 |
-| LAIX-Bench | 25/25 |
-| Live decision bench | `LiveDecisionEngine` matches 7/7 expected actions |
+| [Documentation index](docs/README.md) | start, core, app kit, concepts and project |
+| [Decision lifecycle](docs/01-start/decision-lifecycle.md) | moment to outcome in one loop |
+| [Core building blocks](docs/02-core/00-architecture.md) | the decision layer |
+| [App-kit building blocks](docs/03-appkit/00-architecture.md) | streaming, execution, stores and delivery |
+| [FAQ](docs/04-concepts/faq.md) | models, execution and novelty |
+| [Privacy](docs/04-concepts/privacy.md) | what may be shared, stored or exported |
+| [Examples](examples/README.md) | Python and TypeScript, grouped by lifecycle |
+| [Roadmap](docs/05-project/roadmap.md) | what is done and what is next |
 
-The single-concern planners win their own cases: utility on plain benefit, commitment on promises,
-execution on irreversible or unknown actions, attention on human-facing choices. The integrated
-planner combines them.
+## Requirements
 
-## Core and app kit
+- Python 3.11 or newer (CI runs 3.11 and 3.13).
+- Node 22 or newer (CI runs 22 and 24).
+- TypeScript 5.9 for declaration checks.
 
-- **`laix.core`** — `decide(request)`, contracts, decision shape, attention, policies, planners,
-  sensing contracts, resource admission, outcomes, causal attribution, calibration and evaluation.
-- **`laix.appkit`** — optional integration: `Layer`, streams, checkpoints and timeline, execution
-  and multi-step recovery, records, delivery, platform, live-context loop and state.
+The Python core uses the standard library. The TypeScript package has no runtime dependencies.
 
-A host that needs the answer calls `decide(request)`. A host that also executes, records or delivers
-calls `Layer`. See [boundaries](docs/04-concepts/boundaries.md).
+## Contributing
 
-## Repository map
-
-| Path | Contents |
-|---|---|
-| `packages/python/laix` | the Python package: contracts, policies, planners, runtime, execution, outcomes and records |
-| `packages/typescript/laix` | the TypeScript package with the same decision surface |
-| `packages/contracts/` | the JSON Schema and behavioural vectors |
-| `examples/` | runnable Python and TypeScript examples, grouped by lifecycle |
-| `docs/` | [start, core, app kit, concepts and project](docs/README.md) |
-| `scripts/` | repository checks, including docs links |
-
-## Test
+Run the full checks before opening a change:
 
 ```powershell
 cd packages/python/laix
 py -m pytest -q
-py -m laix.appkit.bench
-py -m laix.appkit.bench --live
+py -m ruff check .
 
 cd ../../packages/typescript/laix
 npm test
+npm run typecheck
 npm run conformance
 npm run bench
 ```
 
-CI runs the same checks in `.github/workflows/ci.yml`. Python and TypeScript examples run there too.
+See [Testing](docs/05-project/testing.md) for every check and [Structure](docs/05-project/structure.md)
+for where things live. CI runs the same checks on every push.
+
+## License
+
+Apache-2.0. See [LICENSE](LICENSE).
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## Status
 
 Current release: `0.9.0`. Python and TypeScript share the same decision contract, policies,
-planners, streaming, execution, learning and app-kit surface. See [Proof](#proof) for the current
-checks.
+planners, streaming, execution, learning and app-kit surface.

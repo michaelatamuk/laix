@@ -47,6 +47,16 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 }
 ```
 
+## Current results
+
+| Check | Result |
+|---|---|
+| Python tests | passed |
+| TypeScript tests | 172 passed |
+| Attention conformance | 24/24 |
+| LAIX-Bench | 25/25 |
+| Live decision bench | `LiveDecisionEngine` 7/7 |
+
 ## Docs
 
 ```powershell
