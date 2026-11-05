@@ -3,7 +3,7 @@ import type { Decision, DecisionRequest, Trace } from "../core/contracts.ts";
 import type { StreamCheckpointStore } from "./checkpoint.ts";
 import { TumblingWindow, type WindowBatch } from "./window.ts";
 import { DecisionTimeline } from "./decision-timeline.ts";
-import { AttentionBudget } from "../core/attention-planner.ts";
+import { AttentionBudget } from "../core/planners/attention/attention-planner.ts";
 import { ManualClock } from "./manual-clock.ts";
 import { StreamStats } from "./stream-stats.ts";
 

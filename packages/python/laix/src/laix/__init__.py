@@ -49,8 +49,8 @@ from .core.support.values import confidence_band
 from .core.support.verbs import VERBS, Verb
 from .core.support.version import SCHEMA_VERSION
 from .core import evaluation
-from .core.engines import attention
-from .core.engines.attention import AttentionDecision, Context, Feedback, Signal, decide_attention
+from .core.engines import signals as attention
+from .core.engines.signals import AttentionDecision, Context, Feedback, Signal, decide_attention
 from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
 from .core.evaluation import load_cases
@@ -84,14 +84,14 @@ from .core.engines.policies import (
 )
 from .core.sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
-from .core.engines.commitment_planner import (
+from .core.engines.planners.commitment.commitment_planner import (
     CommitmentAwareEngine,
     CommitmentEffect,
     CommitmentScore,
     CommitmentWeights,
     commitment_effect,
 )
-from .core.engines.attention_planner import (
+from .core.engines.planners.attention.attention_planner import (
     AttentionAwareEngine,
     AttentionBudget,
     AttentionEffect,
@@ -100,7 +100,7 @@ from .core.engines.attention_planner import (
     approval_state,
     attention_effect,
 )
-from .core.engines.execution_planner import (
+from .core.engines.planners.execution.execution_planner import (
     ExecutionAwareEngine,
     ExecutionEffect,
     ExecutionScore,
@@ -116,7 +116,7 @@ from .core.engines.live_bench import (
     default_planners,
     run_live_bench,
 )
-from .core.engines.live_engine import LiveDecisionEngine, LiveScore
+from .core.engines.planners.live.live_engine import LiveDecisionEngine, LiveScore
 from .core.engines.decision_calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
@@ -134,7 +134,7 @@ from .core.engines.calibration import (
     calibration_report,
     samples_from_outcomes,
 )
-from .core.engines.mdp import (
+from .core.engines.planners.mdp.mdp import (
     MDPEngine,
     MdpModel,
     MdpTransition,
@@ -143,7 +143,7 @@ from .core.engines.mdp import (
     value_iteration,
 )
 from .core.engines.model_learning import LearnedTransition, ModelLearner
-from .core.engines.pomdp import (
+from .core.engines.planners.pomdp.pomdp import (
     ObservationProbability,
     POMDPEngine,
     PlannerComparison,
@@ -167,7 +167,7 @@ from .core.engines.simulator import (
     compare_engines,
     seeded_scenarios,
 )
-from .core.engines.utility import RISK_ATTITUDES, UtilityEngine, UtilityModel, UtilityWeights
+from .core.engines.planners.utility.utility import RISK_ATTITUDES, UtilityEngine, UtilityModel, UtilityWeights
 from .core.dispatch import decide, select
 
 # The app kit is optional and is imported on first use.  A host that only needs

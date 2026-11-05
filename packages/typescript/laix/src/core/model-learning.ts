@@ -1,4 +1,4 @@
-import { MdpModel, type MdpModelOptions } from "./mdp.ts";
+import { MdpModel, type MdpModelOptions } from "./planners/mdp/mdp.ts";
 
 export type Transition = [string, string, string, number];
 

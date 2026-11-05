@@ -14,13 +14,13 @@ from typing import Any
 
 from ..support.verbs import VERBS
 from ..decisions import Intent
-from ..engines.attention.input.context import Context
-from ..engines.attention.input.feedback import FEEDBACK_STATES, Feedback
-from ..engines.attention.input.severity import SEVERITY_RANK
-from ..engines.attention.decide import decide_attention
-from ..engines.attention.gates import REASONS
-from ..engines.attention.input.signal import Signal
-from ..engines.attention.timing import parse_range
+from ..engines.signals.input.context import Context
+from ..engines.signals.input.feedback import FEEDBACK_STATES, Feedback
+from ..engines.signals.input.severity import SEVERITY_RANK
+from ..engines.signals.decide import decide_attention
+from ..engines.signals.gates import REASONS
+from ..engines.signals.input.signal import Signal
+from ..engines.signals.timing import parse_range
 
 FIELDS = ("verb", "reason_code", "deliver", "record", "requires_approval", "score", "cost_of_waiting", "undo_hint", "reversible")
 

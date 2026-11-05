@@ -18,7 +18,7 @@ from datetime import datetime, timedelta
 from typing import AsyncIterable, AsyncIterator, Awaitable, Callable, Iterable, Sequence
 
 from ...core.decisions import DECISION_STATUSES, Decision, DecisionRequest, Trace
-from ...core.engines.attention_planner import AttentionBudget
+from ...core.engines.planners.attention.attention_planner import AttentionBudget
 from ...core.support.ids import new_id
 from ...core.support.time import parse_iso, utcnow
 from .checkpoint import StreamCheckpointStore

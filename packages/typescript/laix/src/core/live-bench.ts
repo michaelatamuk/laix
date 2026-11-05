@@ -1,11 +1,11 @@
 import type { ActionOption, Constraint, Situation } from "./contracts.ts";
 import type { DecisionEngine, DecisionProblem } from "./engine.ts";
 import type { Commitment } from "./planning.ts";
-import { UtilityEngine, constraintBlocker } from "./utility.ts";
-import { CommitmentAwareEngine } from "./commitment-planner.ts";
-import { ExecutionAwareEngine } from "./execution-planner.ts";
-import { AttentionAwareEngine } from "./attention-planner.ts";
-import { LiveDecisionEngine } from "./live-engine.ts";
+import { UtilityEngine, constraintBlocker } from "./planners/utility/utility.ts";
+import { CommitmentAwareEngine } from "./planners/commitment/commitment-planner.ts";
+import { ExecutionAwareEngine } from "./planners/execution/execution-planner.ts";
+import { AttentionAwareEngine } from "./planners/attention/attention-planner.ts";
+import { LiveDecisionEngine } from "./planners/live/live-engine.ts";
 import { FirstOptionEngine } from "./first-option-engine.ts";
 import { HighestBenefitEngine } from "./highest-benefit-engine.ts";
 

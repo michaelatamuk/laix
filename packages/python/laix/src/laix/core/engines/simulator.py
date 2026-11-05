@@ -14,7 +14,7 @@ from ..support.time import iso
 from .decision_engine import DecisionEngine
 from .decision_problem import DecisionProblem
 from .engine_score import EngineScore
-from .mdp_model import MdpModel
+from .planners.mdp.mdp_model import MdpModel
 from .scenario import Scenario
 from .simulation_report import SimulationReport
 from .simulation_result import SimulationResult

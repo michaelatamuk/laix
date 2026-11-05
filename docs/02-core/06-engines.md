@@ -1,7 +1,9 @@
 # Planners and the engine contract
 
 The planner contract, the built-in planners and the simulator are implemented in
-`core/engines/`. Rule policies and packaged policies work on their own; planners are optional.
+`core/engines/`. The planners are grouped under `core/engines/planners/`, and the signal-attention
+engine is under `core/engines/signals/`. Rule policies and packaged policies work on their own;
+planners are optional.
 This page covers the planner contract; attention and policies are separate parts of the Decide layer.
 The vocabulary is defined in the [glossary](../04-concepts/glossary.md).
 

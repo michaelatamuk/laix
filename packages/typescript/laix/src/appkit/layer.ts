@@ -6,7 +6,7 @@
  * the same Decision.
  */
 
-import { decideAttention, type Context, type Signal } from "../core/attention.ts";
+import { decideAttention, type Context, type Signal } from "../core/signals/attention.ts";
 import type {
   ActionOption,
   Decision,

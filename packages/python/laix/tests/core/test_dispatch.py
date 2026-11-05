@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from laix.core import ActionOption, Decision, DecisionRequest, Situation, decide
-from laix.core.engines.attention import Context, Signal
+from laix.core.engines.signals import Context, Signal
 
 
 def at(hour: int = 10) -> datetime:

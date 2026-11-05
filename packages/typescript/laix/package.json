@@ -12,13 +12,17 @@
       "default": "./src/index.ts"
     }
   },
-  "files": ["src", "types.d.ts", "README.md"],
+  "files": [
+    "src",
+    "types.d.ts",
+    "README.md"
+  ],
   "sideEffects": false,
   "devDependencies": {
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "test": "node --experimental-strip-types --test test/attention.test.ts test/conformance.test.ts test/record.test.ts test/record-replay.test.ts test/layer.test.ts test/parity.test.ts test/streaming.test.ts test/engine.test.ts test/commitment-planner.test.ts test/execution-planner.test.ts test/attention-planner.test.ts test/decision-calibration.test.ts test/decision-timeline.test.ts test/live-bench.test.ts test/live-engine.test.ts test/execution-integrity.test.ts test/authoring.test.ts test/checkpoint-sources.test.ts test/causal-planning.test.ts test/group-simulation.test.ts test/saga.test.ts test/engine-roadmap.test.ts test/calibration.test.ts test/model-learning.test.ts test/pomdp.test.ts",
+    "test": "node --experimental-strip-types --test test/signals/attention.test.ts test/conformance.test.ts test/record.test.ts test/record-replay.test.ts test/layer.test.ts test/parity.test.ts test/streaming.test.ts test/engine.test.ts test/planners/commitment/commitment-planner.test.ts test/planners/execution/execution-planner.test.ts test/planners/attention/attention-planner.test.ts test/decision-calibration.test.ts test/decision-timeline.test.ts test/live-bench.test.ts test/planners/live/live-engine.test.ts test/execution-integrity.test.ts test/authoring.test.ts test/checkpoint-sources.test.ts test/causal-planning.test.ts test/group-simulation.test.ts test/saga.test.ts test/engine-roadmap.test.ts test/calibration.test.ts test/model-learning.test.ts test/planners/pomdp/pomdp.test.ts",
     "typecheck": "tsc -p tsconfig.typecheck.json",
     "typecheck:declarations": "tsc --noEmit --skipLibCheck --target ES2022 --module ESNext --moduleResolution Bundler --lib ES2022,DOM types.d.ts",
     "bench": "node --experimental-strip-types scripts/bench.mjs",

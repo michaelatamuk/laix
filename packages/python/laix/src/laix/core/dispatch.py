@@ -11,7 +11,7 @@ from dataclasses import replace
 from typing import Any
 
 from .decisions import Decision, DecisionRequest, coerce, from_attention
-from .engines.attention import decide_attention
+from .engines.signals import decide_attention
 from .engines.policies import ActionPolicy, ActionPolicyRequest
 from .support.ids import new_id
 

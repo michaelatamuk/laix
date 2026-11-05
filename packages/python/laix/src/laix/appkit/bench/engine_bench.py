@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from ...core.engines.engine import DecisionProblem, Plan
-from ...core.engines.mdp import MDPEngine, MdpModel, MdpTransition
+from ...core.engines.planners.mdp.mdp import MDPEngine, MdpModel, MdpTransition
 from ...core.engines.simulator import Scenario, SimulationReport, Simulator, compare_engines
 
 

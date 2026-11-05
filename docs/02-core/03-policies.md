@@ -201,5 +201,5 @@ decision shape.
 ## Where the rules live
 
 - Action policy: `packages/python/laix/src/laix/core/engines/policies/implementations/action.py`
-- Attention policy: `packages/python/laix/src/laix/core/engines/attention/decide.py`
+- Attention policy: `packages/python/laix/src/laix/core/engines/signals/decide.py`
 - Packaged policies: `packages/python/laix/src/laix/core/engines/policies/implementations/`

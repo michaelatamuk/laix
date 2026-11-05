@@ -15,7 +15,7 @@ import json
 from datetime import datetime, timezone
 from typing import Any, Mapping, Sequence
 
-from ...core.engines.attention import Context, Feedback, Signal
+from ...core.engines.signals import Context, Feedback, Signal
 from ...core.engines.live_bench import run_live_bench
 from ...core.decisions import ActionOption, Belief, DecisionRequest, Situation
 from ...core.engines.policies import (

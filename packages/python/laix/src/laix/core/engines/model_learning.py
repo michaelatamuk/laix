@@ -11,7 +11,7 @@ import math
 from typing import Any, Iterable
 
 from .learned_transition import LearnedTransition
-from .mdp import MdpModel, MdpTransition
+from .planners.mdp.mdp import MdpModel, MdpTransition
 
 Transition = tuple[str, str, str, float]
 

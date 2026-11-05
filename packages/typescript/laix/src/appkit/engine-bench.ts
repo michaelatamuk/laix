@@ -1,5 +1,5 @@
 import type { DecisionEngine, DecisionProblem, Plan } from "../core/engine.ts";
-import { MDPEngine, MdpModel } from "../core/mdp.ts";
+import { MDPEngine, MdpModel } from "../core/planners/mdp/mdp.ts";
 import { Simulator, compareEngines, type SimulationReport } from "./simulator.ts";
 
 export class FixedActionEngine implements DecisionEngine {

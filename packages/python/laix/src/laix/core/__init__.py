@@ -5,7 +5,7 @@ mission, agent or another application that only needs the decision layer.
 """
 
 from .schema.records import RECORDS, RECORD_NAMES
-from .engines.attention import (
+from .engines.signals import (
     Context,
     Feedback,
     Signal,
@@ -22,14 +22,14 @@ from .engines.calibration import (
     calibration_report,
     samples_from_outcomes,
 )
-from .engines.commitment_planner import (
+from .engines.planners.commitment.commitment_planner import (
     CommitmentAwareEngine,
     CommitmentEffect,
     CommitmentScore,
     CommitmentWeights,
     commitment_effect,
 )
-from .engines.attention_planner import (
+from .engines.planners.attention.attention_planner import (
     AttentionAwareEngine,
     AttentionBudget,
     AttentionEffect,
@@ -38,7 +38,7 @@ from .engines.attention_planner import (
     approval_state,
     attention_effect,
 )
-from .engines.execution_planner import (
+from .engines.planners.execution.execution_planner import (
     ExecutionAwareEngine,
     ExecutionEffect,
     ExecutionScore,
@@ -54,7 +54,7 @@ from .engines.live_bench import (
     default_planners,
     run_live_bench,
 )
-from .engines.live_engine import LiveDecisionEngine, LiveScore
+from .engines.planners.live.live_engine import LiveDecisionEngine, LiveScore
 from .engines.decision_calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
@@ -64,7 +64,7 @@ from .engines.decision_calibration import (
     decision_samples_from_outcomes,
 )
 from .engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
-from .engines.mdp import (
+from .engines.planners.mdp.mdp import (
     MDPEngine,
     MdpModel,
     MdpTransition,
@@ -73,7 +73,7 @@ from .engines.mdp import (
     value_iteration,
 )
 from .engines.model_learning import LearnedTransition, ModelLearner
-from .engines.pomdp import (
+from .engines.planners.pomdp.pomdp import (
     ObservationProbability,
     POMDPEngine,
     PlannerComparison,
@@ -97,7 +97,7 @@ from .engines.simulator import (
     compare_engines,
     seeded_scenarios,
 )
-from .engines.utility import RISK_ATTITUDES, UtilityEngine, UtilityModel, UtilityWeights
+from .engines.planners.utility.utility import RISK_ATTITUDES, UtilityEngine, UtilityModel, UtilityWeights
 from .decisions import (
     ActionOption,
     Belief,

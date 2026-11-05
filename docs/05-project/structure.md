@@ -45,20 +45,23 @@ packages/python/laix/src/laix/
 │   │   └── normalise.py     coerce and from_attention
 │   ├── engines/
 │   │   ├── engine.py        DecisionEngine, DecisionProblem, Plan, EnginePolicy, to_decision
-│   │   ├── utility.py       UtilityEngine, UtilityModel and hard limits
-│   │   ├── mdp.py           MdpModel, value iteration and MDPEngine
-│   │   ├── pomdp.py         PomdpModel, belief update and POMDPEngine
+│   │   ├── decision_engine.py the solver protocol
+│   │   ├── decision_problem.py and plan.py  engine input and output values
+│   │   ├── planners/
+│   │   │   ├── utility/     utility engine, model and weights
+│   │   │   ├── mdp/         MDP model, transitions, value iteration and engine
+│   │   │   ├── pomdp/       POMDP model, observations, belief state and engine
+│   │   │   ├── commitment/  commitment-aware planner, effects and weights
+│   │   │   ├── execution/   execution-aware planner, effects and weights
+│   │   │   ├── attention/   attention-aware planner, budget and effects
+│   │   │   └── live/        integrated live planner and score
 │   │   ├── simulator.py     Simulator, scenarios and engine comparison
 │   │   ├── calibration.py   CalibrationReport and confidence adjustment
-│   │   ├── commitment_planner.py commitment-aware planning
-│   │   ├── execution_planner.py execution-aware planning
-│   │   ├── attention_planner.py attention-aware planning
 │   │   ├── decision_calibration.py decision-level calibration
 │   │   ├── live_bench.py    training-free live decision benchmark
-│   │   ├── live_engine.py   integrated live planner
 │   │   ├── model_learning.py ModelLearner and rollback
 │   │   ├── policies/        policy.py, registry.py, simulation.py, implementations/ (packs, rules, target, planning, group)
-│   │   ├── attention/       input, output, gates/, attention.v1.json, decide, score
+│   │   ├── signals/         input, output, gates/, attention.v1.json, decide, score
 │   │   └── resources/       budget, sensing option, plan, scheduler
 │   ├── outcome_learning/    record, ledger, store, bandit, causal, rewards, attention/
 │   ├── planning/            commitment ledger, stores and planning state
@@ -92,22 +95,23 @@ packages/typescript/laix/src/
 │   ├── causal.ts      causal ledger
 │   ├── planning.ts    commitment ledger
 │   ├── planning-store.ts commitment stores
-│   ├── utility.ts     utility engine
-│   ├── mdp.ts         MDP model, value iteration and engine
-│   ├── pomdp.ts       POMDP model, belief update and engine
+│   ├── planners/
+│   │   ├── utility/   utility engine and model
+│   │   ├── mdp/       MDP model, value iteration and engine
+│   │   ├── pomdp/     POMDP model, belief update and engine
+│   │   ├── commitment/ commitment-aware planner
+│   │   ├── execution/ execution-aware planner
+│   │   ├── attention/ attention-aware planner and budget
+│   │   └── live/      integrated live planner
 │   ├── calibration.ts calibration report and smoothing
-│   ├── commitment-planner.ts commitment-aware planner
-│   ├── execution-planner.ts execution-aware planner
-│   ├── attention-planner.ts attention-aware planner
 │   ├── decision-calibration.ts decision-level calibration
 │   ├── live-bench.ts training-free live benchmark
-│   ├── live-engine.ts integrated live planner
 │   ├── model-learning.ts count-based learner and MDP export
 │   ├── outcome.ts     outcome ledger and UCB learner
 │   ├── evaluation.ts  parity harness
 │   ├── perception.ts  detector and frame contracts
 │   ├── resources.ts   budget and resource admission
-│   ├── attention.ts   attention policy
+│   ├── signals/attention.ts attention policy
 │   └── policies/      eight packs, bandit, rules, target, planning, group, shadow, registry
 └── appkit/
     ├── index.ts       optional app surface
@@ -147,6 +151,7 @@ and the canonical file differ.
 ## Rules
 
 - One class per file; functions may share a small module with their owner.
-- Group folders by role: `decisions`, `policies`, `attention`, `runtime`, `audit`.
+- Group folders by role: `decisions`, `planners`, `policies`, `signals`, `runtime`, `audit`.
+- Mirror source folders in tests: `planners/` and `signals/`.
 - Keep the public API in `__init__.py` and `index.ts`.
 - Use generic words and leave app, domain and vendor names out.
