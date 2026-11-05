@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 import pytest
 
 from laix import (
+    AttentionBudget,
     Decision,
     DecisionRequest,
     DecisionTimeline,
@@ -142,6 +143,59 @@ def test_stream_session_feeds_the_timeline() -> None:
 
     assert timeline.report().decisions == 2
     assert timeline.history(second.decision_id) == (first, second)
+
+
+def test_timeline_round_trips_through_a_stream_snapshot() -> None:
+    timeline = DecisionTimeline()
+    session = StreamSession(
+        _decider,
+        stream_id="STR-1",
+        clock=ManualClock(_moment(0)),
+        timeline=timeline,
+    )
+    first = session.observe(DecisionRequest(subject="a", at=_at(0)))[0]
+    snapshot = session.snapshot()
+
+    restored = StreamSession(
+        _decider,
+        stream_id="STR-1",
+        clock=ManualClock(_moment(1)),
+    )
+    restored.restore(snapshot)
+
+    assert restored.timeline is not None
+    assert restored.timeline.history(first.decision_id) == (first,)
+
+
+def test_stream_session_spends_a_shared_attention_budget() -> None:
+    def decider(request: DecisionRequest) -> list[Decision]:
+        return [
+            Decision(
+                verb="guide",
+                confidence=0.8,
+                reason_code="stream",
+                rationale="a stream decision",
+                decision_id=f"DEC-{request.at}",
+                attributes={"attention_cost": 0.4},
+            )
+        ]
+
+    budget = AttentionBudget(total=1.0)
+    session = StreamSession(
+        decider,
+        stream_id="STR-1",
+        clock=ManualClock(_moment(0)),
+        attention_budget=budget,
+    )
+    session.observe(DecisionRequest(subject="a", at=_at(0)))
+    session.observe(DecisionRequest(subject="b", at=_at(1)))
+
+    assert round(budget.remaining(), 6) == 0.2
+    snapshot = session.snapshot()
+    restored = StreamSession(decider, stream_id="STR-1")
+    restored.restore(snapshot)
+    assert restored.attention_budget is not None
+    assert round(restored.attention_budget.remaining(), 6) == 0.2
 
 
 def test_timeline_round_trips() -> None:

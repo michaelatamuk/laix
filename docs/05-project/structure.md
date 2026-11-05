@@ -99,6 +99,7 @@ packages/typescript/laix/src/
 │   ├── execution-planner.ts execution-aware planner
 │   ├── attention-planner.ts attention-aware planner
 │   ├── decision-calibration.ts decision-level calibration
+│   ├── live-bench.ts training-free live benchmark
 │   ├── model-learning.ts count-based learner and MDP export
 │   ├── outcome.ts     outcome ledger and UCB learner
 │   ├── evaluation.ts  parity harness

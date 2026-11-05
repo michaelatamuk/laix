@@ -2,7 +2,8 @@ import { newId } from "../core/contracts.ts";
 import type { Decision, DecisionRequest, Trace } from "../core/contracts.ts";
 import type { StreamCheckpointStore } from "./checkpoint.ts";
 import { TumblingWindow, type WindowBatch } from "./window.ts";
-import type { DecisionTimeline } from "./decision-timeline.ts";
+import { DecisionTimeline } from "./decision-timeline.ts";
+import { AttentionBudget } from "../core/attention-planner.ts";
 
 export const DECISION_STATUSES = ["final", "provisional", "superseded"] as const;
 export type DecisionStatus = (typeof DECISION_STATUSES)[number];
@@ -100,6 +101,7 @@ export interface StreamSessionOptions {
   trace?: boolean;
   recorder?: (decision: Decision) => void;
   timeline?: DecisionTimeline;
+  attentionBudget?: AttentionBudget;
   clock?: Clock;
   idFactory?: () => string;
 }
@@ -119,7 +121,8 @@ export class StreamSession {
   private readonly latencySamples: number;
   private readonly traceEnabled: boolean;
   private readonly recorder: ((decision: Decision) => void) | null;
-  private readonly timeline: DecisionTimeline | null;
+  private timeline: DecisionTimeline | null;
+  attentionBudget: AttentionBudget | null;
   private clock: Clock;
   private readonly items: Decision[] = [];
   private waiters: Array<() => void> = [];
@@ -172,6 +175,7 @@ export class StreamSession {
     this.traceEnabled = options.trace ?? true;
     this.recorder = options.recorder ?? null;
     this.timeline = options.timeline ?? null;
+    this.attentionBudget = options.attentionBudget ?? null;
     this.clock = options.clock ?? (() => new Date());
   }
 
@@ -319,6 +323,8 @@ export class StreamSession {
       stats: this.statsValue.snapshot(),
       pending: this.items.map((item) => ({ ...item })),
       traces: [...this.traces.values()],
+      timeline: this.timeline ? this.timeline.toDict() : null,
+      attentionBudget: this.attentionBudget ? this.attentionBudget.toDict() : null,
     };
   }
 
@@ -348,6 +354,16 @@ export class StreamSession {
       typeof snapshot.lastSignatureAt === "string" ? new Date(snapshot.lastSignatureAt) : null;
     this.windowStart = typeof snapshot.windowStart === "string" ? new Date(snapshot.windowStart) : null;
     this.windowCount = Number(snapshot.windowCount ?? 0);
+    if (snapshot.timeline && typeof snapshot.timeline === "object") {
+      this.timeline = DecisionTimeline.fromDict(
+        snapshot.timeline as { decisions?: Decision[] },
+      );
+    }
+    if (snapshot.attentionBudget && typeof snapshot.attentionBudget === "object") {
+      this.attentionBudget = AttentionBudget.fromDict(
+        snapshot.attentionBudget as { total?: number; spent?: number },
+      );
+    }
     const stats = snapshot.stats;
     if (stats && typeof stats === "object") {
       Object.assign(this.statsValue, stats);
@@ -602,6 +618,11 @@ export class StreamSession {
       }
       this.recorder?.(decision);
       this.timeline?.add(decision);
+      if (this.attentionBudget) {
+        let cost = Number(decision.attributes?.attention_cost ?? 0);
+        if (!cost && decision.requiresApproval) cost = 0.5;
+        this.attentionBudget.spend(cost);
+      }
     }
   }
 

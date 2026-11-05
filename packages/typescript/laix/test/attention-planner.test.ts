@@ -126,6 +126,7 @@ describe("attention-aware planning", () => {
     assert.equal(plan.actionId, "act");
     assert.equal(Math.round(budget.remaining() * 1e6) / 1e6, 0.1);
     assert.equal(budget.spend(0.1), 0);
+    assert.equal(AttentionBudget.fromDict(budget.toDict()).remaining(), 0);
   });
 
   it("matches the utility engine without attention facts", () => {

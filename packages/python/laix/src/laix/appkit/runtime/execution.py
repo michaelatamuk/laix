@@ -324,6 +324,13 @@ class ExecutionBridge:
             raise KeyError(receipt_id)
         return receipt
 
+    def execution_state(self) -> dict[str, str]:
+        """Map action name to its latest receipt status for execution-aware planning."""
+        state: dict[str, str] = {}
+        for receipt in self.receipts.values():
+            state[receipt.action_name] = receipt.status
+        return state
+
     def _store(self, receipt: ExecutionReceipt) -> ExecutionReceipt:
         self.receipts[receipt.id] = receipt
         return receipt

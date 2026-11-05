@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   CalibratedPolicy,
+  DecisionCalibrationReport,
   calibrateDecision,
   decisionCalibrationReport,
   decisionSamplesFromOutcomes,
@@ -106,6 +107,20 @@ describe("decision-level calibration", () => {
     assert.equal(policy.name, "fake.calibrated");
     assert.equal(decisions[0]!.confidence, 0.5);
     assert.equal(decisions[0]!.calibrated, true);
+  });
+
+  it("round-trips through a dict", () => {
+    const report = decisionCalibrationReport(
+      Array.from({ length: 10 }, (_, index) => ({
+        confidence: 0.9,
+        correct: index < 5,
+      })),
+    );
+    const restored = DecisionCalibrationReport.fromDict(report.toDict());
+
+    assert.equal(restored.samples, report.samples);
+    assert.equal(restored.accuracy, report.accuracy);
+    assert.equal(restored.adjust(0.9), report.adjust(0.9));
   });
 
   it("builds samples from decisions and outcomes", () => {

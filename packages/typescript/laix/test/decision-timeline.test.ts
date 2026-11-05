@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { DecisionTimeline, ManualClock, StreamSession } from "../src/index.ts";
+import {
+  AttentionBudget,
+  DecisionTimeline,
+  ManualClock,
+  StreamSession,
+} from "../src/index.ts";
 import type { Decision, DecisionRequest } from "../src/index.ts";
 
 function decision(
@@ -97,6 +102,35 @@ describe("decision timeline", () => {
 
     assert.deepEqual(restored.report(), timeline.report());
     assert.deepEqual(restored.history("d2"), timeline.history("d2"));
+  });
+
+  it("spends a shared attention budget in a stream", () => {
+    const decider = (request: DecisionRequest): Decision[] => [
+      {
+        verb: "guide",
+        confidence: 0.8,
+        reasonCode: "stream",
+        rationale: "a stream decision",
+        decisionId: `DEC-${request.at}`,
+        attributes: { attention_cost: 0.4 },
+      },
+    ];
+    const budget = new AttentionBudget({ total: 1 });
+    const session = new StreamSession(decider, {
+      streamId: "STR-1",
+      clock: () => new Date("2026-11-01T10:00:00Z"),
+      attentionBudget: budget,
+    });
+    session.observe({ subject: "a", at: "2026-11-01T10:00:00Z" });
+    session.observe({ subject: "b", at: "2026-11-01T10:00:01Z" });
+
+    assert.equal(Math.round(budget.remaining() * 1e6) / 1e6, 0.2);
+    const restored = new StreamSession(decider, { streamId: "STR-1" });
+    restored.restore(session.snapshot());
+    assert.equal(
+      Math.round((restored.attentionBudget?.remaining() ?? 0) * 1e6) / 1e6,
+      0.2,
+    );
   });
 
   it("accepts a valid timeline", () => {

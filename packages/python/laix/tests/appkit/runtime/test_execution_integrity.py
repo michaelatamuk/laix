@@ -51,6 +51,14 @@ def test_unknown_outcome_can_be_reconciled() -> None:
     assert reconciled.idempotency_key == "K-2"
 
 
+def test_execution_state_maps_action_name_to_status() -> None:
+    bridge = ExecutionBridge(handlers={"pay": lambda action, context: {"ok": True}})
+    executed = bridge.execute(_decision(), action=_action(), actor="agent")
+    bridge.mark_unknown(executed.id, actor="agent", reason="response lost")
+
+    assert bridge.execution_state() == {"pay": "unknown"}
+
+
 def test_reconcile_rejects_an_unknown_status() -> None:
     bridge = ExecutionBridge(handlers={"pay": lambda action, context: {"ok": True}})
     executed = bridge.execute(_decision(), action=_action(), actor="agent")

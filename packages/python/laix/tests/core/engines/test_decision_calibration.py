@@ -7,6 +7,7 @@ import pytest
 from laix import (
     CalibratedPolicy,
     Decision,
+    DecisionCalibrationReport,
     DecisionCalibrationSample,
     DecisionRequest,
     Outcome,
@@ -33,6 +34,17 @@ def test_report_bins_decisions_and_adjusts_confidence() -> None:
     assert report.adjust(0.2) == 0.2
     assert report.verb_accuracy["act"] == 0.8
     assert report.action_accuracy["send"] == 0.8
+
+
+def test_report_round_trips_through_a_dict() -> None:
+    report = decision_calibration_report(
+        [DecisionCalibrationSample(0.9, index < 5) for index in range(10)]
+    )
+    restored = DecisionCalibrationReport.from_dict(report.to_dict())
+
+    assert restored.samples == report.samples
+    assert restored.accuracy == report.accuracy
+    assert restored.adjust(0.9) == report.adjust(0.9)
 
 
 def test_empty_report_is_neutral() -> None:

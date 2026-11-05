@@ -49,4 +49,12 @@ describe("execution integrity", () => {
     assert.equal(reconciled.status, "executed");
     assert.equal(reconciled.idempotencyKey, "K-2");
   });
+
+  it("maps action names to execution status", () => {
+    const bridge = new ExecutionBridge({ handlers: { pay: () => ({ ok: true }) } });
+    const executed = bridge.execute(decision, { action, actor: "agent" });
+    bridge.markUnknown(executed.id, { actor: "agent", reason: "response lost" });
+
+    assert.deepEqual(bridge.executionState(), { pay: "unknown" });
+  });
 });

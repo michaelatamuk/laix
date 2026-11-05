@@ -76,6 +76,25 @@ class DecisionCalibrationReport:
             "action_accuracy": dict(self.action_accuracy),
         }
 
+    @classmethod
+    def from_dict(cls, payload: dict[str, object]) -> "DecisionCalibrationReport":
+        bins = tuple(
+            CalibrationBin(**item)
+            for item in payload.get("bins", ())
+            if isinstance(item, dict)
+        )
+        return cls(
+            samples=int(payload.get("samples", 0)),
+            accuracy=float(payload.get("accuracy", 0.0)),
+            expected=float(payload.get("expected", 0.0)),
+            error=float(payload.get("error", 0.0)),
+            bins=bins,
+            verb_accuracy=dict(payload.get("verb_accuracy", {})),
+            action_accuracy=dict(payload.get("action_accuracy", {})),
+            policy=str(payload.get("policy", "")),
+            smoothing=float(payload.get("smoothing", 0.0)),
+        )
+
 
 def _rate(correct: int, total: int, smoothing: float) -> float:
     return (correct + smoothing) / (total + 2.0 * smoothing) if total else 0.0

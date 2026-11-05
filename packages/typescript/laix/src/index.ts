@@ -12,6 +12,7 @@ export * from "./core/utility.ts";
 export * from "./core/commitment-planner.ts";
 export * from "./core/execution-planner.ts";
 export * from "./core/attention-planner.ts";
+export * from "./core/live-bench.ts";
 export * from "./core/mdp.ts";
 export * from "./core/calibration.ts";
 export * from "./core/decision-calibration.ts";

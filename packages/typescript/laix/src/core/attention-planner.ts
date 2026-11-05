@@ -39,6 +39,13 @@ export class AttentionBudget {
   toDict(): { total: number; spent: number } {
     return { total: this.total, spent: this.spent };
   }
+
+  static fromDict(payload: { total?: number; spent?: number }): AttentionBudget {
+    return new AttentionBudget({
+      total: payload.total,
+      spent: payload.spent,
+    });
+  }
 }
 
 export interface AttentionEffect {

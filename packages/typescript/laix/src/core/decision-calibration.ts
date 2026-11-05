@@ -106,6 +106,23 @@ export class DecisionCalibrationReport {
       action_accuracy: { ...this.actionAccuracy },
     };
   }
+
+  static fromDict(payload: Record<string, unknown>): DecisionCalibrationReport {
+    const bins = Array.isArray(payload.bins)
+      ? (payload.bins as CalibrationBin[])
+      : [];
+    return new DecisionCalibrationReport({
+      samples: Number(payload.samples ?? 0),
+      accuracy: Number(payload.accuracy ?? 0),
+      expected: Number(payload.expected ?? 0),
+      error: Number(payload.error ?? 0),
+      bins,
+      verbAccuracy: (payload.verb_accuracy as Record<string, number>) ?? {},
+      actionAccuracy: (payload.action_accuracy as Record<string, number>) ?? {},
+      policy: String(payload.policy ?? ""),
+      smoothing: Number(payload.smoothing ?? 0),
+    });
+  }
 }
 
 export function decisionCalibrationReport(

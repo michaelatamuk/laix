@@ -11,6 +11,7 @@
 | **Adapter** | App code that turns app events into requests and decisions into app actions. |
 | **Attention** | The mechanism that ranks signals and decides whether to surface, hold, act or escalate. |
 | **Attention-aware planning** | Planning that treats interruption, approval and escalation as a budget. |
+| **Attention budget** | The interruption and approval capacity a task may spend. |
 | **Planner** | A solver that returns a `Plan`: utility, MDP, POMDP or an external planner. |
 | **Engine** | The code contract for a planner: `DecisionEngine.solve(problem) -> Plan`; `EnginePolicy` wraps it. |
 | **Plan** | A planner's answer: verb, confidence, reason, action, score and alternatives. |
@@ -28,6 +29,7 @@
 | **Stream** | A `StreamSession` that applies event time, cadence, backpressure and revisions to many requests. |
 | **Checkpoint** | A resumable snapshot of a stream. |
 | **Decision timeline** | An append-only record of decisions with revision and event-time rules. |
+| **Live decision bench** | A training-free comparison of planners on risk, promise, execution and attention cases. |
 | **TTL** | Time to live: how long state or a decision stays valid. |
 | **SSE** | Server-sent events: a one-way HTTP stream of events. |
 | **NDJSON** | Newline-delimited JSON: one event per line. |
@@ -39,6 +41,7 @@
 | **UCB** | Upper confidence bound: choose the arm with the best reward plus a bonus for arms tried less. |
 | **Calibration** | A comparison between stated confidence and observed accuracy. |
 | **Decision calibration** | Comparing stated confidence with whether the chosen verb and action were correct. |
+| **Calibrated policy** | A policy wrapper that applies a decision calibration report to every decision. |
 | **JEV** | A typed decision model from TypeSafe; it returns a judgment and can sit behind a LAIX policy. |
 | **LLM** | Large language model: a model that generates or judges text. |
 | **PPMA** | The layer above LAIX that owns activation, commit and the system-level loop; LAIX decides inside one task. |

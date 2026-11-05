@@ -214,6 +214,14 @@ export class ExecutionBridge {
     return receipt;
   }
 
+  executionState(): Record<string, string> {
+    const state: Record<string, string> = {};
+    for (const receipt of this.receipts.values()) {
+      state[receipt.actionName] = receipt.status;
+    }
+    return state;
+  }
+
   private store(receipt: Receipt): Receipt {
     this.receipts.set(receipt.id, receipt);
     return receipt;
