@@ -8,14 +8,13 @@ learned model without changing the policy adapter.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from typing import Any
 
 from ..decisions import ActionOption
 from ..support.values import clamp
 from .engine import DecisionProblem, Plan
-
-RISK_ATTITUDES: tuple[str, ...] = ("neutral", "averse", "seeking")
+from .utility_model import RISK_ATTITUDES, UtilityModel
+from .utility_weights import UtilityWeights
 
 
 def _truthy(value: Any) -> bool:
@@ -78,64 +77,6 @@ def _approval_required(problem: DecisionProblem) -> bool:
         ):
             return True
     return False
-
-
-@dataclass(frozen=True, slots=True)
-class UtilityWeights:
-    """How much each cost subtracts from expected benefit."""
-
-    benefit: float = 1.0
-    cost: float = 0.25
-    risk: float = 0.25
-    interruption: float = 0.15
-    latency: float = 0.0
-
-    def __post_init__(self) -> None:
-        for name in ("benefit", "cost", "risk", "interruption", "latency"):
-            if getattr(self, name) < 0:
-                raise ValueError(f"utility weight {name!r} must not be negative")
-
-
-@dataclass(frozen=True, slots=True)
-class UtilityModel:
-    """Weights, risk attitude and the hard limits for one decision."""
-
-    weights: UtilityWeights = field(default_factory=UtilityWeights)
-    risk_attitude: str = "neutral"
-    max_risk: float = 1.0
-    max_cost: float | None = None
-    max_latency_ms: float | None = None
-
-    def __post_init__(self) -> None:
-        if self.risk_attitude not in RISK_ATTITUDES:
-            raise ValueError(f"unknown risk attitude: {self.risk_attitude}")
-        if not 0.0 <= self.max_risk <= 1.0:
-            raise ValueError("max_risk must be between zero and one")
-
-    def feasible(self, option: ActionOption) -> bool:
-        if option.risk > self.max_risk:
-            return False
-        if self.max_cost is not None and option.cost > self.max_cost:
-            return False
-        if self.max_latency_ms is not None and option.latency_ms > self.max_latency_ms:
-            return False
-        return True
-
-    def score(self, option: ActionOption) -> float:
-        weights = self.weights
-        risk = option.risk
-        if self.risk_attitude == "averse":
-            risk = risk * (1.0 + risk)
-        elif self.risk_attitude == "seeking":
-            risk = risk * (1.0 - 0.5 * risk)
-        return round(
-            weights.benefit * option.expected_benefit
-            - weights.cost * option.cost
-            - weights.risk * risk
-            - weights.interruption * option.interrupt_cost
-            - weights.latency * option.latency_ms,
-            6,
-        )
 
 
 class UtilityEngine:

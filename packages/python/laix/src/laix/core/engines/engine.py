@@ -7,48 +7,10 @@ owns the search; the policy owns the conversion to the one ``Decision`` shape.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any, Protocol
-
-from ..decisions import Decision, DecisionRequest, Intent
-
-
-@dataclass(frozen=True, slots=True)
-class DecisionProblem:
-    """What an engine may use to solve one task."""
-
-    subject: str
-    at: str
-    situation: Any = None
-    options: tuple[Any, ...] = ()
-    signals: tuple[Any, ...] = ()
-    context: Any = None
-    attributes: dict[str, Any] = field(default_factory=dict)
-
-
-@dataclass(frozen=True, slots=True)
-class Plan:
-    """The engine's answer, before it becomes a ``Decision``."""
-
-    verb: str
-    confidence: float
-    reason_code: str
-    rationale: str
-    action_id: str | None = None
-    intent: Intent | None = None
-    requires_approval: bool = False
-    reversible: bool = False
-    undo_hint: str | None = None
-    score: float | None = None
-    alternatives: tuple[dict[str, Any], ...] = ()
-    attributes: dict[str, Any] = field(default_factory=dict)
-
-
-class DecisionEngine(Protocol):
-    """An external or built-in solver behind ``EnginePolicy``."""
-
-    def solve(self, problem: DecisionProblem) -> Plan:
-        ...
+from ..decisions import Decision, DecisionRequest
+from .decision_engine import DecisionEngine
+from .decision_problem import DecisionProblem
+from .plan import Plan
 
 
 def to_problem(request: DecisionRequest) -> DecisionProblem:

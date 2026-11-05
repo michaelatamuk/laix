@@ -4,22 +4,12 @@ from __future__ import annotations
 
 import asyncio
 import json
-from dataclasses import dataclass, field
 from typing import AsyncIterable, AsyncIterator, Callable, Iterable
 
 from ...core.decisions import DecisionRequest
-from ...core.support.time import iso
+from .dead_letter import DeadLetter
 
 ErrorHandler = Callable[[str, Exception], None]
-
-
-@dataclass(frozen=True, slots=True)
-class DeadLetter:
-    """One malformed source frame, kept for inspection."""
-
-    raw: str
-    error: str
-    at: str = field(default_factory=iso)
 
 
 class DeadLetterQueue:

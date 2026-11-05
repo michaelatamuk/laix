@@ -9,36 +9,11 @@ causal discovery engine; it makes the assumption visible.
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
 from typing import Any, Callable, Iterable, Mapping
 
+from .causal_effect import CausalEffect
+from .causal_observation import CausalObservation
 from .record import Outcome
-
-
-@dataclass(frozen=True, slots=True)
-class CausalObservation:
-    """One decision, its arm and the measured outcome."""
-
-    decision_id: str
-    arm: str
-    outcome: float
-    propensity: float | None = None
-    context: dict[str, Any] = field(default_factory=dict)
-
-
-@dataclass(frozen=True, slots=True)
-class CausalEffect:
-    """The estimated effect of one arm against another."""
-
-    treatment: str
-    control: str
-    estimate: float
-    treated: int
-    control_size: int
-    method: str
-    standard_error: float | None = None
-    ci_low: float | None = None
-    ci_high: float | None = None
 
 
 def _weighted_mean(

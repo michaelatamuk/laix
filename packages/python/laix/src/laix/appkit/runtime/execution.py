@@ -10,47 +10,17 @@ action hangs, the situation changes, or a human rejects the request.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from typing import Any, Callable, Iterable
 
 from ...core.decisions import ActionOption, Decision, ExecutionReceipt
 from ...core.support.ids import new_execution_receipt_id
 from ...core.support.verbs import Verb
 from .approval_required import ApprovalRequired
+from .execution_saga_result import ExecutionSagaResult
+from .execution_step import ExecutionStep
 from .saga import Saga, SagaStep
 
 Handler = Callable[[ActionOption, dict[str, Any]], dict[str, Any]]
-
-
-@dataclass(frozen=True, slots=True)
-class ExecutionStep:
-    """One forward action and its optional compensation."""
-
-    action: ActionOption
-    decision: Decision | None = None
-    actor: str | None = None
-    approver: str | None = None
-    context: dict[str, Any] = field(default_factory=dict)
-    idempotency_key: str | None = None
-    compensate: Callable[[ExecutionReceipt], dict[str, Any]] | None = None
-
-
-@dataclass(frozen=True, slots=True)
-class ExecutionSagaResult:
-    """The outcome of a multi-step execution, including every receipt."""
-
-    completed: tuple[str, ...]
-    compensated: tuple[str, ...]
-    receipts: tuple[ExecutionReceipt, ...]
-    error: str | None = None
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "completed": list(self.completed),
-            "compensated": list(self.compensated),
-            "receipts": [item.to_dict() for item in self.receipts],
-            "error": self.error,
-        }
 
 
 class ExecutionBridge:

@@ -13,7 +13,7 @@ import asyncio
 import contextlib
 import time
 from collections import OrderedDict, deque
-from dataclasses import dataclass, replace
+from dataclasses import replace
 from datetime import datetime, timedelta
 from typing import AsyncIterable, AsyncIterator, Awaitable, Callable, Iterable, Sequence
 
@@ -21,9 +21,11 @@ from ...core.decisions import DECISION_STATUSES, Decision, DecisionRequest, Trac
 from ...core.engines.attention_planner import AttentionBudget
 from ...core.support.ids import new_id
 from ...core.support.time import parse_iso, utcnow
-from .window import TumblingWindow, WindowBatch
 from .checkpoint import StreamCheckpointStore
+from .manual_clock import ManualClock
+from .stream_stats import StreamStats
 from .timeline import DecisionTimeline
+from .window import TumblingWindow, WindowBatch
 
 Decider = Callable[[DecisionRequest], Sequence[Decision]]
 Refiner = Callable[[DecisionRequest], Awaitable[Sequence[Decision]]]
@@ -35,59 +37,6 @@ FULL_POLICIES = ("latest_wins", "drop_oldest", "drop_newest")
 
 LATE_POLICIES = ("drop", "accept")
 """What to do with an event whose event time is behind the watermark."""
-
-
-@dataclass
-class StreamStats:
-    """Counters for one stream session."""
-
-    observed: int = 0
-    decided: int = 0
-    late: int = 0
-    throttled: int = 0
-    dropped: int = 0
-    expired: int = 0
-    suppressed: int = 0
-    shed: int = 0
-    duplicates: int = 0
-    refine_timeouts: int = 0
-    provisional: int = 0
-    revised: int = 0
-    latency_p50: float = 0.0
-    latency_p95: float = 0.0
-    latency_p99: float = 0.0
-
-    def snapshot(self) -> dict[str, int | float]:
-        return {
-            "observed": self.observed,
-            "decided": self.decided,
-            "late": self.late,
-            "throttled": self.throttled,
-            "dropped": self.dropped,
-            "expired": self.expired,
-            "suppressed": self.suppressed,
-            "shed": self.shed,
-            "duplicates": self.duplicates,
-            "refine_timeouts": self.refine_timeouts,
-            "provisional": self.provisional,
-            "revised": self.revised,
-            "latency_p50": self.latency_p50,
-            "latency_p95": self.latency_p95,
-            "latency_p99": self.latency_p99,
-        }
-
-
-class ManualClock:
-    """A clock the caller moves.  Used by replay and deterministic tests."""
-
-    def __init__(self, now: datetime | None = None) -> None:
-        self.now = now or utcnow()
-
-    def __call__(self) -> datetime:
-        return self.now
-
-    def set(self, value: datetime) -> None:
-        self.now = value
 
 
 class StreamSession:

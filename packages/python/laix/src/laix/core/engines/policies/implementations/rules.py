@@ -2,24 +2,10 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import Any, Iterable
 
-from ....decisions import Decision, Intent
-
-
-@dataclass(frozen=True, slots=True)
-class Rule:
-    """One condition and the decision it produces."""
-
-    when: dict[str, Any]
-    verb: str
-    reason_code: str
-    rationale: str = ""
-    confidence: float = 0.8
-    action_id: str | None = None
-    requires_approval: bool = False
-    intent: Intent | None = None
+from ....decisions import Decision
+from .rule import Rule
 
 
 def _matches(attributes: dict[str, Any], when: dict[str, Any]) -> bool:

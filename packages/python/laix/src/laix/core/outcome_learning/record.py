@@ -3,20 +3,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import StrEnum
 from typing import Any
 
 from ..support.serialize import to_primitive
 from ..support.time import iso
 from ..support.version import SCHEMA_VERSION
-
-class OutcomeLabel(StrEnum):
-    """The four labels an outcome can carry."""
-
-    HELPED = "helped"
-    NEUTRAL = "neutral"
-    HURT = "hurt"
-    UNKNOWN = "unknown"
+from .outcome_label import OutcomeLabel
 
 
 OUTCOME_LABELS: tuple[str, ...] = tuple(label.value for label in OutcomeLabel)

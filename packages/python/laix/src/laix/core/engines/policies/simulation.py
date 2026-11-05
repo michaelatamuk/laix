@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import Any, Iterable
 
 from ...decisions import Decision
+from .shadow_difference import ShadowDifference
 
 
 def _signature(decisions: Iterable[Decision]) -> tuple[tuple[str, str | None, str], ...]:
@@ -15,15 +15,6 @@ def _signature(decisions: Iterable[Decision]) -> tuple[tuple[str, str | None, st
 def simulate(policy: Any, requests: Iterable[Any]) -> list[list[Decision]]:
     """Run a policy over recorded requests; no side effects."""
     return [list(policy.decide(request)) for request in requests]
-
-
-@dataclass(frozen=True, slots=True)
-class ShadowDifference:
-    """Where the shadow policy disagreed with the primary."""
-
-    request: Any
-    primary: tuple[Decision, ...]
-    shadow: tuple[Decision, ...]
 
 
 class ShadowPolicy:

@@ -9,176 +9,23 @@ action, the expected action, safety, irreversibility, latency and score.
 from __future__ import annotations
 
 import time
-from dataclasses import dataclass
-from typing import Any, Iterable, Mapping
+from typing import Iterable, Mapping
 
 from ..decisions import ActionOption, Constraint, Situation
 from ..planning import Commitment
 from .attention_planner import AttentionAwareEngine
 from .commitment_planner import CommitmentAwareEngine
-from .engine import DecisionEngine, DecisionProblem, Plan
+from .decision_engine import DecisionEngine
+from .decision_problem import DecisionProblem
 from .execution_planner import ExecutionAwareEngine
+from .first_option_engine import FirstOptionEngine
+from .highest_benefit_engine import HighestBenefitEngine
+from .live_bench_report import LiveBenchReport
+from .live_bench_row import LiveBenchRow
+from .live_case import LiveCase
 from .live_engine import LiveDecisionEngine
+from .planner_metrics import PlannerMetrics
 from .utility import UtilityEngine, _constraint_blocker
-
-
-@dataclass(frozen=True, slots=True)
-class LiveCase:
-    """One live decision case with the action a careful planner should choose."""
-
-    name: str
-    problem: DecisionProblem
-    expected_actions: tuple[str, ...] = ()
-    tags: tuple[str, ...] = ()
-
-    def __post_init__(self) -> None:
-        object.__setattr__(self, "expected_actions", tuple(self.expected_actions))
-        object.__setattr__(self, "tags", tuple(self.tags))
-
-
-@dataclass(frozen=True, slots=True)
-class LiveBenchRow:
-    """One planner's answer to one case."""
-
-    case: str
-    tags: tuple[str, ...]
-    planner: str
-    action_id: str | None
-    verb: str
-    expected: tuple[str, ...]
-    correct: bool | None
-    safe: bool
-    irreversible: bool
-    latency_ms: float
-    score: float | None
-    reason_code: str
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "case": self.case,
-            "tags": list(self.tags),
-            "planner": self.planner,
-            "action_id": self.action_id,
-            "verb": self.verb,
-            "expected": list(self.expected),
-            "correct": self.correct,
-            "safe": self.safe,
-            "irreversible": self.irreversible,
-            "latency_ms": round(self.latency_ms, 4),
-            "score": self.score,
-            "reason_code": self.reason_code,
-        }
-
-
-@dataclass(frozen=True, slots=True)
-class PlannerMetrics:
-    """Aggregate results for one planner."""
-
-    planner: str
-    decisions: int
-    checked: int
-    correct: int
-    accuracy: float
-    safety_violations: int
-    irreversible: int
-    mean_latency_ms: float
-    mean_score: float | None
-    reasons: tuple[str, ...]
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "planner": self.planner,
-            "decisions": self.decisions,
-            "checked": self.checked,
-            "correct": self.correct,
-            "accuracy": round(self.accuracy, 4),
-            "safety_violations": self.safety_violations,
-            "irreversible": self.irreversible,
-            "mean_latency_ms": round(self.mean_latency_ms, 4),
-            "mean_score": None if self.mean_score is None else round(self.mean_score, 6),
-            "reasons": list(self.reasons),
-        }
-
-
-@dataclass(frozen=True, slots=True)
-class LiveBenchReport:
-    """All rows and all per-planner metrics for one run."""
-
-    rows: tuple[LiveBenchRow, ...]
-    metrics: tuple[PlannerMetrics, ...]
-    cases: tuple[str, ...]
-    planners: tuple[str, ...]
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "cases": list(self.cases),
-            "planners": list(self.planners),
-            "rows": [row.to_dict() for row in self.rows],
-            "metrics": [item.to_dict() for item in self.metrics],
-        }
-
-    def summary(self) -> str:
-        lines = [
-            "planner      accuracy  safe  irreversible  mean_ms  mean_score",
-            "-----------  --------  ----  ------------  -------  ----------",
-        ]
-        for item in sorted(
-            self.metrics, key=lambda metric: (-metric.accuracy, metric.planner)
-        ):
-            mean_score = "-" if item.mean_score is None else f"{item.mean_score:.3f}"
-            lines.append(
-                f"{item.planner:<11}  {item.accuracy:>8.2%}  "
-                f"{item.safety_violations:>4}  {item.irreversible:>12}  "
-                f"{item.mean_latency_ms:>7.3f}  {mean_score:>10}"
-            )
-        return "\n".join(lines)
-
-
-class FirstOptionEngine:
-    """Naive baseline: take the first option the host offers."""
-
-    name = "first.v1"
-
-    def solve(self, problem: DecisionProblem) -> Plan:
-        if not problem.options:
-            return _wait("no_options", "there are no options")
-        option = problem.options[0]
-        return _plan(option, "first_option", "the first option was taken")
-
-
-class HighestBenefitEngine:
-    """Naive baseline: take the option with the highest benefit."""
-
-    name = "benefit.v1"
-
-    def solve(self, problem: DecisionProblem) -> Plan:
-        if not problem.options:
-            return _wait("no_options", "there are no options")
-        option = max(problem.options, key=lambda item: (item.expected_benefit, item.id))
-        return _plan(option, "highest_benefit", "the highest benefit was taken")
-
-
-def _plan(option: ActionOption, reason_code: str, rationale: str) -> Plan:
-    return Plan(
-        verb=option.verb,
-        confidence=1.0,
-        reason_code=reason_code,
-        rationale=rationale,
-        action_id=option.id,
-        requires_approval=option.requires_approval or option.destructive,
-        reversible=option.reversible,
-        score=option.utility,
-    )
-
-
-def _wait(reason_code: str, rationale: str) -> Plan:
-    return Plan(
-        verb="wait",
-        confidence=1.0,
-        reason_code=reason_code,
-        rationale=rationale,
-        score=0.0,
-    )
 
 
 def default_planners() -> dict[str, DecisionEngine]:

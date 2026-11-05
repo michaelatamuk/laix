@@ -8,44 +8,20 @@ to compare a rule policy, a utility engine and an MDP planner on one trace.
 from __future__ import annotations
 
 import random
-from dataclasses import dataclass
 from typing import Callable, Iterable, Mapping, Sequence
 
 from ..support.time import iso
-from .engine import DecisionEngine, DecisionProblem
-from .mdp import MdpModel
+from .decision_engine import DecisionEngine
+from .decision_problem import DecisionProblem
+from .engine_score import EngineScore
+from .mdp_model import MdpModel
+from .scenario import Scenario
+from .simulation_report import SimulationReport
+from .simulation_result import SimulationResult
+from .simulation_step import SimulationStep
 
 Step = Callable[[str, str], tuple[str, float]]
 RandomStep = Callable[[str, str, random.Random], tuple[str, float]]
-
-
-@dataclass(frozen=True, slots=True)
-class SimulationStep:
-    """One step in a simulated trace."""
-
-    step: int
-    state: str
-    action: str | None
-    reward: float
-    next_state: str
-
-
-@dataclass(frozen=True, slots=True)
-class SimulationResult:
-    """What one engine did in one scenario."""
-
-    scenario: str
-    steps: tuple[SimulationStep, ...]
-    total_reward: float
-    final_state: str
-
-    def summary(self) -> dict[str, object]:
-        return {
-            "scenario": self.scenario,
-            "steps": len(self.steps),
-            "total_reward": round(self.total_reward, 6),
-            "final_state": self.final_state,
-        }
 
 
 class Simulator:
@@ -173,84 +149,6 @@ class Simulator:
             random_step=random_step if seed is not None else None,
             seed=seed,
         )
-
-
-@dataclass(frozen=True, slots=True)
-class Scenario:
-    """One named simulator, with an optional known optimum."""
-
-    name: str
-    simulator: Simulator
-    optimum: float | None = None
-
-    def run(self, engine: DecisionEngine) -> SimulationResult:
-        result = self.simulator.run(engine)
-        return SimulationResult(
-            scenario=self.name,
-            steps=result.steps,
-            total_reward=result.total_reward,
-            final_state=result.final_state,
-        )
-
-
-@dataclass(frozen=True, slots=True)
-class EngineScore:
-    """One engine's result on one scenario."""
-
-    engine: str
-    scenario: str
-    total_reward: float
-    steps: int
-    optimality_gap: float | None
-
-    def to_dict(self) -> dict[str, object]:
-        return {
-            "engine": self.engine,
-            "scenario": self.scenario,
-            "total_reward": round(self.total_reward, 6),
-            "steps": self.steps,
-            "optimality_gap": self.optimality_gap,
-        }
-
-
-@dataclass(frozen=True, slots=True)
-class SimulationReport:
-    """Engine scores across a set of scenarios."""
-
-    rows: tuple[EngineScore, ...]
-
-    def summary(self) -> dict[str, dict[str, float]]:
-        buckets: dict[str, list[EngineScore]] = {}
-        for row in self.rows:
-            buckets.setdefault(row.engine, []).append(row)
-        return {
-            engine: {
-                "runs": len(items),
-                "mean_reward": round(
-                    sum(item.total_reward for item in items) / len(items), 6
-                ),
-                "mean_gap": round(
-                    sum(item.optimality_gap or 0.0 for item in items) / len(items), 6
-                ),
-            }
-            for engine, items in sorted(buckets.items())
-        }
-
-    def best(self) -> str | None:
-        summary = self.summary()
-        if not summary:
-            return None
-        return sorted(
-            summary,
-            key=lambda engine: (-summary[engine]["mean_reward"], engine),
-        )[0]
-
-    def to_dict(self) -> dict[str, object]:
-        return {
-            "rows": [row.to_dict() for row in self.rows],
-            "summary": self.summary(),
-            "best": self.best(),
-        }
 
 
 def compare_engines(

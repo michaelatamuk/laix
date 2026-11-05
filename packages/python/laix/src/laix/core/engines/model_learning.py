@@ -8,23 +8,12 @@ reject a learned model that performs worse on a validation set.
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass
 from typing import Any, Iterable
 
+from .learned_transition import LearnedTransition
 from .mdp import MdpModel, MdpTransition
 
 Transition = tuple[str, str, str, float]
-
-
-@dataclass(frozen=True, slots=True)
-class LearnedTransition:
-    """The learned distribution for one state and action."""
-
-    state: str
-    action: str
-    probabilities: dict[str, float]
-    expected_reward: float
-    count: int
 
 
 class ModelLearner:

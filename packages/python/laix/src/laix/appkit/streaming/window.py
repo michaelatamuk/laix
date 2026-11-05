@@ -8,20 +8,11 @@ time; the host turns a closed window into one ``DecisionRequest`` with
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 
 from ...core.decisions import DecisionRequest
 from ...core.support.time import parse_iso
-
-
-@dataclass(frozen=True, slots=True)
-class WindowBatch:
-    """One closed tumbling window."""
-
-    start: datetime
-    end: datetime
-    events: tuple[DecisionRequest, ...]
+from .window_batch import WindowBatch
 
 
 class TumblingWindow:
