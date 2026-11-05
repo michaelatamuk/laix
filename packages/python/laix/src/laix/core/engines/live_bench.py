@@ -14,6 +14,7 @@ from typing import Any, Iterable, Mapping
 
 from ..decisions import ActionOption, Constraint, Situation
 from ..planning import Commitment
+from .attention_planner import AttentionAwareEngine
 from .commitment_planner import CommitmentAwareEngine
 from .engine import DecisionEngine, DecisionProblem, Plan
 from .execution_planner import ExecutionAwareEngine
@@ -187,6 +188,7 @@ def default_planners() -> dict[str, DecisionEngine]:
         "utility": UtilityEngine(),
         "commitment": CommitmentAwareEngine(),
         "execution": ExecutionAwareEngine(),
+        "attention": AttentionAwareEngine(),
     }
 
 
@@ -333,6 +335,30 @@ def default_cases() -> tuple[LiveCase, ...]:
                         requires_approval=True,
                     ),
                 ),
+            ),
+        ),
+        LiveCase(
+            name="attention",
+            tags=("attention",),
+            expected_actions=("act",),
+            problem=DecisionProblem(
+                subject="attention",
+                at="2026-11-01T10:00:00+00:00",
+                options=(
+                    ActionOption(
+                        id="ask",
+                        verb="ask",
+                        name="ask",
+                        expected_benefit=0.9,
+                    ),
+                    ActionOption(
+                        id="act",
+                        verb="act",
+                        name="act",
+                        expected_benefit=0.6,
+                    ),
+                ),
+                attributes={"attention_budget": 0.2, "attention_spent": 0.2},
             ),
         ),
         LiveCase(

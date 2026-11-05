@@ -65,6 +65,7 @@ The contracts:
 | `UtilityEngine` | expected utility with hard limits and risk attitude |
 | `CommitmentAwareEngine` | utility plus promise keeping, violations and due commitments |
 | `ExecutionAwareEngine` | utility plus irreversibility, unknown outcomes and recovery cost |
+| `AttentionAwareEngine` | utility plus interruption, approval and escalation cost |
 | `MdpModel`, `MDPEngine` | finite MDP, value iteration and a greedy plan |
 | `PomdpModel`, `POMDPEngine` | belief update and finite-horizon planning |
 | `Simulator` | runs a planner in a model |
@@ -79,7 +80,7 @@ The contracts:
 | 1 | Problem shape | `DecisionProblem`, request projection |
 | 2 | Option model | `ActionOption`, costs, risks and hard limits |
 | 3 | Utility model | `UtilityModel`, weights, risk attitude |
-| 4 | Planner choice | `DecisionEngine.solve`, `UtilityEngine`, `CommitmentAwareEngine`, `ExecutionAwareEngine`, `MDPEngine`, `POMDPEngine` |
+| 4 | Planner choice | `DecisionEngine.solve`, `UtilityEngine`, `CommitmentAwareEngine`, `ExecutionAwareEngine`, `AttentionAwareEngine`, `MDPEngine`, `POMDPEngine` |
 | 5 | Calibration | `CalibrationReport` and confidence adjustment |
 | 6 | Learning | `ModelLearner` for transitions and rewards |
 | 7 | Explanation | chosen plan, alternatives, expected value |
@@ -235,6 +236,36 @@ The engine subtracts:
 
 `ExecutionAwareEngine` returns the same `Plan`. It is deterministic and training-free; the
 execution facts come from the option and the host's constraints.
+
+## Attention-aware planning
+
+Attention-aware planning treats human attention as a budget. An option may interrupt a person, need
+approval or escalate; the planner charges for each and refuses a human-facing option when the
+budget is gone.
+
+The host supplies the budget in the request attributes:
+
+```python
+DecisionProblem(
+    ...,
+    attributes={"attention_budget": 0.2, "attention_spent": 0.2},
+)
+```
+
+An option can also declare its own interruption cost:
+
+```python
+ActionOption(
+    id="guide",
+    verb="guide",
+    name="guide",
+    expected_benefit=0.75,
+    interrupt_cost=0.8,
+)
+```
+
+`AttentionAwareEngine` returns the same `Plan`. It is deterministic and training-free. It can
+prefer a direct action, or wait when every option needs more attention than is left.
 
 ## Path A: external planner
 

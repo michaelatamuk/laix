@@ -27,6 +27,13 @@ def test_commitment_planner_wins_the_commitment_case() -> None:
     assert _row(report, "commitment", "utility").correct is False
 
 
+def test_attention_planner_wins_the_attention_case() -> None:
+    report = run_live_bench()
+
+    assert _row(report, "attention", "attention").correct is True
+    assert _row(report, "attention", "utility").correct is False
+
+
 def test_execution_planner_wins_execution_cases() -> None:
     report = run_live_bench()
 

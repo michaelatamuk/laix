@@ -91,6 +91,7 @@ py examples/python/01-decide/attention_bill_due.py
 | Utility with hard limits | `utility_engine.py` | `engines.mts` | `act bold 0.75` |
 | Commitment-aware planning | `commitment_planner.py` | `commitment_planner.mts` | `send-later commitment_aware c1` |
 | Execution-aware planning | `execution_planner.py` | `execution_planner.mts` | `archive execution_aware True` / `true` |
+| Attention-aware planning | `attention_planner.py` | `attention_planner.mts` | `act attention_aware 0.0` / `0` |
 | One-step MDP plan | `mdp_engine.py` | `engines.mts` | `act go 2.8` |
 | POMDP belief planning | `pomdp.py` | `pomdp.mts` | `act go 2.8` |
 | Compare planners on one scenario | `simulator.py` | `engines.mts` | `right 4.0 1.0` |
@@ -143,7 +144,7 @@ py examples/python/01-decide/attention_bill_due.py
 |---|---|---|---|
 | Run LAIX-Bench | `bench.py` | `bench.mts` | `25 25 1.0` / `25 25 1` |
 | Compare cases with the parity harness | `evaluation.py` | `evaluation.mts` | `2 2 1.0` / `2 2 1` |
-| Training-free live decisions | `live_bench.py` | — | `utility 0.33 0` / `commitment 0.50 0` / `execution 0.83 0` |
+| Training-free live decisions | `live_bench.py` | — | `utility 0.29 0` / `commitment 0.43 0` / `execution 0.71 0` / `attention 0.57 0` |
 
 ## 08 Stores
 

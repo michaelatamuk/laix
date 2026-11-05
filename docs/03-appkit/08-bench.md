@@ -109,8 +109,8 @@ and prints reward, steps and optimality gap. `--json` returns the same rows as J
 
 ## Live decision bench
 
-`run_live_bench()` compares training-free planners on six compact cases: risk limit, commitment,
-irreversible action, unknown outcome, approval and plain utility.
+`run_live_bench()` compares training-free planners on seven compact cases: risk limit, commitment,
+irreversible action, unknown outcome, approval, attention and plain utility.
 
 ```powershell
 python -m laix.appkit.bench --live
@@ -129,5 +129,5 @@ print(report.summary())
 ```
 
 The current result shows why the new planners exist: utility wins on plain benefit, while the
-commitment-aware and execution-aware planners win the cases that include promises and execution
-risk. See [the planner reference](../02-core/06-engines.md).
+commitment-aware, execution-aware and attention-aware planners win the cases that include promises,
+execution risk and human attention. See [the planner reference](../02-core/06-engines.md).

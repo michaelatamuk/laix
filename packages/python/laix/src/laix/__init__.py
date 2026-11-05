@@ -91,6 +91,13 @@ from .core.engines.commitment_planner import (
     CommitmentWeights,
     commitment_effect,
 )
+from .core.engines.attention_planner import (
+    AttentionAwareEngine,
+    AttentionEffect,
+    AttentionScore,
+    AttentionWeights,
+    attention_effect,
+)
 from .core.engines.execution_planner import (
     ExecutionAwareEngine,
     ExecutionEffect,
@@ -406,6 +413,11 @@ __all__ = [
     "PreferenceElicitationPolicy",
     "EXECUTION_RECEIPT_STATUSES",
     "ExecutionReceipt",
+    "AttentionAwareEngine",
+    "AttentionEffect",
+    "AttentionScore",
+    "AttentionWeights",
+    "attention_effect",
     "ExecutionAwareEngine",
     "ExecutionEffect",
     "ExecutionScore",

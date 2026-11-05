@@ -30,7 +30,7 @@ Read in order.
 | [Policies](02-core/03-policies.md) | packaged policies, authoring, planning, group and shadow |
 | [Outcome learning](02-core/04-outcome-learning.md) | rewards, UCB, causal attribution, calibration and model learning |
 | [Evaluation](02-core/05-evaluation.md) | cases, comparison and parity |
-| [Planners](02-core/06-engines.md) | planner contract, utility, commitment, execution, MDP, POMDP, simulation and calibration |
+| [Planners](02-core/06-engines.md) | planner contract, utility, commitment, execution, attention, MDP, POMDP, simulation and calibration |
 
 ## App kit
 

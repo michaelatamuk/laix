@@ -10,6 +10,7 @@ export * from "./planning-store.ts";
 export * from "./utility.ts";
 export * from "./commitment-planner.ts";
 export * from "./execution-planner.ts";
+export * from "./attention-planner.ts";
 export * from "./mdp.ts";
 export * from "./calibration.ts";
 export * from "./model-learning.ts";
