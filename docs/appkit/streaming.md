@@ -77,6 +77,16 @@ async for decision in stream.feed_windows(
     ...
 ```
 
+For operations:
+
+```python
+from laix import prometheus, run_stream_bench
+
+print(prometheus(stream.stats))
+result = run_stream_bench(stream, requests)
+print(result.decisions, result.elapsed_ms, result.throughput_per_second)
+```
+
 ## What the session owns
 
 | Concern | Rule |
@@ -98,6 +108,8 @@ async for decision in stream.feed_windows(
 | **Replay** | `replay(requests)` runs the same sequence with event time as the clock, without filling the buffer. |
 | **Trace and record** | Each decision gets a `trace_id` and a trace; a `recorder` callback receives every emitted decision for a `DecisionRecord`. |
 | **Checkpoint** | `snapshot()` / `restore()` keep the watermark, cadence, counters, buffered decisions and traces. |
+| **Sources** | `from_queue` and `from_sync` adapt a queue or a synchronous iterable to `feed`. |
+| **Operations** | `prometheus(stats)` exports counters; `run_stream_bench(session, requests)` reports throughput. |
 | **Stats** | `stats` counts observed, decided, late, throttled, dropped, expired, suppressed, shed, duplicates, refine timeouts, provisional and revised, and reports p50/p95/p99 decision latency. |
 
 ## Contract fields

@@ -82,8 +82,15 @@ class Layer:
         actor: str,
         approver: str | None = None,
         context: dict[str, Any] | None = None,
+        idempotency_key: str | None = None,
     ) -> Any:
-        return self.runtime.execute(decision, actor=actor, approver=approver, context=context)
+        return self.runtime.execute(
+            decision,
+            actor=actor,
+            approver=approver,
+            context=context,
+            idempotency_key=idempotency_key,
+        )
 
     def measure(self, decision: Decision, **kwargs: Any) -> Any:
         return self.runtime.measure(decision.decision_id, **kwargs)

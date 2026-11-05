@@ -15,7 +15,7 @@ from typing import Any, Union, get_args, get_origin, get_type_hints
 
 from ..decisions.request.payload.situation import HORIZONS, PHASES
 from ..decisions.trail.execution_receipt import EXECUTION_RECEIPT_STATUSES
-from ..decisions.response.decision import DECISION_STATUSES
+from ..decisions.response.decision import DECISION_STATUSES, TARGET_MODES
 from ..outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
 from ..support.verbs import VERBS
 from ..support.version import SCHEMA_VERSION
@@ -30,6 +30,7 @@ _ENUMS: dict[str, list[str]] = {
     "horizon": list(HORIZONS),
     "status": list(EXECUTION_RECEIPT_STATUSES),
     "Decision.status": list(DECISION_STATUSES),
+    "Decision.target": list(TARGET_MODES),
     "label": list(OUTCOME_LABELS),
     "direction": list(OUTCOME_DIRECTIONS),
 }

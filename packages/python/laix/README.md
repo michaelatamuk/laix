@@ -60,6 +60,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/schema/` | `RECORDS`, `RECORD_NAMES`, schema generation, validation and `laix-v1.schema.json` |
 | `core/support/` | time, ids, values, serialization, errors, verb and version helpers |
 | `appkit/layer.py` | the app-kit `Layer`: core selection plus runtime, execution and traces |
+| `core/engines/engine.py` | `DecisionEngine`, `DecisionProblem`, `Plan` and `EnginePolicy` |
 | `core/engines/policies/implementations/action.py` | built-in action-selection policy |
 | `core/engines/policies/implementations/active_perception.py` | packaged `observe` policy |
 | `core/engines/policies/implementations/safety_constrained.py` | risk-limited action policy |
@@ -70,12 +71,14 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/engines/policies/implementations/verification.py` | outcome confirmation policy |
 | `core/engines/policies/implementations/escalation.py` | hand-over policy |
 | `core/engines/policies/implementations/bandit.py` | learned bandit policy |
+| `core/engines/policies/implementations/rules.py` | declarative `Rule` / `RulePolicy` |
+| `core/engines/policies/implementations/target.py` | `TargetedPolicy` for recipient modes |
 | `core/engines/policies/policy.py`, `core/engines/policies/registry.py` | policy plugin protocol and registry |
 | `core/engines/attention/input/`, `output/`, `attention.v1.json` | attention records and decision cases |
 | `core/engines/attention/gates/implementations/` | one file per gate, ordered by `rules.py` |
 | `core/engines/attention/decide.py`, `timing.py` | attention loop and quiet hours |
 | `appkit/runtime/decision_runtime.py` | the action-decision runtime |
-| `appkit/runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
+| `appkit/runtime/execution.py` | approval, idempotency, execute, cancel, undo, unknown outcome, receipts |
 | `core/sensing/` | detector, detection and frame records |
 | `appkit/live_context/` | host-driven detector loop and function-backed detector |
 | `appkit/streaming/` | stream session: event time, cadence, backpressure, revisions, windows |

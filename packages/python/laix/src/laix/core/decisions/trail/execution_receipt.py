@@ -17,6 +17,8 @@ EXECUTION_RECEIPT_STATUSES: tuple[str, ...] = (
     "cancelled",
     "failed",
     "undone",
+    "unknown",
+    "duplicate",
 )
 
 
@@ -34,6 +36,7 @@ class ExecutionReceipt:
     previous_state: dict[str, Any] | None = None
     error: str | None = None
     approved_by: str | None = None
+    idempotency_key: str | None = None
     schema_version: str = SCHEMA_VERSION
 
     def __post_init__(self) -> None:

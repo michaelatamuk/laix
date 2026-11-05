@@ -11,3 +11,6 @@ export * from "./runtime/state.ts";
 export * from "./runtime/state-store.ts";
 export * from "./streaming.ts";
 export * from "./window.ts";
+export * from "./sources.ts";
+export * from "./metrics.ts";
+export * from "./bench-stream.ts";

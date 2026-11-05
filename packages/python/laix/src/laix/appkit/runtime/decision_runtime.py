@@ -113,10 +113,18 @@ class DecisionRuntime:
         approver: str | None = None,
         context: dict[str, Any] | None = None,
         action: ActionOption | None = None,
+        idempotency_key: str | None = None,
     ) -> ExecutionReceipt:
         resolved = action or (self._actions.get(decision.action_id) if decision.action_id else None)
         try:
-            receipt = self.bridge.execute(decision, action=resolved, actor=actor, approver=approver, context=context)
+            receipt = self.bridge.execute(
+                decision,
+                action=resolved,
+                actor=actor,
+                approver=approver,
+                context=context,
+                idempotency_key=idempotency_key,
+            )
         except ApprovalRequired as exc:
             receipt = self.bridge.refuse(decision, action=resolved, actor=actor, reason=str(exc))
             self._append_trace(decision, "approval.required", {"actor": actor, "reason": str(exc)})

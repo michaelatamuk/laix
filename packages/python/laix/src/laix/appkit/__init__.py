@@ -36,7 +36,18 @@ from .audit.proposal import (
 from ..core.sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from ..core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .live_context import CallableDetector, LiveContext
-from .streaming import ManualClock, StreamSession, StreamStats, TumblingWindow, WindowBatch
+from .streaming import (
+    ManualClock,
+    StreamBenchResult,
+    StreamSession,
+    StreamStats,
+    TumblingWindow,
+    WindowBatch,
+    from_queue,
+    from_sync,
+    prometheus,
+    run_stream_bench,
+)
 from .runtime import (
     ApprovalRequired,
     DecisionRuntime,
@@ -85,8 +96,13 @@ __all__ = [
     "UnknownAction",
     "StreamSession",
     "StreamStats",
+    "StreamBenchResult",
     "TumblingWindow",
     "WindowBatch",
+    "from_queue",
+    "from_sync",
+    "prometheus",
+    "run_stream_bench",
     "apply_proposal",
     "approve_proposal",
     "approve_record",

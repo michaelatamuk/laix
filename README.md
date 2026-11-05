@@ -64,13 +64,15 @@ The layer holds one set of contracts and two built-in policies:
 
 It also ships eight packaged policies for active perception, safety-constrained action, replanning,
 allocation, negotiation, preference elicitation, verification and escalation. They use the same
-plugin interface and decision shape.
+plugin interface and decision shape. `EnginePolicy` wraps an external engine — JEV, an optimizer or a
+planner — behind that same interface, and `RulePolicy` / `TargetedPolicy` cover authored rules and
+group targets.
 
 Live Context adds a detector contract and a perception loop: cheap detectors run continuously, deep
 ones are admitted under a sub-second cost and latency budget, and each event produces a frame.
 
-`Layer.stream` adds the live loop around decisions: event time, a cooldown, a bounded buffer and
-revisioned decisions.
+`Layer.stream` adds the live loop around decisions: event time, cadence, backpressure and revisions.
+The execution bridge adds idempotency keys, unknown outcomes and reconciliation around a write.
 
 Outcome learning turns measured labels into rewards. `UCBBandit` learns which arm works and
 `BanditPolicy` puts that learner behind the policy interface.

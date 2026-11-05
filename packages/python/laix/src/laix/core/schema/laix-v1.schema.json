@@ -679,7 +679,9 @@
             "refused",
             "cancelled",
             "failed",
-            "undone"
+            "undone",
+            "unknown",
+            "duplicate"
           ]
         },
         "actor": {
@@ -726,6 +728,16 @@
           ]
         },
         "approved_by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "idempotency_key": {
           "anyOf": [
             {
               "type": "string"
@@ -1039,6 +1051,36 @@
           "anyOf": [
             {
               "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "target": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "one",
+                "some",
+                "all",
+                "peer",
+                "gather"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recipients": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             {
               "type": "null"

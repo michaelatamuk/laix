@@ -35,7 +35,7 @@ The split follows the code:
 | [core/03-packaged-policies.md](core/03-packaged-policies.md) | the eight packaged policies |
 | [core/04-outcome-learning.md](core/04-outcome-learning.md) | rewards, UCB and `BanditPolicy` |
 | [core/05-evaluation.md](core/05-evaluation.md) | vectors, conformance and bench |
-| [core/06-engine-roadmap.md](core/06-engine-roadmap.md) | the next planner and engine work |
+| [core/06-engine-roadmap.md](core/06-engine-roadmap.md) | the engine contract and the planner roadmap |
 
 ## App kit
 

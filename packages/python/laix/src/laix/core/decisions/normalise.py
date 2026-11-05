@@ -96,6 +96,8 @@ def coerce(value: Any) -> Decision:
             supersedes=value.get("supersedes"),
             revision=int(value.get("revision") or 0),
             status=str(value.get("status") or "final"),
+            target=str(value.get("target") or "one"),
+            recipients=tuple(value.get("recipients", ())),
         )
     raise PolicyError(f"policy returned an unsupported decision: {type(value).__name__}")
 

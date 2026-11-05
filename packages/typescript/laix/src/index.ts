@@ -4,6 +4,7 @@ export * from "./core/perception.ts";
 export * from "./core/resources.ts";
 
 export * from "./core/evaluation.ts";
+export * from "./core/engine.ts";
 export * from "./core/outcome.ts";
 export * from "./core/policies/active-perception.ts";
 export * from "./core/policies/allocation.ts";

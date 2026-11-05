@@ -67,6 +67,33 @@ decision = decide(request, policy=registry.get("replan"))[0]
 
 `register` stores a policy. `get` returns it.
 
+## Authoring and target
+
+Two policies sit around the packaged set:
+
+- **`RulePolicy`** — a deterministic policy authored as `Rule` objects over request attributes.
+- **`TargetedPolicy`** — wraps another policy and sets `target` and `recipients` on its decisions.
+
+```python
+from laix import DecisionRequest, Rule, RulePolicy, TargetedPolicy
+
+policy = TargetedPolicy(
+    RulePolicy([
+        Rule(when={"amount": {"gte": 500}}, verb="ask", reason_code="over_limit"),
+        Rule(when={"priority": "high"}, verb="act", reason_code="priority"),
+    ]),
+    target="some",
+    recipients=("alice", "ben"),
+)
+
+decision = policy.decide(
+    DecisionRequest(subject="refund", at="2026-11-01T10:00:00+00:00", attributes={"amount": 780})
+)[0]
+```
+
+`RulePolicy` supports equality, `gte`, `lte`, `in` and `contains`. `TargetedPolicy`
+accepts `target="request"` to take the mode from the request.
+
 ## Active perception
 
 - **Inputs:** `uncertainty`, `observations` (`id`, `information_gain`, `cost`),

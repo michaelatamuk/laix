@@ -14,6 +14,7 @@ from .engines.attention import (
     score,
 )
 from .engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from .engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_problem
 from .decisions import (
     ActionOption,
     Belief,
@@ -32,6 +33,7 @@ from .decisions import (
     EXECUTION_RECEIPT_STATUSES,
     ExecutionReceipt,
     Situation,
+    TARGET_MODES,
     Trace,
 )
 from .outcome_learning import (
@@ -67,6 +69,9 @@ from .engines.policies import (
     ReplanningPolicy,
     SafetyConstrainedPolicy,
     VerificationPolicy,
+    Rule,
+    RulePolicy,
+    TargetedPolicy,
     decide_action,
 )
 
@@ -91,6 +96,12 @@ __all__ = [
     "Decision",
     "DECISION_STATUSES",
     "DecisionRequest",
+    "DecisionEngine",
+    "DecisionProblem",
+    "EnginePolicy",
+    "Plan",
+    "TARGET_MODES",
+    "to_problem",
     "Detection",
     "Detector",
     "EvidenceRef",
@@ -135,6 +146,9 @@ __all__ = [
     "VERBS",
     "Verb",
     "VerificationPolicy",
+    "Rule",
+    "RulePolicy",
+    "TargetedPolicy",
     "compare",
     "decide",
     "confidence_band",

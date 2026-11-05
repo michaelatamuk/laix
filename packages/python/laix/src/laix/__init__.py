@@ -30,6 +30,7 @@ from .core.decisions import (
     ExecutionReceipt,
     ScoreBreakdown,
     Situation,
+    TARGET_MODES,
     Trace,
 )
 from .core.outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
@@ -62,10 +63,14 @@ from .core.engines.policies import (
     ReplanningPolicy,
     SafetyConstrainedPolicy,
     VerificationPolicy,
+    Rule,
+    RulePolicy,
+    TargetedPolicy,
     decide_action,
 )
 from .core.sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from .core.engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_problem
 from .core.dispatch import decide, select
 
 # The app kit is optional and is imported on first use.  A host that only needs
@@ -104,10 +109,15 @@ _APPKIT_NAMES: dict[str, dict[str, str]] = {
     },
     ".appkit.streaming": {
         "ManualClock": "ManualClock",
+        "StreamBenchResult": "StreamBenchResult",
         "StreamSession": "StreamSession",
         "StreamStats": "StreamStats",
         "TumblingWindow": "TumblingWindow",
         "WindowBatch": "WindowBatch",
+        "from_queue": "from_queue",
+        "from_sync": "from_sync",
+        "prometheus": "prometheus",
+        "run_stream_bench": "run_stream_bench",
     },
     ".appkit.platform": {
         "ApprovalDecision": "ApprovalDecision",
@@ -218,6 +228,12 @@ __all__ = [
     "Constraint",
     "Decision",
     "DECISION_STATUSES",
+    "DecisionEngine",
+    "DecisionProblem",
+    "EnginePolicy",
+    "Plan",
+    "TARGET_MODES",
+    "to_problem",
     "ActionPolicy",
     "DecisionRuntime",
     "Detection",
@@ -250,8 +266,13 @@ __all__ = [
     "Situation",
     "StreamSession",
     "StreamStats",
+    "StreamBenchResult",
     "TumblingWindow",
     "WindowBatch",
+    "from_queue",
+    "from_sync",
+    "prometheus",
+    "run_stream_bench",
     "Trace",
     "UCBBandit",
     "UnknownAction",
@@ -259,6 +280,9 @@ __all__ = [
     "VERBS",
     "Verb",
     "VerificationPolicy",
+    "Rule",
+    "RulePolicy",
+    "TargetedPolicy",
     "confidence_band",
     "decide",
     "decide_action",

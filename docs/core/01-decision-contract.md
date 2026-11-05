@@ -51,8 +51,9 @@ DecisionRequest(
 )
 ```
 
-A request also accepts `event_id` for stream dedupe, plus `deadline` and `valid_until`. A one-shot
-decision may leave them empty; a stream session copies the deadline and validity onto the response.
+A request also accepts `event_id` for stream dedupe, `target` and `recipients` for
+a group decision, plus `deadline` and `valid_until`. A one-shot decision may leave
+them empty; a stream session copies the deadline and validity onto the response.
 
 ## The response
 
@@ -123,6 +124,8 @@ guide worth_surfacing 84.0
 | `supersedes` | The decision this one replaces. |
 | `revision` | `0` for the first decision, then `1`, `2`, … |
 | `status` | `final`, `provisional` or `superseded`. |
+| `target` | `one`, `some`, `all`, `peer` or `gather`. |
+| `recipients` | The user or group ids that receive the decision. |
 
 ## The seven verbs
 

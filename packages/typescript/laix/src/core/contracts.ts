@@ -4,6 +4,8 @@ export const SCHEMA_VERSION = "0.8.0";
 export const POLICY_VERSION = "0.8.0";
 
 export const VERBS: Verb[] = ["wait", "observe", "guide", "ask", "act", "verify", "escalate"];
+export const TARGET_MODES = ["one", "some", "all", "peer", "gather"] as const;
+export type TargetMode = (typeof TARGET_MODES)[number];
 export const PHASES = ["observe", "understand", "decide", "act", "verify", "adapt"] as const;
 export type Phase = (typeof PHASES)[number];
 
@@ -66,6 +68,8 @@ export interface Decision {
   supersedes?: string | null;
   revision?: number;
   status?: "final" | "provisional" | "superseded";
+  target?: TargetMode;
+  recipients?: string[];
 }
 
 export interface DecisionRequest {
@@ -82,6 +86,8 @@ export interface DecisionRequest {
   deadline?: string | null;
   validUntil?: string | null;
   eventId?: string;
+  target?: TargetMode;
+  recipients?: string[];
 }
 
 export interface Observation {
@@ -166,12 +172,13 @@ export interface Receipt {
   id: string;
   decisionId: string;
   actionName: string;
-  status: "pending" | "approved" | "executed" | "refused" | "failed" | "cancelled" | "undone";
+  status: "pending" | "approved" | "executed" | "refused" | "failed" | "cancelled" | "undone" | "unknown" | "duplicate";
   actor: string;
   detail?: Record<string, unknown>;
   error?: string;
   approvedBy?: string | null;
   previousState?: Record<string, unknown>;
+  idempotencyKey?: string | null;
   at?: string;
 }
 

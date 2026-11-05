@@ -245,6 +245,8 @@
     deadline?: string | null;
     validUntil?: string | null;
     eventId?: string;
+    target?: TargetMode;
+    recipients?: string[];
   }
   export interface Decision {
     verb: Verb;
@@ -278,9 +280,43 @@
     supersedes?: string | null;
     revision?: number;
     status?: "final" | "provisional" | "superseded";
+    target?: TargetMode;
+    recipients?: string[];
   }
-  export interface ActionOption {
-    id: string;
+  export interface DecisionProblem {
+    subject: string;
+    at: string;
+    situation?: unknown;
+    options: ActionOption[];
+    signals?: unknown[];
+    context?: unknown;
+    attributes: Record<string, unknown>;
+  }
+  export interface Plan {
+    verb: Verb;
+    confidence: number;
+    reasonCode: string;
+    rationale: string;
+    actionId?: string | null;
+    intent?: Intent | null;
+    requiresApproval?: boolean;
+    reversible?: boolean;
+    undoHint?: string | null;
+    score?: number | null;
+    alternatives?: Array<Record<string, unknown>>;
+    attributes?: Record<string, unknown>;
+  }
+  export interface DecisionEngine {
+    solve(problem: DecisionProblem): Plan;
+  }
+  export class EnginePolicy {
+    readonly name: string;
+    readonly engine: DecisionEngine;
+    constructor(engine: DecisionEngine, name?: string);
+    decide(request: DecisionRequest): Decision[];
+  }
+  export function toProblem(request: DecisionRequest): DecisionProblem;
+  export interface ActionOption {    id: string;
     verb: Verb;
     name: string;
     params?: Record<string, unknown>;
@@ -560,9 +596,14 @@
   export class ExecutionBridge {
     constructor(options?: { handlers?: Record<string, (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>>; undoHandlers?: Record<string, (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>> });
     register(name: string, handler: (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>, undo?: (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>): void;
-    execute(decision: Decision, options: { action: ActionOption | null; actor: string; approver?: string | null; context?: Record<string, unknown> }): Receipt;
+    execute(decision: Decision, options: { action: ActionOption | null; actor: string; approver?: string | null; context?: Record<string, unknown>; idempotencyKey?: string }): Receipt;
     cancel(receiptId: string, options: { actor: string; reason?: string }): Receipt;
     undo(receiptId: string, options: { actor: string }): Receipt;
+    markUnknown(receiptId: string, options: { actor: string; reason?: string }): Receipt;
+    reconcile(
+      receiptId: string,
+      options: { actor: string; status: "executed" | "failed" | "unknown"; detail?: Record<string, unknown> },
+    ): Receipt;
   }
   export class DecisionRuntime {
     constructor(options?: { state?: ExperienceState; bridge?: ExecutionBridge; outcomes?: OutcomeLedger; resources?: ResourceScheduler });
@@ -575,6 +616,21 @@
   }
 
   export type DecisionStatus = "final" | "provisional" | "superseded";
+  export type TargetMode = "one" | "some" | "all" | "peer" | "gather";
+  export const TARGET_MODES: readonly TargetMode[];
+  export function fromQueue<T>(queue: AsyncIterable<T | null>): AsyncIterable<T>;
+  export function fromSync<T>(items: Iterable<T>): AsyncIterable<T>;
+  export function prometheus(stats: StreamStats, prefix?: string): string;
+  export interface StreamBenchResult {
+    decisions: Decision[];
+    elapsedMs: number;
+    throughputPerSecond: number;
+    stats: Record<string, number>;
+  }
+  export function runStreamBench(
+    session: StreamSession,
+    requests: Iterable<DecisionRequest>,
+  ): StreamBenchResult;
   export type FullPolicy = "latest_wins" | "drop_oldest" | "drop_newest";
   export type LatePolicy = "drop" | "accept";
   export interface WindowBatch {

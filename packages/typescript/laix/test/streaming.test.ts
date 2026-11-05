@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { ManualClock, StreamSession, TumblingWindow } from "../src/index.ts";
+import { ManualClock, StreamSession, TumblingWindow, fromSync, prometheus, runStreamBench } from "../src/index.ts";
 import type { Decision, DecisionRequest } from "../src/index.ts";
 import { Layer } from "../src/index.ts";
 
@@ -359,4 +359,23 @@ describe("stream session", () => {
     assert.equal(out.length, 1);
     assert.equal(out[0]!.streamId, "STR-L");
   });
+
+  it("exports counters and benches a stream", async () => {
+    async function* events(): AsyncIterable<DecisionRequest> {
+      yield request("a", 0);
+      yield request("b", 1);
+    }
+
+    const session = new StreamSession(decider);
+    const out: Decision[] = [];
+    for await (const decision of session.feed(fromSync(await collectAsync(events())))) out.push(decision);
+    assert.equal(prometheus(session.stats).includes("laix_stream_decided 2"), true);
+    assert.equal(runStreamBench(session, [request("c", 2)]).decisions.length, 1);
+  });
 });
+
+async function collectAsync(events: AsyncIterable<DecisionRequest>): Promise<DecisionRequest[]> {
+  const out: DecisionRequest[] = [];
+  for await (const event of events) out.push(event);
+  return out;
+}

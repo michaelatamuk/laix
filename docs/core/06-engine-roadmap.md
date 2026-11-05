@@ -1,7 +1,7 @@
-# Decision engine roadmap
+# Decision engine contract
 
-This page describes the next step for LAIX: a planner and engine contract on top of the existing
-policy layer, while keeping LAIX usable as a decision layer.
+The engine contract is implemented in `core/engines/engine.py`; a planner is
+the next step on top of it. It keeps LAIX usable as a decision layer.
 
 The goal is:
 
@@ -38,20 +38,19 @@ The rule:
 ## Core contracts
 
 ```python
+from laix import DecisionProblem, EnginePolicy, Plan
+
 class DecisionEngine(Protocol):
     def solve(self, problem: DecisionProblem) -> Plan: ...
 
-class EnginePolicy:
-    def __init__(self, engine: DecisionEngine):
-        self.engine = engine
-
-    def decide(self, request):
-        problem = to_problem(request)
-        plan = self.engine.solve(problem)
-        return [to_decision(plan)]
+policy = EnginePolicy(engine)
+decision = policy.decide(request)[0]
 ```
 
-The contracts to add:
+`EnginePolicy` owns the conversion; the engine returns a `Plan`, the policy returns
+the one `Decision` shape.
+
+The contracts:
 
 | Contract | Purpose |
 |---|---|
@@ -93,11 +92,13 @@ class MDPEngine:
     def solve(self, problem: DecisionProblem) -> Plan:
         ...
         return Plan(
+            verb="act",
             action_id="valve",
-            expected_utility=0.91,
             confidence=0.88,
+            reason_code="expected_utility",
+            rationale="the valve plan has the highest expected utility",
+            score=0.91,
             alternatives=(...),
-            explanation="...",
         )
 
 decision = decide(request, policy=EnginePolicy(MDPEngine()))[0]

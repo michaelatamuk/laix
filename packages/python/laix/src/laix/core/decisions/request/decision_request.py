@@ -30,6 +30,8 @@ class DecisionRequest:
     deadline: str | None = None
     valid_until: str | None = None
     event_id: str = ""
+    target: str = "one"
+    recipients: tuple[str, ...] = ()
 
 
 __all__ = ["DecisionRequest"]

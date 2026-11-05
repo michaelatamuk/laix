@@ -16,6 +16,9 @@ from .payload.intent import Intent
 DECISION_STATUSES = ("final", "provisional", "superseded")
 """Lifecycle of a decision that belongs to a stream."""
 
+TARGET_MODES = ("one", "some", "all", "peer", "gather")
+"""Who receives a decision: one, some, all, a peer or gathered from many."""
+
 
 @dataclass(frozen=True, slots=True)
 class Decision:
@@ -46,6 +49,8 @@ class Decision:
     alternatives: tuple[dict[str, Any], ...] = ()
     constraints_applied: tuple[str, ...] = ()
     attributes: dict[str, Any] = field(default_factory=dict)
+    target: str = "one"
+    recipients: tuple[str, ...] = ()
     stream_id: str = ""
     event_time: str | None = None
     deadline: str | None = None
@@ -60,6 +65,8 @@ class Decision:
             raise ValueError(f"unknown verb: {self.verb!r}")
         if self.status not in DECISION_STATUSES:
             raise ValueError(f"unknown decision status: {self.status!r}")
+        if self.target not in TARGET_MODES:
+            raise ValueError(f"unknown target mode: {self.target!r}")
         object.__setattr__(self, "confidence", clamp(self.confidence))
 
     def basis(self) -> tuple[dict[str, Any], ...]:
@@ -108,7 +115,8 @@ class Decision:
             data["breakdown"] = ScoreBreakdown(**breakdown)
         data["alternatives"] = tuple(data.get("alternatives", ()))
         data["constraints_applied"] = tuple(data.get("constraints_applied", ()))
+        data["recipients"] = tuple(data.get("recipients", ()))
         return cls(**data)
 
 
-__all__ = ["DECISION_STATUSES", "Decision"]
+__all__ = ["DECISION_STATUSES", "Decision", "TARGET_MODES"]

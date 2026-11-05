@@ -21,6 +21,9 @@ _LAZY = {
     "ReplanningPolicy": "implementations.replanning",
     "SafetyConstrainedPolicy": "implementations.safety_constrained",
     "VerificationPolicy": "implementations.verification",
+    "Rule": "implementations.rules",
+    "RulePolicy": "implementations.rules",
+    "TargetedPolicy": "implementations.target",
 }
 
 
@@ -44,6 +47,9 @@ __all__ = [
     "ReplanningPolicy",
     "SafetyConstrainedPolicy",
     "VerificationPolicy",
+    "Rule",
+    "RulePolicy",
+    "TargetedPolicy",
     "ACTION_POLICY_VERSION",
     "Policy",
     "ActionPolicyConfig",

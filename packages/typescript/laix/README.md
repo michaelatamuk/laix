@@ -28,11 +28,13 @@ registered with `registerPolicy` and selected with `usePolicy`.
 |---|---|
 | Attention | `decide`, `score`, `costOfWaiting`, `OutcomeLog` |
 | Action | `Layer`, `decideAction` |
+| Engine | `EnginePolicy`, `DecisionEngine`, `DecisionProblem`, `Plan` |
 | Policy packs | `ActivePerceptionPolicy`, `SafetyConstrainedPolicy`, `ReplanningPolicy`, `AllocationPolicy`, `NegotiationPolicy`, `PreferenceElicitationPolicy`, `VerificationPolicy`, `EscalationPolicy` |
 | Learned policy | `BanditPolicy`, `UCBBandit`, `Arm`, `rewardForLabel` |
 | Live Context | `LiveContext`, `CallableDetector`, `Detector`, `Detection`, `PerceptionEvent` |
 | Streaming | `StreamSession`, `StreamStats`, `ManualClock`, `TumblingWindow`, `WindowBatch` |
 | Runtime | `DecisionRuntime`, `ExecutionBridge`, `ExperienceState`, `ResourceScheduler` |
+| Execution | `ExecutionBridge` idempotency, unknown outcomes and reconciliation |
 | Platform | `Platform`, `InMemoryPlatform`, `SkillCall` |
 | Stores | `StateStore`, `InMemoryStateStore`, `OutcomeLedger`, `OutcomeStore` |
 | Proposals | `createProposal`, `approveProposal`, `rejectProposal`, `applyProposal`, `undoProposal` |
