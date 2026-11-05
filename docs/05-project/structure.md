@@ -12,19 +12,24 @@ laix/
 ├── docs/
 │   ├── README.md          audience-first index
 │   ├── 01-start/          quickstart, what-is, host integration
-│   ├── 02-core/           contract, attention, policies, learning, evaluation, engines
+│   ├── 02-core/           contract, attention, policies, learning, evaluation, planners
 │   ├── 03-appkit/         architecture, integration, streaming, execution, stores, bench
 │   ├── 04-concepts/       architecture, boundaries, PPMA, decision models, privacy, glossary
 │   └── 05-project/        structure, testing, versioning, roadmap
 ├── examples/
 │   ├── python/            numbered lifecycle stages
 │   └── typescript/        the same numbered stages
+├── scripts/
+│   └── check_docs_links.py relative link check for docs and READMEs
 └── .github/               CI and release workflows
 ```
 
 `packages/contracts/` is the shared source of truth for the decision record shape and the test
 vectors. The core record schema is generated from the Python dataclasses and ships inside the
 package.
+
+`scripts/check_docs_links.py` checks every relative link in the docs, examples and README files;
+the `docs` CI job runs it.
 
 ## Python package
 

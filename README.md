@@ -78,10 +78,10 @@ const [decision] = new Layer().decide({
 | Attention | which signal deserves attention now, and what to do with it |
 | Action policies | the next move from the options the app can afford |
 | Packaged policies | active perception, safety, replanning, allocation, negotiation, preference, verification and escalation |
-| Decision engines | utility, MDP and POMDP planners behind `EnginePolicy` |
+| Planners | [utility, MDP and POMDP](docs/02-core/06-engines.md#what-an-mdp-is) behind `EnginePolicy` |
 | Learning | outcome labels, rewards, bandits, causal attribution, calibration and model learning |
 | Streaming | event time, cadence, backpressure, revisions, checkpoints and sources |
-| Execution | receipts, idempotency, unknown outcomes, reconciliation, sagas and records |
+| Execution | receipts, idempotency, unknown outcomes, reconciliation, multi-step recovery and records |
 | Stores | state, checkpoints, commitments and outcomes through host-owned ports |
 | Delivery | a port and a receipt for the app’s own channel |
 | Proof | LAIX-Bench, conformance vectors, simulator, engine bench and metrics |
@@ -90,8 +90,8 @@ const [decision] = new Layer().decide({
 
 - **`laix.core`** — `decide(request)`, contracts, decision shape, attention, policies, engines,
   sensing contracts, resource admission, outcomes, causal attribution, calibration and evaluation.
-- **`laix.appkit`** — optional integration: `Layer`, streams and checkpoints, execution and sagas,
-  records, delivery, platform, live-context loop and state.
+- **`laix.appkit`** — optional integration: `Layer`, streams and checkpoints, execution and
+  multi-step recovery, records, delivery, platform, live-context loop and state.
 
 A host that needs the answer calls `decide(request)`. A host that also executes, records or delivers
 calls `Layer`. See [boundaries](docs/04-concepts/boundaries.md).
@@ -105,6 +105,7 @@ calls `Layer`. See [boundaries](docs/04-concepts/boundaries.md).
 | `packages/contracts/` | the JSON Schema and behavioural vectors |
 | `examples/` | runnable Python and TypeScript examples, grouped by lifecycle |
 | `docs/` | [start, core, app kit, concepts and project](docs/README.md) |
+| `scripts/` | repository checks, including docs links |
 
 ## Test
 

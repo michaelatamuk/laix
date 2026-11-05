@@ -10,7 +10,7 @@ examples/
 │   ├── 02-policies/     packaged policies, authoring, planning, group and shadow
 │   ├── 03-plan/         utility, MDP, POMDP, simulation and engine bench
 │   ├── 04-stream/       sessions, windows, flow control, checkpoints and sources
-│   ├── 05-execute/      execution, sagas, records, platform and delivery
+│   ├── 05-execute/      execution, multi-step recovery, records, platform and delivery
 │   ├── 06-learn/        outcomes, causal attribution, calibration and model learning
 │   ├── 07-prove/        evaluation and LAIX-Bench
 │   └── 08-stores/       state, outcome-backed and file-backed stores
@@ -91,7 +91,7 @@ py examples/python/01-decide/attention_bill_due.py
 | Utility with hard limits | `utility_engine.py` | `engines.mts` | `act bold 0.75` |
 | One-step MDP plan | `mdp_engine.py` | `engines.mts` | `act go 2.8` |
 | POMDP belief planning | `pomdp.py` | `pomdp.mts` | `act go 2.8` |
-| Compare engines on one scenario | `simulator.py` | `engines.mts` | `right 4.0 1.0` |
+| Compare planners on one scenario | `simulator.py` | `engines.mts` | `right 4.0 1.0` |
 | Engine bench baseline | `engine_bench.py` | `engine_bench.mts` | `mdp 4.0 1.0` |
 | Constraints, stochastic rollout, POMDP check | `engine_depth.py` | `engine_depth.mts` | `safe blocked by risk:risk-limit` / `s1 1.0` / `s0 0.0 go` |
 
@@ -190,5 +190,5 @@ capabilities. The test suite is the source of truth for behavioural parity.
 - `executed` — the record moved from approved to executed.
 - `True` — the record fingerprint still matches its content.
 
-The full field list is in [`../docs/core/01-decision-contract.md`](../docs/core/01-decision-contract.md).
-The policy contracts are in [`../docs/core/03-packaged-policies.md`](../docs/core/03-packaged-policies.md).
+The full field list is in [`../docs/02-core/01-decision-contract.md`](../docs/02-core/01-decision-contract.md).
+The policy contracts are in [`../docs/02-core/03-policies.md`](../docs/02-core/03-policies.md).

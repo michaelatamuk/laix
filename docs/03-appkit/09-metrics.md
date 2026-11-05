@@ -1,6 +1,8 @@
 # Metrics
 
-The app kit exposes stream counters and latency percentiles. It renders Prometheus text with the standard library.
+The app kit exposes stream counters and latency percentiles. It renders Prometheus text with the
+standard library. Prometheus is an open-source metrics and alerting system; the text output is
+designed to be scraped by it.
 
 ## Counters
 

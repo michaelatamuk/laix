@@ -30,21 +30,21 @@ Read in order.
 | [Policies](02-core/03-policies.md) | packaged policies, authoring, planning, group and shadow |
 | [Outcome learning](02-core/04-outcome-learning.md) | rewards, UCB, causal attribution, calibration and model learning |
 | [Evaluation](02-core/05-evaluation.md) | cases, comparison and parity |
-| [Engines](02-core/06-engines.md) | utility, MDP, POMDP, simulation and calibration |
+| [Planners](02-core/06-engines.md) | planner contract, utility, MDP, POMDP, simulation and calibration |
 
 ## App kit
 
 | Page | Covers |
 |---|---|
-| [App-kit architecture](03-appkit/00-architecture.md) | runtime, data, ports and proof tools |
+| [App-kit architecture](03-appkit/00-architecture.md) | surface, runtime, state, result, ports and proof |
 | [Integration](03-appkit/01-integration.md) | adapters, confidence, rollout and custom policies |
 | [Streaming](03-appkit/02-streaming.md) | event time, cadence, backpressure, checkpoints and sources |
 | [Live Context](03-appkit/03-live-context.md) | detectors, admission and frames |
-| [Execution](03-appkit/04-execution.md) | receipts, idempotency, sagas, records and recovery |
+| [Execution](03-appkit/04-execution.md) | receipts, idempotency, multi-step recovery, records |
 | [Stores](03-appkit/05-stores.md) | state, checkpoints, commitments and outcomes |
 | [Platform](03-appkit/06-platform.md) | skills, events and approvals |
 | [Delivery](03-appkit/07-delivery.md) | ports, receipts and the host transport |
-| [Bench](03-appkit/08-bench.md) | LAIX-Bench, stream bench and engine simulation |
+| [Bench](03-appkit/08-bench.md) | LAIX-Bench, stream bench and planner simulation |
 | [Metrics](03-appkit/09-metrics.md) | stream counters, Prometheus and latency |
 
 ## Concepts
@@ -82,5 +82,6 @@ Runnable examples are organized by language and lifecycle in
 | stream events | [Streaming](03-appkit/02-streaming.md) |
 | execute and recover | [Execution](03-appkit/04-execution.md) |
 | learn from outcomes | [Outcome learning](02-core/04-outcome-learning.md) |
-| understand the engine contract | [Engines](02-core/06-engines.md) |
+| understand the planner contract | [Planners](02-core/06-engines.md) |
+| look up a term | [Glossary](04-concepts/glossary.md) |
 | work on the repository | [Testing](05-project/testing.md), then [Structure](05-project/structure.md) |

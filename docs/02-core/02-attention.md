@@ -32,7 +32,7 @@ second is its decision; the third is the app’s job.
 Attention returns `wait`, `guide`, `act` or `escalate`; action policies cover the other verbs.
 
 ```python
-from laix.core.engines.attention import Context, decide_attention
+from laix import Context, decide_attention
 
 decisions = decide_attention(signals, context)
 ```

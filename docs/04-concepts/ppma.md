@@ -1,6 +1,7 @@
 # PPMA + LAIX: the task-decision layer
 
-PPMA decides what the system does next. LAIX decides what one task does next.
+PPMA (the activation layer above LAIX; see the [glossary](glossary.md)) decides what the system
+does next. LAIX decides what one task does next.
 
 ## 1. What LAIX decides
 
@@ -33,9 +34,9 @@ Decision
 
 PPMA issues `ui.ask`, records the decision, commits the outcome and acts.
 
-## 2. How PPMA decides today
+## 2. How PPMA decides
 
-PPMA reaches an activation decision through four paths today. It names its edges by compass: **north** is apps, **south** is what PPMA runs on (model vendors and their adapters), **east** is third-party agents that PPMA delegates work to, and **west** is agents that consult memory.
+PPMA reaches an activation decision through four paths. It names its edges by compass: **north** is apps, **south** is what PPMA runs on (model vendors and their adapters), **east** is third-party agents that PPMA delegates work to, and **west** is agents that consult memory.
 
 Every activation decision is one of four kinds: `NOOP` (no operation), `UPDATE_STATE` (a memory change), `ISSUE_COMMAND` (one or more commands), or `DISPATCH` (start a mission).
 

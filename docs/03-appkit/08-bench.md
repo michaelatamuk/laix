@@ -98,13 +98,13 @@ fixtures.
 `run_stream_bench(session, requests)` replays requests through a `StreamSession` and reports the
 decisions, elapsed time, throughput and stream counters. See [streaming](02-streaming.md).
 
-## Engine simulation
+## Planner simulation
 
-`Simulator` runs an engine in a deterministic model. `compare_engines(engines, scenarios)` returns
-reward and optimality gap per engine and scenario; `seeded_scenarios(seed)` builds repeatable chains
-with a known optimum. `Simulator.from_mdp(model, seed=...)` gives repeatable stochastic rollouts.
+`Simulator` runs a planner in a deterministic model. `compare_engines(engines, scenarios)` returns
+reward and optimality gap (the distance from the best possible reward) per planner and scenario;
+`seeded_scenarios(seed)` builds repeatable chains with a known optimum. `Simulator.from_mdp(model, seed=...)` gives repeatable stochastic rollouts.
 
 `python -m laix.appkit.bench --engines` compares `MDPEngine` with a do-nothing baseline on a chain
 and prints reward, steps and optimality gap. `--json` returns the same rows as JSON.
 
-See [the engine reference](../02-core/06-engines.md).
+See [the planner reference](../02-core/06-engines.md).

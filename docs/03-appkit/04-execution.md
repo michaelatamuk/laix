@@ -31,6 +31,10 @@ Receipt statuses: `pending`, `approved`, `executed`, `refused`, `failed`, `cance
 
 ## Multi-step execution
 
+A **saga** is a multi-step action with an undo for each step. Steps run in order; when a later step
+fails, the completed steps are compensated in reverse. See
+[What recovery does](00-architecture.md#what-recovery-does).
+
 `run_steps` executes an ordered set of `ExecutionStep`s. When a step fails, completed steps are
 compensated in reverse through their custom compensation or the registered undo handler.
 
@@ -47,7 +51,7 @@ result = bridge.run_steps(
 print(result.completed, result.compensated, result.error)
 ```
 
-For a non-bridge saga, use `Saga` and `SagaStep` directly.
+For recovery outside the bridge, use `Saga` and `SagaStep` directly.
 
 ## Records
 
@@ -65,6 +69,7 @@ move it through the lifecycle. `verify_record` checks the fingerprint after each
 
 - Python: `examples/python/05-execute/execution.py`
 - Python: `examples/python/05-execute/execution_saga.py`
+- Python: `examples/python/05-execute/saga.py`
 - Python: `examples/python/05-execute/record.py`
 - TypeScript: `examples/typescript/05-execute/execution.mts`
 - TypeScript: `examples/typescript/05-execute/execution_saga.mts`

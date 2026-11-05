@@ -27,12 +27,12 @@ npm.cmd run conformance
 
 Conformance compares the attention decisions with the shared vector file.
 
-## What is next
+## What evaluation does not cover yet
 
 - A held-out set.
 - Real user outcomes.
 - A causal study.
 - Live sensing and sub-second cases.
 
-Today the checks show whether a change altered behaviour. User studies show how the layer performs in
+These checks show whether a change altered behaviour. User studies show how the layer performs in
 the real world.

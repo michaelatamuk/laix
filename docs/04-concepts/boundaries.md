@@ -2,7 +2,9 @@
 
 LAIX produces a decision for one bounded task. A host owns the product around it.
 
-The boundary assigns the activation decision to PPMA and the task decision to LAIX. PPMA owns the activation core, the commit path and the execution lifecycle. LAIX provides the task decision. The same boundary applies to any host; PPMA is the primary case because it already has its own decision vocabulary and lifecycle.
+The boundary assigns the activation decision to PPMA (the activation layer above LAIX; see the
+[glossary](glossary.md)) and the task decision to LAIX. PPMA owns the activation core, the commit
+path and the execution lifecycle. LAIX provides the task decision. The same boundary applies to any host; PPMA is the primary case because it already has its own decision vocabulary and lifecycle.
 
 - PPMA owns the activation decision, commit, execution and records.
 - LAIX owns the task decision inside one bounded task.
@@ -104,7 +106,7 @@ PPMA activation core
 
 The activation core owns PPMA's reasoning path and final decision. LAIX operates as a task policy layer below it. LAIX can be exposed to the Commander as a query tool (`effect: none`) or to a mission as a tool; the Commander's `ask` or the mission agent calls it within the existing path. PPMA treats the result as one input: it accepts, modifies or rejects it.
 
-Today the Commander's `command.decide` ask is the general command chooser. LAIX adds a policy path for one bounded decision class.
+The Commander's `command.decide` ask is the general command chooser. LAIX adds a policy path for one bounded decision class.
 
 The clean deployment is a separate `ppma-laix` tool or service:
 

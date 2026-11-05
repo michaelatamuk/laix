@@ -25,7 +25,8 @@ A code change that leaves a record shape unchanged leaves the schema unchanged.
 2. Run the full test, bench, conformance and example checks.
 3. Commit the release.
 4. Tag `vX.Y.Z` and push the tag. The release workflow builds Python and TypeScript packages.
-5. Pin the new tag in [integration](../03-appkit/01-integration.md) and [quickstart](../01-start/quickstart.md).
+5. Pin the new tag in the [quickstart](../01-start/quickstart.md) install command and the release
+   notes.
 
 ## Changelog
 

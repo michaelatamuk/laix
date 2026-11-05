@@ -7,8 +7,10 @@ LAIX learns from measured outcomes, turns the result into a reward, and improves
 | **Outcome** | A measured result of a decision. |
 | **Reward** | A number from `0` to `1` that says how good the outcome was. |
 | **Arm** | One choice the learner can pick. |
+| **Bandit** | A learner that chooses among arms and updates from rewards. |
 | **Learner** | Code that updates its choice from rewards. |
 | **Ledger** | A store of measured outcomes. |
+| **Causal attribution** | Assigning part of an outcome to a decision or arm rather than to other factors. |
 
 ```text
 decision -> outcome -> reward -> learner -> next decision
@@ -29,6 +31,9 @@ An `Outcome` stores the decision id, metric, before/after, label, attribution an
 measures it. LAIX learns from the label.
 
 ## Learner
+
+`UCBBandit` uses an **upper confidence bound**: it picks the arm with the best reward plus a bonus
+for arms tried less, so an untried arm gets a chance.
 
 ```python
 from laix import Arm, OutcomeLedger, UCBBandit

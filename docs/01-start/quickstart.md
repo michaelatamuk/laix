@@ -11,10 +11,10 @@ Python:
 pip install "git+https://github.com/michaelatamuk/laix.git@v0.9.0#subdirectory=packages/python/laix"
 ```
 
-Local checkout:
+Local checkout, from the repository root:
 
 ```powershell
-pip install -e C:\Workspace\laix\packages\python\laix
+pip install -e packages/python/laix
 ```
 
 TypeScript:
@@ -22,7 +22,7 @@ TypeScript:
 ```json
 {
   "dependencies": {
-    "laix": "file:../../laix/packages/typescript/laix"
+    "laix": "file:../path/to/laix/packages/typescript/laix"
   }
 }
 ```
@@ -31,6 +31,9 @@ The release page also has a packed `laix-0.9.0.tgz`. See
 [versioning](../05-project/versioning.md) for tags and schema versions.
 
 ## One decision
+
+The snippets assume the app has already built `signal`, `situation` and `options`; see
+[the decision contract](../02-core/01-decision-contract.md) for their types.
 
 Attention request:
 

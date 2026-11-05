@@ -9,19 +9,9 @@ question:
 
 It returns a **decision**. The app runs the chosen option.
 
-## Terms used in this documentation
+## Terms
 
-| Term | Meaning |
-|---|---|
-| **Request** | A description of the situation sent to LAIX. |
-| **Signal** | One item that might need attention, such as a deadline or a risk. |
-| **Situation** | The current state: what is believed, what the goal is, and what actions exist. |
-| **Decision** | LAIX's answer: one verb, a reason, and optional execution details. |
-| **Verb** | The word that says what to do: `wait`, `observe`, `guide`, `ask`, `act`, `verify` or `escalate`. |
-| **Policy** | A rule set with a `name` and a `decide(request)` method. It turns a request into a decision. |
-| **Adapter** | App code that translates app events into requests and decisions into app actions. |
-| **Platform** | The software below LAIX that runs skills, approvals, state and events. |
-| **Outcome** | A measured result of a decision, such as time saved or a resolved issue. |
+The vocabulary is defined once in the [glossary](glossary.md).
 
 ## Flow
 
@@ -166,7 +156,7 @@ decision = layer.decide(request)[0]
 
 Selection then uses the request shape:
 
-| Request has | Engine |
+| Request has | Path |
 |---|---|
 | `situation` + `options` | built-in action policy |
 | `signals` + `context` | built-in attention |
@@ -226,9 +216,9 @@ LAIX is a decision layer. It can host a decision model such as JEV inside a poli
 | New storage | Implement `StateStore` or `OutcomeStore` |
 | New channel | Implement `DeliveryPort` |
 
-The engine contract is in place: `EnginePolicy` wraps JEV, an optimizer or a planner. Built-in
-`UtilityEngine`, `MDPEngine` and `POMDPEngine` planners are available behind the same adapter;
-simulation, calibration and model learning support them. See
-[the engine reference](../02-core/06-engines.md).
+The planner contract is in place: `EnginePolicy` wraps JEV, an optimizer or a planner. The built-in
+`UtilityEngine`, [MDPEngine](../02-core/06-engines.md#what-an-mdp-is) and `POMDPEngine` are
+available behind the same adapter; simulation, calibration and model learning support them. See
+[the planner reference](../02-core/06-engines.md).
 
 Core vs app kit vs host is defined in [boundaries](boundaries.md).

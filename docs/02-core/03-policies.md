@@ -106,9 +106,9 @@ accepts `target="request"` to take the mode from the request.
 - **`ShadowPolicy`** — runs a second policy beside the primary, returns the primary decision and
   records every disagreement for comparison.
 
-## Decision engines
+## Planners
 
-An engine is a planner behind the same policy interface. Wrap it with `EnginePolicy`:
+A planner is a solver behind the same policy interface. Wrap it with `EnginePolicy`:
 
 ```python
 from laix import DecisionRequest, EnginePolicy, MDPEngine, MdpModel, decide
@@ -123,16 +123,20 @@ decision = decide(
 - **`UtilityEngine`** — expected utility over the offered options, with hard limits and
   `neutral` / `averse` / `seeking` risk attitudes. Hard `Situation` constraints for risk, cost,
   budget, latency, interruption and safety are enforced before scoring.
-- **`MDPEngine`** — value iteration over a finite `MdpModel`, with a discount and horizon.
+- **`MDPEngine`** — value iteration over a finite `MdpModel`, with a discount and horizon. See
+  [what an MDP is](06-engines.md#what-an-mdp-is).
 - **`POMDPEngine`** — belief update and finite-horizon expectimax over a small `PomdpModel`.
   `compare_pomdp_to_mdp` is a sanity check against the most likely MDP state.
-- **`Simulator`** — runs an engine in a model; `compare_engines` reports reward and optimality gap.
+- **`Simulator`** — runs a planner in a model; `compare_engines` reports reward and optimality gap.
   `Simulator.from_mdp(..., seed=...)` gives repeatable stochastic rollouts.
 - **`ModelLearner`** — learns transitions and rewards; `to_mdp_model()` turns the table into an
   `MdpModel` for `MDPEngine`.
 
+Risk attitude controls how the utility planner trades expected value against variance: `neutral`
+ignores it, `averse` penalises it, and `seeking` rewards it.
+
 `to_decision(plan, request)` is the shared plan-to-decision conversion. See
-[the engine reference](06-engines.md).
+[the planner reference](06-engines.md).
 
 ## Active perception
 
