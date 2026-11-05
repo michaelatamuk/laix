@@ -1,4 +1,4 @@
-import type { Detection, PerceptionFrame } from "../core/perception.ts";
+import type { Detection, PerceptionFrame } from "../core/perception/perception.ts";
 
 export class Frame implements PerceptionFrame {
   subject: string;

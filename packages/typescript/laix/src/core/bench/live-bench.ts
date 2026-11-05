@@ -1,6 +1,6 @@
 import type { ActionOption, Constraint, Situation } from "../contracts.ts";
 import type { DecisionEngine, DecisionProblem } from "../contract/engine.ts";
-import type { Commitment } from "../planning.ts";
+import type { Commitment } from "../commitments/commitments.ts";
 import { UtilityEngine, constraintBlocker } from "../planners/utility/utility.ts";
 import { CommitmentAwareEngine } from "../planners/commitment/commitment-planner.ts";
 import { ExecutionAwareEngine } from "../planners/execution/execution-planner.ts";

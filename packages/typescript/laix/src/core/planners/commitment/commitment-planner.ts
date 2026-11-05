@@ -1,7 +1,7 @@
 import type { ActionOption } from "../../contracts.ts";
 import type { DecisionProblem, Plan } from "../../contract/engine.ts";
-import type { Commitment } from "../../planning.ts";
-import { CommitmentLedger, commitmentDue } from "../../planning.ts";
+import type { Commitment } from "../../commitments/commitments.ts";
+import { CommitmentLedger, commitmentDue } from "../../commitments/commitments.ts";
 import {
   UtilityEngine,
   UtilityModel,

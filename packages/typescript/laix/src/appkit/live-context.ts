@@ -1,5 +1,5 @@
 import { clamp } from "../core/contracts.ts";
-import type { Detection, Detector, PerceptionEvent, PerceptionFrame } from "../core/perception.ts";
+import type { Detection, Detector, PerceptionEvent, PerceptionFrame } from "../core/perception/perception.ts";
 import { ResourceScheduler, type Budget, type SensingOption } from "../core/resources.ts";
 import { CallableDetector } from "./callable-detector.ts";
 import { Frame } from "./frame.ts";

@@ -134,7 +134,7 @@ from .outcome_learning import (
     UCBBandit,
     reward_for_label,
 )
-from .planning import (
+from .commitments import (
     COMMITMENT_STATUSES,
     Commitment,
     CommitmentLedger,
@@ -142,7 +142,7 @@ from .planning import (
     FileCommitmentStore,
     InMemoryCommitmentStore,
 )
-from .sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
+from .perception import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .support.time import iso, parse_iso, utcnow
 from .support.values import confidence_band
 from .support.version import SCHEMA_VERSION

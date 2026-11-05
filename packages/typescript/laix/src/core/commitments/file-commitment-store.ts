@@ -1,5 +1,5 @@
-import { CommitmentLedger } from "./planning.ts";
-import type { CommitmentFiles, CommitmentStore } from "./planning-store.ts";
+import { CommitmentLedger } from "./commitments.ts";
+import type { CommitmentFiles, CommitmentStore } from "./store.ts";
 
 export class FileCommitmentStore implements CommitmentStore {
   readonly directory: string;

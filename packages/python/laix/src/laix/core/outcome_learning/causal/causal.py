@@ -13,7 +13,7 @@ from typing import Any, Callable, Iterable, Mapping
 
 from .causal_effect import CausalEffect
 from .causal_observation import CausalObservation
-from .record import Outcome
+from ..record import Outcome
 
 
 def _weighted_mean(

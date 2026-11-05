@@ -66,7 +66,7 @@ block-beta
 | **Foundation** | Schema · Sensing · Support | Shared records and utilities. |
 
 Limits is a gate: it is the `Constraint` set on the request, enforced by policies and the utility
-engine. Commitments live in `core/planning`; `PlanningPolicy` is a policy wrapper.
+engine. Commitments live in `core/commitments`; `PlanningPolicy` is a policy wrapper.
 
 ## Which path runs
 

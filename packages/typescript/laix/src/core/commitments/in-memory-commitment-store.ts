@@ -1,5 +1,5 @@
-import { CommitmentLedger, type Commitment } from "./planning.ts";
-import type { CommitmentStore } from "./planning-store.ts";
+import { CommitmentLedger, type Commitment } from "./commitments.ts";
+import type { CommitmentStore } from "./store.ts";
 
 export class InMemoryCommitmentStore implements CommitmentStore {
   private items = new Map<string, string>();

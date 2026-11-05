@@ -1,13 +1,13 @@
 export * from "./appkit/index.ts";
 export * from "./core/signals/attention.ts";
-export * from "./core/perception.ts";
+export * from "./core/perception/perception.ts";
 export * from "./core/resources.ts";
 
 export * from "./core/evaluation.ts";
 export * from "./core/contract/engine.ts";
 export * from "./core/causal.ts";
-export * from "./core/planning.ts";
-export * from "./core/planning-store.ts";
+export * from "./core/commitments/commitments.ts";
+export * from "./core/commitments/store.ts";
 export * from "./core/planners/utility/utility.ts";
 export * from "./core/planners/commitment/commitment-planner.ts";
 export * from "./core/planners/execution/execution-planner.ts";

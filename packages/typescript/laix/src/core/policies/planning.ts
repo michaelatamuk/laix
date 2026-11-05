@@ -1,5 +1,5 @@
 import type { Decision, DecisionRequest } from "../contracts.ts";
-import { CommitmentLedger, commitmentDue } from "../planning.ts";
+import { CommitmentLedger, commitmentDue } from "../commitments/commitments.ts";
 
 export class PlanningPolicy {
   readonly name = "planning.v1";

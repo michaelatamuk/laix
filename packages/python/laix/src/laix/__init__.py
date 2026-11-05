@@ -36,7 +36,7 @@ from .core.decisions import (
 from .core.outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
 from .core.outcome_learning import AttentionOutcome, Outcome
 from .core.outcome_learning import CausalEffect, CausalLedger, CausalObservation
-from .core.planning import (
+from .core.commitments import (
     COMMITMENT_STATUSES,
     Commitment,
     CommitmentLedger,
@@ -82,7 +82,7 @@ from .core.engines.policies import (
     simulate,
     decide_action,
 )
-from .core.sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
+from .core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .core.engines.planners.commitment.commitment_planner import (
     CommitmentAwareEngine,

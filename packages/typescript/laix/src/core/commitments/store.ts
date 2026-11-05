@@ -1,4 +1,4 @@
-import type { CommitmentLedger } from "./planning.ts";
+import type { CommitmentLedger } from "./commitments.ts";
 
 export interface CommitmentStore {
   save(key: string, ledger: CommitmentLedger): void;
