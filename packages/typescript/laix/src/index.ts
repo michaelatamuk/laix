@@ -15,6 +15,8 @@ export * from "./core/policies/preference.ts";
 export * from "./core/policies/replanning.ts";
 export * from "./core/policies/safety.ts";
 export * from "./core/policies/verification.ts";
+export * from "./core/policies/rules.ts";
+export * from "./core/policies/target.ts";
 export { PolicyError, PolicyRegistry } from "./core/policies/registry.ts";
 export type { Policy } from "./core/policies/registry.ts";
 

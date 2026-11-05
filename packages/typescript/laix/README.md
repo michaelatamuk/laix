@@ -30,6 +30,7 @@ registered with `registerPolicy` and selected with `usePolicy`.
 | Action | `Layer`, `decideAction` |
 | Engine | `EnginePolicy`, `DecisionEngine`, `DecisionProblem`, `Plan` |
 | Policy packs | `ActivePerceptionPolicy`, `SafetyConstrainedPolicy`, `ReplanningPolicy`, `AllocationPolicy`, `NegotiationPolicy`, `PreferenceElicitationPolicy`, `VerificationPolicy`, `EscalationPolicy` |
+| Authoring and target | `RulePolicy`, `Rule`, `TargetedPolicy` |
 | Learned policy | `BanditPolicy`, `UCBBandit`, `Arm`, `rewardForLabel` |
 | Live Context | `LiveContext`, `CallableDetector`, `Detector`, `Detection`, `PerceptionEvent` |
 | Streaming | `StreamSession`, `StreamStats`, `ManualClock`, `TumblingWindow`, `WindowBatch` |

@@ -431,6 +431,32 @@
     decide(request: DecisionRequest): Decision[];
   }
 
+  export interface Rule {
+    when: Record<string, unknown>;
+    verb: Verb;
+    reasonCode: string;
+    rationale?: string;
+    confidence?: number;
+    actionId?: string | null;
+    requiresApproval?: boolean;
+    intent?: Intent | null;
+  }
+  export class RulePolicy {
+    readonly name: string;
+    readonly rules: Rule[];
+    readonly fallback: Rule;
+    constructor(rules: Rule[], options?: { name?: string; fallback?: Rule });
+    decide(request: DecisionRequest): Decision[];
+  }
+  export class TargetedPolicy {
+    readonly name: string;
+    constructor(
+      policy: { decide(request: DecisionRequest): Decision[] },
+      options?: { target?: "request" | TargetMode; recipients?: string[] },
+    );
+    decide(request: DecisionRequest): Decision[];
+  }
+
   export interface Arm {
     id: string;
     priorMean?: number;
