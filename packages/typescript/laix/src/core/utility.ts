@@ -59,7 +59,7 @@ function limit(kind: string, value: unknown): number | null {
   return numeric;
 }
 
-function constraintBlocker(
+export function constraintBlocker(
   problem: DecisionProblem,
   option: ActionOption,
 ): string | null {
@@ -88,7 +88,7 @@ function constraintBlocker(
   return null;
 }
 
-function approvalRequired(problem: DecisionProblem): boolean {
+export function approvalRequired(problem: DecisionProblem): boolean {
   const situation = problem.situation as SituationLike | undefined;
   return Boolean(
     situation?.constraints?.some(

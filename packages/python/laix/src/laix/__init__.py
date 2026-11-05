@@ -84,6 +84,13 @@ from .core.engines.policies import (
 )
 from .core.sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from .core.engines.commitment_planner import (
+    CommitmentAwareEngine,
+    CommitmentEffect,
+    CommitmentScore,
+    CommitmentWeights,
+    commitment_effect,
+)
 from .core.engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
 from .core.engines.calibration import (
     CalibrationBin,
@@ -254,7 +261,12 @@ __all__ = [
     "CausalObservation",
     "COMMITMENT_STATUSES",
     "Commitment",
+    "CommitmentAwareEngine",
+    "CommitmentEffect",
     "CommitmentLedger",
+    "CommitmentScore",
+    "CommitmentWeights",
+    "commitment_effect",
     "CommitmentStore",
     "FileCommitmentStore",
     "InMemoryCommitmentStore",

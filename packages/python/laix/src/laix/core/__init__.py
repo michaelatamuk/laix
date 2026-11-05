@@ -22,6 +22,13 @@ from .engines.calibration import (
     calibration_report,
     samples_from_outcomes,
 )
+from .engines.commitment_planner import (
+    CommitmentAwareEngine,
+    CommitmentEffect,
+    CommitmentScore,
+    CommitmentWeights,
+    commitment_effect,
+)
 from .engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
 from .engines.mdp import (
     MDPEngine,
@@ -158,7 +165,12 @@ __all__ = [
     "CausalObservation",
     "COMMITMENT_STATUSES",
     "Commitment",
+    "CommitmentAwareEngine",
+    "CommitmentEffect",
     "CommitmentLedger",
+    "CommitmentScore",
+    "CommitmentWeights",
+    "commitment_effect",
     "CommitmentStore",
     "FileCommitmentStore",
     "InMemoryCommitmentStore",

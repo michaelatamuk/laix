@@ -8,6 +8,7 @@ export * from "./causal.ts";
 export * from "./planning.ts";
 export * from "./planning-store.ts";
 export * from "./utility.ts";
+export * from "./commitment-planner.ts";
 export * from "./mdp.ts";
 export * from "./calibration.ts";
 export * from "./model-learning.ts";

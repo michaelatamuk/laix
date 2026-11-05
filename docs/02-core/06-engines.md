@@ -63,6 +63,7 @@ The contracts:
 | `DecisionEngine` | `solve(problem) -> Plan` |
 | `EnginePolicy` | turns a plan into a `Decision` |
 | `UtilityEngine` | expected utility with hard limits and risk attitude |
+| `CommitmentAwareEngine` | utility plus promise keeping, violations and due commitments |
 | `MdpModel`, `MDPEngine` | finite MDP, value iteration and a greedy plan |
 | `PomdpModel`, `POMDPEngine` | belief update and finite-horizon planning |
 | `Simulator` | runs a planner in a model |
@@ -77,7 +78,7 @@ The contracts:
 | 1 | Problem shape | `DecisionProblem`, request projection |
 | 2 | Option model | `ActionOption`, costs, risks and hard limits |
 | 3 | Utility model | `UtilityModel`, weights, risk attitude |
-| 4 | Planner choice | `DecisionEngine.solve`, `MDPEngine`, `POMDPEngine` |
+| 4 | Planner choice | `DecisionEngine.solve`, `UtilityEngine`, `CommitmentAwareEngine`, `MDPEngine`, `POMDPEngine` |
 | 5 | Calibration | `CalibrationReport` and confidence adjustment |
 | 6 | Learning | `ModelLearner` for transitions and rewards |
 | 7 | Explanation | chosen plan, alternatives, expected value |
@@ -179,6 +180,33 @@ comparison.
 
 Both MDP and POMDP need a world model: states, transitions and rewards. The app supplies that model;
 LAIX plans over it. Large state spaces become expensive, so keep the model small and purposeful.
+
+## Commitment-aware planning
+
+The utility planner scores benefit, cost, risk and interruption. The commitment-aware planner adds
+what an option does to the promises the task already made.
+
+An option declares its effect in `params`:
+
+```python
+ActionOption(
+    id="send-later",
+    verb="act",
+    name="send later",
+    params={"commitments": {"fulfills": ["c1"]}},
+)
+```
+
+The engine adds:
+
+- a reward for fulfilling an open commitment;
+- an extra reward when the commitment is due;
+- a penalty for violating a commitment;
+- a penalty for creating a new one, because it reduces future flexibility.
+
+`CommitmentAwareEngine` returns the same `Plan`. It is deterministic and training-free; the
+commitments and due times come from the host. The effect can be written under `commitments` or at
+the top level of `params`.
 
 ## Path A: external planner
 

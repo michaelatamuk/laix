@@ -12,6 +12,7 @@ still open.
 | Bench | done |
 | Planner contract | done |
 | Utility planner | done |
+| Commitment-aware planner | done |
 | MDP planner | done |
 | Simulator and planner comparison | done |
 | Planner bench CLI | done |

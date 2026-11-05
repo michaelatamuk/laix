@@ -123,6 +123,7 @@ decision = decide(
 - **`UtilityEngine`** — expected utility over the offered options, with hard limits and
   `neutral` / `averse` / `seeking` risk attitudes. Hard `Situation` constraints for risk, cost,
   budget, latency, interruption and safety are enforced before scoring.
+- **`CommitmentAwareEngine`** — utility plus promise keeping, violations and due commitments.
 - **`MDPEngine`** — value iteration over a finite `MdpModel`, with a discount and horizon. See
   [what an MDP is](06-engines.md#what-an-mdp-is).
 - **`POMDPEngine`** — belief update and finite-horizon expectimax over a small `PomdpModel`.
