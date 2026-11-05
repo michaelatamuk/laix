@@ -1,5 +1,6 @@
 import { newId } from "../core/contracts.ts";
 import type { Decision, DecisionRequest, Trace } from "../core/contracts.ts";
+import { TumblingWindow, type WindowBatch } from "./window.ts";
 
 export const DECISION_STATUSES = ["final", "provisional", "superseded"] as const;
 export type DecisionStatus = (typeof DECISION_STATUSES)[number];
@@ -420,6 +421,27 @@ export class StreamSession {
       }
     } finally {
       await pump.catch(() => undefined);
+    }
+  }
+
+  async *feedWindows(
+    events: AsyncIterable<DecisionRequest>,
+    options: {
+      windowMs: number;
+      onWindow: (batch: WindowBatch) => DecisionRequest | null;
+      late?: LatePolicy;
+    },
+  ): AsyncIterableIterator<Decision> {
+    const window = new TumblingWindow(options.windowMs, { late: options.late });
+    for await (const event of events) {
+      for (const batch of window.add(event)) {
+        const request = options.onWindow(batch);
+        if (request) yield* this.admit(request, "final", false, 0, null);
+      }
+    }
+    for (const batch of window.flush()) {
+      const request = options.onWindow(batch);
+      if (request) yield* this.admit(request, "final", false, 0, null);
     }
   }
 

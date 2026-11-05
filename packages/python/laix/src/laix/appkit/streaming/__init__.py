@@ -8,6 +8,7 @@ from .session import (
     StreamSession,
     StreamStats,
 )
+from .window import TumblingWindow, WindowBatch
 
 __all__ = [
     "FULL_POLICIES",
@@ -16,4 +17,6 @@ __all__ = [
     "Refiner",
     "StreamSession",
     "StreamStats",
+    "TumblingWindow",
+    "WindowBatch",
 ]

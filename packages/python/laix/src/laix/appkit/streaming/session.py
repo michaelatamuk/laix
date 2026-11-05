@@ -20,6 +20,7 @@ from typing import AsyncIterable, AsyncIterator, Awaitable, Callable, Iterable, 
 from ...core.decisions import DECISION_STATUSES, Decision, DecisionRequest, Trace
 from ...core.support.ids import new_id
 from ...core.support.time import parse_iso, utcnow
+from .window import TumblingWindow, WindowBatch
 
 Decider = Callable[[DecisionRequest], Sequence[Decision]]
 Refiner = Callable[[DecisionRequest], Awaitable[Sequence[Decision]]]
@@ -329,6 +330,36 @@ class StreamSession:
             task.cancel()
             with contextlib.suppress(asyncio.CancelledError):
                 await task
+
+    async def feed_windows(
+        self,
+        events: AsyncIterable[DecisionRequest],
+        *,
+        window_ms: int,
+        on_window: Callable[[WindowBatch], DecisionRequest | None],
+        late: str = "drop",
+    ) -> AsyncIterator[Decision]:
+        """Aggregate events into tumbling windows, then decide each window.
+
+        ``on_window`` turns a closed batch into one request; return ``None`` to
+        skip a window. The session watermark applies to the request it returns.
+        """
+        window = TumblingWindow(window_ms, late=late)
+
+        async def decide(batch: WindowBatch) -> AsyncIterator[Decision]:
+            request = on_window(batch)
+            if request is None:
+                return
+            for decision in self._admit(request, status="final", force=False, revision=0, supersedes=None):
+                yield decision
+
+        async for event in events:
+            for batch in window.add(event):
+                async for decision in decide(batch):
+                    yield decision
+        for batch in window.flush():
+            async for decision in decide(batch):
+                yield decision
 
     def replay(self, requests: Iterable[DecisionRequest]) -> list[Decision]:
         """Run a sequence with event time as the clock.

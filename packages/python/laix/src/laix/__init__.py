@@ -106,6 +106,8 @@ _APPKIT_NAMES: dict[str, dict[str, str]] = {
         "ManualClock": "ManualClock",
         "StreamSession": "StreamSession",
         "StreamStats": "StreamStats",
+        "TumblingWindow": "TumblingWindow",
+        "WindowBatch": "WindowBatch",
     },
     ".appkit.platform": {
         "ApprovalDecision": "ApprovalDecision",
@@ -248,6 +250,8 @@ __all__ = [
     "Situation",
     "StreamSession",
     "StreamStats",
+    "TumblingWindow",
+    "WindowBatch",
     "Trace",
     "UCBBandit",
     "UnknownAction",

@@ -10,3 +10,4 @@ export * from "./runtime/execution.ts";
 export * from "./runtime/state.ts";
 export * from "./runtime/state-store.ts";
 export * from "./streaming.ts";
+export * from "./window.ts";

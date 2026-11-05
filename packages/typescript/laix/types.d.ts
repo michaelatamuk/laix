@@ -577,6 +577,19 @@
   export type DecisionStatus = "final" | "provisional" | "superseded";
   export type FullPolicy = "latest_wins" | "drop_oldest" | "drop_newest";
   export type LatePolicy = "drop" | "accept";
+  export interface WindowBatch {
+    start: Date;
+    end: Date;
+    events: DecisionRequest[];
+  }
+  export class TumblingWindow {
+    readonly windowMs: number;
+    readonly late: LatePolicy;
+    constructor(windowMs: number, options?: { late?: LatePolicy });
+    readonly pending: number;
+    add(event: DecisionRequest): WindowBatch[];
+    flush(): WindowBatch[];
+  }
   export const DECISION_STATUSES: readonly DecisionStatus[];
   export const FULL_POLICIES: readonly FullPolicy[];
   export const LATE_POLICIES: readonly LatePolicy[];
@@ -649,6 +662,14 @@
     feed(
       events: AsyncIterable<DecisionRequest>,
       options?: { coalesceMs?: number },
+    ): AsyncIterableIterator<Decision>;
+    feedWindows(
+      events: AsyncIterable<DecisionRequest>,
+      options: {
+        windowMs: number;
+        onWindow: (batch: WindowBatch) => DecisionRequest | null;
+        late?: LatePolicy;
+      },
     ): AsyncIterableIterator<Decision>;
     decisions(): AsyncIterableIterator<Decision>;
     close(): void;

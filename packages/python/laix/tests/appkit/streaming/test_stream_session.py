@@ -17,6 +17,7 @@ from laix import (
     ScoreBreakdown,
     StreamSession,
 )
+from laix import TumblingWindow
 
 
 UTC = timezone.utc
@@ -338,6 +339,48 @@ def test_observe_wait_applies_backpressure() -> None:
     first, second = asyncio.run(run())
     assert first.rationale == "a"
     assert second.rationale == "b"
+
+
+def test_tumbling_window_closes_on_next_window() -> None:
+    window = TumblingWindow(10_000)
+    assert window.add(DecisionRequest(subject="a", at=at(0))) == []
+    assert window.add(DecisionRequest(subject="b", at=at(5))) == []
+    batches = window.add(DecisionRequest(subject="c", at=at(11)))
+
+    assert len(batches) == 1
+    assert batches[0].start == moment(0)
+    assert batches[0].end == moment(10)
+    assert [item.subject for item in batches[0].events] == ["a", "b"]
+
+    rest = window.flush()
+    assert [item.subject for item in rest[0].events] == ["c"]
+
+
+def test_tumbling_window_drops_late_events() -> None:
+    window = TumblingWindow(10_000)
+    window.add(DecisionRequest(subject="a", at=at(15)))
+
+    assert window.add(DecisionRequest(subject="late", at=at(1))) == []
+    assert window.pending == 1
+
+
+def test_feed_windows_aggregates() -> None:
+    async def events():
+        for second in (0, 1, 11, 12):
+            yield DecisionRequest(subject=f"e{second}", at=at(second))
+
+    def on_window(batch) -> DecisionRequest:
+        return DecisionRequest(subject=f"n{len(batch.events)}", at=batch.end.isoformat())
+
+    async def run() -> list[Decision]:
+        session = StreamSession(decider, clock=ManualClock(moment(0)))
+        out: list[Decision] = []
+        async for decision in session.feed_windows(events(), window_ms=10_000, on_window=on_window):
+            out.append(decision)
+        return out
+
+    decisions = asyncio.run(run())
+    assert [item.rationale for item in decisions] == ["n2", "n2"]
 
 
 def test_decision_from_dict_round_trips() -> None:

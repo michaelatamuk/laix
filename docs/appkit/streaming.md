@@ -49,6 +49,34 @@ first = await stream.observe_refined(request, deep_decide)
 
 `feed` coalesces a busy source; `observe_refined` emits a provisional decision, awaits the deep path, then emits its revision.
 
+For aggregation, close a tumbling window and decide the batch:
+
+```python
+from laix import DecisionRequest, TumblingWindow
+
+window = TumblingWindow(window_ms=10_000)
+for batch in window.add(request):
+    aggregate = DecisionRequest(
+        subject=f"{len(batch.events)} events",
+        at=batch.end.isoformat(),
+    )
+    ...
+```
+
+Or let the session do it:
+
+```python
+async for decision in stream.feed_windows(
+    events,
+    window_ms=10_000,
+    on_window=lambda batch: DecisionRequest(
+        subject=f"{len(batch.events)} events",
+        at=batch.end.isoformat(),
+    ),
+):
+    ...
+```
+
 ## What the session owns
 
 | Concern | Rule |
@@ -64,6 +92,7 @@ first = await stream.observe_refined(request, deep_decide)
 | **Revisions** | `revise(previous, request)` returns a decision with `revision + 1` and `supersedes`. |
 | **Deep path** | `observe_refined(request, refine, timeout_ms=...)` emits `provisional`, awaits `refine`, then emits its revision; a timeout finalises the provisional. |
 | **Feed** | `feed(events, coalesce_ms=...)` observes an async stream; the newest event wins inside the window. |
+| **Windows** | `TumblingWindow(window_ms)` closes a batch on the event clock; `feed_windows(..., on_window=...)` decides each closed batch. |
 | **Provisional** | `observe(request, status="provisional")` marks a fast decision that a revision can replace. |
 | **Deadline** | A decision made after `deadline` is emitted as `provisional` and counted as expired. |
 | **Replay** | `replay(requests)` runs the same sequence with event time as the clock, without filling the buffer. |

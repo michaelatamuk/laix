@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { ManualClock, StreamSession } from "../src/index.ts";
+import { ManualClock, StreamSession, TumblingWindow } from "../src/index.ts";
 import type { Decision, DecisionRequest } from "../src/index.ts";
 import { Layer } from "../src/index.ts";
 
@@ -199,6 +199,37 @@ describe("stream session", () => {
     assert.deepEqual(
       out.map((item) => item.rationale),
       ["b", "c"],
+    );
+  });
+
+  it("closes tumbling windows", () => {
+    const window = new TumblingWindow(10_000);
+    assert.equal(window.add(request("a", 0)).length, 0);
+    assert.equal(window.add(request("b", 5)).length, 0);
+    const batches = window.add(request("c", 11));
+
+    assert.equal(batches.length, 1);
+    assert.equal(batches[0]!.events.length, 2);
+    assert.equal(window.flush()[0]!.events.length, 1);
+  });
+
+  it("aggregates windows into decisions", async () => {
+    async function* events(): AsyncIterable<DecisionRequest> {
+      for (const second of [0, 1, 11, 12]) yield request(`e${second}`, second);
+    }
+
+    const session = new StreamSession(decider);
+    const out: Decision[] = [];
+    for await (const decision of session.feedWindows(events(), {
+      windowMs: 10_000,
+      onWindow: (batch) => ({ subject: `n${batch.events.length}`, at: batch.end.toISOString() }),
+    })) {
+      out.push(decision);
+    }
+
+    assert.deepEqual(
+      out.map((item) => item.rationale),
+      ["n2", "n2"],
     );
   });
 

@@ -31,7 +31,7 @@ registered with `registerPolicy` and selected with `usePolicy`.
 | Policy packs | `ActivePerceptionPolicy`, `SafetyConstrainedPolicy`, `ReplanningPolicy`, `AllocationPolicy`, `NegotiationPolicy`, `PreferenceElicitationPolicy`, `VerificationPolicy`, `EscalationPolicy` |
 | Learned policy | `BanditPolicy`, `UCBBandit`, `Arm`, `rewardForLabel` |
 | Live Context | `LiveContext`, `CallableDetector`, `Detector`, `Detection`, `PerceptionEvent` |
-| Streaming | `StreamSession`, `StreamStats`, `ManualClock` |
+| Streaming | `StreamSession`, `StreamStats`, `ManualClock`, `TumblingWindow`, `WindowBatch` |
 | Runtime | `DecisionRuntime`, `ExecutionBridge`, `ExperienceState`, `ResourceScheduler` |
 | Platform | `Platform`, `InMemoryPlatform`, `SkillCall` |
 | Stores | `StateStore`, `InMemoryStateStore`, `OutcomeLedger`, `OutcomeStore` |
