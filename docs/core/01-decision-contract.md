@@ -258,7 +258,7 @@ py -m pytest tests/test_laix.py -k schema
 
 | Thing | Version |
 |---|---|
-| Package | `0.8.1` |
+| Package | `0.9.0` |
 | Record schema | `0.8.0` |
 | Rule sets | `0.8.0` |
 | Attention vectors | `0.8.0` |

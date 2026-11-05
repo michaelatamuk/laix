@@ -15,11 +15,12 @@ block-beta
     end
 
     block:runtime_group
-        columns 4
+        columns 5
         runtime_label["Runtime"]
         runtime["DecisionRuntime"]
         execution["ExecutionBridge"]
         live["LiveContext"]
+        saga["Saga"]
     end
 
     block:data_group
@@ -32,9 +33,10 @@ block-beta
     end
 
     block:ports_group
-        columns 4
+        columns 5
         ports_label["Ports"]
         state_store["StateStore"]
+        checkpoint["StreamCheckpointStore"]
         platform["Platform"]
         delivery["DeliveryPort"]
     end
@@ -58,9 +60,9 @@ block-beta
 | Row | Kind | Contains | What it is |
 |---|---|---|---|
 | **Surface** | API | Layer · StreamSession | How a host calls LAIX. |
-| **Runtime** | Components | DecisionRuntime · ExecutionBridge · LiveContext | What runs a decision, an action and perception. |
+| **Runtime** | Components | DecisionRuntime · ExecutionBridge · LiveContext · Saga | What runs a decision, an action, perception and recovery. |
 | **Data** | Shapes | ExperienceState · DecisionRecord · Outcome · ExecutionReceipt | What is carried or kept. |
-| **Ports** | Interfaces | StateStore · Platform · DeliveryPort | What the host implements or supplies. |
+| **Ports** | Interfaces | StateStore · StreamCheckpointStore · Platform · DeliveryPort | What the host implements or supplies. |
 | **Proof** | Tools | Bench · Metrics | How the kit is tested and observed. |
 
 ## What each part contains
@@ -72,11 +74,13 @@ block-beta
 | Runtime | **DecisionRuntime** | Component | policy, state, execution, outcome |
 | Runtime | **ExecutionBridge** | Component | approval, idempotency, execute, cancel, undo, unknown, reconcile |
 | Runtime | **LiveContext** | Component | detectors, admission, frames |
+| Runtime | **Saga** | Component | steps, compensation, recovery |
 | Data | **ExperienceState** | Shape | goals, phase, beliefs, TTL, history |
 | Data | **DecisionRecord** | Shape | draft, approve, reject, execute, undo, verify |
 | Data | **Outcome** | Shape | measurement, direction, attribution, label |
 | Data | **ExecutionReceipt** | Shape | status, actor, result, error, idempotency key |
 | Ports | **StateStore** | Interface | save, load, delete a state snapshot |
+| Ports | **StreamCheckpointStore** | Interface | save, load, delete a stream checkpoint |
 | Ports | **Platform** | Interface | skills, events, approvals |
 | Ports | **DeliveryPort** | Interface | deliver a result and return a receipt |
 | Proof | **Bench** | Tool | deterministic cases, suites, report |
@@ -87,11 +91,12 @@ block-beta
 - **Surface** — `Layer` answers one request; `StreamSession` answers a stream over time. Both use the
   same core decision.
 - **Runtime** — `DecisionRuntime` links a policy to state, execution and outcome; `ExecutionBridge` is
-  the write boundary; `LiveContext` runs detectors and returns frames.
+  the write boundary; `LiveContext` runs detectors and returns frames; `Saga` compensates completed
+  steps when a later step fails.
 - **Data** — `ExperienceState` is live state, `DecisionRecord` is the audit lifecycle, `Outcome` is
   what was measured, `ExecutionReceipt` is what the host returned.
-- **Ports** — the host supplies a state store, a platform and a delivery port. They are interfaces,
-  not implementations.
+- **Ports** — the host supplies a state store, a stream checkpoint store, a platform and a delivery
+  port. They are interfaces, not implementations.
 - **Proof** — the bench checks decisions; metrics exposes stream counters.
 
 The app kit is optional. A host that only needs the answer calls `decide` or `Layer`; a host that

@@ -9,7 +9,9 @@ from laix import (
     DecisionRequest,
     ManualClock,
     StreamSession,
+    from_ndjson,
     from_queue,
+    from_sse,
     from_sync,
     prometheus,
     run_stream_bench,
@@ -70,3 +72,29 @@ def test_stream_bench_reports_throughput() -> None:
     assert result.elapsed_ms >= 0
     assert result.throughput_per_second >= 0
     assert result.stats["decided"] == 2
+
+
+def test_from_ndjson_reads_one_request_per_line() -> None:
+    async def lines():
+        yield '{"subject":"a","at":"2026-11-01T10:00:00+00:00"}\n'
+        yield '{"subject":"b","at":"2026-11-01T10:00:01+00:00"}\n'
+
+    async def run() -> list[DecisionRequest]:
+        return [item async for item in from_ndjson(lines())]
+
+    requests = asyncio.run(run())
+    assert [item.subject for item in requests] == ["a", "b"]
+
+
+def test_from_sse_reads_data_frames() -> None:
+    async def lines():
+        yield 'data: {"subject":"a","at":"2026-11-01T10:00:00+00:00"}\n'
+        yield "\n"
+        yield 'data: {"subject":"b","at":"2026-11-01T10:00:01+00:00"}\n'
+        yield "\n"
+
+    async def run() -> list[DecisionRequest]:
+        return [item async for item in from_sse(lines())]
+
+    requests = asyncio.run(run())
+    assert [item.subject for item in requests] == ["a", "b"]

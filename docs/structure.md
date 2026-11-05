@@ -42,10 +42,11 @@ packages/python/laix/src/laix/
 │   │   └── normalise.py     coerce and from_attention
 │   ├── engines/
 │   │   ├── engine.py        DecisionEngine, DecisionProblem, Plan, EnginePolicy
-│   │   ├── policies/        policy.py, registry.py, implementations/ (packs, rules, target)
+│   │   ├── policies/        policy.py, registry.py, simulation.py, implementations/ (packs, rules, target, planning, group)
 │   │   ├── attention/       input, output, gates/, attention.v1.json, decide, score
 │   │   └── resources/       budget, sensing option, plan, scheduler
-│   ├── outcome_learning/    record, ledger, store, bandit, rewards, attention/
+│   ├── outcome_learning/    record, ledger, store, bandit, causal, rewards, attention/
+│   ├── planning/            commitment ledger and planning state
 │   ├── evaluation/          case, row, report, compare, attention replay, attention-bench.v1.json
 │   ├── sensing/             detection, detector, event, frame
 │   ├── schema/              build, check, records and laix-v1.schema.json
@@ -53,12 +54,12 @@ packages/python/laix/src/laix/
 └── appkit/
     ├── __init__.py          optional app surface
     ├── layer.py             public Layer
-    ├── runtime/             decision runtime, execution, state, stores
+    ├── runtime/             decision runtime, execution, saga, state, stores
     ├── audit/               decision record, proposal, approval, undo, audit event
     ├── delivery/            port, receipt, null
     ├── platform/            platform, in-memory, skill call, approvals, event, capability
     ├── live_context/        loop and callable detector
-    ├── streaming/           session, window, sources, bench
+    ├── streaming/           session, window, sources, checkpoint, bench
     └── bench/               case, suite, row, report, runner
 ```
 

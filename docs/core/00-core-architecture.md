@@ -86,7 +86,7 @@ outcome → label → feedback → better attention
 | Contract | **Decision response** | verb, reason, confidence, action, evidence, approval, target, recipients | Support |
 | Contract | **Execution trail** | execution receipt, trace | Support |
 | Engines | **Attention** | signals, priority, timing | Contract, support |
-| Engines | **Policies** | eight packs, engine adapter, rule and target wrappers | Contract, learning, support |
+| Engines | **Policies** | eight packs, engine adapter, rule, target, planning, group and shadow wrappers | Contract, learning, support |
 | Engines | **Resources** | budget, sensing options, limits | Support |
 | Foundation | **Schema** | records, validation | Contract, learning, support |
 | Foundation | **Sensing** | detector, detection, event, frame | Support |
@@ -97,7 +97,7 @@ outcome → label → feedback → better attention
 - **Capabilities** — Decide chooses explicitly or automatically; Learn turns outcomes into a better policy or attention; Evaluate checks the engines.
 - **Contract** — the request describes what is happening and what the app can do; the response carries the verb, reason, confidence, action, approval and target; the trail records what happened.
 - **Engine choice** — `signals + context` → Attention; `situation + options` → Action policy. A packaged or custom policy is selected explicitly with `policy=...`.
-- **Engines** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation, plus `EnginePolicy`, `RulePolicy` and `TargetedPolicy`; Resources set sensing limits.
+- **Engines** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation, plus `EnginePolicy`, `RulePolicy`, `TargetedPolicy`, `PlanningPolicy`, `GroupPolicy` and `ShadowPolicy`; Resources set sensing limits.
 - **Foundation** — Schema validates records; Sensing defines detectors, events and frames; Support provides shared types and helpers.
 
 Streaming, execution, records and delivery are app-kit blocks, not core: see

@@ -10,6 +10,7 @@ from ...support.errors import PolicyError
 from .implementations.action import ACTION_POLICY_VERSION, ActionPolicy, ActionPolicyConfig, ActionPolicyRequest, decide_action
 from .policy import Policy
 from .registry import PolicyRegistry
+from .simulation import ShadowDifference, ShadowPolicy, simulate
 
 _LAZY = {
     "ActivePerceptionPolicy": "implementations.active_perception",
@@ -24,6 +25,8 @@ _LAZY = {
     "Rule": "implementations.rules",
     "RulePolicy": "implementations.rules",
     "TargetedPolicy": "implementations.target",
+    "PlanningPolicy": "implementations.planning",
+    "GroupPolicy": "implementations.group",
 }
 
 
@@ -50,6 +53,8 @@ __all__ = [
     "Rule",
     "RulePolicy",
     "TargetedPolicy",
+    "PlanningPolicy",
+    "GroupPolicy",
     "ACTION_POLICY_VERSION",
     "Policy",
     "ActionPolicyConfig",
@@ -57,4 +62,7 @@ __all__ = [
     "PolicyRegistry",
     "ActionPolicyRequest",
     "decide_action",
+    "ShadowDifference",
+    "ShadowPolicy",
+    "simulate",
 ]

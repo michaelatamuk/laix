@@ -21,6 +21,7 @@ from ...core.decisions import DECISION_STATUSES, Decision, DecisionRequest, Trac
 from ...core.support.ids import new_id
 from ...core.support.time import parse_iso, utcnow
 from .window import TumblingWindow, WindowBatch
+from .checkpoint import StreamCheckpointStore
 
 Decider = Callable[[DecisionRequest], Sequence[Decision]]
 Refiner = Callable[[DecisionRequest], Awaitable[Sequence[Decision]]]
@@ -390,8 +391,20 @@ class StreamSession:
             self._clock = original
         return out
 
+    def save(self, store: StreamCheckpointStore, key: str) -> None:
+        """Persist the current snapshot through the host's store."""
+        store.save(key, self.snapshot())
+
+    def resume(self, store: StreamCheckpointStore, key: str) -> bool:
+        """Load a snapshot from the host's store; return whether one existed."""
+        snapshot = store.load(key)
+        if snapshot is None:
+            return False
+        self.restore(snapshot)
+        return True
+
     def snapshot(self) -> dict[str, object]:
-        """Return the resumable state, including buffered decisions."""
+        """Return the resumable state, including pending decisions and traces."""
         return {
             "stream_id": self.stream_id,
             "watermark": self._watermark.isoformat() if self._watermark else None,

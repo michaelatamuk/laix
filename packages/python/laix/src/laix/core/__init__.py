@@ -37,6 +37,9 @@ from .decisions import (
     Trace,
 )
 from .outcome_learning import (
+    CausalEffect,
+    CausalLedger,
+    CausalObservation,
     OUTCOME_DIRECTIONS,
     OUTCOME_LABELS,
     Arm,
@@ -46,6 +49,7 @@ from .outcome_learning import (
     UCBBandit,
     reward_for_label,
 )
+from .planning import COMMITMENT_STATUSES, Commitment, CommitmentLedger
 from .sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .support.time import iso, parse_iso, utcnow
 from .support.values import confidence_band
@@ -72,6 +76,11 @@ from .engines.policies import (
     Rule,
     RulePolicy,
     TargetedPolicy,
+    PlanningPolicy,
+    GroupPolicy,
+    ShadowDifference,
+    ShadowPolicy,
+    simulate,
     decide_action,
 )
 
@@ -90,6 +99,12 @@ __all__ = [
     "RECORD_NAMES",
     "CONSTRAINT_KINDS",
     "Case",
+    "CausalEffect",
+    "CausalLedger",
+    "CausalObservation",
+    "COMMITMENT_STATUSES",
+    "Commitment",
+    "CommitmentLedger",
     "Constraint",
     "Context",
     "ActionPolicy",
@@ -149,6 +164,11 @@ __all__ = [
     "Rule",
     "RulePolicy",
     "TargetedPolicy",
+    "PlanningPolicy",
+    "GroupPolicy",
+    "ShadowDifference",
+    "ShadowPolicy",
+    "simulate",
     "compare",
     "decide",
     "confidence_band",

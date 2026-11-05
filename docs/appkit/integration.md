@@ -14,7 +14,7 @@ The app sends a request. LAIX returns a decision. The app runs the chosen option
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.8.0#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.9.0#subdirectory=packages/python/laix"
 ```
 
 Local checkout:
@@ -33,7 +33,7 @@ TypeScript:
 }
 ```
 
-The release page also has a packed `laix-0.8.0.tgz`.
+The release page also has a packed `laix-0.9.0.tgz`.
 
 ## Build the adapter
 
@@ -152,7 +152,7 @@ The production adapter stays in the app. `examples/apps/` shows caller examples.
 Use a tag:
 
 ```text
-v0.8.0
+v0.9.0
 ```
 
 The Python subdirectory is `packages/python/laix`. The TypeScript path is
@@ -165,7 +165,7 @@ from laix import Layer, Decision
 
 class QualityPolicy:
     name = "quality"
-    version = "0.8.0"
+    version = "0.9.0"
 
     def decide(self, request):
         return [

@@ -94,6 +94,14 @@ decision = policy.decide(
 `RulePolicy` supports equality, `gte`, `lte`, `in` and `contains`. `TargetedPolicy`
 accepts `target="request"` to take the mode from the request.
 
+## Planning, group and shadow
+
+- **`PlanningPolicy`** — reads a `CommitmentLedger`: act on a due commitment, ask when it is blocked,
+  wait otherwise.
+- **`GroupPolicy`** — sets the target and recipients and strips attributes marked private.
+- **`ShadowPolicy`** — runs a second policy beside the primary, returns the primary decision and
+  records every disagreement for comparison.
+
 ## Active perception
 
 - **Inputs:** `uncertainty`, `observations` (`id`, `information_gain`, `cost`),

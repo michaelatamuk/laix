@@ -33,7 +33,7 @@ The split follows the code:
 | [core/01-decision-contract.md](core/01-decision-contract.md) | the decision contract: request, response and records |
 | [core/02-attention.md](core/02-attention.md) | task-level attention and its scope |
 | [core/03-packaged-policies.md](core/03-packaged-policies.md) | the eight packaged policies |
-| [core/04-outcome-learning.md](core/04-outcome-learning.md) | rewards, UCB and `BanditPolicy` |
+| [core/04-outcome-learning.md](core/04-outcome-learning.md) | rewards, UCB, causal attribution and `BanditPolicy` |
 | [core/05-evaluation.md](core/05-evaluation.md) | vectors, conformance and bench |
 | [core/06-engine-roadmap.md](core/06-engine-roadmap.md) | the engine contract and the planner roadmap |
 

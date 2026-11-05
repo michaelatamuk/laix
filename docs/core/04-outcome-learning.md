@@ -79,6 +79,15 @@ The policy reads arms from `DecisionRequest.attributes["arms"]` or from the band
 No arms returns `wait` with `no_arms`. All arms outside the limits returns `wait` with
 `no_arm_within_limits`.
 
+## Causal attribution
+
+`CausalLedger` compares a treatment arm with a control arm. It uses difference in means, or inverse
+propensity weighting when every observation carries a propensity strictly between zero and one. It
+returns a `CausalEffect` with the estimate, the sample sizes and the method.
+
+`OutcomeLedger` records whether a decision helped; `CausalLedger` estimates whether one arm caused a
+better outcome. They answer different questions.
+
 ## App and LAIX
 
 The app owns the metric, the measurement and the decision-to-arm map. LAIX owns the reward contract,
