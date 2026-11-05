@@ -8,37 +8,11 @@ time. The timeline also reports chains, superseded decisions and late events.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import Iterable
 
 from ...core.decisions import Decision
-
-
-class TimelineError(ValueError):
-    """A decision breaks the timeline semantics."""
-
-
-@dataclass(frozen=True, slots=True)
-class TimelineReport:
-    """A compact view of one timeline."""
-
-    decisions: int
-    chains: int
-    superseded: int
-    issues: tuple[str, ...]
-
-    @property
-    def valid(self) -> bool:
-        return not self.issues
-
-    def to_dict(self) -> dict[str, object]:
-        return {
-            "decisions": self.decisions,
-            "chains": self.chains,
-            "superseded": self.superseded,
-            "valid": self.valid,
-            "issues": list(self.issues),
-        }
+from .timeline_error import TimelineError
+from .timeline_report import TimelineReport
 
 
 class DecisionTimeline:
