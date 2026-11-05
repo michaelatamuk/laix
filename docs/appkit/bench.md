@@ -90,3 +90,8 @@ ignored.
 
 App traces can become cases by exporting the request and the expected decision. LAIX keeps its own
 fixtures.
+
+## Stream bench
+
+`run_stream_bench(session, requests)` replays requests through a `StreamSession` and reports the
+decisions, elapsed time, throughput and stream counters. See [streaming](streaming.md).
