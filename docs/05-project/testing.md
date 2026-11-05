@@ -59,10 +59,10 @@ The check resolves relative links across `docs/`, `examples/` and every README.
 
 | Check | Covers |
 |---|---|
-| `pytest` | contracts, policies, planners, app kit, schema, examples |
+| `pytest` | contracts, policies, planners, calibration, timeline, app kit, schema, examples |
 | `ruff check` | Python syntax, undefined names and unused imports |
 | `tsc` | TypeScript source and public declaration syntax/types |
-| `npm test` | TS contracts, conformance, parity, streaming, execution, planners |
+| `npm test` | TS contracts, conformance, parity, streaming, timeline, execution, planners |
 | `npm run bench` | 10 suites and 25 deterministic cases |
 | `npm run conformance` | 24 shared attention decisions |
 | examples | every runnable Python and TypeScript example |

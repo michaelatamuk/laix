@@ -10,6 +10,7 @@
 | **Policy** | A callable with `decide(request)` that returns decisions. |
 | **Adapter** | App code that turns app events into requests and decisions into app actions. |
 | **Attention** | The mechanism that ranks signals and decides whether to surface, hold, act or escalate. |
+| **Attention-aware planning** | Planning that treats interruption, approval and escalation as a budget. |
 | **Planner** | A solver that returns a `Plan`: utility, MDP, POMDP or an external planner. |
 | **Engine** | The code contract for a planner: `DecisionEngine.solve(problem) -> Plan`; `EnginePolicy` wraps it. |
 | **Plan** | A planner's answer: verb, confidence, reason, action, score and alternatives. |
@@ -19,11 +20,14 @@
 | **Risk attitude** | How a planner trades expected value against variance: `neutral`, `averse` or `seeking`. |
 | **Limits** | Risk, approval, safety and policy constraints that bound a decision; a gate, not a module. |
 | **Commitment** | A promised step with a due time, status and dependencies. The planning layer tracks commitments. |
+| **Commitment-aware planning** | Planning with promises, due times and dependencies in the state. |
 | **Recovery** | Run steps in order and undo the completed ones when a later step fails. |
+| **Execution-aware planning** | Planning with reversibility, unknown outcomes, approval and recovery cost. |
 | **Saga** | The pattern behind recovery: a multi-step action with an undo for each step. |
 | **Target** | Who receives a decision: `one`, `some`, `all`, `peer` or `gather`. |
 | **Stream** | A `StreamSession` that applies event time, cadence, backpressure and revisions to many requests. |
 | **Checkpoint** | A resumable snapshot of a stream. |
+| **Decision timeline** | An append-only record of decisions with revision and event-time rules. |
 | **TTL** | Time to live: how long state or a decision stays valid. |
 | **SSE** | Server-sent events: a one-way HTTP stream of events. |
 | **NDJSON** | Newline-delimited JSON: one event per line. |
@@ -34,6 +38,7 @@
 | **Ledger** | A store of measured outcomes or commitments. |
 | **UCB** | Upper confidence bound: choose the arm with the best reward plus a bonus for arms tried less. |
 | **Calibration** | A comparison between stated confidence and observed accuracy. |
+| **Decision calibration** | Comparing stated confidence with whether the chosen verb and action were correct. |
 | **JEV** | A typed decision model from TypeSafe; it returns a judgment and can sit behind a LAIX policy. |
 | **LLM** | Large language model: a model that generates or judges text. |
 | **PPMA** | The layer above LAIX that owns activation, commit and the system-level loop; LAIX decides inside one task. |

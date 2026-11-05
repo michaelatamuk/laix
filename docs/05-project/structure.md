@@ -50,6 +50,11 @@ packages/python/laix/src/laix/
 │   │   ├── pomdp.py         PomdpModel, belief update and POMDPEngine
 │   │   ├── simulator.py     Simulator, scenarios and engine comparison
 │   │   ├── calibration.py   CalibrationReport and confidence adjustment
+│   │   ├── commitment_planner.py commitment-aware planning
+│   │   ├── execution_planner.py execution-aware planning
+│   │   ├── attention_planner.py attention-aware planning
+│   │   ├── decision_calibration.py decision-level calibration
+│   │   ├── live_bench.py    training-free live decision benchmark
 │   │   ├── model_learning.py ModelLearner and rollback
 │   │   ├── policies/        policy.py, registry.py, simulation.py, implementations/ (packs, rules, target, planning, group)
 │   │   ├── attention/       input, output, gates/, attention.v1.json, decide, score
@@ -68,7 +73,7 @@ packages/python/laix/src/laix/
     ├── delivery/            port, receipt, null
     ├── platform/            platform, in-memory, skill call, approvals, event, capability
     ├── live_context/        loop and callable detector
-    ├── streaming/           session, window, sources, checkpoint, bench
+    ├── streaming/           session, window, sources, checkpoint, timeline, bench
     └── bench/               case, suite, row, report, runner, engine bench
 ```
 
@@ -90,6 +95,10 @@ packages/typescript/laix/src/
 │   ├── mdp.ts         MDP model, value iteration and engine
 │   ├── pomdp.ts       POMDP model, belief update and engine
 │   ├── calibration.ts calibration report and smoothing
+│   ├── commitment-planner.ts commitment-aware planner
+│   ├── execution-planner.ts execution-aware planner
+│   ├── attention-planner.ts attention-aware planner
+│   ├── decision-calibration.ts decision-level calibration
 │   ├── model-learning.ts count-based learner and MDP export
 │   ├── outcome.ts     outcome ledger and UCB learner
 │   ├── evaluation.ts  parity harness
@@ -102,6 +111,7 @@ packages/typescript/laix/src/
     ├── layer.ts       public Layer and action policy
     ├── live-context.ts host-driven detector loop
     ├── streaming.ts   stream session and checkpoints
+    ├── decision-timeline.ts decision timeline semantics
     ├── checkpoint.ts  in-memory and file checkpoint stores
     ├── simulator.ts   engine simulator and comparison
     ├── engine-bench.ts engine bench baseline
