@@ -13,9 +13,8 @@ decision.
 LAIX reads what is happening, what the host can do and what the host allows, then returns one
 decision: **wait, observe, guide, ask, act, verify or escalate**.
 
-Today that decision can be one-shot or streamed, executed with receipts and sagas, and improved with
-outcomes, causal attribution and calibration. The direction is a layer that stays live across the
-whole experience: every signal, every decision, every outcome in one coherent loop.
+LAIX keeps that loop coherent: the same reason, confidence, action and trail follow the experience
+as the moment changes. The experience keeps moving; LAIX keeps the next move decidable.
 
 | Start | |
 |---|---|
