@@ -14,6 +14,7 @@ examples/
 │   ├── 06-learn/        outcomes, causal attribution, calibration and model learning
 │   ├── 07-prove/        evaluation and LAIX-Bench
 │   └── 08-stores/       state, outcome-backed and file-backed stores
+09-live-loop/    stream, decision, execution, outcome, calibration and timeline
 └── typescript/
     └── (the same numbered stages)
 ```
@@ -156,6 +157,12 @@ py examples/python/01-decide/attention_bill_due.py
 | Save and load experience state | `state_store.py` | `state_store.mts` | `decide True` / `decide true` |
 | Record a measured outcome | `outcome_store.py` | `outcome_store.mts` | `helped -2.0 1` / `helped -2 1` |
 | Persist checkpoint and commitment files | `file_stores.py` | `file_stores.mts` | `1 send the draft` |
+
+## 09 Live loop
+
+| Story | Python | TypeScript | Output |
+|---|---|---|---|
+| Full loop: stream, decision, execution, outcome, calibration and timeline | `live_loop.py` | `live_loop.mts` | `safe act executed helped 1 0.8 1.0` |
 
 ## Parity notes
 

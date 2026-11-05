@@ -32,6 +32,9 @@ A task has a promise due, an irreversible action and a tight attention budget.
 The host owns the experience, data, UI, execution, storage and delivery. LAIX owns the decision and
 the trail.
 
+Runnable example: [`examples/python/09-live-loop/live_loop.py`](../../examples/python/09-live-loop/live_loop.py)
+and [`examples/typescript/09-live-loop/live_loop.mts`](../../examples/typescript/09-live-loop/live_loop.mts).
+
 ## Read next
 
 - [Core building blocks](../02-core/00-architecture.md)

@@ -19,6 +19,7 @@ import {
 import type { ExecutionWeights } from "./execution-planner.ts";
 import {
   approvalState,
+  attentionCost,
   attentionScoreOption,
   remainingBudget,
 } from "./attention-planner.ts";
@@ -175,6 +176,7 @@ export class LiveDecisionEngine {
         commitment_score: best.score.commitment,
         execution_score: best.score.execution,
         attention_score: best.score.attention,
+        attention_cost: attentionCost(best.attention.effect),
         commitments_fulfilled: [...best.commitment.fulfilled],
         commitments_violated: [...best.commitment.violated],
         commitments_created: [...best.commitment.created],

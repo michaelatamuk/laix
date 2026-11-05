@@ -15,9 +15,9 @@ decision.
 | Page | Answers |
 |---|---|
 | [What is LAIX?](01-start/what-is-laix.md) | What problem does it solve, in plain language? |
+| [Decision lifecycle](01-start/decision-lifecycle.md) | How one decision moves from moment to outcome? |
 | [Quickstart](01-start/quickstart.md) | How do I install it and make one decision? |
 | [Host integration](01-start/host-integration.md) | Where does LAIX plug in, and what does the host keep? |
-| [Decision lifecycle](01-start/decision-lifecycle.md) | How one decision moves from moment to outcome? |
 
 ## Core
 

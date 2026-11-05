@@ -67,6 +67,23 @@ def test_observe_stamps_the_stream_fields() -> None:
     assert session.pending == 1
 
 
+def test_observe_stamps_a_missing_decision_id() -> None:
+    def bare(request: DecisionRequest) -> list[Decision]:
+        return [
+            Decision(
+                verb="guide",
+                confidence=0.9,
+                reason_code="bare",
+                rationale=request.subject,
+            )
+        ]
+
+    session = StreamSession(bare, capacity=4)
+    out = session.observe(DecisionRequest(subject="a", at=at(0)))
+
+    assert out[0].decision_id
+
+
 def test_async_decisions_drain_and_close() -> None:
     async def run() -> list[Decision]:
         session = StreamSession(decider, capacity=4)

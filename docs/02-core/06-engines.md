@@ -323,6 +323,9 @@ cases.
 This is the integration the layer is built around: one decision can keep a promise, avoid an
 irreversible action and respect a human-attention budget at the same time.
 
+Runnable examples: [`examples/python/03-plan/live_engine.py`](../../examples/python/03-plan/live_engine.py)
+and the full loop in [`examples/python/09-live-loop/live_loop.py`](../../examples/python/09-live-loop/live_loop.py).
+
 ## Path A: external planner
 
 ```python

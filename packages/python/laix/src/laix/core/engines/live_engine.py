@@ -175,6 +175,7 @@ class LiveDecisionEngine:
                 "commitment_score": best.score.commitment,
                 "execution_score": best.score.execution,
                 "attention_score": best.score.attention,
+                "attention_cost": best.attention.effect.cost,
                 "commitments_fulfilled": list(best.commitment.fulfilled),
                 "commitments_violated": list(best.commitment.violated),
                 "commitments_created": list(best.commitment.created),

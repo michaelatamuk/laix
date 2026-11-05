@@ -39,14 +39,15 @@ LAIX turns those properties into one layer:
 - **One contract** — attention, action, follow-up, execution and outcomes return the same decision
   shape with a reason, confidence and trail.
 - **Training-free** — the current layer is policy/rules based; planners use a model the host supplies.
-- **Live context** — promises, execution risk, human attention, calibration and decision time are
-  part of the decision itself.
+- **Live context** — promises, execution risk and human attention are part of the decision;
+  calibration and decision time complete the loop.
 - **Host control** — LAIX decides; the host owns data, execution, storage and delivery.
 - **Evidence** — conformance vectors, bench, examples and Python/TypeScript parity.
 
 The contribution is the combination: a coherent decision layer for live experiences.
 `LiveDecisionEngine` makes that concrete: one plan can keep a promise, avoid an irreversible action
-and respect an attention budget at the same time.
+and respect an attention budget at the same time. Calibration and the decision timeline complete the
+loop around that plan.
 
 ## Model-optional
 

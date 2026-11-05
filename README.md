@@ -24,6 +24,7 @@ supplies.
 | [Quickstart](docs/01-start/quickstart.md) | install and make one decision |
 | [Lifecycle](docs/01-start/decision-lifecycle.md) | moment to outcome in one loop |
 | [Documentation](docs/README.md) | start, core, app kit, concepts and project |
+| [FAQ](docs/04-concepts/faq.md) | models, execution and novelty |
 | [Examples](examples/README.md) | runnable Python and TypeScript examples |
 
 ## One decision call
@@ -46,6 +47,8 @@ decision = decide(
 
 print(decision.verb, decision.reason_code, decision.score)
 ```
+
+The snippets assume the app has already built `situation` and `options`.
 
 An app can ask LAIX to choose between actions in the same way:
 
@@ -74,13 +77,21 @@ const [decision] = new Layer().decide({
 });
 ```
 
+For the integrated live decision, the same `DecisionProblem` goes to `LiveDecisionEngine`:
+
+```python
+from laix import LiveDecisionEngine
+
+plan = LiveDecisionEngine().solve(problem)
+```
+
 ## Why LAIX
 
 - **One decision contract** — attention, action, follow-up, execution and outcomes share the same
   shape, reasons, confidence and trail.
 - **Training-free** — policies and rules now; planners use a model the host supplies.
-- **Live context is part of the decision** — promises, execution risk, human attention, calibration
-  and decision time are first-class inputs.
+- **Live context is part of the decision** — promises, execution risk and human attention are scored
+  in the plan; calibration and decision time complete the loop.
 - **The host keeps control** — LAIX decides; the host owns data, execution, storage and delivery.
 - **Inspectable and testable** — reasons, trail, conformance vectors, bench and Python/TypeScript
   parity.
@@ -89,7 +100,8 @@ The novelty is the combination: a model-free decision layer that treats commitme
 risk, human attention, calibration and decision time as one contract.
 
 `LiveDecisionEngine` makes that concrete: one plan can keep a promise, avoid an irreversible action
-and respect an attention budget at the same time.
+and respect an attention budget at the same time. Calibration and the decision timeline complete the
+loop around that plan.
 
 ## What LAIX provides
 
@@ -99,20 +111,19 @@ and respect an attention budget at the same time.
 | Attention | which signal deserves attention now, and what to do with it |
 | Action policies | the next move from the options the app can afford |
 | Packaged policies | active perception, safety, replanning, allocation, negotiation, preference, verification and escalation |
-| Planners | [utility, commitment, execution, attention, integrated live, MDP and POMDP](docs/02-core/06-engines.md#what-an-mdp-is) behind `EnginePolicy` |
+| Planners | [utility, commitment, execution, attention, integrated live, MDP and POMDP](docs/02-core/06-engines.md) behind `EnginePolicy` |
 | Learning | outcome labels, rewards, bandits, causal attribution, calibration, decision calibration and model learning |
 | Streaming | event time, cadence, backpressure, revisions, checkpoints, timeline and sources |
 | Execution | receipts, idempotency, unknown outcomes, reconciliation, multi-step recovery and records |
 | Stores | state, checkpoints, commitments and outcomes through host-owned ports |
 | Delivery | a port and a receipt for the app’s own channel |
-| Proof | LAIX-Bench, live decision bench, conformance vectors, simulator, planner bench and metrics |
 
 ## Proof
 
 | Check | Result |
 |---|---|
 | Python tests | passed |
-| TypeScript tests | 171 passed |
+| TypeScript tests | 172 passed |
 | Attention conformance | 24/24 |
 | LAIX-Bench | 25/25 |
 | Live decision bench | `LiveDecisionEngine` matches 7/7 expected actions |
@@ -135,7 +146,7 @@ calls `Layer`. See [boundaries](docs/04-concepts/boundaries.md).
 
 | Path | Contents |
 |---|---|
-| `packages/python/laix` | the Python package: contracts, policies, engines, runtime, execution, outcomes and records |
+| `packages/python/laix` | the Python package: contracts, policies, planners, runtime, execution, outcomes and records |
 | `packages/typescript/laix` | the TypeScript package with the same decision surface |
 | `packages/contracts/` | the JSON Schema and behavioural vectors |
 | `examples/` | runnable Python and TypeScript examples, grouped by lifecycle |
@@ -160,6 +171,6 @@ CI runs the same checks in `.github/workflows/ci.yml`. Python and TypeScript exa
 
 ## Status
 
-Current release: `0.9.0`. Python and TypeScript share the same decision contract, policies, engines,
-streaming, execution, learning and app-kit surface. LAIX-Bench passes 25/25 cases; attention
-conformance passes 24/24 decisions.
+Current release: `0.9.0`. Python and TypeScript share the same decision contract, policies,
+planners, streaming, execution, learning and app-kit surface. See [Proof](#proof) for the current
+checks.

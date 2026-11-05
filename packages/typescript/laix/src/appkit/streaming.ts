@@ -664,6 +664,7 @@ export class StreamSession {
   ): Decision {
     const stamped: Decision = {
       ...decision,
+      decisionId: decision.decisionId || newId("DEC"),
       streamId: this.streamId,
       eventTime: request.at,
       deadline: request.deadline ?? decision.deadline ?? null,

@@ -114,6 +114,21 @@ describe("stream session", () => {
     assert.equal(session.stats.revised, 1);
   });
 
+  it("stamps a missing decision id", () => {
+    const bare = (input: DecisionRequest): Decision[] => [
+      {
+        verb: "guide",
+        confidence: 0.9,
+        reasonCode: "bare",
+        rationale: input.subject,
+      },
+    ];
+    const session = new StreamSession(bare);
+    const out = session.observe(request("a", 0));
+
+    assert.ok(out[0]!.decisionId);
+  });
+
   it("marks a missed deadline as provisional", () => {
     const clock = new ManualClock(new Date("2026-11-01T10:00:05Z"));
     const session = new StreamSession(decider, { clock: () => clock.now });

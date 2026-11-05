@@ -701,6 +701,8 @@ class StreamSession:
             target=request.target or decision.target,
             recipients=request.recipients or decision.recipients,
         )
+        if not stamped.decision_id:
+            stamped = replace(stamped, decision_id=new_id("DEC"))
         if self._trace and not stamped.trace_id:
             stamped = replace(stamped, trace_id=new_id("TRC"))
         return stamped
