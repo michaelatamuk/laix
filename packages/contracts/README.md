@@ -8,8 +8,8 @@ The contract is the source of truth. Code follows it.
 | `attention.v1.json` | 23 behavioural cases for the attention policy |
 | `attention-bench.v1.json` | 12 labelled cases for precision, hazard and recall |
 
-The decision shape is generated from the Python dataclasses in `laix.core.contracts` and committed
-as `packages/python/laix/src/laix/core/laix-v1.schema.json`. It ships inside the installed
+The decision shape is generated from the Python dataclasses in `laix.core.decisions` and committed
+as `packages/python/laix/src/laix/core/schema/laix-v1.schema.json`. It ships inside the installed
 package as the single decision schema.
 
 A runtime is valid when it passes the cases for the policy it implements. Scores are part of the
