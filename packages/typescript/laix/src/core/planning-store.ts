@@ -1,4 +1,4 @@
-import { CommitmentLedger, type Commitment } from "./planning.ts";
+import type { CommitmentLedger } from "./planning.ts";
 
 export interface CommitmentStore {
   save(key: string, ledger: CommitmentLedger): void;
@@ -13,51 +13,5 @@ export interface CommitmentFiles {
   remove(path: string): void;
 }
 
-export class InMemoryCommitmentStore implements CommitmentStore {
-  private items = new Map<string, string>();
-
-  save(key: string, ledger: CommitmentLedger): void {
-    this.items.set(key, JSON.stringify(ledger.toDict()));
-  }
-
-  load(key: string): CommitmentLedger | null {
-    const value = this.items.get(key);
-    return value === undefined
-      ? null
-      : CommitmentLedger.fromDict(
-          JSON.parse(value) as { commitments?: Commitment[] },
-        );
-  }
-
-  delete(key: string): void {
-    this.items.delete(key);
-  }
-}
-
-export class FileCommitmentStore implements CommitmentStore {
-  readonly directory: string;
-  private readonly files: CommitmentFiles;
-
-  constructor(directory: string, files: CommitmentFiles) {
-    this.directory = directory;
-    this.files = files;
-  }
-
-  private path(key: string): string {
-    const safe = key.replace(/[\\/:*?"<>|]/g, "_");
-    return this.files.join(this.directory, `${safe}.json`);
-  }
-
-  save(key: string, ledger: CommitmentLedger): void {
-    this.files.write(this.path(key), JSON.stringify(ledger.toDict(), null, 2));
-  }
-
-  load(key: string): CommitmentLedger | null {
-    const text = this.files.read(this.path(key));
-    return text === null ? null : CommitmentLedger.fromDict(JSON.parse(text));
-  }
-
-  delete(key: string): void {
-    this.files.remove(this.path(key));
-  }
-}
+export { FileCommitmentStore } from "./file-commitment-store.ts";
+export { InMemoryCommitmentStore } from "./in-memory-commitment-store.ts";

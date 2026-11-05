@@ -1,11 +1,7 @@
 import type { Decision } from "../core/contracts.ts";
+import { TimelineError } from "./timeline-error.ts";
 
-export class TimelineError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "TimelineError";
-  }
-}
+export { TimelineError };
 
 export interface TimelineReport {
   decisions: number;

@@ -1,11 +1,15 @@
 import type { ActionOption, Constraint, Situation } from "./contracts.ts";
-import type { DecisionEngine, DecisionProblem, Plan } from "./engine.ts";
+import type { DecisionEngine, DecisionProblem } from "./engine.ts";
 import type { Commitment } from "./planning.ts";
 import { UtilityEngine, constraintBlocker } from "./utility.ts";
 import { CommitmentAwareEngine } from "./commitment-planner.ts";
 import { ExecutionAwareEngine } from "./execution-planner.ts";
 import { AttentionAwareEngine } from "./attention-planner.ts";
 import { LiveDecisionEngine } from "./live-engine.ts";
+import { FirstOptionEngine } from "./first-option-engine.ts";
+import { HighestBenefitEngine } from "./highest-benefit-engine.ts";
+
+export { FirstOptionEngine, HighestBenefitEngine };
 
 export interface LiveCase {
   name: string;
@@ -51,48 +55,6 @@ export interface LiveBenchReport {
 
 function round(value: number): number {
   return Math.round(value * 1e6) / 1e6;
-}
-
-function plan(option: ActionOption, reasonCode: string, rationale: string): Plan {
-  return {
-    verb: option.verb,
-    confidence: 1,
-    reasonCode,
-    rationale,
-    actionId: option.id,
-    requiresApproval: Boolean(option.requiresApproval || option.destructive),
-    reversible: option.reversible ?? true,
-    score: option.expectedBenefit ?? 0.5,
-  };
-}
-
-function wait(reasonCode: string, rationale: string): Plan {
-  return { verb: "wait", confidence: 1, reasonCode, rationale, score: 0 };
-}
-
-export class FirstOptionEngine implements DecisionEngine {
-  readonly name = "first.v1";
-
-  solve(problem: DecisionProblem): Plan {
-    const option = problem.options[0];
-    if (!option) return wait("no_options", "there are no options");
-    return plan(option, "first_option", "the first option was taken");
-  }
-}
-
-export class HighestBenefitEngine implements DecisionEngine {
-  readonly name = "benefit.v1";
-
-  solve(problem: DecisionProblem): Plan {
-    if (!problem.options.length) return wait("no_options", "there are no options");
-    return plan(
-      [...problem.options].sort((left, right) =>
-        (right.expectedBenefit ?? 0.5) - (left.expectedBenefit ?? 0.5),
-      )[0]!,
-      "highest_benefit",
-      "the highest benefit was taken",
-    );
-  }
 }
 
 export function defaultPlanners(): Record<string, DecisionEngine> {

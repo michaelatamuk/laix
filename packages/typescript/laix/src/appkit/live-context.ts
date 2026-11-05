@@ -1,72 +1,10 @@
 import { clamp } from "../core/contracts.ts";
 import type { Detection, Detector, PerceptionEvent, PerceptionFrame } from "../core/perception.ts";
 import { ResourceScheduler, type Budget, type SensingOption } from "../core/resources.ts";
+import { CallableDetector } from "./callable-detector.ts";
+import { Frame } from "./frame.ts";
 
-export class CallableDetector implements Detector {
-  name: string;
-  tier: "cheap" | "deep";
-  cost: number;
-  latencyMs: number;
-  informationGain: number;
-  private handler: (event: PerceptionEvent) => Detection[];
-
-  constructor(name: string, handler: (event: PerceptionEvent) => Detection[], options: { tier?: "cheap" | "deep"; cost?: number; latencyMs?: number; informationGain?: number } = {}) {
-    this.name = name;
-    this.handler = handler;
-    this.tier = options.tier ?? "cheap";
-    this.cost = options.cost ?? 0;
-    this.latencyMs = options.latencyMs ?? 0;
-    this.informationGain = options.informationGain ?? 0;
-  }
-
-  detect(event: PerceptionEvent): Detection[] {
-    return this.handler(event);
-  }
-}
-
-class Frame implements PerceptionFrame {
-  subject: string;
-  at: string;
-  detections: Detection[];
-  allowed: string[];
-  skipped: Array<{ name: string; reason: string; gain: number }>;
-  uncertainty: number;
-  deepCalls: number;
-  cost: number;
-
-  constructor(
-    subject: string,
-    at: string,
-    detections: Detection[],
-    allowed: string[],
-    skipped: Array<{ name: string; reason: string; gain: number }>,
-    uncertainty: number,
-    deepCalls: number,
-    cost: number,
-  ) {
-    this.subject = subject;
-    this.at = at;
-    this.detections = detections;
-    this.allowed = allowed;
-    this.skipped = skipped;
-    this.uncertainty = uncertainty;
-    this.deepCalls = deepCalls;
-    this.cost = cost;
-  }
-
-  toDict(): Record<string, unknown> {
-    return {
-      subject: this.subject,
-      at: this.at,
-      detections: this.detections,
-      allowed: this.allowed,
-      skipped: this.skipped,
-      uncertainty: Number(this.uncertainty.toFixed(6)),
-      deepCalls: this.deepCalls,
-      cost: Number(this.cost.toFixed(6)),
-    };
-  }
-}
+export { CallableDetector };
 
 export class LiveContext {
   budget: Required<Budget>;

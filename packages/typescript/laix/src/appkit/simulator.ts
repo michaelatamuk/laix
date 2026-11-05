@@ -1,5 +1,8 @@
 import type { DecisionEngine, DecisionProblem } from "../core/engine.ts";
 import type { MdpModel } from "../core/mdp.ts";
+import { SimulationReport } from "./simulation-report.ts";
+
+export { SimulationReport };
 
 export type Step = (state: string, action: string) => [string, number];
 export type RandomStep = (
@@ -157,61 +160,6 @@ export interface EngineScore {
   totalReward: number;
   steps: number;
   optimalityGap: number | null;
-}
-
-export class SimulationReport {
-  readonly rows: EngineScore[];
-
-  constructor(rows: EngineScore[]) {
-    this.rows = rows;
-  }
-
-  summary(): Record<string, { runs: number; meanReward: number; meanGap: number }> {
-    const buckets = new Map<string, EngineScore[]>();
-    for (const row of this.rows) {
-      const items = buckets.get(row.engine) ?? [];
-      items.push(row);
-      buckets.set(row.engine, items);
-    }
-    return Object.fromEntries(
-      [...buckets.entries()]
-        .sort(([left], [right]) => (left < right ? -1 : 1))
-        .map(([engine, items]) => [
-          engine,
-          {
-            runs: items.length,
-            meanReward: round(
-              items.reduce((total, item) => total + item.totalReward, 0) / items.length,
-            ),
-            meanGap: round(
-              items.reduce((total, item) => total + (item.optimalityGap ?? 0), 0) /
-                items.length,
-            ),
-          },
-        ]),
-    );
-  }
-
-  best(): string | null {
-    const summary = this.summary();
-    const engines = Object.keys(summary);
-    if (!engines.length) return null;
-    return engines.sort((left, right) =>
-      summary[right]!.meanReward !== summary[left]!.meanReward
-        ? summary[right]!.meanReward - summary[left]!.meanReward
-        : left < right
-          ? -1
-          : 1,
-    )[0]!;
-  }
-
-  toDict(): Record<string, unknown> {
-    return {
-      rows: this.rows.map((item) => ({ ...item })),
-      summary: this.summary(),
-      best: this.best(),
-    };
-  }
 }
 
 export function compareEngines(

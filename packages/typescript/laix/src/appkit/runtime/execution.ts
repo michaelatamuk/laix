@@ -1,11 +1,12 @@
 import type { ActionOption, Decision, Receipt } from "../../core/contracts.ts";
 import { newId } from "../../core/contracts.ts";
+import { ApprovalRequired } from "./approval-required.ts";
 import { Saga, type SagaStep } from "./saga.ts";
+import { UnknownAction } from "./unknown-action.ts";
+
+export { ApprovalRequired, UnknownAction };
 
 export type Handler = (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>;
-
-export class ApprovalRequired extends Error {}
-export class UnknownAction extends Error {}
 
 export interface ExecutionStep {
   action: ActionOption;

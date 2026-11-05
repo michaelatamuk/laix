@@ -1,11 +1,12 @@
 import type { Decision, DecisionRequest } from "../contracts.ts";
+import { PolicyError } from "./policy-error.ts";
+
+export { PolicyError };
 
 export interface Policy {
   name: string;
   decide(request: DecisionRequest): Decision[];
 }
-
-export class PolicyError extends Error {}
 
 export class PolicyRegistry {
   private policies = new Map<string, Policy>();
