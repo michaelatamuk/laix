@@ -36,6 +36,7 @@ from .audit.proposal import (
 from ..core.sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from ..core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .live_context import CallableDetector, LiveContext
+from .streaming import ManualClock, StreamSession, StreamStats
 from .runtime import (
     ApprovalRequired,
     DecisionRuntime,
@@ -69,6 +70,7 @@ __all__ = [
     "InMemoryStateStore",
     "Layer",
     "LiveContext",
+    "ManualClock",
     "NullDelivery",
     "PerceptionEvent",
     "PerceptionFrame",
@@ -81,6 +83,8 @@ __all__ = [
     "SkillCall",
     "StateStore",
     "UnknownAction",
+    "StreamSession",
+    "StreamStats",
     "apply_proposal",
     "approve_proposal",
     "approve_record",

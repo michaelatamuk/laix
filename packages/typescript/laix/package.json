@@ -15,7 +15,7 @@
   "files": ["src", "types.d.ts", "README.md"],
   "sideEffects": false,
   "scripts": {
-    "test": "node --experimental-strip-types --test test/attention.test.ts test/conformance.test.ts test/record.test.ts test/record-replay.test.ts test/layer.test.ts test/parity.test.ts",
+    "test": "node --experimental-strip-types --test test/attention.test.ts test/conformance.test.ts test/record.test.ts test/record-replay.test.ts test/layer.test.ts test/parity.test.ts test/streaming.test.ts",
     "bench": "node --experimental-strip-types scripts/bench.mjs",
     "conformance": "node --experimental-strip-types scripts/conformance.mjs"
   }

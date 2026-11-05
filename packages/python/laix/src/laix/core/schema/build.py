@@ -15,6 +15,7 @@ from typing import Any, Union, get_args, get_origin, get_type_hints
 
 from ..decisions.request.payload.situation import HORIZONS, PHASES
 from ..decisions.trail.execution_receipt import EXECUTION_RECEIPT_STATUSES
+from ..decisions.response.decision import DECISION_STATUSES
 from ..outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
 from ..support.verbs import VERBS
 from ..support.version import SCHEMA_VERSION
@@ -28,6 +29,7 @@ _ENUMS: dict[str, list[str]] = {
     "phase": list(PHASES),
     "horizon": list(HORIZONS),
     "status": list(EXECUTION_RECEIPT_STATUSES),
+    "Decision.status": list(DECISION_STATUSES),
     "label": list(OUTCOME_LABELS),
     "direction": list(OUTCOME_DIRECTIONS),
 }
@@ -65,8 +67,9 @@ def _schema_for(value: Any) -> dict[str, Any]:
 
 def _field_schema(record: type, name: str, annotation: Any, required: bool) -> dict[str, Any]:
     schema = _schema_for(annotation)
-    if name in _ENUMS and _ENUMS[name]:
-        schema = {**schema, "enum": _ENUMS[name]}
+    enum = _ENUMS.get(f"{record.__name__}.{name}", _ENUMS.get(name, []))
+    if enum:
+        schema = {**schema, "enum": enum}
     if name in {"confidence", "expected_benefit", "risk", "interrupt_cost", "priority"}:
         schema = {**schema, "minimum": 0, "maximum": 1}
     if not required:

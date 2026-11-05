@@ -14,6 +14,7 @@ examples/
 ├── policies/          packaged policies and learned bandit
 ├── appkit/
 │   ├── runtime/       execution, resources, live context, stores
+│   ├── streaming/     event time, cadence, backpressure, revisions
 │   ├── audit/         proposal lifecycle
 │   ├── platform/      platform interface
 │   └── bench/         LAIX-Bench
@@ -22,6 +23,7 @@ examples/
 │   ├── action/
 │   ├── policies/
 │   ├── runtime/
+│   ├── streaming/
 │   ├── stores/
 │   ├── records/
 │   └── integration/
@@ -91,6 +93,7 @@ examples/
 |---|---|---|
 | `appkit/runtime/mission_adapter.py` | Task → request → decision → basis | `act valve host-calibrated True reason` |
 | `appkit/runtime/mission_execution.py` | Approval → execution → receipt | `executed approve the repair True` |
+| `appkit/streaming/stream_session.py` | One event → a decision stream → close | `guide worth_surfacing STR-DEMO final` |
 
 ## Integration
 
@@ -109,6 +112,7 @@ examples/
 | `typescript/policies/packs.mts` | All eight packaged policies. | one line per policy |
 | `typescript/policies/bandit.mts` | Outcome learning changes the next choice. | `manual automatic 0.75` |
 | `typescript/runtime/live_context.mts` | Cheap and deep detectors under a budget. | `[ 'motion', 'read-label' ] [ 'transcribe' ] 2 0.097` |
+| `typescript/streaming/stream_session.mts` | One event → a decision stream → close. | `guide worth_surfacing STR-DEMO final` |
 | `typescript/runtime/execution.mts` | Decide, execute, record a receipt. | `executed close the valve` |
 | `typescript/runtime/platform.mts` | Run a skill, approve, read events. | `7 skill.started,skill.finished fast true` |
 | `typescript/runtime/resources.mts` | Cheap/deep admission. | `[ 'camera', 'read-page' ] [ 'full-audio' ]` |

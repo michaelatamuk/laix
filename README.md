@@ -69,6 +69,9 @@ plugin interface and decision shape.
 Live Context adds a detector contract and a perception loop: cheap detectors run continuously, deep
 ones are admitted under a sub-second cost and latency budget, and each event produces a frame.
 
+`Layer.stream` adds the live loop around decisions: event time, a cooldown, a bounded buffer and
+revisioned decisions.
+
 Outcome learning turns measured labels into rewards. `UCBBandit` learns which arm works and
 `BanditPolicy` puts that learner behind the policy interface.
 

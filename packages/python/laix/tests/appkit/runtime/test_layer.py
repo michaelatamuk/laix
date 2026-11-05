@@ -51,3 +51,20 @@ def test_action_request_returns_the_same_shape() -> None:
     assert len(decisions) == 1
     assert decisions[0].verb in {"wait", "observe", "guide", "ask", "act", "verify", "escalate"}
     assert decisions[0].reason_code == "policy_rule"
+
+
+def test_layer_exposes_a_stream_session() -> None:
+    layer = Layer()
+    stream = layer.stream(stream_id="STR-1", capacity=2)
+    decisions = stream.observe(
+        DecisionRequest(
+            subject="one signal",
+            at="2026-11-01T10:00:00+00:00",
+            signals=(Signal(id="s-1", kind="k", severity="high", confidence=0.9),),
+            context=Context(now=datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc), quiet_hours=None),
+        )
+    )
+
+    assert len(decisions) == 1
+    assert decisions[0].stream_id == "STR-1"
+    assert decisions[0].status == "final"

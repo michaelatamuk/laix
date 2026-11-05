@@ -1,8 +1,8 @@
 # laix (TypeScript)
 
 One package for the LAIX decision layer: contracts, attention, action, the ten decision classes,
-Live Context, outcome learning, bench, platform, stores, proposals, delivery, execution and records.
-It mirrors the Python package capability for capability.
+Live Context, streaming, outcome learning, bench, platform, stores, proposals, delivery, execution
+and records. It mirrors the Python package capability for capability.
 
 The source is split into `src/core` and `src/appkit`. The package exports one entry point, `laix`.
 
@@ -31,6 +31,7 @@ registered with `registerPolicy` and selected with `usePolicy`.
 | Policy packs | `ActivePerceptionPolicy`, `SafetyConstrainedPolicy`, `ReplanningPolicy`, `AllocationPolicy`, `NegotiationPolicy`, `PreferenceElicitationPolicy`, `VerificationPolicy`, `EscalationPolicy` |
 | Learned policy | `BanditPolicy`, `UCBBandit`, `Arm`, `rewardForLabel` |
 | Live Context | `LiveContext`, `CallableDetector`, `Detector`, `Detection`, `PerceptionEvent` |
+| Streaming | `StreamSession`, `StreamStats`, `ManualClock` |
 | Runtime | `DecisionRuntime`, `ExecutionBridge`, `ExperienceState`, `ResourceScheduler` |
 | Platform | `Platform`, `InMemoryPlatform`, `SkillCall` |
 | Stores | `StateStore`, `InMemoryStateStore`, `OutcomeLedger`, `OutcomeStore` |

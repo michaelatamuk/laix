@@ -89,6 +89,13 @@ def coerce(value: Any) -> Decision:
             trace_id=str(value.get("trace_id", "")),
             deliver=bool(value.get("deliver", True)),
             record=bool(value.get("record", True)),
+            stream_id=str(value.get("stream_id", "")),
+            event_time=value.get("event_time"),
+            deadline=value.get("deadline"),
+            valid_until=value.get("valid_until"),
+            supersedes=value.get("supersedes"),
+            revision=int(value.get("revision") or 0),
+            status=str(value.get("status") or "final"),
         )
     raise PolicyError(f"policy returned an unsupported decision: {type(value).__name__}")
 

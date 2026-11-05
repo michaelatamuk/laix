@@ -28,6 +28,7 @@ from ..core.engines.policies import Policy, PolicyRegistry
 from ..core.engines.policies.implementations.action import ACTION_POLICY_VERSION
 from .runtime import DecisionRuntime
 from .runtime.execution import ExecutionBridge
+from .streaming import StreamSession
 
 
 class Layer:
@@ -69,6 +70,10 @@ class Layer:
             result = decide_core(request)
         self._decisions.extend(result)
         return result
+
+    def stream(self, **options: Any) -> StreamSession:
+        """Create a stream session backed by this layer's decision path."""
+        return StreamSession(self.decide, **options)
 
     def execute(
         self,

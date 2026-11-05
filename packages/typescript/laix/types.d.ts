@@ -211,6 +211,22 @@
     registerPolicy(name: string, policy: Policy): void;
     usePolicy(name: string): void;
     decide(request: DecisionRequest): Decision[];
+    stream(options?: {
+      streamId?: string;
+      capacity?: number;
+      onFull?: FullPolicy;
+      late?: LatePolicy;
+      cooldownMs?: number;
+      hysteresisMs?: number;
+      dedupeMs?: number;
+      maxDecisionsPerWindow?: number;
+      budgetWindowMs?: number;
+      latencySamples?: number;
+      trace?: boolean;
+      recorder?: (decision: Decision) => void;
+      clock?: () => Date;
+      idFactory?: () => string;
+    }): StreamSession;
     status(): Record<string, unknown>;
     explain(decision: Decision): Record<string, unknown>;
   }
@@ -226,6 +242,9 @@
     confidence?: number;
     confidenceSource?: string;
     calibrated?: boolean;
+    deadline?: string | null;
+    validUntil?: string | null;
+    eventId?: string;
   }
   export interface Decision {
     verb: Verb;
@@ -252,6 +271,13 @@
     confidenceSource?: string;
     calibrated?: boolean;
     attributes?: Record<string, unknown>;
+    streamId?: string;
+    eventTime?: string | null;
+    deadline?: string | null;
+    validUntil?: string | null;
+    supersedes?: string | null;
+    revision?: number;
+    status?: "final" | "provisional" | "superseded";
   }
   export interface ActionOption {
     id: string;
@@ -546,6 +572,86 @@
     undo(receiptId: string, options: { actor: string }): Receipt;
     measure(decisionId: string, options: { metric: string; before: number; after: number; attributed?: boolean; direction?: Outcome["direction"]; note?: string }): Outcome;
     trace(decisionId: string): Trace;
+  }
+
+  export type DecisionStatus = "final" | "provisional" | "superseded";
+  export type FullPolicy = "latest_wins" | "drop_oldest" | "drop_newest";
+  export type LatePolicy = "drop" | "accept";
+  export const DECISION_STATUSES: readonly DecisionStatus[];
+  export const FULL_POLICIES: readonly FullPolicy[];
+  export const LATE_POLICIES: readonly LatePolicy[];
+  export class StreamStats {
+    observed: number;
+    decided: number;
+    late: number;
+    throttled: number;
+    dropped: number;
+    expired: number;
+    suppressed: number;
+    shed: number;
+    duplicates: number;
+    refineTimeouts: number;
+    provisional: number;
+    revised: number;
+    latencyP50: number;
+    latencyP95: number;
+    latencyP99: number;
+    snapshot(): Record<string, number>;
+    copy(): StreamStats;
+  }
+  export class ManualClock {
+    now: Date;
+    constructor(now?: Date);
+    set(value: Date): void;
+  }
+  export class StreamSession {
+    constructor(
+      decide: (request: DecisionRequest) => Decision[],
+      options?: {
+        streamId?: string;
+        capacity?: number;
+        onFull?: FullPolicy;
+        late?: LatePolicy;
+        cooldownMs?: number;
+        hysteresisMs?: number;
+        dedupeMs?: number;
+        maxDecisionsPerWindow?: number;
+        budgetWindowMs?: number;
+        latencySamples?: number;
+        trace?: boolean;
+        recorder?: (decision: Decision) => void;
+        clock?: () => Date;
+        idFactory?: () => string;
+      },
+    );
+    readonly streamId: string;
+    readonly closed: boolean;
+    readonly pending: number;
+    readonly stats: StreamStats;
+    observe(request: DecisionRequest, options?: { status?: DecisionStatus; force?: boolean }): Decision[];
+    observeWait(request: DecisionRequest, options?: { status?: DecisionStatus; force?: boolean }): Promise<Decision[]>;
+    revise(previous: Decision, request: DecisionRequest, options?: { status?: DecisionStatus }): Decision[];
+    reviseWith(
+      previous: Decision,
+      request: DecisionRequest,
+      decisions: Decision[],
+      options?: { status?: DecisionStatus },
+    ): Decision[];
+    observeRefined(
+      request: DecisionRequest,
+      refine: (request: DecisionRequest) => Promise<Decision[]>,
+      options?: { status?: DecisionStatus; timeoutMs?: number },
+    ): Promise<Decision[]>;
+    trace(decisionId: string): Trace;
+    replay(requests: Iterable<DecisionRequest>): Decision[];
+    snapshot(): Record<string, unknown>;
+    restore(snapshot: Record<string, unknown>): void;
+    feed(
+      events: AsyncIterable<DecisionRequest>,
+      options?: { coalesceMs?: number },
+    ): AsyncIterableIterator<Decision>;
+    decisions(): AsyncIterableIterator<Decision>;
+    close(): void;
   }
 
   export interface Case { id: string; request: unknown; expected?: Record<string, unknown>[]; }

@@ -23,7 +23,7 @@ from .request import (
 )
 from .response import EvidenceRef, Intent, ScoreBreakdown
 from .normalise import coerce, from_attention
-from .response.decision import Decision
+from .response.decision import DECISION_STATUSES, Decision
 from .trail.execution_receipt import EXECUTION_RECEIPT_STATUSES, ExecutionReceipt
 from .trail.trace import Trace
 
@@ -35,6 +35,7 @@ __all__ = [
     "Constraint",
     "Decision",
     "DecisionRequest",
+    "DECISION_STATUSES",
     "EvidenceRef",
     "Goal",
     "HORIZONS",

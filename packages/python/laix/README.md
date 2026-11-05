@@ -78,6 +78,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `appkit/runtime/execution.py` | approval gate, execute, cancel, undo, receipts |
 | `core/sensing/` | detector, detection and frame records |
 | `appkit/live_context/` | host-driven detector loop and function-backed detector |
+| `appkit/streaming/` | stream session: event time, cadence, backpressure, revisions |
 | `appkit/runtime/state.py` | experience state: goals, phase, beliefs, decay, expiry |
 | `appkit/runtime/state_store.py`, `in_memory_state_store.py` | state store contract and in-memory store |
 | `core/engines/resources/` | cheap/deep call admission under budget |

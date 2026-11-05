@@ -15,6 +15,7 @@ import type {
   Verb,
 } from "../core/contracts.ts";
 import { PolicyRegistry, type Policy } from "../core/policies/registry.ts";
+import { StreamSession, type StreamSessionOptions } from "./streaming.ts";
 
 
 
@@ -184,6 +185,10 @@ export class Layer {
       score: decision.score,
       policy: decision.policyVersion ?? this.policy?.name ?? "built-in",
     };
+  }
+
+  stream(options: StreamSessionOptions = {}): StreamSession {
+    return new StreamSession((request) => this.decide(request), options);
   }
 
   decide(request: DecisionRequest): Decision[] {

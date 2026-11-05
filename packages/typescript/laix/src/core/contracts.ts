@@ -59,6 +59,13 @@ export interface Decision {
   confidenceSource?: string;
   calibrated?: boolean;
   attributes?: Record<string, unknown>;
+  streamId?: string;
+  eventTime?: string | null;
+  deadline?: string | null;
+  validUntil?: string | null;
+  supersedes?: string | null;
+  revision?: number;
+  status?: "final" | "provisional" | "superseded";
 }
 
 export interface DecisionRequest {
@@ -72,7 +79,9 @@ export interface DecisionRequest {
   confidence?: number;
   confidenceSource?: string;
   calibrated?: boolean;
-  attributes?: Record<string, unknown>;
+  deadline?: string | null;
+  validUntil?: string | null;
+  eventId?: string;
 }
 
 export interface Observation {

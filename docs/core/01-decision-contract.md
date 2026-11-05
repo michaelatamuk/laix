@@ -51,6 +51,9 @@ DecisionRequest(
 )
 ```
 
+A request also accepts `event_id` for stream dedupe, plus `deadline` and `valid_until`. A one-shot
+decision may leave them empty; a stream session copies the deadline and validity onto the response.
+
 ## The response
 
 The response is a `Decision`; it lives under `core/decisions/response/`.
@@ -113,6 +116,13 @@ guide worth_surfacing 84.0
 | `calibrated` | Whether the confidence is a calibrated probability. |
 | `alternatives` | Other options, their score and why they lost. |
 | `constraints_applied` | Hard limits that changed the option set. |
+| `stream_id` | The stream session that produced it; empty for a one-shot decision. |
+| `event_time` | When the event happened, not when it was processed. |
+| `deadline` | When the decision had to be made. |
+| `valid_until` | How long the decision applies. |
+| `supersedes` | The decision this one replaces. |
+| `revision` | `0` for the first decision, then `1`, `2`, … |
+| `status` | `final`, `provisional` or `superseded`. |
 
 ## The seven verbs
 

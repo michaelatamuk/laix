@@ -27,6 +27,9 @@ class DecisionRequest:
     confidence: float | None = None
     confidence_source: str = ""
     calibrated: bool = False
+    deadline: str | None = None
+    valid_until: str | None = None
+    event_id: str = ""
 
 
 __all__ = ["DecisionRequest"]

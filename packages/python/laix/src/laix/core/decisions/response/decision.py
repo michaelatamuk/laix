@@ -13,6 +13,10 @@ from .payload.evidence_ref import EvidenceRef
 from .payload.intent import Intent
 
 
+DECISION_STATUSES = ("final", "provisional", "superseded")
+"""Lifecycle of a decision that belongs to a stream."""
+
+
 @dataclass(frozen=True, slots=True)
 class Decision:
     """The one decision shape returned by every policy, ``decide`` and ``Layer``."""
@@ -42,11 +46,20 @@ class Decision:
     alternatives: tuple[dict[str, Any], ...] = ()
     constraints_applied: tuple[str, ...] = ()
     attributes: dict[str, Any] = field(default_factory=dict)
+    stream_id: str = ""
+    event_time: str | None = None
+    deadline: str | None = None
+    valid_until: str | None = None
+    supersedes: str | None = None
+    revision: int = 0
+    status: str = "final"
     schema_version: str = SCHEMA_VERSION
 
     def __post_init__(self) -> None:
         if self.verb not in VERBS:
             raise ValueError(f"unknown verb: {self.verb!r}")
+        if self.status not in DECISION_STATUSES:
+            raise ValueError(f"unknown decision status: {self.status!r}")
         object.__setattr__(self, "confidence", clamp(self.confidence))
 
     def basis(self) -> tuple[dict[str, Any], ...]:
@@ -78,5 +91,24 @@ class Decision:
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "Decision":
+        """Rebuild a decision from ``to_dict`` output."""
+        known = cls.__dataclass_fields__
+        data = {key: value for key, value in payload.items() if key in known}
+        data["evidence"] = tuple(
+            item if isinstance(item, EvidenceRef) else EvidenceRef(**item)
+            for item in data.get("evidence", ())
+        )
+        intent = data.get("intent")
+        if isinstance(intent, dict):
+            data["intent"] = Intent(**intent)
+        breakdown = data.get("breakdown")
+        if isinstance(breakdown, dict):
+            data["breakdown"] = ScoreBreakdown(**breakdown)
+        data["alternatives"] = tuple(data.get("alternatives", ()))
+        data["constraints_applied"] = tuple(data.get("constraints_applied", ()))
+        return cls(**data)
 
-__all__ = ["Decision"]
+
+__all__ = ["DECISION_STATUSES", "Decision"]
