@@ -24,14 +24,12 @@ block-beta
     end
 
     block:decide_layer
-        columns 3
+        columns 4
         decide_layer_label["Decide"]
         attention["Attention<br/>what matters now?"]
-        block:policy_group
-            columns 1
-            policies["Policies<br/>what should I do?"]
-            planners["Planners<br/>utility · MDP · POMDP<br/>commitment · execution · attention"]
-        end
+        policies["Policies<br/>what should I do?"]
+        planners["Planners<br/>utility · MDP · POMDP<br/>commitment · execution · attention"]
+        policies -- "wraps" --> planners
     end
 
     block:constrain_layer
