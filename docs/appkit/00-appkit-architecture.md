@@ -1,44 +1,45 @@
 # App-kit building blocks
 
 The core map is [Core building blocks](../core/00-core-architecture.md). This page is the optional
-layer around it. Read top-down: each row uses the rows below it.
+layer around it, grouped by what each piece is: an API, a runtime, a data shape, a port or a tool.
 
 ```mermaid
 block-beta
     columns 1
 
-    block:surface
+    block:surface_group
         columns 3
         surface_label["Surface"]
         layer["Layer<br/>one decision"]
         stream["StreamSession<br/>live decisions"]
     end
 
-    block:runtime
+    block:runtime_group
         columns 4
         runtime_label["Runtime"]
         runtime["DecisionRuntime"]
         execution["ExecutionBridge"]
-        state["ExperienceState"]
-    end
-
-    block:records
-        columns 4
-        records_label["Records"]
-        record["DecisionRecord"]
-        outcomes["OutcomeLedger"]
-        stores["StateStore"]
-    end
-
-    block:connectors
-        columns 4
-        connectors_label["Connectors"]
         live["LiveContext"]
-        platform["Platform"]
-        delivery["Delivery"]
     end
 
-    block:proof
+    block:data_group
+        columns 5
+        data_label["Data"]
+        state["ExperienceState"]
+        record["DecisionRecord"]
+        outcomes["Outcome"]
+        receipt["ExecutionReceipt"]
+    end
+
+    block:ports_group
+        columns 4
+        ports_label["Ports"]
+        state_store["StateStore"]
+        platform["Platform"]
+        delivery["DeliveryPort"]
+    end
+
+    block:proof_group
         columns 3
         proof_label["Proof"]
         bench["Bench"]
@@ -47,50 +48,51 @@ block-beta
 
     style surface_label fill:transparent,stroke:transparent,font-size:22px,font-weight:bold
     style runtime_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-    style records_label fill:transparent,stroke:transparent,font-weight:bold
-    style connectors_label fill:transparent,stroke:transparent,font-weight:bold
+    style data_label fill:transparent,stroke:transparent,font-weight:bold
+    style ports_label fill:transparent,stroke:transparent,font-weight:bold
     style proof_label fill:transparent,stroke:transparent,font-weight:bold
 ```
 
 ## The rows
 
-| Row block | Contains | What it is |
-|---|---|---|
-| **Surface** | Layer · StreamSession | How a host calls LAIX. |
-| **Runtime** | DecisionRuntime · ExecutionBridge · ExperienceState | How one decision becomes an action. |
-| **Records** | DecisionRecord · OutcomeLedger · StateStore | What is kept after the decision. |
-| **Connectors** | LiveContext · Platform · Delivery | How the host supplies context and receives actions. |
-| **Proof** | Bench · Metrics | How the kit is tested and observed. |
+| Row | Kind | Contains | What it is |
+|---|---|---|---|
+| **Surface** | API | Layer · StreamSession | How a host calls LAIX. |
+| **Runtime** | Components | DecisionRuntime · ExecutionBridge · LiveContext | What runs a decision, an action and perception. |
+| **Data** | Shapes | ExperienceState · DecisionRecord · Outcome · ExecutionReceipt | What is carried or kept. |
+| **Ports** | Interfaces | StateStore · Platform · DeliveryPort | What the host implements or supplies. |
+| **Proof** | Tools | Bench · Metrics | How the kit is tested and observed. |
 
 ## What each part contains
 
-| Row | Part | Contains | Built on |
+| Row | Part | Kind | Contains |
 |---|---|---|---|
-| Surface | **Layer** | decide, execute, measure, deliver | Runtime, records, delivery |
-| Surface | **StreamSession** | observe, decisions, feed, windows, revisions, checkpoints | Core, runtime |
-| Runtime | **DecisionRuntime** | policy, state, execution, outcome | Core, execution, state |
-| Runtime | **ExecutionBridge** | approval, idempotency, execute, cancel, undo, unknown, reconcile | Core |
-| Runtime | **ExperienceState** | goals, phase, beliefs, TTL, history | Core |
-| Records | **DecisionRecord** | draft, approve, reject, execute, undo, verify | Core |
-| Records | **OutcomeLedger** | measured outcome per decision | Core |
-| Records | **StateStore** | snapshot save, load, delete | Core |
-| Connectors | **LiveContext** | detectors, admission, frames | Core |
-| Connectors | **Platform** | skills, events, approvals | Core |
-| Connectors | **Delivery** | port, receipt, null delivery | Core |
-| Proof | **Bench** | deterministic cases, suites, report | Core |
-| Proof | **Metrics** | Prometheus counters from stream stats | StreamSession |
+| Surface | **Layer** | API | decide, execute, measure, deliver |
+| Surface | **StreamSession** | API | observe, decisions, feed, windows, revisions, checkpoints |
+| Runtime | **DecisionRuntime** | Component | policy, state, execution, outcome |
+| Runtime | **ExecutionBridge** | Component | approval, idempotency, execute, cancel, undo, unknown, reconcile |
+| Runtime | **LiveContext** | Component | detectors, admission, frames |
+| Data | **ExperienceState** | Shape | goals, phase, beliefs, TTL, history |
+| Data | **DecisionRecord** | Shape | draft, approve, reject, execute, undo, verify |
+| Data | **Outcome** | Shape | measurement, direction, attribution, label |
+| Data | **ExecutionReceipt** | Shape | status, actor, result, error, idempotency key |
+| Ports | **StateStore** | Interface | save, load, delete a state snapshot |
+| Ports | **Platform** | Interface | skills, events, approvals |
+| Ports | **DeliveryPort** | Interface | deliver a result and return a receipt |
+| Proof | **Bench** | Tool | deterministic cases, suites, report |
+| Proof | **Metrics** | Tool | Prometheus counters from stream stats |
 
 ## Reading the app kit
 
 - **Surface** — `Layer` answers one request; `StreamSession` answers a stream over time. Both use the
   same core decision.
-- **Runtime** — the runtime links a policy to state, execution and outcome. The execution bridge is
-  the write boundary: approval, idempotency, unknown outcomes and reconciliation.
-- **Records** — a decision record is the audit lifecycle; the outcome ledger is what was measured;
-  the state store is how a host resumes state.
-- **Connectors** — Live Context supplies perception, Platform runs host skills, Delivery carries the
-  result to the host's channel.
-- **Proof** — Bench checks decisions; Metrics exposes stream counters.
+- **Runtime** — `DecisionRuntime` links a policy to state, execution and outcome; `ExecutionBridge` is
+  the write boundary; `LiveContext` runs detectors and returns frames.
+- **Data** — `ExperienceState` is live state, `DecisionRecord` is the audit lifecycle, `Outcome` is
+  what was measured, `ExecutionReceipt` is what the host returned.
+- **Ports** — the host supplies a state store, a platform and a delivery port. They are interfaces,
+  not implementations.
+- **Proof** — the bench checks decisions; metrics exposes stream counters.
 
 The app kit is optional. A host that only needs the answer calls `decide` or `Layer`; a host that
 also executes, records, streams or delivers adds the rest.
