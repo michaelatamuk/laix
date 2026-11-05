@@ -8,11 +8,15 @@ direct action or wait instead of interrupting a person again.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import Any
 
 from ..decisions import ActionOption
 from ..support.values import clamp
+from ._attention_row import _Row
+from .attention_budget import AttentionBudget
+from .attention_effect import AttentionEffect
+from .attention_score import AttentionScore
+from .attention_weights import AttentionWeights
 from .engine import DecisionProblem, Plan
 from .utility import (
     UtilityEngine,
@@ -20,93 +24,6 @@ from .utility import (
     _approval_required,
     _constraint_blocker,
 )
-
-@dataclass
-class AttentionBudget:
-    """A movable human-attention budget shared across decisions."""
-
-    total: float = 1.0
-    spent: float = 0.0
-
-    def __post_init__(self) -> None:
-        if self.total < 0:
-            raise ValueError("attention budget total must not be negative")
-        if self.spent < 0:
-            raise ValueError("attention budget spent must not be negative")
-
-    def remaining(self) -> float:
-        return max(0.0, self.total - self.spent)
-
-    def spend(self, amount: float) -> float:
-        if amount < 0:
-            raise ValueError("attention spend must not be negative")
-        self.spent = min(self.total, self.spent + amount)
-        return self.remaining()
-
-    def to_dict(self) -> dict[str, float]:
-        return {"total": self.total, "spent": self.spent}
-
-    @classmethod
-    def from_dict(cls, payload: dict[str, object]) -> "AttentionBudget":
-        return cls(
-            total=float(payload.get("total", 1.0)),
-            spent=float(payload.get("spent", 0.0)),
-        )
-
-
-@dataclass(frozen=True, slots=True)
-class AttentionWeights:
-    """How much each kind of human attention costs."""
-
-    interrupt: float = 0.4
-    approval: float = 0.25
-    escalation: float = 0.3
-    exhausted: float = 1.0
-
-    def __post_init__(self) -> None:
-        for name in ("interrupt", "approval", "escalation", "exhausted"):
-            if getattr(self, name) < 0:
-                raise ValueError(f"attention weight {name!r} must not be negative")
-
-
-@dataclass(frozen=True, slots=True)
-class AttentionEffect:
-    """The human-attention cost of one option."""
-
-    interrupt_cost: float = 0.0
-    requires_approval: bool = False
-    escalates: bool = False
-    interactive: bool = False
-    approval_state: str | None = None
-
-    def __post_init__(self) -> None:
-        object.__setattr__(self, "interrupt_cost", clamp(self.interrupt_cost))
-
-    @property
-    def cost(self) -> float:
-        """A comparable attention cost: interruption, approval, escalation and contact."""
-        return (
-            self.interrupt_cost
-            + (0.5 if self.requires_approval else 0.0)
-            + (0.5 if self.escalates else 0.0)
-            + (0.5 if self.interactive else 0.0)
-        )
-
-    @property
-    def requires_attention(self) -> bool:
-        return self.cost > 0.0 or self.requires_approval or self.escalates
-
-
-@dataclass(frozen=True, slots=True)
-class AttentionScore:
-    """The utility and attention parts of one option's score."""
-
-    utility: float
-    attention: float
-    total: float
-    effect: AttentionEffect
-    remaining: float
-    blocked: str | None = None
 
 
 def attention_effect(
@@ -224,14 +141,6 @@ def _score_option(
         remaining=max(0.0, remaining - effect.cost),
         blocked=blocked,
     )
-
-
-@dataclass(frozen=True, slots=True)
-class _Row:
-    option: ActionOption
-    score: AttentionScore
-    feasible: bool
-    blocker: str | None
 
 
 class AttentionAwareEngine:

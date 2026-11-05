@@ -8,11 +8,9 @@ respect an attention budget at the same time.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any
 
-from ..decisions import ActionOption
 from ..support.time import parse_iso
 from ..support.values import clamp
 from .attention_planner import (
@@ -26,7 +24,9 @@ from .commitment_planner import (
     _commitments,
     _score_option as commitment_score,
 )
+from ._live_row import _Row
 from .engine import DecisionProblem, Plan
+from .live_score import LiveScore
 from .execution_planner import (
     ExecutionWeights,
     _receipt_status,
@@ -38,28 +38,6 @@ from .utility import (
     _approval_required,
     _constraint_blocker,
 )
-
-
-@dataclass(frozen=True, slots=True)
-class LiveScore:
-    """The utility, commitment, execution and attention parts of one option."""
-
-    utility: float
-    commitment: float
-    execution: float
-    attention: float
-    total: float
-
-
-@dataclass(frozen=True, slots=True)
-class _Row:
-    option: ActionOption
-    score: LiveScore
-    feasible: bool
-    blocker: str | None
-    commitment: Any
-    execution: Any
-    attention: Any
 
 
 class LiveDecisionEngine:

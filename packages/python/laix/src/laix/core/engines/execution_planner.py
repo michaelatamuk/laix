@@ -8,60 +8,21 @@ the execution facts come from the option and from the host's constraints.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import Any
 
 from ..decisions import ActionOption
 from ..support.values import clamp
+from ._execution_row import _Row
 from .engine import DecisionProblem, Plan
+from .execution_effect import ExecutionEffect
+from .execution_score import ExecutionScore
+from .execution_weights import ExecutionWeights
 from .utility import (
     UtilityEngine,
     UtilityModel,
     _approval_required,
     _constraint_blocker,
 )
-
-
-@dataclass(frozen=True, slots=True)
-class ExecutionWeights:
-    """How much each execution risk subtracts from the utility score."""
-
-    irreversible: float = 0.35
-    unknown: float = 0.5
-    approval: float = 0.15
-    recovery: float = 0.25
-
-    def __post_init__(self) -> None:
-        for name in ("irreversible", "unknown", "approval", "recovery"):
-            if getattr(self, name) < 0:
-                raise ValueError(f"execution weight {name!r} must not be negative")
-
-
-@dataclass(frozen=True, slots=True)
-class ExecutionEffect:
-    """The execution facts that change an option's score."""
-
-    unknown_risk: float = 0.0
-    recovery_cost: float = 0.0
-
-    def __post_init__(self) -> None:
-        object.__setattr__(self, "unknown_risk", clamp(self.unknown_risk))
-        object.__setattr__(self, "recovery_cost", max(0.0, float(self.recovery_cost)))
-
-
-@dataclass(frozen=True, slots=True)
-class ExecutionScore:
-    """The utility and execution parts of one option's score."""
-
-    utility: float
-    execution: float
-    total: float
-    irreversible: bool = False
-    unknown_risk: float = 0.0
-    recovery_cost: float = 0.0
-    requires_approval: bool = False
-    receipt_status: str | None = None
-    blocked: str | None = None
 
 
 def execution_effect(option: ActionOption) -> ExecutionEffect:
@@ -150,14 +111,6 @@ def _score_option(
         requires_approval=requires_approval,
         receipt_status=receipt_status,
     )
-
-
-@dataclass(frozen=True, slots=True)
-class _Row:
-    option: ActionOption
-    score: ExecutionScore
-    feasible: bool
-    blocker: str | None
 
 
 class ExecutionAwareEngine:
