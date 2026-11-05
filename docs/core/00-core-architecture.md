@@ -99,3 +99,6 @@ outcome → label → feedback → better attention
 - **Engine choice** — `signals + context` → Attention; `situation + options` → Action policy. A packaged or custom policy is selected explicitly with `policy=...`.
 - **Engines** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation, plus `EnginePolicy`, `RulePolicy` and `TargetedPolicy`; Resources set sensing limits.
 - **Foundation** — Schema validates records; Sensing defines detectors, events and frames; Support provides shared types and helpers.
+
+Streaming, execution, records and delivery are app-kit blocks, not core: see
+[App-kit building blocks](../appkit/00-appkit-architecture.md).

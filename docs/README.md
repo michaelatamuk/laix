@@ -41,6 +41,7 @@ The split follows the code:
 
 | Page | Covers |
 |---|---|
+| [appkit/00-appkit-architecture.md](appkit/00-appkit-architecture.md) | the app-kit building blocks and how they stack |
 | [appkit/integration.md](appkit/integration.md) | install, adapter, rollout and pinning |
 | [appkit/live-context.md](appkit/live-context.md) | detectors, admission and frames |
 | [appkit/platform.md](appkit/platform.md) | the platform contract |
