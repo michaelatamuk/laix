@@ -18,7 +18,7 @@ block-beta
         columns 4
         contract_label["Contract"]
         request["Decision request<br/>what is happening + what the app can do"]
-        response["Decision response<br/>verb · reason · confidence · action"]
+        response["Decision response<br/>verb · reason · confidence · action · target"]
         trail["Execution trail<br/>receipt · trace"]
     end
 
@@ -64,7 +64,9 @@ engine. With `policy=`, it uses the policy you pass.
 | `situation` + `options` | Action policy |
 | `policy=...` | The policy you pass |
 
-Packaged and custom policies are always selected explicitly.
+Packaged and custom policies are always selected explicitly. An `EnginePolicy` is a custom policy:
+it wraps JEV, an optimizer or a planner behind the same interface. `RulePolicy` and
+`TargetedPolicy` are the authoring and target wrappers.
 
 ## Learning loop
 
@@ -81,10 +83,10 @@ outcome → label → feedback → better attention
 | Capabilities | **Learn from outcomes** | outcome → reward → learner → better policy; outcome → label → feedback → better attention | Support |
 | Capabilities | **Evaluate** | test cases, comparison, reports, benchmarks | Contract, engines, support |
 | Contract | **Decision request** | what is happening and what the app can do; signals + context, or situation + options | Support |
-| Contract | **Decision response** | verb, reason, confidence, action, evidence, approval | Support |
+| Contract | **Decision response** | verb, reason, confidence, action, evidence, approval, target, recipients | Support |
 | Contract | **Execution trail** | execution receipt, trace | Support |
 | Engines | **Attention** | signals, priority, timing | Contract, support |
-| Engines | **Policies** | action, safety, replanning, allocation, negotiation, preference, verification, escalation | Contract, learning, support |
+| Engines | **Policies** | eight packs, engine adapter, rule and target wrappers | Contract, learning, support |
 | Engines | **Resources** | budget, sensing options, limits | Support |
 | Foundation | **Schema** | records, validation | Contract, learning, support |
 | Foundation | **Sensing** | detector, detection, event, frame | Support |
@@ -93,7 +95,7 @@ outcome → label → feedback → better attention
 ## Reading the stack
 
 - **Capabilities** — Decide chooses explicitly or automatically; Learn turns outcomes into a better policy or attention; Evaluate checks the engines.
-- **Contract** — the request describes what is happening and what the app can do; the response carries the verb, reason, confidence, action and approval; the trail records what happened.
+- **Contract** — the request describes what is happening and what the app can do; the response carries the verb, reason, confidence, action, approval and target; the trail records what happened.
 - **Engine choice** — `signals + context` → Attention; `situation + options` → Action policy. A packaged or custom policy is selected explicitly with `policy=...`.
-- **Engines** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation; Resources set sensing limits.
+- **Engines** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation, plus `EnginePolicy`, `RulePolicy` and `TargetedPolicy`; Resources set sensing limits.
 - **Foundation** — Schema validates records; Sensing defines detectors, events and frames; Support provides shared types and helpers.
