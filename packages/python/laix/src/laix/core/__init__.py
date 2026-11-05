@@ -31,9 +31,11 @@ from .engines.commitment_planner import (
 )
 from .engines.attention_planner import (
     AttentionAwareEngine,
+    AttentionBudget,
     AttentionEffect,
     AttentionScore,
     AttentionWeights,
+    approval_state,
     attention_effect,
 )
 from .engines.execution_planner import (
@@ -53,6 +55,7 @@ from .engines.live_bench import (
     run_live_bench,
 )
 from .engines.decision_calibration import (
+    CalibratedPolicy,
     DecisionCalibrationReport,
     DecisionCalibrationSample,
     calibrate_decision,
@@ -187,6 +190,7 @@ __all__ = [
     "RECORD_NAMES",
     "CONSTRAINT_KINDS",
     "Case",
+    "CalibratedPolicy",
     "CalibrationBin",
     "CalibrationReport",
     "CalibrationSample",
@@ -287,9 +291,11 @@ __all__ = [
     "RECORDS",
     "ExecutionReceipt",
     "AttentionAwareEngine",
+    "AttentionBudget",
     "AttentionEffect",
     "AttentionScore",
     "AttentionWeights",
+    "approval_state",
     "attention_effect",
     "ExecutionAwareEngine",
     "ExecutionEffect",

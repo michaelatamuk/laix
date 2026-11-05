@@ -205,7 +205,11 @@ The engine adds:
 - a reward for fulfilling an open commitment;
 - an extra reward when the commitment is due;
 - a penalty for violating a commitment;
-- a penalty for creating a new one, because it reduces future flexibility.
+- a penalty for creating a new one, because it reduces future flexibility;
+- a penalty for trying to fulfill a commitment whose dependencies are not done.
+
+The reward scales with `Commitment.priority`, so a high-priority promise counts more. A blocked
+commitment is not counted as fulfilled until its dependencies are `done`.
 
 `CommitmentAwareEngine` returns the same `Plan`. It is deterministic and training-free; the
 commitments and due times come from the host. The effect can be written under `commitments` or at
@@ -234,6 +238,21 @@ The engine subtracts:
 - a penalty for unknown outcome risk;
 - a penalty for an approval step;
 - a penalty for recovery cost.
+
+The host can also pass execution state in the request attributes:
+
+```python
+DecisionProblem(
+    ...,
+    attributes={
+        "execution_receipts": receipts,      # ExecutionReceipt objects
+        "execution_state": {"archive": "unknown"},
+    },
+)
+```
+
+An `unknown` receipt raises the unknown risk, a `failed`, `refused`, `cancelled` or `undone` receipt
+raises the recovery cost, and a `pending` receipt counts as approval.
 
 `ExecutionAwareEngine` returns the same `Plan`. It is deterministic and training-free; the
 execution facts come from the option and the host's constraints.
@@ -264,6 +283,19 @@ ActionOption(
     interrupt_cost=0.8,
 )
 ```
+
+A shared `AttentionBudget` can be passed instead of the two numbers:
+
+```python
+from laix import AttentionBudget
+
+budget = AttentionBudget(total=1.0, spent=0.4)
+DecisionProblem(..., attributes={"attention_budget": budget})
+```
+
+Approval state can also be passed in `attributes["approvals"]` as a map from action id to
+`approved`, `pending` or `rejected`. A rejected option is blocked; an approved option does not pay
+the approval cost.
 
 `AttentionAwareEngine` returns the same `Plan`. It is deterministic and training-free. It can
 prefer a direct action, or wait when every option needs more attention than is left.

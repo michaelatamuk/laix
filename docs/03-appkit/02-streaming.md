@@ -134,7 +134,8 @@ print(result.decisions, result.elapsed_ms, result.throughput_per_second)
 
 ## Decision timeline
 
-`DecisionTimeline` keeps the decisions a session emits and enforces the revision semantics:
+`DecisionTimeline` keeps the decisions a session emits and enforces the revision semantics. Pass it
+to `StreamSession(..., timeline=timeline)` and the session feeds it automatically:
 
 - a root decision has revision 0 and no predecessor;
 - a revision points to the decision it supersedes and uses the next number;
@@ -142,11 +143,12 @@ print(result.decisions, result.elapsed_ms, result.throughput_per_second)
 - duplicate ids are rejected.
 
 ```python
-from laix import DecisionTimeline
+from laix import DecisionTimeline, StreamSession
 
 timeline = DecisionTimeline()
-for decision in decisions:
-    timeline.add(decision)
+session = StreamSession(decide, timeline=timeline)
+
+# ... observe events through the session ...
 
 print(timeline.report().to_dict())
 print(timeline.current())

@@ -2,9 +2,38 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
+
 import pytest
 
-from laix import Decision, DecisionTimeline, TimelineError
+from laix import (
+    Decision,
+    DecisionRequest,
+    DecisionTimeline,
+    ManualClock,
+    StreamSession,
+    TimelineError,
+)
+
+
+def _at(second: int) -> str:
+    return f"2026-11-01T10:00:{second:02d}+00:00"
+
+
+def _moment(second: int) -> datetime:
+    return datetime(2026, 11, 1, 10, 0, second, tzinfo=timezone.utc)
+
+
+def _decider(request: DecisionRequest) -> list[Decision]:
+    return [
+        Decision(
+            verb="guide",
+            confidence=0.8,
+            reason_code="stream",
+            rationale="a stream decision",
+            decision_id=f"DEC-{request.at}",
+        )
+    ]
 
 
 def _decision(
@@ -98,6 +127,21 @@ def test_late_events_are_reported() -> None:
     )
 
     assert timeline.late("2026-11-01T10:03:00+00:00") == (timeline.get("d1"),)
+
+
+def test_stream_session_feeds_the_timeline() -> None:
+    timeline = DecisionTimeline()
+    session = StreamSession(
+        _decider,
+        stream_id="STR-1",
+        clock=ManualClock(_moment(0)),
+        timeline=timeline,
+    )
+    first = session.observe(DecisionRequest(subject="a", at=_at(0)))[0]
+    second = session.revise(first, DecisionRequest(subject="a", at=_at(1)))[0]
+
+    assert timeline.report().decisions == 2
+    assert timeline.history(second.decision_id) == (first, second)
 
 
 def test_timeline_round_trips() -> None:

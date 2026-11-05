@@ -2,6 +2,7 @@ import { newId } from "../core/contracts.ts";
 import type { Decision, DecisionRequest, Trace } from "../core/contracts.ts";
 import type { StreamCheckpointStore } from "./checkpoint.ts";
 import { TumblingWindow, type WindowBatch } from "./window.ts";
+import type { DecisionTimeline } from "./decision-timeline.ts";
 
 export const DECISION_STATUSES = ["final", "provisional", "superseded"] as const;
 export type DecisionStatus = (typeof DECISION_STATUSES)[number];
@@ -98,6 +99,7 @@ export interface StreamSessionOptions {
   latencySamples?: number;
   trace?: boolean;
   recorder?: (decision: Decision) => void;
+  timeline?: DecisionTimeline;
   clock?: Clock;
   idFactory?: () => string;
 }
@@ -117,6 +119,7 @@ export class StreamSession {
   private readonly latencySamples: number;
   private readonly traceEnabled: boolean;
   private readonly recorder: ((decision: Decision) => void) | null;
+  private readonly timeline: DecisionTimeline | null;
   private clock: Clock;
   private readonly items: Decision[] = [];
   private waiters: Array<() => void> = [];
@@ -168,6 +171,7 @@ export class StreamSession {
     this.latencySamples = latencySamples;
     this.traceEnabled = options.trace ?? true;
     this.recorder = options.recorder ?? null;
+    this.timeline = options.timeline ?? null;
     this.clock = options.clock ?? (() => new Date());
   }
 
@@ -597,6 +601,7 @@ export class StreamSession {
         this.traceByDecision.set(decision.decisionId ?? "", decision.traceId);
       }
       this.recorder?.(decision);
+      this.timeline?.add(decision);
     }
   }
 

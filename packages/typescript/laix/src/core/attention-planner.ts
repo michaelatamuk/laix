@@ -15,11 +15,38 @@ export interface AttentionWeights {
   exhausted?: number;
 }
 
+export class AttentionBudget {
+  total: number;
+  spent: number;
+
+  constructor(options: { total?: number; spent?: number } = {}) {
+    this.total = options.total ?? 1;
+    this.spent = options.spent ?? 0;
+    if (this.total < 0) throw new Error("attention budget total must not be negative");
+    if (this.spent < 0) throw new Error("attention budget spent must not be negative");
+  }
+
+  remaining(): number {
+    return Math.max(0, this.total - this.spent);
+  }
+
+  spend(amount: number): number {
+    if (amount < 0) throw new Error("attention spend must not be negative");
+    this.spent = Math.min(this.total, this.spent + amount);
+    return this.remaining();
+  }
+
+  toDict(): { total: number; spent: number } {
+    return { total: this.total, spent: this.spent };
+  }
+}
+
 export interface AttentionEffect {
   interruptCost: number;
   requiresApproval: boolean;
   escalates: boolean;
   interactive: boolean;
+  approvalState: string | null;
 }
 
 export interface AttentionScore {
@@ -42,24 +69,60 @@ function clamp(value: number): number {
 export function attentionEffect(
   option: ActionOption,
   approval = false,
+  approvalState: string | null = null,
 ): AttentionEffect {
   const params = (option.params ?? {}) as Record<string, unknown>;
   const payload = (params.attention ?? params) as Record<string, unknown>;
   const source = payload && typeof payload === "object" ? payload : params;
   const rawInterrupt = Number(source.interrupt_cost ?? option.interruptCost ?? 0);
-  const requiresApproval = Boolean(
+  let requiresApproval = Boolean(
     approval ||
       source.requires_approval ||
       option.requiresApproval ||
       option.destructive,
   );
+  if (approvalState === "approved") requiresApproval = false;
+  if (approvalState === "pending" || approvalState === "rejected") {
+    requiresApproval = true;
+  }
   const escalates = Boolean(source.escalates ?? option.verb === "escalate");
   return {
     interruptCost: clamp(Number.isNaN(rawInterrupt) ? 0 : rawInterrupt),
     requiresApproval,
     escalates,
     interactive: option.verb === "ask" || option.verb === "guide",
+    approvalState,
   };
+}
+
+export function approvalState(
+  problem: DecisionProblem,
+  option: ActionOption,
+): string | null {
+  const raw = (problem.attributes ?? {}).approvals;
+  if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    const value = (raw as Record<string, unknown>)[option.id] ??
+      (raw as Record<string, unknown>)[option.name];
+    if (value === undefined || value === null) return null;
+    if (typeof value === "boolean") return value ? "approved" : "rejected";
+    return String(value);
+  }
+  if (Array.isArray(raw)) {
+    for (const item of raw) {
+      if (!item || typeof item !== "object") continue;
+      const payload = item as Record<string, unknown>;
+      const name = payload.actionId ?? payload.action_id ?? payload.actionName ??
+        payload.action_name;
+      let status = payload.status;
+      if (status === undefined && "approved" in payload) {
+        status = payload.approved ? "approved" : "rejected";
+      }
+      if ((name === option.id || name === option.name) && status !== undefined) {
+        return String(status);
+      }
+    }
+  }
+  return null;
 }
 
 export function attentionCost(effect: AttentionEffect): number {
@@ -73,12 +136,19 @@ export function attentionCost(effect: AttentionEffect): number {
 
 function remainingBudget(problem: DecisionProblem): number {
   const attributes = (problem.attributes ?? {}) as Record<string, unknown>;
-  const budget = Number(attributes.attention_budget ?? 1.0);
-  const spent = Number(attributes.attention_spent ?? 0.0);
+  const raw = attributes.attention_budget ?? 1.0;
+  let base: number;
+  if (raw instanceof AttentionBudget) {
+    base = raw.remaining();
+  } else if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    const payload = raw as Record<string, unknown>;
+    base = Number(payload.total ?? 1) - Number(payload.spent ?? 0);
+  } else {
+    base = Number(raw) - Number(attributes.attention_spent ?? 0);
+  }
   const explicit = attributes.attention_remaining;
-  const remaining =
-    explicit === undefined ? budget - spent : Number(explicit);
-  if (Number.isNaN(remaining)) return Math.max(0, budget - spent);
+  const remaining = explicit === undefined ? base : Number(explicit);
+  if (Number.isNaN(remaining)) return Math.max(0, base);
   return Math.max(0, remaining);
 }
 
@@ -88,10 +158,16 @@ function scoreOption(
   weights: Required<AttentionWeights>,
   remaining: number,
   approval: boolean,
+  state: string | null,
 ): AttentionScore {
-  const effect = attentionEffect(option, approval);
+  const effect = attentionEffect(option, approval, state);
   const cost = attentionCost(effect);
-  const blocked = cost > remaining ? "attention budget exhausted" : null;
+  const blocked =
+    state === "rejected"
+      ? "approval rejected"
+      : cost > remaining
+        ? "attention budget exhausted"
+        : null;
   const attention =
     -weights.interrupt * effect.interruptCost -
     weights.approval * (effect.requiresApproval ? 1 : 0) -
@@ -144,7 +220,14 @@ export class AttentionAwareEngine {
     const remaining = remainingBudget(problem);
     const approval = approvalRequired(problem);
     const rows: Row[] = options.map((option) => {
-      const score = scoreOption(option, model, this.weights, remaining, approval);
+      const score = scoreOption(
+        option,
+        model,
+        this.weights,
+        remaining,
+        approval,
+        approvalState(problem, option),
+      );
       const blocker = constraintBlocker(problem, option);
       return {
         option,
@@ -156,6 +239,12 @@ export class AttentionAwareEngine {
     });
     const feasible = rows.filter((row) => row.feasible);
     if (!feasible.length) {
+      if (rows.some((row) => row.blocker === "approval rejected")) {
+        return this.wait(
+          "approval_rejected",
+          "every remaining option was rejected or needs more attention",
+        );
+      }
       return this.wait(
         "attention_budget_exhausted",
         "every option needs more human attention than is left",
@@ -176,9 +265,7 @@ export class AttentionAwareEngine {
       reasonCode: "attention_aware",
       rationale: `${best.option.id} balances utility ${best.score.utility.toFixed(3)} and attention cost ${best.score.attention >= 0 ? "+" : ""}${best.score.attention.toFixed(3)}`,
       actionId: best.option.id,
-      requiresApproval: Boolean(
-        best.option.requiresApproval || best.option.destructive || approval,
-      ),
+      requiresApproval: best.score.effect.requiresApproval,
       reversible: best.option.reversible ?? true,
       score: best.score.total,
       alternatives: this.alternatives(rows, best.option.id),
@@ -188,6 +275,7 @@ export class AttentionAwareEngine {
         attention_cost: attentionCost(best.score.effect),
         attention_remaining: best.score.remaining,
         attention_budget_blocked: best.score.blocked,
+        approval_state: best.score.effect.approvalState,
       },
     };
   }

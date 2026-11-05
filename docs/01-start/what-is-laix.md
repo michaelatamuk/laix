@@ -66,6 +66,10 @@ Water is coming under the bathroom door.
 - whether a person must approve;
 - what to record.
 
+When the task has promises, execution risk or a limited human-attention budget, those are part of
+the decision too: what it promises, what could go wrong after the button is pressed, and how much
+attention it spends. Later outcomes can calibrate the next decision.
+
 ## A harder example: water and electricity
 
 Water is under the bathroom door and has reached a socket. The water valve is out of reach. A dry

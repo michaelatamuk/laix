@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+  CalibratedPolicy,
   calibrateDecision,
   decisionCalibrationReport,
   decisionSamplesFromOutcomes,
 } from "../src/index.ts";
-import type { Decision, Outcome } from "../src/index.ts";
+import type { Decision, DecisionRequest, Outcome, Policy } from "../src/index.ts";
 
 describe("decision-level calibration", () => {
   it("bins decisions and adjusts confidence", () => {
@@ -71,6 +72,40 @@ describe("decision-level calibration", () => {
       (calibrated.attributes?.calibration as Record<string, unknown>).before,
       0.9,
     );
+  });
+
+  it("wraps any policy and calibrates its decisions", () => {
+    class FakePolicy implements Policy {
+      readonly name = "fake";
+
+      decide(_request: DecisionRequest): Decision[] {
+        return [
+          {
+            verb: "act",
+            confidence: 0.9,
+            reasonCode: "fake",
+            rationale: "a fake decision",
+            decisionId: "d1",
+          },
+        ];
+      }
+    }
+
+    const report = decisionCalibrationReport(
+      Array.from({ length: 10 }, (_, index) => ({
+        confidence: 0.9,
+        correct: index < 5,
+      })),
+    );
+    const policy = new CalibratedPolicy(new FakePolicy(), report);
+    const decisions = policy.decide({
+      subject: "a",
+      at: "2026-11-01T10:00:00Z",
+    });
+
+    assert.equal(policy.name, "fake.calibrated");
+    assert.equal(decisions[0]!.confidence, 0.5);
+    assert.equal(decisions[0]!.calibrated, true);
   });
 
   it("builds samples from decisions and outcomes", () => {

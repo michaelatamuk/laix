@@ -190,6 +190,26 @@ def decision_samples_from_outcomes(
     return tuple(rows)
 
 
+class CalibratedPolicy:
+    """Wrap any policy and calibrate every decision it returns."""
+
+    def __init__(
+        self,
+        policy: object,
+        report: DecisionCalibrationReport,
+        *,
+        name: str | None = None,
+    ) -> None:
+        self.policy = policy
+        self.report = report
+        self.name = name or f"{getattr(policy, 'name', 'policy')}.calibrated"
+        self.version = self.name
+
+    def decide(self, request: object) -> list[Decision]:
+        decisions = self.policy.decide(request)  # type: ignore[attr-defined]
+        return [calibrate_decision(decision, self.report) for decision in decisions]
+
+
 def calibrate_decision(
     decision: Decision,
     report: DecisionCalibrationReport,
@@ -217,6 +237,7 @@ def calibrate_decision(
 
 
 __all__ = [
+    "CalibratedPolicy",
     "DecisionCalibrationReport",
     "DecisionCalibrationSample",
     "calibrate_decision",

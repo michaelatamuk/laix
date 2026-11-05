@@ -5,14 +5,17 @@ import {
   UtilityEngine,
   UtilityModel,
 } from "../src/index.ts";
-import type { ActionOption, DecisionProblem } from "../src/index.ts";
+import type { ActionOption, DecisionProblem, Receipt } from "../src/index.ts";
 
-function problem(options: ActionOption[]): DecisionProblem {
+function problem(
+  options: ActionOption[],
+  attributes: Record<string, unknown> = {},
+): DecisionProblem {
   return {
     subject: "choose",
     at: "2026-11-01T10:00:00Z",
     options,
-    attributes: {},
+    attributes,
   };
 }
 
@@ -68,6 +71,42 @@ describe("execution-aware planning", () => {
     );
 
     assert.equal(plan.actionId, "direct");
+  });
+
+  it("penalizes an unknown receipt", () => {
+    const receipt: Receipt = {
+      id: "r1",
+      decisionId: "d1",
+      actionName: "unknown",
+      status: "unknown",
+      actor: "operator",
+    };
+    const plan = new ExecutionAwareEngine().solve(
+      problem(
+        [option("known", 0.7), option("unknown", 0.8)],
+        { execution_receipts: [receipt] },
+      ),
+    );
+
+    assert.equal(plan.actionId, "known");
+  });
+
+  it("penalizes a failed receipt and a pending approval", () => {
+    const failed = new ExecutionAwareEngine().solve(
+      problem(
+        [option("known", 0.7), option("failed", 0.8)],
+        { execution_state: { failed: "failed" } },
+      ),
+    );
+    assert.equal(failed.actionId, "known");
+
+    const pending = new ExecutionAwareEngine().solve(
+      problem(
+        [option("direct", 0.7), option("pending", 0.75)],
+        { execution_state: { pending: "pending" } },
+      ),
+    );
+    assert.equal(pending.actionId, "direct");
   });
 
   it("matches the utility engine without execution facts", () => {

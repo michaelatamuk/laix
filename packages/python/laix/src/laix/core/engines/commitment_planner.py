@@ -34,9 +34,10 @@ class CommitmentWeights:
     violate: float = 1.0
     create: float = 0.10
     due: float = 0.25
+    blocked: float = 0.50
 
     def __post_init__(self) -> None:
-        for name in ("keep", "violate", "create", "due"):
+        for name in ("keep", "violate", "create", "due", "blocked"):
             if getattr(self, name) < 0:
                 raise ValueError(f"commitment weight {name!r} must not be negative")
 
@@ -68,6 +69,7 @@ class CommitmentScore:
     created: tuple[str, ...] = ()
     due_fulfilled: tuple[str, ...] = ()
     due_violated: tuple[str, ...] = ()
+    blocked_fulfilled: tuple[str, ...] = ()
     blocked: str | None = None
 
 
@@ -113,7 +115,7 @@ def commitment_effect(option: ActionOption) -> CommitmentEffect:
     )
 
 
-def _active_commitments(problem: DecisionProblem) -> dict[str, Commitment]:
+def _commitments(problem: DecisionProblem) -> dict[str, Commitment]:
     attributes = problem.attributes or {}
     raw = attributes.get("commitments")
     if raw is None:
@@ -121,7 +123,7 @@ def _active_commitments(problem: DecisionProblem) -> dict[str, Commitment]:
     if raw is None:
         return {}
     if isinstance(raw, CommitmentLedger):
-        return {item.id: item for item in raw.open()}
+        return {item.id: item for item in raw.all()}
     if isinstance(raw, Mapping):
         raw = raw.get("commitments", ())
     items: list[Commitment] = []
@@ -130,7 +132,18 @@ def _active_commitments(problem: DecisionProblem) -> dict[str, Commitment]:
             items.append(item)
         elif isinstance(item, Mapping):
             items.append(Commitment.from_dict(dict(item)))
-    return {item.id: item for item in items if item.status == "open"}
+    return {item.id: item for item in items}
+
+
+def _blocked(commitment_id: str, commitments: dict[str, Commitment]) -> bool:
+    commitment = commitments.get(commitment_id)
+    if commitment is None:
+        return True
+    for dependency in commitment.depends_on:
+        item = commitments.get(dependency)
+        if item is None or item.status != "done":
+            return True
+    return False
 
 
 def _now(problem: DecisionProblem) -> datetime:
@@ -145,16 +158,42 @@ def _score_option(
     now: datetime,
 ) -> CommitmentScore:
     effect = commitment_effect(option)
-    fulfilled = tuple(item for item in effect.fulfills if item in active)
-    violated = tuple(item for item in effect.violates if item in active)
+    open_ids = {
+        item_id for item_id, item in active.items() if item.status == "open"
+    }
+    fulfilled = tuple(
+        item
+        for item in effect.fulfills
+        if item in open_ids and not _blocked(item, active)
+    )
+    blocked_fulfilled = tuple(
+        item
+        for item in effect.fulfills
+        if item in open_ids and _blocked(item, active)
+    )
+    violated = tuple(item for item in effect.violates if item in open_ids)
     created = tuple(item for item in effect.creates if item not in active)
     due_fulfilled = tuple(item for item in fulfilled if active[item].is_due(now))
     due_violated = tuple(item for item in violated if active[item].is_due(now))
+    keep_reward = sum(
+        weights.keep * (0.5 + active[item].priority) for item in fulfilled
+    )
+    due_reward = sum(
+        weights.due * (0.5 + active[item].priority) for item in due_fulfilled
+    )
+    violation_penalty = sum(
+        weights.violate * (0.5 + active[item].priority) for item in violated
+    )
+    due_penalty = sum(
+        weights.due * (0.5 + active[item].priority) for item in due_violated
+    )
+    blocked_penalty = weights.blocked * len(blocked_fulfilled)
     commitment = (
-        weights.keep * len(fulfilled)
-        + weights.due * len(due_fulfilled)
-        - weights.violate * len(violated)
-        - weights.due * len(due_violated)
+        keep_reward
+        + due_reward
+        - violation_penalty
+        - due_penalty
+        - blocked_penalty
         - weights.create * len(created)
     )
     blocked = (
@@ -172,6 +211,7 @@ def _score_option(
         created=created,
         due_fulfilled=due_fulfilled,
         due_violated=due_violated,
+        blocked_fulfilled=blocked_fulfilled,
         blocked=blocked,
     )
 
@@ -204,7 +244,7 @@ class CommitmentAwareEngine:
             return self._wait("no_options", "there are no options to score")
 
         model = self._utility._model_for(problem)
-        active = _active_commitments(problem)
+        active = _commitments(problem)
         now = _now(problem)
         rows: list[_Row] = []
         for option in options:
@@ -254,6 +294,7 @@ class CommitmentAwareEngine:
                 "commitments_violated": list(best.score.violated),
                 "commitments_created": list(best.score.created),
                 "commitments_due_fulfilled": list(best.score.due_fulfilled),
+                "commitments_blocked_fulfilled": list(best.score.blocked_fulfilled),
             },
         )
 

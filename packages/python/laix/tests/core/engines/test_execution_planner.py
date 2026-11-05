@@ -9,16 +9,18 @@ from laix import (
     DecisionProblem,
     ExecutionAwareEngine,
     ExecutionEffect,
+    ExecutionReceipt,
     ExecutionWeights,
     UtilityEngine,
 )
 
 
-def _problem(*options: ActionOption) -> DecisionProblem:
+def _problem(*options: ActionOption, **attributes: object) -> DecisionProblem:
     return DecisionProblem(
         subject="choose",
         at="2026-11-01T10:00:00+00:00",
         options=options,
+        attributes=dict(attributes),
     )
 
 
@@ -107,6 +109,50 @@ def test_matches_the_utility_engine_without_execution_facts() -> None:
         ExecutionAwareEngine().solve(problem).action_id
         == UtilityEngine().solve(problem).action_id
     )
+
+
+def test_an_unknown_receipt_penalizes_the_action() -> None:
+    plan = ExecutionAwareEngine().solve(
+        _problem(
+            ActionOption(id="known", verb="act", name="known", expected_benefit=0.7),
+            ActionOption(id="unknown", verb="act", name="unknown", expected_benefit=0.8),
+            execution_receipts=(
+                ExecutionReceipt(
+                    id="r1",
+                    decision_id="d1",
+                    action_name="unknown",
+                    status="unknown",
+                    actor="operator",
+                ),
+            ),
+        )
+    )
+
+    assert plan.action_id == "known"
+
+
+def test_a_failed_receipt_penalizes_recovery() -> None:
+    plan = ExecutionAwareEngine().solve(
+        _problem(
+            ActionOption(id="known", verb="act", name="known", expected_benefit=0.7),
+            ActionOption(id="failed", verb="act", name="failed", expected_benefit=0.8),
+            execution_state={"failed": "failed"},
+        )
+    )
+
+    assert plan.action_id == "known"
+
+
+def test_a_pending_receipt_counts_as_approval() -> None:
+    plan = ExecutionAwareEngine().solve(
+        _problem(
+            ActionOption(id="direct", verb="act", name="direct", expected_benefit=0.7),
+            ActionOption(id="pending", verb="act", name="pending", expected_benefit=0.75),
+            execution_state={"pending": "pending"},
+        )
+    )
+
+    assert plan.action_id == "direct"
 
 
 def test_unknown_risk_is_clamped() -> None:

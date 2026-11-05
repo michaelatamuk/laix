@@ -63,6 +63,10 @@ export class CommitmentLedger {
     return this.replace(commitmentId, "cancelled");
   }
 
+  all(): Required<Commitment>[] {
+    return [...this.items.values()];
+  }
+
   open(): Required<Commitment>[] {
     return [...this.items.values()].filter((item) => item.status === "open");
   }

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { DecisionTimeline } from "../src/index.ts";
-import type { Decision } from "../src/index.ts";
+import { DecisionTimeline, ManualClock, StreamSession } from "../src/index.ts";
+import type { Decision, DecisionRequest } from "../src/index.ts";
 
 function decision(
   decisionId: string,
@@ -101,5 +101,35 @@ describe("decision timeline", () => {
 
   it("accepts a valid timeline", () => {
     assert.doesNotThrow(() => new DecisionTimeline().assertValid());
+  });
+
+  it("is fed by a stream session", () => {
+    const timeline = new DecisionTimeline();
+    const clock = new ManualClock(new Date("2026-11-01T10:00:00Z"));
+    const decider = (request: DecisionRequest): Decision[] => [
+      {
+        verb: "guide",
+        confidence: 0.8,
+        reasonCode: "stream",
+        rationale: "a stream decision",
+        decisionId: `DEC-${request.at}`,
+      },
+    ];
+    const session = new StreamSession(decider, {
+      streamId: "STR-1",
+      clock: () => clock.now,
+      timeline,
+    });
+    const first = session.observe({
+      subject: "a",
+      at: "2026-11-01T10:00:00Z",
+    })[0]!;
+    const second = session.revise(first, {
+      subject: "a",
+      at: "2026-11-01T10:00:01Z",
+    })[0]!;
+
+    assert.equal(timeline.report().decisions, 2);
+    assert.deepEqual(timeline.history(second.decisionId!), [first, second]);
   });
 });

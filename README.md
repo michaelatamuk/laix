@@ -80,18 +80,18 @@ const [decision] = new Layer().decide({
 | Packaged policies | active perception, safety, replanning, allocation, negotiation, preference, verification and escalation |
 | Planners | [utility, commitment, execution, attention, MDP and POMDP](docs/02-core/06-engines.md#what-an-mdp-is) behind `EnginePolicy` |
 | Learning | outcome labels, rewards, bandits, causal attribution, calibration, decision calibration and model learning |
-| Streaming | event time, cadence, backpressure, revisions, checkpoints and sources |
+| Streaming | event time, cadence, backpressure, revisions, checkpoints, timeline and sources |
 | Execution | receipts, idempotency, unknown outcomes, reconciliation, multi-step recovery and records |
 | Stores | state, checkpoints, commitments and outcomes through host-owned ports |
 | Delivery | a port and a receipt for the app’s own channel |
-| Proof | LAIX-Bench, conformance vectors, simulator, engine bench and metrics |
+| Proof | LAIX-Bench, live decision bench, conformance vectors, simulator, planner bench and metrics |
 
 ## Core and app kit
 
-- **`laix.core`** — `decide(request)`, contracts, decision shape, attention, policies, engines,
+- **`laix.core`** — `decide(request)`, contracts, decision shape, attention, policies, planners,
   sensing contracts, resource admission, outcomes, causal attribution, calibration and evaluation.
-- **`laix.appkit`** — optional integration: `Layer`, streams and checkpoints, execution and
-  multi-step recovery, records, delivery, platform, live-context loop and state.
+- **`laix.appkit`** — optional integration: `Layer`, streams, checkpoints and timeline, execution
+  and multi-step recovery, records, delivery, platform, live-context loop and state.
 
 A host that needs the answer calls `decide(request)`. A host that also executes, records or delivers
 calls `Layer`. See [boundaries](docs/04-concepts/boundaries.md).
@@ -113,6 +113,7 @@ calls `Layer`. See [boundaries](docs/04-concepts/boundaries.md).
 cd packages/python/laix
 py -m pytest -q
 py -m laix.appkit.bench
+py -m laix.appkit.bench --live
 
 cd ../../packages/typescript/laix
 npm test

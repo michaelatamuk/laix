@@ -21,6 +21,39 @@ from .utility import (
     _constraint_blocker,
 )
 
+@dataclass
+class AttentionBudget:
+    """A movable human-attention budget shared across decisions."""
+
+    total: float = 1.0
+    spent: float = 0.0
+
+    def __post_init__(self) -> None:
+        if self.total < 0:
+            raise ValueError("attention budget total must not be negative")
+        if self.spent < 0:
+            raise ValueError("attention budget spent must not be negative")
+
+    def remaining(self) -> float:
+        return max(0.0, self.total - self.spent)
+
+    def spend(self, amount: float) -> float:
+        if amount < 0:
+            raise ValueError("attention spend must not be negative")
+        self.spent = min(self.total, self.spent + amount)
+        return self.remaining()
+
+    def to_dict(self) -> dict[str, float]:
+        return {"total": self.total, "spent": self.spent}
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, object]) -> "AttentionBudget":
+        return cls(
+            total=float(payload.get("total", 1.0)),
+            spent=float(payload.get("spent", 0.0)),
+        )
+
+
 @dataclass(frozen=True, slots=True)
 class AttentionWeights:
     """How much each kind of human attention costs."""
@@ -44,6 +77,7 @@ class AttentionEffect:
     requires_approval: bool = False
     escalates: bool = False
     interactive: bool = False
+    approval_state: str | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "interrupt_cost", clamp(self.interrupt_cost))
@@ -75,7 +109,12 @@ class AttentionScore:
     blocked: str | None = None
 
 
-def attention_effect(option: ActionOption, *, approval: bool = False) -> AttentionEffect:
+def attention_effect(
+    option: ActionOption,
+    *,
+    approval: bool = False,
+    approval_state: str | None = None,
+) -> AttentionEffect:
     """Read an option's human-attention cost from its fields and ``params``."""
     params = getattr(option, "params", {}) or {}
     payload = params.get("attention", params)
@@ -86,6 +125,10 @@ def attention_effect(option: ActionOption, *, approval: bool = False) -> Attenti
         approval
         or payload.get("requires_approval", option.requires_approval or option.destructive)
     )
+    if approval_state == "approved":
+        requires_approval = False
+    elif approval_state in {"pending", "rejected"}:
+        requires_approval = True
     escalates = bool(payload.get("escalates", option.verb == "escalate"))
     try:
         interrupt_value = float(interrupt)
@@ -96,27 +139,58 @@ def attention_effect(option: ActionOption, *, approval: bool = False) -> Attenti
         requires_approval=requires_approval,
         escalates=escalates,
         interactive=option.verb in {"ask", "guide"},
+        approval_state=approval_state,
     )
+
+
+def approval_state(problem: DecisionProblem, option: ActionOption) -> str | None:
+    """Read the host's approval state for one option, if it supplied one."""
+    raw = (problem.attributes or {}).get("approvals")
+    if isinstance(raw, dict):
+        value = raw.get(option.id, raw.get(option.name))
+        if value is None:
+            return None
+        if isinstance(value, bool):
+            return "approved" if value else "rejected"
+        return str(value)
+    if isinstance(raw, (list, tuple)):
+        for item in raw:
+            if isinstance(item, dict):
+                name = item.get("action_id", item.get("action_name"))
+                status = item.get("status")
+                if status is None and "approved" in item:
+                    status = "approved" if item["approved"] else "rejected"
+            else:
+                name = getattr(item, "action_name", None)
+                status = getattr(item, "status", None)
+                if status is None and hasattr(item, "approved"):
+                    status = "approved" if getattr(item, "approved") else "rejected"
+            if name in {option.id, option.name} and status is not None:
+                return str(status)
+    return None
 
 
 def _remaining(problem: DecisionProblem) -> float:
     attributes = problem.attributes or {}
-    budget = attributes.get("attention_budget", 1.0)
-    spent = attributes.get("attention_spent", 0.0)
+    raw = attributes.get("attention_budget", 1.0)
+    if isinstance(raw, AttentionBudget):
+        base = raw.remaining()
+    elif isinstance(raw, dict):
+        base = float(raw.get("total", 1.0)) - float(raw.get("spent", 0.0))
+    else:
+        try:
+            base = float(raw)
+        except (TypeError, ValueError):
+            base = 1.0
+        spent = attributes.get("attention_spent", 0.0)
+        try:
+            base -= float(spent)
+        except (TypeError, ValueError):
+            pass
     try:
-        budget_value = float(budget)
+        remaining_value = float(attributes.get("attention_remaining", base))
     except (TypeError, ValueError):
-        budget_value = 1.0
-    try:
-        spent_value = float(spent)
-    except (TypeError, ValueError):
-        spent_value = 0.0
-    try:
-        remaining_value = float(
-            attributes.get("attention_remaining", budget_value - spent_value)
-        )
-    except (TypeError, ValueError):
-        remaining_value = budget_value - spent_value
+        remaining_value = base
     return max(0.0, remaining_value)
 
 
@@ -126,13 +200,15 @@ def _score_option(
     weights: AttentionWeights,
     remaining: float,
     approval: bool,
+    state: str | None,
 ) -> AttentionScore:
-    effect = attention_effect(option, approval=approval)
-    blocked = (
-        "attention budget exhausted"
-        if effect.requires_attention and effect.cost > remaining
-        else None
-    )
+    effect = attention_effect(option, approval=approval, approval_state=state)
+    if state == "rejected":
+        blocked = "approval rejected"
+    elif effect.requires_attention and effect.cost > remaining:
+        blocked = "attention budget exhausted"
+    else:
+        blocked = None
     attention = (
         -weights.interrupt * effect.interrupt_cost
         - weights.approval * (1.0 if effect.requires_approval else 0.0)
@@ -182,7 +258,15 @@ class AttentionAwareEngine:
         approval = _approval_required(problem)
         rows: list[_Row] = []
         for option in options:
-            score = _score_option(option, model, self.weights, remaining, approval)
+            state = approval_state(problem, option)
+            score = _score_option(
+                option,
+                model,
+                self.weights,
+                remaining,
+                approval,
+                state,
+            )
             blocker = _constraint_blocker(problem, option)
             rows.append(
                 _Row(
@@ -197,6 +281,11 @@ class AttentionAwareEngine:
 
         feasible = [row for row in rows if row.feasible]
         if not feasible:
+            if any(row.blocker == "approval rejected" for row in rows):
+                return self._wait(
+                    "approval_rejected",
+                    "every remaining option was rejected or needs more attention",
+                )
             return self._wait(
                 "attention_budget_exhausted",
                 "every option needs more human attention than is left",
@@ -214,11 +303,7 @@ class AttentionAwareEngine:
                 f"and attention cost {best.score.attention:+.3f}"
             ),
             action_id=best.option.id,
-            requires_approval=(
-                best.option.requires_approval
-                or best.option.destructive
-                or approval
-            ),
+            requires_approval=best.score.effect.requires_approval,
             reversible=best.option.reversible,
             score=best.score.total,
             alternatives=self._alternatives(rows, best.option.id),
@@ -228,6 +313,7 @@ class AttentionAwareEngine:
                 "attention_cost": best.score.effect.cost,
                 "attention_remaining": best.score.remaining,
                 "attention_budget_blocked": best.score.blocked,
+                "approval_state": best.score.effect.approval_state,
             },
         )
 
@@ -280,8 +366,10 @@ class AttentionAwareEngine:
 
 __all__ = [
     "AttentionAwareEngine",
+    "AttentionBudget",
     "AttentionEffect",
     "AttentionScore",
     "AttentionWeights",
+    "approval_state",
     "attention_effect",
 ]

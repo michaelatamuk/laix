@@ -88,6 +88,53 @@ describe("commitment-aware planning", () => {
     );
   });
 
+  it("blocks fulfillment until a dependency is done", () => {
+    const blocked = new CommitmentAwareEngine().solve(
+      problem(
+        [
+          option("do-c0", 0.5, { fulfills: ["c0"] }),
+          option("do-c1", 0.5, { fulfills: ["c1"] }),
+        ],
+        [
+          { id: "c0", subject: "prerequisite" },
+          { id: "c1", subject: "dependent", dependsOn: ["c0"] },
+        ],
+      ),
+    );
+    assert.equal(blocked.actionId, "do-c0");
+
+    const unblocked = new CommitmentAwareEngine().solve(
+      problem(
+        [
+          option("do-c0", 0.5),
+          option("do-c1", 0.5, { fulfills: ["c1"] }),
+        ],
+        [
+          { id: "c0", subject: "prerequisite", status: "done" },
+          { id: "c1", subject: "dependent", dependsOn: ["c0"] },
+        ],
+      ),
+    );
+    assert.equal(unblocked.actionId, "do-c1");
+  });
+
+  it("scales the reward by priority", () => {
+    const plan = new CommitmentAwareEngine().solve(
+      problem(
+        [
+          option("do-low", 0.5, { fulfills: ["low"] }),
+          option("do-high", 0.5, { fulfills: ["high"] }),
+        ],
+        [
+          { id: "low", subject: "low", priority: 0.1 },
+          { id: "high", subject: "high", priority: 1 },
+        ],
+      ),
+    );
+
+    assert.equal(plan.actionId, "do-high");
+  });
+
   it("matches the utility engine when there are no commitments", () => {
     const options: ActionOption[] = [
       { id: "safe", verb: "act", name: "safe", expectedBenefit: 0.6, risk: 0.1 },

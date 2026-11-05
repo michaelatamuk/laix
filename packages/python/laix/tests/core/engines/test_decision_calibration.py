@@ -5,8 +5,10 @@ from __future__ import annotations
 import pytest
 
 from laix import (
+    CalibratedPolicy,
     Decision,
     DecisionCalibrationSample,
+    DecisionRequest,
     Outcome,
     calibrate_decision,
     decision_calibration_report,
@@ -64,6 +66,34 @@ def test_calibrate_decision_preserves_the_decision() -> None:
     assert calibrated.action_id == "valve"
     assert calibrated.attributes["calibration"]["before"] == 0.9
     assert calibrated.attributes["calibration"]["after"] == 0.5
+
+
+def test_calibrated_policy_wraps_any_policy() -> None:
+    class FakePolicy:
+        name = "fake"
+
+        def decide(self, request: object) -> list[Decision]:
+            return [
+                Decision(
+                    verb="act",
+                    confidence=0.9,
+                    reason_code="fake",
+                    rationale="a fake decision",
+                    decision_id="d1",
+                )
+            ]
+
+    report = decision_calibration_report(
+        [DecisionCalibrationSample(0.9, index < 5) for index in range(10)]
+    )
+    policy = CalibratedPolicy(FakePolicy(), report)
+    decisions = policy.decide(
+        DecisionRequest(subject="a", at="2026-11-01T10:00:00+00:00")
+    )
+
+    assert policy.name == "fake.calibrated"
+    assert decisions[0].confidence == 0.5
+    assert decisions[0].calibrated is True
 
 
 def test_samples_from_outcomes_use_the_decision_shape() -> None:

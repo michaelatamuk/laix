@@ -28,6 +28,7 @@ export interface ExecutionScore {
   unknownRisk: number;
   recoveryCost: number;
   requiresApproval: boolean;
+  receiptStatus: string | null;
   blocked: string | null;
 }
 
@@ -55,30 +56,63 @@ export function executionEffect(option: ActionOption): ExecutionEffect {
   };
 }
 
+function receiptStatus(
+  problem: DecisionProblem,
+  option: ActionOption,
+): string | null {
+  const attributes = (problem.attributes ?? {}) as Record<string, unknown>;
+  const state = attributes.execution_state;
+  if (state && typeof state === "object" && !Array.isArray(state)) {
+    const value = (state as Record<string, unknown>)[option.id];
+    return value === undefined || value === null ? null : String(value);
+  }
+  const receipts = attributes.execution_receipts;
+  if (!Array.isArray(receipts)) return null;
+  for (const receipt of receipts) {
+    if (!receipt || typeof receipt !== "object") continue;
+    const payload = receipt as Record<string, unknown>;
+    const name = payload.actionName ?? payload.action_name;
+    const status = payload.status;
+    if ((name === option.id || name === option.name) && status !== undefined) {
+      return String(status);
+    }
+  }
+  return null;
+}
+
 function scoreOption(
   option: ActionOption,
   model: UtilityModel,
   weights: Required<ExecutionWeights>,
   approval: boolean,
+  receipt: string | null,
 ): ExecutionScore {
   const effect = executionEffect(option);
   const reversible = option.reversible ?? true;
   const irreversible = !reversible;
-  const requiresApproval = approval || Boolean(option.requiresApproval || option.destructive);
+  let requiresApproval = approval || Boolean(option.requiresApproval || option.destructive);
+  let unknownRisk = effect.unknownRisk;
+  let recoveryCost = effect.recoveryCost;
+  if (receipt === "unknown") unknownRisk = Math.max(unknownRisk, 1);
+  if (["failed", "refused", "cancelled", "undone"].includes(receipt ?? "")) {
+    recoveryCost = Math.max(recoveryCost, 1);
+  }
+  if (receipt === "pending") requiresApproval = true;
   const execution =
     -weights.irreversible * (irreversible ? 1 : 0) -
-    weights.unknown * effect.unknownRisk -
+    weights.unknown * unknownRisk -
     weights.approval * (requiresApproval ? 1 : 0) -
-    weights.recovery * effect.recoveryCost;
+    weights.recovery * recoveryCost;
   const utility = model.score(option);
   return {
     utility: round(utility),
     execution: round(execution),
     total: round(utility + execution),
     irreversible,
-    unknownRisk: effect.unknownRisk,
-    recoveryCost: effect.recoveryCost,
+    unknownRisk,
+    recoveryCost,
     requiresApproval,
+    receiptStatus: receipt,
     blocked: null,
   };
 }
@@ -118,7 +152,13 @@ export class ExecutionAwareEngine {
     const model = this.modelFor((problem.attributes ?? {}) as Record<string, unknown>);
     const approval = approvalRequired(problem);
     const rows: Row[] = options.map((option) => {
-      const score = scoreOption(option, model, this.weights, approval);
+      const score = scoreOption(
+        option,
+        model,
+        this.weights,
+        approval,
+        receiptStatus(problem, option),
+      );
       const blocker = constraintBlocker(problem, option);
       return {
         option,
@@ -159,6 +199,7 @@ export class ExecutionAwareEngine {
         unknown_risk: best.score.unknownRisk,
         recovery_cost: best.score.recoveryCost,
         requires_approval: best.score.requiresApproval,
+        receipt_status: best.score.receiptStatus,
       },
     };
   }

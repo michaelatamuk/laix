@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   AttentionAwareEngine,
+  AttentionBudget,
   UtilityEngine,
   UtilityModel,
 } from "../src/index.ts";
@@ -84,6 +85,47 @@ describe("attention-aware planning", () => {
     );
 
     assert.equal(plan.actionId, "direct");
+  });
+
+  it("honors approval state", () => {
+    const rejected = new AttentionAwareEngine().solve(
+      problem(
+        [
+          option("rejected", 0.9),
+          option("direct", 0.6),
+        ],
+        { approvals: { rejected: "rejected" } },
+      ),
+    );
+    assert.equal(rejected.actionId, "direct");
+
+    const approved = new AttentionAwareEngine().solve(
+      problem(
+        [
+          option("direct", 0.7),
+          option("approved", 0.75, { requiresApproval: true }),
+        ],
+        { approvals: { approved: "approved" } },
+      ),
+    );
+    assert.equal(approved.actionId, "approved");
+  });
+
+  it("shares an attention budget object", () => {
+    const budget = new AttentionBudget({ total: 1, spent: 0.9 });
+    const plan = new AttentionAwareEngine().solve(
+      problem(
+        [
+          { id: "ask", verb: "ask", name: "ask", expectedBenefit: 0.9 },
+          option("act", 0.6),
+        ],
+        { attention_budget: budget },
+      ),
+    );
+
+    assert.equal(plan.actionId, "act");
+    assert.equal(Math.round(budget.remaining() * 1e6) / 1e6, 0.1);
+    assert.equal(budget.spend(0.1), 0);
   });
 
   it("matches the utility engine without attention facts", () => {

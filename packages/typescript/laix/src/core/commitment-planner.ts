@@ -1,7 +1,7 @@
 import type { ActionOption } from "./contracts.ts";
 import type { DecisionProblem, Plan } from "./engine.ts";
 import type { Commitment } from "./planning.ts";
-import { commitmentDue } from "./planning.ts";
+import { CommitmentLedger, commitmentDue } from "./planning.ts";
 import {
   UtilityEngine,
   UtilityModel,
@@ -15,6 +15,7 @@ export interface CommitmentWeights {
   violate?: number;
   create?: number;
   due?: number;
+  blocked?: number;
 }
 
 export interface CommitmentEffect {
@@ -33,6 +34,7 @@ export interface CommitmentScore {
   created: string[];
   dueFulfilled: string[];
   dueViolated: string[];
+  blockedFulfilled: string[];
   blocked: string | null;
 }
 
@@ -81,14 +83,28 @@ function activeCommitments(problem: DecisionProblem): Map<string, Commitment> {
   const attributes = (problem.attributes ?? {}) as Record<string, unknown>;
   const raw = attributes.commitments ?? attributes.commitment_ledger;
   if (raw === undefined || raw === null) return new Map();
-  const items = Array.isArray(raw)
-    ? (raw as Commitment[])
-    : ((raw as { commitments?: Commitment[] }).commitments ?? []);
+  const items =
+    raw instanceof CommitmentLedger
+      ? raw.all()
+      : Array.isArray(raw)
+        ? (raw as Commitment[])
+        : ((raw as { commitments?: Commitment[] }).commitments ?? []);
   const result = new Map<string, Commitment>();
-  for (const item of items) {
-    if ((item.status ?? "open") === "open") result.set(item.id, item);
-  }
+  for (const item of items) result.set(item.id, item);
   return result;
+}
+
+function isBlocked(
+  commitmentId: string,
+  commitments: Map<string, Commitment>,
+): boolean {
+  const commitment = commitments.get(commitmentId);
+  if (!commitment) return true;
+  for (const dependency of commitment.dependsOn ?? []) {
+    const item = commitments.get(dependency);
+    if (!item || (item.status ?? "open") !== "done") return true;
+  }
+  return false;
 }
 
 function scoreOption(
@@ -99,16 +115,28 @@ function scoreOption(
   now: Date,
 ): CommitmentScore {
   const effect = commitmentEffect(option);
-  const fulfilled = effect.fulfills.filter((id) => active.has(id));
-  const violated = effect.violates.filter((id) => active.has(id));
+  const openIds = new Set(
+    [...active.entries()]
+      .filter(([, item]) => (item.status ?? "open") === "open")
+      .map(([id]) => id),
+  );
+  const fulfilled = effect.fulfills.filter(
+    (id) => openIds.has(id) && !isBlocked(id, active),
+  );
+  const blockedFulfilled = effect.fulfills.filter(
+    (id) => openIds.has(id) && isBlocked(id, active),
+  );
+  const violated = effect.violates.filter((id) => openIds.has(id));
   const created = effect.creates.filter((id) => !active.has(id));
   const dueFulfilled = fulfilled.filter((id) => commitmentDue(active.get(id)!, now));
   const dueViolated = violated.filter((id) => commitmentDue(active.get(id)!, now));
+  const weightOf = (id: string): number => 0.5 + (active.get(id)?.priority ?? 0.5);
   const commitment =
-    weights.keep * fulfilled.length +
-    weights.due * dueFulfilled.length -
-    weights.violate * violated.length -
-    weights.due * dueViolated.length -
+    weights.keep * fulfilled.reduce((total, id) => total + weightOf(id), 0) +
+    weights.due * dueFulfilled.reduce((total, id) => total + weightOf(id), 0) -
+    weights.violate * violated.reduce((total, id) => total + weightOf(id), 0) -
+    weights.due * dueViolated.reduce((total, id) => total + weightOf(id), 0) -
+    weights.blocked * blockedFulfilled.length -
     weights.create * created.length;
   const utility = model.score(option);
   return {
@@ -120,6 +148,7 @@ function scoreOption(
     created,
     dueFulfilled,
     dueViolated,
+    blockedFulfilled,
     blocked:
       effect.hard && violated.length
         ? `hard commitment: ${violated.join(", ")}`
@@ -147,6 +176,7 @@ export class CommitmentAwareEngine {
       violate: weights.violate ?? 1.0,
       create: weights.create ?? 0.1,
       due: weights.due ?? 0.25,
+      blocked: weights.blocked ?? 0.5,
     };
     for (const [key, value] of Object.entries(this.weights)) {
       if (value < 0) throw new Error(`commitment weight ${key} must not be negative`);
@@ -209,6 +239,7 @@ export class CommitmentAwareEngine {
         commitments_violated: [...best.score.violated],
         commitments_created: [...best.score.created],
         commitments_due_fulfilled: [...best.score.dueFulfilled],
+        commitments_blocked_fulfilled: [...best.score.blockedFulfilled],
       },
     };
   }

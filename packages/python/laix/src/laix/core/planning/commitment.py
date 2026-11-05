@@ -75,6 +75,10 @@ class CommitmentLedger:
     def cancel(self, commitment_id: str) -> Commitment:
         return self._replace(commitment_id, status="cancelled")
 
+    def all(self) -> tuple[Commitment, ...]:
+        """Every commitment, including done and cancelled ones."""
+        return tuple(self._items.values())
+
     def open(self) -> tuple[Commitment, ...]:
         return tuple(item for item in self._items.values() if item.status == "open")
 

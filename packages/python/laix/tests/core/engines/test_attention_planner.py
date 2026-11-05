@@ -7,6 +7,7 @@ import pytest
 from laix import (
     ActionOption,
     AttentionAwareEngine,
+    AttentionBudget,
     AttentionWeights,
     DecisionProblem,
     UtilityEngine,
@@ -82,6 +83,69 @@ def test_approval_counts_as_attention() -> None:
     )
 
     assert plan.action_id == "direct"
+
+
+def test_a_rejected_approval_blocks_the_option() -> None:
+    plan = AttentionAwareEngine().solve(
+        _problem(
+            ActionOption(id="rejected", verb="act", name="rejected", expected_benefit=0.9),
+            ActionOption(id="direct", verb="act", name="direct", expected_benefit=0.6),
+            approvals={"rejected": "rejected"},
+        )
+    )
+
+    assert plan.action_id == "direct"
+
+
+def test_an_approved_option_does_not_pay_the_approval_cost() -> None:
+    plan = AttentionAwareEngine().solve(
+        _problem(
+            ActionOption(id="direct", verb="act", name="direct", expected_benefit=0.7),
+            ActionOption(
+                id="approved",
+                verb="act",
+                name="approved",
+                expected_benefit=0.75,
+                requires_approval=True,
+            ),
+            approvals={"approved": "approved"},
+        )
+    )
+
+    assert plan.action_id == "approved"
+
+
+def test_a_pending_approval_still_costs_attention() -> None:
+    plan = AttentionAwareEngine().solve(
+        _problem(
+            ActionOption(id="direct", verb="act", name="direct", expected_benefit=0.7),
+            ActionOption(
+                id="pending",
+                verb="act",
+                name="pending",
+                expected_benefit=0.75,
+                requires_approval=True,
+            ),
+            approvals={"pending": "pending"},
+        )
+    )
+
+    assert plan.action_id == "direct"
+
+
+def test_attention_budget_object_is_shared() -> None:
+    budget = AttentionBudget(total=1.0, spent=0.9)
+    plan = AttentionAwareEngine().solve(
+        _problem(
+            ActionOption(id="ask", verb="ask", name="ask", expected_benefit=0.9),
+            ActionOption(id="act", verb="act", name="act", expected_benefit=0.6),
+            attention_budget=budget,
+        )
+    )
+
+    assert plan.action_id == "act"
+    assert round(budget.remaining(), 6) == 0.1
+    assert budget.spend(0.1) == 0.0
 
 
 def test_matches_the_utility_engine_without_attention_facts() -> None:

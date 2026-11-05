@@ -60,6 +60,7 @@ class ExecutionScore:
     unknown_risk: float = 0.0
     recovery_cost: float = 0.0
     requires_approval: bool = False
+    receipt_status: str | None = None
     blocked: str | None = None
 
 
@@ -91,20 +92,52 @@ def execution_effect(option: ActionOption) -> ExecutionEffect:
     )
 
 
+def _receipt_status(problem: DecisionProblem, option: ActionOption) -> str | None:
+    attributes = problem.attributes or {}
+    raw = attributes.get("execution_state")
+    if isinstance(raw, dict):
+        value = raw.get(option.id)
+        return str(value) if value is not None else None
+    receipts = attributes.get("execution_receipts")
+    if not receipts:
+        return None
+    for receipt in receipts:
+        if isinstance(receipt, dict):
+            name = receipt.get("action_name")
+            status = receipt.get("status")
+        else:
+            name = getattr(receipt, "action_name", None)
+            status = getattr(receipt, "status", None)
+        if name in {option.id, option.name} and status is not None:
+            return str(status)
+    return None
+
+
 def _score_option(
     option: ActionOption,
     model: UtilityModel,
     weights: ExecutionWeights,
     approval: bool,
+    receipt_status: str | None,
 ) -> ExecutionScore:
     effect = execution_effect(option)
     irreversible = not option.reversible
-    requires_approval = approval or option.requires_approval or option.destructive
+    requires_approval = (
+        approval or option.requires_approval or option.destructive
+    )
+    unknown_risk = effect.unknown_risk
+    recovery_cost = effect.recovery_cost
+    if receipt_status == "unknown":
+        unknown_risk = max(unknown_risk, 1.0)
+    elif receipt_status in {"failed", "refused", "cancelled", "undone"}:
+        recovery_cost = max(recovery_cost, 1.0)
+    elif receipt_status == "pending":
+        requires_approval = True
     execution = (
         -weights.irreversible * (1.0 if irreversible else 0.0)
-        - weights.unknown * effect.unknown_risk
+        - weights.unknown * unknown_risk
         - weights.approval * (1.0 if requires_approval else 0.0)
-        - weights.recovery * effect.recovery_cost
+        - weights.recovery * recovery_cost
     )
     utility = model.score(option)
     return ExecutionScore(
@@ -112,9 +145,10 @@ def _score_option(
         execution=round(execution, 6),
         total=round(utility + execution, 6),
         irreversible=irreversible,
-        unknown_risk=effect.unknown_risk,
-        recovery_cost=effect.recovery_cost,
+        unknown_risk=unknown_risk,
+        recovery_cost=recovery_cost,
         requires_approval=requires_approval,
+        receipt_status=receipt_status,
     )
 
 
@@ -149,7 +183,13 @@ class ExecutionAwareEngine:
         approval = _approval_required(problem)
         rows: list[_Row] = []
         for option in options:
-            score = _score_option(option, model, self.weights, approval)
+            score = _score_option(
+                option,
+                model,
+                self.weights,
+                approval,
+                _receipt_status(problem, option),
+            )
             blocker = _constraint_blocker(problem, option)
             rows.append(
                 _Row(
@@ -194,6 +234,7 @@ class ExecutionAwareEngine:
                 "unknown_risk": best.score.unknown_risk,
                 "recovery_cost": best.score.recovery_cost,
                 "requires_approval": best.score.requires_approval,
+                "receipt_status": best.score.receipt_status,
             },
         )
 

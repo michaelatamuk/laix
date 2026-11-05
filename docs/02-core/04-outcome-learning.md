@@ -118,8 +118,9 @@ were right. `DecisionCalibrationSample` carries the confidence, correctness, ver
 
 `calibrate_decision(decision, report)` returns a copy with adjusted confidence, `calibrated=True`
 and the before/after values in `attributes["calibration"]`. `decision_samples_from_outcomes` builds
-the samples from decisions and measured outcomes. No model is trained; the report only uses the
-observed decisions.
+the samples from decisions and measured outcomes. `CalibratedPolicy(policy, report)` wraps any
+policy and calibrates every decision it returns, so the adjustment applies without changing the
+call site. No model is trained; the report only uses the observed decisions.
 
 Both are available in Python and TypeScript, alongside the utility, MDP and POMDP engines and the
 simulator.

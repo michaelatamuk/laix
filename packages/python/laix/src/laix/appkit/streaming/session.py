@@ -22,6 +22,7 @@ from ...core.support.ids import new_id
 from ...core.support.time import parse_iso, utcnow
 from .window import TumblingWindow, WindowBatch
 from .checkpoint import StreamCheckpointStore
+from .timeline import DecisionTimeline
 
 Decider = Callable[[DecisionRequest], Sequence[Decision]]
 Refiner = Callable[[DecisionRequest], Awaitable[Sequence[Decision]]]
@@ -114,6 +115,7 @@ class StreamSession:
         latency_samples: int = 256,
         trace: bool = True,
         recorder: Recorder | None = None,
+        timeline: DecisionTimeline | None = None,
         clock: Clock | None = None,
         id_factory: Callable[[], str] | None = None,
     ) -> None:
@@ -150,6 +152,7 @@ class StreamSession:
         self._latency_samples = latency_samples
         self._trace = trace
         self._recorder = recorder
+        self.timeline = timeline
         self._clock: Clock = clock or utcnow
         self._items: deque[Decision] = deque()
         self._wake = asyncio.Event()
@@ -618,6 +621,8 @@ class StreamSession:
                 self._trace_by_decision[decision.decision_id] = decision.trace_id
             if self._recorder is not None:
                 self._recorder(decision)
+            if self.timeline is not None:
+                self.timeline.add(decision)
 
     def trace(self, decision_id: str) -> Trace:
         trace_id = self._trace_by_decision.get(decision_id)

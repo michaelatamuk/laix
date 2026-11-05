@@ -75,6 +75,55 @@ def test_due_commitment_gets_extra_weight() -> None:
     assert plan.attributes["commitments_due_fulfilled"] == ["now"]
 
 
+def test_a_dependency_blocks_fulfillment() -> None:
+    commitments = (
+        Commitment(id="c0", subject="prerequisite"),
+        Commitment(id="c1", subject="dependent", depends_on=("c0",)),
+    )
+    plan = CommitmentAwareEngine().solve(
+        _problem(
+            _option("do-c0", 0.5, commitments={"fulfills": ["c0"]}),
+            _option("do-c1", 0.5, commitments={"fulfills": ["c1"]}),
+            commitments=commitments,
+        )
+    )
+
+    assert plan.action_id == "do-c0"
+    assert plan.attributes["commitments_blocked_fulfilled"] == []
+
+
+def test_a_done_dependency_unblocks_fulfillment() -> None:
+    commitments = (
+        Commitment(id="c0", subject="prerequisite", status="done"),
+        Commitment(id="c1", subject="dependent", depends_on=("c0",)),
+    )
+    plan = CommitmentAwareEngine().solve(
+        _problem(
+            _option("do-c0", 0.5),
+            _option("do-c1", 0.5, commitments={"fulfills": ["c1"]}),
+            commitments=commitments,
+        )
+    )
+
+    assert plan.action_id == "do-c1"
+
+
+def test_priority_scales_the_reward() -> None:
+    commitments = (
+        Commitment(id="low", subject="low", priority=0.1),
+        Commitment(id="high", subject="high", priority=1.0),
+    )
+    plan = CommitmentAwareEngine().solve(
+        _problem(
+            _option("do-low", 0.5, commitments={"fulfills": ["low"]}),
+            _option("do-high", 0.5, commitments={"fulfills": ["high"]}),
+            commitments=commitments,
+        )
+    )
+
+    assert plan.action_id == "do-high"
+
+
 def test_creating_a_commitment_costs_future_flexibility() -> None:
     plan = CommitmentAwareEngine().solve(
         _problem(

@@ -1,7 +1,8 @@
-import type { Decision } from "./contracts.ts";
+import type { Decision, DecisionRequest } from "./contracts.ts";
 import { clamp } from "./contracts.ts";
 import type { Outcome } from "./contracts.ts";
 import type { CalibrationBin } from "./calibration.ts";
+import type { Policy } from "./policies/registry.ts";
 
 export interface DecisionCalibrationSample {
   confidence: number;
@@ -194,6 +195,28 @@ export function decisionSamplesFromOutcomes(
     });
   }
   return rows;
+}
+
+export class CalibratedPolicy implements Policy {
+  readonly name: string;
+  readonly policy: Policy;
+  readonly report: DecisionCalibrationReport;
+
+  constructor(
+    policy: Policy,
+    report: DecisionCalibrationReport,
+    name?: string,
+  ) {
+    this.policy = policy;
+    this.report = report;
+    this.name = name ?? `${policy.name}.calibrated`;
+  }
+
+  decide(request: DecisionRequest): Decision[] {
+    return this.policy
+      .decide(request)
+      .map((decision) => calibrateDecision(decision, this.report));
+  }
 }
 
 export function calibrateDecision(
