@@ -13,6 +13,7 @@ export * from "./execution-planner.ts";
 export * from "./attention-planner.ts";
 export * from "./mdp.ts";
 export * from "./calibration.ts";
+export * from "./decision-calibration.ts";
 export * from "./model-learning.ts";
 export * from "./pomdp.ts";
 export { Context, Feedback, OutcomeLog, Signal, decideAttention, isQuietHours, score } from "./attention.ts";

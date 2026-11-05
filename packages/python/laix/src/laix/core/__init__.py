@@ -52,6 +52,13 @@ from .engines.live_bench import (
     default_planners,
     run_live_bench,
 )
+from .engines.decision_calibration import (
+    DecisionCalibrationReport,
+    DecisionCalibrationSample,
+    calibrate_decision,
+    decision_calibration_report,
+    decision_samples_from_outcomes,
+)
 from .engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
 from .engines.mdp import (
     MDPEngine,
@@ -183,6 +190,11 @@ __all__ = [
     "CalibrationBin",
     "CalibrationReport",
     "CalibrationSample",
+    "DecisionCalibrationReport",
+    "DecisionCalibrationSample",
+    "calibrate_decision",
+    "decision_calibration_report",
+    "decision_samples_from_outcomes",
     "CausalEffect",
     "CausalLedger",
     "CausalObservation",

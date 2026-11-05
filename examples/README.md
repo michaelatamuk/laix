@@ -135,6 +135,7 @@ py examples/python/01-decide/attention_bill_due.py
 | Build a causal ledger from outcomes | `causal_outcomes.py` | — | `6.0 6.0 6.0` |
 | Causal intervals and strata | `causal_strata.py` | `causal_strata.mts` | `1.0 -1.771859 3.771859 ['east', 'west']` |
 | Calibration and smoothing | `calibration.py` | `calibration.mts` | `0.9 0.5 0.4 0.5` |
+| Decision-level calibration | `decision_calibration.py` | `decision_calibration.mts` | `0.9 0.5 decision-calibration` |
 | Learn transitions and rewards | `model_learning.py` | `model_learning.mts` | `{'s1': 1.0} 2.0` / `{"s1":1} 2` |
 | Causal attribution and planning | — | `causal_planning.mts` | `1 difference-in-means act a` |
 

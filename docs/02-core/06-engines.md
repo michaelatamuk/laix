@@ -71,6 +71,7 @@ The contracts:
 | `Simulator` | runs a planner in a model |
 | `SimulationReport` | planner comparison, reward and optimality gap |
 | `CalibrationReport` | predicted confidence vs observed accuracy |
+| `DecisionCalibrationReport` | decision accuracy, per-verb and per-action calibration |
 | `ModelLearner` | transition and reward learning with rollback |
 
 ## Capabilities
@@ -81,7 +82,7 @@ The contracts:
 | 2 | Option model | `ActionOption`, costs, risks and hard limits |
 | 3 | Utility model | `UtilityModel`, weights, risk attitude |
 | 4 | Planner choice | `DecisionEngine.solve`, `UtilityEngine`, `CommitmentAwareEngine`, `ExecutionAwareEngine`, `AttentionAwareEngine`, `MDPEngine`, `POMDPEngine` |
-| 5 | Calibration | `CalibrationReport` and confidence adjustment |
+| 5 | Calibration | `CalibrationReport`, `DecisionCalibrationReport` and confidence adjustment |
 | 6 | Learning | `ModelLearner` for transitions and rewards |
 | 7 | Explanation | chosen plan, alternatives, expected value |
 | 8 | Simulator and bench | `Simulator`, planner comparison, optimality gap |

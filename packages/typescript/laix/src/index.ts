@@ -14,6 +14,7 @@ export * from "./core/execution-planner.ts";
 export * from "./core/attention-planner.ts";
 export * from "./core/mdp.ts";
 export * from "./core/calibration.ts";
+export * from "./core/decision-calibration.ts";
 export * from "./core/model-learning.ts";
 export * from "./core/pomdp.ts";
 export * from "./core/outcome.ts";

@@ -110,6 +110,17 @@ better outcome. They answer different questions.
   transitions. `commit(validation)` keeps the model only when it beats the best one and rolls back
   otherwise. `to_mdp_model()` feeds the learned table to `MDPEngine`.
 
+### Decision-level calibration
+
+Prediction calibration checks confidence; decision calibration checks whether the verb and action
+were right. `DecisionCalibrationSample` carries the confidence, correctness, verb and action.
+`decision_calibration_report` bins by confidence and also reports accuracy per verb and per action.
+
+`calibrate_decision(decision, report)` returns a copy with adjusted confidence, `calibrated=True`
+and the before/after values in `attributes["calibration"]`. `decision_samples_from_outcomes` builds
+the samples from decisions and measured outcomes. No model is trained; the report only uses the
+observed decisions.
+
 Both are available in Python and TypeScript, alongside the utility, MDP and POMDP engines and the
 simulator.
 
