@@ -1,9 +1,10 @@
 # laix (TypeScript)
 
-One package for the LAIX decision layer: contracts, attention, action, the ten decision classes,
-Live Context, streaming, outcome learning, bench, platform, stores, proposals, delivery, execution
-and records. It mirrors the Python decision surface, including calibration, model learning and
-POMDP planning.
+**LAIX — Live AI Experience — is the decision layer for live AI experiences.**
+
+This package contains the contracts, attention, action, the ten decision classes, Live Context,
+streaming, outcome learning, bench, platform, stores, proposals, delivery, execution and records.
+It mirrors the Python decision surface, including calibration, model learning and POMDP planning.
 
 The source is split into `src/core` and `src/appkit`. The package exports one entry point, `laix`.
 

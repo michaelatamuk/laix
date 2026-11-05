@@ -2,8 +2,21 @@
 
 [![CI](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml)
 
-LAIX is one decision layer for live apps. An app describes the moment and its limits. LAIX decides
-whether to **wait, observe, guide, ask, act, verify or escalate**, and records what happened.
+LAIX is **Live AI Experience**: the decision layer for live AI experiences. A live experience is not
+a chat transcript. It notices the moment, decides whether to intervene and knows when to wait. LAIX
+does not generate the experience; it decides what the experience should do next.
+
+> Given what is happening, what the app can do and what the host allows, should this experience
+> **wait, observe, guide, ask, act, verify or escalate**?
+
+| | |
+|---|---|
+| **Is** | the decision layer for live AI experiences |
+| **Is not** | an agent framework, workflow engine, chatbot platform, database or UI kit |
+| **Replaces** | scattered decision logic for when and how an AI experience should intervene |
+
+The app owns the experience, data, UI and execution. LAIX owns the moment-to-decision loop and
+records what happened.
 
 ## One decision call
 

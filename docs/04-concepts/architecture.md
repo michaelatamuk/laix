@@ -2,9 +2,10 @@
 
 ## What LAIX is
 
-LAIX answers one question:
+**LAIX — Live AI Experience — is the decision layer for live AI experiences.** It answers one
+question:
 
-> Given this situation, what should the app do next?
+> Given this situation, what should the experience do next?
 
 It returns a **decision**. The app runs the chosen option.
 

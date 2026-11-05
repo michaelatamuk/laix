@@ -1,6 +1,7 @@
 # Privacy and trust
 
-LAIX is a decision layer. The host owns the data, the transport and the storage.
+LAIX is the decision layer for live AI experiences. The host owns the data, the transport and the
+storage.
 
 ## What the layer needs
 

@@ -1,7 +1,9 @@
 # laix (Python)
 
-One package for the LAIX decision layer: contracts, generic policies, runtime, execution, outcomes
-and decision records.
+**LAIX — Live AI Experience — is the decision layer for live AI experiences.**
+
+This package contains the contracts, generic policies, runtime, execution, outcomes and decision
+records. It is the Python surface of LAIX.
 
 The package uses the Python standard library and its own modules. It takes generic inputs and
 returns generic decisions.

@@ -1,6 +1,10 @@
 # What is LAIX?
 
-LAIX helps a product answer one question:
+**LAIX stands for Live AI Experience.** It is the decision layer for live AI experiences.
+
+A live AI experience is not a chat transcript. It is a product that notices the moment, decides
+whether to intervene and knows when to wait. LAIX does not generate the experience. It decides what
+the experience should do next:
 
 > Given this situation, what should happen next?
 
@@ -11,6 +15,26 @@ wait    observe    guide    ask    act    verify    escalate
 ```
 
 Then the product does the work.
+
+| | |
+|---|---|
+| **Is** | the decision layer for live AI experiences |
+| **Is not** | an AI model, agent framework, workflow engine, chatbot platform, database or UI kit |
+| **Replaces** | scattered decision logic for when and how an AI experience should intervene |
+
+## Why a live experience needs a decision layer
+
+Generating a response is cheap. Knowing whether to interrupt, wait, ask, act or verify is not.
+
+A live experience needs to be:
+
+- **timely** — act inside the window, not after it;
+- **restrained** — stay silent when the moment is wrong;
+- **safe** — respect hard risk and approval limits;
+- **coherent** — one decision shape across attention, action and follow-up;
+- **auditable** — record why it intervened and what happened.
+
+LAIX supplies that layer. The host keeps the experience, memory, UI, execution and delivery.
 
 ## How it fits
 

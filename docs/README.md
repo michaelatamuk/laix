@@ -1,7 +1,8 @@
 # LAIX documentation
 
-LAIX answers one question for a live app: given what is happening, what the app can do and what the
-host allows, should it **wait, observe, guide, ask, act, verify or escalate**?
+LAIX — **Live AI Experience** — is the decision layer for live AI experiences. Given what is
+happening, what the app can do and what the host allows, it decides whether the experience should
+**wait, observe, guide, ask, act, verify or escalate**.
 
 ## Start here
 

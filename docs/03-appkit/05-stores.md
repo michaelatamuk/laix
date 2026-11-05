@@ -4,13 +4,13 @@ LAIX defines the contracts. The app owns the database.
 
 | Word | Meaning |
 |---|---|
-| **State** | Short-lived experience data: goal, phase, beliefs and open items. |
+| **State** | Short-lived state of one live experience: goal, phase, beliefs and open items. |
 | **Commitment** | A promised step with a due time, status and dependencies. |
 | **Outcome** | A measured result of a decision. |
 
 ## State store
 
-Use it for short-lived experience state: goal, phase, beliefs, open items, expiry.
+Use it for the short-lived state of one live experience: goal, phase, beliefs, open items, expiry.
 
 ```python
 from laix import ExperienceState, StateStore
