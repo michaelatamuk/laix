@@ -41,6 +41,30 @@ export function toProblem(request: DecisionRequest): DecisionProblem {
   };
 }
 
+export function toDecision(
+  plan: Plan,
+  request: DecisionRequest,
+  options: { decisionId?: string; traceId?: string; policyVersion?: string } = {},
+): Decision {
+  return {
+    verb: plan.verb,
+    confidence: plan.confidence,
+    reasonCode: plan.reasonCode,
+    rationale: plan.rationale,
+    decisionId: options.decisionId ?? "",
+    traceId: options.traceId ?? "",
+    actionId: plan.actionId ?? null,
+    intent: plan.intent ?? null,
+    requiresApproval: plan.requiresApproval ?? false,
+    reversible: plan.reversible ?? false,
+    undoHint: plan.undoHint ?? null,
+    score: plan.score ?? null,
+    alternatives: plan.alternatives ?? [],
+    attributes: { ...(request.attributes ?? {}), ...(plan.attributes ?? {}) },
+    policyVersion: options.policyVersion ?? "engine.v1",
+  };
+}
+
 export class EnginePolicy {
   readonly name: string;
   readonly engine: DecisionEngine;
@@ -52,22 +76,6 @@ export class EnginePolicy {
 
   decide(request: DecisionRequest): Decision[] {
     const plan = this.engine.solve(toProblem(request));
-    return [
-      {
-        verb: plan.verb,
-        confidence: plan.confidence,
-        reasonCode: plan.reasonCode,
-        rationale: plan.rationale,
-        actionId: plan.actionId ?? null,
-        intent: plan.intent ?? null,
-        requiresApproval: plan.requiresApproval ?? false,
-        reversible: plan.reversible ?? false,
-        undoHint: plan.undoHint ?? null,
-        score: plan.score ?? null,
-        alternatives: plan.alternatives ?? [],
-        attributes: { ...(request.attributes ?? {}), ...(plan.attributes ?? {}) },
-        policyVersion: this.name,
-      },
-    ];
+    return [toDecision(plan, request, { policyVersion: this.name })];
   }
 }

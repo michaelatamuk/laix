@@ -316,6 +316,142 @@
     decide(request: DecisionRequest): Decision[];
   }
   export function toProblem(request: DecisionRequest): DecisionProblem;
+  export function toDecision(
+    plan: Plan,
+    request: DecisionRequest,
+    options?: { decisionId?: string; traceId?: string; policyVersion?: string },
+  ): Decision;
+
+  export type CausalMethod = "difference-in-means" | "inverse-propensity";
+  export interface CausalObservation {
+    decisionId: string;
+    arm: string;
+    outcome: number;
+    propensity?: number | null;
+    context?: Record<string, unknown>;
+  }
+  export interface CausalEffect {
+    treatment: string;
+    control: string;
+    estimate: number;
+    treated: number;
+    controlSize: number;
+    method: CausalMethod;
+  }
+  export class CausalLedger {
+    records: CausalObservation[];
+    add(
+      decisionId: string,
+      options: {
+        arm: string;
+        outcome: number;
+        propensity?: number | null;
+        context?: Record<string, unknown>;
+      },
+    ): CausalObservation;
+    effect(treatment: string, control: string): CausalEffect;
+  }
+
+  export type CommitmentStatus = "open" | "done" | "cancelled";
+  export const COMMITMENT_STATUSES: readonly CommitmentStatus[];
+  export interface Commitment {
+    id: string;
+    subject: string;
+    due?: string | null;
+    status?: CommitmentStatus;
+    dependsOn?: string[];
+    priority?: number;
+    payload?: Record<string, unknown>;
+  }
+  export function commitmentDue(commitment: Commitment, now: Date): boolean;
+  export class CommitmentLedger {
+    constructor(commitments?: Commitment[]);
+    add(commitment: Commitment): Required<Commitment>;
+    get(commitmentId: string): Required<Commitment>;
+    complete(commitmentId: string): Required<Commitment>;
+    cancel(commitmentId: string): Required<Commitment>;
+    open(): Required<Commitment>[];
+    due(now: Date): Required<Commitment>[];
+    next(now?: Date): Required<Commitment> | null;
+    blocked(commitment: Commitment): boolean;
+  }
+
+  export type RiskAttitude = "neutral" | "averse" | "seeking";
+  export const RISK_ATTITUDES: readonly RiskAttitude[];
+  export interface UtilityWeights {
+    benefit?: number;
+    cost?: number;
+    risk?: number;
+    interruption?: number;
+    latency?: number;
+  }
+  export interface UtilityOptions {
+    weights?: UtilityWeights;
+    riskAttitude?: RiskAttitude;
+    maxRisk?: number;
+    maxCost?: number | null;
+    maxLatencyMs?: number | null;
+  }
+  export class UtilityModel {
+    readonly weights: Required<UtilityWeights>;
+    readonly riskAttitude: RiskAttitude;
+    readonly maxRisk: number;
+    readonly maxCost: number | null;
+    readonly maxLatencyMs: number | null;
+    constructor(options?: UtilityOptions);
+    feasible(option: ActionOption): boolean;
+    score(option: ActionOption): number;
+  }
+  export class UtilityEngine implements DecisionEngine {
+    readonly name: string;
+    readonly model: UtilityModel;
+    constructor(model?: UtilityModel);
+    solve(problem: DecisionProblem): Plan;
+  }
+
+  export interface MdpTransition {
+    state: string;
+    action: string;
+    nextState: string;
+    probability?: number;
+    reward?: number;
+  }
+  export interface MdpModelOptions {
+    states: string[];
+    actions: string[];
+    transitions: MdpTransition[];
+    start: string;
+    discount?: number;
+    horizon?: number | null;
+  }
+  export class MdpModel {
+    readonly states: string[];
+    readonly actions: string[];
+    readonly transitions: Required<MdpTransition>[];
+    readonly start: string;
+    readonly discount: number;
+    readonly horizon: number | null;
+    constructor(options: MdpModelOptions);
+    outgoing(state: string, action: string): Required<MdpTransition>[];
+    actionsFor(state: string): string[];
+  }
+  export function valueIteration(
+    model: MdpModel,
+    options?: { horizon?: number | null; tolerance?: number; maxIterations?: number },
+  ): Record<string, number>;
+  export function actionValues(
+    model: MdpModel,
+    state: string,
+    values?: Record<string, number>,
+  ): Array<[string, number]>;
+  export class MDPEngine implements DecisionEngine {
+    readonly name: string;
+    readonly model: MdpModel;
+    readonly state: string;
+    constructor(model: MdpModel, options?: { state?: string });
+    solve(problem: DecisionProblem): Plan;
+  }
+  export function planActions(model: MdpModel, state?: string): string[];
   export interface ActionOption {    id: string;
     verb: Verb;
     name: string;
@@ -454,6 +590,45 @@
       policy: { decide(request: DecisionRequest): Decision[] },
       options?: { target?: "request" | TargetMode; recipients?: string[] },
     );
+    decide(request: DecisionRequest): Decision[];
+  }
+  export class PlanningPolicy implements Policy {
+    readonly name: string;
+    readonly ledger: CommitmentLedger;
+    constructor(ledger: CommitmentLedger);
+    decide(request: DecisionRequest): Decision[];
+  }
+  export interface GroupPolicyOptions {
+    target?: TargetMode;
+    recipients?: string[];
+    privateAttributes?: string[];
+  }
+  export class GroupPolicy implements Policy {
+    readonly name: string;
+    readonly policy: { decide(request: DecisionRequest): Decision[] };
+    readonly target: TargetMode;
+    readonly recipients: string[];
+    constructor(
+      policy: { decide(request: DecisionRequest): Decision[] },
+      options?: GroupPolicyOptions,
+    );
+    decide(request: DecisionRequest): Decision[];
+  }
+  export interface PolicyLike {
+    decide(request: DecisionRequest): Decision[];
+  }
+  export function simulate(policy: PolicyLike, requests: DecisionRequest[]): Decision[][];
+  export interface ShadowDifference {
+    request: DecisionRequest;
+    primary: Decision[];
+    shadow: Decision[];
+  }
+  export class ShadowPolicy implements Policy {
+    readonly name: string;
+    readonly primary: PolicyLike;
+    readonly shadow: PolicyLike;
+    differences: ShadowDifference[];
+    constructor(primary: PolicyLike, shadow: PolicyLike, name?: string);
     decide(request: DecisionRequest): Decision[];
   }
 
@@ -617,6 +792,29 @@
     load(key: string): ExperienceState | null;
     delete(key: string): void;
   }
+  export interface StreamCheckpointStore {
+    save(key: string, snapshot: Record<string, unknown>): void;
+    load(key: string): Record<string, unknown> | null;
+    delete(key: string): void;
+  }
+  export interface CheckpointFiles {
+    join(directory: string, name: string): string;
+    read(path: string): string | null;
+    write(path: string, text: string): void;
+    remove(path: string): void;
+  }
+  export class InMemoryStreamCheckpointStore implements StreamCheckpointStore {
+    save(key: string, snapshot: Record<string, unknown>): void;
+    load(key: string): Record<string, unknown> | null;
+    delete(key: string): void;
+  }
+  export class FileStreamCheckpointStore implements StreamCheckpointStore {
+    readonly directory: string;
+    constructor(directory: string, files: CheckpointFiles);
+    save(key: string, snapshot: Record<string, unknown>): void;
+    load(key: string): Record<string, unknown> | null;
+    delete(key: string): void;
+  }
   export class ApprovalRequired extends Error {}
   export class UnknownAction extends Error {}
   export class ExecutionBridge {
@@ -640,12 +838,89 @@
     measure(decisionId: string, options: { metric: string; before: number; after: number; attributed?: boolean; direction?: Outcome["direction"]; note?: string }): Outcome;
     trace(decisionId: string): Trace;
   }
+  export type SagaForward = () => Record<string, unknown>;
+  export type SagaCompensate = () => Record<string, unknown>;
+  export interface SagaStep {
+    name: string;
+    forward: SagaForward;
+    compensate?: SagaCompensate;
+  }
+  export interface SagaResult {
+    completed: string[];
+    compensated: string[];
+    error?: string | null;
+  }
+  export class Saga {
+    run(steps: SagaStep[]): SagaResult;
+  }
+
+  export type Step = (state: string, action: string) => [string, number];
+  export interface SimulationStep {
+    step: number;
+    state: string;
+    action: string | null;
+    reward: number;
+    nextState: string;
+  }
+  export interface SimulationResult {
+    scenario: string;
+    steps: SimulationStep[];
+    totalReward: number;
+    finalState: string;
+  }
+  export interface SimulatorOptions {
+    start: string;
+    horizon?: number;
+    name?: string;
+  }
+  export class Simulator {
+    readonly step: Step;
+    readonly actions: string[];
+    readonly start: string;
+    readonly horizon: number;
+    readonly name: string;
+    constructor(step: Step, actions: string[], options: SimulatorOptions);
+    run(engine: DecisionEngine): SimulationResult;
+    static fromMdp(model: MdpModel, options?: { start?: string }): Simulator;
+  }
+  export interface Scenario {
+    name: string;
+    simulator: Simulator;
+    optimum?: number | null;
+  }
+  export interface EngineScore {
+    engine: string;
+    scenario: string;
+    totalReward: number;
+    steps: number;
+    optimalityGap: number | null;
+  }
+  export class SimulationReport {
+    readonly rows: EngineScore[];
+    constructor(rows: EngineScore[]);
+    summary(): Record<string, { runs: number; meanReward: number; meanGap: number }>;
+    best(): string | null;
+  }
+  export function compareEngines(
+    engines: Record<string, DecisionEngine>,
+    scenarios: Scenario[],
+  ): SimulationReport;
+  export function seededScenarios(
+    seed: number,
+    options?: { count?: number; horizon?: number; actions?: string[] },
+  ): Scenario[];
 
   export type DecisionStatus = "final" | "provisional" | "superseded";
   export type TargetMode = "one" | "some" | "all" | "peer" | "gather";
   export const TARGET_MODES: readonly TargetMode[];
   export function fromQueue<T>(queue: AsyncIterable<T | null>): AsyncIterable<T>;
   export function fromSync<T>(items: Iterable<T>): AsyncIterable<T>;
+  export function fromNdjson(
+    lines: AsyncIterable<string> | Iterable<string>,
+  ): AsyncIterable<DecisionRequest>;
+  export function fromSse(
+    lines: AsyncIterable<string> | Iterable<string>,
+  ): AsyncIterable<DecisionRequest>;
   export function prometheus(stats: StreamStats, prefix?: string): string;
   export interface StreamBenchResult {
     decisions: Decision[];
@@ -723,6 +998,8 @@
     readonly closed: boolean;
     readonly pending: number;
     readonly stats: StreamStats;
+    save(store: StreamCheckpointStore, key: string): void;
+    resume(store: StreamCheckpointStore, key: string): boolean;
     observe(request: DecisionRequest, options?: { status?: DecisionStatus; force?: boolean }): Decision[];
     observeWait(request: DecisionRequest, options?: { status?: DecisionStatus; force?: boolean }): Promise<Decision[]>;
     revise(previous: Decision, request: DecisionRequest, options?: { status?: DecisionStatus }): Decision[];

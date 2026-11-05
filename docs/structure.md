@@ -41,7 +41,13 @@ packages/python/laix/src/laix/
 │   │   ├── trail/           execution receipt and trace
 │   │   └── normalise.py     coerce and from_attention
 │   ├── engines/
-│   │   ├── engine.py        DecisionEngine, DecisionProblem, Plan, EnginePolicy
+│   │   ├── engine.py        DecisionEngine, DecisionProblem, Plan, EnginePolicy, to_decision
+│   │   ├── utility.py       UtilityEngine, UtilityModel and hard limits
+│   │   ├── mdp.py           MdpModel, value iteration and MDPEngine
+│   │   ├── pomdp.py         PomdpModel, belief update and POMDPEngine
+│   │   ├── simulator.py     Simulator, scenarios and engine comparison
+│   │   ├── calibration.py   CalibrationReport and confidence adjustment
+│   │   ├── model_learning.py ModelLearner and rollback
 │   │   ├── policies/        policy.py, registry.py, simulation.py, implementations/ (packs, rules, target, planning, group)
 │   │   ├── attention/       input, output, gates/, attention.v1.json, decide, score
 │   │   └── resources/       budget, sensing option, plan, scheduler
@@ -73,20 +79,26 @@ packages/typescript/laix/src/
 ├── core/
 │   ├── index.ts       core surface
 │   ├── contracts.ts   core records
-│   ├── engine.ts      DecisionEngine and EnginePolicy
+│   ├── engine.ts      DecisionEngine, EnginePolicy and to_decision
+│   ├── causal.ts      causal ledger
+│   ├── planning.ts    commitment ledger
+│   ├── utility.ts     utility engine
+│   ├── mdp.ts         MDP model, value iteration and engine
 │   ├── outcome.ts     outcome ledger and UCB learner
 │   ├── evaluation.ts  parity harness
 │   ├── perception.ts  detector and frame contracts
 │   ├── resources.ts   budget and resource admission
 │   ├── attention.ts   attention policy
-│   └── policies/      eight packs, bandit, rules, target, registry
+│   └── policies/      eight packs, bandit, rules, target, planning, group, shadow, registry
 └── appkit/
     ├── index.ts       optional app surface
     ├── layer.ts       public Layer and action policy
     ├── live-context.ts host-driven detector loop
-    ├── streaming.ts   stream session
+    ├── streaming.ts   stream session and checkpoints
+    ├── checkpoint.ts  in-memory and file checkpoint stores
+    ├── simulator.ts   engine simulator and comparison
     ├── window.ts      tumbling windows
-    ├── sources.ts     queue and sync sources
+    ├── sources.ts     queue, sync, NDJSON and SSE sources
     ├── metrics.ts     Prometheus counters
     ├── bench-stream.ts stream bench
     ├── record.ts      decision record
@@ -94,7 +106,7 @@ packages/typescript/laix/src/
     ├── proposal.ts    proposal lifecycle
     ├── delivery.ts    delivery port
     ├── bench.ts       LAIX-Bench
-    └── runtime/       execution, state and stores
+    └── runtime/       execution, saga, state and stores
 ```
 
 The TypeScript package mirrors the same folders under `src/core` and `src/appkit`. It exports one

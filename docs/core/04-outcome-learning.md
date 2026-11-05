@@ -88,6 +88,18 @@ returns a `CausalEffect` with the estimate, the sample sizes and the method.
 `OutcomeLedger` records whether a decision helped; `CausalLedger` estimates whether one arm caused a
 better outcome. They answer different questions.
 
+## Calibration and model learning
+
+- **`CalibrationReport`** — bins stated confidence and compares each bin with observed accuracy.
+  `calibration_report(samples)` and `calibration_by_policy(samples)` expose the report; `adjust()`
+  maps a future confidence onto the observed rate.
+- **`ModelLearner`** — learns transition probabilities and expected rewards from observed
+  transitions. `commit(validation)` keeps the model only when it beats the best one and rolls back
+  otherwise.
+
+Both are Python-first. TypeScript exposes the engine contract, utility and MDP engines, and the
+simulator.
+
 ## App and LAIX
 
 The app owns the metric, the measurement and the decision-to-arm map. LAIX owns the reward contract,

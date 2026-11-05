@@ -1,5 +1,6 @@
 import { newId } from "../core/contracts.ts";
 import type { Decision, DecisionRequest, Trace } from "../core/contracts.ts";
+import type { StreamCheckpointStore } from "./checkpoint.ts";
 import { TumblingWindow, type WindowBatch } from "./window.ts";
 
 export const DECISION_STATUSES = ["final", "provisional", "superseded"] as const;
@@ -287,6 +288,17 @@ export class StreamSession {
       this.clock = original;
     }
     return out;
+  }
+
+  save(store: StreamCheckpointStore, key: string): void {
+    store.save(key, this.snapshot());
+  }
+
+  resume(store: StreamCheckpointStore, key: string): boolean {
+    const snapshot = store.load(key);
+    if (snapshot === null) return false;
+    this.restore(snapshot);
+    return true;
   }
 
   snapshot(): Record<string, unknown> {

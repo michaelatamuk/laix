@@ -42,10 +42,11 @@ block-beta
     end
 
     block:proof_group
-        columns 3
+        columns 4
         proof_label["Proof"]
         bench["Bench"]
         metrics["Metrics"]
+        simulator["Simulator"]
     end
 
     style surface_label fill:transparent,stroke:transparent,font-size:22px,font-weight:bold
@@ -63,7 +64,7 @@ block-beta
 | **Runtime** | Components | DecisionRuntime · ExecutionBridge · LiveContext · Saga | What runs a decision, an action, perception and recovery. |
 | **Data** | Shapes | ExperienceState · DecisionRecord · Outcome · ExecutionReceipt | What is carried or kept. |
 | **Ports** | Interfaces | StateStore · StreamCheckpointStore · Platform · DeliveryPort | What the host implements or supplies. |
-| **Proof** | Tools | Bench · Metrics | How the kit is tested and observed. |
+| **Proof** | Tools | Bench · Metrics · Simulator | How the kit is tested and observed. |
 
 ## What each part contains
 
@@ -85,6 +86,7 @@ block-beta
 | Ports | **DeliveryPort** | Interface | deliver a result and return a receipt |
 | Proof | **Bench** | Tool | deterministic cases, suites, report |
 | Proof | **Metrics** | Tool | Prometheus counters from stream stats |
+| Proof | **Simulator** | Tool | engine runs, scenarios, optimality gap |
 
 ## Reading the app kit
 
@@ -97,7 +99,8 @@ block-beta
   what was measured, `ExecutionReceipt` is what the host returned.
 - **Ports** — the host supplies a state store, a stream checkpoint store, a platform and a delivery
   port. They are interfaces, not implementations.
-- **Proof** — the bench checks decisions; metrics exposes stream counters.
+- **Proof** — the bench checks decisions; metrics exposes stream counters; the simulator runs
+  engines in a model and reports reward and optimality gap.
 
 The app kit is optional. A host that only needs the answer calls `decide` or `Layer`; a host that
 also executes, records, streams or delivers adds the rest.

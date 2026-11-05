@@ -1,4 +1,5 @@
 export * from "./bench.ts";
+export * from "./checkpoint.ts";
 export * from "./delivery.ts";
 export * from "./layer.ts";
 export * from "./live-context.ts";
@@ -7,8 +8,10 @@ export * from "./proposal.ts";
 export * from "./record.ts";
 export * from "./runtime/decision-runtime.ts";
 export * from "./runtime/execution.ts";
+export * from "./runtime/saga.ts";
 export * from "./runtime/state.ts";
 export * from "./runtime/state-store.ts";
+export * from "./simulator.ts";
 export * from "./streaming.ts";
 export * from "./window.ts";
 export * from "./sources.ts";

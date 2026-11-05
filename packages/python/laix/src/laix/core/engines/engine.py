@@ -64,6 +64,39 @@ def to_problem(request: DecisionRequest) -> DecisionProblem:
     )
 
 
+def to_decision(
+    plan: Plan,
+    request: DecisionRequest,
+    *,
+    decision_id: str = "",
+    trace_id: str = "",
+    policy_version: str = "engine.v1",
+) -> Decision:
+    """Turn one plan into the public decision shape.
+
+    This is the single conversion used by ``EnginePolicy``; an adapter that
+    calls an engine directly can use it too, so every engine path returns the
+    same shape.
+    """
+    return Decision(
+        verb=plan.verb,
+        confidence=plan.confidence,
+        reason_code=plan.reason_code,
+        rationale=plan.rationale,
+        decision_id=decision_id,
+        trace_id=trace_id,
+        action_id=plan.action_id,
+        intent=plan.intent,
+        requires_approval=plan.requires_approval,
+        reversible=plan.reversible,
+        undo_hint=plan.undo_hint,
+        score=plan.score,
+        alternatives=tuple(plan.alternatives),
+        attributes={**request.attributes, **plan.attributes},
+        policy_version=policy_version,
+    )
+
+
 class EnginePolicy:
     """Wrap any ``DecisionEngine`` as a policy."""
 
@@ -81,21 +114,11 @@ class EnginePolicy:
     ) -> list[Decision]:
         plan = self.engine.solve(to_problem(request))
         return [
-            Decision(
-                verb=plan.verb,
-                confidence=plan.confidence,
-                reason_code=plan.reason_code,
-                rationale=plan.rationale,
+            to_decision(
+                plan,
+                request,
                 decision_id=decision_id,
                 trace_id=trace_id,
-                action_id=plan.action_id,
-                intent=plan.intent,
-                requires_approval=plan.requires_approval,
-                reversible=plan.reversible,
-                undo_hint=plan.undo_hint,
-                score=plan.score,
-                alternatives=tuple(plan.alternatives),
-                attributes={**request.attributes, **plan.attributes},
                 policy_version=self.name,
             )
         ]
@@ -106,5 +129,6 @@ __all__ = [
     "DecisionProblem",
     "EnginePolicy",
     "Plan",
+    "to_decision",
     "to_problem",
 ]

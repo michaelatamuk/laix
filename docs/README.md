@@ -32,10 +32,10 @@ The split follows the code:
 | [core/00-core-architecture.md](core/00-core-architecture.md) | the core building blocks and how they stack |
 | [core/01-decision-contract.md](core/01-decision-contract.md) | the decision contract: request, response and records |
 | [core/02-attention.md](core/02-attention.md) | task-level attention and its scope |
-| [core/03-packaged-policies.md](core/03-packaged-policies.md) | the eight packaged policies |
-| [core/04-outcome-learning.md](core/04-outcome-learning.md) | rewards, UCB, causal attribution and `BanditPolicy` |
+| [core/03-packaged-policies.md](core/03-packaged-policies.md) | the eight packaged policies, wrappers and decision engines |
+| [core/04-outcome-learning.md](core/04-outcome-learning.md) | rewards, UCB, causal attribution, calibration and `BanditPolicy` |
 | [core/05-evaluation.md](core/05-evaluation.md) | vectors, conformance and bench |
-| [core/06-engine-roadmap.md](core/06-engine-roadmap.md) | the engine contract and the planner roadmap |
+| [core/06-engine-roadmap.md](core/06-engine-roadmap.md) | the engine contract, built-in engines, simulation, calibration and learning |
 
 ## App kit
 
@@ -45,11 +45,11 @@ The split follows the code:
 | [appkit/integration.md](appkit/integration.md) | install, adapter, rollout and pinning |
 | [appkit/live-context.md](appkit/live-context.md) | detectors, admission and frames |
 | [appkit/platform.md](appkit/platform.md) | the platform contract |
-| [appkit/stores.md](appkit/stores.md) | state and outcome stores |
+| [appkit/stores.md](appkit/stores.md) | state, stream checkpoint and outcome stores |
 | [appkit/streaming.md](appkit/streaming.md) | stream sessions: event time, cadence, backpressure and revisions |
 | [appkit/bench.md](appkit/bench.md) | LAIX-Bench suites and CLI |
 
 ## Examples
 
 Runnable examples live in [`../examples/README.md`](../examples/README.md). Every Python and
-TypeScript capability has an example, and the test suite runs them.
+TypeScript capability has an example, and CI runs both example sets.

@@ -95,3 +95,9 @@ fixtures.
 
 `run_stream_bench(session, requests)` replays requests through a `StreamSession` and reports the
 decisions, elapsed time, throughput and stream counters. See [streaming](streaming.md).
+
+## Engine simulation
+
+`Simulator` runs an engine in a deterministic model. `compare_engines(engines, scenarios)` returns
+reward and optimality gap per engine and scenario; `seeded_scenarios(seed)` builds repeatable chains
+with a known optimum. See [the engine roadmap](../core/06-engine-roadmap.md).

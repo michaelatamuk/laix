@@ -10,6 +10,7 @@ from laix import (
     EnginePolicy,
     Intent,
     Plan,
+    to_decision,
     to_problem,
 )
 
@@ -49,6 +50,28 @@ def test_engine_policy_returns_the_one_decision_shape() -> None:
     assert decision.reversible is True
     assert decision.policy_version == "fake-engine.v1"
     assert decision.intent is not None
+
+
+def test_to_decision_converts_one_plan() -> None:
+    request = DecisionRequest(
+        subject="a task",
+        at="2026-11-01T10:00:00+00:00",
+        attributes={"urgency": 0.8},
+    )
+    plan = Plan(
+        verb="act",
+        confidence=0.9,
+        reason_code="best_plan",
+        rationale="the best plan",
+        action_id="a1",
+        attributes={"engine": "utility"},
+    )
+    decision = to_decision(plan, request, policy_version="utility.v1")
+
+    assert decision.verb == "act"
+    assert decision.action_id == "a1"
+    assert decision.attributes == {"urgency": 0.8, "engine": "utility"}
+    assert decision.policy_version == "utility.v1"
 
 
 def test_to_problem_projects_the_request() -> None:

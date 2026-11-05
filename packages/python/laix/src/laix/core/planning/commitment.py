@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from ..support.time import parse_iso, utcnow
 
 COMMITMENT_STATUSES = ("open", "done", "cancelled")
+_NEVER = datetime.max.replace(tzinfo=timezone.utc)
 
 
 @dataclass(frozen=True, slots=True)
@@ -64,7 +65,7 @@ class CommitmentLedger:
             return None
         return sorted(
             open_items,
-            key=lambda item: (item.due or "9999", -item.priority, item.id),
+            key=lambda item: (parse_iso(item.due) or _NEVER, -item.priority, item.id),
         )[0]
 
     def blocked(self, commitment: Commitment) -> bool:

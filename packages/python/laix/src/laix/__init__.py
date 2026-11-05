@@ -77,7 +77,47 @@ from .core.engines.policies import (
 )
 from .core.sensing import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
-from .core.engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_problem
+from .core.engines.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
+from .core.engines.calibration import (
+    CalibrationBin,
+    CalibrationReport,
+    CalibrationSample,
+    calibration_by_policy,
+    calibration_report,
+    samples_from_outcomes,
+)
+from .core.engines.mdp import (
+    MDPEngine,
+    MdpModel,
+    MdpTransition,
+    action_values,
+    plan_actions,
+    value_iteration,
+)
+from .core.engines.model_learning import LearnedTransition, ModelLearner
+from .core.engines.pomdp import (
+    ObservationProbability,
+    POMDPEngine,
+    PomdpModel,
+    PomdpTransition,
+    belief_entropy,
+    belief_from_state,
+    belief_update,
+    normalize_belief,
+    observation_probability,
+    pomdp_value,
+)
+from .core.engines.simulator import (
+    EngineScore,
+    Scenario,
+    SimulationReport,
+    SimulationResult,
+    SimulationStep,
+    Simulator,
+    compare_engines,
+    seeded_scenarios,
+)
+from .core.engines.utility import RISK_ATTITUDES, UtilityEngine, UtilityModel, UtilityWeights
 from .core.dispatch import decide, select
 
 # The app kit is optional and is imported on first use.  A host that only needs
@@ -193,6 +233,9 @@ __all__ = [
     "CAPABILITY_LEVELS",
     "Capability",
     "Case",
+    "CalibrationBin",
+    "CalibrationReport",
+    "CalibrationSample",
     "CausalEffect",
     "CausalLedger",
     "CausalObservation",
@@ -229,6 +272,38 @@ __all__ = [
     "Saga",
     "SagaResult",
     "SagaStep",
+    "MDPEngine",
+    "MdpModel",
+    "MdpTransition",
+    "ModelLearner",
+    "LearnedTransition",
+    "ObservationProbability",
+    "POMDPEngine",
+    "PomdpModel",
+    "PomdpTransition",
+    "RISK_ATTITUDES",
+    "Scenario",
+    "SimulationReport",
+    "SimulationResult",
+    "SimulationStep",
+    "Simulator",
+    "UtilityEngine",
+    "UtilityModel",
+    "UtilityWeights",
+    "action_values",
+    "belief_entropy",
+    "belief_from_state",
+    "belief_update",
+    "calibration_by_policy",
+    "calibration_report",
+    "compare_engines",
+    "normalize_belief",
+    "observation_probability",
+    "plan_actions",
+    "pomdp_value",
+    "samples_from_outcomes",
+    "seeded_scenarios",
+    "value_iteration",
     "apply_proposal",
     "approve_proposal",
     "approve_record",
@@ -257,6 +332,7 @@ __all__ = [
     "EnginePolicy",
     "Plan",
     "TARGET_MODES",
+    "to_decision",
     "to_problem",
     "ActionPolicy",
     "DecisionRuntime",

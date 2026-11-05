@@ -25,6 +25,26 @@ class MyStore:
 `ExperienceState` has `snapshot()` and `from_snapshot()` for app-owned persistence. Long-lived project
 or user memory belongs in the app or a manager service.
 
+## Stream checkpoint store
+
+Use it to resume a `StreamSession` without giving LAIX a database. The snapshot keeps the watermark,
+cadence, counters, buffered decisions and traces.
+
+```python
+from laix import FileStreamCheckpointStore
+
+store = FileStreamCheckpointStore("./checkpoints")
+stream.save(store, "case-1")
+stream.resume(store, "case-1")
+```
+
+`InMemoryStreamCheckpointStore` is included for tests. The host can implement `StreamCheckpointStore`
+with its own storage.
+
+In TypeScript, `FileStreamCheckpointStore` takes a small `CheckpointFiles` adapter
+(`join`, `read`, `write`, `remove`), so the package does not import a Node-only filesystem. A Node
+host can pass `node:fs` and `node:path` wrappers.
+
 ## Outcome store
 
 Use it for decision consequences.
@@ -51,6 +71,7 @@ Store:
 
 Keep transcripts, images, customer data and secrets in the app.
 
-TypeScript exports `StateStore`, `InMemoryStateStore`, `OutcomeStore` and `OutcomeLedger`.
+TypeScript exports `StateStore`, `InMemoryStateStore`, `StreamCheckpointStore`,
+`InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`, `OutcomeStore` and `OutcomeLedger`.
 
 Learning uses outcome labels: [outcome learning](../core/04-outcome-learning.md).

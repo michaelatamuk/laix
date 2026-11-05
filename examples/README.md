@@ -8,13 +8,13 @@ result. The stories are small everyday situations, so the result is easy to pict
 ```text
 examples/
 ├── decisions/
-│   ├── action/        action decisions and custom policy
+│   ├── action/        action decisions, engines and custom policy
 │   ├── attention/     surfacing, quiet hours, feedback
-│   └── records/       DecisionRecord, outcome store, parity
-├── policies/          packaged policies and learned bandit
+│   └── records/       DecisionRecord, outcome store, causal, calibration, model learning
+├── policies/          packaged policies, planning, group, shadow, POMDP and learned bandit
 ├── appkit/
-│   ├── runtime/       execution, resources, live context, stores
-│   ├── streaming/     event time, cadence, backpressure, revisions
+│   ├── runtime/       execution, resources, live context, stores, saga, simulator
+│   ├── streaming/     event time, cadence, backpressure, revisions, checkpoints, sources
 │   ├── audit/         proposal lifecycle
 │   ├── platform/      platform interface
 │   └── bench/         LAIX-Bench
@@ -48,6 +48,8 @@ examples/
 | `decisions/action/pay_bill.py` | A bill is due today and a person must approve the payment. | `act policy_rule option-pay True` |
 | `decisions/action/check_again.py` | A parcel is late; a tracking page can settle it. | `observe policy_rule option-check-tracking` |
 | `decisions/action/custom_policy.py` | A caller supplies its own policy. | `wait policy_rule` |
+| `decisions/action/utility_engine.py` | Expected utility with hard limits. | `act bold 0.75` |
+| `decisions/action/mdp_engine.py` | Plan one step in a finite MDP. | `act go 2.8` |
 
 ## Packaged policies
 
@@ -63,6 +65,10 @@ examples/
 | `policies/escalation.py` | Escalation | `escalate escalate_to_target manager` |
 | `policies/bandit.py` | Outcome learning | `manual automatic 0.75` |
 | `policies/time_critical.py` | Gates, delay, cost, disruption and confidence | `act breaker-dry 0.44` |
+| `policies/planning.py` | Commitment-based next move | `act due_commitment a` |
+| `policies/group.py` | Target, recipients and private masking | `all ('alice', 'ben', 'chris') {'topic': 'math'}` |
+| `policies/shadow.py` | Shadow policy records a disagreement | `ask 1 act` |
+| `policies/pomdp.py` | Belief update and finite-horizon planning | `act go 2.8` |
 
 ## Runtime
 
@@ -71,6 +77,8 @@ examples/
 | `appkit/runtime/execution.py` | Decision runtime and execution bridge | `executed close the valve` |
 | `appkit/runtime/resources.py` | Cheap/deep call admission | `('camera', 'read-page') ('full-audio',)` |
 | `appkit/runtime/live_context.py` | Detectors, admission and perception frames | `('motion', 'read-label') ('transcribe',) 2 0.097` |
+| `appkit/runtime/saga.py` | Forward steps and reverse compensation | `('first',) ('first',) RuntimeError: boom` |
+| `appkit/runtime/simulator.py` | Compare engines on one scenario | `right 4.0 1.0` |
 | `appkit/platform/platform_interface.py` | Run a skill, approve, read events | `7 skill.started,skill.finished fast True` |
 
 ## Records
@@ -79,6 +87,9 @@ examples/
 |---|---|---|
 | `decisions/records/record.py` | Record, approve, execute, verify | `executed True` |
 | `appkit/audit/proposal.py` | Proposal lifecycle | `pending approved applied undone` |
+| `decisions/records/causal.py` | Estimate a treatment effect | `1.0 difference-in-means` |
+| `decisions/records/calibration.py` | Compare confidence with accuracy | `0.9 0.5 0.4 0.5` |
+| `decisions/records/model_learning.py` | Learn transitions and reward | `{'s1': 1.0} 2.0` |
 
 ## Stores
 
@@ -94,6 +105,8 @@ examples/
 | `appkit/runtime/mission_adapter.py` | Task → request → decision → basis | `act valve host-calibrated True reason` |
 | `appkit/runtime/mission_execution.py` | Approval → execution → receipt | `executed approve the repair True` |
 | `appkit/streaming/stream_session.py` | One event → a decision stream → close | `guide worth_surfacing STR-DEMO final` |
+| `appkit/streaming/checkpoint.py` | Save and resume a stream | `True 1 1` |
+| `appkit/streaming/sources.py` | Read NDJSON into requests | `a b` |
 
 ## Integration
 
@@ -123,6 +136,11 @@ examples/
 | `typescript/integration/bench.mts` | Run LAIX-Bench from TypeScript. | `25 25 1` |
 | `typescript/integration/delivery.mts` | Delivery port and receipt. | `skipped email` |
 | `typescript/integration/evaluation.mts` | Parity harness. | `2 2 1` |
+| `typescript/streaming/checkpoint.mts` | Checkpoint, resume and NDJSON source. | `true 1 a b` |
+| `typescript/policies/causal_planning.mts` | Causal effect and commitment planning. | `1 difference-in-means act a` |
+| `typescript/policies/group_shadow.mts` | Group masking and shadow comparison. | `ask act all {"topic":"math"}` |
+| `typescript/runtime/saga.mts` | Forward steps and reverse compensation. | `first first Error: boom` |
+| `typescript/integration/engines.mts` | Utility, MDP, simulator and comparison. | `bold 0.75 go 2.8 right 0` |
 
 ## Run
 
@@ -147,7 +165,8 @@ The TypeScript examples run with Node's type stripping:
 Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object { node --experimental-strip-types $_.FullName }
 ```
 
-`packages/python/laix/tests/test_examples.py` runs every example, so none of them can rot.
+`packages/python/laix/tests/test_examples.py` runs every Python example, and CI runs every
+TypeScript example, so none of them can rot.
 
 ## What the output means
 

@@ -1,5 +1,24 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- **Built-in decision engines.** `UtilityEngine` with hard limits and risk attitude, `MDPEngine`
+  with value iteration, and `POMDPEngine` with belief update and finite-horizon planning.
+- **Engine proof.** `Simulator`, seeded scenarios, `compare_engines` with reward and optimality gap,
+  `CalibrationReport` and `ModelLearner` with rollback.
+- **TypeScript parity for the 0.9.0 depth work.** Checkpoint stores, NDJSON/SSE sources,
+  `CausalLedger`, commitments and `PlanningPolicy`, `GroupPolicy`, `ShadowPolicy` / `simulate` and
+  `Saga`.
+- **TypeScript engine surface.** `UtilityEngine`, `MDPEngine`, `Simulator` and `compareEngines`.
+- **Examples** for checkpoints, sources, causal attribution, planning, group/shadow, sagas,
+  calibration, model learning, utility, MDP and POMDP.
+
+### Changed
+
+- Added `to_decision` / `toDecision` as the one plan-to-decision conversion.
+
 ## 0.9.0 — 2026-11-05
 
 ### Added

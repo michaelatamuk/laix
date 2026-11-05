@@ -102,6 +102,29 @@ accepts `target="request"` to take the mode from the request.
 - **`ShadowPolicy`** — runs a second policy beside the primary, returns the primary decision and
   records every disagreement for comparison.
 
+## Decision engines
+
+An engine is a planner behind the same policy interface. Wrap it with `EnginePolicy`:
+
+```python
+from laix import DecisionRequest, EnginePolicy, MDPEngine, MdpModel, decide
+
+# model = MdpModel(states=..., actions=..., transitions=..., start=...)
+decision = decide(
+    DecisionRequest(subject="choose", at="2026-11-01T10:00:00+00:00"),
+    policy=EnginePolicy(MDPEngine(model)),
+)[0]
+```
+
+- **`UtilityEngine`** — expected utility over the offered options, with hard limits and
+  `neutral` / `averse` / `seeking` risk attitudes.
+- **`MDPEngine`** — value iteration over a finite `MdpModel`, with a discount and horizon.
+- **`POMDPEngine`** — belief update and finite-horizon expectimax over a small `PomdpModel`.
+- **`Simulator`** — runs an engine in a model; `compare_engines` reports reward and optimality gap.
+
+`to_decision(plan, request)` is the shared plan-to-decision conversion. See
+[the engine roadmap](06-engine-roadmap.md).
+
 ## Active perception
 
 - **Inputs:** `uncertainty`, `observations` (`id`, `information_gain`, `cost`),

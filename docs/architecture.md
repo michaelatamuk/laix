@@ -225,7 +225,9 @@ LAIX is a decision layer. It can host a decision model such as JEV inside a poli
 | New storage | Implement `StateStore` or `OutcomeStore` |
 | New channel | Implement `DeliveryPort` |
 
-The engine contract is in place: `EnginePolicy` wraps JEV, an optimizer or a planner. A LAIX
-planner is the next step, tracked in [the engine roadmap](core/06-engine-roadmap.md).
+The engine contract is in place: `EnginePolicy` wraps JEV, an optimizer or a planner. Built-in
+`UtilityEngine`, `MDPEngine` and `POMDPEngine` planners are available behind the same adapter;
+simulation, calibration and model learning support them. See
+[the engine roadmap](core/06-engine-roadmap.md).
 
 Core vs app kit vs host is defined in [boundaries](boundaries.md).

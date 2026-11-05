@@ -46,11 +46,17 @@ class FileStreamCheckpointStore:
         self.directory.mkdir(parents=True, exist_ok=True)
 
     def _path(self, key: str) -> Path:
-        safe = key.replace("/", "_").replace("\\", "_")
+        safe = "".join(
+            "_" if character in '/\\:*?"<>|' else character
+            for character in key
+        )
         return self.directory / f"{safe}.json"
 
     def save(self, key: str, snapshot: dict[str, Any]) -> None:
-        self._path(key).write_text(json.dumps(snapshot, indent=2), encoding="utf-8")
+        path = self._path(key)
+        temporary = path.with_suffix(".tmp")
+        temporary.write_text(json.dumps(snapshot, indent=2), encoding="utf-8")
+        temporary.replace(path)
 
     def load(self, key: str) -> dict[str, Any] | None:
         path = self._path(key)

@@ -68,14 +68,22 @@ plugin interface and decision shape. `EnginePolicy` wraps an external engine —
 planner — behind that same interface, and `RulePolicy` / `TargetedPolicy` cover authored rules and
 group targets.
 
+Built-in engines add `UtilityEngine`, `MDPEngine` and `POMDPEngine`. `Simulator` compares engines on
+the same scenario, `CalibrationReport` compares confidence with accuracy, and `ModelLearner` learns
+transitions and rewards with rollback.
+
 Live Context adds a detector contract and a perception loop: cheap detectors run continuously, deep
 ones are admitted under a sub-second cost and latency budget, and each event produces a frame.
 
 `Layer.stream` adds the live loop around decisions: event time, cadence, backpressure and revisions.
-The execution bridge adds idempotency keys, unknown outcomes and reconciliation around a write.
+`StreamSession` saves and resumes through a `StreamCheckpointStore` and reads NDJSON or SSE sources.
+The execution bridge adds idempotency keys, unknown outcomes and reconciliation around a write, and
+`Saga` compensates completed steps when a later step fails.
 
 Outcome learning turns measured labels into rewards. `UCBBandit` learns which arm works and
-`BanditPolicy` puts that learner behind the policy interface.
+`BanditPolicy` puts that learner behind the policy interface. `CausalLedger` estimates a treatment
+effect, `CommitmentLedger` and `PlanningPolicy` plan the next step, `GroupPolicy` masks private
+state, and `ShadowPolicy` compares a second policy without changing the primary decision.
 
 LAIX-Bench runs deterministic cases for every decision class:
 
@@ -87,8 +95,8 @@ New apps send requests. Shared rules become generic policies. App rules stay in 
 
 ## Two surfaces
 
-- **`laix.core`** — `decide(request)`, contracts, decision shape, attention, policies, sensing contracts, resource admission, outcomes and evaluation. Core uses only core modules.
-- **`laix.appkit`** — optional integration: Layer, execution, records, delivery, platform, live-context loop and state.
+- **`laix.core`** — `decide(request)`, contracts, decision shape, attention, policies, decision engines, sensing contracts, resource admission, outcomes, causal attribution, calibration and evaluation. Core uses only core modules.
+- **`laix.appkit`** — optional integration: Layer, streams and checkpoints, execution and sagas, records, delivery, platform, live-context loop and state.
 
 A host that only needs the answer calls `decide(request)`. A host that also executes, records or
 delivers calls `Layer`. LAIX uses its own modules and generic vocabulary. See
@@ -98,8 +106,8 @@ delivers calls `Layer`. LAIX uses its own modules and generic vocabulary. See
 
 | Path | Contents |
 |---|---|
-| `packages/python/laix` | one Python package: contracts, policies, runtime, execution, outcomes, records |
-| `packages/typescript/laix` | one TypeScript package: the decision contract, attention policy and decision record |
+| `packages/python/laix` | one Python package: contracts, policies, engines, runtime, execution, outcomes, records |
+| `packages/typescript/laix` | one TypeScript package: the decision contract, policies, engines and app kit |
 | `packages/contracts/` | the JSON Schema and behavioural vectors |
 | `examples/` | small runnable requests in Python and TypeScript |
 | `docs/` | [design notes, guides and the integration guide](docs/README.md) |
@@ -120,5 +128,5 @@ CI runs the same checks in `.github/workflows/ci.yml`.
 
 ## Status
 
-Early seed. The contracts and policies pass their vectors. The 2027 figures in the LAIX notes are
-goals.
+Early seed. The contracts, policies and engines pass their vectors. The 2027 figures in the LAIX
+notes are goals.
