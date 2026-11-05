@@ -126,6 +126,7 @@ decision = decide(
 - **`CommitmentAwareEngine`** — utility plus promise keeping, violations and due commitments.
 - **`ExecutionAwareEngine`** — utility plus irreversibility, unknown outcomes and recovery cost.
 - **`AttentionAwareEngine`** — utility plus interruption, approval and escalation cost.
+- **`LiveDecisionEngine`** — utility plus commitments, execution risk and human attention.
 - **`MDPEngine`** — value iteration over a finite `MdpModel`, with a discount and horizon. See
   [what an MDP is](06-engines.md#what-an-mdp-is).
 - **`POMDPEngine`** — belief update and finite-horizon expectimax over a small `PomdpModel`.

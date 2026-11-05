@@ -130,5 +130,6 @@ print(report.summary())
 
 The current result shows why the new planners exist: utility wins on plain benefit, while the
 commitment-aware, execution-aware and attention-aware planners win the cases that include promises,
-execution risk and human attention. TypeScript exports the same benchmark as `runLiveBench`,
-`defaultCases` and `liveBenchSummary`. See [the planner reference](../02-core/06-engines.md).
+execution risk and human attention. `LiveDecisionEngine` combines all three and matches all seven
+expected actions. TypeScript exports the same benchmark as `runLiveBench`, `defaultCases` and
+`liveBenchSummary`. See [the planner reference](../02-core/06-engines.md).

@@ -18,6 +18,7 @@ from .attention_planner import AttentionAwareEngine
 from .commitment_planner import CommitmentAwareEngine
 from .engine import DecisionEngine, DecisionProblem, Plan
 from .execution_planner import ExecutionAwareEngine
+from .live_engine import LiveDecisionEngine
 from .utility import UtilityEngine, _constraint_blocker
 
 
@@ -189,6 +190,7 @@ def default_planners() -> dict[str, DecisionEngine]:
         "commitment": CommitmentAwareEngine(),
         "execution": ExecutionAwareEngine(),
         "attention": AttentionAwareEngine(),
+        "live": LiveDecisionEngine(),
     }
 
 

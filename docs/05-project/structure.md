@@ -11,11 +11,11 @@ laix/
 │   └── typescript/laix/   TypeScript package and tests
 ├── docs/
 │   ├── README.md          audience-first index
-│   ├── 01-start/          quickstart, what-is, host integration
+│   ├── 01-start/          quickstart, what-is, lifecycle, host integration
 │   ├── 02-core/           contract, attention, policies, learning, evaluation, planners
 │   ├── 03-appkit/         architecture, integration, streaming, execution, stores, bench
-│   ├── 04-concepts/       architecture, boundaries, PPMA, decision models, privacy, glossary
-│   └── 05-project/        structure, testing, versioning, roadmap
+│   ├── 04-concepts/       architecture, boundaries, PPMA, decision models, privacy, FAQ, glossary
+│   └── 05-project/        structure, testing, API map, versioning, roadmap
 ├── examples/
 │   ├── python/            numbered lifecycle stages
 │   └── typescript/        the same numbered stages
@@ -55,6 +55,7 @@ packages/python/laix/src/laix/
 │   │   ├── attention_planner.py attention-aware planning
 │   │   ├── decision_calibration.py decision-level calibration
 │   │   ├── live_bench.py    training-free live decision benchmark
+│   │   ├── live_engine.py   integrated live planner
 │   │   ├── model_learning.py ModelLearner and rollback
 │   │   ├── policies/        policy.py, registry.py, simulation.py, implementations/ (packs, rules, target, planning, group)
 │   │   ├── attention/       input, output, gates/, attention.v1.json, decide, score
@@ -100,6 +101,7 @@ packages/typescript/laix/src/
 │   ├── attention-planner.ts attention-aware planner
 │   ├── decision-calibration.ts decision-level calibration
 │   ├── live-bench.ts training-free live benchmark
+│   ├── live-engine.ts integrated live planner
 │   ├── model-learning.ts count-based learner and MDP export
 │   ├── outcome.ts     outcome ledger and UCB learner
 │   ├── evaluation.ts  parity harness

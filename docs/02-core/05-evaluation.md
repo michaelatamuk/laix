@@ -28,7 +28,7 @@ npm.cmd run conformance
 
 Conformance compares the attention decisions with the shared vector file.
 
-## What evaluation does not cover yet
+## Next evaluation work
 
 - A held-out set.
 - Real user outcomes.

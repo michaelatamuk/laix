@@ -5,6 +5,7 @@ import { UtilityEngine, constraintBlocker } from "./utility.ts";
 import { CommitmentAwareEngine } from "./commitment-planner.ts";
 import { ExecutionAwareEngine } from "./execution-planner.ts";
 import { AttentionAwareEngine } from "./attention-planner.ts";
+import { LiveDecisionEngine } from "./live-engine.ts";
 
 export interface LiveCase {
   name: string;
@@ -102,6 +103,7 @@ export function defaultPlanners(): Record<string, DecisionEngine> {
     commitment: new CommitmentAwareEngine(),
     execution: new ExecutionAwareEngine(),
     attention: new AttentionAwareEngine(),
+    live: new LiveDecisionEngine(),
   };
 }
 

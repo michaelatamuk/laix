@@ -56,7 +56,7 @@ export function executionEffect(option: ActionOption): ExecutionEffect {
   };
 }
 
-function receiptStatus(
+export function receiptStatus(
   problem: DecisionProblem,
   option: ActionOption,
 ): string | null {
@@ -80,7 +80,7 @@ function receiptStatus(
   return null;
 }
 
-function scoreOption(
+export function executionScoreOption(
   option: ActionOption,
   model: UtilityModel,
   weights: Required<ExecutionWeights>,
@@ -152,7 +152,7 @@ export class ExecutionAwareEngine {
     const model = this.modelFor((problem.attributes ?? {}) as Record<string, unknown>);
     const approval = approvalRequired(problem);
     const rows: Row[] = options.map((option) => {
-      const score = scoreOption(
+      const score = executionScoreOption(
         option,
         model,
         this.weights,

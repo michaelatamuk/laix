@@ -52,4 +52,4 @@ The bill is important, it is daytime, and the user can decide when to pay.
   all, across apps and tasks.
 
 A product that already has a global interruption rule should keep it and use LAIX
-only for task-level signal decisions.
+for task-level signal decisions.

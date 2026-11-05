@@ -32,6 +32,28 @@ A live experience needs timing, restraint, safety, coherence and a record:
 
 LAIX supplies that layer. The host keeps the experience, memory, UI, execution and delivery.
 
+## What LAIX adds
+
+LAIX turns those properties into one layer:
+
+- **One contract** — attention, action, follow-up, execution and outcomes return the same decision
+  shape with a reason, confidence and trail.
+- **Training-free** — the current layer is policy/rules based; planners use a model the host supplies.
+- **Live context** — promises, execution risk, human attention, calibration and decision time are
+  part of the decision itself.
+- **Host control** — LAIX decides; the host owns data, execution, storage and delivery.
+- **Evidence** — conformance vectors, bench, examples and Python/TypeScript parity.
+
+The contribution is the combination: a coherent decision layer for live experiences.
+`LiveDecisionEngine` makes that concrete: one plan can keep a promise, avoid an irreversible action
+and respect an attention budget at the same time.
+
+## Model-optional
+
+Training-free means LAIX does not train or fine-tune a model. The default path is policies and
+rules. A planner can use a world model the host supplies: states, transitions and rewards. A
+pretrained model can sit behind `EnginePolicy`, and the decision contract stays the same.
+
 ## How it fits
 
 ```text
@@ -69,6 +91,9 @@ Water is coming under the bathroom door.
 When the task has promises, execution risk or a limited human-attention budget, those are part of
 the decision too: what it promises, what could go wrong after the button is pressed, and how much
 attention it spends. Later outcomes can calibrate the next decision.
+
+LAIX is training-free: the current layer is policy/rules based, and planners use a model the host
+supplies.
 
 ## A harder example: water and electricity
 
@@ -180,6 +205,8 @@ LAIX keeps the decision and its record.
 
 ## Read next
 
+- [Decision lifecycle](decision-lifecycle.md) — one loop from moment to outcome.
 - [Architecture](../04-concepts/architecture.md) — the full picture.
 - [Host integration](host-integration.md) — the six things a host team checks first.
 - [The Decision response](../02-core/01-decision-contract.md) — every field in plain language.
+- [FAQ](../04-concepts/faq.md) — models, execution and novelty.

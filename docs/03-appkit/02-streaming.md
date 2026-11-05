@@ -12,7 +12,7 @@ calls the same core.
 | **Event time** | When the event happened: `DecisionRequest.at`. The session uses it as its clock. |
 | **Watermark** | The time boundary before which an event counts as late. |
 | **Cadence** | `cooldown_ms`: the shortest gap between two decisions. |
-| **Backpressure** | `observe_wait` waits for buffer space instead of dropping an event. |
+| **Backpressure** | `observe_wait` waits for buffer space. |
 | **Hysteresis** | `hysteresis_ms`: suppress a repeated decision inside the window. |
 | **Provisional** | A fast decision that a later revision can replace. |
 | **Revision** | A decision that supersedes an earlier one. |
@@ -157,7 +157,7 @@ print(timeline.history("d2"))
 
 `report()` returns the number of decisions, open chains, superseded decisions and any issues.
 `current()` returns the latest decision in each chain; `late(watermark)` returns decisions before
-the watermark. The timeline is append-only and trains nothing.
+the watermark. The timeline is append-only.
 
 ## Contract fields
 

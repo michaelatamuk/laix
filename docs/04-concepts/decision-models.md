@@ -109,7 +109,7 @@ Does this invoice match the work order?
 -> yes, 0.93 confidence
 ```
 
-That is useful, but it is only one input.
+That is useful, and it is one input.
 
 The app defines the invoice, the plumber, the bank and the £500 rule. LAIX sees generic pieces.
 The app maps the domain into those pieces:

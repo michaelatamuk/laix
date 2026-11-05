@@ -8,7 +8,7 @@ path and the execution lifecycle. LAIX provides the task decision. The same boun
 
 - PPMA owns the activation decision, commit, execution and records.
 - LAIX owns the task decision inside one bounded task.
-- PPMA uses LAIX core only, as a task policy layer below its activation core.
+- PPMA uses LAIX core as a task policy layer below its activation core.
 
 ## 1. The PPMA–LAIX boundary
 
@@ -110,7 +110,7 @@ The Commander's `command.decide` ask is the general command chooser. LAIX adds a
 
 The clean deployment is a separate `ppma-laix` tool or service:
 
-- it imports only `laix` core and `ppma-contracts`;
+- it imports `laix` core and `ppma-contracts`;
 - it exposes `laix.decide` as a query tool (`effect: none`) or a mission tool;
 - it receives a `DecisionRequest` and returns a `Decision`.
 
@@ -162,7 +162,7 @@ The decision carries:
 - `action_id`, `intent`, `requires_approval`, `reversible`, `undo_hint`;
 - `decision_id`, `trace_id`, `policy_version`, `created_at`.
 
-PPMA keeps the domain nouns in how it builds the request and reads the decision. LAIX sees only the generic fields above.
+PPMA keeps the domain nouns in how it builds the request and reads the decision. LAIX sees the generic fields above.
 
 ## 4. Ids, confidence, provenance and commit
 
@@ -207,7 +207,7 @@ The app kit is a separate surface. Packaging may ship the two together or separa
 6. Each owner keeps its own decision ids. The host records a LAIX decision id as a reference.
 7. Execution and records follow task ownership: the host, or the app kit when the host chooses it.
 8. Memory, connectors, permissions, proactivity, missions and app policy stay in the host.
-9. Core imports only the standard library and its own modules. App kit imports the standard library, core and its own modules. The host imports LAIX.
-10. A host that already has execution, records and commit uses the core only.
+9. Core imports the standard library and its own modules. App kit imports the standard library, core and its own modules. The host imports LAIX.
+10. A host that already has execution, records and commit uses the core.
 
 For the PPMA integration in practice, see [PPMA + LAIX](ppma.md).

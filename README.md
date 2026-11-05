@@ -16,9 +16,13 @@ decision: **wait, observe, guide, ask, act, verify or escalate**.
 The same reason, confidence, action and trail travel with every decision. The experience stays
 present; LAIX keeps the next move timely.
 
+LAIX is **training-free**. The current layer uses policies, rules and planners over a model the host
+supplies.
+
 | Start | |
 |---|---|
 | [Quickstart](docs/01-start/quickstart.md) | install and make one decision |
+| [Lifecycle](docs/01-start/decision-lifecycle.md) | moment to outcome in one loop |
 | [Documentation](docs/README.md) | start, core, app kit, concepts and project |
 | [Examples](examples/README.md) | runnable Python and TypeScript examples |
 
@@ -70,6 +74,23 @@ const [decision] = new Layer().decide({
 });
 ```
 
+## Why LAIX
+
+- **One decision contract** — attention, action, follow-up, execution and outcomes share the same
+  shape, reasons, confidence and trail.
+- **Training-free** — policies and rules now; planners use a model the host supplies.
+- **Live context is part of the decision** — promises, execution risk, human attention, calibration
+  and decision time are first-class inputs.
+- **The host keeps control** — LAIX decides; the host owns data, execution, storage and delivery.
+- **Inspectable and testable** — reasons, trail, conformance vectors, bench and Python/TypeScript
+  parity.
+
+The novelty is the combination: a model-free decision layer that treats commitments, execution
+risk, human attention, calibration and decision time as one contract.
+
+`LiveDecisionEngine` makes that concrete: one plan can keep a promise, avoid an irreversible action
+and respect an attention budget at the same time.
+
 ## What LAIX provides
 
 | Capability | What it gives the host |
@@ -78,13 +99,27 @@ const [decision] = new Layer().decide({
 | Attention | which signal deserves attention now, and what to do with it |
 | Action policies | the next move from the options the app can afford |
 | Packaged policies | active perception, safety, replanning, allocation, negotiation, preference, verification and escalation |
-| Planners | [utility, commitment, execution, attention, MDP and POMDP](docs/02-core/06-engines.md#what-an-mdp-is) behind `EnginePolicy` |
+| Planners | [utility, commitment, execution, attention, integrated live, MDP and POMDP](docs/02-core/06-engines.md#what-an-mdp-is) behind `EnginePolicy` |
 | Learning | outcome labels, rewards, bandits, causal attribution, calibration, decision calibration and model learning |
 | Streaming | event time, cadence, backpressure, revisions, checkpoints, timeline and sources |
 | Execution | receipts, idempotency, unknown outcomes, reconciliation, multi-step recovery and records |
 | Stores | state, checkpoints, commitments and outcomes through host-owned ports |
 | Delivery | a port and a receipt for the app’s own channel |
 | Proof | LAIX-Bench, live decision bench, conformance vectors, simulator, planner bench and metrics |
+
+## Proof
+
+| Check | Result |
+|---|---|
+| Python tests | passed |
+| TypeScript tests | 171 passed |
+| Attention conformance | 24/24 |
+| LAIX-Bench | 25/25 |
+| Live decision bench | `LiveDecisionEngine` matches 7/7 expected actions |
+
+The single-concern planners win their own cases: utility on plain benefit, commitment on promises,
+execution on irreversible or unknown actions, attention on human-facing choices. The integrated
+planner combines them.
 
 ## Core and app kit
 

@@ -10,7 +10,7 @@ LAIX learns from measured outcomes, turns the result into a reward, and improves
 | **Bandit** | A learner that chooses among arms and updates from rewards. |
 | **Learner** | Code that updates its choice from rewards. |
 | **Ledger** | A store of measured outcomes. |
-| **Causal attribution** | Assigning part of an outcome to a decision or arm rather than to other factors. |
+| **Causal attribution** | Assigning part of an outcome to a decision or arm, separate from other factors. |
 
 ```text
 decision -> outcome -> reward -> learner -> next decision
@@ -107,7 +107,7 @@ better outcome. They answer different questions.
   expose the report; Laplace smoothing regularizes small bins. `adjust()` maps a future confidence
   onto the observed rate.
 - **`ModelLearner`** — learns transition probabilities and expected rewards from observed
-  transitions. `commit(validation)` keeps the model only when it beats the best one and rolls back
+  transitions. `commit(validation)` keeps the model when it beats the best one and rolls back
   otherwise. `to_mdp_model()` feeds the learned table to `MDPEngine`.
 
 ### Decision-level calibration
@@ -120,7 +120,7 @@ were right. `DecisionCalibrationSample` carries the confidence, correctness, ver
 and the before/after values in `attributes["calibration"]`. `decision_samples_from_outcomes` builds
 the samples from decisions and measured outcomes. `CalibratedPolicy(policy, report)` wraps any
 policy and calibrates every decision it returns, so the adjustment applies without changing the
-call site. No model is trained; the report only uses the observed decisions.
+call site. The report uses the observed decisions directly.
 
 Both are available in Python and TypeScript, alongside the utility, MDP and POMDP engines and the
 simulator.

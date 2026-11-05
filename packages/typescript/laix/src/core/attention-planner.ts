@@ -141,7 +141,7 @@ export function attentionCost(effect: AttentionEffect): number {
   );
 }
 
-function remainingBudget(problem: DecisionProblem): number {
+export function remainingBudget(problem: DecisionProblem): number {
   const attributes = (problem.attributes ?? {}) as Record<string, unknown>;
   const raw = attributes.attention_budget ?? 1.0;
   let base: number;
@@ -159,7 +159,7 @@ function remainingBudget(problem: DecisionProblem): number {
   return Math.max(0, remaining);
 }
 
-function scoreOption(
+export function attentionScoreOption(
   option: ActionOption,
   model: UtilityModel,
   weights: Required<AttentionWeights>,
@@ -227,7 +227,7 @@ export class AttentionAwareEngine {
     const remaining = remainingBudget(problem);
     const approval = approvalRequired(problem);
     const rows: Row[] = options.map((option) => {
-      const score = scoreOption(
+      const score = attentionScoreOption(
         option,
         model,
         this.weights,

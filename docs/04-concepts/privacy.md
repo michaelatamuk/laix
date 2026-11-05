@@ -35,7 +35,7 @@ host owns the database.
 ## Telemetry
 
 `prometheus(stats)` exports counters such as decided, dropped, suppressed, duplicates, shed and
-latency percentiles. It exports counters only. Traces can contain ids and reasons; treat them as
+latency percentiles. It exports counters. Traces can contain ids and reasons; treat them as
 metadata with the same care as records.
 
 ## Trust boundary

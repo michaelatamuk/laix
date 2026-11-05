@@ -107,7 +107,7 @@ block-beta
   (`LiveContext`) runs detectors over incoming context and returns frames.
 - **Runtime** — **Decision loop** (`DecisionRuntime`) links a policy to state, execution and
   outcome. **Execution** (`ExecutionBridge`) is the write boundary: it checks approval, enforces
-  idempotency (a retry does not repeat the effect), calls the host skill and records a receipt.
+  idempotency (a retry returns the original receipt), calls the host skill and records a receipt.
   **Recovery** (`Saga`) undoes completed steps when a later step fails.
 - **State** — **Live state** (`ExperienceState`) is the live context: goals, phase, beliefs, TTL and
   history. **Audit record** (`DecisionRecord`) is the audit lifecycle: draft, approve or reject,
@@ -125,7 +125,7 @@ block-beta
 
 Recovery uses a **saga**: a multi-step action where each step has a way to undo itself. Steps run in
 order. If a later step fails, the completed steps are compensated in reverse order, so the world
-does not stay half-changed.
+returns to a consistent state.
 
 Example: book a flight, then a hotel, then a car.
 
@@ -150,7 +150,7 @@ print(result.error)         # None when every step succeeded
 
 Use `Saga` when one action has several side effects that must be undone together.
 `ExecutionBridge.run_steps` applies the same idea to execution steps and returns one receipt per
-step. Compensation is best effort: a compensation that fails does not stop the others.
+step. Compensation is best effort: one failing compensation leaves the others to run.
 
 ## What a port is
 
@@ -162,5 +162,5 @@ delivered.
 it sits with Result because it is the output boundary. Small in-memory implementations ship for
 tests: `InMemoryStateStore`, `InMemoryStreamCheckpointStore`, `InMemoryPlatform` and `NullDelivery`.
 
-The app kit is optional. A host that only needs the answer calls `decide` or `Layer`; a host that
-also executes, records, streams or delivers adds the rest.
+The app kit is optional. A host that needs the answer calls `decide` or `Layer`; a host that also
+executes, records, streams or delivers adds the rest.

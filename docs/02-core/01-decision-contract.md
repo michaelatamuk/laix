@@ -285,5 +285,5 @@ The seven verbs are part of the contract: `wait`, `observe`, `guide`, `ask`, `ac
 | `packages/contracts/attention.v1.json` | attention test cases |
 | `packages/contracts/attention-bench.v1.json` | attention outcome cases |
 
-The schema is generated from the Python records, so it is the only decision schema. The test
+The schema is generated from the Python records, so it is the one decision schema. The test
 vectors are hand-written and shared by both packages.

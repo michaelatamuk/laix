@@ -43,7 +43,7 @@ It shows:
 
 ## 2. One reasoning path
 
-The host decides **when** to ask LAIX. LAIX answers only when called.
+The host decides **when** to ask LAIX. LAIX answers when called.
 
 That means a product keeps one orchestrator. LAIX is a tool inside a task.
 

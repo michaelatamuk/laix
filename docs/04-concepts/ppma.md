@@ -47,7 +47,7 @@ Every activation decision is one of four kinds: `NOOP` (no operation), `UPDATE_S
 | `Commander.effect_step()` | Timer | A scheduled command is re-checked and issued | `ISSUE_COMMAND` |
 | Mission agent | East | An agent run on JiuwenSwarm, Claude Code or another harness | A proposal (`DispatchResult`); PPMA turns it into a command |
 
-The `command.decide` ask is the only general chooser: it picks the commands, dispatch, plans, filters and missions. The other three paths handle a narrower case.
+The `command.decide` ask is the general chooser: it picks the commands, dispatch, plans, filters and missions. The other three paths handle a narrower case.
 
 An effect step is a scheduled command. The command was chosen by the `command.decide` ask when the plan was installed; the timer executes it. When the timer fires, PPMA re-checks it against the current manifests, permissions, holders and health rules and issues it as `ISSUE_COMMAND`. Fire time stays deterministic.
 

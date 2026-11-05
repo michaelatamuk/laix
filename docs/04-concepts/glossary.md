@@ -19,7 +19,7 @@
 | **POMDP** | An MDP with hidden state; the planner keeps a belief over states and updates it from observations. |
 | **Optimality gap** | The difference between a planner's reward and the best reward available in the model. |
 | **Risk attitude** | How a planner trades expected value against variance: `neutral`, `averse` or `seeking`. |
-| **Limits** | Risk, approval, safety and policy constraints that bound a decision; a gate, not a module. |
+| **Limits** | Risk, approval, safety and policy constraints that bound a decision; a gate on the request. |
 | **Commitment** | A promised step with a due time, status and dependencies. The planning layer tracks commitments. |
 | **Commitment-aware planning** | Planning with promises, due times and dependencies in the state. |
 | **Recovery** | Run steps in order and undo the completed ones when a later step fails. |
@@ -35,7 +35,7 @@
 | **NDJSON** | Newline-delimited JSON: one event per line. |
 | **Outcome** | A measured result of a decision, with a label and attribution. |
 | **Causal effect** | An estimate of the effect of one arm against another. |
-| **Causal attribution** | Assigning part of an outcome to a decision or arm rather than to other factors. |
+| **Causal attribution** | Assigning part of an outcome to a decision or arm, separate from other factors. |
 | **Bandit** | A learner that chooses among arms and updates from rewards. |
 | **Ledger** | A store of measured outcomes or commitments. |
 | **UCB** | Upper confidence bound: choose the arm with the best reward plus a bonus for arms tried less. |

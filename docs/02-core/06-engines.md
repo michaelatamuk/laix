@@ -66,6 +66,7 @@ The contracts:
 | `CommitmentAwareEngine` | utility plus promise keeping, violations and due commitments |
 | `ExecutionAwareEngine` | utility plus irreversibility, unknown outcomes and recovery cost |
 | `AttentionAwareEngine` | utility plus interruption, approval and escalation cost |
+| `LiveDecisionEngine` | utility plus commitments, execution risk and human attention in one plan |
 | `MdpModel`, `MDPEngine` | finite MDP, value iteration and a greedy plan |
 | `PomdpModel`, `POMDPEngine` | belief update and finite-horizon planning |
 | `Simulator` | runs a planner in a model |
@@ -81,7 +82,7 @@ The contracts:
 | 1 | Problem shape | `DecisionProblem`, request projection |
 | 2 | Option model | `ActionOption`, costs, risks and hard limits |
 | 3 | Utility model | `UtilityModel`, weights, risk attitude |
-| 4 | Planner choice | `DecisionEngine.solve`, `UtilityEngine`, `CommitmentAwareEngine`, `ExecutionAwareEngine`, `AttentionAwareEngine`, `MDPEngine`, `POMDPEngine` |
+| 4 | Planner choice | `DecisionEngine.solve`, `UtilityEngine`, `CommitmentAwareEngine`, `ExecutionAwareEngine`, `AttentionAwareEngine`, `LiveDecisionEngine`, `MDPEngine`, `POMDPEngine` |
 | 5 | Calibration | `CalibrationReport`, `DecisionCalibrationReport` and confidence adjustment |
 | 6 | Learning | `ModelLearner` for transitions and rewards |
 | 7 | Explanation | chosen plan, alternatives, expected value |
@@ -92,7 +93,7 @@ The contracts:
 A **Markov Decision Process** models a sequence of decisions under uncertainty. At each step the app
 is in a **state**, chooses an **action**, the world moves to a **next state** with some probability,
 and the action earns a **reward**. “Markov” means the next state depends on the current state and
-action, not on the whole history.
+action.
 
 ```mermaid
 stateDiagram-v2
@@ -171,7 +172,7 @@ planner chooses the action that is best under that belief.
 
 | Piece | Meaning |
 |---|---|
-| Hidden state | what is true, but not directly observed |
+| Hidden state | what is true and inferred from observations |
 | Observation | what the app sees |
 | Belief | the probability of each state |
 | Update | revise the belief from the new observation |
@@ -206,10 +207,10 @@ The engine adds:
 - an extra reward when the commitment is due;
 - a penalty for violating a commitment;
 - a penalty for creating a new one, because it reduces future flexibility;
-- a penalty for trying to fulfill a commitment whose dependencies are not done.
+- a penalty for trying to fulfill a commitment whose dependencies are still open.
 
 The reward scales with `Commitment.priority`, so a high-priority promise counts more. A blocked
-commitment is not counted as fulfilled until its dependencies are `done`.
+commitment counts as fulfilled once its dependencies are `done`.
 
 `CommitmentAwareEngine` returns the same `Plan`. It is deterministic and training-free; the
 commitments and due times come from the host. The effect can be written under `commitments` or at
@@ -284,7 +285,7 @@ ActionOption(
 )
 ```
 
-A shared `AttentionBudget` can be passed instead of the two numbers:
+A shared `AttentionBudget` can be passed as one object:
 
 ```python
 from laix import AttentionBudget
@@ -294,11 +295,33 @@ DecisionProblem(..., attributes={"attention_budget": budget})
 ```
 
 Approval state can also be passed in `attributes["approvals"]` as a map from action id to
-`approved`, `pending` or `rejected`. A rejected option is blocked; an approved option does not pay
-the approval cost.
+`approved`, `pending` or `rejected`. A rejected option is blocked; an approved option avoids the
+approval cost.
 
 `AttentionAwareEngine` returns the same `Plan`. It is deterministic and training-free. It can
 prefer a direct action, or wait when every option needs more attention than is left.
+
+## Integrated live planning
+
+`LiveDecisionEngine` puts the three live concerns into one plan: promises, execution risk and human
+attention. It keeps the utility score and adds the commitment, execution and attention terms.
+
+```python
+from laix import DecisionProblem, LiveDecisionEngine
+
+plan = LiveDecisionEngine().solve(problem)
+print(plan.action_id, plan.score)
+print(plan.attributes["commitment_score"])
+print(plan.attributes["execution_score"])
+print(plan.attributes["attention_score"])
+```
+
+The plan carries the full breakdown, so the reason is auditable. On the live benchmark the
+integrated planner matches every expected action, while the single-concern planners win their own
+cases.
+
+This is the integration the layer is built around: one decision can keep a promise, avoid an
+irreversible action and respect a human-attention budget at the same time.
 
 ## Path A: external planner
 

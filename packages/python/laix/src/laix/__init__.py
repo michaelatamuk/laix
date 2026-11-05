@@ -116,6 +116,7 @@ from .core.engines.live_bench import (
     default_planners,
     run_live_bench,
 )
+from .core.engines.live_engine import LiveDecisionEngine, LiveScore
 from .core.engines.decision_calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
@@ -447,6 +448,8 @@ __all__ = [
     "LiveBenchReport",
     "LiveBenchRow",
     "LiveCase",
+    "LiveDecisionEngine",
+    "LiveScore",
     "PlannerMetrics",
     "default_cases",
     "default_planners",

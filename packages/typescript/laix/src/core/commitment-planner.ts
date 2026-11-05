@@ -79,7 +79,7 @@ export function commitmentEffect(option: ActionOption): CommitmentEffect {
   };
 }
 
-function activeCommitments(problem: DecisionProblem): Map<string, Commitment> {
+export function activeCommitments(problem: DecisionProblem): Map<string, Commitment> {
   const attributes = (problem.attributes ?? {}) as Record<string, unknown>;
   const raw = attributes.commitments ?? attributes.commitment_ledger;
   if (raw === undefined || raw === null) return new Map();
@@ -107,7 +107,7 @@ function isBlocked(
   return false;
 }
 
-function scoreOption(
+export function commitmentScoreOption(
   option: ActionOption,
   model: UtilityModel,
   active: Map<string, Commitment>,
@@ -193,7 +193,7 @@ export class CommitmentAwareEngine {
     const active = activeCommitments(problem);
     const now = new Date(problem.at);
     const rows: Row[] = options.map((option) => {
-      const score = scoreOption(option, model, active, this.weights, now);
+      const score = commitmentScoreOption(option, model, active, this.weights, now);
       const blocker = constraintBlocker(problem, option);
       return {
         option,
