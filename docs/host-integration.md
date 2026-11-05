@@ -31,7 +31,7 @@ decision = decide(request)[0]
 If the host also wants the runtime, execution and records, use `Layer` from the app kit. The
 examples below use the app kit because they show execution and audit.
 
-Runnable example: [`examples/appkit/runtime/mission_adapter.py`](../examples/appkit/runtime/mission_adapter.py).
+Runnable example: [`examples/python/05-execute/host_adapter.py`](../examples/python/05-execute/host_adapter.py).
 
 It shows:
 
@@ -86,7 +86,7 @@ execution path. LAIX can provide an execution bridge for a task, but that is par
 of the optional app kit. The bridge also accepts an idempotency key and can mark an
 unknown outcome and reconcile it with provider evidence.
 
-Runnable example: [`examples/appkit/runtime/mission_execution.py`](../examples/appkit/runtime/mission_execution.py).
+Runnable example: [`examples/python/05-execute/host_execution.py`](../examples/python/05-execute/host_execution.py).
 
 It shows a decision that needs approval, an owner approval, and a receipt.
 
@@ -143,6 +143,6 @@ Run the two examples from the repository root:
 
 ```powershell
 $env:PYTHONPATH = "packages/python/laix/src"
-py examples/appkit/runtime/mission_adapter.py
-py examples/appkit/runtime/mission_execution.py
+py examples/python/05-execute/host_adapter.py
+py examples/python/05-execute/host_execution.py
 ```

@@ -121,6 +121,7 @@ export interface Goal {
 }
 
 export interface Constraint {
+  id?: string;
   kind: string;
   value: unknown;
   hard?: boolean;

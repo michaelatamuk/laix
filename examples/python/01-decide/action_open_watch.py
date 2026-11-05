@@ -1,23 +1,12 @@
-"""RootCause — a quality reading calls LAIX to choose the next action.
+"""A quality reading chooses a guide action instead of immediate action."""
 
-RootCause keeps the line, case, baseline and report. It maps one reading to a
-Situation and gives LAIX the actions the quality team can take.
-
-The result is:
-
-    guide policy_rule open-watch
-
-- guide: open a watch for the engineer; the engineer chooses when to look.
-- policy_rule: a written policy rule made the choice.
-- open-watch: the chosen action.
-"""
+from __future__ import annotations
 
 from laix import ActionOption, Belief, DecisionRequest, Layer, Situation, iso
 
-layer = Layer()
-decision = layer.decide(
+decision = Layer().decide(
     DecisionRequest(
-        subject="RootCause quality reading",
+        subject="quality reading",
         at=iso(),
         situation=Situation(
             id="reading-1",
@@ -40,7 +29,12 @@ decision = layer.decide(
         options=(
             ActionOption(id="wait", verb="wait", name="keep observing", expected_benefit=0.2),
             ActionOption(id="open-watch", verb="guide", name="open a watch", expected_benefit=0.6),
-            ActionOption(id="notify-engineer", verb="act", name="notify the engineer", expected_benefit=0.9),
+            ActionOption(
+                id="notify-engineer",
+                verb="act",
+                name="notify the engineer",
+                expected_benefit=0.9,
+            ),
         ),
     )
 )[0]

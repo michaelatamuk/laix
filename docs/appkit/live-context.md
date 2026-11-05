@@ -84,7 +84,7 @@ The host drives time. A live loop calls `perceive` on each event. A batch job ca
 
 ## Example
 
-`examples/appkit/runtime/live_context.py`:
+`examples/python/05-execute/live_context.py`:
 
 ```text
 ('motion', 'read-label') ('transcribe',) 2 0.097

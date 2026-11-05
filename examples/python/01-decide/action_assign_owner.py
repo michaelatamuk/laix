@@ -1,24 +1,12 @@
-"""GeoResponse — a change alert calls LAIX to choose the next action.
+"""An urgent alert chooses an action; the chosen assignment needs approval."""
 
-GeoResponse keeps its alert store, imagery and analyst roster. It maps an open
-alert to a Situation and gives LAIX the actions it can afford.
-
-The result is:
-
-    act policy_rule assign-owner True
-
-- act: assign the alert now.
-- policy_rule: a written policy rule made the choice.
-- assign-owner: the chosen action.
-- True: a person approves the assignment before it runs.
-"""
+from __future__ import annotations
 
 from laix import ActionOption, Belief, DecisionRequest, Layer, Situation, iso
 
-layer = Layer()
-decision = layer.decide(
+decision = Layer().decide(
     DecisionRequest(
-        subject="GeoResponse change alert",
+        subject="monitored area alert",
         at=iso(),
         situation=Situation(
             id="alert-1",
@@ -35,11 +23,16 @@ decision = layer.decide(
         ),
         options=(
             ActionOption(id="wait", verb="wait", name="keep watching", expected_benefit=0.2),
-            ActionOption(id="request-check", verb="ask", name="request a better view", expected_benefit=0.6),
+            ActionOption(
+                id="request-check",
+                verb="ask",
+                name="request a better view",
+                expected_benefit=0.6,
+            ),
             ActionOption(
                 id="assign-owner",
                 verb="act",
-                name="assign an analyst",
+                name="assign an owner",
                 expected_benefit=0.9,
                 requires_approval=True,
             ),

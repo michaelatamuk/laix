@@ -1,240 +1,193 @@
 # Examples
 
-Each example sends one request to `decide` or `Layer`, or uses one LAIX contract, then prints a short
-result. The stories are small everyday situations, so the result is easy to picture.
-
-## Layout
+Each example demonstrates one LAIX capability and prints a short result. The
+folder is organized by language and then by the decision lifecycle:
 
 ```text
 examples/
-├── decisions/
-│   ├── action/        action decisions, engines and custom policy
-│   ├── attention/     surfacing, quiet hours, feedback
-│   └── records/       DecisionRecord, outcome store, causal, calibration, model learning
-├── policies/          packaged policies, authoring, planning, group, shadow, POMDP and learned bandit
-├── appkit/
-│   ├── runtime/       execution, resources, live context, stores, sagas, simulator, file stores, engine depth
-│   ├── streaming/     event time, cadence, backpressure, revisions, windows, checkpoints, sources
-│   ├── audit/         proposal lifecycle
-│   ├── platform/      platform interface
-│   └── bench/         LAIX-Bench
-├── typescript/
-│   ├── attention/
-│   ├── action/
-│   ├── policies/
-│   ├── runtime/
-│   ├── streaming/
-│   ├── stores/
-│   ├── records/
-│   └── integration/
-└── apps/              one caller example per working app
+├── python/
+│   ├── 01-decide/       signals, situations, actions and the core call
+│   ├── 02-policies/     packaged policies, authoring, planning, group and shadow
+│   ├── 03-plan/         utility, MDP, POMDP, simulation and engine bench
+│   ├── 04-stream/       sessions, windows, flow control, checkpoints and sources
+│   ├── 05-execute/      execution, sagas, records, platform and delivery
+│   ├── 06-learn/        outcomes, causal attribution, calibration and model learning
+│   ├── 07-prove/        evaluation and LAIX-Bench
+│   └── 08-stores/       state, outcome-backed and file-backed stores
+└── typescript/
+    └── (the same numbered stages)
 ```
 
-## Attention
-
-| File | Story | Output |
-|---|---|---|
-| `decisions/attention/bill_due.py` | An electricity bill is due tomorrow, at 10:00. | `guide worth_surfacing 84.0` |
-| `decisions/attention/quiet_hours.py` | The same bill, now at 23:30. | `wait quiet_hours 84.0 True False` |
-| `decisions/attention/feedback.py` | The person already dismissed this signal. | `wait dismissed` |
-
-## Action
-
-| File | Story | Output |
-|---|---|---|
-| `decisions/action/leaking_sink.py` | The kitchen sink is about to overflow. | `act policy_rule option-close-valve` |
-| `decisions/action/core_decide.py` | The same sink, answered by core `decide` with no app kit. | `act policy_rule option-close-valve DEC-...` |
-| `decisions/action/water_electricity_no_valve.py` | No safe valve: the safety boundary escalates. | `escalate manager 0.7` |
-| `decisions/action/pay_bill.py` | A bill is due today and a person must approve the payment. | `act policy_rule option-pay True` |
-| `decisions/action/check_again.py` | A parcel is late; a tracking page can settle it. | `observe policy_rule option-check-tracking` |
-| `decisions/action/custom_policy.py` | A caller supplies its own policy. | `wait policy_rule` |
-| `decisions/action/utility_engine.py` | Expected utility with hard limits. | `act bold 0.75` |
-| `decisions/action/mdp_engine.py` | Plan one step in a finite MDP. | `act go 2.8` |
-
-## Packaged policies
-
-| File | Class | Output |
-|---|---|---|
-| `policies/active_perception.py` | Active perception | `observe observe_for_information look-1` |
-| `policies/safety_constrained.py` | Safety-constrained action | `act safe_action valve` |
-| `policies/replanning.py` | Replanning | `act replan plan-fast` |
-| `policies/allocation.py` | Allocation | `act allocate ['a', 'b']` |
-| `policies/negotiation.py` | Negotiation | `act counter_offer 12.5` |
-| `policies/preference_elicitation.py` | Preference elicitation | `ask ask_preference q2` |
-| `policies/verification.py` | Verification | `verify verify_outcome api` |
-| `policies/escalation.py` | Escalation | `escalate escalate_to_target manager` |
-| `policies/bandit.py` | Outcome learning | `manual automatic 0.75` |
-| `policies/time_critical.py` | Gates, delay, cost, disruption and confidence | `act breaker-dry 0.44` |
-| `policies/authoring.py` | Rule policy with a target and recipients | `ask over_limit some ('alice', 'ben')` |
-| `policies/planning.py` | Commitment-based next move | `act due_commitment a` |
-| `policies/planning_store.py` | Persist and restore a commitment ledger | `send the draft` |
-| `policies/group.py` | Target, recipients and private masking | `all ('alice', 'ben', 'chris') {'topic': 'math'}` |
-| `policies/shadow.py` | Shadow policy records a disagreement | `ask 1 act` |
-| `policies/pomdp.py` | Belief update and finite-horizon planning | `act go 2.8` |
-
-## Runtime
-
-| File | Piece | Output |
-|---|---|---|
-| `appkit/runtime/execution.py` | Decision runtime and execution bridge | `executed close the valve` |
-| `appkit/runtime/resources.py` | Cheap/deep call admission | `('camera', 'read-page') ('full-audio',)` |
-| `appkit/runtime/live_context.py` | Detectors, admission and perception frames | `('motion', 'read-label') ('transcribe',) 2 0.097` |
-| `appkit/runtime/saga.py` | Forward steps and reverse compensation | `('first',) ('first',) RuntimeError: boom` |
-| `appkit/runtime/execution_saga.py` | Bridge execution with receipt-linked compensation | `('reserve',) ('reserve',) RuntimeError: declined` |
-| `appkit/runtime/simulator.py` | Compare engines on one scenario | `right 4.0 1.0` |
-| `appkit/runtime/file_stores.py` | Persist a checkpoint and a commitment ledger | `1 send the draft` |
-| `appkit/runtime/engine_depth.py` | Constraints, stochastic simulation and POMDP comparison | `safe blocked by risk:risk-limit` / `s1 1.0` / `s0 0.0 go` |
-| `appkit/platform/platform_interface.py` | Run a skill, approve, read events | `7 skill.started,skill.finished fast True` |
-
-## Records
-
-| File | Piece | Output |
-|---|---|---|
-| `decisions/records/record.py` | Record, approve, execute, verify | `executed True` |
-| `appkit/audit/proposal.py` | Proposal lifecycle | `pending approved applied undone` |
-| `decisions/records/causal.py` | Estimate a treatment effect | `1.0 difference-in-means` |
-| `decisions/records/causal_outcomes.py` | Build a causal ledger from outcomes | `6.0 6.0 6.0` |
-| `decisions/records/causal_strata.py` | Causal intervals and strata | `1.0 -1.771859 3.771859 ['east', 'west']` |
-| `decisions/records/calibration.py` | Compare confidence with accuracy | `0.9 0.5 0.4 0.5` |
-| `decisions/records/model_learning.py` | Learn transitions and reward | `{'s1': 1.0} 2.0` |
-
-## Stores
-
-| File | Piece | Output |
-|---|---|---|
-| `appkit/runtime/state_store.py` | Save, load and delete an experience snapshot | `decide True` |
-| `decisions/records/outcome_store.py` | Record what a decision changed | `helped -2.0 1` |
-
-## Host integration
-
-| File | Shows | Output |
-|---|---|---|
-| `appkit/runtime/mission_adapter.py` | Task → request → decision → basis | `act valve host-calibrated True reason` |
-| `appkit/runtime/mission_execution.py` | Approval → execution → receipt | `executed approve the repair True` |
-| `appkit/streaming/stream_session.py` | One event → a decision stream → close | `guide worth_surfacing STR-DEMO final` |
-| `appkit/streaming/checkpoint.py` | Save and resume a stream | `True 1 1` |
-| `appkit/streaming/sources.py` | Read NDJSON into requests | `a b` |
-| `appkit/streaming/dead_letter.py` | Retain a malformed frame and continue | `a b 1 True` |
-| `appkit/streaming/windows.py` | Aggregate events into tumbling windows | `['2 events', '1 events']` |
-| `appkit/streaming/flow_control.py` | Cooldown, budget and replay | `1 0 0 1 1 ['d', 'e']` |
-
-## Integration
-
-| File | Piece | Output |
-|---|---|---|
-| `appkit/bench/bench.py` | Run LAIX-Bench from Python | `25 25 1.0` |
-| `appkit/bench/engine_bench.py` | Compare the MDP planner with a baseline | `mdp 4.0 1.0` |
-| `appkit/runtime/delivery.py` | Delivery port and receipt | `skipped email` |
-| `decisions/records/evaluation.py` | Parity harness over cases | `2 2 1.0` |
-
-## TypeScript
-
-| File | Story | Output |
-|---|---|---|
-| `typescript/attention/bill_due.mts` | The same bill, in TypeScript. | `guide worth_surfacing 84` |
-| `typescript/action/action.mts` | The leaking sink, in TypeScript. | `act policy_rule option-close-valve` |
-| `typescript/policies/packs.mts` | All eight packaged policies. | one line per policy |
-| `typescript/policies/bandit.mts` | Outcome learning changes the next choice. | `manual automatic 0.75` |
-| `typescript/runtime/live_context.mts` | Cheap and deep detectors under a budget. | `[ 'motion', 'read-label' ] [ 'transcribe' ] 2 0.097` |
-| `typescript/streaming/stream_session.mts` | One event → a decision stream → close. | `guide worth_surfacing STR-DEMO final` |
-| `typescript/runtime/execution.mts` | Decide, execute, record a receipt. | `executed close the valve` |
-| `typescript/runtime/platform.mts` | Run a skill, approve, read events. | `7 skill.started,skill.finished fast true` |
-| `typescript/runtime/resources.mts` | Cheap/deep admission. | `[ 'camera', 'read-page' ] [ 'full-audio' ]` |
-| `typescript/stores/state_store.mts` | Save, load and delete experience state. | `decide true` |
-| `typescript/stores/outcome_store.mts` | Record a measured outcome. | `helped -2 1` |
-| `typescript/records/proposal.mts` | Proposal lifecycle. | `pending approved applied undone` |
-| `typescript/records/record.mts` | Decision record lifecycle. | `executed true` |
-| `typescript/integration/bench.mts` | Run LAIX-Bench from TypeScript. | `25 25 1` |
-| `typescript/integration/delivery.mts` | Delivery port and receipt. | `skipped email` |
-| `typescript/integration/evaluation.mts` | Parity harness. | `2 2 1` |
-| `typescript/streaming/checkpoint.mts` | Checkpoint, resume and NDJSON source. | `true 1 a b` |
-| `typescript/policies/causal_planning.mts` | Causal effect and commitment planning. | `1 difference-in-means act a` |
-| `typescript/policies/group_shadow.mts` | Group masking and shadow comparison. | `ask act all {"topic":"math"}` |
-| `typescript/runtime/saga.mts` | Forward steps and reverse compensation. | `first first Error: boom` |
-| `typescript/integration/engines.mts` | Utility, MDP, simulator and comparison. | `bold 0.75 go 2.8 right 0` |
-| `typescript/integration/engine_bench.mts` | Engine bench baseline comparison. | `mdp 4 1` |
-| `typescript/records/calibration.mts` | Confidence vs accuracy. | `0.9 0.5 0.4 0.5` |
-| `typescript/records/model_learning.mts` | Learn transitions and reward. | `{"s1":1} 2` |
-| `typescript/policies/pomdp.mts` | Belief planning. | `act go 2.8` |
-| `typescript/policies/planning_store.mts` | Persist a commitment ledger. | `send the draft` |
-| `typescript/streaming/dead_letter.mts` | Retain a malformed frame. | `a b 1 true` |
-| `typescript/runtime/execution_saga.mts` | Bridge execution with compensation. | `reserve reserve Error: declined` |
-| `typescript/policies/authoring.mts` | Rule policy with a target. | `ask over_limit some alice,ben` |
-| `typescript/streaming/windows.mts` | Tumbling windows. | `[ '2 events', '1 events' ]` |
-| `typescript/streaming/flow_control.mts` | Cooldown, budget and replay. | `1 0 0 1 1 [ 'd', 'e' ]` |
-| `typescript/records/causal_strata.mts` | Causal intervals and strata. | `1 -1.771859 3.771859 [ 'east', 'west' ]` |
-| `typescript/runtime/file_stores.mts` | File-backed checkpoint and commitment stores. | `1 send the draft` |
+Every Python and TypeScript example is executed by CI. The output shown is the
+actual output.
 
 ## Run
 
-From the repository root:
+From the repository root.
+
+Python:
 
 ```powershell
 $env:PYTHONPATH = "packages/python/laix/src"
-Get-ChildItem examples/decisions, examples/policies, examples/appkit -Recurse -Filter *.py | ForEach-Object { py $_.FullName }
-Get-ChildItem examples/apps/*.py | ForEach-Object { py $_.FullName }
+Get-ChildItem examples/python -Recurse -Filter *.py | ForEach-Object { py $_.FullName }
+```
+
+TypeScript:
+
+```powershell
+Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
+    node --experimental-strip-types $_.FullName
+}
 ```
 
 A single example:
 
 ```powershell
 $env:PYTHONPATH = "packages/python/laix/src"
-py examples/policies/active_perception.py
+py examples/python/01-decide/attention_bill_due.py
 ```
 
-The TypeScript examples run with Node's type stripping:
+## 01 Decide
 
-```powershell
-Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object { node --experimental-strip-types $_.FullName }
-```
+| Story | Python | TypeScript | Output |
+|---|---|---|---|
+| A bill is due tomorrow. | `attention_bill_due.py` | `attention_bill_due.mts` | `guide worth_surfacing 84` |
+| The same bill arrives at night. | `attention_quiet_hours.py` | `attention_quiet_hours.mts` | `wait quiet_hours 84.0 True False` / `wait quiet_hours 84 true false` |
+| The person dismissed the signal. | `attention_feedback.py` | `attention_feedback.mts` | `wait dismissed` |
+| A power plan is below its required load. | `attention_power_plan.py` | — | `guide worth_surfacing 75.0` |
+| A sink is about to overflow. | `action_leaking_sink.py` | `action.mts` | `act policy_rule option-close-valve` |
+| The same sink, through core `decide`. | `action_core_decide.py` | — | `act policy_rule option-close-valve DEC-...` |
+| A bill needs payment and approval. | `action_pay_bill.py` | `action_pay_bill.mts` | `act policy_rule option-pay True` / `true` |
+| A parcel is late; a tracking page can settle it. | `action_check_again.py` | — | `observe policy_rule option-check-tracking` |
+| No safe valve: the safety boundary escalates. | `action_no_valve.py` | `action_no_valve.mts` | `escalate manager 0.7` |
+| An alert assigns an owner with approval. | `action_assign_owner.py` | `action_assign_owner.mts` | `act policy_rule assign-owner True` / `true` |
+| A quality reading opens a watch. | `action_open_watch.py` | `action_open_watch.mts` | `guide policy_rule open-watch` |
+| A caller supplies its own policy. | `action_custom_policy.py` | — | `wait policy_rule` |
 
-`packages/python/laix/tests/test_examples.py` runs every Python example, and CI runs every
-TypeScript example, so none of them can rot.
+## 02 Policies
 
-## What the output means
+| Story | Python | TypeScript | Output |
+|---|---|---|---|
+| Active perception | `active_perception.py` | `packs.mts` | `observe observe_for_information look-1` |
+| Safety-constrained action | `safety_constrained.py` | `packs.mts` | `act safe_action valve` |
+| Replanning | `replanning.py` | `packs.mts` | `act replan plan-fast` |
+| Allocation | `allocation.py` | `packs.mts` | `act allocate ['a', 'b']` |
+| Negotiation | `negotiation.py` | `packs.mts` | `act counter_offer 12.5` |
+| Preference elicitation | `preference_elicitation.py` | `packs.mts` | `ask ask_preference q2` |
+| Verification | `verification.py` | `packs.mts` | `verify verify_outcome api` |
+| Escalation | `escalation.py` | `packs.mts` | `escalate escalate_to_target manager` |
+| Time-critical gates | `time_critical.py` | — | `act breaker-dry 0.44` |
+| Learned bandit policy | `bandit.py` | `bandit.mts` | `manual automatic 0.75` |
+| Authored rules and a target | `authoring.py` | `authoring.mts` | `ask over_limit some ('alice', 'ben')` |
+| Group target and private masking | `group.py` | `group_shadow.mts` | `all ('alice', 'ben', 'chris') {'topic': 'math'}` |
+| Shadow policy comparison | `shadow.py` | `group_shadow.mts` | `ask 1 act` |
+| Commitment planning | `planning.py` | `planning.mts` | `act due_commitment a` |
+| Persist a commitment ledger | `planning_store.py` | `planning_store.mts` | `send the draft` |
 
-### `guide worth_surfacing 84.0`
+## 03 Plan
 
-- `guide` — show the bill to the user now. The user decides when to pay.
-- `worth_surfacing` — the rule that says the bill is worth surfacing.
-- `84.0` — the policy score. A higher score means the item is more worth showing.
+| Story | Python | TypeScript | Output |
+|---|---|---|---|
+| Utility with hard limits | `utility_engine.py` | `engines.mts` | `act bold 0.75` |
+| One-step MDP plan | `mdp_engine.py` | `engines.mts` | `act go 2.8` |
+| POMDP belief planning | `pomdp.py` | `pomdp.mts` | `act go 2.8` |
+| Compare engines on one scenario | `simulator.py` | `engines.mts` | `right 4.0 1.0` |
+| Engine bench baseline | `engine_bench.py` | `engine_bench.mts` | `mdp 4.0 1.0` |
+| Constraints, stochastic rollout, POMDP check | `engine_depth.py` | `engine_depth.mts` | `safe blocked by risk:risk-limit` / `s1 1.0` / `s0 0.0 go` |
 
-### `wait quiet_hours 84.0 True False`
+## 04 Stream
 
-- `wait` — stay silent now.
-- `quiet_hours` — quiet hours are active, so the bill waits.
-- `84.0` — the score still says it is important.
-- `True` — keep it on record for the morning digest.
-- `False` — hold it for later.
+| Story | Python | TypeScript | Output |
+|---|---|---|---|
+| One event becomes a decision | `stream_session.py` | `stream_session.mts` | `guide worth_surfacing STR-DEMO final` |
+| Aggregate events into windows | `windows.py` | `windows.mts` | `['2 events', '1 events']` |
+| Cooldown, budget and replay | `flow_control.py` | `flow_control.mts` | `1 0 0 1 1 ['d', 'e']` |
+| Save and resume a stream | `checkpoint.py` | `checkpoint.mts` | `True 1 1` / `true 1 a b` |
+| Read NDJSON into requests | `sources.py` | `sources.mts` | `a b` |
+| Retain malformed source frames | `dead_letter.py` | `dead_letter.mts` | `a b 1 True` |
+
+## 05 Execute
+
+| Story | Python | TypeScript | Output |
+|---|---|---|---|
+| Execute a decision | `execution.py` | `execution.mts` | `executed close the valve` |
+| Run steps and compensate | `saga.py` | `saga.mts` | `('first',) ('first',) RuntimeError: boom` |
+| Bridge execution with receipts | `execution_saga.py` | `execution_saga.mts` | `('reserve',) ('reserve',) RuntimeError: declined` |
+| Perception loop | `live_context.py` | `live_context.mts` | `('motion', 'read-label') ('transcribe',) 2 0.097` |
+| Resource admission | `resources.py` | `resources.mts` | `('camera', 'read-page') ('full-audio',)` |
+| Platform skills and approvals | `platform.py` | `platform.mts` | `7 skill.started,skill.finished fast True` |
+| Delivery port | `delivery.py` | `delivery.mts` | `skipped email` |
+| Host adapter | `host_adapter.py` | — | `act valve host-calibrated True reason` |
+| Host execution | `host_execution.py` | — | `executed approve the repair True` |
+| Proposal lifecycle | `proposal.py` | `proposal.mts` | `pending approved applied undone` |
+| Decision record lifecycle | `record.py` | `record.mts` | `executed True` |
+| Surface a promise and approve a record | `record_promise.py` | — | `guide worth_surfacing approved` |
+
+## 06 Learn
+
+| Story | Python | TypeScript | Output |
+|---|---|---|---|
+| Estimate a treatment effect | `causal.py` | — | `1.0 difference-in-means` |
+| Build a causal ledger from outcomes | `causal_outcomes.py` | — | `6.0 6.0 6.0` |
+| Causal intervals and strata | `causal_strata.py` | `causal_strata.mts` | `1.0 -1.771859 3.771859 ['east', 'west']` |
+| Calibration and smoothing | `calibration.py` | `calibration.mts` | `0.9 0.5 0.4 0.5` |
+| Learn transitions and rewards | `model_learning.py` | `model_learning.mts` | `{'s1': 1.0} 2.0` / `{"s1":1} 2` |
+| Causal attribution and planning | — | `causal_planning.mts` | `1 difference-in-means act a` |
+
+## 07 Prove
+
+| Story | Python | TypeScript | Output |
+|---|---|---|---|
+| Run LAIX-Bench | `bench.py` | `bench.mts` | `25 25 1.0` / `25 25 1` |
+| Compare cases with the parity harness | `evaluation.py` | `evaluation.mts` | `2 2 1.0` / `2 2 1` |
+
+## 08 Stores
+
+| Story | Python | TypeScript | Output |
+|---|---|---|---|
+| Save and load experience state | `state_store.py` | `state_store.mts` | `decide True` / `decide true` |
+| Record a measured outcome | `outcome_store.py` | `outcome_store.mts` | `helped -2.0 1` / `helped -2 1` |
+| Persist checkpoint and commitment files | `file_stores.py` | `file_stores.mts` | `1 send the draft` |
+
+## Parity notes
+
+Python keeps one story per file. Some TypeScript files intentionally cover
+several Python stories:
+
+- `02-policies/packs.mts` covers the eight packaged policies.
+- `01-decide/action.mts` covers the main action path.
+- `02-policies/group_shadow.mts` covers group and shadow.
+- `06-learn/causal_planning.mts` covers causal attribution and planning.
+
+Some Python files remain narrative variants rather than separate TypeScript
+capabilities. The test suite is the source of truth for behavioural parity.
+
+## Output meanings
+
+### `guide worth_surfacing 84`
+
+- `guide` — show the item now.
+- `worth_surfacing` — the rule that says it is worth showing.
+- `84` — the policy score.
 
 ### `act policy_rule option-close-valve`
 
 - `act` — do something now.
 - `policy_rule` — a written policy rule made the choice.
-- `option-close-valve` — the chosen action is to close the valve.
+- `option-close-valve` — the chosen action.
 
-### `act policy_rule option-pay True`
+### `wait quiet_hours 84.0 True False`
 
-- `act` — the policy chooses to pay now.
-- `policy_rule` — a written policy rule made the choice.
-- `option-pay` — the chosen action is the payment.
-- `True` — a person must approve before the payment runs.
-
-### `observe policy_rule option-check-tracking`
-
-- `observe` — get more information yourself before deciding.
-- `policy_rule` — a written policy rule made the choice.
-- `option-check-tracking` — the chosen action is to read the tracking page.
+- `wait` — stay silent now.
+- `quiet_hours` — quiet hours are active.
+- `84.0` — the score still says it is important.
+- `True` — keep it on record for the morning digest.
+- `False` — hold it for later.
 
 ### `executed True`
 
 - `executed` — the record moved from approved to executed.
 - `True` — the record fingerprint still matches its content.
 
-The full field list is in [`../docs/core/01-decision-contract.md`](../docs/core/01-decision-contract.md). The policy-pack contracts
-are in [`../docs/core/03-packaged-policies.md`](../docs/core/03-packaged-policies.md).
-
-## Real caller examples
-
-[`apps/`](apps/README.md) contains one example for each of the four working apps. Each app keeps its
-own adapter and sends a request to the same `Layer`.
+The full field list is in [`../docs/core/01-decision-contract.md`](../docs/core/01-decision-contract.md).
+The policy contracts are in [`../docs/core/03-packaged-policies.md`](../docs/core/03-packaged-policies.md).

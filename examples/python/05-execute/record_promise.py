@@ -1,16 +1,6 @@
-"""RECALL — a promise from a meeting calls LAIX for timing and a record.
+"""Surface a promise, then record and approve it."""
 
-RECALL keeps the capture, transcript and meeting links. It maps a promise to a
-Signal, asks LAIX whether to surface it, and records the human approval.
-
-The result is:
-
-    guide worth_surfacing approved
-
-- guide: show the promise to the user.
-- worth_surfacing: the rule that says the promise is worth showing.
-- approved: the decision record is approved by the owner.
-"""
+from __future__ import annotations
 
 from datetime import datetime, timezone
 
@@ -24,10 +14,9 @@ from laix import (
     create_record,
 )
 
-layer = Layer()
-decision = layer.decide(
+decision = Layer().decide(
     DecisionRequest(
-        subject="RECALL promise",
+        subject="contract promise",
         at="2026-11-01T10:00:00+00:00",
         signals=(
             Signal(

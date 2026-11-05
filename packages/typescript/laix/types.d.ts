@@ -680,6 +680,7 @@
     done?: boolean;
   }
   export interface Constraint {
+    id?: string;
     kind: string;
     value: unknown;
     hard?: boolean;

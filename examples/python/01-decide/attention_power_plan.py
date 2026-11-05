@@ -1,25 +1,14 @@
-"""CUE — a show-production risk scan calls LAIX for timing.
+"""A high-severity risk signal asks LAIX whether to surface it now."""
 
-CUE keeps its own risk detection, show store and delivery channels. It maps
-each detected risk to one Signal and asks LAIX whether to show it now.
-
-The result is:
-
-    guide worth_surfacing 75.0
-
-- guide: show the risk to the production office.
-- worth_surfacing: the rule that says the risk is worth showing.
-- 75.0: the score. The risk is high, due within three days, and 90% confirmed.
-"""
+from __future__ import annotations
 
 from datetime import datetime, timezone
 
 from laix import Context, DecisionRequest, Layer, Signal
 
-layer = Layer()
-decision = layer.decide(
+decision = Layer().decide(
     DecisionRequest(
-        subject="CUE risk scan",
+        subject="power plan review",
         at="2026-11-01T10:00:00+00:00",
         signals=(
             Signal(
