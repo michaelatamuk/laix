@@ -31,7 +31,7 @@ laix/
 │   ├── 01-start/          numbered start path
 │   ├── 02-core/           contract, attention, policies, learning, evaluation, planners
 │   ├── 03-appkit/         architecture, integration, streaming, execution, stores, LAIX-Bench
-│   ├── 04-concepts/       system architecture, boundaries, PPMA, decision models, privacy, FAQ, glossary
+│   ├── 04-concepts/       system architecture, scope and boundaries, PPMA integration, decision models, privacy, FAQ, glossary
 │   ├── 05-project/        repository structure, testing, API map, versioning, roadmap
 │   └── 06-research/
 │       ├── 01-positioning/  prior art, comparators, formal model

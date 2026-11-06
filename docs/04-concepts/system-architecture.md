@@ -1,4 +1,4 @@
-# Architecture
+# System architecture
 
 ## What LAIX is
 
@@ -259,4 +259,4 @@ The planner contract is in place: `EnginePolicy` wraps JEV, an optimizer or a pl
 available behind the same adapter; simulation, calibration and model learning support them. See
 [the planner reference](../02-core/06-engines.md).
 
-Core vs app kit vs host is defined in [boundaries](boundaries.md).
+Core vs app kit vs host is defined in [boundaries](scope-and-boundaries.md).

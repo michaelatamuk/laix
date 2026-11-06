@@ -1,4 +1,4 @@
-# Boundaries: PPMA, LAIX and other hosts
+# Scope and boundaries
 
 LAIX produces a decision for one bounded task. A host owns the product around it.
 
@@ -210,4 +210,4 @@ The app kit is a separate surface. Packaging may ship the two together or separa
 9. Core imports the standard library and its own modules. App kit imports the standard library, core and its own modules. The host imports LAIX.
 10. A host that already has execution, records and commit uses the core.
 
-For the PPMA integration in practice, see [PPMA + LAIX](ppma.md).
+For the PPMA integration in practice, see [PPMA + LAIX](ppma-integration.md).

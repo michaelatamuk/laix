@@ -56,9 +56,9 @@ Read in order.
 | Page | Answers |
 |---|---|
 | [System architecture](04-concepts/system-architecture.md) | how the whole system fits together |
-| [Boundaries](04-concepts/boundaries.md) | where PPMA, LAIX, core, app kit and host end |
+| [Scope and boundaries](04-concepts/scope-and-boundaries.md) | where PPMA, LAIX, core, app kit and host end |
 | [Decision models](04-concepts/decision-models.md) | how LAIX relates to judgment and decision models |
-| [PPMA](04-concepts/ppma.md) | why and how PPMA would use LAIX |
+| [PPMA integration](04-concepts/ppma-integration.md) | why and how PPMA would use LAIX |
 | [Privacy](04-concepts/privacy.md) | what may be shared, stored or exported |
 | [FAQ](04-concepts/faq.md) | models, execution, novelty and when to use LAIX |
 | [Glossary](04-concepts/glossary.md) | the vocabulary used across the docs |
@@ -105,7 +105,7 @@ Runnable examples are organized by language and lifecycle in
 
 | I am… | Start with |
 |---|---|
-| Product | [What is LAIX?](01-start/01-what-is-laix.md), [Decision lifecycle](01-start/03-decision-lifecycle.md), [Boundaries](04-concepts/boundaries.md) |
+| Product | [What is LAIX?](01-start/01-what-is-laix.md), [Decision lifecycle](01-start/03-decision-lifecycle.md), [Scope and boundaries](04-concepts/scope-and-boundaries.md) |
 | Engineer | [Quickstart](01-start/02-quickstart.md), [Decision contract](02-core/01-decision-contract.md), [Policies](02-core/03-policies.md), [Planners](02-core/06-engines.md), [App kit](03-appkit/00-architecture.md) |
 | Operator | [Execution](03-appkit/04-execution.md), [Stores](03-appkit/05-stores.md), [Platform](03-appkit/06-platform.md), [Delivery](03-appkit/07-delivery.md), [Metrics](03-appkit/09-metrics.md) |
 | Researcher or reviewer | [Research and evidence](06-research/README.md), then [Prior art](06-research/01-positioning/prior-art.md), [Benchmark](06-research/02-evaluation/benchmark.md) |

@@ -273,4 +273,4 @@ LAIX is the layer that can use a decision model. It works alongside JEV and othe
 In PPMA, the comparison is the Commander's LLM ask vs a LAIX policy for one bounded task. JEV is a
 judgment engine that can sit inside either path.
 
-For the PPMA case, see [PPMA + LAIX](ppma.md).
+For the PPMA case, see [PPMA + LAIX](ppma-integration.md).
