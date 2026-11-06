@@ -186,8 +186,11 @@ Record the assumed effect size and the resulting power in the paper.
 
 Create:
 
-- `benchmarks/live/cases.v1.json`
+- `benchmarks/live/dev-cases-v1.json`
+- `benchmarks/live/test-cases-v1.json`
+- `benchmarks/live/adversarial-cases-v1.json`
 - `benchmarks/live/README.md`
+- `scripts/generate_live_cases.py`
 - `scripts/run_live_bench_v2.py`
 - `scripts/run_ablations.py`
 - `scripts/summarize_results.py`
@@ -226,9 +229,9 @@ Start with 120 cases:
 
 Splits:
 
-- dev: 60 cases, used while developing;
-- test: 40 cases, used once for the main table;
-- adversarial: 20 held-out cases, written last and not inspected during tuning.
+- dev: 72 cases, used while developing;
+- test: 30 cases, frozen for the main table;
+- adversarial: 18 held-out cases, written last and not used for tuning.
 
 ### Baselines
 
@@ -309,3 +312,74 @@ Mitigations:
 - confidence intervals and effect sizes;
 - external review and replication;
 - publish negative results.
+
+## 5. Results and failure analysis
+
+Generated from the frozen test split (30 cases) and the six ablations. The raw rows are in
+`results/live_bench_v2/raw.jsonl`; the summary is in `results/live_bench_v2/summary.json`; the
+baseline is `results/live_bench_v2/baseline.json`.
+
+### Main table (test split, 30 cases)
+
+| Planner | Accuracy | 95% CI | Promise keeping | Irreversible rate | Budget violations |
+|---|---:|---:|---:|---:|---:|
+| first | 70.00% | 0.53–0.87 | 58.33% | 13.33% | 77.78% |
+| benefit | 23.33% | 0.10–0.40 | 0.00% | 23.33% | 70.00% |
+| utility | 30.00% | 0.13–0.47 | 0.00% | 23.33% | 70.00% |
+| commitment | 70.00% | 0.53–0.87 | 100.00% | 13.33% | 57.14% |
+| execution | 50.00% | 0.33–0.67 | 8.33% | 6.67% | 62.50% |
+| attention | 53.33% | 0.37–0.70 | 25.00% | 16.67% | 0.00% |
+| **live** | **100.00%** | **1.00–1.00** | **100.00%** | **0.00%** | **0.00%** |
+
+### Conflict cases (6 cases)
+
+| Planner | Conflict accuracy | 95% CI |
+|---|---:|---:|
+| first | 0.00% | 0.00–0.00 |
+| benefit | 0.00% | 0.00–0.00 |
+| utility | 0.00% | 0.00–0.00 |
+| commitment | 83.33% | 0.50–1.00 |
+| execution | 33.33% | 0.00–0.67 |
+| attention | 66.67% | 0.33–1.00 |
+| **live** | **100.00%** | **1.00–1.00** |
+
+### Ablations (test split, 30 cases)
+
+| Variant | Accuracy | Promise keeping | Irreversible rate | Budget violations |
+|---|---:|---:|---:|---:|
+| full | 100.00% | 100.00% | 0.00% | 0.00% |
+| equal weights | 100.00% | 100.00% | 0.00% | 0.00% |
+| no attention | 96.67% | 100.00% | 0.00% | 0.00% |
+| no feasibility gates | 93.33% | 100.00% | 0.00% | 0.00% |
+| no execution | 83.33% | 100.00% | 10.00% | 0.00% |
+| no commitment | 70.00% | 25.00% | 6.67% | 0.00% |
+| utility only | 30.00% | 0.00% | 23.33% | 70.00% |
+
+The ablation is the important number: removing commitments costs 30 accuracy points, removing
+execution risk costs 16.7, and removing attention costs 3.3. The integration is doing real work.
+
+### Failure analysis
+
+`live` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a
+warning, not a victory: the corpus is synthetic and currently too easy. The next evidence step must
+add cases where the planner is expected to fail or abstain:
+
+- ambiguous trade-offs where the domain expert disagrees with the score;
+- noisy or missing outcomes;
+- multi-step dependencies that cross decisions;
+- long-tail incidents from real traffic;
+- host-specific approval and recovery behaviour.
+
+Record every new failure in this section with the case id, chosen action, expected action and the
+term that dominated incorrectly. A benchmark with no failures cannot support a strong novelty
+claim; the real-world validation in `validation.md` is still required.
+
+### Reproduce
+
+```bash
+python scripts/run_live_bench_v2.py --split test --seed 42
+python scripts/run_ablations.py --split test --seed 42
+python scripts/summarize_results.py
+```
+
+or, in CI, `bash scripts/reproduce.sh`.

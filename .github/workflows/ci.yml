@@ -40,6 +40,8 @@ jobs:
       - name: Bench
         working-directory: packages/python/laix
         run: python -m laix.appkit.bench
+      - name: Live bench v2
+        run: bash scripts/reproduce.sh
       - name: Run examples
         run: |
           for file in $(find examples -name '*.py'); do

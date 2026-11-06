@@ -1,0 +1,309 @@
+{
+  "cases": 30,
+  "planners": {
+    "equal_weights": {
+      "abstention_rate": 0.0,
+      "accuracy": 1.0,
+      "accuracy_ci": [
+        1.0,
+        1.0
+      ],
+      "budget_ci": [
+        0.0,
+        0.0
+      ],
+      "budget_violation_rate": 0.0,
+      "checked": 30,
+      "conflict_accuracy": 1.0,
+      "conflict_ci": [
+        1.0,
+        1.0
+      ],
+      "correct": 30,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.0,
+        0.0
+      ],
+      "irreversible_rate": 0.0,
+      "mean_latency_ms": 0.097073,
+      "mean_regret": 0.241818,
+      "p95_latency_ms": 0.32044,
+      "promise_ci": [
+        1.0,
+        1.0
+      ],
+      "promise_keeping": 1.0,
+      "regret_ci": [
+        0.183118,
+        0.297809
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    },
+    "full": {
+      "abstention_rate": 0.0,
+      "accuracy": 1.0,
+      "accuracy_ci": [
+        1.0,
+        1.0
+      ],
+      "budget_ci": [
+        0.0,
+        0.0
+      ],
+      "budget_violation_rate": 0.0,
+      "checked": 30,
+      "conflict_accuracy": 1.0,
+      "conflict_ci": [
+        1.0,
+        1.0
+      ],
+      "correct": 30,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.0,
+        0.0
+      ],
+      "irreversible_rate": 0.0,
+      "mean_latency_ms": 0.08858,
+      "mean_regret": 0.241818,
+      "p95_latency_ms": 0.232065,
+      "promise_ci": [
+        1.0,
+        1.0
+      ],
+      "promise_keeping": 1.0,
+      "regret_ci": [
+        0.183118,
+        0.297809
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    },
+    "no_attention": {
+      "abstention_rate": 0.0,
+      "accuracy": 0.966667,
+      "accuracy_ci": [
+        0.9,
+        1.0
+      ],
+      "budget_ci": [
+        0.0,
+        0.0
+      ],
+      "budget_violation_rate": 0.0,
+      "checked": 30,
+      "conflict_accuracy": 1.0,
+      "conflict_ci": [
+        1.0,
+        1.0
+      ],
+      "correct": 29,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.0,
+        0.0
+      ],
+      "irreversible_rate": 0.0,
+      "mean_latency_ms": 0.091243,
+      "mean_regret": 0.230707,
+      "p95_latency_ms": 0.18403,
+      "promise_ci": [
+        1.0,
+        1.0
+      ],
+      "promise_keeping": 1.0,
+      "regret_ci": [
+        0.170524,
+        0.289246
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    },
+    "no_commitment": {
+      "abstention_rate": 0.0,
+      "accuracy": 0.7,
+      "accuracy_ci": [
+        0.533333,
+        0.866667
+      ],
+      "budget_ci": [
+        0.0,
+        0.0
+      ],
+      "budget_violation_rate": 0.0,
+      "checked": 30,
+      "conflict_accuracy": 0.666667,
+      "conflict_ci": [
+        0.333333,
+        1.0
+      ],
+      "correct": 21,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.0,
+        0.166667
+      ],
+      "irreversible_rate": 0.066667,
+      "mean_latency_ms": 0.08471,
+      "mean_regret": 0.137374,
+      "p95_latency_ms": 0.14082,
+      "promise_ci": [
+        0.0,
+        0.5
+      ],
+      "promise_keeping": 0.25,
+      "regret_ci": [
+        0.078594,
+        0.198503
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    },
+    "no_execution": {
+      "abstention_rate": 0.0,
+      "accuracy": 0.833333,
+      "accuracy_ci": [
+        0.7,
+        0.966667
+      ],
+      "budget_ci": [
+        0.0,
+        0.0
+      ],
+      "budget_violation_rate": 0.0,
+      "checked": 30,
+      "conflict_accuracy": 1.0,
+      "conflict_ci": [
+        1.0,
+        1.0
+      ],
+      "correct": 25,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.0,
+        0.233333
+      ],
+      "irreversible_rate": 0.1,
+      "mean_latency_ms": 0.077527,
+      "mean_regret": 0.186263,
+      "p95_latency_ms": 0.097865,
+      "promise_ci": [
+        1.0,
+        1.0
+      ],
+      "promise_keeping": 1.0,
+      "regret_ci": [
+        0.122916,
+        0.249487
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    },
+    "no_feasibility_gates": {
+      "abstention_rate": 0.0,
+      "accuracy": 0.933333,
+      "accuracy_ci": [
+        0.833333,
+        1.0
+      ],
+      "budget_ci": [
+        0.0,
+        0.0
+      ],
+      "budget_violation_rate": 0.0,
+      "checked": 30,
+      "conflict_accuracy": 1.0,
+      "conflict_ci": [
+        1.0,
+        1.0
+      ],
+      "correct": 28,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.0,
+        0.0
+      ],
+      "irreversible_rate": 0.0,
+      "mean_latency_ms": 0.090317,
+      "mean_regret": 0.241818,
+      "p95_latency_ms": 0.147715,
+      "promise_ci": [
+        1.0,
+        1.0
+      ],
+      "promise_keeping": 1.0,
+      "regret_ci": [
+        0.183118,
+        0.297809
+      ],
+      "safety_ci": [
+        0.0,
+        0.166667
+      ],
+      "safety_violation_rate": 0.066667
+    },
+    "utility_only": {
+      "abstention_rate": 0.0,
+      "accuracy": 0.3,
+      "accuracy_ci": [
+        0.133333,
+        0.466667
+      ],
+      "budget_ci": [
+        0.4,
+        1.0
+      ],
+      "budget_violation_rate": 0.7,
+      "checked": 30,
+      "conflict_accuracy": 0.0,
+      "conflict_ci": [
+        0.0,
+        0.0
+      ],
+      "correct": 9,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.1,
+        0.4
+      ],
+      "irreversible_rate": 0.233333,
+      "mean_latency_ms": 0.01175,
+      "mean_regret": 0.0,
+      "p95_latency_ms": 0.028585,
+      "promise_ci": [
+        0.0,
+        0.0
+      ],
+      "promise_keeping": 0.0,
+      "regret_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    }
+  },
+  "schema": "laix/live-bench-summary/v1",
+  "seed": 42,
+  "split": "test"
+}

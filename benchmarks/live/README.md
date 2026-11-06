@@ -4,6 +4,20 @@ This directory holds the live-bench case files. Each file is a list of
 `DecisionProblem` scenarios in JSON. The Python loader converts them into
 `LiveCase` objects for use with `run_live_bench()`.
 
+## Current files
+
+| File | Split | Cases |
+|---|---|---:|
+| `dev-cases-v1.json` | dev | 72 |
+| `test-cases-v1.json` | test | 30 |
+| `adversarial-cases-v1.json` | adversarial | 18 |
+
+Regenerate the corpus with:
+
+```bash
+python scripts/generate_live_cases.py
+```
+
 ## Schema
 
 **`cases.v1.schema.json`** — JSON Schema (Draft 2020-12) for all case files in this

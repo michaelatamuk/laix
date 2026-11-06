@@ -11,6 +11,17 @@ ruff check .
 python -m laix.appkit.bench
 ```
 
+Live benchmark, ablations and baseline diff from the repository root:
+
+```powershell
+python scripts/generate_live_cases.py
+python scripts/run_live_bench_v2.py --split test --seed 42
+python scripts/run_ablations.py --split test --seed 42
+python scripts/summarize_results.py
+```
+
+CI runs the same sequence through `bash scripts/reproduce.sh`.
+
 With `uv` from the repository root:
 
 ```powershell
@@ -57,6 +68,9 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 | Attention conformance | 24/24 |
 | LAIX-Bench | 25/25 |
 | Live decision bench | `LiveDecisionEngine` 7/7 |
+| Live corpus | 120 cases: 72 dev / 30 test / 18 adversarial |
+| Live bench v2 | test split: `live` 30/30; conflict 6/6 |
+| Ablations | full 100%, no commitment 70%, no execution 83.3%, no attention 96.7% |
 
 ## Docs
 
@@ -77,6 +91,9 @@ The check resolves relative links across `docs/`, `examples/` and every README.
 | `npm test` | TS contracts, conformance, parity, streaming, timeline, execution, planners |
 | `npm run bench` | 10 suites and 25 deterministic cases |
 | `npm run conformance` | 24 shared attention decisions |
+| `scripts/run_live_bench_v2.py` | 120-case corpus, metrics, bootstrap intervals, conflict check |
+| `scripts/run_ablations.py` | term removal, equal weights and no-feasibility-gates variants |
+| `scripts/summarize_results.py` | baseline diff for headline metrics |
 | examples | every runnable Python and TypeScript example |
 | docs links | relative links in docs, examples and README files |
 

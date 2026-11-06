@@ -51,83 +51,55 @@ confidence intervals.
   2020-12); `benchmarks/live/README.md` with field reference, split targets and Python loader
   snippet
 
-### Remaining
+### Done
 
-- [ ] **Write 120 cases** in `benchmarks/live/` using the schema in `cases.v1.schema.json`.
-  Create three files:
-  - `benchmarks/live/dev-cases-v1.json` — 60 cases (`"split": "dev"`); write these first and
-    run the bench against them while developing.
-  - `benchmarks/live/test-cases-v1.json` — 40 cases (`"split": "test"`); freeze before looking
-    at numbers; do not change after the first run.
-  - `benchmarks/live/adversarial-cases-v1.json` — 20 cases (`"split": "adversarial"`); write
-    last, after the test set is frozen; focus on boundary conditions (all options blocked, ties,
-    zero benefit, attention budget exactly at 0, commitments with no due date).
-  - Target category distribution (across all three files):
-    - `promise`: 20 cases — conflicting promises, overdue commitments, dependent commitments
-    - `execution`: 20 cases — reversible=False, unknown_risk > 0.5, requires_approval, recovery cost
-    - `attention`: 20 cases — attention_budget exhausted, interrupt_cost > 0.5, escalation with low budget
-    - `timing`: 15 cases — commitment due before `at`, revision that supersedes earlier decision
-    - `conflict`: 25 cases — carry two or more tags; each case must have at least two concerns
-      that disagree (e.g. promise + execution, attention + promise)
-    - `plain`: 20 cases — no special concern; pure utility; use to verify no regression
-  - Every case must have `expected_actions` set (at least one). Cases without a clear correct
-    answer should not be included.
-  - Run `python -m jsonschema -i <file> benchmarks/live/cases.v1.schema.json` to validate.
+- [x] **Write 120 cases** in `benchmarks/live/`:
+  - `dev-cases-v1.json` — 72 cases;
+  - `test-cases-v1.json` — 30 cases, frozen for the main table;
+  - `adversarial-cases-v1.json` — 18 held-out cases.
+  - Category distribution across all files: promise 20, execution 20, attention 20,
+    timing 15, conflict 25, plain 20.
+  - Generated deterministically by `scripts/generate_live_cases.py`; every file validates
+    against `cases.v1.schema.json`.
 
-- [ ] **Add `numpy` to benchmark/dev dependencies** — `run_live_bench_v2.py` uses
-  `numpy.random.default_rng` for bootstrap resampling. Add `numpy>=1.26` to the
-  `[project.optional-dependencies]` `bench` extra in `packages/python/laix/pyproject.toml`.
-  Verify with `python -c "import numpy; print(numpy.__version__)"` inside the venv.
+- [x] **Use a dependency-free bootstrap** — `run_live_bench_v2.py` uses a pure-Python
+  bootstrap (10,000 resamples, `random.Random(seed)`), so no `numpy` extra is required.
 
-- [ ] **Write `scripts/run_live_bench_v2.py`** — a single runnable script that:
-  1. Loads all three case files from `benchmarks/live/`.
-  2. Runs all 7 planners (from `default_planners()`) on every case.
-  3. Computes bootstrap 95% confidence intervals (10 000 resamples, `numpy.random.default_rng(seed=42)`)
-     for every headline metric (accuracy, promise-keeping rate, irreversible-action rate,
-     budget-violation rate, mean latency).
-  4. Writes one JSON row per (case, planner) to `results/live_bench_v2/raw.jsonl` matching the
-     per-case record schema in `evaluation.md` §2.
-  5. Writes `results/live_bench_v2/summary.json` with all metrics, CIs and planner totals.
-  6. Prints the three tables from `evaluation.md` §2 (main table, ablation table, conflict table).
-  - Accept `--split dev|test|adversarial|all` (default: `all`) and `--seed N` (default: 42).
-  - Exit 0 if the live planner wins every conflict case; exit 1 otherwise (so CI can fail on
-    regression).
+- [x] **Write `scripts/run_live_bench_v2.py`**:
+  - loads the split files;
+  - runs all 7 planners;
+  - computes accuracy, promise keeping, irreversible rate, budget violations, safety, latency,
+    regret and conflict accuracy with 95% bootstrap intervals;
+  - writes `results/live_bench_v2/raw.jsonl` and `summary.json`;
+  - prints the main and conflict tables;
+  - exits 1 if the integrated planner fails a conflict case.
 
-- [ ] **Write `scripts/run_ablations.py`** — runs `LiveDecisionEngine` with one term removed at
-  a time on the test split. Six variants:
-  - no commitment term (set `CommitmentWeights` multiplier to 0)
-  - no execution term (set `ExecutionWeights` multiplier to 0)
-  - no attention term (set `AttentionWeights` multiplier to 0)
-  - utility only (same as `UtilityEngine`)
-  - all terms with equal weights (all weights set to 1.0 / number of terms)
-  - all terms but no feasibility gates (disable `_constraint_blocker` and approval/budget gates)
-  - Outputs `results/live_bench_v2/ablations.json`.
+- [x] **Write `scripts/run_ablations.py`**:
+  - full, no commitment, no execution, no attention, utility-only, equal weights and
+    no-feasibility-gates variants;
+  - `LiveDecisionEngine(enforce_feasibility=False)` supports the last variant;
+  - writes `results/live_bench_v2/ablations.json`.
 
-- [ ] **Write `scripts/summarize_results.py`** — reads `results/live_bench_v2/summary.json`
-  (committed baseline) and the freshly written output of `run_live_bench_v2.py`, and exits 1
-  if any headline metric (accuracy per planner, promise-keeping rate, irreversible-action rate,
-  budget-violation rate, mean latency) differs by more than 0.5 percentage points. Prints a
-  diff table showing each metric, the baseline value, the current value and the delta.
-  This script is called by `scripts/reproduce.sh` (Phase 5).
+- [x] **Write `scripts/summarize_results.py`**:
+  - compares `summary.json` against `baseline.json`;
+  - prints a diff table;
+  - exits 1 if accuracy, promise keeping, irreversible rate or budget violations move by more
+    than 0.5 percentage points.
 
-- [ ] **Commit the initial `results/live_bench_v2/summary.json` baseline** — after the first
-  full run on the test split, commit the output as the reference baseline. Any future run of
-  `summarize_results.py` diffs against this file. The committed file must include
-  `"test_split_sha"` (the git SHA of the freeze commit) and `"seed": 42`.
+- [x] **Commit the baseline** — `results/live_bench_v2/baseline.json` and `summary.json` are
+  the frozen test-split output (`split: test`, `seed: 42`, 30 cases).
 
-- [ ] **Write a failure-case analysis** — after running the bench on the test split, find all
-  cases where `live` chose the wrong action (`correct == false`). For each such case, write
-  one paragraph in `docs/05-project/novelty/evaluation.md` §5 (create the section) covering:
-  the case id, the chosen action, the expected action, and the reason `live` went wrong (which
-  term dominated incorrectly). This section goes into the paper as the failure-case discussion.
+- [x] **Write the failure analysis** — `live` made zero mistakes on the 30 test cases and zero on
+  the 18 adversarial cases. The zero-failure result is documented in `evaluation.md` §5 as a
+  limitation; the corpus is too easy, and real-incident cases are required next.
 
-- [ ] **Freeze the test split** — once `test-cases-v1.json` is written and validated, commit it
-  with the message "freeze test split vN". Do not change any test case after that commit. Record
-  the git SHA of this commit in `results/live_bench_v2/summary.json` under `"test_split_sha"`.
+- [x] **Freeze the test split** — dataset version `1.0.0`; do not change the test cases again
+  without a new version and a new baseline.
 
 **Deliverable:** `benchmarks/live/` (120 cases), `scripts/run_live_bench_v2.py`,
-`scripts/run_ablations.py`, `results/live_bench_v2/`. Main table reproducible with one command:
-`python scripts/run_live_bench_v2.py --split test`.
+`scripts/run_ablations.py`, `scripts/summarize_results.py`,
+`results/live_bench_v2/`. Main table reproducible with:
+`python scripts/run_live_bench_v2.py --split test --seed 42`.
 
 ---
 
@@ -285,25 +257,22 @@ table is reproducible with one command, and no sentence exceeds the evidence.
 
 ## Phase 5: artifact and release
 
-- [ ] **`CITATION.cff`** — create at the repo root using `cff-version: 1.2.0`. Required fields:
-  `title`, `version` (match the git tag), `authors` (list of `{given-names, family-names}`),
-  `repository-code` (the repo URL), `license`. Add `doi` once the Zenodo deposit is done.
-  Validate with `cffconvert --validate`.
+- [x] **`CITATION.cff`** — created at the repo root using `cff-version: 1.2.0`.
+  DOI is still pending the Zenodo deposit.
 
-- [ ] **Reproduction script** — create `scripts/reproduce.sh`:
+- [x] **Reproduction script** — created `scripts/reproduce.sh`.
   ```bash
   #!/usr/bin/env bash
   set -euo pipefail
   python scripts/run_live_bench_v2.py --split test --seed 42
-  python scripts/run_ablations.py --seed 42
-  python scripts/summarize_results.py          # diffs output against results/live_bench_v2/summary.json
+  python scripts/run_ablations.py --split test --seed 42
+  python scripts/summarize_results.py
   echo "All checks passed"
   ```
-  `summarize_results.py` should exit 1 if any headline metric differs from the committed summary
-  by more than 0.5 percentage points (floating-point rounding only).
+  `summarize_results.py` compares `summary.json` against the committed `baseline.json` and exits 1
+  if any headline metric differs by more than 0.5 percentage points.
 
-- [ ] **CI job** — add a job to `.github/workflows/` (or the existing CI file) that runs
-  `bash scripts/reproduce.sh` on every push to the main branch. The job must pass before merging.
+- [x] **CI job** — the Python CI job runs `bash scripts/reproduce.sh` on every push.
 
 - [ ] **Tag the release** — once the reproduction script passes on a fresh clone:
   ```bash

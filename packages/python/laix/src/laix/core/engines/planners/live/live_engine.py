@@ -52,11 +52,13 @@ class LiveDecisionEngine:
         commitment_weights: CommitmentWeights | None = None,
         execution_weights: ExecutionWeights | None = None,
         attention_weights: AttentionWeights | None = None,
+        enforce_feasibility: bool = True,
     ) -> None:
         self.model = model
         self.commitment_weights = commitment_weights or CommitmentWeights()
         self.execution_weights = execution_weights or ExecutionWeights()
         self.attention_weights = attention_weights or AttentionWeights()
+        self.enforce_feasibility = enforce_feasibility
         self._utility = UtilityEngine(model)
 
     def solve(self, problem: DecisionProblem) -> Plan:
@@ -112,7 +114,11 @@ class LiveDecisionEngine:
                 _Row(
                     option=option,
                     score=score,
-                    feasible=model.feasible(option) and blocked is None,
+                    feasible=(
+                        model.feasible(option) and blocked is None
+                        if self.enforce_feasibility
+                        else True
+                    ),
                     blocker=blocked,
                     commitment=commitment,
                     execution=execution,

@@ -220,6 +220,22 @@ The integration adds real value: each single-concern planner wins its own
 cases but fails on cases where two or more concerns fire simultaneously.
 See `examples/python/03-plan/conflict_scenario.py` for a worked example.
 
+### 2.7 Ablation results (test split, 30 cases)
+
+The expanded corpus is in `benchmarks/live/`. On the frozen test split:
+
+| Variant | Accuracy | Promise keeping | Irreversible rate | Budget violations |
+|---|---:|---:|---:|---:|
+| full | 100.00% | 100.00% | 0.00% | 0.00% |
+| equal weights | 100.00% | 100.00% | 0.00% | 0.00% |
+| no attention | 96.67% | 100.00% | 0.00% | 0.00% |
+| no feasibility gates | 93.33% | 100.00% | 0.00% | 0.00% |
+| no execution | 83.33% | 100.00% | 10.00% | 0.00% |
+| no commitment | 70.00% | 25.00% | 6.67% | 0.00% |
+| utility only | 30.00% | 0.00% | 23.33% | 70.00% |
+
+Reproduce with `python scripts/run_ablations.py --split test --seed 42`.
+
 ## 3. State machines
 
 ### Receipt state machine

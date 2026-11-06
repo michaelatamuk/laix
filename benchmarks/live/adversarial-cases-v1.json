@@ -1,0 +1,921 @@
+{
+  "schema": "laix/live-bench/v1",
+  "version": "1.0.0",
+  "split": "adversarial",
+  "note": "LAIX live-bench v1 adversarial split.",
+  "cases": [
+    {
+      "id": "adversarial_promise_00",
+      "name": "keep the open promise",
+      "tags": [
+        "promise"
+      ],
+      "expected_actions": [
+        "keep"
+      ],
+      "note": "Keeping the open commitment is correct even at a lower immediate benefit.",
+      "problem": {
+        "subject": "keep the open promise",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "keep",
+            "verb": "act",
+            "name": "keep",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "commitments": {
+              "fulfills": [
+                "c0"
+              ]
+            }
+          },
+          {
+            "id": "break",
+            "verb": "act",
+            "name": "break",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "commitments": {
+              "violates": [
+                "c0"
+              ]
+            }
+          }
+        ],
+        "commitments": [
+          {
+            "id": "c0",
+            "subject": "promise",
+            "priority": 0.4,
+            "due": "2026-11-01T09:00:00+00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "adversarial_promise_01",
+      "name": "keep the open promise",
+      "tags": [
+        "promise"
+      ],
+      "expected_actions": [
+        "keep"
+      ],
+      "note": "Keeping the open commitment is correct even at a lower immediate benefit.",
+      "problem": {
+        "subject": "keep the open promise",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "keep",
+            "verb": "act",
+            "name": "keep",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "commitments": {
+              "fulfills": [
+                "c1"
+              ]
+            }
+          },
+          {
+            "id": "break",
+            "verb": "act",
+            "name": "break",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "commitments": {
+              "violates": [
+                "c1"
+              ]
+            }
+          }
+        ],
+        "commitments": [
+          {
+            "id": "c1",
+            "subject": "promise",
+            "priority": 0.5,
+            "due": "2026-11-01T12:00:00+00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "adversarial_promise_02",
+      "name": "keep the open promise",
+      "tags": [
+        "promise"
+      ],
+      "expected_actions": [
+        "keep"
+      ],
+      "note": "Keeping the open commitment is correct even at a lower immediate benefit.",
+      "problem": {
+        "subject": "keep the open promise",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "keep",
+            "verb": "act",
+            "name": "keep",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "commitments": {
+              "fulfills": [
+                "c2"
+              ]
+            }
+          },
+          {
+            "id": "break",
+            "verb": "act",
+            "name": "break",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "commitments": {
+              "violates": [
+                "c2"
+              ]
+            }
+          }
+        ],
+        "commitments": [
+          {
+            "id": "c2",
+            "subject": "promise",
+            "priority": 0.6000000000000001
+          }
+        ]
+      }
+    },
+    {
+      "id": "adversarial_execution_00",
+      "name": "avoid execution risk",
+      "tags": [
+        "execution"
+      ],
+      "expected_actions": [
+        "safe"
+      ],
+      "note": "The irreversible option is not worth the small benefit gain.",
+      "problem": {
+        "subject": "avoid execution risk",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "safe",
+            "verb": "act",
+            "name": "safe",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          },
+          {
+            "id": "risky",
+            "verb": "act",
+            "name": "risky",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": false,
+            "requires_approval": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "adversarial_execution_01",
+      "name": "avoid execution risk",
+      "tags": [
+        "execution"
+      ],
+      "expected_actions": [
+        "safe"
+      ],
+      "note": "A high unknown-outcome risk makes the safe option correct.",
+      "problem": {
+        "subject": "avoid execution risk",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "safe",
+            "verb": "act",
+            "name": "safe",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          },
+          {
+            "id": "risky",
+            "verb": "act",
+            "name": "risky",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "unknown_risk": 0.9
+          }
+        ]
+      }
+    },
+    {
+      "id": "adversarial_execution_02",
+      "name": "avoid execution risk",
+      "tags": [
+        "execution"
+      ],
+      "expected_actions": [
+        "safe"
+      ],
+      "note": "An approval step costs execution and attention; the safe option wins.",
+      "problem": {
+        "subject": "avoid execution risk",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "safe",
+            "verb": "act",
+            "name": "safe",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          },
+          {
+            "id": "risky",
+            "verb": "act",
+            "name": "risky",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "adversarial_attention_00",
+      "name": "spend available attention",
+      "tags": [
+        "attention"
+      ],
+      "expected_actions": [
+        "ask"
+      ],
+      "note": "The human-facing option fits the remaining attention budget.",
+      "problem": {
+        "subject": "spend available attention",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "ask",
+            "verb": "ask",
+            "name": "ask",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.2,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          },
+          {
+            "id": "act",
+            "verb": "act",
+            "name": "act",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          }
+        ],
+        "attention_budget": {
+          "total": 1.0,
+          "spent": 0.0
+        }
+      }
+    },
+    {
+      "id": "adversarial_attention_01",
+      "name": "budget exhausted",
+      "tags": [
+        "attention"
+      ],
+      "expected_actions": [
+        "act"
+      ],
+      "note": "The budget is exhausted, so the direct action is correct.",
+      "problem": {
+        "subject": "budget exhausted",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "ask",
+            "verb": "ask",
+            "name": "ask",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.2,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          },
+          {
+            "id": "act",
+            "verb": "act",
+            "name": "act",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          }
+        ],
+        "attention_budget": {
+          "total": 1.0,
+          "spent": 1.0
+        }
+      }
+    },
+    {
+      "id": "adversarial_attention_02",
+      "name": "approval rejected",
+      "tags": [
+        "attention"
+      ],
+      "expected_actions": [
+        "fallback"
+      ],
+      "note": "A rejected approval must not be chosen.",
+      "problem": {
+        "subject": "approval rejected",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "ask",
+            "verb": "ask",
+            "name": "ask",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.1,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          },
+          {
+            "id": "fallback",
+            "verb": "act",
+            "name": "fallback",
+            "expected_benefit": 0.5,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          }
+        ],
+        "approvals": {
+          "ask": "rejected"
+        }
+      }
+    },
+    {
+      "id": "adversarial_timing_00",
+      "name": "time-sensitive promise",
+      "tags": [
+        "timing",
+        "promise"
+      ],
+      "expected_actions": [
+        "keep"
+      ],
+      "note": "The promise is due or approaching; keeping it is correct.",
+      "problem": {
+        "subject": "time-sensitive promise",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "keep",
+            "verb": "act",
+            "name": "keep",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "commitments": {
+              "fulfills": [
+                "t0"
+              ]
+            }
+          },
+          {
+            "id": "break",
+            "verb": "act",
+            "name": "break",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "commitments": {
+              "violates": [
+                "t0"
+              ]
+            }
+          }
+        ],
+        "commitments": [
+          {
+            "id": "t0",
+            "subject": "promise",
+            "priority": 0.7,
+            "due": "2026-11-01T09:00:00+00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "adversarial_timing_01",
+      "name": "latency limit",
+      "tags": [
+        "timing"
+      ],
+      "expected_actions": [
+        "fast"
+      ],
+      "note": "The hard latency limit excludes the slower, higher-benefit option.",
+      "problem": {
+        "subject": "latency limit",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "fast",
+            "verb": "act",
+            "name": "fast",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 50,
+            "reversible": true,
+            "requires_approval": false
+          },
+          {
+            "id": "slow",
+            "verb": "act",
+            "name": "slow",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 500,
+            "reversible": true,
+            "requires_approval": false
+          }
+        ],
+        "situation": {
+          "id": "situation",
+          "subject": "latency limit",
+          "constraints": [
+            {
+              "id": "latency-limit",
+              "kind": "latency",
+              "value": 100,
+              "hard": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "adversarial_conflict_00",
+      "name": "conflicting concerns",
+      "tags": [
+        "conflict",
+        "promise",
+        "execution"
+      ],
+      "expected_actions": [
+        "safe"
+      ],
+      "note": "Fast breaks a promise and is irreversible; safe keeps the promise.",
+      "problem": {
+        "subject": "conflicting concerns",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "fast",
+            "verb": "act",
+            "name": "fast",
+            "expected_benefit": 1.0,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": false,
+            "requires_approval": false,
+            "commitments": {
+              "violates": [
+                "cc0"
+              ]
+            }
+          },
+          {
+            "id": "safe",
+            "verb": "act",
+            "name": "safe",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "commitments": {
+              "fulfills": [
+                "cc0"
+              ]
+            }
+          }
+        ],
+        "commitments": [
+          {
+            "id": "cc0",
+            "subject": "promise",
+            "priority": 0.7,
+            "due": "2026-11-01T09:00:00+00:00"
+          }
+        ],
+        "attention_budget": {
+          "total": 0.5,
+          "spent": 0.1
+        }
+      }
+    },
+    {
+      "id": "adversarial_conflict_01",
+      "name": "conflicting concerns",
+      "tags": [
+        "conflict",
+        "promise",
+        "attention"
+      ],
+      "expected_actions": [
+        "safe"
+      ],
+      "note": "Fast breaks a promise and costs attention; safe keeps it directly.",
+      "problem": {
+        "subject": "conflicting concerns",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "fast",
+            "verb": "ask",
+            "name": "fast",
+            "expected_benefit": 1.0,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.4,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "commitments": {
+              "violates": [
+                "cc1"
+              ]
+            }
+          },
+          {
+            "id": "safe",
+            "verb": "act",
+            "name": "safe",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "commitments": {
+              "fulfills": [
+                "cc1"
+              ]
+            }
+          }
+        ],
+        "commitments": [
+          {
+            "id": "cc1",
+            "subject": "promise",
+            "priority": 0.7,
+            "due": "2026-11-01T09:00:00+00:00"
+          }
+        ],
+        "attention_budget": {
+          "total": 0.5,
+          "spent": 0.1
+        }
+      }
+    },
+    {
+      "id": "adversarial_conflict_02",
+      "name": "conflicting concerns",
+      "tags": [
+        "conflict",
+        "execution",
+        "attention"
+      ],
+      "expected_actions": [
+        "safe"
+      ],
+      "note": "Fast is irreversible and needs attention; safe is direct and reversible.",
+      "problem": {
+        "subject": "conflicting concerns",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "fast",
+            "verb": "ask",
+            "name": "fast",
+            "expected_benefit": 1.0,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.4,
+            "latency_ms": 0.0,
+            "reversible": false,
+            "requires_approval": false
+          },
+          {
+            "id": "safe",
+            "verb": "act",
+            "name": "safe",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          }
+        ],
+        "attention_budget": {
+          "total": 0.5,
+          "spent": 0.1
+        }
+      }
+    },
+    {
+      "id": "adversarial_conflict_03",
+      "name": "conflicting concerns",
+      "tags": [
+        "conflict",
+        "promise",
+        "execution",
+        "attention"
+      ],
+      "expected_actions": [
+        "safe"
+      ],
+      "note": "All three concerns fire; safe is the only option that satisfies them.",
+      "problem": {
+        "subject": "conflicting concerns",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "fast",
+            "verb": "ask",
+            "name": "fast",
+            "expected_benefit": 1.0,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.5,
+            "latency_ms": 0.0,
+            "reversible": false,
+            "requires_approval": false,
+            "commitments": {
+              "violates": [
+                "cc3"
+              ]
+            }
+          },
+          {
+            "id": "safe",
+            "verb": "act",
+            "name": "safe",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false,
+            "commitments": {
+              "fulfills": [
+                "cc3"
+              ]
+            }
+          }
+        ],
+        "commitments": [
+          {
+            "id": "cc3",
+            "subject": "promise",
+            "priority": 0.7,
+            "due": "2026-11-01T09:00:00+00:00"
+          }
+        ],
+        "attention_budget": {
+          "total": 0.5,
+          "spent": 0.1
+        }
+      }
+    },
+    {
+      "id": "adversarial_plain_00",
+      "name": "plain utility choice",
+      "tags": [
+        "plain"
+      ],
+      "expected_actions": [
+        "best"
+      ],
+      "note": "The option with the highest benefit is correct; no other concern applies.",
+      "problem": {
+        "subject": "plain utility choice",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "best",
+            "verb": "act",
+            "name": "best",
+            "expected_benefit": 0.8,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          },
+          {
+            "id": "weak",
+            "verb": "act",
+            "name": "weak",
+            "expected_benefit": 0.35,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "adversarial_plain_01",
+      "name": "plain utility choice",
+      "tags": [
+        "plain"
+      ],
+      "expected_actions": [
+        "best"
+      ],
+      "note": "The option with the highest benefit is correct; no other concern applies.",
+      "problem": {
+        "subject": "plain utility choice",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "best",
+            "verb": "act",
+            "name": "best",
+            "expected_benefit": 0.81,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          },
+          {
+            "id": "weak",
+            "verb": "act",
+            "name": "weak",
+            "expected_benefit": 0.37,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "adversarial_plain_02",
+      "name": "plain utility choice",
+      "tags": [
+        "plain"
+      ],
+      "expected_actions": [
+        "best"
+      ],
+      "note": "The option with the highest benefit is correct; no other concern applies.",
+      "problem": {
+        "subject": "plain utility choice",
+        "at": "2026-11-01T10:00:00+00:00",
+        "options": [
+          {
+            "id": "best",
+            "verb": "act",
+            "name": "best",
+            "expected_benefit": 0.82,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          },
+          {
+            "id": "weak",
+            "verb": "act",
+            "name": "weak",
+            "expected_benefit": 0.39,
+            "risk": 0.0,
+            "cost": 0.0,
+            "interrupt_cost": 0.0,
+            "latency_ms": 0.0,
+            "reversible": true,
+            "requires_approval": false
+          }
+        ]
+      }
+    }
+  ]
+}

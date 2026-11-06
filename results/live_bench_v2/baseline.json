@@ -1,0 +1,309 @@
+{
+  "cases": 30,
+  "planners": {
+    "attention": {
+      "abstention_rate": 0.0,
+      "accuracy": 0.533333,
+      "accuracy_ci": [
+        0.366667,
+        0.7
+      ],
+      "budget_ci": [
+        0.0,
+        0.0
+      ],
+      "budget_violation_rate": 0.0,
+      "checked": 30,
+      "conflict_accuracy": 0.666667,
+      "conflict_ci": [
+        0.333333,
+        1.0
+      ],
+      "correct": 16,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.033333,
+        0.3
+      ],
+      "irreversible_rate": 0.166667,
+      "mean_latency_ms": 0.033773,
+      "mean_regret": 0.081819,
+      "p95_latency_ms": 0.12502,
+      "promise_ci": [
+        0.0,
+        0.5
+      ],
+      "promise_keeping": 0.25,
+      "regret_ci": [
+        0.032859,
+        0.137361
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    },
+    "benefit": {
+      "abstention_rate": 0.0,
+      "accuracy": 0.233333,
+      "accuracy_ci": [
+        0.1,
+        0.4
+      ],
+      "budget_ci": [
+        0.4,
+        1.0
+      ],
+      "budget_violation_rate": 0.7,
+      "checked": 30,
+      "conflict_accuracy": 0.0,
+      "conflict_ci": [
+        0.0,
+        0.0
+      ],
+      "correct": 7,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.1,
+        0.4
+      ],
+      "irreversible_rate": 0.233333,
+      "mean_latency_ms": 0.003907,
+      "mean_regret": 0.0,
+      "p95_latency_ms": 0.00631,
+      "promise_ci": [
+        0.0,
+        0.0
+      ],
+      "promise_keeping": 0.0,
+      "regret_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_ci": [
+        0.0,
+        0.166667
+      ],
+      "safety_violation_rate": 0.066667
+    },
+    "commitment": {
+      "abstention_rate": 0.0,
+      "accuracy": 0.7,
+      "accuracy_ci": [
+        0.533333,
+        0.866667
+      ],
+      "budget_ci": [
+        0.142857,
+        0.857143
+      ],
+      "budget_violation_rate": 0.571429,
+      "checked": 30,
+      "conflict_accuracy": 0.833333,
+      "conflict_ci": [
+        0.5,
+        1.0
+      ],
+      "correct": 21,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.033333,
+        0.266667
+      ],
+      "irreversible_rate": 0.133333,
+      "mean_latency_ms": 0.044047,
+      "mean_regret": 0.14027,
+      "p95_latency_ms": 0.11472,
+      "promise_ci": [
+        1.0,
+        1.0
+      ],
+      "promise_keeping": 1.0,
+      "regret_ci": [
+        0.08,
+        0.202416
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    },
+    "execution": {
+      "abstention_rate": 0.0,
+      "accuracy": 0.5,
+      "accuracy_ci": [
+        0.333333,
+        0.666667
+      ],
+      "budget_ci": [
+        0.25,
+        0.875
+      ],
+      "budget_violation_rate": 0.625,
+      "checked": 30,
+      "conflict_accuracy": 0.333333,
+      "conflict_ci": [
+        0.0,
+        0.666667
+      ],
+      "correct": 15,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.0,
+        0.166667
+      ],
+      "irreversible_rate": 0.066667,
+      "mean_latency_ms": 0.025803,
+      "mean_regret": 0.068213,
+      "p95_latency_ms": 0.053935,
+      "promise_ci": [
+        0.0,
+        0.25
+      ],
+      "promise_keeping": 0.083333,
+      "regret_ci": [
+        0.022823,
+        0.122222
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    },
+    "first": {
+      "abstention_rate": 0.0,
+      "accuracy": 0.7,
+      "accuracy_ci": [
+        0.533333,
+        0.866667
+      ],
+      "budget_ci": [
+        0.444444,
+        1.0
+      ],
+      "budget_violation_rate": 0.777778,
+      "checked": 30,
+      "conflict_accuracy": 0.0,
+      "conflict_ci": [
+        0.0,
+        0.0
+      ],
+      "correct": 21,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.033333,
+        0.266667
+      ],
+      "irreversible_rate": 0.133333,
+      "mean_latency_ms": 0.00401,
+      "mean_regret": 0.133333,
+      "p95_latency_ms": 0.01534,
+      "promise_ci": [
+        0.333333,
+        0.833333
+      ],
+      "promise_keeping": 0.583333,
+      "regret_ci": [
+        0.077778,
+        0.188889
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    },
+    "live": {
+      "abstention_rate": 0.0,
+      "accuracy": 1.0,
+      "accuracy_ci": [
+        1.0,
+        1.0
+      ],
+      "budget_ci": [
+        0.0,
+        0.0
+      ],
+      "budget_violation_rate": 0.0,
+      "checked": 30,
+      "conflict_accuracy": 1.0,
+      "conflict_ci": [
+        1.0,
+        1.0
+      ],
+      "correct": 30,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.0,
+        0.0
+      ],
+      "irreversible_rate": 0.0,
+      "mean_latency_ms": 0.089357,
+      "mean_regret": 0.241818,
+      "p95_latency_ms": 0.295465,
+      "promise_ci": [
+        1.0,
+        1.0
+      ],
+      "promise_keeping": 1.0,
+      "regret_ci": [
+        0.183118,
+        0.297809
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    },
+    "utility": {
+      "abstention_rate": 0.0,
+      "accuracy": 0.3,
+      "accuracy_ci": [
+        0.133333,
+        0.466667
+      ],
+      "budget_ci": [
+        0.4,
+        1.0
+      ],
+      "budget_violation_rate": 0.7,
+      "checked": 30,
+      "conflict_accuracy": 0.0,
+      "conflict_ci": [
+        0.0,
+        0.0
+      ],
+      "correct": 9,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.1,
+        0.4
+      ],
+      "irreversible_rate": 0.233333,
+      "mean_latency_ms": 0.01341,
+      "mean_regret": 0.0,
+      "p95_latency_ms": 0.034065,
+      "promise_ci": [
+        0.0,
+        0.0
+      ],
+      "promise_keeping": 0.0,
+      "regret_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    }
+  },
+  "schema": "laix/live-bench-summary/v1",
+  "seed": 42,
+  "split": "test"
+}

@@ -219,6 +219,12 @@ Reproduce with one command: `python examples/python/03-plan/ablation_study.py`.
 A worked conflict scenario (all three concerns fire simultaneously) is in
 `examples/python/03-plan/conflict_scenario.py`.
 
+**Expanded corpus:** 120 cases across six categories (72 dev, 30 test, 18 adversarial).
+On the frozen test split, the integrated planner is 30/30 and wins every conflict case (6/6).
+Ablations on the same split: full 100%, no attention 96.7%, no feasibility gates 93.3%,
+no execution 83.3%, no commitment 70%, utility-only 30%. Reproduce with
+`bash scripts/reproduce.sh`.
+
 **Prior art:** No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda,
 FIPA/BDI, scikit-learn calibration) carries all ten capabilities in one decision object.
 See [comparators.md](../05-project/novelty/comparators.md) for the full matrix.

@@ -35,15 +35,14 @@ review.
   (PLD 2024/2853 mapping), `ablation_study.py` (all 7 planners on 7 cases, `live` wins
   every case), `conflict_scenario.py` (triple-concern demo), `shadow_rollout.py` (rollout
   pattern).
-- Added (this session): `formal-model.md` filled with exact score formulas and weights,
-  `prior-art.md` matrix complete (10 capabilities × 7 columns, 14 footnotes),
-  `tests/core/test_invariants.py` (17 property tests, I1–I10, all pass),
-  `architecture.md` updated with integration evidence section,
-  `benchmarks/live/cases.v1.schema.json` (JSON Schema Draft 2020-12 for case files),
-  `benchmarks/live/README.md` (field reference, split targets, Python loader snippet),
-  §1 claim rewritten and narrowed after the matrix.
-- Remaining gaps: benchmark at 7 cases (need 120+), no confidence intervals, no
-  real-world validation, no paper.
+- Added: `formal-model.md` with exact score formulas and weights, `prior-art.md` matrix
+  (10 capabilities × 7 columns), `tests/core/test_invariants.py` (17 property tests, I1–I10),
+  `benchmarks/live/` (120 cases with dev/test/adversarial splits),
+  `scripts/run_live_bench_v2.py` (metrics and bootstrap intervals),
+  `scripts/run_ablations.py`, `scripts/summarize_results.py`,
+  `results/live_bench_v2/` (baseline summary), and a CI reproduction step.
+- Remaining gaps: no external runnable adapter (the prior-art comparison is documented, not
+  measured head-to-head), no real-world validation, no paper and no external review.
 
 ## 1. What "novel" must mean here
 
@@ -55,8 +54,8 @@ Do not claim a new algorithm. Claim a **systems and integration contribution**.
 > attention budget into one decision contract — the same object that carries the verb, the score,
 > the reason code and the audit trail — while the host retains execution and delivery.
 > No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI, scikit-learn)
-> carries all ten capabilities in one object. The integration has measurable value: `live` wins
-> every live-bench case (7/7); single-concern planners win at most 5/7.
+> carries all ten capabilities in one object. The integration has measurable value: on the frozen
+> test split `live` is 30/30 and wins every conflict case; the best single-concern planner is 70%.
 
 ### Why this claim is narrow enough to defend
 
@@ -142,13 +141,15 @@ Do not claim novelty in a paper, README or talk until all of these are true:
   search log, per-system paragraphs, defensible claims);
 - [x] the formal model and invariants are documented — `formal-model.md` filled (types, score
   formulas with weights, state machines, invariants I1–I10); 17 property tests pass;
-- [ ] the benchmark has 100+ cases and held-out splits — 7 cases exist, need 120+;
-- [x] ablations show which term contributes what — `ablation_study.py` runs all 7 planners;
-  result: `live` 7/7, `execution` 5/7, `attention` 4/7, `commitment` 3/7, `utility` 2/7;
-- [ ] confidence intervals and effect sizes are reported;
+- [x] the benchmark has 100+ cases and held-out splits — 120 cases: 72 dev, 30 test,
+  18 adversarial;
+- [x] ablations show which term contributes what — test split: full 100%, no attention 96.7%,
+  no feasibility gates 93.3%, no execution 83.3%, no commitment 70%, utility-only 30%;
+- [x] confidence intervals and effect sizes are reported — 10,000-resample bootstrap in
+  `results/live_bench_v2/`;
 - [ ] one real validation exists;
-- [ ] the artifact reproduces the main table with one command;
-- [ ] limitations are written down;
+- [x] the artifact reproduces the main table with one command — `bash scripts/reproduce.sh`;
+- [x] limitations are written down — threats and failure analysis in `evaluation.md`;
 - [ ] an external reader or reviewer has seen the draft.
 
 Until then, use this wording:
@@ -172,16 +173,20 @@ npm run typecheck
 npm test
 npm run bench
 npm run conformance
+
+cd ../..
+bash scripts/reproduce.sh
 ```
 
-Then open:
+Then review:
 
 1. `README.md` (this page);
-2. `prior-art.md` (fill in the matrix);
-3. `formal-model.md` (write the model);
-4. `benchmarks/live/README.md` (create the case schema first).
+2. `prior-art.md` and `comparators.md`;
+3. `evaluation.md` and `results/live_bench_v2/`;
+4. `validation.md` — the next external step.
 
-First task: write the claim and the prior-art matrix. Do not start with more code.
+First task now: choose the validation option and run it. The synthetic corpus is complete; do not add more
+synthetic cases without real incident data.
 
 ## 5. Open decisions
 
