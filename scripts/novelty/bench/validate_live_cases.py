@@ -6,8 +6,8 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-CASES = ROOT / "benchmarks" / "live"
+ROOT = Path(__file__).resolve().parents[3]
+CASES = ROOT / "benchmarks" / "cases"
 SCHEMA = CASES / "cases.v1.schema.json"
 SPLITS = ("dev", "test", "adversarial")
 

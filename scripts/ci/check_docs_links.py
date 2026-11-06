@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 from urllib.parse import unquote
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 LINK = re.compile(r"\]\(([^)]+)\)")
 SKIP = ("http://", "https://", "mailto:", "tel:", "#")
 EXCLUDED = {".git", ".pytest_cache", ".ruff_cache", "__pycache__", "node_modules", "dist", "build"}

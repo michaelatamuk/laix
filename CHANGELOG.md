@@ -41,6 +41,7 @@
 
 ### Changed
 
+- Reordered the repository for role-based grouping: `benchmarks/cases/`, `data/validation/{incidents,user-study}/`, `scripts/ci/` and `scripts/novelty/{bench,analysis,validation,compare}/`. Public APIs and package layout are unchanged.
 - Added `to_decision` / `toDecision` as the one plan-to-decision conversion.
 - TypeScript now mirrors the Python calibration, model-learning and POMDP surface.
 

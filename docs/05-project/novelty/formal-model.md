@@ -222,7 +222,7 @@ See `examples/python/03-plan/conflict_scenario.py` for a worked example.
 
 ### 2.7 Ablation results (test split, 30 cases)
 
-The expanded corpus is in `benchmarks/live/`. On the frozen test split:
+The expanded corpus is in `benchmarks/cases/`. On the frozen test split:
 
 | Variant | Accuracy | Promise keeping | Irreversible rate | Budget violations |
 |---|---:|---:|---:|---:|
@@ -234,7 +234,7 @@ The expanded corpus is in `benchmarks/live/`. On the frozen test split:
 | no commitment | 70.00% | 25.00% | 6.67% | 0.00% |
 | utility only | 30.00% | 0.00% | 23.33% | 70.00% |
 
-Reproduce with `python scripts/novelty/run_ablations.py --split test --seed 42`.
+Reproduce with `python scripts/novelty/bench/run_ablations.py --split test --seed 42`.
 
 ## 3. State machines
 

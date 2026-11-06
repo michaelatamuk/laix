@@ -43,12 +43,12 @@ review.
   pattern).
 - Added: `formal-model.md` with exact score formulas and weights, `prior-art.md` matrix
   (10 capabilities × 7 columns), `tests/core/test_invariants.py` (17 property tests, I1–I10),
-  `benchmarks/live/` (120 cases with dev/test/adversarial splits),
-  `scripts/novelty/run_live_bench_v2.py` (metrics and bootstrap intervals),
-  `scripts/novelty/analyze_results.py` (McNemar, paired bootstrap and effect sizes),
+  `benchmarks/cases/` (120 cases with dev/test/adversarial splits),
+  `scripts/novelty/bench/run_live_bench_v2.py` (metrics and bootstrap intervals),
+  `scripts/novelty/analysis/analyze_results.py` (McNemar, paired bootstrap and effect sizes),
   `scripts/novelty/glue_baseline.py` (hand-built integration baseline),
-  `scripts/novelty/validate_live_cases.py` (schema validation),
-  `scripts/novelty/run_ablations.py`, `scripts/novelty/summarize_results.py`,
+  `scripts/novelty/bench/validate_live_cases.py` (schema validation),
+  `scripts/novelty/bench/run_ablations.py`, `scripts/novelty/bench/summarize_results.py`,
   `results/live_bench_v2/` (baseline, analysis and ablations), and a CI reproduction step.
 - Measured result: `live` 30/30 on the test split, but a hand-built glue baseline is 28/30.
   Against glue, +6.7 pp (95% CI 0.0–0.167, McNemar p = 0.48). The integration advantage over

@@ -8,10 +8,10 @@ platform and records no personal data.
 From the repository root:
 
 ```bash
-python scripts/novelty/serve_user_study.py
+python scripts/novelty/validation/serve_user_study.py
 ```
 
-The browser opens at `http://localhost:8000/user-study-app/`.
+The browser opens at the printed local URL; the app itself is served under `/user-study-app/`.
 
 ## Facilitator flow
 
@@ -26,7 +26,7 @@ Each session is 20 vignettes × 2 recommendations = 40 trials, about 20–30 min
 
 ## Output
 
-The downloaded file is JSON Lines in the format expected by `scripts/novelty/analyze_user_study.py`:
+The downloaded file is JSON Lines in the format expected by `scripts/novelty/validation/analyze_user_study.py`:
 
 ```json
 {"participant_id":"p-...","vignette_id":"v01","condition":"laix","recommendation":"ask","choice":"ask","timeliness":5,"trust":4,"workload":2}

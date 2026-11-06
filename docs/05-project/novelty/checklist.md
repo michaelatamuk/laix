@@ -47,25 +47,25 @@ confidence intervals.
   runs all 7 planners on all 7 cases; live bench 7/7, single-concern planners partial
 - [x] Write the conflict scenario — `examples/python/03-plan/conflict_scenario.py`
   shows all three concerns firing; UtilityEngine and AttentionAware fail; full score breakdown
-- [x] Create the case schema — `benchmarks/live/cases.v1.schema.json` (JSON Schema Draft
-  2020-12); `benchmarks/live/README.md` with field reference, split targets and Python loader
+- [x] Create the case schema — `benchmarks/cases/cases.v1.schema.json` (JSON Schema Draft
+  2020-12); `benchmarks/cases/README.md` with field reference, split targets and Python loader
   snippet
 
 ### Done
 
-- [x] **Write 120 cases** in `benchmarks/live/`:
+- [x] **Write 120 cases** in `benchmarks/cases/`:
   - `dev-cases-v1.json` — 72 cases;
   - `test-cases-v1.json` — 30 cases, frozen for the main table;
   - `adversarial-cases-v1.json` — 18 held-out cases.
   - Category distribution across all files: promise 20, execution 20, attention 20,
     timing 15, conflict 25, plain 20.
-  - Generated deterministically by `scripts/novelty/generate_live_cases.py`; every file validates
+  - Generated deterministically by `scripts/novelty/bench/generate_live_cases.py`; every file validates
     against `cases.v1.schema.json`.
 
 - [x] **Use a dependency-free bootstrap** — `run_live_bench_v2.py` uses a pure-Python
   bootstrap (10,000 resamples, `random.Random(seed)`), so no `numpy` extra is required.
 
-- [x] **Write `scripts/novelty/run_live_bench_v2.py`**:
+- [x] **Write `scripts/novelty/bench/run_live_bench_v2.py`**:
   - loads the split files;
   - runs all 7 planners;
   - computes accuracy, promise keeping, irreversible rate, budget violations, safety, latency,
@@ -74,13 +74,13 @@ confidence intervals.
   - prints the main and conflict tables;
   - exits 1 if the integrated planner fails a conflict case.
 
-- [x] **Write `scripts/novelty/run_ablations.py`**:
+- [x] **Write `scripts/novelty/bench/run_ablations.py`**:
   - full, no commitment, no execution, no attention, utility-only, equal weights and
     no-feasibility-gates variants;
   - `LiveDecisionEngine(enforce_feasibility=False)` supports the last variant;
   - writes `results/live_bench_v2/ablations.json`.
 
-- [x] **Write `scripts/novelty/summarize_results.py`**:
+- [x] **Write `scripts/novelty/bench/summarize_results.py`**:
   - compares `summary.json` against `baseline.json`;
   - prints a diff table;
   - exits 1 if accuracy, promise keeping, irreversible rate or budget violations move by more
@@ -103,10 +103,10 @@ confidence intervals.
 - [x] **Freeze the test split** — dataset version `1.0.0`; do not change the test cases again
   without a new version and a new baseline.
 
-**Deliverable:** `benchmarks/live/` (120 cases), `scripts/novelty/run_live_bench_v2.py`,
-`scripts/novelty/run_ablations.py`, `scripts/novelty/summarize_results.py`,
+**Deliverable:** `benchmarks/cases/` (120 cases), `scripts/novelty/bench/run_live_bench_v2.py`,
+`scripts/novelty/bench/run_ablations.py`, `scripts/novelty/bench/summarize_results.py`,
 `results/live_bench_v2/`. Main table reproducible with:
-`python scripts/novelty/run_live_bench_v2.py --split test --seed 42`.
+`python scripts/novelty/bench/run_live_bench_v2.py --split test --seed 42`.
 
 ---
 
@@ -116,11 +116,11 @@ confidence intervals.
 team did not write.
 
 - [x] **Build the validation harness** — `docs/05-project/novelty/collection-kit.md`,
-  `data/validation/incidents-template.jsonl`, `data/validation/user-study-app/`,
-  `scripts/novelty/check_validation_data.py`, `scripts/novelty/ingest_incidents.py`,
-  `scripts/novelty/analyze_validation.py`, `data/validation/vignettes-v1.json`
-  (20 user-study vignettes), `scripts/novelty/analyze_user_study.py`,
-  `scripts/novelty/serve_user_study.py`, and the consent/recruitment templates.
+  `data/validation/incidents/incidents-template.jsonl`, `data/validation/user-study/user-study-app/`,
+  `scripts/novelty/validation/check_validation_data.py`, `scripts/novelty/validation/ingest_incidents.py`,
+  `scripts/novelty/validation/analyze_validation.py`, `data/validation/user-study/vignettes-v1.json`
+  (20 user-study vignettes), `scripts/novelty/validation/analyze_user_study.py`,
+  `scripts/novelty/validation/serve_user_study.py`, and the consent/recruitment templates.
 
 - [ ] **Record the chosen option** — write one paragraph in
   `docs/05-project/novelty/validation.md` §1 stating: which option (A, B or C) was chosen,
@@ -144,11 +144,11 @@ Replay historical incidents where a person already made a decision.
 1. Find a source of historical incidents with a recorded human decision (support tickets, ops logs,
    approval records). Minimum: 200 raw incidents so that after filtering you have 40+ where LAIX
    and the human disagree.
-2. Write an ingestion script in `scripts/novelty/ingest_incidents.py` that:
+2. Write an ingestion script in `scripts/novelty/validation/ingest_incidents.py` that:
    - Reads the raw export.
    - Maps each incident to a `DecisionProblem` JSON (using the case schema).
    - Strips all PII: names, emails, IPs, customer IDs, free-text that could identify a person.
-   - Writes `data/validation/anonymised/incidents-v1.jsonl` (each line: one problem + human
+   - Writes `data/validation/incidents/anonymised/incidents-v1.jsonl` (each line: one problem + human
      decision label).
 3. Run `decide()` on each problem. Record LAIX verb and reason code.
 4. Count: agreement rate, disagreement rate, discordant-pair list.
@@ -159,12 +159,12 @@ Replay historical incidents where a person already made a decision.
 
 ### Option B — User study
 
-Materials and protocol are ready: `data/validation/vignettes-v1.json`,
-`docs/05-project/novelty/user-study.md` and `scripts/novelty/analyze_user_study.py`. Recruitment is external.
+Materials and protocol are ready: `data/validation/user-study/vignettes-v1.json`,
+`docs/05-project/novelty/user-study.md` and `scripts/novelty/validation/analyze_user_study.py`. Recruitment is external.
 
 Recruit participants to judge LAIX decisions on vignette scenarios.
 
-1. Write 20 vignettes in `data/validation/vignettes-v1.json`. Each vignette has:
+1. Write 20 vignettes in `data/validation/user-study/vignettes-v1.json`. Each vignette has:
    - a situation description (plain English, no jargon);
    - 2–4 labelled options;
    - the LAIX decision (verb + rationale);
@@ -239,11 +239,11 @@ table is reproducible with one command, and no sentence exceeds the evidence.
   ```bash
   #!/usr/bin/env bash
   set -euo pipefail
-  python scripts/novelty/validate_live_cases.py
-  python scripts/novelty/run_live_bench_v2.py --split test --seed 42
-  python scripts/novelty/analyze_results.py
-  python scripts/novelty/run_ablations.py --split test --seed 42
-  python scripts/novelty/summarize_results.py
+  python scripts/novelty/bench/validate_live_cases.py
+  python scripts/novelty/bench/run_live_bench_v2.py --split test --seed 42
+  python scripts/novelty/analysis/analyze_results.py
+  python scripts/novelty/bench/run_ablations.py --split test --seed 42
+  python scripts/novelty/bench/summarize_results.py
   echo "All checks passed"
   ```
   `summarize_results.py` compares `summary.json` against the committed `baseline.json` and exits 1
@@ -272,9 +272,9 @@ table is reproducible with one command, and no sentence exceeds the evidence.
   DOI into `CITATION.cff` under `doi:` and commit.
 
 - [ ] **Publish the benchmark** — in the Zenodo deposit include:
-  - `benchmarks/live/dev-cases-v1.json`
-  - `benchmarks/live/test-cases-v1.json`
-  - `benchmarks/live/cases.v1.schema.json`
+  - `benchmarks/cases/dev-cases-v1.json`
+  - `benchmarks/cases/test-cases-v1.json`
+  - `benchmarks/cases/cases.v1.schema.json`
   - `results/live_bench_v2/summary.json`
   Do **not** include `adversarial-cases-v1.json` in the public deposit (keep it private to
   prevent gaming).
@@ -308,7 +308,7 @@ table is reproducible with one command, and no sentence exceeds the evidence.
     action taken and the resulting number change.
 
 - [ ] **Independent replication** — share `scripts/novelty/reproduce.sh` and
-  `benchmarks/live/test-cases-v1.json` with one person outside the team. Ask them to:
+  `benchmarks/cases/test-cases-v1.json` with one person outside the team. Ask them to:
   1. Clone the repo on a machine they control.
   2. Run `bash scripts/novelty/reproduce.sh`.
   3. Report whether the main table in the paper matches their output within 0.5 pp.

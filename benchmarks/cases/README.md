@@ -15,7 +15,7 @@ This directory holds the live-bench case files. Each file is a list of
 Regenerate the corpus with:
 
 ```bash
-python scripts/novelty/generate_live_cases.py
+python scripts/novelty/bench/generate_live_cases.py
 ```
 
 ## Schema
@@ -25,7 +25,7 @@ directory. Validate a file with:
 
 ```bash
 # using python-jsonschema
-python -m jsonschema -i my-cases.json benchmarks/live/cases.v1.schema.json
+python -m jsonschema -i my-cases.json benchmarks/cases/cases.v1.schema.json
 ```
 
 ## File format
@@ -239,7 +239,7 @@ def load_cases(path: Path) -> list[LiveCase]:
 
 
 # Usage
-cases = load_cases(Path("benchmarks/live/dev-cases-v1.json"))
+cases = load_cases(Path("benchmarks/cases/dev-cases-v1.json"))
 report = run_live_bench(cases, default_planners())
 print(report.summary())
 ```

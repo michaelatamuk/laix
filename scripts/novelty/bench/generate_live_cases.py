@@ -3,7 +3,7 @@
 The case files are committed; this script keeps the corpus reproducible and
 makes the category/split balance explicit. Run from the repository root:
 
-    python scripts/generate_live_cases.py
+    python scripts/novelty/bench/generate_live_cases.py
 """
 
 from __future__ import annotations
@@ -12,8 +12,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "benchmarks" / "live"
+ROOT = Path(__file__).resolve().parents[3]
+OUT = ROOT / "benchmarks" / "cases"
 AT = "2026-11-01T10:00:00+00:00"
 PAST = "2026-11-01T09:00:00+00:00"
 FUTURE = "2026-11-01T12:00:00+00:00"

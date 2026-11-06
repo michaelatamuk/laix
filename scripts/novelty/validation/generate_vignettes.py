@@ -7,14 +7,17 @@ stores the current LAIX choice so the study can be blinded and scored later.
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from laix import LiveDecisionEngine, UtilityEngine
 from live_bench_common import build_problem
 
-ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "data" / "validation" / "vignettes-v1.json"
+ROOT = Path(__file__).resolve().parents[3]
+OUT = ROOT / "data" / "validation" / "user-study" / "vignettes-v1.json"
 AT = "2026-11-06T10:00:00+00:00"
 
 

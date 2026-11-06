@@ -32,7 +32,7 @@ python -m pip install -r benchmarks/compare/requirements-external.txt
 Then run:
 
 ```bash
-python scripts/novelty/run_external_comparison.py --split test
+python scripts/novelty/compare/run_external_comparison.py --split test
 ```
 
 The script writes `results/live_bench_v2/external-comparison.json` and prints the capability and

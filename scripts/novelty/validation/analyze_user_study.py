@@ -11,9 +11,9 @@ from pathlib import Path
 from statistics import mean
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_INPUT = ROOT / "data" / "validation" / "user-study-results.jsonl"
-DEFAULT_OUTPUT = ROOT / "data" / "validation" / "user-study-report.json"
+ROOT = Path(__file__).resolve().parents[3]
+DEFAULT_INPUT = ROOT / "data" / "validation" / "user-study" / "user-study-results.jsonl"
+DEFAULT_OUTPUT = ROOT / "data" / "validation" / "user-study" / "user-study-report.json"
 
 
 def parse_args() -> argparse.Namespace:

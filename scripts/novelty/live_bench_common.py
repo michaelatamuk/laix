@@ -32,7 +32,7 @@ from laix.core.engines.planners.utility.utility import (
 )
 
 ROOT = Path(__file__).resolve().parents[2]
-CASES = ROOT / "benchmarks" / "live"
+CASES = ROOT / "benchmarks" / "cases"
 RESULTS = ROOT / "results" / "live_bench_v2"
 SPLITS = ("dev", "test", "adversarial")
 

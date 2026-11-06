@@ -14,12 +14,12 @@ python -m laix.appkit.bench
 Live benchmark, ablations and baseline diff from the repository root:
 
 ```powershell
-python scripts/novelty/generate_live_cases.py
-python scripts/novelty/validate_live_cases.py
-python scripts/novelty/run_live_bench_v2.py --split test --seed 42
-python scripts/novelty/analyze_results.py
-python scripts/novelty/run_ablations.py --split test --seed 42
-python scripts/novelty/summarize_results.py
+python scripts/novelty/bench/generate_live_cases.py
+python scripts/novelty/bench/validate_live_cases.py
+python scripts/novelty/bench/run_live_bench_v2.py --split test --seed 42
+python scripts/novelty/analysis/analyze_results.py
+python scripts/novelty/bench/run_ablations.py --split test --seed 42
+python scripts/novelty/bench/summarize_results.py
 ```
 
 CI runs the same sequence through `bash scripts/novelty/reproduce.sh`.
@@ -28,7 +28,7 @@ External comparison is optional and needs an extra dependency:
 
 ```powershell
 python -m pip install -r benchmarks/compare/requirements-external.txt
-python scripts/novelty/run_external_comparison.py --split all
+python scripts/novelty/compare/run_external_comparison.py --split all
 ```
 
 With `uv` from the repository root:
@@ -89,7 +89,7 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 ## Docs
 
 ```powershell
-python scripts/check_docs_links.py
+python scripts/ci/check_docs_links.py
 ```
 
 The check resolves relative links across `docs/`, `examples/` and every README.
@@ -106,11 +106,13 @@ The check resolves relative links across `docs/`, `examples/` and every README.
 | `npm run bench` | 10 suites and 25 deterministic cases |
 | `npm run conformance` | 24 shared attention decisions |
 | `npm run live-bench` | TypeScript runs the 30-case test split and compares 210 action IDs with Python |
-| `scripts/novelty/run_live_bench_v2.py` | 120-case corpus, metrics, bootstrap intervals, conflict check |
-| `scripts/novelty/analyze_results.py` | McNemar, paired bootstrap, Cohen's h and category breakdown |
-| `scripts/novelty/run_ablations.py` | term removal, equal weights and no-feasibility-gates variants |
-| `scripts/novelty/summarize_results.py` | baseline diff for headline metrics |
-| `scripts/novelty/validate_live_cases.py` | JSON Schema validation and duplicate-id check |
+| `scripts/novelty/bench/run_live_bench_v2.py` | 120-case corpus, metrics, bootstrap intervals, conflict check |
+| `scripts/novelty/analysis/analyze_results.py` | McNemar, paired bootstrap, Cohen's h and category breakdown |
+| `scripts/novelty/bench/run_ablations.py` | term removal, equal weights and no-feasibility-gates variants |
+| `scripts/novelty/bench/summarize_results.py` | baseline diff for headline metrics |
+| `scripts/novelty/bench/validate_live_cases.py` | JSON Schema validation and duplicate-id check |
+| `scripts/novelty/validation/` | incident preflight, ingest and user-study analysis |
+| `scripts/ci/check_docs_links.py` | relative links in docs, examples and README files |
 | `benchmarks/compare/` | optional external adapter harness and capability matrix |
 | examples | every runnable Python and TypeScript example |
 | docs links | relative links in docs, examples and README files |

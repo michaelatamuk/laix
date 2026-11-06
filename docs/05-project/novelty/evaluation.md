@@ -186,14 +186,14 @@ Record the assumed effect size and the resulting power in the paper.
 
 Create:
 
-- `benchmarks/live/dev-cases-v1.json`
-- `benchmarks/live/test-cases-v1.json`
-- `benchmarks/live/adversarial-cases-v1.json`
-- `benchmarks/live/README.md`
-- `scripts/novelty/generate_live_cases.py`
-- `scripts/novelty/run_live_bench_v2.py`
-- `scripts/novelty/run_ablations.py`
-- `scripts/novelty/summarize_results.py`
+- `benchmarks/cases/dev-cases-v1.json`
+- `benchmarks/cases/test-cases-v1.json`
+- `benchmarks/cases/adversarial-cases-v1.json`
+- `benchmarks/cases/README.md`
+- `scripts/novelty/bench/generate_live_cases.py`
+- `scripts/novelty/bench/run_live_bench_v2.py`
+- `scripts/novelty/bench/run_ablations.py`
+- `scripts/novelty/bench/summarize_results.py`
 - `results/live_bench_v2/` (generated, versioned summary committed)
 
 ### Case schema
@@ -399,9 +399,9 @@ claim; the real-world validation in `validation.md` is still required.
 ### Reproduce
 
 ```bash
-python scripts/novelty/run_live_bench_v2.py --split test --seed 42
-python scripts/novelty/run_ablations.py --split test --seed 42
-python scripts/novelty/summarize_results.py
+python scripts/novelty/bench/run_live_bench_v2.py --split test --seed 42
+python scripts/novelty/bench/run_ablations.py --split test --seed 42
+python scripts/novelty/bench/summarize_results.py
 ```
 
 or, in CI, `bash scripts/novelty/reproduce.sh`.

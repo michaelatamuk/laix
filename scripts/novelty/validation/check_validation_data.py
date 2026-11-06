@@ -10,8 +10,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_INPUT = ROOT / "data" / "validation" / "anonymised" / "incidents-v1.jsonl"
+ROOT = Path(__file__).resolve().parents[3]
+DEFAULT_INPUT = ROOT / "data" / "validation" / "incidents" / "anonymised" / "incidents-v1.jsonl"
 PII_KEYS = {
     "full_name",
     "first_name",

@@ -4,22 +4,22 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 
 ## Benchmark
 
-- `benchmarks/live/cases.v1.schema.json`
-- `benchmarks/live/dev-cases-v1.json` (72)
-- `benchmarks/live/test-cases-v1.json` (30, frozen)
-- `benchmarks/live/adversarial-cases-v1.json` (18)
-- `benchmarks/live/README.md`
+- `benchmarks/cases/cases.v1.schema.json`
+- `benchmarks/cases/dev-cases-v1.json` (72)
+- `benchmarks/cases/test-cases-v1.json` (30, frozen)
+- `benchmarks/cases/adversarial-cases-v1.json` (18)
+- `benchmarks/cases/README.md`
 
 ## Analysis
 
-- `scripts/novelty/generate_live_cases.py`
-- `scripts/novelty/validate_live_cases.py`
-- `scripts/novelty/run_live_bench_v2.py`
-- `scripts/novelty/analyze_results.py`
-- `scripts/novelty/run_ablations.py`
-- `scripts/novelty/summarize_results.py`
+- `scripts/novelty/bench/generate_live_cases.py`
+- `scripts/novelty/bench/validate_live_cases.py`
+- `scripts/novelty/bench/run_live_bench_v2.py`
+- `scripts/novelty/analysis/analyze_results.py`
+- `scripts/novelty/bench/run_ablations.py`
+- `scripts/novelty/bench/summarize_results.py`
 - `scripts/novelty/glue_baseline.py`
-- `scripts/novelty/run_external_comparison.py`
+- `scripts/novelty/compare/run_external_comparison.py`
 - `scripts/novelty/reproduce.sh`
 - `scripts/novelty/live_bench_common.py`
 - `packages/typescript/laix/scripts/live-bench.mjs`
@@ -53,15 +53,17 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 
 - `docs/05-project/novelty/collection-kit.md`
 - `data/validation/README.md`
-- `data/validation/incidents-template.jsonl`
-- `data/validation/vignettes-v1.json`
-- `data/validation/user-study-app/`
-- `scripts/novelty/check_validation_data.py`
-- `scripts/novelty/ingest_incidents.py`
-- `scripts/novelty/analyze_validation.py`
-- `scripts/novelty/generate_vignettes.py`
-- `scripts/novelty/analyze_user_study.py`
-- `scripts/novelty/serve_user_study.py`
+- `data/validation/incidents/README.md`
+- `data/validation/incidents/incidents-template.jsonl`
+- `data/validation/user-study/README.md`
+- `data/validation/user-study/vignettes-v1.json`
+- `data/validation/user-study/user-study-app/`
+- `scripts/novelty/validation/check_validation_data.py`
+- `scripts/novelty/validation/ingest_incidents.py`
+- `scripts/novelty/validation/analyze_validation.py`
+- `scripts/novelty/validation/generate_vignettes.py`
+- `scripts/novelty/validation/analyze_user_study.py`
+- `scripts/novelty/validation/serve_user_study.py`
 - `docs/05-project/novelty/user-study.md`
 - `docs/05-project/novelty/user-study-consent.md`
 - `docs/05-project/novelty/user-study-recruitment.md`

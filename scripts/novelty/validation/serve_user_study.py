@@ -1,4 +1,4 @@
-"""Serve the offline user-study app from data/validation."""
+"""Serve the offline user-study app from data/validation/user-study."""
 
 from __future__ import annotations
 
@@ -9,8 +9,8 @@ import threading
 import webbrowser
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-DIRECTORY = ROOT / "data" / "validation"
+ROOT = Path(__file__).resolve().parents[3]
+DIRECTORY = ROOT / "data" / "validation" / "user-study"
 
 
 class _Handler(http.server.SimpleHTTPRequestHandler):

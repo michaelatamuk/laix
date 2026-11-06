@@ -178,7 +178,7 @@ Reproduce with:
 
 ```bash
 python -m pip install -r benchmarks/compare/requirements-external.txt
-python scripts/novelty/run_external_comparison.py --split all
+python scripts/novelty/compare/run_external_comparison.py --split all
 ```
 
 Temporal, PagerDuty and Camunda remain documented-only because they need a server or account.

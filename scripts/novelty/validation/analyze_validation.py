@@ -4,16 +4,19 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from glue_baseline import GlueBaseline
 from laix import LiveDecisionEngine, UtilityEngine
 from live_bench_common import bootstrap_ci, build_problem, run_planner
 
-ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_INPUT = ROOT / "data" / "validation" / "anonymised" / "incidents-v1.jsonl"
-DEFAULT_OUTPUT = ROOT / "data" / "validation" / "report.json"
+ROOT = Path(__file__).resolve().parents[3]
+DEFAULT_INPUT = ROOT / "data" / "validation" / "incidents" / "anonymised" / "incidents-v1.jsonl"
+DEFAULT_OUTPUT = ROOT / "data" / "validation" / "incidents" / "report.json"
 
 
 def parse_args() -> argparse.Namespace:

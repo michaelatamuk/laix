@@ -14,7 +14,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Check links
-        run: python scripts/check_docs_links.py
+        run: python scripts/ci/check_docs_links.py
 
   python:
     runs-on: ubuntu-latest

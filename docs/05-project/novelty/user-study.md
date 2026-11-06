@@ -4,7 +4,7 @@ Status: materials are ready; no participants have been recruited.
 
 ## Materials
 
-`data/validation/vignettes-v1.json` contains 20 vignettes. Each vignette has:
+`data/validation/user-study/vignettes-v1.json` contains 20 vignettes. Each vignette has:
 
 - `situation` — plain-English description;
 - `options` — labelled actions;
@@ -12,10 +12,10 @@ Status: materials are ready; no participants have been recruited.
 - `baseline_choice` — the current utility-only recommendation;
 - `human_choice` and `notes` — empty until the study.
 
-The offline app lives in `data/validation/user-study-app/`. Start it with:
+The offline app lives in `data/validation/user-study/user-study-app/`. Start it with:
 
 ```bash
-python scripts/novelty/serve_user_study.py
+python scripts/novelty/validation/serve_user_study.py
 ```
 
 It blinds the recommendations, randomises order and downloads the results JSONL.
@@ -61,7 +61,7 @@ One JSON object per trial in JSON Lines:
 Script:
 
 ```bash
-python scripts/novelty/analyze_user_study.py --input data/validation/user-study-results.jsonl
+python scripts/novelty/validation/analyze_user_study.py --input data/validation/user-study/user-study-results.jsonl
 ```
 
 ## Sample-size justification

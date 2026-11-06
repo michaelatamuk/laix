@@ -6,8 +6,10 @@ This page maps files. Concepts are defined in [architecture](../04-concepts/arch
 ```text
 laix/
 ├── benchmarks/
-│   ├── live/              case schema, dev/test/adversarial corpus
+│   ├── cases/             case schema, dev/test/adversarial corpus
 │   └── compare/           external adapter harness and capability matrix
+├── data/
+│   └── validation/        incident replay and user-study materials
 ├── results/
 │   └── live_bench_v2/     summaries, ablations and raw rows
 ├── packages/
@@ -25,8 +27,8 @@ laix/
 │   ├── python/            numbered lifecycle stages
 │   └── typescript/        the same numbered stages
 ├── scripts/
-│   ├── check_docs_links.py relative link check
-│   └── novelty/           live corpus, bench, ablations, validation and reproduction
+│   ├── ci/                repository checks (relative links)
+│   └── novelty/           bench, analysis, validation, comparison and reproduction
 └── .github/               CI and release workflows
 ```
 
@@ -34,7 +36,7 @@ laix/
 vectors. The core record schema is generated from the Python dataclasses and ships inside the
 package.
 
-`scripts/check_docs_links.py` checks every relative link in the docs, examples and README files;
+`scripts/ci/check_docs_links.py` checks every relative link in the docs, examples and README files;
 the `docs` CI job runs it.
 
 ## Python package

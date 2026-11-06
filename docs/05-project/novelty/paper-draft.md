@@ -187,8 +187,8 @@ Choose one from `validation.md`:
 
 The harness is ready:
 
-- `scripts/novelty/ingest_incidents.py` anonymises a JSONL export;
-- `scripts/novelty/analyze_validation.py` compares LAIX, glue and utility against recorded human decisions;
+- `scripts/novelty/validation/ingest_incidents.py` anonymises a JSONL export;
+- `scripts/novelty/validation/analyze_validation.py` compares LAIX, glue and utility against recorded human decisions;
 - `data/validation/README.md` defines the format and privacy rules.
 
 No real data has been collected. Until it is, the novelty claim is a synthetic systems claim plus a
@@ -223,7 +223,7 @@ bash scripts/novelty/reproduce.sh
 
 Files:
 
-- `benchmarks/live/` — 120 cases and schema;
+- `benchmarks/cases/` — 120 cases and schema;
 - `results/live_bench_v2/summary.json` — baseline metrics;
 - `results/live_bench_v2/analysis.json` — paired tests and categories;
 - `results/live_bench_v2/ablations.json` — ablation results;
