@@ -29,7 +29,6 @@ approvals, promises, human attention or auditability matter.
 - [Install](#install)
 - [One decision](#one-decision)
 - [Integrated live decision](#integrated-live-decision)
-- [Demo](#demo)
 - [How it works](#how-it-works)
 - [Decision continuity](#decision-continuity)
 - [Results](#results)
@@ -147,18 +146,14 @@ The plan prefers the reversible, promise-keeping option and keeps the commitment
 attention scores. See the full
 [conflict scenario](examples/python/03-plan/conflict_scenario.py).
 
-## Demo
-
-![Animated quickstart: the live engine returns a decision with a reason](docs/assets/demo.gif)
-
-A four-second animated quickstart generated from the actual example output.
-
 ## How it works
 
-![Agent plans, LAIX decides, host executes, outcome closes the loop](docs/assets/architecture.png)
+![How LAIX works: an agent plans, LAIX decides, the host executes, and the outcome returns as the next decision](docs/assets/how-it-works.svg)
 
 An agent or automation plans the task. LAIX decides the next move. The host executes it. The
 receipt and outcome close the loop and calibrate the next decision.
+
+Every decision carries a verb, a reason code, confidence, a score, approval state and a trace.
 
 ## Decision continuity
 
