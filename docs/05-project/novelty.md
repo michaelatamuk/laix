@@ -132,6 +132,114 @@ Write one paragraph that names the closest system in each category and explains 
 - The matrix does not use straw men.
 - The claim is rewritten after the matrix so it is narrower if needed.
 
+## 3.1 Comparison targets and fair comparison protocol
+
+Novelty is not shown by LAIX's numbers alone. It is shown by **LAIX versus a fair alternative on the
+same task**.
+
+Use three comparison levels.
+
+### Level 1: internal comparison (proves the integration)
+
+This is the strongest and easiest comparison because the cases, inputs and outputs are identical.
+
+| Comparator | What it tests |
+|---|---|
+| First option | naive baseline |
+| Highest benefit | ignores safety, promises and attention |
+| Utility only | no commitment, execution or attention terms |
+| Commitment only | one concern |
+| Execution only | one concern |
+| Attention only | one concern |
+| LAIX without commitments | ablation |
+| LAIX without execution risk | ablation |
+| LAIX without attention | ablation |
+| LAIX with equal weights | weight sensitivity |
+| LAIX without feasibility gates | gate sensitivity |
+
+Report every comparator on the same cases, splits and metrics.
+
+### Level 2: external system comparison (proves the gap)
+
+Compare against the closest system in each category. Run a **task-aligned adapter** where possible;
+otherwise compare documented capabilities and say so explicitly.
+
+| Category | Candidate comparators | What to compare | How |
+|---|---|---|---|
+| Agent orchestration | LangGraph, AutoGen, CrewAI, Semantic Kernel | one decision contract, commitments, approval, interrupts, replay | adapter or documented comparison |
+| Durable workflows | Temporal, Airflow, Prefect, Netflix Conductor | approvals, retries, compensation, audit, recovery | adapter or documented comparison |
+| Incident and alerting | PagerDuty, Opsgenie, Grafana OnCall | interruption policy, escalation, on-call budget | rules adapter or documented comparison |
+| Commitment protocols | FIPA ACL, commitment-based multi-agent systems, BDI agents | promise state, violation, dependency handling | conceptual comparison and small prototype |
+| Planning | MDP/POMDP solvers, HTN and PDDL planners | decision quality under uncertainty | same case harness where feasible |
+| Execution safety | saga pattern, Camunda, Temporal | undo, compensation, receipts, idempotency | adapter or documented comparison |
+| Calibration | scikit-learn calibration, conformal prediction | ECE, Brier score, decision accuracy | same outcome data |
+| Human-in-the-loop | mixed-initiative and interruption research | attention cost, acceptance, timing | user study or simulation |
+
+Do not compare LAIX to an agent framework on general agent tasks. Compare on the **live decision
+task**: one request, one decision, with promises, execution risk, attention and audit.
+
+### Level 3: operational comparison (proves practicality)
+
+Numbers reviewers ask for that are not accuracy:
+
+| Metric | Why it matters |
+|---|---|
+| Glue code lines | how much host code the integration needs |
+| Configuration size | how many rules or settings the host must write |
+| External dependencies | services, databases or SDKs required |
+| Cold-start and p95 latency | whether it fits the live window |
+| Deployment complexity | number of moving parts |
+| Failure modes | what happens when a dependency is down |
+| Audit completeness | whether a decision can be replayed |
+
+### Fairness rules
+
+1. Use the same cases, inputs, expected actions and splits for every comparator.
+2. Give each comparator its strongest reasonable configuration.
+3. Tune on the dev split only; freeze the test split before the final run.
+4. Record the exact version, commit, configuration and seed.
+5. Do not use a straw-man baseline.
+6. If a system cannot be run, say "documented capability comparison" and do not report invented
+   performance numbers.
+7. Separate "out-of-the-box" from "task-aligned adapter" results.
+8. Report negative and mixed results.
+9. Report integration effort and operational cost, not only accuracy.
+10. Keep the comparison protocol in the artifact.
+
+### Comparison reporting table
+
+| Comparator | Version | Capability score | Accuracy | Promise keeping | Irreversible rate | Budget violations | p95 latency | Glue LoC | External deps |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---|
+| First option | — | | | | | | | | |
+| Highest benefit | — | | | | | | | | |
+| Utility only | — | | | | | | | | |
+| Commitment only | — | | | | | | | | |
+| Execution only | — | | | | | | | | |
+| Attention only | — | | | | | | | | |
+| LAIX integrated | | | | | | | | | |
+| External system A | | | | | | | | | |
+| External system B | | | | | | | | | |
+
+The **capability score** is the number of capabilities covered out of the matrix above. The
+**integration delta** is LAIX minus the best non-LAIX comparator on the same metric. Report both.
+
+### What "compare to whom" means in the paper
+
+- **Primary comparison:** internal ablations and single-concern planners. This proves that the
+  integration does work.
+- **Secondary comparison:** closest external system in each category. This proves the gap is real.
+- **Tertiary comparison:** closest academic line in related work. This positions the contribution.
+- **Not a comparison:** LAIX versus a full agent framework on general agent benchmarks. That is a
+  different task and would be an unfair comparison.
+
+### Acceptance criteria
+
+- At least one external comparator per relevant category.
+- At least one task-aligned adapter, not only a documentation table.
+- All comparators share the same cases and metrics.
+- The paper reports both capability and performance comparisons.
+- The limitations section names every comparison that could not be run.
+
 ## 4. Formal contribution
 
 ### Deliverable
