@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_BASELINE = ROOT / "results" / "live_bench_v2" / "baseline.json"
 DEFAULT_CURRENT = ROOT / "results" / "live_bench_v2" / "summary.json"
 TOLERANCE = 0.005

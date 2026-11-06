@@ -1,7 +1,7 @@
 # Claim–evidence map
 
 Status: repository-side evidence is complete. External validation and peer review are still pending.
-Every number below is reproducible from `results/live_bench_v2/` and `bash scripts/reproduce.sh`.
+Every number below is reproducible from `results/live_bench_v2/` and `bash scripts/novelty/reproduce.sh`.
 
 ## Current claims
 
@@ -17,7 +17,7 @@ Every number below is reproducible from `results/live_bench_v2/` and `bash scrip
 | It avoids irreversible actions | irreversible-action rate | 0% (vs 23.3% highest-benefit) | `summary.json` | measured |
 | It respects the attention budget | budget-violation rate | 0% (vs 70% highest-benefit) | `summary.json` | measured |
 | The integration is doing real work | ablation delta | full 100%; no commitment 70%; no execution 83.3%; no attention 96.7% | `results/live_bench_v2/ablations.json` | measured |
-| The case files are valid | schema validation | 120/120 valid, unique ids | `scripts/validate_live_cases.py` | tested |
+| The case files are valid | schema validation | 120/120 valid, unique ids | `scripts/novelty/validate_live_cases.py` | tested |
 | The live path is fast enough | p95 latency | under 2 ms on the test split | `summary.json` | measured |
 | The model is deterministic | replay equality | 100% across the invariant suite | `tests/core/test_invariants.py` | tested |
 | The contract is stable | invariant tests | 17/17 | `tests/core/test_invariants.py` | tested |

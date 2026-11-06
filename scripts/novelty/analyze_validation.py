@@ -11,7 +11,7 @@ from glue_baseline import GlueBaseline
 from laix import LiveDecisionEngine, UtilityEngine
 from live_bench_common import bootstrap_ci, build_problem, run_planner
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_INPUT = ROOT / "data" / "validation" / "anonymised" / "incidents-v1.jsonl"
 DEFAULT_OUTPUT = ROOT / "data" / "validation" / "report.json"
 

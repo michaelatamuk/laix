@@ -12,15 +12,15 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 
 ## Analysis
 
-- `scripts/generate_live_cases.py`
-- `scripts/validate_live_cases.py`
-- `scripts/run_live_bench_v2.py`
-- `scripts/analyze_results.py`
-- `scripts/run_ablations.py`
-- `scripts/summarize_results.py`
-- `scripts/glue_baseline.py`
-- `scripts/reproduce.sh`
-- `scripts/live_bench_common.py`
+- `scripts/novelty/generate_live_cases.py`
+- `scripts/novelty/validate_live_cases.py`
+- `scripts/novelty/run_live_bench_v2.py`
+- `scripts/novelty/analyze_results.py`
+- `scripts/novelty/run_ablations.py`
+- `scripts/novelty/summarize_results.py`
+- `scripts/novelty/glue_baseline.py`
+- `scripts/novelty/reproduce.sh`
+- `scripts/novelty/live_bench_common.py`
 - `packages/typescript/laix/scripts/live-bench.mjs`
 
 ## Results
@@ -51,11 +51,11 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 - `data/validation/README.md`
 - `data/validation/incidents-template.jsonl`
 - `data/validation/vignettes-v1.json`
-- `scripts/check_validation_data.py`
-- `scripts/ingest_incidents.py`
-- `scripts/analyze_validation.py`
-- `scripts/generate_vignettes.py`
-- `scripts/analyze_user_study.py`
+- `scripts/novelty/check_validation_data.py`
+- `scripts/novelty/ingest_incidents.py`
+- `scripts/novelty/analyze_validation.py`
+- `scripts/novelty/generate_vignettes.py`
+- `scripts/novelty/analyze_user_study.py`
 - `docs/05-project/novelty/user-study.md`
 - `docs/05-project/novelty/user-study-consent.md`
 - `docs/05-project/novelty/user-study-recruitment.md`
@@ -63,7 +63,7 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 ## Reproduction
 
 ```bash
-bash scripts/reproduce.sh
+bash scripts/novelty/reproduce.sh
 ```
 
 ## Release fields

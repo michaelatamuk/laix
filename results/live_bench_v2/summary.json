@@ -26,9 +26,9 @@
         0.3
       ],
       "irreversible_rate": 0.166667,
-      "mean_latency_ms": 0.05794,
+      "mean_latency_ms": 0.02241,
       "mean_regret": 0.081819,
-      "p95_latency_ms": 0.17651,
+      "p95_latency_ms": 0.04133,
       "promise_ci": [
         0.0,
         0.5
@@ -69,9 +69,9 @@
         0.4
       ],
       "irreversible_rate": 0.233333,
-      "mean_latency_ms": 0.009337,
+      "mean_latency_ms": 0.006647,
       "mean_regret": 0.0,
-      "p95_latency_ms": 0.024635,
+      "p95_latency_ms": 0.010545,
       "promise_ci": [
         0.0,
         0.0
@@ -112,9 +112,9 @@
         0.266667
       ],
       "irreversible_rate": 0.133333,
-      "mean_latency_ms": 0.175237,
+      "mean_latency_ms": 0.06227,
       "mean_regret": 0.14027,
-      "p95_latency_ms": 1.56991,
+      "p95_latency_ms": 0.14566,
       "promise_ci": [
         1.0,
         1.0
@@ -155,9 +155,9 @@
         0.166667
       ],
       "irreversible_rate": 0.066667,
-      "mean_latency_ms": 0.072783,
+      "mean_latency_ms": 0.033753,
       "mean_regret": 0.068213,
-      "p95_latency_ms": 0.337975,
+      "p95_latency_ms": 0.105745,
       "promise_ci": [
         0.0,
         0.25
@@ -198,9 +198,9 @@
         0.266667
       ],
       "irreversible_rate": 0.133333,
-      "mean_latency_ms": 0.00659,
+      "mean_latency_ms": 0.005723,
       "mean_regret": 0.133333,
-      "p95_latency_ms": 0.016175,
+      "p95_latency_ms": 0.01363,
       "promise_ci": [
         0.333333,
         0.833333
@@ -241,9 +241,9 @@
         0.0
       ],
       "irreversible_rate": 0.0,
-      "mean_latency_ms": 0.045287,
+      "mean_latency_ms": 0.040983,
       "mean_regret": 0.219596,
-      "p95_latency_ms": 0.181155,
+      "p95_latency_ms": 0.18637,
       "promise_ci": [
         1.0,
         1.0
@@ -284,9 +284,9 @@
         0.0
       ],
       "irreversible_rate": 0.0,
-      "mean_latency_ms": 0.212297,
+      "mean_latency_ms": 0.11326,
       "mean_regret": 0.241818,
-      "p95_latency_ms": 0.56867,
+      "p95_latency_ms": 0.22001,
       "promise_ci": [
         1.0,
         1.0
@@ -327,9 +327,9 @@
         0.4
       ],
       "irreversible_rate": 0.233333,
-      "mean_latency_ms": 0.022593,
+      "mean_latency_ms": 0.02002,
       "mean_regret": 0.0,
-      "p95_latency_ms": 0.05327,
+      "p95_latency_ms": 0.0536,
       "promise_ci": [
         0.0,
         0.0

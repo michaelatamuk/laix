@@ -31,7 +31,7 @@ jobs:
           python -m laix.appkit.bench
 
       - name: Live bench v2
-        run: bash scripts/reproduce.sh
+        run: bash scripts/novelty/reproduce.sh
 
       - name: Test TypeScript
         working-directory: packages/typescript/laix

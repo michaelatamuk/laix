@@ -35,8 +35,8 @@ Required fields: `id`, `at`, `subject`, `options`, `human_action`.
 ## Commands
 
 ```bash
-python scripts/ingest_incidents.py --input raw/incidents.jsonl
-python scripts/analyze_validation.py
+python scripts/novelty/ingest_incidents.py --input raw/incidents.jsonl
+python scripts/novelty/analyze_validation.py
 ```
 
 The first command writes `data/validation/anonymised/incidents-v1.jsonl`.
@@ -48,7 +48,7 @@ The second writes `data/validation/report.json` and prints agreement with the hu
 in `docs/05-project/novelty/user-study.md`. Collect results as JSON Lines, then run:
 
 ```bash
-python scripts/analyze_user_study.py --input data/validation/user-study-results.jsonl
+python scripts/novelty/analyze_user_study.py --input data/validation/user-study-results.jsonl
 ```
 
 The analysis writes `data/validation/user-study-report.json`.

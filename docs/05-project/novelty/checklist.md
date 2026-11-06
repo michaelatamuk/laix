@@ -59,13 +59,13 @@ confidence intervals.
   - `adversarial-cases-v1.json` — 18 held-out cases.
   - Category distribution across all files: promise 20, execution 20, attention 20,
     timing 15, conflict 25, plain 20.
-  - Generated deterministically by `scripts/generate_live_cases.py`; every file validates
+  - Generated deterministically by `scripts/novelty/generate_live_cases.py`; every file validates
     against `cases.v1.schema.json`.
 
 - [x] **Use a dependency-free bootstrap** — `run_live_bench_v2.py` uses a pure-Python
   bootstrap (10,000 resamples, `random.Random(seed)`), so no `numpy` extra is required.
 
-- [x] **Write `scripts/run_live_bench_v2.py`**:
+- [x] **Write `scripts/novelty/run_live_bench_v2.py`**:
   - loads the split files;
   - runs all 7 planners;
   - computes accuracy, promise keeping, irreversible rate, budget violations, safety, latency,
@@ -74,13 +74,13 @@ confidence intervals.
   - prints the main and conflict tables;
   - exits 1 if the integrated planner fails a conflict case.
 
-- [x] **Write `scripts/run_ablations.py`**:
+- [x] **Write `scripts/novelty/run_ablations.py`**:
   - full, no commitment, no execution, no attention, utility-only, equal weights and
     no-feasibility-gates variants;
   - `LiveDecisionEngine(enforce_feasibility=False)` supports the last variant;
   - writes `results/live_bench_v2/ablations.json`.
 
-- [x] **Write `scripts/summarize_results.py`**:
+- [x] **Write `scripts/novelty/summarize_results.py`**:
   - compares `summary.json` against `baseline.json`;
   - prints a diff table;
   - exits 1 if accuracy, promise keeping, irreversible rate or budget violations move by more
@@ -99,10 +99,10 @@ confidence intervals.
 - [x] **Freeze the test split** — dataset version `1.0.0`; do not change the test cases again
   without a new version and a new baseline.
 
-**Deliverable:** `benchmarks/live/` (120 cases), `scripts/run_live_bench_v2.py`,
-`scripts/run_ablations.py`, `scripts/summarize_results.py`,
+**Deliverable:** `benchmarks/live/` (120 cases), `scripts/novelty/run_live_bench_v2.py`,
+`scripts/novelty/run_ablations.py`, `scripts/novelty/summarize_results.py`,
 `results/live_bench_v2/`. Main table reproducible with:
-`python scripts/run_live_bench_v2.py --split test --seed 42`.
+`python scripts/novelty/run_live_bench_v2.py --split test --seed 42`.
 
 ---
 
@@ -112,10 +112,10 @@ confidence intervals.
 team did not write.
 
 - [x] **Build the validation harness** — `docs/05-project/novelty/collection-kit.md`,
-  `data/validation/incidents-template.jsonl`, `scripts/check_validation_data.py`,
-  `scripts/ingest_incidents.py`, `scripts/analyze_validation.py`,
+  `data/validation/incidents-template.jsonl`, `scripts/novelty/check_validation_data.py`,
+  `scripts/novelty/ingest_incidents.py`, `scripts/novelty/analyze_validation.py`,
   `data/validation/vignettes-v1.json` (20 user-study vignettes),
-  `scripts/analyze_user_study.py`, and the consent/recruitment templates.
+  `scripts/novelty/analyze_user_study.py`, and the consent/recruitment templates.
 
 - [ ] **Record the chosen option** — write one paragraph in
   `docs/05-project/novelty/validation.md` §1 stating: which option (A, B or C) was chosen,
@@ -139,7 +139,7 @@ Replay historical incidents where a person already made a decision.
 1. Find a source of historical incidents with a recorded human decision (support tickets, ops logs,
    approval records). Minimum: 200 raw incidents so that after filtering you have 40+ where LAIX
    and the human disagree.
-2. Write an ingestion script in `scripts/ingest_incidents.py` that:
+2. Write an ingestion script in `scripts/novelty/ingest_incidents.py` that:
    - Reads the raw export.
    - Maps each incident to a `DecisionProblem` JSON (using the case schema).
    - Strips all PII: names, emails, IPs, customer IDs, free-text that could identify a person.
@@ -155,7 +155,7 @@ Replay historical incidents where a person already made a decision.
 ### Option B — User study
 
 Materials and protocol are ready: `data/validation/vignettes-v1.json`,
-`docs/05-project/novelty/user-study.md` and `scripts/analyze_user_study.py`. Recruitment is external.
+`docs/05-project/novelty/user-study.md` and `scripts/novelty/analyze_user_study.py`. Recruitment is external.
 
 Recruit participants to judge LAIX decisions on vignette scenarios.
 
@@ -218,7 +218,7 @@ limitations. At least one metric from outside the benchmark.
 - [x] **Failure-case section** — drafted as the zero-failure limitation in `paper-draft.md`.
 - [ ] **Data availability statement** — needs the DOI and the validation data decision.
 - [x] **Threats to validity** — drafted in `paper-draft.md`.
-- [x] **Reproducibility check** — `bash scripts/reproduce.sh` passes in CI.
+- [x] **Reproducibility check** — `bash scripts/novelty/reproduce.sh` passes in CI.
 
 **Deliverable:** a draft paper (or technical report) where every claim has a table row, every
 table is reproducible with one command, and no sentence exceeds the evidence.
@@ -230,21 +230,21 @@ table is reproducible with one command, and no sentence exceeds the evidence.
 - [x] **`CITATION.cff`** — created at the repo root using `cff-version: 1.2.0`.
   DOI is still pending the Zenodo deposit.
 
-- [x] **Reproduction script** — created `scripts/reproduce.sh`.
+- [x] **Reproduction script** — created `scripts/novelty/reproduce.sh`.
   ```bash
   #!/usr/bin/env bash
   set -euo pipefail
-  python scripts/validate_live_cases.py
-  python scripts/run_live_bench_v2.py --split test --seed 42
-  python scripts/analyze_results.py
-  python scripts/run_ablations.py --split test --seed 42
-  python scripts/summarize_results.py
+  python scripts/novelty/validate_live_cases.py
+  python scripts/novelty/run_live_bench_v2.py --split test --seed 42
+  python scripts/novelty/analyze_results.py
+  python scripts/novelty/run_ablations.py --split test --seed 42
+  python scripts/novelty/summarize_results.py
   echo "All checks passed"
   ```
   `summarize_results.py` compares `summary.json` against the committed `baseline.json` and exits 1
   if any headline metric differs by more than 0.5 percentage points.
 
-- [x] **CI job** — the Python CI job runs `bash scripts/reproduce.sh` on every push.
+- [x] **CI job** — the Python CI job runs `bash scripts/novelty/reproduce.sh` on every push.
 
 - [x] **Artifact manifest** — `docs/05-project/novelty/artifact-manifest.md` lists the files for
   the release. DOI and tag are still pending.
@@ -302,10 +302,10 @@ table is reproducible with one command, and no sentence exceeds the evidence.
   - Record all changes in `docs/05-project/novelty/review-log.md` with the reviewer comment, the
     action taken and the resulting number change.
 
-- [ ] **Independent replication** — share `scripts/reproduce.sh` and
+- [ ] **Independent replication** — share `scripts/novelty/reproduce.sh` and
   `benchmarks/live/test-cases-v1.json` with one person outside the team. Ask them to:
   1. Clone the repo on a machine they control.
-  2. Run `bash scripts/reproduce.sh`.
+  2. Run `bash scripts/novelty/reproduce.sh`.
   3. Report whether the main table in the paper matches their output within 0.5 pp.
   Record the outcome (pass/fail and their machine details) in `docs/05-project/novelty/review-log.md`.
 

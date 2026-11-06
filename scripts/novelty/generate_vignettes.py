@@ -13,7 +13,7 @@ from typing import Any
 from laix import LiveDecisionEngine, UtilityEngine
 from live_bench_common import build_problem
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "validation" / "vignettes-v1.json"
 AT = "2026-11-06T10:00:00+00:00"
 

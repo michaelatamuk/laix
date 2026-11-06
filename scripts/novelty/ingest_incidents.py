@@ -14,7 +14,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_OUTPUT = ROOT / "data" / "validation" / "anonymised" / "incidents-v1.jsonl"
 
 PII_KEYS = {

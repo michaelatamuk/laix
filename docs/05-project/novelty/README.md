@@ -44,11 +44,11 @@ review.
 - Added: `formal-model.md` with exact score formulas and weights, `prior-art.md` matrix
   (10 capabilities × 7 columns), `tests/core/test_invariants.py` (17 property tests, I1–I10),
   `benchmarks/live/` (120 cases with dev/test/adversarial splits),
-  `scripts/run_live_bench_v2.py` (metrics and bootstrap intervals),
-  `scripts/analyze_results.py` (McNemar, paired bootstrap and effect sizes),
-  `scripts/glue_baseline.py` (hand-built integration baseline),
-  `scripts/validate_live_cases.py` (schema validation),
-  `scripts/run_ablations.py`, `scripts/summarize_results.py`,
+  `scripts/novelty/run_live_bench_v2.py` (metrics and bootstrap intervals),
+  `scripts/novelty/analyze_results.py` (McNemar, paired bootstrap and effect sizes),
+  `scripts/novelty/glue_baseline.py` (hand-built integration baseline),
+  `scripts/novelty/validate_live_cases.py` (schema validation),
+  `scripts/novelty/run_ablations.py`, `scripts/novelty/summarize_results.py`,
   `results/live_bench_v2/` (baseline, analysis and ablations), and a CI reproduction step.
 - Measured result: `live` 30/30 on the test split, but a hand-built glue baseline is 28/30.
   Against glue, +6.7 pp (95% CI 0.0–0.167, McNemar p = 0.48). The integration advantage over
@@ -140,7 +140,7 @@ Out of scope:
 | Parity | Python and TypeScript suites | exists | include in artifact release |
 | Benchmark | 120 live cases + 7-case demo | **done** | harder real-incident cases |
 | Ablation | 7 planner variants on the test split | **done** | — |
-| Glue baseline | `scripts/glue_baseline.py` | **done** | external adapters still missing |
+| Glue baseline | `scripts/novelty/glue_baseline.py` | **done** | external adapters still missing |
 | Significance | McNemar, paired bootstrap and effect sizes | **done** | +6.7 pp vs glue is not significant on 30 cases |
 | Prior art | `comparators.md` (7 systems, documented capability comparison) | **done** | runnable adapter still missing |
 | EU liability case | `eu-liability.md` (PLD 2024/2853 field-by-field mapping) | **done** | — |
@@ -165,7 +165,7 @@ Do not claim novelty in a paper, README or talk until all of these are true:
   McNemar in `results/live_bench_v2/analysis.json`;
 - [x] the result against a hand-built glue baseline is reported honestly — +6.7 pp, p = 0.48;
 - [ ] one real validation exists;
-- [x] the artifact reproduces the main table with one command — `bash scripts/reproduce.sh`;
+- [x] the artifact reproduces the main table with one command — `bash scripts/novelty/reproduce.sh`;
 - [x] limitations are written down — threats and failure analysis in `evaluation.md`;
 - [ ] an external reader or reviewer has seen the draft.
 
@@ -192,7 +192,7 @@ npm run bench
 npm run conformance
 
 cd ../..
-bash scripts/reproduce.sh
+bash scripts/novelty/reproduce.sh
 ```
 
 Then review:

@@ -62,7 +62,7 @@ function loadCases() {
   const path = resolve(CASES, `${split}-cases-v1.json`);
   if (!existsSync(path)) {
     console.error(`missing case file: ${path}`);
-    console.error("Run: python scripts/generate_live_cases.py");
+    console.error("Run: python scripts/novelty/generate_live_cases.py");
     process.exit(2);
   }
   const payload = JSON.parse(readFileSync(path, "utf8"));

@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "benchmarks" / "live"
 AT = "2026-11-01T10:00:00+00:00"
 PAST = "2026-11-01T09:00:00+00:00"

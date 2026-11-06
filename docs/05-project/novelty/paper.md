@@ -9,7 +9,7 @@ validation-pending and is not submittable yet.
 Already present:
 
 - `CITATION.cff`
-- `scripts/reproduce.sh`
+- `scripts/novelty/reproduce.sh`
 - a CI job that runs the live benchmark, analysis and ablations
 - `results/live_bench_v2/` with the reported run
 - [artifact-manifest.md](artifact-manifest.md)

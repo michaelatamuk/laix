@@ -47,7 +47,7 @@
 - CI runs `ruff check` for Python and `tsc --noEmit` for TypeScript; TypeScript uses a committed
   `package-lock.json`.
 - CI validates the live-bench cases and runs the benchmark, paired analysis and ablations through
-  `scripts/reproduce.sh`.
+  `scripts/novelty/reproduce.sh`.
 
 ## 0.9.0 — 2026-11-05
 

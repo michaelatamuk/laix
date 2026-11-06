@@ -14,15 +14,15 @@ python -m laix.appkit.bench
 Live benchmark, ablations and baseline diff from the repository root:
 
 ```powershell
-python scripts/generate_live_cases.py
-python scripts/validate_live_cases.py
-python scripts/run_live_bench_v2.py --split test --seed 42
-python scripts/analyze_results.py
-python scripts/run_ablations.py --split test --seed 42
-python scripts/summarize_results.py
+python scripts/novelty/generate_live_cases.py
+python scripts/novelty/validate_live_cases.py
+python scripts/novelty/run_live_bench_v2.py --split test --seed 42
+python scripts/novelty/analyze_results.py
+python scripts/novelty/run_ablations.py --split test --seed 42
+python scripts/novelty/summarize_results.py
 ```
 
-CI runs the same sequence through `bash scripts/reproduce.sh`.
+CI runs the same sequence through `bash scripts/novelty/reproduce.sh`.
 
 With `uv` from the repository root:
 
@@ -98,11 +98,11 @@ The check resolves relative links across `docs/`, `examples/` and every README.
 | `npm run bench` | 10 suites and 25 deterministic cases |
 | `npm run conformance` | 24 shared attention decisions |
 | `npm run live-bench` | TypeScript runs the 30-case test split and compares 210 action IDs with Python |
-| `scripts/run_live_bench_v2.py` | 120-case corpus, metrics, bootstrap intervals, conflict check |
-| `scripts/analyze_results.py` | McNemar, paired bootstrap, Cohen's h and category breakdown |
-| `scripts/run_ablations.py` | term removal, equal weights and no-feasibility-gates variants |
-| `scripts/summarize_results.py` | baseline diff for headline metrics |
-| `scripts/validate_live_cases.py` | JSON Schema validation and duplicate-id check |
+| `scripts/novelty/run_live_bench_v2.py` | 120-case corpus, metrics, bootstrap intervals, conflict check |
+| `scripts/novelty/analyze_results.py` | McNemar, paired bootstrap, Cohen's h and category breakdown |
+| `scripts/novelty/run_ablations.py` | term removal, equal weights and no-feasibility-gates variants |
+| `scripts/novelty/summarize_results.py` | baseline diff for headline metrics |
+| `scripts/novelty/validate_live_cases.py` | JSON Schema validation and duplicate-id check |
 | examples | every runnable Python and TypeScript example |
 | docs links | relative links in docs, examples and README files |
 

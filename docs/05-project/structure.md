@@ -23,7 +23,9 @@ laix/
 ├── examples/
 │   ├── python/            numbered lifecycle stages
 │   └── typescript/        the same numbered stages
-├── scripts/               docs links, live corpus, bench, ablations and reproduction
+├── scripts/
+│   ├── check_docs_links.py relative link check
+│   └── novelty/           live corpus, bench, ablations, validation and reproduction
 └── .github/               CI and release workflows
 ```
 

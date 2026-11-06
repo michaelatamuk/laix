@@ -190,10 +190,10 @@ Create:
 - `benchmarks/live/test-cases-v1.json`
 - `benchmarks/live/adversarial-cases-v1.json`
 - `benchmarks/live/README.md`
-- `scripts/generate_live_cases.py`
-- `scripts/run_live_bench_v2.py`
-- `scripts/run_ablations.py`
-- `scripts/summarize_results.py`
+- `scripts/novelty/generate_live_cases.py`
+- `scripts/novelty/run_live_bench_v2.py`
+- `scripts/novelty/run_ablations.py`
+- `scripts/novelty/summarize_results.py`
 - `results/live_bench_v2/` (generated, versioned summary committed)
 
 ### Case schema
@@ -399,9 +399,9 @@ claim; the real-world validation in `validation.md` is still required.
 ### Reproduce
 
 ```bash
-python scripts/run_live_bench_v2.py --split test --seed 42
-python scripts/run_ablations.py --split test --seed 42
-python scripts/summarize_results.py
+python scripts/novelty/run_live_bench_v2.py --split test --seed 42
+python scripts/novelty/run_ablations.py --split test --seed 42
+python scripts/novelty/summarize_results.py
 ```
 
-or, in CI, `bash scripts/reproduce.sh`.
+or, in CI, `bash scripts/novelty/reproduce.sh`.

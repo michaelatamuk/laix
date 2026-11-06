@@ -53,7 +53,7 @@ One JSON object per trial in JSON Lines:
 Script:
 
 ```bash
-python scripts/analyze_user_study.py --input data/validation/user-study-results.jsonl
+python scripts/novelty/analyze_user_study.py --input data/validation/user-study-results.jsonl
 ```
 
 ## Sample-size justification

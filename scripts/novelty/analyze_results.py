@@ -10,7 +10,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "results" / "live_bench_v2" / "raw.jsonl"
 OUT = ROOT / "results" / "live_bench_v2" / "analysis.json"
 REFERENCE = "live"

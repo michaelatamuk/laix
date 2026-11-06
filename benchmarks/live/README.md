@@ -15,7 +15,7 @@ This directory holds the live-bench case files. Each file is a list of
 Regenerate the corpus with:
 
 ```bash
-python scripts/generate_live_cases.py
+python scripts/novelty/generate_live_cases.py
 ```
 
 ## Schema
