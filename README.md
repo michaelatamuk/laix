@@ -199,13 +199,14 @@ and respects an attention budget. The contribution is the composition; see
 
 ## Results
 
-`live` scores **30/30** on the frozen 30-case test split and **6/6** on the conflict cases. A
-hand-built glue baseline scores 28/30; the **+6.7 pp** difference is **not yet significant**
-(p = 0.48). Every single-concern planner has significantly lower accuracy (McNemar p ≤ 0.008).
+`LiveDecisionEngine` — the `live` planner — scores **30/30** on the frozen 30-case test split and
+**6/6** on the conflict cases. A hand-built glue baseline — the `glue` planner — scores 28/30; the
+**+6.7 pp** difference is **not yet significant** (p = 0.48). Every single-concern planner has
+significantly lower accuracy (McNemar p ≤ 0.008).
 
 ![Accuracy and conflict accuracy on the frozen test split](docs/assets/benchmark.png)
 
-| Measure | `live` | Best comparator |
+| Measure | `LiveDecisionEngine` | Best comparator |
 |---|---:|---:|
 | Accuracy, all 30 cases | **100%** | 93.3% (glue) |
 | Conflict accuracy, 6 cases | **100%** | 100% (glue) |
@@ -214,8 +215,8 @@ hand-built glue baseline scores 28/30; the **+6.7 pp** difference is **not yet s
 | Attention-budget violations | **0%** | 0% (glue) |
 | p95 decision latency | **0.22 ms** | — |
 
-The glue baseline matches `live` on conflict, promises, reversibility and budget. The remaining
-difference is accuracy on the other 24 cases, and it is not significant on 30 cases.
+The glue baseline matches `LiveDecisionEngine` on conflict, promises, reversibility and budget. The
+remaining difference is accuracy on the other 24 cases, and it is not significant on 30 cases.
 
 ### Ablations
 
