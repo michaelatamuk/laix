@@ -1,44 +1,84 @@
 # Claim–evidence map
 
 Status: repository-side evidence is complete. External validation and peer review are still pending.
-Every number below is reproducible from `results/live-decision-benchmark/` and `bash scripts/novelty/reproduce.sh`.
 
-## Current claims
+Every measured number is reproducible from
+[`results/live-decision-benchmark/`](../../../results/live-decision-benchmark/) and
+`bash scripts/novelty/reproduce.sh`.
 
-| Claim | Metric | Value | Source | Status |
-|---|---|---|---:|---|---|
-| The integration is accurate on the frozen test split | accuracy | 100% (30/30) | `results/live-decision-benchmark/metrics/summary.json` | measured |
-| It beats the best single-concern planner | accuracy delta | +30 pp (100% vs 70%) | `metrics/summary.json` | measured |
-| It beats a hand-built glue baseline | accuracy delta | +6.7 pp (100% vs 93.3%), p = 0.48 | `metrics/significance.json` | measured, not significant |
-| It wins when concerns conflict | conflict accuracy | 100% (6/6) | `metrics/summary.json` | measured |
-| It wins against every single-concern planner | McNemar p | p ≤ 0.008 for every single-concern planner | `metrics/significance.json` | measured |
-| It wins against hand-built glue code | McNemar p | p = 0.48 | `metrics/significance.json` | **not significant** |
-| It keeps promises | promise-keeping rate | 100% (vs 0% utility-only) | `metrics/summary.json` | measured |
-| It avoids irreversible actions | irreversible-action rate | 0% (vs 23.3% highest-benefit) | `metrics/summary.json` | measured |
-| It respects the attention budget | budget-violation rate | 0% (vs 70% highest-benefit) | `metrics/summary.json` | measured |
-| The integration is doing real work | ablation delta | full 100%; no commitment 70%; no execution 83.3%; no attention 96.7% | `results/live-decision-benchmark/ablations/results.json` | measured |
-| The case files are valid | schema validation | 120/120 valid, unique ids | `scripts/novelty/bench/validate_live_cases.py` | tested |
-| The live path is fast enough | p95 latency | under 2 ms on the test split | `metrics/summary.json` | measured |
-| The model is deterministic | replay equality | 100% across the invariant suite | `tests/core/test_invariants.py` | tested |
-| The contract is stable | invariant tests | 17/17 | `tests/core/test_invariants.py` | tested |
-| Python and TypeScript agree | conformance + live-bench action parity | 24/24 conformance; 210/210 live actions; 172 TS tests | CI | tested |
-| The layer is auditable | trace and receipt tests | I6–I9 pass | `tests/core/test_invariants.py` | tested |
-| LangGraph can host the same decision | operational adapter | 120 decisions, 0 interrupts, 6-7 ms mean, 110 glue lines | `results/live-decision-benchmark/comparison/external-systems.json` | measured (operational only) |
-| The audit answers EU PLD questions | field mapping | `verb`, `reason_code`, `policy_version`, `decision_id`, `trace_id`, `created_at` | `eu-liability.md` | documented |
+## Headline results
 
-## Claims that still need evidence
+| Claim | Result | Status |
+|---|---|---|
+| Accuracy, frozen test split | **100%** (30/30) | measured |
+| Conflict accuracy | **100%** (6/6) | measured |
+| Best single-concern planner | **+30 pp** (100% vs 70%) | measured |
+| Hand-built glue baseline | **+6.7 pp** (100% vs 93.3%), p = 0.48 | not significant |
+| Ablation: full vs no commitment | **100%** vs **70%** | measured |
+| Ablation: full vs no execution | **100%** vs **83.3%** | measured |
+| Ablation: full vs no attention | **100%** vs **96.7%** | measured |
+
+The glue comparison is the honest caveat: the gain is real on this corpus, but the 95% confidence
+interval includes zero and p = 0.48 on 30 cases. The advantage over every single-concern planner is
+significant (McNemar p ≤ 0.008 for each).
+
+## Safety and promise keeping
+
+| Check | LAIX | Comparator | Status |
+|---|---:|---:|---|
+| Promise-keeping rate | **100%** | 0% (utility-only) | measured |
+| Irreversible-action rate | **0%** | 23.3% (highest-benefit) | measured |
+| Attention-budget violation rate | **0%** | 70% (highest-benefit) | measured |
+| p95 latency, test split | **< 2 ms** | — | measured |
+
+## Contract and parity
+
+| Check | Result | Evidence | Status |
+|---|---|---|---|
+| Case schema | 120/120 valid; unique ids | [validator](../../../scripts/novelty/bench/validate_live_cases.py) | tested |
+| Determinism | 100% replay equality | [invariants](../../../packages/python/laix/tests/core/test_invariants.py) | tested |
+| Contract invariants | 17/17 | [invariants](../../../packages/python/laix/tests/core/test_invariants.py) | tested |
+| Python/TypeScript parity | 24/24 conformance; 210/210 live actions; 172 TS tests | CI | tested |
+| Audit trail | I6–I9 pass | [invariants](../../../packages/python/laix/tests/core/test_invariants.py) | tested |
+| LangGraph host | 120 decisions; 0 interrupts; 6–7 ms mean; 110 glue lines | [comparison](../../../results/live-decision-benchmark/comparison/external-systems.json) | measured (operational) |
+| EU PLD audit fields | see below | [EU PLD](../05-governance/eu-liability.md) | documented |
+
+### EU PLD audit fields
+
+| Question | Field |
+|---|---|
+| What was decided? | `verb` |
+| Why? | `reason_code` |
+| Under which policy? | `policy_version` |
+| Which decision? | `decision_id` |
+| Which trace? | `trace_id` |
+| When? | `created_at` |
+
+## Still needs evidence
 
 | Claim | Missing evidence | Next step |
 |---|---|---|
-| The integration beats an external system | runnable adapter comparison | Phase 2 external comparison in `../01-positioning/prior-art.md` |
-| The layer works in a real domain | deployment, incident replay or user study | Phase 3 in `checklist.md` |
-| The results generalise | independent replication | Phase 6 in `checklist.md` |
-| The paper's claims are accepted | peer review | Phase 6 in `checklist.md` |
+| The integration beats an external system | Runnable adapter comparison | Phase 2 in [prior art](../01-positioning/prior-art.md) |
+| The layer works in a real domain | Deployment, incident replay or user study | Phase 3 in [checklist](../checklist.md) |
+| The results generalise | Independent replication | Phase 6 in [checklist](../checklist.md) |
+| The paper's claims are accepted | Peer review | Phase 6 in [checklist](../checklist.md) |
+
+## Evidence index
+
+| Evidence | What it shows |
+|---|---|
+| [Benchmark summary](../../../results/live-decision-benchmark/metrics/summary.json) | Accuracy, conflict, promises, safety, budget and latency. |
+| [Significance tests](../../../results/live-decision-benchmark/metrics/significance.json) | McNemar tests, confidence intervals and effect sizes. |
+| [Ablations](../../../results/live-decision-benchmark/ablations/results.json) | Full integration vs removing one concern. |
+| [External comparison](../../../results/live-decision-benchmark/comparison/external-systems.json) | LangGraph adapter results. |
+| [Case validator](../../../scripts/novelty/bench/validate_live_cases.py) | Schema and id checks. |
+| [Invariant tests](../../../packages/python/laix/tests/core/test_invariants.py) | Determinism, contract and audit invariants. |
+| [EU PLD mapping](../05-governance/eu-liability.md) | Audit fields for liability questions. |
 
 ## Rules
 
 - Every row needs a source.
-- A row marked "measured" must be reproducible from the listed command or file.
-- A row marked "tested" must fail if the code regresses.
-- A row marked "documented" is an argument and is labelled as such.
-- Promote a claim from "measured" to "general" only after external validation.
+- `measured` is reproducible from the listed file or command.
+- `tested` fails if the code regresses.
+- `documented` is an argument, not a measurement.
+- Promote a claim to `general` only after external validation.
