@@ -22,6 +22,7 @@ review.
 | [Evaluation](evaluation.md) | hypotheses, metrics, benchmark protocol, threats |
 | [Claim–evidence map](evidence.md) | current numbers, sources and missing evidence |
 | [Validation](validation.md) | deployment, incident replay or user study |
+| [User study](user-study.md) | 20 vignettes and the blinded protocol |
 | [Paper and artifact](paper.md) | reproducibility, paper outline, venues |
 | [Paper draft](paper-draft.md) | current draft with validation pending |
 | [Artifact manifest](artifact-manifest.md) | files to release |
@@ -142,7 +143,7 @@ Out of scope:
 | Significance | McNemar, paired bootstrap and effect sizes | **done** | +6.7 pp vs glue is not significant on 30 cases |
 | Prior art | `comparators.md` (7 systems, documented capability comparison) | **done** | runnable adapter still missing |
 | EU liability case | `eu-liability.md` (PLD 2024/2853 field-by-field mapping) | **done** | — |
-| Real validation | harness ready; no data collected | missing | one deployment, replay or user study |
+| Real validation | incident harness + 20 user-study vignettes ready; no data collected | missing | one deployment, replay or user study |
 | Paper | draft in `paper-draft.md`; validation pending | partial | final draft after real data |
 
 ## 3. Definition of done

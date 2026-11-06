@@ -7,27 +7,31 @@ repository tests.
 
 Synthetic cases are not enough. Choose one:
 
-### Option A: deployment or pilot
+### Option A: incident or support replay
+
+- harness: `scripts/ingest_incidents.py` and `scripts/analyze_validation.py`;
+- take historical events;
+- replay through LAIX and the baseline;
+- compare decisions against what a human did;
+- report disagreements and their costs.
+
+### Option B: user study
+
+- materials: `data/validation/vignettes-v1.json` (20 vignettes);
+- protocol: `docs/05-project/novelty/user-study.md`;
+- analysis: `scripts/analyze_user_study.py`;
+- ask operators to judge decisions from LAIX and a baseline;
+- blind the source;
+- measure acceptance, perceived timeliness, trust and workload;
+- include a sample-size justification.
+
+### Option C: deployment or pilot
 
 - one host application;
 - two to four weeks;
 - log decisions, approvals, executions and outcomes;
 - measures: promise keeping, irreversible actions, attention spend, missed deadlines,
   undo rate, acceptance rate.
-
-### Option B: incident or support replay
-
-- take historical events;
-- replay through LAIX and the baseline;
-- compare decisions against what a human did;
-- report disagreements and their costs.
-
-### Option C: user study
-
-- ask operators to judge decisions from LAIX and a baseline;
-- blind the source;
-- measure acceptance, perceived timeliness, trust and workload;
-- include a sample-size justification.
 
 For all options, document consent, privacy, data minimisation and retention. Do not include
 personal data in the public artifact.

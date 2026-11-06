@@ -110,7 +110,9 @@ team did not write.
 
 - [x] **Build the validation harness** — `scripts/ingest_incidents.py` anonymises a JSONL export,
   `scripts/analyze_validation.py` compares LAIX, glue and utility against recorded human
-  decisions, and `data/validation/README.md` defines the format and privacy rules.
+  decisions, `data/validation/vignettes-v1.json` has 20 user-study vignettes,
+  `scripts/analyze_user_study.py` analyses blinded ratings, and `data/validation/README.md` defines
+  the formats and privacy rules.
 
 - [ ] **Record the chosen option** — write one paragraph in
   `docs/05-project/novelty/validation.md` §1 stating: which option (A, B or C) was chosen,
@@ -148,6 +150,9 @@ Replay historical incidents where a person already made a decision.
 7. Write the method and results in `docs/05-project/novelty/validation.md` §2 and §3.
 
 ### Option B — User study
+
+Materials and protocol are ready: `data/validation/vignettes-v1.json`,
+`docs/05-project/novelty/user-study.md` and `scripts/analyze_user_study.py`. Recruitment is external.
 
 Recruit participants to judge LAIX decisions on vignette scenarios.
 

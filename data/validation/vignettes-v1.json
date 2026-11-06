@@ -1,0 +1,968 @@
+{
+  "schema": "laix/validation-vignettes/v1",
+  "version": "1.0.0",
+  "note": "User-study materials. human_choice is filled by participants.",
+  "vignettes": [
+    {
+      "id": "v01",
+      "domain": "customer support",
+      "situation": "A customer asks for a \u20ac780 refund. The policy says amounts above \u20ac500 need a human decision.",
+      "options": [
+        {
+          "id": "approve",
+          "label": "Approve the refund immediately",
+          "verb": "act"
+        },
+        {
+          "id": "ask",
+          "label": "Ask a supervisor to approve",
+          "verb": "ask"
+        }
+      ],
+      "problem": {
+        "subject": "customer support",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "approve",
+            "verb": "act",
+            "name": "Approve the refund immediately",
+            "expected_benefit": 0.8,
+            "risk": 0.0,
+            "requires_approval": true
+          },
+          {
+            "id": "ask",
+            "verb": "ask",
+            "name": "Ask a supervisor to approve",
+            "expected_benefit": 0.7,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "ask",
+      "laix_verb": "ask",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "ask balances utility 0.700, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "approve",
+      "baseline_verb": "act",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v02",
+      "domain": "on-call operations",
+      "situation": "A production database is close to its connection limit. A restart is available, but it is disruptive.",
+      "options": [
+        {
+          "id": "restart",
+          "label": "Restart the database now",
+          "verb": "act"
+        },
+        {
+          "id": "scale",
+          "label": "Add capacity and monitor",
+          "verb": "act"
+        }
+      ],
+      "problem": {
+        "subject": "on-call operations",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "restart",
+            "verb": "act",
+            "name": "Restart the database now",
+            "expected_benefit": 0.9,
+            "risk": 0.5,
+            "reversible": false
+          },
+          {
+            "id": "scale",
+            "verb": "act",
+            "name": "Add capacity and monitor",
+            "expected_benefit": 0.6,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "scale",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "scale balances utility 0.600, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "restart",
+      "baseline_verb": "act",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v03",
+      "domain": "data governance",
+      "situation": "A user asks to delete an account. The request is valid, but deletion cannot be undone.",
+      "options": [
+        {
+          "id": "delete",
+          "label": "Delete the account permanently",
+          "verb": "act"
+        },
+        {
+          "id": "archive",
+          "label": "Archive the account and confirm",
+          "verb": "act"
+        }
+      ],
+      "problem": {
+        "subject": "data governance",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "delete",
+            "verb": "act",
+            "name": "Delete the account permanently",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "reversible": false
+          },
+          {
+            "id": "archive",
+            "verb": "act",
+            "name": "Archive the account and confirm",
+            "expected_benefit": 0.6,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "archive",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "archive balances utility 0.600, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "delete",
+      "baseline_verb": "act",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v04",
+      "domain": "healthcare",
+      "situation": "A patient has not confirmed an appointment tomorrow. The clinic can send a reminder or call.",
+      "options": [
+        {
+          "id": "remind",
+          "label": "Send a reminder",
+          "verb": "guide"
+        },
+        {
+          "id": "call",
+          "label": "Call the patient",
+          "verb": "ask"
+        },
+        {
+          "id": "wait",
+          "label": "Wait for the patient",
+          "verb": "wait"
+        }
+      ],
+      "problem": {
+        "subject": "healthcare",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "remind",
+            "verb": "guide",
+            "name": "Send a reminder",
+            "expected_benefit": 0.7,
+            "risk": 0.0
+          },
+          {
+            "id": "call",
+            "verb": "ask",
+            "name": "Call the patient",
+            "expected_benefit": 0.8,
+            "risk": 0.0,
+            "interrupt_cost": 0.5
+          },
+          {
+            "id": "wait",
+            "verb": "wait",
+            "name": "Wait for the patient",
+            "expected_benefit": 0.3,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "remind",
+      "laix_verb": "guide",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "remind balances utility 0.700, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "call",
+      "baseline_verb": "ask",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v05",
+      "domain": "sales",
+      "situation": "A high-value lead opened a proposal three days ago but has not replied.",
+      "options": [
+        {
+          "id": "followup",
+          "label": "Send a short follow-up",
+          "verb": "act"
+        },
+        {
+          "id": "wait",
+          "label": "Wait for the lead",
+          "verb": "wait"
+        }
+      ],
+      "problem": {
+        "subject": "sales",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "followup",
+            "verb": "act",
+            "name": "Send a short follow-up",
+            "expected_benefit": 0.8,
+            "risk": 0.0
+          },
+          {
+            "id": "wait",
+            "verb": "wait",
+            "name": "Wait for the lead",
+            "expected_benefit": 0.4,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "followup",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "followup balances utility 0.800, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "followup",
+      "baseline_verb": "act",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v06",
+      "domain": "contracts",
+      "situation": "A monthly report is due this morning. A fast draft is possible but less accurate.",
+      "options": [
+        {
+          "id": "send-fast",
+          "label": "Send the fast draft now",
+          "verb": "act"
+        },
+        {
+          "id": "send-careful",
+          "label": "Send the careful draft later",
+          "verb": "act"
+        }
+      ],
+      "problem": {
+        "subject": "contracts",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "send-fast",
+            "verb": "act",
+            "name": "Send the fast draft now",
+            "expected_benefit": 0.8,
+            "risk": 0.0,
+            "commitments": {
+              "creates": [
+                "c-report"
+              ]
+            }
+          },
+          {
+            "id": "send-careful",
+            "verb": "act",
+            "name": "Send the careful draft later",
+            "expected_benefit": 0.6,
+            "risk": 0.0,
+            "commitments": {
+              "fulfills": [
+                "c-report"
+              ]
+            }
+          }
+        ],
+        "commitments": [
+          {
+            "id": "c-report",
+            "subject": "send the report",
+            "priority": 0.8
+          }
+        ]
+      },
+      "laix_choice": "send-careful",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "send-careful balances utility 0.600, commitments +0.455, execution -0.000 and attention -0.000",
+      "baseline_choice": "send-fast",
+      "baseline_verb": "act",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v07",
+      "domain": "cloud cost",
+      "situation": "A budget alert says the monthly spend is 80% used with a week left.",
+      "options": [
+        {
+          "id": "throttle",
+          "label": "Throttle non-critical jobs",
+          "verb": "act"
+        },
+        {
+          "id": "observe",
+          "label": "Watch for one more day",
+          "verb": "observe"
+        }
+      ],
+      "problem": {
+        "subject": "cloud cost",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "throttle",
+            "verb": "act",
+            "name": "Throttle non-critical jobs",
+            "expected_benefit": 0.7,
+            "risk": 0.0
+          },
+          {
+            "id": "observe",
+            "verb": "observe",
+            "name": "Watch for one more day",
+            "expected_benefit": 0.6,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "throttle",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "throttle balances utility 0.700, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "throttle",
+      "baseline_verb": "act",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v08",
+      "domain": "customer success",
+      "situation": "A long-running customer sends a complaint that mentions leaving the service.",
+      "options": [
+        {
+          "id": "guide",
+          "label": "Offer a retention guide",
+          "verb": "guide"
+        },
+        {
+          "id": "ask",
+          "label": "Ask a human to call",
+          "verb": "ask"
+        }
+      ],
+      "problem": {
+        "subject": "customer success",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "guide",
+            "verb": "guide",
+            "name": "Offer a retention guide",
+            "expected_benefit": 0.7,
+            "risk": 0.0
+          },
+          {
+            "id": "ask",
+            "verb": "ask",
+            "name": "Ask a human to call",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "interrupt_cost": 0.4
+          }
+        ]
+      },
+      "laix_choice": "guide",
+      "laix_verb": "guide",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "guide balances utility 0.700, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "ask",
+      "baseline_verb": "ask",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v09",
+      "domain": "security",
+      "situation": "A critical vulnerability has a patch. The patch may break a legacy integration.",
+      "options": [
+        {
+          "id": "patch",
+          "label": "Patch now",
+          "verb": "act"
+        },
+        {
+          "id": "verify",
+          "label": "Test the patch first",
+          "verb": "verify"
+        }
+      ],
+      "problem": {
+        "subject": "security",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "patch",
+            "verb": "act",
+            "name": "Patch now",
+            "expected_benefit": 0.9,
+            "risk": 0.3
+          },
+          {
+            "id": "verify",
+            "verb": "verify",
+            "name": "Test the patch first",
+            "expected_benefit": 0.7,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "patch",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "patch balances utility 0.825, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "patch",
+      "baseline_verb": "act",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v10",
+      "domain": "inventory",
+      "situation": "A best-selling item has two days of stock left. The supplier needs a decision today.",
+      "options": [
+        {
+          "id": "reorder",
+          "label": "Place the reorder",
+          "verb": "act"
+        },
+        {
+          "id": "wait",
+          "label": "Wait for a better price",
+          "verb": "wait"
+        }
+      ],
+      "problem": {
+        "subject": "inventory",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "reorder",
+            "verb": "act",
+            "name": "Place the reorder",
+            "expected_benefit": 0.8,
+            "risk": 0.0,
+            "cost": 0.4
+          },
+          {
+            "id": "wait",
+            "verb": "wait",
+            "name": "Wait for a better price",
+            "expected_benefit": 0.4,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "reorder",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "reorder balances utility 0.700, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "reorder",
+      "baseline_verb": "act",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v11",
+      "domain": "scheduling",
+      "situation": "Three people need a meeting slot. Two slots are possible and one person has not responded.",
+      "options": [
+        {
+          "id": "book",
+          "label": "Book the majority slot",
+          "verb": "act"
+        },
+        {
+          "id": "ask",
+          "label": "Ask the missing person",
+          "verb": "ask"
+        }
+      ],
+      "problem": {
+        "subject": "scheduling",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "book",
+            "verb": "act",
+            "name": "Book the majority slot",
+            "expected_benefit": 0.7,
+            "risk": 0.0
+          },
+          {
+            "id": "ask",
+            "verb": "ask",
+            "name": "Ask the missing person",
+            "expected_benefit": 0.8,
+            "risk": 0.0,
+            "interrupt_cost": 0.3
+          }
+        ]
+      },
+      "laix_choice": "book",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "book balances utility 0.700, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "ask",
+      "baseline_verb": "ask",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v12",
+      "domain": "content moderation",
+      "situation": "A post may violate policy but the evidence is ambiguous.",
+      "options": [
+        {
+          "id": "remove",
+          "label": "Remove the post now",
+          "verb": "act"
+        },
+        {
+          "id": "escalate",
+          "label": "Escalate to a human moderator",
+          "verb": "escalate"
+        }
+      ],
+      "problem": {
+        "subject": "content moderation",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "remove",
+            "verb": "act",
+            "name": "Remove the post now",
+            "expected_benefit": 0.8,
+            "risk": 0.4,
+            "reversible": false
+          },
+          {
+            "id": "escalate",
+            "verb": "escalate",
+            "name": "Escalate to a human moderator",
+            "expected_benefit": 0.7,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "escalate",
+      "laix_verb": "escalate",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "escalate balances utility 0.700, commitments +0.000, execution -0.000 and attention -0.300",
+      "baseline_choice": "escalate",
+      "baseline_verb": "escalate",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v13",
+      "domain": "payments",
+      "situation": "A card payment failed with a temporary network error.",
+      "options": [
+        {
+          "id": "retry",
+          "label": "Retry the payment",
+          "verb": "act"
+        },
+        {
+          "id": "observe",
+          "label": "Observe the next attempt",
+          "verb": "observe"
+        }
+      ],
+      "problem": {
+        "subject": "payments",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "retry",
+            "verb": "act",
+            "name": "Retry the payment",
+            "expected_benefit": 0.8,
+            "risk": 0.0
+          },
+          {
+            "id": "observe",
+            "verb": "observe",
+            "name": "Observe the next attempt",
+            "expected_benefit": 0.5,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "retry",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "retry balances utility 0.800, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "retry",
+      "baseline_verb": "act",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v14",
+      "domain": "subscriptions",
+      "situation": "A customer wants to cancel. The contract allows a pause instead.",
+      "options": [
+        {
+          "id": "guide",
+          "label": "Offer a pause",
+          "verb": "guide"
+        },
+        {
+          "id": "cancel",
+          "label": "Cancel immediately",
+          "verb": "act"
+        }
+      ],
+      "problem": {
+        "subject": "subscriptions",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "guide",
+            "verb": "guide",
+            "name": "Offer a pause",
+            "expected_benefit": 0.7,
+            "risk": 0.0
+          },
+          {
+            "id": "cancel",
+            "verb": "act",
+            "name": "Cancel immediately",
+            "expected_benefit": 0.8,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "cancel",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "cancel balances utility 0.800, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "cancel",
+      "baseline_verb": "act",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v15",
+      "domain": "delivery",
+      "situation": "A delivery is late and the customer is waiting.",
+      "options": [
+        {
+          "id": "guide",
+          "label": "Send a new ETA",
+          "verb": "guide"
+        },
+        {
+          "id": "escalate",
+          "label": "Escalate to the carrier",
+          "verb": "escalate"
+        }
+      ],
+      "problem": {
+        "subject": "delivery",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "guide",
+            "verb": "guide",
+            "name": "Send a new ETA",
+            "expected_benefit": 0.7,
+            "risk": 0.0
+          },
+          {
+            "id": "escalate",
+            "verb": "escalate",
+            "name": "Escalate to the carrier",
+            "expected_benefit": 0.8,
+            "risk": 0.0,
+            "interrupt_cost": 0.3
+          }
+        ]
+      },
+      "laix_choice": "guide",
+      "laix_verb": "guide",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "guide balances utility 0.700, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "escalate",
+      "baseline_verb": "escalate",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v16",
+      "domain": "hiring",
+      "situation": "A candidate is strong but one reference has not replied.",
+      "options": [
+        {
+          "id": "ask",
+          "label": "Ask for the missing reference",
+          "verb": "ask"
+        },
+        {
+          "id": "wait",
+          "label": "Wait for the reference",
+          "verb": "wait"
+        }
+      ],
+      "problem": {
+        "subject": "hiring",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "ask",
+            "verb": "ask",
+            "name": "Ask for the missing reference",
+            "expected_benefit": 0.8,
+            "risk": 0.0,
+            "interrupt_cost": 0.3
+          },
+          {
+            "id": "wait",
+            "verb": "wait",
+            "name": "Wait for the reference",
+            "expected_benefit": 0.5,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "ask",
+      "laix_verb": "ask",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "ask balances utility 0.755, commitments +0.000, execution -0.000 and attention -0.120",
+      "baseline_choice": "ask",
+      "baseline_verb": "ask",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v17",
+      "domain": "laboratory",
+      "situation": "A lab result is outside the normal range and the patient is not in the clinic.",
+      "options": [
+        {
+          "id": "verify",
+          "label": "Verify the sample first",
+          "verb": "verify"
+        },
+        {
+          "id": "escalate",
+          "label": "Escalate to the clinician",
+          "verb": "escalate"
+        }
+      ],
+      "problem": {
+        "subject": "laboratory",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "verify",
+            "verb": "verify",
+            "name": "Verify the sample first",
+            "expected_benefit": 0.8,
+            "risk": 0.0
+          },
+          {
+            "id": "escalate",
+            "verb": "escalate",
+            "name": "Escalate to the clinician",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "interrupt_cost": 0.4
+          }
+        ]
+      },
+      "laix_choice": "verify",
+      "laix_verb": "verify",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "verify balances utility 0.800, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "escalate",
+      "baseline_verb": "escalate",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v18",
+      "domain": "platform",
+      "situation": "An API client is close to its rate limit during a traffic spike.",
+      "options": [
+        {
+          "id": "observe",
+          "label": "Observe for five minutes",
+          "verb": "observe"
+        },
+        {
+          "id": "throttle",
+          "label": "Throttle the client now",
+          "verb": "act"
+        }
+      ],
+      "problem": {
+        "subject": "platform",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "observe",
+            "verb": "observe",
+            "name": "Observe for five minutes",
+            "expected_benefit": 0.6,
+            "risk": 0.0
+          },
+          {
+            "id": "throttle",
+            "verb": "act",
+            "name": "Throttle the client now",
+            "expected_benefit": 0.7,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "throttle",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "throttle balances utility 0.700, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "throttle",
+      "baseline_verb": "act",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v19",
+      "domain": "warranty",
+      "situation": "A warranty claim is missing one photo but the customer has a long history.",
+      "options": [
+        {
+          "id": "approve",
+          "label": "Approve the claim",
+          "verb": "act"
+        },
+        {
+          "id": "ask",
+          "label": "Ask for the missing photo",
+          "verb": "ask"
+        }
+      ],
+      "problem": {
+        "subject": "warranty",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "approve",
+            "verb": "act",
+            "name": "Approve the claim",
+            "expected_benefit": 0.8,
+            "risk": 0.0
+          },
+          {
+            "id": "ask",
+            "verb": "ask",
+            "name": "Ask for the missing photo",
+            "expected_benefit": 0.9,
+            "risk": 0.0,
+            "interrupt_cost": 0.3
+          }
+        ]
+      },
+      "laix_choice": "approve",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "approve balances utility 0.800, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "ask",
+      "baseline_verb": "ask",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    },
+    {
+      "id": "v20",
+      "domain": "deployment",
+      "situation": "A canary release shows a small error increase. The rollback is reversible.",
+      "options": [
+        {
+          "id": "rollback",
+          "label": "Roll back the release",
+          "verb": "act"
+        },
+        {
+          "id": "verify",
+          "label": "Investigate for ten minutes",
+          "verb": "verify"
+        }
+      ],
+      "problem": {
+        "subject": "deployment",
+        "at": "2026-11-06T10:00:00+00:00",
+        "options": [
+          {
+            "id": "rollback",
+            "verb": "act",
+            "name": "Roll back the release",
+            "expected_benefit": 0.8,
+            "risk": 0.0
+          },
+          {
+            "id": "verify",
+            "verb": "verify",
+            "name": "Investigate for ten minutes",
+            "expected_benefit": 0.7,
+            "risk": 0.0
+          }
+        ]
+      },
+      "laix_choice": "rollback",
+      "laix_verb": "act",
+      "laix_reason_code": "live_decision",
+      "laix_rationale": "rollback balances utility 0.800, commitments +0.000, execution -0.000 and attention -0.000",
+      "baseline_choice": "rollback",
+      "baseline_verb": "act",
+      "baseline_reason_code": "expected_utility",
+      "human_choice": null,
+      "notes": ""
+    }
+  ]
+}

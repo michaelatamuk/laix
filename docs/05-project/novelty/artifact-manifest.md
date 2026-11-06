@@ -46,8 +46,12 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 ## Validation harness
 
 - `data/validation/README.md`
+- `data/validation/vignettes-v1.json`
 - `scripts/ingest_incidents.py`
 - `scripts/analyze_validation.py`
+- `scripts/generate_vignettes.py`
+- `scripts/analyze_user_study.py`
+- `docs/05-project/novelty/user-study.md`
 
 ## Reproduction
 
