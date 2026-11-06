@@ -93,7 +93,7 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 python scripts/ci/check_docs_links.py
 ```
 
-The check resolves relative links across `docs/`, `examples/` and every README.
+The check resolves relative links across `docs/`, root Markdown files and every `README.md`.
 
 ## What covers what
 

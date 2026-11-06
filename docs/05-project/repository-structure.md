@@ -5,6 +5,14 @@ This page maps files. Concepts are defined in [architecture](../04-concepts/syst
 
 ```text
 laix/
+├── README.md            product front page
+├── CONTRIBUTING.md      setup, design rules and checks
+├── SECURITY.md          vulnerability reporting
+├── SUPPORT.md           where to ask
+├── CODE_OF_CONDUCT.md   participation rules
+├── CHANGELOG.md         release history
+├── CITATION.cff         citation metadata
+├── LICENSE              Apache-2.0
 ├── benchmarks/
 │   ├── README.md          data vs harness index
 │   ├── live/
@@ -29,29 +37,31 @@ laix/
 ├── docs/
 │   ├── README.md          audience-first index
 │   ├── 01-start/          numbered start path
-│   ├── 02-core/           contract, attention, policies, learning, evaluation, planners
-│   ├── 03-appkit/         architecture, integration, streaming, execution, stores, LAIX-Bench
-│   ├── 04-concepts/       system architecture, scope and boundaries, PPMA integration, decision models, privacy, FAQ, glossary
-│   ├── 05-project/        repository structure, testing, API map, versioning, roadmap
-│   └── 06-research/
-│       ├── 01-positioning/  prior art, comparators, formal model
-│       ├── 02-evaluation/   evaluation and evidence map
-│       ├── 03-validation/   plan, incident replay and vignette study
-│       ├── 04-publication/  paper, artifact, references and review
-│       └── 05-governance/   EU liability
+│   ├── 02-core/           contract, attention, policies, commitments, learning, evaluation, planners
+│   ├── 03-appkit/         architecture, integration, streaming, execution, stores, LAIX-Bench, deployment
+│   ├── 04-concepts/       system architecture, scope and boundaries, PPMA integration, decision models, privacy, security, FAQ, glossary
+│   ├── 05-project/        repository structure, testing, troubleshooting, migration, API map, versioning, roadmap
+│   ├── 06-research/
+│   │   ├── 01-positioning/  prior art, comparators, formal model
+│   │   ├── 02-evaluation/   evaluation and evidence map
+│   │   ├── 03-validation/   plan, incident replay and vignette study
+│   │   ├── 04-publication/  paper, artifact, references and review
+│   │   └── 05-governance/   EU liability
+│   └── assets/           logo, banner, architecture and demo placeholder
 ├── examples/
 │   ├── python/            numbered lifecycle stages
 │   └── typescript/        the same numbered stages
 ├── scripts/
 │   ├── ci/                repository checks (relative links)
-│   └── novelty/
-│       ├── bench/         corpus, live bench, ablations and baseline
-│       ├── analysis/      significance tests and category breakdown
-│       ├── compare/       external comparison runner
-│       ├── incident-replay/  incident preflight, ingest and analysis
-│       ├── vignette-study/   vignette generation, analysis and server
-│       ├── shared/        shared benchmark and glue modules
-│       └── reproduce.sh   full evidence pipeline
+│   ├── novelty/
+│   │   ├── bench/         corpus, live bench, ablations and baseline
+│   │   ├── analysis/      significance tests and category breakdown
+│   │   ├── compare/       external comparison runner
+│   │   ├── incident-replay/  incident preflight, ingest and analysis
+│   │   ├── vignette-study/   vignette generation, analysis and server
+│   │   ├── shared/        shared benchmark and glue modules
+│   │   └── reproduce.sh   full evidence pipeline
+│   └── docs/             brand asset renderer
 └── .github/               CI and release workflows
 ```
 

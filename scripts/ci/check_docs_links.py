@@ -18,7 +18,7 @@ def markdown_files() -> list[Path]:
         relative = path.relative_to(ROOT)
         if any(part in EXCLUDED for part in relative.parts):
             continue
-        if relative.parts[0] == "docs" or path.name == "README.md":
+        if relative.parts[0] == "docs" or path.name == "README.md" or path.parent == ROOT:
             files.append(path)
     return sorted(set(files))
 

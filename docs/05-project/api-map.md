@@ -1,6 +1,7 @@
 # API map
 
-One page for the public surface. Python and TypeScript export the same concepts.
+One page for the public surface. Python and TypeScript export the same concepts. This is a
+map by role, not a generated signature reference; the package `__all__` lists every export.
 
 ## Contract
 
@@ -11,50 +12,93 @@ One page for the public surface. Python and TypeScript export the same concepts.
 | `ActionOption` | one action the host can offer |
 | `Constraint` | risk, approval, safety, budget and other limits |
 | `Situation` | beliefs, goals, observations and constraints |
+| `Belief`, `Goal`, `Observation` | the situation's evidence and intent |
+| `Intent`, `EvidenceRef` | what the action would do and what supports it |
+| `ScoreBreakdown`, `Trace`, `ExecutionReceipt` | the score, the trail and the execution state |
+| `Verb` | `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` |
 | `decide` | answer one request with the core |
+
+## Commitments
+
+| Name | Purpose |
+|---|---|
+| `Commitment` | one promised step with a due time, status, dependencies and priority |
+| `CommitmentLedger` | the open promises for one task, with due and blocked queries |
+| `CommitmentStore` | the persistence port for a ledger |
+| `InMemoryCommitmentStore`, `FileCommitmentStore` | the built-in stores |
+| `CommitmentAwareEngine` | the planner that scores fulfill, violate and create effects |
 
 ## Decision mechanisms
 
 | Name | Purpose |
 |---|---|
-| `decide_attention` | rank signals and choose the attention verb |
+| `decide_attention`, `Signal`, `Context`, `Feedback` | rank signals and choose the attention verb |
+| `AttentionDecision`, `AttentionBudget` | the attention result and its budget |
 | `Policy` / `PolicyRegistry` | the smallest policy contract and a registry |
-| `RulePolicy`, `TargetedPolicy` | authored rules and target modes |
+| `Rule`, `RulePolicy`, `TargetedPolicy` | authored rules and target modes |
 | `EnginePolicy` | wrap a planner as a policy |
+| `PlanningPolicy` | act on the next actionable commitment |
+| `GroupPolicy`, `ShadowPolicy`, `ShadowDifference` | sharing boundary and shadow comparison |
 | `UtilityEngine` | expected utility with hard limits and risk attitude |
-| `CommitmentAwareEngine` | promises, due times, dependencies and priority |
 | `ExecutionAwareEngine` | irreversibility, unknown outcomes, approval and recovery |
 | `AttentionAwareEngine` | interruption, approval, escalation and a shared budget |
 | `LiveDecisionEngine` | commitments, execution risk and attention in one plan |
 | `MDPEngine`, `POMDPEngine` | model-based planning over a host-supplied model |
+| `Simulator`, `compare_engines` | run and compare planners |
+
+## Perception and resources
+
+| Name | Purpose |
+|---|---|
+| `Detection`, `Detector` | a perception result and the detector contract |
+| `PerceptionEvent`, `PerceptionFrame` | the event and frame shapes |
+| `LiveContext`, `CallableDetector` | host-driven perception loop |
+| `Budget`, `ResourcePlan`, `ResourceScheduler`, `SensingOption` | resource admission and sensing |
 
 ## Learning and evaluation
 
 | Name | Purpose |
 |---|---|
-| `Outcome`, `OutcomeLedger` | measured results and their store |
-| `UCBBandit`, `BanditPolicy` | reward-driven choice |
-| `CalibrationReport` | confidence vs observed accuracy |
-| `DecisionCalibrationReport`, `CalibratedPolicy` | decision accuracy and calibrated decisions |
-| `CausalLedger` | treatment and control effects |
-| `Simulator`, `compare_engines` | run and compare planners |
+| `Outcome`, `OutcomeLedger`, `OutcomeStore` | measured results and their store |
+| `AttentionOutcome` | the attention-specific outcome shape |
+| `UCBBandit`, `BanditPolicy`, `Arm` | reward-driven choice |
+| `CalibrationReport`, `CalibrationBin` | confidence vs observed accuracy |
+| `DecisionCalibrationReport`, `DecisionCalibrationSample`, `CalibratedPolicy` | decision accuracy and calibrated decisions |
+| `CausalLedger`, `CausalObservation`, `CausalEffect` | treatment and control effects |
+| `Case`, `Row`, `Report`, `compare_decisions` | case-based evaluation and parity |
+| `ModelLearner`, `LearnedTransition` | learn a transition model and roll it back |
 
 ## App kit
 
 | Name | Purpose |
 |---|---|
 | `Layer` | one decision with the optional runtime |
-| `StreamSession` | event-time decisions, revisions and checkpoints |
-| `DecisionTimeline` | revision, predecessor and event-time semantics |
-| `ExecutionBridge`, `Saga` | execution boundary, receipts and recovery |
+| `DecisionRuntime` | the app-kit decision loop |
+| `StreamSession`, `DecisionTimeline` | event-time decisions, revisions and checkpoints |
+| `StreamStats`, `DeadLetterQueue`, `TumblingWindow` | stream counters, failures and windows |
+| `ExecutionBridge`, `Saga` | execution boundary, receipts, recovery and compensation |
 | `ExperienceState`, `StateStore` | live state and its port |
-| `Platform`, `DeliveryPort` | host skills, approvals and delivery |
-| `LiveContext` | detectors and perception frames |
+| `DecisionRecord`, `create_record`, `approve_record`, `reject_record`, `mark_executed`, `verify_record` | the audit lifecycle |
+| `Proposal`, `approve_proposal`, `reject_proposal`, `undo_proposal` | the proposal lifecycle |
+| `ApprovalRequest`, `ApprovalDecision` | approval hand-off |
+| `Platform`, `InMemoryPlatform`, `SkillCall` | host skills, events and approvals |
+| `DeliveryPort`, `DeliveryReceipt`, `NullDelivery` | delivery boundary and receipt |
+| `prometheus`, `run_stream_bench` | metrics and stream bench |
 
 ## Proof
 
 | Name | Purpose |
 |---|---|
-| `run_live_bench` / `runLiveBench` | compare training-free planners |
-| `run_stream_bench` | stream throughput and counters |
+| `run_live_bench` / `runLiveBench` | compare training-free planners on the seven-case demo |
+| `default_cases`, `default_planners` | the demo case set and planner set |
+| `LiveBenchReport`, `LiveBenchRow`, `PlannerMetrics` | the live-bench report |
 | `Bench`, `Metrics` | LAIX-Bench and Prometheus counters |
+| `run_stream_bench` | stream throughput and counters |
+
+## Reading the API
+
+- Start with `DecisionRequest` and `Decision`; they are the contract.
+- Use `decide` for the core, or `Layer` when you want the app kit.
+- Use `EnginePolicy` to put a planner or model behind the same contract.
+- Use `ExecutionBridge` and `DecisionRecord` when the decision changes the world.
+- The app kit is optional; importing `laix` does not load it until first use.

@@ -1,7 +1,11 @@
-# LAIX — Live AI Experience
+![LAIX — the decision runtime for AI agents and automations](docs/assets/banner.png)
 
 [![CI](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)
+![Node 22+](https://img.shields.io/badge/node-22%2B-339933?logo=node.js&logoColor=white)
+
+# LAIX — Live AI Experience
 
 **LAIX is the decision runtime for AI agents and automations that act in the real world.**
 
@@ -14,6 +18,12 @@ data, delivery and storage; LAIX owns the decision and its trail.
 LAIX is **training-free**: the default path is deterministic policies and planners; a planner can use
 a model the host supplies.
 
+**Who it is for:** teams building AI agents or automations that take real actions — especially when
+approvals, promises, human attention or auditability matter.
+
+**What it is not:** an agent framework, a workflow engine or a model. It sits between planning and
+execution.
+
 **Status:** `0.9.0` · synthetic evidence complete · external validation pending.
 
 ## Contents
@@ -21,11 +31,14 @@ a model the host supplies.
 - [Install](#install)
 - [One decision](#one-decision)
 - [Integrated live decision](#integrated-live-decision)
+- [How it works](#how-it-works)
 - [What you get](#what-you-get)
 - [Why LAIX](#why-laix)
 - [Proof](#proof)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
+- [Security](#security)
+- [Citation](#citation)
 - [License and status](#license-and-status)
 
 ## Install
@@ -139,6 +152,16 @@ The plan prefers the reversible, promise-keeping option and keeps the commitment
 attention scores. See the full
 [conflict scenario](examples/python/03-plan/conflict_scenario.py).
 
+## How it works
+
+![Agent plans, LAIX decides, host executes, outcome closes the loop](docs/assets/architecture.png)
+
+An agent or automation plans the task. LAIX decides the next move. The host executes it. The
+receipt and outcome close the loop and calibrate the next decision.
+
+A recorded 20-30 second walkthrough is still being produced. The placeholder, storyboard and
+recording tools are in the [asset guide](docs/assets/README.md).
+
 ## What you get
 
 | Capability | What it gives the host |
@@ -198,10 +221,16 @@ External validation — real incident replay or a participant study — is still
 | [Quickstart](docs/01-start/02-quickstart.md) | install and first decision |
 | [Decision lifecycle](docs/01-start/03-decision-lifecycle.md) | moment to outcome in one loop |
 | [Core building blocks](docs/02-core/00-architecture.md) | the decision runtime |
+| [Commitments](docs/02-core/07-commitments.md) | promises, ledgers, due times and dependencies |
 | [App-kit building blocks](docs/03-appkit/00-architecture.md) | streaming, execution, stores and delivery |
+| [Deployment](docs/03-appkit/10-deployment.md) | production topology, reliability, rollout and retention |
 | [Research and evidence](docs/06-research/README.md) | claim, prior art, experiments and paper plan |
 | [Privacy](docs/04-concepts/privacy.md) | what may be shared, stored or exported |
+| [Security](docs/04-concepts/security.md) | threat model, trust boundaries and controls |
 | [Testing](docs/05-project/testing.md) | pytest, ruff, tsc, bench, conformance and CI |
+| [Troubleshooting](docs/05-project/troubleshooting.md) | symptoms, reason codes and execution failures |
+| [Migration](docs/05-project/migration.md) | upgrades, compatibility and deprecation |
+| [API map](docs/05-project/api-map.md) | the public surface by role |
 | [Repository structure](docs/05-project/repository-structure.md) | where each package, module and test lives |
 | [Examples](examples/README.md) | Python and TypeScript, grouped by lifecycle |
 
@@ -223,6 +252,19 @@ npm run bench
 
 CI runs the same checks on every push, plus the live benchmark, TypeScript parity, examples and docs
 links. See [Testing](docs/05-project/testing.md) for every check.
+
+For setup, design rules and the pull-request checklist, read [CONTRIBUTING.md](CONTRIBUTING.md).
+Questions go to [SUPPORT.md](SUPPORT.md); participation is covered by
+[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+## Security
+
+Do not open a public issue for a vulnerability. Read [SECURITY.md](SECURITY.md) and the
+[security and threat model](docs/04-concepts/security.md).
+
+## Citation
+
+If you use LAIX in research, cite it via [CITATION.cff](CITATION.cff).
 
 ## License and status
 

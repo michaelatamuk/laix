@@ -35,6 +35,7 @@ Read in order.
 | [Outcome learning](02-core/04-outcome-learning.md) | rewards, UCB, causal attribution, calibration, decision calibration and model learning |
 | [Evaluation](02-core/05-evaluation.md) | cases, comparison and parity |
 | [Planners](02-core/06-engines.md) | planner contract, utility, commitment, execution, attention, integrated live, MDP, POMDP, simulation and calibration |
+| [Commitments](02-core/07-commitments.md) | promises, ledgers, due times, dependencies and the commitment-aware planner |
 
 ## App kit
 
@@ -50,6 +51,7 @@ Read in order.
 | [Delivery](03-appkit/07-delivery.md) | ports, receipts and the host transport |
 | [LAIX-Bench](03-appkit/08-laix-bench.md) | LAIX-Bench, stream bench and planner simulation |
 | [Metrics](03-appkit/09-metrics.md) | stream counters, Prometheus and latency |
+| [Deployment](03-appkit/10-deployment.md) | production topology, reliability, observability, rollout and retention |
 
 ## Concepts
 
@@ -60,6 +62,7 @@ Read in order.
 | [Decision models](04-concepts/decision-models.md) | how LAIX relates to judgment and decision models |
 | [PPMA integration](04-concepts/ppma-integration.md) | why and how PPMA would use LAIX |
 | [Privacy](04-concepts/privacy.md) | what may be shared, stored or exported |
+| [Security](04-concepts/security.md) | trust boundaries, threats and controls |
 | [FAQ](04-concepts/faq.md) | models, execution, novelty and when to use LAIX |
 | [Glossary](04-concepts/glossary.md) | the vocabulary used across the docs |
 
@@ -69,15 +72,28 @@ Read in order.
 |---|---|
 | [Repository structure](05-project/repository-structure.md) | where each package, module and test lives |
 | [Testing](05-project/testing.md) | pytest, ruff, tsc, bench, conformance and CI |
+| [Troubleshooting](05-project/troubleshooting.md) | symptoms, reason codes, execution failures and performance |
+| [Migration](05-project/migration.md) | upgrades, compatibility, deprecation and data migration |
 | [API map](05-project/api-map.md) | public classes and functions by role |
 | [Versioning](05-project/versioning.md) | package, schema and vector versions |
 | [Roadmap](05-project/roadmap.md) | what is done and what is next |
+| [Brand assets](assets/README.md) | logo, banner, architecture and demo placeholder |
 
 ## Research and evidence
 
 | Page | Covers |
 |---|---|
 | [Research and evidence](06-research/README.md) | claim, prior-art gap, experiments, validation and paper plan |
+
+## Community
+
+| Page | Covers |
+|---|---|
+| [Contributing](../CONTRIBUTING.md) | setup, design rules, checks and the pull-request workflow |
+| [Security](../SECURITY.md) | vulnerability reporting and supported versions |
+| [Support](../SUPPORT.md) | where to ask and what to include |
+| [Code of conduct](../CODE_OF_CONDUCT.md) | participation rules |
+| [Citation](../CITATION.cff) | how to cite LAIX |
 
 ## Examples
 
@@ -97,9 +113,14 @@ Runnable examples are organized by language and lifecycle in
 | understand the planner contract | [Planners](02-core/06-engines.md) |
 | see the end-to-end loop | [Decision lifecycle](01-start/03-decision-lifecycle.md) |
 | see the public API | [API map](05-project/api-map.md) |
+| operate in production | [Deployment](03-appkit/10-deployment.md), [Metrics](03-appkit/09-metrics.md), [Troubleshooting](05-project/troubleshooting.md) |
+| troubleshoot a decision | [Troubleshooting](05-project/troubleshooting.md) |
+| upgrade a deployment | [Migration](05-project/migration.md) |
+| report a vulnerability | [Security](../SECURITY.md) |
+| contribute | [Contributing](../CONTRIBUTING.md), then [Testing](05-project/testing.md) |
 | check model use or novelty | [FAQ](04-concepts/faq.md), then [Research and evidence](06-research/README.md) |
 | look up a term | [Glossary](04-concepts/glossary.md) |
-| work on the repository | [Testing](05-project/testing.md), then [Structure](05-project/repository-structure.md) |
+| work on the repository | [Testing](05-project/testing.md), then [Repository structure](05-project/repository-structure.md) |
 
 ## Reading paths
 
@@ -107,5 +128,6 @@ Runnable examples are organized by language and lifecycle in
 |---|---|
 | Product | [What is LAIX?](01-start/01-what-is-laix.md), [Decision lifecycle](01-start/03-decision-lifecycle.md), [Scope and boundaries](04-concepts/scope-and-boundaries.md) |
 | Engineer | [Quickstart](01-start/02-quickstart.md), [Decision contract](02-core/01-decision-contract.md), [Policies](02-core/03-policies.md), [Planners](02-core/06-engines.md), [App kit](03-appkit/00-architecture.md) |
-| Operator | [Execution](03-appkit/04-execution.md), [Stores](03-appkit/05-stores.md), [Platform](03-appkit/06-platform.md), [Delivery](03-appkit/07-delivery.md), [Metrics](03-appkit/09-metrics.md) |
+| Operator | [Execution](03-appkit/04-execution.md), [Stores](03-appkit/05-stores.md), [Platform](03-appkit/06-platform.md), [Delivery](03-appkit/07-delivery.md), [Deployment](03-appkit/10-deployment.md), [Metrics](03-appkit/09-metrics.md) |
+| Contributor | [Contributing](../CONTRIBUTING.md), [Testing](05-project/testing.md), [Repository structure](05-project/repository-structure.md) |
 | Researcher or reviewer | [Research and evidence](06-research/README.md), then [Prior art](06-research/01-positioning/prior-art.md), [Benchmark](06-research/02-evaluation/benchmark.md) |

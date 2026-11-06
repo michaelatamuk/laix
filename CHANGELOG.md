@@ -38,6 +38,10 @@
 - **TypeScript engine surface.** `UtilityEngine`, `MDPEngine`, `Simulator` and `compareEngines`.
 - **Examples** for checkpoints, sources, causal attribution, planning, group/shadow, sagas,
   calibration, model learning, utility, MDP and POMDP.
+- **Brand and visuals.** Logo, banner, avatar, architecture diagram, demo placeholder and a
+  reproducible asset renderer in `scripts/docs/`.
+- **Project docs.** Contributing, security policy, code of conduct, support, deployment,
+  troubleshooting, migration, commitments and an expanded API map.
 
 ### Changed
 
