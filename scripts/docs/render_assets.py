@@ -1,6 +1,6 @@
 """Render the README and social assets from the LAIX brand source.
 
-Development-only. Requires Pillow:
+Development-only. Requires Pillow and matplotlib:
 
     python -m pip install -r scripts/docs/requirements-assets.txt
     python scripts/docs/render_assets.py
@@ -15,6 +15,12 @@ import json
 import math
 from pathlib import Path
 
+import matplotlib
+
+matplotlib.use("Agg")
+
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter, MultipleLocator
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -490,74 +496,110 @@ def render_demo_placeholder() -> None:
 
 
 PLANNERS = [
-    ("live", "LiveDecisionEngine", TEAL),
-    ("glue", "glue baseline", PURPLE),
-    ("commitment", "commitment", BLUE),
-    ("first", "first / rule", "#60A5FA"),
-    ("attention", "attention", "#38BDF8"),
-    ("execution", "execution", "#818CF8"),
-    ("utility", "utility", "#64748B"),
-    ("benefit", "benefit", "#475569"),
+    ("live", "LiveDecisionEngine"),
+    ("glue", "Glue baseline"),
+    ("commitment", "Commitment"),
+    ("first", "First / rule"),
+    ("attention", "Attention"),
+    ("execution", "Execution"),
+    ("utility", "Utility"),
+    ("benefit", "Benefit"),
 ]
 
 ABLATIONS_ORDER = [
-    ("full", "full", TEAL),
-    ("equal_weights", "equal weights", TEAL),
-    ("no_attention", "no attention", BLUE),
-    ("no_feasibility_gates", "no feasibility gates", BLUE),
-    ("no_execution", "no execution", BLUE),
-    ("no_commitment", "no commitment", BLUE),
-    ("utility_only", "utility only", MUTED),
+    ("full", "Full integration"),
+    ("equal_weights", "Equal weights"),
+    ("no_attention", "No attention"),
+    ("no_feasibility_gates", "No feasibility gates"),
+    ("no_execution", "No execution"),
+    ("no_commitment", "No commitment"),
+    ("utility_only", "Utility only"),
 ]
 
+ACCENT = "#0F766E"
+BAR = "#94A3B8"
+INK = "#0F172A"
+INK_MUTED = "#64748B"
+GRID = "#E2E8F0"
 
-def chart_panel(
-    draw: ImageDraw.ImageDraw,
-    x: int,
-    y: int,
-    width: int,
+
+def _percent(value: float) -> str:
+    return f"{value:.1%}".replace(".0%", "%")
+
+
+def _style_axes(ax: plt.Axes, title: str, subtitle: str) -> None:
+    ax.set_facecolor("white")
+    ax.set_axisbelow(True)
+    ax.xaxis.grid(True, color=GRID, linewidth=0.8)
+    ax.yaxis.grid(False)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    for side in ("left", "bottom"):
+        ax.spines[side].set_color(GRID)
+    ax.tick_params(axis="both", colors=INK_MUTED, labelsize=10, length=0)
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda value, _: f"{value:.0%}"))
+    ax.xaxis.set_major_locator(MultipleLocator(0.2))
+    ax.set_xlim(0, 1.14)
+    ax.text(
+        0.0,
+        1.10,
+        title,
+        transform=ax.transAxes,
+        fontsize=13,
+        fontweight="bold",
+        color=INK,
+        va="bottom",
+    )
+    ax.text(
+        0.0,
+        1.035,
+        subtitle,
+        transform=ax.transAxes,
+        fontsize=10,
+        color=INK_MUTED,
+        va="bottom",
+    )
+
+
+def _hbar_panel(
+    ax: plt.Axes,
+    rows: list[tuple[str, float, list[float]]],
     title: str,
     subtitle: str,
-    rows: list[tuple[str, float, str]],
 ) -> None:
-    draw.text((x, y), title, font=font("segoeuib.ttf", 24), fill=TEXT)
-    draw.text(
-        (x, y + 32),
-        subtitle,
-        font=font("segoeui.ttf", 14),
-        fill=MUTED,
+    labels = [label for label, _, _ in rows]
+    values = [value for _, value, _ in rows]
+    errors = [
+        [max(0.0, value - interval[0]) for _, value, interval in rows],
+        [max(0.0, interval[1] - value) for _, value, interval in rows],
+    ]
+    colors = [ACCENT if index == 0 else BAR for index in range(len(rows))]
+    ax.barh(
+        labels,
+        values,
+        height=0.62,
+        color=colors,
+        xerr=errors,
+        error_kw={
+            "ecolor": INK_MUTED,
+            "elinewidth": 1,
+            "capsize": 3,
+            "capthick": 1,
+        },
+        zorder=3,
     )
-    label_width = 190
-    value_width = 70
-    bar_x = x + label_width
-    bar_width = width - label_width - value_width - 10
-    bar_height = 22
-    row_height = 56
-    top = y + 70
-    label_font = font("seguisb.ttf", 13)
-    value_font = font("seguisb.ttf", 13)
-    for index, (label, value, color) in enumerate(rows):
-        row_y = top + index * row_height
-        draw.text((x, row_y + 3), label, font=label_font, fill=TEXT)
-        draw.rounded_rectangle(
-            [bar_x, row_y, bar_x + bar_width, row_y + bar_height],
-            radius=bar_height // 2,
-            fill="#1E293B",
+    ax.invert_yaxis()
+    for index, (_, value, interval) in enumerate(rows):
+        ax.text(
+            max(0.03, max(value, interval[1]) + 0.015),
+            index,
+            f"{_percent(value)}",
+            va="center",
+            ha="left",
+            fontsize=9.5,
+            color=INK,
         )
-        filled = max(0.0, min(1.0, value))
-        if filled > 0:
-            bar_end = bar_x + max(bar_height, int(bar_width * filled))
-            draw.rounded_rectangle(
-                [bar_x, row_y, bar_end, row_y + bar_height],
-                radius=bar_height // 2,
-                fill=color,
-            )
-        draw.text(
-            (bar_x + bar_width + 14, row_y + 3),
-            f"{value * 100:.1f}%",
-            font=value_font,
-            fill=TEXT,
-        )
+    _style_axes(ax, title, subtitle)
 
 
 def load_results() -> tuple[dict[str, dict[str, float]], dict[str, dict[str, float]]]:
@@ -568,86 +610,91 @@ def load_results() -> tuple[dict[str, dict[str, float]], dict[str, dict[str, flo
 
 def render_benchmark_chart() -> None:
     summary, _ = load_results()
-    canvas = gradient((1600, 900), BG, BG_2).convert("RGBA")
-    glow(canvas, (1300, 100), 500, TEAL, 14, 220)
-    draw = ImageDraw.Draw(canvas)
-    draw.text(
-        (80, 50),
-        "Live decision benchmark",
-        font=font("segoeuib.ttf", 42),
-        fill=TEXT,
-    )
-    draw.text(
-        (80, 106),
-        "Frozen 30-case test split - synthetic corpus - higher is better",
-        font=font("segoeui.ttf", 17),
-        fill=MUTED,
-    )
-    draw.line([(800, 180), (800, 720)], fill="#1E293B", width=1)
     accuracy = [
-        (label, float(summary[key]["accuracy"]), color)
-        for key, label, color in PLANNERS
+        (label, float(summary[key]["accuracy"]), summary[key]["accuracy_ci"])
+        for key, label in PLANNERS
     ]
     conflict = [
-        (label, float(summary[key]["conflict_accuracy"]), color)
-        for key, label, color in PLANNERS
+        (
+            label,
+            float(summary[key]["conflict_accuracy"]),
+            summary[key]["conflict_ci"],
+        )
+        for key, label in PLANNERS
     ]
-    chart_panel(draw, 80, 180, 720, "Accuracy", "All 30 cases", accuracy)
-    chart_panel(
-        draw,
-        840,
-        180,
-        680,
+
+    fig, panels = plt.subplots(1, 2, figsize=(12, 5.6), dpi=200)
+    fig.patch.set_facecolor("white")
+    fig.text(
+        0.055,
+        0.945,
+        "Live decision benchmark",
+        fontsize=19,
+        fontweight="bold",
+        color=INK,
+    )
+    fig.text(
+        0.055,
+        0.9,
+        "Frozen 30-case test split · synthetic corpus · higher is better",
+        fontsize=10.5,
+        color=INK_MUTED,
+    )
+    _hbar_panel(panels[0], accuracy, "Accuracy", "All 30 cases")
+    _hbar_panel(
+        panels[1],
+        conflict,
         "Conflict accuracy",
         "6 cases where concerns collide",
-        conflict,
     )
-    draw.text(
-        (80, 800),
-        "Source: results/live-decision-benchmark/metrics/summary.json - reproduce: bash scripts/novelty/reproduce.sh",
-        font=font("segoeui.ttf", 12),
-        fill=MUTED,
+    fig.subplots_adjust(left=0.155, right=0.975, top=0.76, bottom=0.14, wspace=0.55)
+    fig.text(
+        0.055,
+        0.035,
+        "Source: results/live-decision-benchmark/metrics/summary.json · "
+        "reproduce: bash scripts/novelty/reproduce.sh",
+        fontsize=8,
+        color=INK_MUTED,
     )
-    canvas.convert("RGB").save(ASSETS / "benchmark.png", optimize=True)
+    fig.savefig(ASSETS / "benchmark.png", facecolor="white")
+    plt.close(fig)
 
 
 def render_ablation_chart() -> None:
     _, ablations = load_results()
-    canvas = gradient((1400, 800), BG, BG_2).convert("RGBA")
-    glow(canvas, (1200, 120), 500, BLUE, 12, 220)
-    draw = ImageDraw.Draw(canvas)
-    draw.text(
-        (80, 50),
-        "Ablations",
-        font=font("segoeuib.ttf", 42),
-        fill=TEXT,
-    )
-    draw.text(
-        (80, 106),
-        "Accuracy on the frozen 30-case test split",
-        font=font("segoeui.ttf", 17),
-        fill=MUTED,
-    )
     rows = [
-        (label, float(ablations[key]["accuracy"]), color)
-        for key, label, color in ABLATIONS_ORDER
+        (label, float(ablations[key]["accuracy"]), ablations[key]["accuracy_ci"])
+        for key, label in ABLATIONS_ORDER
     ]
-    chart_panel(
-        draw,
-        80,
-        180,
-        1240,
-        "Variant",
-        "Full integration vs removing one concern",
-        rows,
+
+    fig, ax = plt.subplots(figsize=(11, 5.2), dpi=200)
+    fig.patch.set_facecolor("white")
+    fig.text(
+        0.055,
+        0.945,
+        "Ablations",
+        fontsize=19,
+        fontweight="bold",
+        color=INK,
     )
-    draw.text(
-        (80, 750),
+    fig.text(
+        0.055,
+        0.9,
+        "Accuracy on the frozen 30-case test split · removing one concern at a time",
+        fontsize=10.5,
+        color=INK_MUTED,
+    )
+    _hbar_panel(ax, rows, "Accuracy", "Full integration vs removing one concern")
+    fig.subplots_adjust(left=0.24, right=0.97, top=0.74, bottom=0.15)
+    fig.text(
+        0.055,
+        0.035,
         "Source: results/live-decision-benchmark/ablations/results.json",
-        font=font("segoeui.ttf", 12),
-        fill=MUTED,
+        fontsize=8,
+        color=INK_MUTED,
     )
-    canvas.convert("RGB").save(ASSETS / "ablation.png", optimize=True)
+    fig.savefig(ASSETS / "ablation.png", facecolor="white")
+    plt.close(fig)
 
 
 def terminal_frame(command: str, output: str | None = None) -> Image.Image:

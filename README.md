@@ -10,13 +10,11 @@
 **LAIX is the live decision runtime for AI agents and automations that act in the real world.**
 
 Agent frameworks plan. Workflow engines orchestrate. LAIX decides whether to act, ask, wait, verify
-or escalate — and records why.
+or escalate — and makes the choice explicit, scored and auditable.
 
-One contract for utility, commitments, execution risk and human attention. The host owns execution,
-data, delivery and storage; LAIX owns the decision and its trail.
-
-**Decision continuity:** every decision carries its commitments, attention budget, approvals and
-revisions into the next.
+One contract for utility, commitments, execution risk and human attention — with **decision
+continuity**: every decision carries its commitments, attention budget, approvals and revisions into
+the next. The host owns execution, data, delivery and storage; LAIX owns the decision and its trail.
 
 LAIX is **training-free**: the default path is deterministic policies and planners; a planner can use
 a model the host supplies.
@@ -34,14 +32,9 @@ approvals, promises, human attention or auditability matter.
 - [Demo](#demo)
 - [How it works](#how-it-works)
 - [Decision continuity](#decision-continuity)
-- [What you get](#what-you-get)
-- [Why LAIX](#why-laix)
 - [Results](#results)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
-- [Security](#security)
-- [Citation](#citation)
-- [License and status](#license-and-status)
 
 ## Install
 
@@ -158,8 +151,7 @@ attention scores. See the full
 
 ![Animated quickstart: the live engine returns a decision with a reason](docs/assets/demo.gif)
 
-A four-second animated quickstart generated from the actual example output. A full screen recording
-can replace it later.
+A four-second animated quickstart generated from the actual example output.
 
 ## How it works
 
@@ -170,7 +162,7 @@ receipt and outcome close the loop and calibrate the next decision.
 
 ## Decision continuity
 
-A decision is not a one-shot answer. It leaves state for the next decision.
+A decision is one step in a sequence. It leaves state for the next decision.
 
 | Step | Decision | State carried forward |
 |---|---|---|
@@ -179,9 +171,7 @@ A decision is not a one-shot answer. It leaves state for the next decision.
 | 3 | verifies after execution | `c1` fulfilled; receipt and outcome recorded |
 
 The next decision sees the commitments, attention budget, approvals, revisions and outcomes the
-previous one left. That is what makes LAIX a runtime, not a classifier.
-
-See [Decision continuity](docs/02-core/08-decision-continuity.md).
+previous one left. See [Decision continuity](docs/02-core/08-decision-continuity.md).
 
 ## What you get
 
@@ -199,13 +189,10 @@ See [Decision continuity](docs/02-core/08-decision-continuity.md).
 
 - **One decision contract** — attention, action, follow-up, execution and outcomes share the same
   shape, reasons, confidence and trail.
-- **Training-free** — no training or fine-tuning; deterministic policies and planners, with an
-  optional model the host supplies.
-- **Live context is part of the decision** — promises, execution risk and human attention are scored
-  in the same plan.
-- **Decision continuity** — the next decision sees what the last one promised, spent, approved or
-  revised.
-- **The host keeps control** — LAIX decides; the host owns data, execution, storage and delivery.
+- **Live context and continuity** — promises, execution risk and human attention are scored in the
+  plan, and the next decision sees what the last one left.
+- **Training-free, host-owned** — deterministic policies and planners; the host supplies the model
+  and owns data, execution, storage and delivery.
 - **Inspectable** — reason code, score breakdown, decision id, trace, conformance vectors and
   Python/TypeScript parity.
 
@@ -229,7 +216,7 @@ is not yet significant. Single-concern planners lose when concerns conflict.
 
 | Check | Result |
 |---|---|
-| Python tests | pass |
+| Python tests | 396 |
 | TypeScript tests | 172 |
 | Attention conformance | 24/24 |
 | LAIX-Bench | 25/25 |

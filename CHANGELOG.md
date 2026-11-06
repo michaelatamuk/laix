@@ -48,6 +48,7 @@
 ### Changed
 
 - Repositioned the README around the live decision-runtime category, restored the training-free property to the opening, and aligned the docs and package one-liners. No API changes.
+- Tightened the README hero, contents and Why section, and replaced the slide-style benchmark and ablation images with matplotlib charts generated from the committed result JSON.
 - Reordered the repository for role-based grouping: `benchmarks/live/v1/` (versioned corpus), `benchmarks/compare/adapters/` (per-system adapters), `data/{incident-replay,vignette-study/v1}/`, `results/live-decision-benchmark/`, `scripts/ci/`, `scripts/novelty/{bench,analysis,compare,incident-replay,vignette-study,shared}/` and `docs/06-research/` (the research dossier moved out of `05-project`). Public APIs and package layout are unchanged.
 - Added `to_decision` / `toDecision` as the one plan-to-decision conversion.
 - TypeScript now mirrors the Python calibration, model-learning and POMDP surface.

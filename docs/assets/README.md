@@ -6,8 +6,8 @@
 | `logo.png` | 512 x 512 | square logo, docs, release notes |
 | `avatar.png` | 512 x 512 | circular-safe mark for GitHub or chat |
 | `architecture.png` | 1600 x 900 | README "How it works" and docs |
-| `benchmark.png` | 1600 x 900 | accuracy and conflict accuracy |
-| `ablation.png` | 1400 x 800 | ablation accuracy |
+| `benchmark.png` | 2400 x 1120 | accuracy and conflict accuracy |
+| `ablation.png` | 2200 x 1040 | ablation accuracy |
 | `demo.gif` | 1200 x 675 | animated quickstart from the real example output |
 | `demo-placeholder.png` | 1200 x 675 | fallback if the animation is removed |
 | `source/laix-cover.png` | 1254 x 1254 | original brand cover, source for the generated assets |
@@ -41,7 +41,8 @@ python scripts/docs/render_assets.py
 ```
 
 The script writes every PNG in this folder. It is development-only and is not part of the
-runtime dependencies or CI.
+runtime dependencies or CI. The benchmark and ablation charts use matplotlib with a light
+background and are generated from the committed result JSON, not hand-drawn.
 
 ## GitHub social preview
 
