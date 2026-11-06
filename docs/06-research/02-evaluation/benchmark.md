@@ -404,3 +404,28 @@ python scripts/novelty/bench/summarize_results.py
 ```
 
 or, in CI, `bash scripts/novelty/reproduce.sh`.
+
+## 6. Sequence benchmark (next)
+
+The current corpus scores one decision at a time. The continuity claim needs an episode benchmark:
+5-20 decisions with state that evolves.
+
+Each episode should include:
+
+- commitments that are created, fulfilled, violated or blocked;
+- an attention budget that depletes across the episode;
+- approvals that change state;
+- revisions after new information;
+- receipts that are pending, unknown or failed;
+- outcomes that feed the next decision.
+
+Measure:
+
+- promise keeping across the episode;
+- attention budget adherence across the episode;
+- revision correctness;
+- decision drift and stability;
+- recovery after a failed or unknown execution;
+- calibration over time.
+
+Status: design only. The implementation is the next benchmark extension.

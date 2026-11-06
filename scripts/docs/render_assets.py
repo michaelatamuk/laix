@@ -233,7 +233,7 @@ def render_banner() -> None:
 
     footer_font = font("seguisb.ttf", 21 * SCALE)
     footer_y = 580 * SCALE
-    items = ["Training-free", "Python + TypeScript", "Auditable"]
+    items = ["Training-free", "Decision continuity", "Auditable"]
     x = left
     for index, item in enumerate(items):
         draw.text((x, footer_y), item, font=footer_font, fill=TEXT)

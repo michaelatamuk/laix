@@ -41,7 +41,9 @@
 - **Brand and visuals.** Logo, banner, avatar, architecture diagram, benchmark and ablation charts,
   an animated quickstart, a demo placeholder and a reproducible asset renderer in `scripts/docs/`.
 - **Project docs.** Contributing, security policy, code of conduct, support, deployment,
-  troubleshooting, migration, commitments and an expanded API map.
+  troubleshooting, migration, commitments, decision continuity and an expanded API map.
+- **Decision continuity.** A README section, a dedicated core page and a sequence-benchmark
+  design note for commitments, budget, approvals, revisions and outcomes carried across decisions.
 
 ### Changed
 

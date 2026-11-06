@@ -1,4 +1,4 @@
-![LAIX — the live decision runtime for AI agents and automations](docs/assets/banner.png)
+![LAIX — the live decision runtime with decision continuity for AI agents and automations](docs/assets/banner.png)
 
 [![CI](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
@@ -15,6 +15,9 @@ or escalate — and records why.
 One contract for utility, commitments, execution risk and human attention. The host owns execution,
 data, delivery and storage; LAIX owns the decision and its trail.
 
+**Decision continuity:** every decision carries its commitments, attention budget, approvals and
+revisions into the next.
+
 LAIX is **training-free**: the default path is deterministic policies and planners; a planner can use
 a model the host supplies.
 
@@ -30,6 +33,7 @@ approvals, promises, human attention or auditability matter.
 - [Integrated live decision](#integrated-live-decision)
 - [Demo](#demo)
 - [How it works](#how-it-works)
+- [Decision continuity](#decision-continuity)
 - [What you get](#what-you-get)
 - [Why LAIX](#why-laix)
 - [Results](#results)
@@ -164,11 +168,27 @@ can replace it later.
 An agent or automation plans the task. LAIX decides the next move. The host executes it. The
 receipt and outcome close the loop and calibrate the next decision.
 
+## Decision continuity
+
+A decision is not a one-shot answer. It leaves state for the next decision.
+
+| Step | Decision | State carried forward |
+|---|---|---|
+| 1 | acts, creating commitment `c1` | `c1` open; attention budget 0.6 spent |
+| 2 | asks because `c1` is due and the budget is low | `c1` still open; approval pending |
+| 3 | verifies after execution | `c1` fulfilled; receipt and outcome recorded |
+
+The next decision sees the commitments, attention budget, approvals, revisions and outcomes the
+previous one left. That is what makes LAIX a runtime, not a classifier.
+
+See [Decision continuity](docs/02-core/08-decision-continuity.md).
+
 ## What you get
 
 | Capability | What it gives the host |
 |---|---|
 | Decision contract | one `Decision` shape for attention, action, follow-up and execution |
+| Decision continuity | commitments, budget, approvals, revisions and outcomes carried into the next decision |
 | Policies | action, safety, replanning, allocation, negotiation, preference, verification and escalation |
 | Planners | utility, commitment, execution, attention, integrated live, MDP and POMDP |
 | Learning | rewards, bandits, causal attribution, calibration and decision calibration |
@@ -183,6 +203,8 @@ receipt and outcome close the loop and calibrate the next decision.
   optional model the host supplies.
 - **Live context is part of the decision** — promises, execution risk and human attention are scored
   in the same plan.
+- **Decision continuity** — the next decision sees what the last one promised, spent, approved or
+  revised.
 - **The host keeps control** — LAIX decides; the host owns data, execution, storage and delivery.
 - **Inspectable** — reason code, score breakdown, decision id, trace, conformance vectors and
   Python/TypeScript parity.

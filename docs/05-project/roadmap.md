@@ -44,6 +44,8 @@ still open.
 - Bootstrap intervals and covariate adjustment for causal effects.
 - [MDP policy iteration](../02-core/06-engines.md#what-an-mdp-is) as an alternative to value iteration.
 - File-backed state and outcome stores for hosts that want an adapter out of the box.
+- A sequence benchmark for decision continuity: episodes of 5-20 decisions with evolving commitments,
+  budgets, approvals and revisions.
 - Generated API reference once the public surface is stable.
 
 ## Candidate planners
@@ -84,6 +86,7 @@ no model training or fine-tuning; planning runs over a model the host supplies.
 | 4 | Human approval and attention | Is human attention a scarce resource that planning should spend explicitly? | feature done |
 | 5 | Decision-level calibration | Does calibrating the decision beat calibrating the prediction? | done |
 | 6 | Streaming decision semantics | What are the correct semantics for decisions over event time, revisions and checkpoints? | done |
+| 7 | Decision continuity | What changes when commitments, budget, approvals and revisions carry across a sequence of decisions? | design |
 
 A track becomes a paper with a precise problem, strong baselines (including published trained
 models where relevant), ablations, reproducible code, and honest limitations. The scope includes

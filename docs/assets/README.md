@@ -12,8 +12,8 @@
 | `demo-placeholder.png` | 1200 x 675 | fallback if the animation is removed |
 | `source/laix-cover.png` | 1254 x 1254 | original brand cover, source for the generated assets |
 
-The banner keeps the existing LAIX mark and wordmark. The positioning text is the current
-one: **live decision runtime for AI agents and automations that act in the real world**.
+The banner keeps the existing LAIX mark and wordmark. The headline is **the live decision runtime for
+AI agents and automations**; the feature strip names **decision continuity**.
 
 ## Brand
 

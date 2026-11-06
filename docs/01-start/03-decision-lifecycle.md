@@ -16,6 +16,9 @@ moment → attention → decision → execution → outcome → learning → nex
 | **Learning** | Rewards, calibration and causal evidence improve the next choice | `UCBBandit`, `CalibrationReport`, `CalibratedPolicy` |
 | **Next decision** | The loop continues, with revisions and a timeline | `StreamSession`, `DecisionTimeline` |
 
+The state that survives the loop is [decision continuity](../02-core/08-decision-continuity.md):
+commitments, attention budget, approvals, revisions and outcomes.
+
 ## One pass
 
 A task has a promise due, an irreversible action and a tight attention budget.
