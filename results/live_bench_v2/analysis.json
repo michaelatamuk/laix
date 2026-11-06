@@ -1,0 +1,462 @@
+{
+  "cases": 30,
+  "categories": {
+    "attention": {
+      "attention": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 9,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "benefit": {
+        "accuracy": 0.222222,
+        "budget_violation_rate": 0.777778,
+        "cases": 9,
+        "irreversible_rate": 0.222222,
+        "promise_keeping": 0.666667
+      },
+      "commitment": {
+        "accuracy": 0.555556,
+        "budget_violation_rate": 0.444444,
+        "cases": 9,
+        "irreversible_rate": 0.111111,
+        "promise_keeping": 1.0
+      },
+      "execution": {
+        "accuracy": 0.444444,
+        "budget_violation_rate": 0.555556,
+        "cases": 9,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 0.777778
+      },
+      "first": {
+        "accuracy": 0.222222,
+        "budget_violation_rate": 0.777778,
+        "cases": 9,
+        "irreversible_rate": 0.222222,
+        "promise_keeping": 0.666667
+      },
+      "glue": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 9,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "live": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 9,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "utility": {
+        "accuracy": 0.222222,
+        "budget_violation_rate": 0.777778,
+        "cases": 9,
+        "irreversible_rate": 0.222222,
+        "promise_keeping": 0.666667
+      }
+    },
+    "conflict": {
+      "attention": {
+        "accuracy": 0.666667,
+        "budget_violation_rate": 0.0,
+        "cases": 6,
+        "irreversible_rate": 0.333333,
+        "promise_keeping": 0.666667
+      },
+      "benefit": {
+        "accuracy": 0.0,
+        "budget_violation_rate": 0.666667,
+        "cases": 6,
+        "irreversible_rate": 0.666667,
+        "promise_keeping": 0.166667
+      },
+      "commitment": {
+        "accuracy": 0.833333,
+        "budget_violation_rate": 0.166667,
+        "cases": 6,
+        "irreversible_rate": 0.166667,
+        "promise_keeping": 1.0
+      },
+      "execution": {
+        "accuracy": 0.333333,
+        "budget_violation_rate": 0.333333,
+        "cases": 6,
+        "irreversible_rate": 0.333333,
+        "promise_keeping": 0.333333
+      },
+      "first": {
+        "accuracy": 0.0,
+        "budget_violation_rate": 0.666667,
+        "cases": 6,
+        "irreversible_rate": 0.666667,
+        "promise_keeping": 0.166667
+      },
+      "glue": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 6,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "live": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 6,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "utility": {
+        "accuracy": 0.0,
+        "budget_violation_rate": 0.666667,
+        "cases": 6,
+        "irreversible_rate": 0.666667,
+        "promise_keeping": 0.166667
+      }
+    },
+    "execution": {
+      "attention": {
+        "accuracy": 0.222222,
+        "budget_violation_rate": 0.0,
+        "cases": 9,
+        "irreversible_rate": 0.555556,
+        "promise_keeping": 0.777778
+      },
+      "benefit": {
+        "accuracy": 0.0,
+        "budget_violation_rate": 0.222222,
+        "cases": 9,
+        "irreversible_rate": 0.777778,
+        "promise_keeping": 0.666667
+      },
+      "commitment": {
+        "accuracy": 0.333333,
+        "budget_violation_rate": 0.111111,
+        "cases": 9,
+        "irreversible_rate": 0.444444,
+        "promise_keeping": 1.0
+      },
+      "execution": {
+        "accuracy": 0.666667,
+        "budget_violation_rate": 0.0,
+        "cases": 9,
+        "irreversible_rate": 0.222222,
+        "promise_keeping": 0.777778
+      },
+      "first": {
+        "accuracy": 0.555556,
+        "budget_violation_rate": 0.222222,
+        "cases": 9,
+        "irreversible_rate": 0.444444,
+        "promise_keeping": 0.666667
+      },
+      "glue": {
+        "accuracy": 0.777778,
+        "budget_violation_rate": 0.0,
+        "cases": 9,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "live": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 9,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "utility": {
+        "accuracy": 0.0,
+        "budget_violation_rate": 0.222222,
+        "cases": 9,
+        "irreversible_rate": 0.777778,
+        "promise_keeping": 0.666667
+      }
+    },
+    "plain": {
+      "attention": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 5,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "benefit": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 5,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "commitment": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 5,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "execution": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 5,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "first": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 5,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "glue": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 5,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "live": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 5,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "utility": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 5,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      }
+    },
+    "promise": {
+      "attention": {
+        "accuracy": 0.25,
+        "budget_violation_rate": 0.0,
+        "cases": 12,
+        "irreversible_rate": 0.166667,
+        "promise_keeping": 0.25
+      },
+      "benefit": {
+        "accuracy": 0.0,
+        "budget_violation_rate": 0.25,
+        "cases": 12,
+        "irreversible_rate": 0.25,
+        "promise_keeping": 0.0
+      },
+      "commitment": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 12,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "execution": {
+        "accuracy": 0.083333,
+        "budget_violation_rate": 0.166667,
+        "cases": 12,
+        "irreversible_rate": 0.166667,
+        "promise_keeping": 0.083333
+      },
+      "first": {
+        "accuracy": 0.583333,
+        "budget_violation_rate": 0.25,
+        "cases": 12,
+        "irreversible_rate": 0.25,
+        "promise_keeping": 0.583333
+      },
+      "glue": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 12,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "live": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 12,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "utility": {
+        "accuracy": 0.0,
+        "budget_violation_rate": 0.25,
+        "cases": 12,
+        "irreversible_rate": 0.25,
+        "promise_keeping": 0.0
+      }
+    },
+    "timing": {
+      "attention": {
+        "accuracy": 0.5,
+        "budget_violation_rate": 0.0,
+        "cases": 4,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 0.5
+      },
+      "benefit": {
+        "accuracy": 0.0,
+        "budget_violation_rate": 0.0,
+        "cases": 4,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 0.5
+      },
+      "commitment": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 4,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "execution": {
+        "accuracy": 0.5,
+        "budget_violation_rate": 0.0,
+        "cases": 4,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 0.5
+      },
+      "first": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 4,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "glue": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 4,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "live": {
+        "accuracy": 1.0,
+        "budget_violation_rate": 0.0,
+        "cases": 4,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 1.0
+      },
+      "utility": {
+        "accuracy": 0.5,
+        "budget_violation_rate": 0.0,
+        "cases": 4,
+        "irreversible_rate": 0.0,
+        "promise_keeping": 0.5
+      }
+    }
+  },
+  "comparisons": {
+    "live_vs_attention": {
+      "accuracy_delta": 0.466667,
+      "checked": 30,
+      "chi2": 12.071429,
+      "cohens_h": 1.50408,
+      "delta_ci": [
+        0.3,
+        0.633333
+      ],
+      "live_accuracy": 1.0,
+      "live_only_correct": 14,
+      "other_accuracy": 0.533333,
+      "other_only_correct": 0,
+      "p_value": 0.000512
+    },
+    "live_vs_benefit": {
+      "accuracy_delta": 0.766667,
+      "checked": 30,
+      "chi2": 21.043478,
+      "cohens_h": 2.133333,
+      "delta_ci": [
+        0.6,
+        0.9
+      ],
+      "live_accuracy": 1.0,
+      "live_only_correct": 23,
+      "other_accuracy": 0.233333,
+      "other_only_correct": 0,
+      "p_value": 4e-06
+    },
+    "live_vs_commitment": {
+      "accuracy_delta": 0.3,
+      "checked": 30,
+      "chi2": 7.111111,
+      "cohens_h": 1.159279,
+      "delta_ci": [
+        0.133333,
+        0.466667
+      ],
+      "live_accuracy": 1.0,
+      "live_only_correct": 9,
+      "other_accuracy": 0.7,
+      "other_only_correct": 0,
+      "p_value": 0.007661
+    },
+    "live_vs_execution": {
+      "accuracy_delta": 0.5,
+      "checked": 30,
+      "chi2": 13.066667,
+      "cohens_h": 1.570796,
+      "delta_ci": [
+        0.333333,
+        0.666667
+      ],
+      "live_accuracy": 1.0,
+      "live_only_correct": 15,
+      "other_accuracy": 0.5,
+      "other_only_correct": 0,
+      "p_value": 0.000301
+    },
+    "live_vs_first": {
+      "accuracy_delta": 0.3,
+      "checked": 30,
+      "chi2": 7.111111,
+      "cohens_h": 1.159279,
+      "delta_ci": [
+        0.133333,
+        0.466667
+      ],
+      "live_accuracy": 1.0,
+      "live_only_correct": 9,
+      "other_accuracy": 0.7,
+      "other_only_correct": 0,
+      "p_value": 0.007661
+    },
+    "live_vs_glue": {
+      "accuracy_delta": 0.066667,
+      "checked": 30,
+      "chi2": 0.5,
+      "cohens_h": 0.522315,
+      "delta_ci": [
+        0.0,
+        0.166667
+      ],
+      "live_accuracy": 1.0,
+      "live_only_correct": 2,
+      "other_accuracy": 0.933333,
+      "other_only_correct": 0,
+      "p_value": 0.4795
+    },
+    "live_vs_utility": {
+      "accuracy_delta": 0.7,
+      "checked": 30,
+      "chi2": 19.047619,
+      "cohens_h": 1.982313,
+      "delta_ci": [
+        0.533333,
+        0.866667
+      ],
+      "live_accuracy": 1.0,
+      "live_only_correct": 21,
+      "other_accuracy": 0.3,
+      "other_only_correct": 0,
+      "p_value": 1.3e-05
+    }
+  },
+  "schema": "laix/live-bench-analysis/v1",
+  "seed": 42
+}

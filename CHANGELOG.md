@@ -4,6 +4,13 @@
 
 ### Added
 
+- **Live decision benchmark.** A 120-case corpus across promise, execution, attention, timing,
+  conflict and plain categories, with dev/test/adversarial splits, JSON Schema validation,
+  bootstrap confidence intervals, paired significance tests and a hand-built glue baseline.
+- **Novelty evidence.** Prior-art matrix, formal model and invariants, claim–evidence map,
+  EU Product Liability mapping, paper draft and validation harness.
+- **Validation harness.** Incident ingestion with PII stripping and a comparison script for
+  recorded human decisions.
 - **Built-in decision engines.** `UtilityEngine` with hard limits and risk attitude, `MDPEngine`
   with value iteration, and `POMDPEngine` with belief update and finite-horizon planning.
 - **Engine proof.** `Simulator`, seeded scenarios, `compare_engines` with reward and optimality gap,
@@ -37,6 +44,8 @@
 
 - CI runs `ruff check` for Python and `tsc --noEmit` for TypeScript; TypeScript uses a committed
   `package-lock.json`.
+- CI validates the live-bench cases and runs the benchmark, paired analysis and ablations through
+  `scripts/reproduce.sh`.
 
 ## 0.9.0 — 2026-11-05
 

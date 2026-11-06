@@ -26,9 +26,9 @@
         0.0
       ],
       "irreversible_rate": 0.0,
-      "mean_latency_ms": 0.138473,
+      "mean_latency_ms": 0.150057,
       "mean_regret": 0.241818,
-      "p95_latency_ms": 0.2645,
+      "p95_latency_ms": 0.244745,
       "promise_ci": [
         1.0,
         1.0
@@ -69,9 +69,9 @@
         0.0
       ],
       "irreversible_rate": 0.0,
-      "mean_latency_ms": 0.122613,
+      "mean_latency_ms": 0.168917,
       "mean_regret": 0.241818,
-      "p95_latency_ms": 0.32038,
+      "p95_latency_ms": 0.43763,
       "promise_ci": [
         1.0,
         1.0
@@ -112,9 +112,9 @@
         0.0
       ],
       "irreversible_rate": 0.0,
-      "mean_latency_ms": 0.107997,
+      "mean_latency_ms": 0.2465,
       "mean_regret": 0.230707,
-      "p95_latency_ms": 0.129935,
+      "p95_latency_ms": 0.74842,
       "promise_ci": [
         1.0,
         1.0
@@ -155,9 +155,9 @@
         0.166667
       ],
       "irreversible_rate": 0.066667,
-      "mean_latency_ms": 0.097887,
+      "mean_latency_ms": 0.28693,
       "mean_regret": 0.137374,
-      "p95_latency_ms": 0.11447,
+      "p95_latency_ms": 1.061935,
       "promise_ci": [
         0.0,
         0.5
@@ -198,9 +198,9 @@
         0.233333
       ],
       "irreversible_rate": 0.1,
-      "mean_latency_ms": 0.109577,
+      "mean_latency_ms": 0.36081,
       "mean_regret": 0.186263,
-      "p95_latency_ms": 0.172785,
+      "p95_latency_ms": 2.060195,
       "promise_ci": [
         1.0,
         1.0
@@ -241,9 +241,9 @@
         0.0
       ],
       "irreversible_rate": 0.0,
-      "mean_latency_ms": 0.119993,
+      "mean_latency_ms": 0.34367,
       "mean_regret": 0.241818,
-      "p95_latency_ms": 0.300035,
+      "p95_latency_ms": 1.962175,
       "promise_ci": [
         1.0,
         1.0
@@ -284,9 +284,9 @@
         0.4
       ],
       "irreversible_rate": 0.233333,
-      "mean_latency_ms": 0.022407,
+      "mean_latency_ms": 0.030273,
       "mean_regret": 0.0,
-      "p95_latency_ms": 0.0664,
+      "p95_latency_ms": 0.0608,
       "promise_ci": [
         0.0,
         0.0

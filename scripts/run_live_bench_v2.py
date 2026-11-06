@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import sys
 
+from glue_baseline import GlueBaseline
 from laix import default_planners
 from live_bench_common import (
     evaluate_case,
@@ -72,7 +73,7 @@ def main() -> int:
         return 2
 
     cases = load_cases(paths)
-    planners = default_planners()
+    planners = {"glue": GlueBaseline(), **default_planners()}
     rows = []
     for planner_name, engine in planners.items():
         for case in cases:

@@ -42,94 +42,97 @@ def split_paths(split: str) -> list[Path]:
     return [CASES / f"{name}-cases-v1.json" for name in names]
 
 
+def build_problem(payload: dict[str, Any]) -> DecisionProblem:
+    situation = None
+    raw_situation = payload.get("situation")
+    if raw_situation:
+        constraints = tuple(
+            Constraint(
+                id=constraint["id"],
+                kind=constraint["kind"],
+                value=constraint["value"],
+                hard=constraint["hard"],
+            )
+            for constraint in raw_situation.get("constraints", [])
+        )
+        situation = Situation(
+            id=raw_situation["id"],
+            at=payload["at"],
+            subject=raw_situation["subject"],
+            constraints=constraints,
+        )
+
+    commitments = tuple(
+        Commitment(
+            id=commitment["id"],
+            subject=commitment["subject"],
+            due=commitment.get("due"),
+            priority=float(commitment.get("priority", 0.5)),
+        )
+        for commitment in payload.get("commitments", [])
+    )
+
+    attention = payload.get("attention_budget")
+    attention_budget = (
+        AttentionBudget(total=attention["total"], spent=attention["spent"])
+        if attention
+        else None
+    )
+
+    options = tuple(
+        ActionOption(
+            id=option["id"],
+            verb=option["verb"],
+            name=option["name"],
+            expected_benefit=float(option.get("expected_benefit", 0.0)),
+            cost=float(option.get("cost", 0.0)),
+            risk=float(option.get("risk", 0.0)),
+            interrupt_cost=float(option.get("interrupt_cost", 0.0)),
+            latency_ms=float(option.get("latency_ms", 0.0)),
+            reversible=bool(option.get("reversible", True)),
+            requires_approval=bool(option.get("requires_approval", False)),
+            params={
+                **(
+                    {"commitments": option["commitments"]}
+                    if option.get("commitments")
+                    else {}
+                ),
+                **(
+                    {"unknown_risk": option["unknown_risk"]}
+                    if option.get("unknown_risk") is not None
+                    else {}
+                ),
+            },
+        )
+        for option in payload["options"]
+    )
+
+    attributes: dict[str, Any] = {}
+    if commitments:
+        attributes["commitments"] = commitments
+    if attention_budget is not None:
+        attributes["attention_budget"] = attention_budget
+    if payload.get("approvals"):
+        attributes["approvals"] = payload["approvals"]
+
+    return DecisionProblem(
+        subject=payload["subject"],
+        at=payload["at"],
+        situation=situation,
+        options=options,
+        attributes=attributes,
+    )
+
+
 def load_cases(paths: Iterable[Path]) -> list[LiveCase]:
     cases: list[LiveCase] = []
     for path in paths:
         payload = json.loads(path.read_text(encoding="utf-8"))
         for item in payload["cases"]:
-            problem = item["problem"]
-            situation = None
-            raw_situation = problem.get("situation")
-            if raw_situation:
-                constraints = tuple(
-                    Constraint(
-                        id=constraint["id"],
-                        kind=constraint["kind"],
-                        value=constraint["value"],
-                        hard=constraint["hard"],
-                    )
-                    for constraint in raw_situation.get("constraints", [])
-                )
-                situation = Situation(
-                    id=raw_situation["id"],
-                    at=problem["at"],
-                    subject=raw_situation["subject"],
-                    constraints=constraints,
-                )
-
-            commitments = tuple(
-                Commitment(
-                    id=commitment["id"],
-                    subject=commitment["subject"],
-                    due=commitment.get("due"),
-                    priority=float(commitment.get("priority", 0.5)),
-                )
-                for commitment in problem.get("commitments", [])
-            )
-
-            attention = problem.get("attention_budget")
-            attention_budget = (
-                AttentionBudget(total=attention["total"], spent=attention["spent"])
-                if attention
-                else None
-            )
-
-            options = tuple(
-                ActionOption(
-                    id=option["id"],
-                    verb=option["verb"],
-                    name=option["name"],
-                    expected_benefit=float(option.get("expected_benefit", 0.0)),
-                    cost=float(option.get("cost", 0.0)),
-                    risk=float(option.get("risk", 0.0)),
-                    interrupt_cost=float(option.get("interrupt_cost", 0.0)),
-                    latency_ms=float(option.get("latency_ms", 0.0)),
-                    reversible=bool(option.get("reversible", True)),
-                    requires_approval=bool(option.get("requires_approval", False)),
-                    params={
-                        **(
-                            {"commitments": option["commitments"]}
-                            if option.get("commitments")
-                            else {}
-                        ),
-                        **(
-                            {"unknown_risk": option["unknown_risk"]}
-                            if option.get("unknown_risk") is not None
-                            else {}
-                        ),
-                    },
-                )
-                for option in problem["options"]
-            )
-
-            attributes: dict[str, Any] = {}
-            if commitments:
-                attributes["commitments"] = commitments
-            if attention_budget is not None:
-                attributes["attention_budget"] = attention_budget
-            if problem.get("approvals"):
-                attributes["approvals"] = problem["approvals"]
-
             cases.append(
                 LiveCase(
                     name=item["id"],
-                    problem=DecisionProblem(
-                        subject=problem["subject"],
-                        at=problem["at"],
-                        situation=situation,
-                        options=options,
-                        attributes=attributes,
-                    ),
+                    problem=build_problem(item["problem"]),
                     expected_actions=tuple(item.get("expected_actions", [])),
                     tags=tuple(item.get("tags", [])),
                 )

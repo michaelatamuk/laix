@@ -9,11 +9,15 @@ Every number below is reproducible from `results/live_bench_v2/` and `bash scrip
 |---|---|---|---:|---|---|
 | The integration is accurate on the frozen test split | accuracy | 100% (30/30) | `results/live_bench_v2/summary.json` | measured |
 | It beats the best single-concern planner | accuracy delta | +30 pp (100% vs 70%) | `summary.json` | measured |
+| It beats a hand-built glue baseline | accuracy delta | +6.7 pp (100% vs 93.3%), p = 0.48 | `analysis.json` | measured, not significant |
 | It wins when concerns conflict | conflict accuracy | 100% (6/6) | `summary.json` | measured |
+| It wins against every single-concern planner | McNemar p | p ≤ 0.008 for every single-concern planner | `analysis.json` | measured |
+| It wins against hand-built glue code | McNemar p | p = 0.48 | `analysis.json` | **not significant** |
 | It keeps promises | promise-keeping rate | 100% (vs 0% utility-only) | `summary.json` | measured |
 | It avoids irreversible actions | irreversible-action rate | 0% (vs 23.3% highest-benefit) | `summary.json` | measured |
 | It respects the attention budget | budget-violation rate | 0% (vs 70% highest-benefit) | `summary.json` | measured |
 | The integration is doing real work | ablation delta | full 100%; no commitment 70%; no execution 83.3%; no attention 96.7% | `results/live_bench_v2/ablations.json` | measured |
+| The case files are valid | schema validation | 120/120 valid, unique ids | `scripts/validate_live_cases.py` | tested |
 | The live path is fast enough | p95 latency | under 2 ms on the test split | `summary.json` | measured |
 | The model is deterministic | replay equality | 100% across the invariant suite | `tests/core/test_invariants.py` | tested |
 | The contract is stable | invariant tests | 17/17 | `tests/core/test_invariants.py` | tested |

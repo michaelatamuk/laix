@@ -23,6 +23,8 @@ review.
 | [Claim–evidence map](evidence.md) | current numbers, sources and missing evidence |
 | [Validation](validation.md) | deployment, incident replay or user study |
 | [Paper and artifact](paper.md) | reproducibility, paper outline, venues |
+| [Paper draft](paper-draft.md) | current draft with validation pending |
+| [Artifact manifest](artifact-manifest.md) | files to release |
 | [Checklist](checklist.md) | phased tasks from claim to external review |
 | [Review log](review-log.md) | reviewer comments and changes |
 | [References](references.md) | sources to verify before citing |
@@ -41,8 +43,14 @@ review.
   (10 capabilities × 7 columns), `tests/core/test_invariants.py` (17 property tests, I1–I10),
   `benchmarks/live/` (120 cases with dev/test/adversarial splits),
   `scripts/run_live_bench_v2.py` (metrics and bootstrap intervals),
+  `scripts/analyze_results.py` (McNemar, paired bootstrap and effect sizes),
+  `scripts/glue_baseline.py` (hand-built integration baseline),
+  `scripts/validate_live_cases.py` (schema validation),
   `scripts/run_ablations.py`, `scripts/summarize_results.py`,
-  `results/live_bench_v2/` (baseline summary), and a CI reproduction step.
+  `results/live_bench_v2/` (baseline, analysis and ablations), and a CI reproduction step.
+- Measured result: `live` 30/30 on the test split, but a hand-built glue baseline is 28/30.
+  Against glue, +6.7 pp (95% CI 0.0–0.167, McNemar p = 0.48). The integration advantage over
+  single-concern planners is large; the advantage over competent glue code is not yet significant.
 - Remaining gaps: no external runnable adapter (the prior-art comparison is documented, not
   measured head-to-head), no real-world validation, no paper and no external review.
 
@@ -56,8 +64,10 @@ Do not claim a new algorithm. Claim a **systems and integration contribution**.
 > attention budget into one decision contract — the same object that carries the verb, the score,
 > the reason code and the audit trail — while the host retains execution and delivery.
 > No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI, scikit-learn)
-> carries all ten capabilities in one object. The integration has measurable value: on the frozen
-> test split `live` is 30/30 and wins every conflict case; the best single-concern planner is 70%.
+> carries all ten capabilities in one object. On the frozen test split `live` is 30/30 and wins
+> every conflict case; the best single-concern planner is 70%. A hand-built glue baseline reaches
+> 93.3%, so the remaining integration advantage is +6.7 pp and is not significant on 30 cases.
+> That is why real-world validation is still required.
 
 ### Why this claim is narrow enough to defend
 
@@ -118,7 +128,7 @@ Out of scope:
 | Area | Current artifact | Status | Gap to close |
 |---|---|---|---|
 | Decision contract | `Decision`, `DecisionProblem`, `Plan`, `EnginePolicy` | exists | formal definition and invariants |
-| Integrated planner | `LiveDecisionEngine` | exists | ablation and sensitivity study |
+| Integrated planner | `LiveDecisionEngine` | exists | real validation still needed |
 | Commitments | `Commitment`, `CommitmentLedger`, commitment planner | exists | larger conflict cases |
 | Execution risk | execution planner, receipts, recovery | exists | measured irreversible-action reduction |
 | Attention | attention planner, budget, signals | exists | measured budget adherence and interruption quality |
@@ -126,12 +136,14 @@ Out of scope:
 | Calibration | calibration and decision calibration | exists | held-out calibration report |
 | Audit | receipts, traces, decision record | exists | replay and tamper evidence in evaluation |
 | Parity | Python and TypeScript suites | exists | include in artifact release |
-| Benchmark | LAIX-Bench 25 cases; live bench 7 cases | small | 100+ live cases with splits and CIs |
-| Ablation | `ablation_study.py`, `conflict_scenario.py` | **done** | expand to 120 cases with splits |
-| Prior art | `comparators.md` (7 systems, documented capability comparison) | **done** | fill table in `prior-art.md`; add runnable adapter |
+| Benchmark | 120 live cases + 7-case demo | **done** | harder real-incident cases |
+| Ablation | 7 planner variants on the test split | **done** | — |
+| Glue baseline | `scripts/glue_baseline.py` | **done** | external adapters still missing |
+| Significance | McNemar, paired bootstrap and effect sizes | **done** | +6.7 pp vs glue is not significant on 30 cases |
+| Prior art | `comparators.md` (7 systems, documented capability comparison) | **done** | runnable adapter still missing |
 | EU liability case | `eu-liability.md` (PLD 2024/2853 field-by-field mapping) | **done** | — |
-| Real validation | none | missing | one deployment, replay or user study |
-| Paper | none | missing | technical report and submission |
+| Real validation | harness ready; no data collected | missing | one deployment, replay or user study |
+| Paper | draft in `paper-draft.md`; validation pending | partial | final draft after real data |
 
 ## 3. Definition of done
 
@@ -147,8 +159,9 @@ Do not claim novelty in a paper, README or talk until all of these are true:
   18 adversarial;
 - [x] ablations show which term contributes what — test split: full 100%, no attention 96.7%,
   no feasibility gates 93.3%, no execution 83.3%, no commitment 70%, utility-only 30%;
-- [x] confidence intervals and effect sizes are reported — 10,000-resample bootstrap in
-  `results/live_bench_v2/`;
+- [x] confidence intervals and effect sizes are reported — 10,000-resample bootstrap and
+  McNemar in `results/live_bench_v2/analysis.json`;
+- [x] the result against a hand-built glue baseline is reported honestly — +6.7 pp, p = 0.48;
 - [ ] one real validation exists;
 - [x] the artifact reproduces the main table with one command — `bash scripts/reproduce.sh`;
 - [x] limitations are written down — threats and failure analysis in `evaluation.md`;

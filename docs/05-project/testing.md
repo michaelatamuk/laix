@@ -15,7 +15,9 @@ Live benchmark, ablations and baseline diff from the repository root:
 
 ```powershell
 python scripts/generate_live_cases.py
+python scripts/validate_live_cases.py
 python scripts/run_live_bench_v2.py --split test --seed 42
+python scripts/analyze_results.py
 python scripts/run_ablations.py --split test --seed 42
 python scripts/summarize_results.py
 ```
@@ -70,7 +72,9 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 | Live decision bench | `LiveDecisionEngine` 7/7 |
 | Live corpus | 120 cases: 72 dev / 30 test / 18 adversarial |
 | Live bench v2 | test split: `live` 30/30; conflict 6/6 |
+| Glue baseline | 28/30; `live` +6.7 pp, p = 0.48 |
 | Ablations | full 100%, no commitment 70%, no execution 83.3%, no attention 96.7% |
+| Analysis | McNemar, paired bootstrap and effect sizes |
 
 ## Docs
 
@@ -92,8 +96,10 @@ The check resolves relative links across `docs/`, `examples/` and every README.
 | `npm run bench` | 10 suites and 25 deterministic cases |
 | `npm run conformance` | 24 shared attention decisions |
 | `scripts/run_live_bench_v2.py` | 120-case corpus, metrics, bootstrap intervals, conflict check |
+| `scripts/analyze_results.py` | McNemar, paired bootstrap, Cohen's h and category breakdown |
 | `scripts/run_ablations.py` | term removal, equal weights and no-feasibility-gates variants |
 | `scripts/summarize_results.py` | baseline diff for headline metrics |
+| `scripts/validate_live_cases.py` | JSON Schema validation and duplicate-id check |
 | examples | every runnable Python and TypeScript example |
 | docs links | relative links in docs, examples and README files |
 

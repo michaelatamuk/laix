@@ -26,9 +26,9 @@
         0.3
       ],
       "irreversible_rate": 0.166667,
-      "mean_latency_ms": 0.06342,
+      "mean_latency_ms": 0.05794,
       "mean_regret": 0.081819,
-      "p95_latency_ms": 0.248975,
+      "p95_latency_ms": 0.17651,
       "promise_ci": [
         0.0,
         0.5
@@ -69,9 +69,9 @@
         0.4
       ],
       "irreversible_rate": 0.233333,
-      "mean_latency_ms": 0.006133,
+      "mean_latency_ms": 0.009337,
       "mean_regret": 0.0,
-      "p95_latency_ms": 0.01032,
+      "p95_latency_ms": 0.024635,
       "promise_ci": [
         0.0,
         0.0
@@ -112,9 +112,9 @@
         0.266667
       ],
       "irreversible_rate": 0.133333,
-      "mean_latency_ms": 0.06445,
+      "mean_latency_ms": 0.175237,
       "mean_regret": 0.14027,
-      "p95_latency_ms": 0.180105,
+      "p95_latency_ms": 1.56991,
       "promise_ci": [
         1.0,
         1.0
@@ -155,9 +155,9 @@
         0.166667
       ],
       "irreversible_rate": 0.066667,
-      "mean_latency_ms": 0.03554,
+      "mean_latency_ms": 0.072783,
       "mean_regret": 0.068213,
-      "p95_latency_ms": 0.06566,
+      "p95_latency_ms": 0.337975,
       "promise_ci": [
         0.0,
         0.25
@@ -198,9 +198,9 @@
         0.266667
       ],
       "irreversible_rate": 0.133333,
-      "mean_latency_ms": 0.00612,
+      "mean_latency_ms": 0.00659,
       "mean_regret": 0.133333,
-      "p95_latency_ms": 0.022995,
+      "p95_latency_ms": 0.016175,
       "promise_ci": [
         0.333333,
         0.833333
@@ -209,6 +209,49 @@
       "regret_ci": [
         0.077778,
         0.188889
+      ],
+      "safety_ci": [
+        0.0,
+        0.0
+      ],
+      "safety_violation_rate": 0.0
+    },
+    "glue": {
+      "abstention_rate": 0.0,
+      "accuracy": 0.933333,
+      "accuracy_ci": [
+        0.833333,
+        1.0
+      ],
+      "budget_ci": [
+        0.0,
+        0.0
+      ],
+      "budget_violation_rate": 0.0,
+      "checked": 30,
+      "conflict_accuracy": 1.0,
+      "conflict_ci": [
+        1.0,
+        1.0
+      ],
+      "correct": 28,
+      "decisions": 30,
+      "irreversible_ci": [
+        0.0,
+        0.0
+      ],
+      "irreversible_rate": 0.0,
+      "mean_latency_ms": 0.045287,
+      "mean_regret": 0.219596,
+      "p95_latency_ms": 0.181155,
+      "promise_ci": [
+        1.0,
+        1.0
+      ],
+      "promise_keeping": 1.0,
+      "regret_ci": [
+        0.158508,
+        0.278976
       ],
       "safety_ci": [
         0.0,
@@ -241,9 +284,9 @@
         0.0
       ],
       "irreversible_rate": 0.0,
-      "mean_latency_ms": 0.111863,
+      "mean_latency_ms": 0.212297,
       "mean_regret": 0.241818,
-      "p95_latency_ms": 0.21222,
+      "p95_latency_ms": 0.56867,
       "promise_ci": [
         1.0,
         1.0
@@ -284,9 +327,9 @@
         0.4
       ],
       "irreversible_rate": 0.233333,
-      "mean_latency_ms": 0.020163,
+      "mean_latency_ms": 0.022593,
       "mean_regret": 0.0,
-      "p95_latency_ms": 0.04933,
+      "p95_latency_ms": 0.05327,
       "promise_ci": [
         0.0,
         0.0

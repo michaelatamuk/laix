@@ -1,19 +1,25 @@
 # Paper and artifact
 
 Write the paper only after the evidence exists. This page covers reproducibility, the artifact, the
-paper outline and the venues.
+paper outline and the venues. The current draft is in [paper-draft.md](paper-draft.md); it is marked
+validation-pending and is not submittable yet.
 
 ## 1. Reproducibility and artifact
 
-Create or update:
+Already present:
 
 - `CITATION.cff`
+- `scripts/reproduce.sh`
+- a CI job that runs the live benchmark, analysis and ablations
+- `results/live_bench_v2/` with the reported run
+- [artifact-manifest.md](artifact-manifest.md)
+
+Still pending:
+
 - `LICENSE` reference in the paper
-- `scripts/reproduce_novelty.py`
 - a pinned environment file
-- a CI job that runs the novelty benchmark
-- a versioned release and DOI (for example through Zenodo)
-- `results/` with the exact output of the reported run
+- a versioned release and DOI
+- the final paper draft after real validation
 
 Acceptance criteria:
 

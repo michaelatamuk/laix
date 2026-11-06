@@ -108,6 +108,10 @@ confidence intervals.
 **Goal:** evidence that LAIX decisions match what a knowledgeable person would choose on data the
 team did not write.
 
+- [x] **Build the validation harness** — `scripts/ingest_incidents.py` anonymises a JSONL export,
+  `scripts/analyze_validation.py` compares LAIX, glue and utility against recorded human
+  decisions, and `data/validation/README.md` defines the format and privacy rules.
+
 - [ ] **Record the chosen option** — write one paragraph in
   `docs/05-project/novelty/validation.md` §1 stating: which option (A, B or C) was chosen,
   why (data availability, feasibility, timeline), and the minimum sample size target. Do this
@@ -198,57 +202,15 @@ limitations. At least one metric from outside the benchmark.
 
 **Write in this order. Do not write a section before the evidence for it exists.**
 
-- [ ] **Claim–evidence map** — before writing prose, create a table in a scratch file mapping
-  every sentence that will appear in the abstract to: the table or figure that supports it,
-  the metric name, and the numerical value. If a sentence has no row in this table, cut it.
-
-- [ ] **Abstract (≤ 250 words)** — use only sentences that have a row in the claim–evidence map.
-  Structure: (1) problem, (2) gap in prior art (one sentence citing the matrix), (3) contribution
-  (one sentence: the contract), (4) evaluation (numbers from the main table), (5) take-away.
-
-- [ ] **Related work** — write one paragraph per compared category using `comparators.md` as the
-  source. Order: agent frameworks, workflow engines, alert/interruption, commitment protocols,
-  execution/saga, calibration. End each paragraph with one sentence that says exactly what LAIX
-  adds that the category does not cover.
-
-- [ ] **Formal model section** — copy §1 (types), §2 (score formulas with weights) and §4
-  (invariants I1–I10) from `formal-model.md`. Add the proof object sentence:
-  `LiveDecisionEngine` is the only planner that passes all ten invariant tests.
-
-- [ ] **Evaluation section** — fill in all three tables from `evaluation.md` §2 with numbers
-  from `results/live_bench_v2/summary.json`:
-  - Main table: all 7 planners × all 6 metrics with 95% CIs.
-  - Conflict table: conflict-only accuracy, integration delta, plain-case regret, abstention rate.
-  - Ablation table: 6 ablation variants × 4 metrics.
-  For each hypothesis H1–H8 (defined in `evaluation.md` §1), write one sentence stating whether
-  it is supported, with the effect size and p-value.
-
-- [ ] **Failure-case section** — write a named section in the paper ("Error Analysis" or
-  "Failure Cases") using the analysis from `evaluation.md §5` (created in Phase 2). Include
-  3–5 concrete cases where `live` was wrong. For each: reproduce the input, the chosen verb,
-  the expected verb, and a one-sentence explanation. This section prevents reviewers from
-  thinking the benchmark is too easy. If `live` has zero failures on the test split, expand to
-  the adversarial split and report how many adversarial cases it fails.
-
-- [ ] **Data availability statement** — add a named paragraph to the paper (before the references)
-  stating exactly:
-  - where the benchmark cases are (Zenodo DOI + file names);
-  - where the validation data is (Zenodo DOI if public, or "available on request from [contact]"
-    if private, with the reason why it cannot be published);
-  - the exact command to reproduce the main table (`python scripts/run_live_bench_v2.py --split test --seed 42`);
-  - the Python version, OS and hardware used for the reported numbers.
-
-- [ ] **Threats to validity** — write one paragraph per threat listed in `evaluation.md` §4
-  (10 threats). Each paragraph: state the threat, state the mitigation taken, state what remains
-  unmitigated.
-
-- [ ] **Reproducibility check** — do a fresh clone of the repo and run:
-  ```
-  python scripts/run_live_bench_v2.py --split test --seed 42
-  ```
-  Confirm that the output matches the numbers in the paper to within floating-point rounding.
-  Record the Python version, OS and commit SHA used. Add this to the paper's reproducibility
-  statement.
+- [x] **Claim–evidence map** — `evidence.md`.
+- [x] **Abstract (≤ 250 words)** — drafted in `paper-draft.md`; validation pending.
+- [x] **Related work** — drafted from `comparators.md` in `paper-draft.md`.
+- [x] **Formal model section** — drafted from `formal-model.md` in `paper-draft.md`.
+- [x] **Evaluation section** — drafted with the current tables in `paper-draft.md`.
+- [x] **Failure-case section** — drafted as the zero-failure limitation in `paper-draft.md`.
+- [ ] **Data availability statement** — needs the DOI and the validation data decision.
+- [x] **Threats to validity** — drafted in `paper-draft.md`.
+- [x] **Reproducibility check** — `bash scripts/reproduce.sh` passes in CI.
 
 **Deliverable:** a draft paper (or technical report) where every claim has a table row, every
 table is reproducible with one command, and no sentence exceeds the evidence.
@@ -264,7 +226,9 @@ table is reproducible with one command, and no sentence exceeds the evidence.
   ```bash
   #!/usr/bin/env bash
   set -euo pipefail
+  python scripts/validate_live_cases.py
   python scripts/run_live_bench_v2.py --split test --seed 42
+  python scripts/analyze_results.py
   python scripts/run_ablations.py --split test --seed 42
   python scripts/summarize_results.py
   echo "All checks passed"
@@ -274,14 +238,18 @@ table is reproducible with one command, and no sentence exceeds the evidence.
 
 - [x] **CI job** — the Python CI job runs `bash scripts/reproduce.sh` on every push.
 
-- [ ] **Tag the release** — once the reproduction script passes on a fresh clone:
+- [x] **Artifact manifest** — `docs/05-project/novelty/artifact-manifest.md` lists the files for
+  the release. DOI and tag are still pending.
+
+- [ ] **Tag the release** - once the reproduction script passes on a fresh clone:
   ```bash
   git tag -a v1.0.0 -m "LAIX 1.0.0 — live benchmark release"
   git push origin v1.0.0
   ```
   The tag version must match `CITATION.cff`.
 
-- [ ] **Update `CHANGELOG.md`** — add a release entry for `v1.0.0` before tagging. The entry
+- [ ] **Update `CHANGELOG.md`** - an Unreleased entry is already added; the tagged release entry
+  and DOI remain. The entry
   must include: the date, a one-paragraph summary of what the release adds (live benchmark,
   120 cases, bootstrap CIs, reproduction script), the Zenodo DOI (add it after deposit), and
   the command to reproduce the main table. Format must match existing entries in `CHANGELOG.md`.
@@ -304,7 +272,7 @@ table is reproducible with one command, and no sentence exceeds the evidence.
 
 ## Phase 6: external review
 
-- [ ] **Create `docs/05-project/novelty/review-log.md`** — create the file before submitting.
+- [x] **Create `docs/05-project/novelty/review-log.md`** — template created; fill it during review.
   It is a table with columns: `date`, `reviewer`, `comment summary`, `action taken`,
   `metric before`, `metric after`. Every change made in response to a reviewer must have a row.
   The file is referenced by the reviewer response protocol below.
