@@ -15,7 +15,7 @@ Status: materials are ready; no participants have been recruited.
 The offline app lives in `data/vignette-study/v1/app/`. Start it with:
 
 ```bash
-python scripts/novelty/validation/serve_user_study.py
+python scripts/novelty/vignette-study/serve_vignette_study.py
 ```
 
 It blinds the recommendations, randomises order and downloads the results JSONL.
@@ -61,7 +61,7 @@ One JSON object per trial in JSON Lines:
 Script:
 
 ```bash
-python scripts/novelty/validation/analyze_user_study.py --input data/vignette-study/v1/output/results.jsonl
+python scripts/novelty/vignette-study/analyze_vignette_study.py --input data/vignette-study/v1/output/results.jsonl
 ```
 
 ## Sample-size justification

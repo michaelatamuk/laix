@@ -12,7 +12,7 @@ NOVELTY = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(NOVELTY))
 
-from live_bench_common import RESULTS, load_cases, split_paths
+from shared.live_bench_common import RESULTS, load_cases, split_paths
 
 from benchmarks.compare import AdapterResult, LangGraphAdapter, TemporalAdapter
 

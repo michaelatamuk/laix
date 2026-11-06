@@ -14,7 +14,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from laix import LiveDecisionEngine, UtilityEngine
-from live_bench_common import build_problem
+from shared.live_bench_common import build_problem
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / "data" / "vignette-study" / "v1" / "vignettes.json"

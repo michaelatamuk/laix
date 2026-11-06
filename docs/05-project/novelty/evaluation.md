@@ -191,7 +191,7 @@ Create:
 - `benchmarks/live/v1/adversarial.json`
 - `benchmarks/live/README.md`
 - `scripts/novelty/bench/generate_live_cases.py`
-- `scripts/novelty/bench/run_live_bench_v2.py`
+- `scripts/novelty/bench/run_live_bench.py`
 - `scripts/novelty/bench/run_ablations.py`
 - `scripts/novelty/bench/summarize_results.py`
 - `results/live-bench/harness-v2/` (generated, versioned summary committed)
@@ -399,7 +399,7 @@ claim; the real-world validation in `validation.md` is still required.
 ### Reproduce
 
 ```bash
-python scripts/novelty/bench/run_live_bench_v2.py --split test --seed 42
+python scripts/novelty/bench/run_live_bench.py --split test --seed 42
 python scripts/novelty/bench/run_ablations.py --split test --seed 42
 python scripts/novelty/bench/summarize_results.py
 ```

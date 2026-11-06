@@ -31,7 +31,7 @@ from laix.core.engines.planners.utility.utility import (
     _constraint_blocker,
 )
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 CASES = ROOT / "benchmarks" / "live" / "v1"
 RESULTS = ROOT / "results" / "live-bench" / "harness-v2"
 REPORTS = RESULTS / "reports"

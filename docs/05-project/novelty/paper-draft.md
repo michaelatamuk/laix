@@ -187,8 +187,8 @@ Choose one from `validation.md`:
 
 The harness is ready:
 
-- `scripts/novelty/validation/ingest_incidents.py` anonymises a JSONL export;
-- `scripts/novelty/validation/analyze_validation.py` compares LAIX, glue and utility against recorded human decisions;
+- `scripts/novelty/incident-replay/ingest_incidents.py` anonymises a JSONL export;
+- `scripts/novelty/incident-replay/analyze_incident_replay.py` compares LAIX, glue and utility against recorded human decisions;
 - `data/incident-replay/README.md` defines the format and privacy rules.
 
 No real data has been collected. Until it is, the novelty claim is a synthetic systems claim plus a

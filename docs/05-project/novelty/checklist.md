@@ -62,10 +62,10 @@ confidence intervals.
   - Generated deterministically by `scripts/novelty/bench/generate_live_cases.py`; every file validates
     against `schema.json`.
 
-- [x] **Use a dependency-free bootstrap** — `run_live_bench_v2.py` uses a pure-Python
+- [x] **Use a dependency-free bootstrap** — `run_live_bench.py` uses a pure-Python
   bootstrap (10,000 resamples, `random.Random(seed)`), so no `numpy` extra is required.
 
-- [x] **Write `scripts/novelty/bench/run_live_bench_v2.py`**:
+- [x] **Write `scripts/novelty/bench/run_live_bench.py`**:
   - loads the split files;
   - runs all 7 planners;
   - computes accuracy, promise keeping, irreversible rate, budget violations, safety, latency,
@@ -103,10 +103,10 @@ confidence intervals.
 - [x] **Freeze the test split** — dataset version `1.0.0`; do not change the test cases again
   without a new version and a new baseline.
 
-**Deliverable:** `benchmarks/live/v1/` (120 cases), `scripts/novelty/bench/run_live_bench_v2.py`,
+**Deliverable:** `benchmarks/live/v1/` (120 cases), `scripts/novelty/bench/run_live_bench.py`,
 `scripts/novelty/bench/run_ablations.py`, `scripts/novelty/bench/summarize_results.py`,
 `results/live-bench/harness-v2/`. Main table reproducible with:
-`python scripts/novelty/bench/run_live_bench_v2.py --split test --seed 42`.
+`python scripts/novelty/bench/run_live_bench.py --split test --seed 42`.
 
 ---
 
@@ -117,10 +117,10 @@ team did not write.
 
 - [x] **Build the validation harness** — `docs/05-project/novelty/collection-kit.md`,
   `data/incident-replay/template.jsonl`, `data/vignette-study/v1/app/`,
-  `scripts/novelty/validation/check_validation_data.py`, `scripts/novelty/validation/ingest_incidents.py`,
-  `scripts/novelty/validation/analyze_validation.py`, `data/vignette-study/v1/vignettes.json`
-  (20 user-study vignettes), `scripts/novelty/validation/analyze_user_study.py`,
-  `scripts/novelty/validation/serve_user_study.py`, and the consent/recruitment templates.
+  `scripts/novelty/incident-replay/preflight_incidents.py`, `scripts/novelty/incident-replay/ingest_incidents.py`,
+  `scripts/novelty/incident-replay/analyze_incident_replay.py`, `data/vignette-study/v1/vignettes.json`
+  (20 user-study vignettes), `scripts/novelty/vignette-study/analyze_vignette_study.py`,
+  `scripts/novelty/vignette-study/serve_vignette_study.py`, and the consent/recruitment templates.
 
 - [ ] **Record the chosen option** — write one paragraph in
   `docs/05-project/novelty/validation.md` §1 stating: which option (A, B or C) was chosen,
@@ -144,7 +144,7 @@ Replay historical incidents where a person already made a decision.
 1. Find a source of historical incidents with a recorded human decision (support tickets, ops logs,
    approval records). Minimum: 200 raw incidents so that after filtering you have 40+ where LAIX
    and the human disagree.
-2. Write an ingestion script in `scripts/novelty/validation/ingest_incidents.py` that:
+2. Write an ingestion script in `scripts/novelty/incident-replay/ingest_incidents.py` that:
    - Reads the raw export.
    - Maps each incident to a `DecisionProblem` JSON (using the case schema).
    - Strips all PII: names, emails, IPs, customer IDs, free-text that could identify a person.
@@ -160,7 +160,7 @@ Replay historical incidents where a person already made a decision.
 ### Option B — User study
 
 Materials and protocol are ready: `data/vignette-study/v1/vignettes.json`,
-`docs/05-project/novelty/user-study.md` and `scripts/novelty/validation/analyze_user_study.py`. Recruitment is external.
+`docs/05-project/novelty/user-study.md` and `scripts/novelty/vignette-study/analyze_vignette_study.py`. Recruitment is external.
 
 Recruit participants to judge LAIX decisions on vignette scenarios.
 
@@ -240,7 +240,7 @@ table is reproducible with one command, and no sentence exceeds the evidence.
   #!/usr/bin/env bash
   set -euo pipefail
   python scripts/novelty/bench/validate_live_cases.py
-  python scripts/novelty/bench/run_live_bench_v2.py --split test --seed 42
+  python scripts/novelty/bench/run_live_bench.py --split test --seed 42
   python scripts/novelty/analysis/analyze_results.py
   python scripts/novelty/bench/run_ablations.py --split test --seed 42
   python scripts/novelty/bench/summarize_results.py

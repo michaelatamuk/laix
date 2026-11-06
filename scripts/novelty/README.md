@@ -7,12 +7,13 @@ everything from the repository root.
 |---|---|
 | `bench/` | corpus generation, schema validation, the live bench, ablations and the baseline summary |
 | `analysis/` | paired significance tests and per-category breakdown |
-| `validation/` | user-study generation and analysis, incident ingest and preflight, the local app server |
 | `compare/` | the optional external comparison runner |
+| `incident-replay/` | incident preflight, ingest and analysis |
+| `vignette-study/` | vignette generation, study analysis and the local app server |
+| `shared/` | modules used by more than one stage |
 
-`bench/` reads `benchmarks/live/v1/`. `validation/` reads `data/incident-replay/` and
-`data/vignette-study/v1/`. `live_bench_common.py` and `glue_baseline.py` are shared modules used by
-both `bench/` and `validation/`.
+`bench/` reads `benchmarks/live/v1/`. `incident-replay/` reads `data/incident-replay/`.
+`vignette-study/` reads `data/vignette-study/v1/`.
 
 Run the full pipeline:
 

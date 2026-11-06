@@ -6,7 +6,7 @@ Why this order:
 
 - incident replay uses decisions that real people already made;
 - it needs no recruitment or scheduling;
-- it maps directly to `scripts/novelty/validation/ingest_incidents.py` and `scripts/novelty/validation/analyze_validation.py`;
+- it maps directly to `scripts/novelty/incident-replay/ingest_incidents.py` and `scripts/novelty/incident-replay/analyze_incident_replay.py`;
 - it gives reviewers the strongest evidence short of a live deployment.
 
 Use the user study only if you cannot get incident data within two working days.
@@ -88,8 +88,8 @@ Stop here and switch to the user study if the source has no reliable human actio
 ### Day 5 — run the analysis
 
 ```bash
-python scripts/novelty/validation/check_validation_data.py --input data/incident-replay/output/anonymised.jsonl
-python scripts/novelty/validation/analyze_validation.py --input data/incident-replay/output/anonymised.jsonl
+python scripts/novelty/incident-replay/preflight_incidents.py --input data/incident-replay/output/anonymised.jsonl
+python scripts/novelty/incident-replay/analyze_incident_replay.py --input data/incident-replay/output/anonymised.jsonl
 ```
 
 Record:
@@ -150,7 +150,7 @@ If incident data is not available by day 2:
 - recruit 20–30 colleagues;
 - each session is about 20–30 minutes;
 - follow `user-study.md` and record results as JSONL;
-- run `scripts/novelty/validation/analyze_user_study.py`.
+- run `scripts/novelty/vignette-study/analyze_vignette_study.py`.
 
 Consent and recruitment text are in `user-study-consent.md` and `user-study-recruitment.md`.
 

@@ -16,7 +16,7 @@ Live benchmark, ablations and baseline diff from the repository root:
 ```powershell
 python scripts/novelty/bench/generate_live_cases.py
 python scripts/novelty/bench/validate_live_cases.py
-python scripts/novelty/bench/run_live_bench_v2.py --split test --seed 42
+python scripts/novelty/bench/run_live_bench.py --split test --seed 42
 python scripts/novelty/analysis/analyze_results.py
 python scripts/novelty/bench/run_ablations.py --split test --seed 42
 python scripts/novelty/bench/summarize_results.py
@@ -106,12 +106,13 @@ The check resolves relative links across `docs/`, `examples/` and every README.
 | `npm run bench` | 10 suites and 25 deterministic cases |
 | `npm run conformance` | 24 shared attention decisions |
 | `npm run live-bench` | TypeScript runs the 30-case test split and compares 210 action IDs with Python |
-| `scripts/novelty/bench/run_live_bench_v2.py` | 120-case corpus, metrics, bootstrap intervals, conflict check |
+| `scripts/novelty/bench/run_live_bench.py` | 120-case corpus, metrics, bootstrap intervals, conflict check |
 | `scripts/novelty/analysis/analyze_results.py` | McNemar, paired bootstrap, Cohen's h and category breakdown |
 | `scripts/novelty/bench/run_ablations.py` | term removal, equal weights and no-feasibility-gates variants |
 | `scripts/novelty/bench/summarize_results.py` | baseline diff for headline metrics |
 | `scripts/novelty/bench/validate_live_cases.py` | JSON Schema validation and duplicate-id check |
-| `scripts/novelty/validation/` | incident preflight, ingest and user-study analysis |
+| `scripts/novelty/incident-replay/` | incident preflight, ingest and analysis |
+| `scripts/novelty/vignette-study/` | vignette generation, study analysis and server |
 | `scripts/ci/check_docs_links.py` | relative links in docs, examples and README files |
 | `benchmarks/live/v1/` | versioned corpus and schema |
 | `benchmarks/compare/adapters/` | optional external adapters and capability matrix |

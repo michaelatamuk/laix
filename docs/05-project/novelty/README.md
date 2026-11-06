@@ -44,9 +44,9 @@ review.
 - Added: `formal-model.md` with exact score formulas and weights, `prior-art.md` matrix
   (10 capabilities × 7 columns), `tests/core/test_invariants.py` (17 property tests, I1–I10),
   `benchmarks/live/v1/` (120 cases with dev/test/adversarial splits),
-  `scripts/novelty/bench/run_live_bench_v2.py` (metrics and bootstrap intervals),
+  `scripts/novelty/bench/run_live_bench.py` (metrics and bootstrap intervals),
   `scripts/novelty/analysis/analyze_results.py` (McNemar, paired bootstrap and effect sizes),
-  `scripts/novelty/glue_baseline.py` (hand-built integration baseline),
+  `scripts/novelty/shared/glue_baseline.py` (hand-built integration baseline),
   `scripts/novelty/bench/validate_live_cases.py` (schema validation),
   `scripts/novelty/bench/run_ablations.py`, `scripts/novelty/bench/summarize_results.py`,
   `results/live-bench/harness-v2/` (baseline, analysis and ablations), and a CI reproduction step.
@@ -143,7 +143,7 @@ Out of scope:
 | Parity | Python and TypeScript suites | exists | include in artifact release |
 | Benchmark | 120 live cases + 7-case demo | **done** | harder real-incident cases |
 | Ablation | 7 planner variants on the test split | **done** | — |
-| Glue baseline | `scripts/novelty/glue_baseline.py` | **done** | external adapters still missing |
+| Glue baseline | `scripts/novelty/shared/glue_baseline.py` | **done** | external adapters still missing |
 | External adapter | LangGraph adapter, 120 decisions, 6.9 ms, 110 glue lines | **done** | Temporal/Camunda need servers |
 | Significance | McNemar, paired bootstrap and effect sizes | **done** | +6.7 pp vs glue is not significant on 30 cases |
 | Prior art | `comparators.md` (7 systems, documented capability comparison) | **done** | runnable adapter still missing |

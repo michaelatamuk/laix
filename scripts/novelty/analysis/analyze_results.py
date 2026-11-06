@@ -185,7 +185,11 @@ def main() -> int:
             f"{item['live_only_correct']:>4} {item['other_only_correct']:>4} "
             f"{item['chi2']:>8.3f} {item['p_value']:>8.4f} {item['cohens_h']:>8.3f}"
         )
-    print(f"\nwrote {args.out.relative_to(ROOT)}")
+    try:
+        shown = args.out.resolve().relative_to(ROOT)
+    except ValueError:
+        shown = args.out
+    print(f"\nwrote {shown}")
     return 0
 
 

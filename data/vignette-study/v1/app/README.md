@@ -8,7 +8,7 @@ platform and records no personal data.
 From the repository root:
 
 ```bash
-python scripts/novelty/validation/serve_user_study.py
+python scripts/novelty/vignette-study/serve_vignette_study.py
 ```
 
 The browser opens at the printed local URL; the app itself is served under `/app/`.
@@ -29,7 +29,7 @@ Each session is 20 vignettes with two recommendations each = 40 trials, about 20
 ## Output
 
 The downloaded file is JSON Lines in the format expected by
-`scripts/novelty/validation/analyze_user_study.py`:
+`scripts/novelty/vignette-study/analyze_vignette_study.py`:
 
 ```json
 {"participant_id":"p-...","vignette_id":"v01","condition":"laix","recommendation":"ask","choice":"ask","timeliness":5,"trust":4,"workload":2}

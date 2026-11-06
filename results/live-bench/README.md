@@ -1,7 +1,7 @@
 # Live bench results
 
 - Corpus: `benchmarks/live/v1/`
-- Harness: `scripts/novelty/bench/run_live_bench_v2.py`
+- Harness: `scripts/novelty/bench/run_live_bench.py`
 - Current run: `harness-v2/`
 
 `harness-v2/` separates raw output from reports:

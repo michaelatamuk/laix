@@ -164,7 +164,10 @@ def main() -> int:
         f"sign-test p={summary['paired']['sign_test_p']:.4f})"
     )
     try:
-        shown = args.output.relative_to(ROOT)
+        try:
+            shown = args.output.resolve().relative_to(ROOT)
+        except ValueError:
+            shown = args.output
     except ValueError:
         shown = args.output
     print(f"wrote {shown}")

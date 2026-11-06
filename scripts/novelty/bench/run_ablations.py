@@ -16,7 +16,7 @@ from laix import (
     LiveDecisionEngine,
     UtilityEngine,
 )
-from live_bench_common import (
+from shared.live_bench_common import (
     RESULTS,
     ROOT,
     evaluate_case,

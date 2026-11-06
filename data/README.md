@@ -15,8 +15,8 @@ Each method keeps generated output under `output/`, which is gitignored:
 | Output | Produced by |
 |---|---|
 | `incident-replay/output/anonymised.jsonl` | `ingest_incidents.py` |
-| `incident-replay/output/report.json` | `analyze_validation.py` |
+| `incident-replay/output/report.json` | `analyze_incident_replay.py` |
 | `vignette-study/v1/output/results.jsonl` | the offline app, saved by the facilitator |
-| `vignette-study/v1/output/report.json` | `analyze_user_study.py` |
+| `vignette-study/v1/output/report.json` | `analyze_vignette_study.py` |
 
 Do not commit raw incidents or participant results. See the README inside each method.

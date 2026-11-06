@@ -9,7 +9,7 @@ Synthetic cases are not enough. Choose one:
 
 ### Option A: incident or support replay
 
-- harness: `scripts/novelty/validation/ingest_incidents.py` and `scripts/novelty/validation/analyze_validation.py`;
+- harness: `scripts/novelty/incident-replay/ingest_incidents.py` and `scripts/novelty/incident-replay/analyze_incident_replay.py`;
 - take historical events;
 - replay through LAIX and the baseline;
 - compare decisions against what a human did;
@@ -19,7 +19,7 @@ Synthetic cases are not enough. Choose one:
 
 - materials: `data/vignette-study/v1/vignettes.json` (20 vignettes);
 - protocol: `docs/05-project/novelty/user-study.md`;
-- analysis: `scripts/novelty/validation/analyze_user_study.py`;
+- analysis: `scripts/novelty/vignette-study/analyze_vignette_study.py`;
 - ask operators to judge decisions from LAIX and a baseline;
 - blind the source;
 - measure acceptance, perceived timeliness, trust and workload;
@@ -99,6 +99,6 @@ Fill this in before collecting data.
 Harness commands:
 
 ```bash
-python scripts/novelty/validation/ingest_incidents.py --input data/incident-replay/raw/incidents.jsonl
-python scripts/novelty/validation/analyze_validation.py
+python scripts/novelty/incident-replay/ingest_incidents.py --input data/incident-replay/raw/incidents.jsonl
+python scripts/novelty/incident-replay/analyze_incident_replay.py
 ```

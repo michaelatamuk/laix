@@ -51,9 +51,9 @@ Required fields: `id`, `at`, `subject`, `options`, `human_action`.
 Put the raw export in `data/incident-replay/raw/` so the default paths stay meaningful:
 
 ```bash
-python scripts/novelty/validation/check_validation_data.py --input data/incident-replay/raw/incidents.jsonl
-python scripts/novelty/validation/ingest_incidents.py --input data/incident-replay/raw/incidents.jsonl
-python scripts/novelty/validation/analyze_validation.py
+python scripts/novelty/incident-replay/preflight_incidents.py --input data/incident-replay/raw/incidents.jsonl
+python scripts/novelty/incident-replay/ingest_incidents.py --input data/incident-replay/raw/incidents.jsonl
+python scripts/novelty/incident-replay/analyze_incident_replay.py
 ```
 
 The ingest command writes `data/incident-replay/output/anonymised.jsonl`.

@@ -23,7 +23,7 @@ The protocol, consent text and recruitment template are in
 From the repository root:
 
 ```bash
-python scripts/novelty/validation/serve_user_study.py
+python scripts/novelty/vignette-study/serve_vignette_study.py
 ```
 
 The app blinds `laix_choice` and `baseline_choice`, randomises the vignette order and the A/B labels,
@@ -33,7 +33,7 @@ and downloads JSON Lines. Save the download as
 ## Analyse the results
 
 ```bash
-python scripts/novelty/validation/analyze_user_study.py \
+python scripts/novelty/vignette-study/analyze_vignette_study.py \
   --input data/vignette-study/v1/output/results.jsonl \
   --output data/vignette-study/v1/output/report.json
 ```
@@ -41,5 +41,5 @@ python scripts/novelty/validation/analyze_user_study.py \
 ## Regenerate the vignettes
 
 ```bash
-python scripts/novelty/validation/generate_vignettes.py
+python scripts/novelty/vignette-study/generate_vignettes.py
 ```

@@ -10,9 +10,9 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from glue_baseline import GlueBaseline
 from laix import LiveDecisionEngine, UtilityEngine
-from live_bench_common import bootstrap_ci, build_problem, run_planner
+from shared.glue_baseline import GlueBaseline
+from shared.live_bench_common import bootstrap_ci, build_problem, run_planner
 
 ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_INPUT = ROOT / "data" / "incident-replay" / "output" / "anonymised.jsonl"
@@ -39,7 +39,7 @@ def main() -> int:
     args = parse_args()
     if not args.input.exists():
         print(f"missing validation data: {args.input}")
-        print("Create the file with scripts/novelty/validation/ingest_incidents.py from a real export.")
+        print("Create the file with scripts/novelty/incident-replay/ingest_incidents.py from a real export.")
         return 2
 
     rows = load_rows(args.input)
@@ -107,7 +107,10 @@ def main() -> int:
             f"{item['agree']:>7} {item['cases']:>6}"
         )
     try:
-        shown = args.output.relative_to(ROOT)
+        try:
+            shown = args.output.resolve().relative_to(ROOT)
+        except ValueError:
+            shown = args.output
     except ValueError:
         shown = args.output
     print(f"\nwrote {shown}")

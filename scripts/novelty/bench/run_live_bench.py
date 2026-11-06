@@ -8,9 +8,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from glue_baseline import GlueBaseline
 from laix import default_planners
-from live_bench_common import (
+from shared.glue_baseline import GlueBaseline
+from shared.live_bench_common import (
     ROOT,
     evaluate_case,
     load_cases,

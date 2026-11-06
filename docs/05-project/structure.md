@@ -34,7 +34,14 @@ laix/
 │   └── typescript/        the same numbered stages
 ├── scripts/
 │   ├── ci/                repository checks (relative links)
-│   └── novelty/           bench, analysis, validation, comparison and reproduction
+│   └── novelty/
+│       ├── bench/         corpus, live bench, ablations and baseline
+│       ├── analysis/      significance tests and category breakdown
+│       ├── compare/       external comparison runner
+│       ├── incident-replay/  incident preflight, ingest and analysis
+│       ├── vignette-study/   vignette generation, analysis and server
+│       ├── shared/        shared benchmark and glue modules
+│       └── reproduce.sh   full evidence pipeline
 └── .github/               CI and release workflows
 ```
 

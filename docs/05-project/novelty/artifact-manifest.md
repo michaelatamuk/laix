@@ -14,14 +14,14 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 
 - `scripts/novelty/bench/generate_live_cases.py`
 - `scripts/novelty/bench/validate_live_cases.py`
-- `scripts/novelty/bench/run_live_bench_v2.py`
+- `scripts/novelty/bench/run_live_bench.py`
 - `scripts/novelty/analysis/analyze_results.py`
 - `scripts/novelty/bench/run_ablations.py`
 - `scripts/novelty/bench/summarize_results.py`
-- `scripts/novelty/glue_baseline.py`
+- `scripts/novelty/shared/glue_baseline.py`
 - `scripts/novelty/compare/run_external_comparison.py`
 - `scripts/novelty/reproduce.sh`
-- `scripts/novelty/live_bench_common.py`
+- `scripts/novelty/shared/live_bench_common.py`
 - `packages/typescript/laix/scripts/live-bench.mjs`
 - `benchmarks/compare/README.md`
 - `benchmarks/compare/adapters/` (protocol, result, LangGraph and Temporal adapters)
@@ -60,12 +60,12 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 - `data/vignette-study/README.md`
 - `data/vignette-study/v1/vignettes.json`
 - `data/vignette-study/v1/app/`
-- `scripts/novelty/validation/check_validation_data.py`
-- `scripts/novelty/validation/ingest_incidents.py`
-- `scripts/novelty/validation/analyze_validation.py`
-- `scripts/novelty/validation/generate_vignettes.py`
-- `scripts/novelty/validation/analyze_user_study.py`
-- `scripts/novelty/validation/serve_user_study.py`
+- `scripts/novelty/incident-replay/preflight_incidents.py`
+- `scripts/novelty/incident-replay/ingest_incidents.py`
+- `scripts/novelty/incident-replay/analyze_incident_replay.py`
+- `scripts/novelty/vignette-study/generate_vignettes.py`
+- `scripts/novelty/vignette-study/analyze_vignette_study.py`
+- `scripts/novelty/vignette-study/serve_vignette_study.py`
 - `docs/05-project/novelty/user-study.md`
 - `docs/05-project/novelty/user-study-consent.md`
 - `docs/05-project/novelty/user-study-recruitment.md`
