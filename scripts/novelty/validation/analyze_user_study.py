@@ -12,8 +12,8 @@ from statistics import mean
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_INPUT = ROOT / "data" / "validation" / "user-study" / "user-study-results.jsonl"
-DEFAULT_OUTPUT = ROOT / "data" / "validation" / "user-study" / "user-study-report.json"
+DEFAULT_INPUT = ROOT / "data" / "vignette-study" / "v1" / "output" / "results.jsonl"
+DEFAULT_OUTPUT = ROOT / "data" / "vignette-study" / "v1" / "output" / "report.json"
 
 
 def parse_args() -> argparse.Namespace:

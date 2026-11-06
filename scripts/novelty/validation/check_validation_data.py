@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_INPUT = ROOT / "data" / "validation" / "incidents" / "anonymised" / "incidents-v1.jsonl"
+DEFAULT_INPUT = ROOT / "data" / "incident-replay" / "output" / "anonymised.jsonl"
 PII_KEYS = {
     "full_name",
     "first_name",
@@ -53,7 +53,7 @@ def main() -> int:
     args = parse_args()
     if not args.input.exists():
         print(f"missing input: {args.input}")
-        print("Start from data/validation/README.md and the collection kit.")
+        print("Start from data/incident-replay/README.md and the collection kit.")
         return 2
 
     rows = [

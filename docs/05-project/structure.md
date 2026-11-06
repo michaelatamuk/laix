@@ -11,7 +11,10 @@ laix/
 │   │   └── v1/            schema, dev/test/adversarial corpus (frozen)
 │   └── compare/           external adapters, capability matrix, requirements
 ├── data/
-│   └── validation/        incident replay and user-study materials
+│   ├── README.md          validation methods index
+│   ├── incident-replay/   incident replay input and output
+│   └── vignette-study/
+│       └── v1/            20-vignette instrument and app
 ├── results/
 │   └── live_bench_v2/     summaries, ablations and raw rows
 ├── packages/

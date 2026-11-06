@@ -17,7 +17,7 @@ Synthetic cases are not enough. Choose one:
 
 ### Option B: user study
 
-- materials: `data/validation/user-study/vignettes-v1.json` (20 vignettes);
+- materials: `data/vignette-study/v1/vignettes.json` (20 vignettes);
 - protocol: `docs/05-project/novelty/user-study.md`;
 - analysis: `scripts/novelty/validation/analyze_user_study.py`;
 - ask operators to judge decisions from LAIX and a baseline;
@@ -99,6 +99,6 @@ Fill this in before collecting data.
 Harness commands:
 
 ```bash
-python scripts/novelty/validation/ingest_incidents.py --input raw/incidents.jsonl
+python scripts/novelty/validation/ingest_incidents.py --input data/incident-replay/raw/incidents.jsonl
 python scripts/novelty/validation/analyze_validation.py
 ```

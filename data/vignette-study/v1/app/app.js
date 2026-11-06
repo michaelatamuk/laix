@@ -171,8 +171,8 @@ function download() {
 
 async function start() {
   if (!app.payload) {
-    const response = await fetch("../vignettes-v1.json");
-    if (!response.ok) throw new Error("Could not load vignettes-v1.json");
+    const response = await fetch("../vignettes.json");
+    if (!response.ok) throw new Error("Could not load vignettes.json");
     app.payload = await response.json();
   }
   if (!restore()) {

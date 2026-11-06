@@ -88,8 +88,8 @@ Stop here and switch to the user study if the source has no reliable human actio
 ### Day 5 — run the analysis
 
 ```bash
-python scripts/novelty/validation/check_validation_data.py --input data/validation/incidents/anonymised/incidents-v1.jsonl
-python scripts/novelty/validation/analyze_validation.py --input data/validation/incidents/anonymised/incidents-v1.jsonl
+python scripts/novelty/validation/check_validation_data.py --input data/incident-replay/output/anonymised.jsonl
+python scripts/novelty/validation/analyze_validation.py --input data/incident-replay/output/anonymised.jsonl
 ```
 
 Record:
@@ -146,7 +146,7 @@ Exclude a case when:
 
 If incident data is not available by day 2:
 
-- use `data/validation/user-study/vignettes-v1.json` (20 vignettes);
+- use `data/vignette-study/v1/vignettes.json` (20 vignettes);
 - recruit 20–30 colleagues;
 - each session is about 20–30 minutes;
 - follow `user-study.md` and record results as JSONL;

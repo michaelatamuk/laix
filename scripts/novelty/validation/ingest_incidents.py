@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_OUTPUT = ROOT / "data" / "validation" / "incidents" / "anonymised" / "incidents-v1.jsonl"
+DEFAULT_OUTPUT = ROOT / "data" / "incident-replay" / "output" / "anonymised.jsonl"
 
 PII_KEYS = {
     "full_name",

@@ -1,4 +1,4 @@
-# User-study app
+# Study app
 
 A self-contained, offline browser app for the 20-vignette study. It needs no external survey
 platform and records no personal data.
@@ -11,7 +11,7 @@ From the repository root:
 python scripts/novelty/validation/serve_user_study.py
 ```
 
-The browser opens at the printed local URL; the app itself is served under `/user-study-app/`.
+The browser opens at the printed local URL; the app itself is served under `/app/`.
 
 ## Facilitator flow
 
@@ -19,14 +19,17 @@ The browser opens at the printed local URL; the app itself is served under `/use
 2. Start the server and open the app.
 3. The participant reads each scenario, sees one blinded recommendation, chooses an action and
    rates timeliness, trust and workload.
-4. At the end, click **Download results**. Save the `.jsonl` file outside the repository.
+4. At the end, click **Download results**. Save the `.jsonl` file as
+   `data/vignette-study/v1/output/results.jsonl`. If you collect several participant files,
+   concatenate them into that file.
 5. Repeat for each participant with a fresh browser profile or by clearing local storage.
 
-Each session is 20 vignettes × 2 recommendations = 40 trials, about 20–30 minutes.
+Each session is 20 vignettes with two recommendations each = 40 trials, about 20-30 minutes.
 
 ## Output
 
-The downloaded file is JSON Lines in the format expected by `scripts/novelty/validation/analyze_user_study.py`:
+The downloaded file is JSON Lines in the format expected by
+`scripts/novelty/validation/analyze_user_study.py`:
 
 ```json
 {"participant_id":"p-...","vignette_id":"v01","condition":"laix","recommendation":"ask","choice":"ask","timeliness":5,"trust":4,"workload":2}

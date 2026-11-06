@@ -1,4 +1,4 @@
-"""Serve the offline user-study app from data/validation/user-study."""
+"""Serve the offline user-study app from data/vignette-study/v1."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ import webbrowser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-DIRECTORY = ROOT / "data" / "validation" / "user-study"
+DIRECTORY = ROOT / "data" / "vignette-study" / "v1"
 
 
 class _Handler(http.server.SimpleHTTPRequestHandler):
@@ -22,7 +22,7 @@ def main() -> int:
     handler = functools.partial(_Handler, directory=str(DIRECTORY))
     with socketserver.TCPServer(("127.0.0.1", 0), handler) as server:
         port = server.server_address[1]
-        url = f"http://127.0.0.1:{port}/user-study-app/"
+        url = f"http://127.0.0.1:{port}/app/"
         print(f"Serving {DIRECTORY}")
         print(f"Open {url}")
         threading.Timer(0.5, lambda: webbrowser.open(url)).start()

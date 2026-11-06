@@ -116,9 +116,9 @@ confidence intervals.
 team did not write.
 
 - [x] **Build the validation harness** — `docs/05-project/novelty/collection-kit.md`,
-  `data/validation/incidents/incidents-template.jsonl`, `data/validation/user-study/user-study-app/`,
+  `data/incident-replay/template.jsonl`, `data/vignette-study/v1/app/`,
   `scripts/novelty/validation/check_validation_data.py`, `scripts/novelty/validation/ingest_incidents.py`,
-  `scripts/novelty/validation/analyze_validation.py`, `data/validation/user-study/vignettes-v1.json`
+  `scripts/novelty/validation/analyze_validation.py`, `data/vignette-study/v1/vignettes.json`
   (20 user-study vignettes), `scripts/novelty/validation/analyze_user_study.py`,
   `scripts/novelty/validation/serve_user_study.py`, and the consent/recruitment templates.
 
@@ -148,7 +148,7 @@ Replay historical incidents where a person already made a decision.
    - Reads the raw export.
    - Maps each incident to a `DecisionProblem` JSON (using the case schema).
    - Strips all PII: names, emails, IPs, customer IDs, free-text that could identify a person.
-   - Writes `data/validation/incidents/anonymised/incidents-v1.jsonl` (each line: one problem + human
+   - Writes `data/incident-replay/output/anonymised.jsonl` (each line: one problem + human
      decision label).
 3. Run `decide()` on each problem. Record LAIX verb and reason code.
 4. Count: agreement rate, disagreement rate, discordant-pair list.
@@ -159,12 +159,12 @@ Replay historical incidents where a person already made a decision.
 
 ### Option B — User study
 
-Materials and protocol are ready: `data/validation/user-study/vignettes-v1.json`,
+Materials and protocol are ready: `data/vignette-study/v1/vignettes.json`,
 `docs/05-project/novelty/user-study.md` and `scripts/novelty/validation/analyze_user_study.py`. Recruitment is external.
 
 Recruit participants to judge LAIX decisions on vignette scenarios.
 
-1. Write 20 vignettes in `data/validation/user-study/vignettes-v1.json`. Each vignette has:
+1. Write 20 vignettes in `data/vignette-study/v1/vignettes.json`. Each vignette has:
    - a situation description (plain English, no jargon);
    - 2–4 labelled options;
    - the LAIX decision (verb + rationale);

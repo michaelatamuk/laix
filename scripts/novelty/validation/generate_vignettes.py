@@ -17,7 +17,7 @@ from laix import LiveDecisionEngine, UtilityEngine
 from live_bench_common import build_problem
 
 ROOT = Path(__file__).resolve().parents[3]
-OUT = ROOT / "data" / "validation" / "user-study" / "vignettes-v1.json"
+OUT = ROOT / "data" / "vignette-study" / "v1" / "vignettes.json"
 AT = "2026-11-06T10:00:00+00:00"
 
 

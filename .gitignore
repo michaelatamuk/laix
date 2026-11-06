@@ -9,3 +9,8 @@ dist/
 coverage/
 *.egg-info/
 .DS_Store
+
+# Generated validation data (raw incidents, participant results and reports)
+data/incident-replay/raw/
+data/incident-replay/output/
+data/vignette-study/*/output/

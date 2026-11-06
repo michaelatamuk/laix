@@ -10,8 +10,9 @@ everything from the repository root.
 | `validation/` | user-study generation and analysis, incident ingest and preflight, the local app server |
 | `compare/` | the optional external comparison runner |
 
-`bench/` reads `benchmarks/live/v1/`. `live_bench_common.py` and `glue_baseline.py` are shared
-modules used by both `bench/` and `validation/`.
+`bench/` reads `benchmarks/live/v1/`. `validation/` reads `data/incident-replay/` and
+`data/vignette-study/v1/`. `live_bench_common.py` and `glue_baseline.py` are shared modules used by
+both `bench/` and `validation/`.
 
 Run the full pipeline:
 

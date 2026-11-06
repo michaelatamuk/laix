@@ -15,8 +15,8 @@ from laix import LiveDecisionEngine, UtilityEngine
 from live_bench_common import bootstrap_ci, build_problem, run_planner
 
 ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_INPUT = ROOT / "data" / "validation" / "incidents" / "anonymised" / "incidents-v1.jsonl"
-DEFAULT_OUTPUT = ROOT / "data" / "validation" / "incidents" / "report.json"
+DEFAULT_INPUT = ROOT / "data" / "incident-replay" / "output" / "anonymised.jsonl"
+DEFAULT_OUTPUT = ROOT / "data" / "incident-replay" / "output" / "report.json"
 
 
 def parse_args() -> argparse.Namespace:
@@ -39,7 +39,7 @@ def main() -> int:
     args = parse_args()
     if not args.input.exists():
         print(f"missing validation data: {args.input}")
-        print("Create the file with scripts/ingest_incidents.py from a real export.")
+        print("Create the file with scripts/novelty/validation/ingest_incidents.py from a real export.")
         return 2
 
     rows = load_rows(args.input)
