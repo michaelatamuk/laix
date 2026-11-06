@@ -51,11 +51,13 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 - `data/validation/README.md`
 - `data/validation/incidents-template.jsonl`
 - `data/validation/vignettes-v1.json`
+- `data/validation/user-study-app/`
 - `scripts/novelty/check_validation_data.py`
 - `scripts/novelty/ingest_incidents.py`
 - `scripts/novelty/analyze_validation.py`
 - `scripts/novelty/generate_vignettes.py`
 - `scripts/novelty/analyze_user_study.py`
+- `scripts/novelty/serve_user_study.py`
 - `docs/05-project/novelty/user-study.md`
 - `docs/05-project/novelty/user-study-consent.md`
 - `docs/05-project/novelty/user-study-recruitment.md`

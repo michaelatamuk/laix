@@ -112,10 +112,11 @@ confidence intervals.
 team did not write.
 
 - [x] **Build the validation harness** — `docs/05-project/novelty/collection-kit.md`,
-  `data/validation/incidents-template.jsonl`, `scripts/novelty/check_validation_data.py`,
-  `scripts/novelty/ingest_incidents.py`, `scripts/novelty/analyze_validation.py`,
-  `data/validation/vignettes-v1.json` (20 user-study vignettes),
-  `scripts/novelty/analyze_user_study.py`, and the consent/recruitment templates.
+  `data/validation/incidents-template.jsonl`, `data/validation/user-study-app/`,
+  `scripts/novelty/check_validation_data.py`, `scripts/novelty/ingest_incidents.py`,
+  `scripts/novelty/analyze_validation.py`, `data/validation/vignettes-v1.json`
+  (20 user-study vignettes), `scripts/novelty/analyze_user_study.py`,
+  `scripts/novelty/serve_user_study.py`, and the consent/recruitment templates.
 
 - [ ] **Record the chosen option** — write one paragraph in
   `docs/05-project/novelty/validation.md` §1 stating: which option (A, B or C) was chosen,

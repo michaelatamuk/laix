@@ -12,6 +12,14 @@ Status: materials are ready; no participants have been recruited.
 - `baseline_choice` — the current utility-only recommendation;
 - `human_choice` and `notes` — empty until the study.
 
+The offline app lives in `data/validation/user-study-app/`. Start it with:
+
+```bash
+python scripts/novelty/serve_user_study.py
+```
+
+It blinds the recommendations, randomises order and downloads the results JSONL.
+
 ## Design
 
 - Within-subject: each participant sees both recommendations for each vignette.

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LAIX decision study</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="app" aria-live="polite">
+    <section id="intro" class="panel">
+      <h1>Decision study</h1>
+      <p>You will read 20 short operational scenarios. For each scenario you will see two recommendations and choose what you would do.</p>
+      <p>Participation is voluntary. The scenarios are fictional and no personal data is recorded.</p>
+      <button id="start">Start</button>
+    </section>
+
+    <section id="trial" class="panel hidden">
+      <div class="progress"><span id="progress"></span></div>
+      <h2 id="situation"></h2>
+      <ul id="options" class="options"></ul>
+
+      <div class="recommendation">
+        <p class="eyebrow">Recommendation <span id="recommendation-label"></span></p>
+        <p id="recommendation-text" class="recommendation-text"></p>
+        <p class="muted">The system recommends this action under its current policy.</p>
+      </div>
+
+      <fieldset>
+        <legend>What would you do?</legend>
+        <div id="choices" class="choices"></div>
+      </fieldset>
+
+      <div class="ratings">
+        <label>Timeliness
+          <input type="range" id="timeliness" min="1" max="5" value="3" />
+          <output id="timeliness-out">3</output>
+        </label>
+        <label>Trust
+          <input type="range" id="trust" min="1" max="5" value="3" />
+          <output id="trust-out">3</output>
+        </label>
+        <label>Workload (1 = low, 5 = high)
+          <input type="range" id="workload" min="1" max="5" value="3" />
+          <output id="workload-out">3</output>
+        </label>
+      </div>
+
+      <p id="error" class="error" role="alert"></p>
+      <button id="next">Next</button>
+    </section>
+
+    <section id="done" class="panel hidden">
+      <h1>Thank you</h1>
+      <p>Download the results file and give it to the study facilitator.</p>
+      <p id="summary" class="muted"></p>
+      <button id="download">Download results</button>
+      <pre id="preview" class="preview"></pre>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
