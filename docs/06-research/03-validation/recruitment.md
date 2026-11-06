@@ -1,4 +1,4 @@
-# User-study recruitment template
+# Vignette-study recruitment
 
 Adapt the wording to your organisation.
 

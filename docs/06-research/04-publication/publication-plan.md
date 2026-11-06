@@ -1,4 +1,4 @@
-# Paper and artifact
+# Publication plan
 
 Write the paper only after the evidence exists. This page covers reproducibility, the artifact, the
 paper outline and the venues. The current draft is in [paper-draft.md](paper-draft.md); it is marked

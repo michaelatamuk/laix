@@ -55,7 +55,7 @@ TypeScript, from a local checkout:
 npm install file:../path/to/laix/packages/typescript/laix
 ```
 
-See the [quickstart](docs/01-start/quickstart.md) for the full setup.
+See the [quickstart](docs/01-start/02-quickstart.md) for the full setup.
 
 ## One decision
 
@@ -188,7 +188,7 @@ See [Testing](docs/05-project/testing.md) for the full check list and how to run
 | Start | |
 |---|---|
 | [Documentation index](docs/README.md) | start, core, app kit, concepts, project and research |
-| [Decision lifecycle](docs/01-start/decision-lifecycle.md) | moment to outcome in one loop |
+| [Decision lifecycle](docs/01-start/03-decision-lifecycle.md) | moment to outcome in one loop |
 | [Core building blocks](docs/02-core/00-architecture.md) | the decision layer |
 | [App-kit building blocks](docs/03-appkit/00-architecture.md) | streaming, execution, stores and delivery |
 | [FAQ](docs/04-concepts/faq.md) | models, execution and novelty |
@@ -221,7 +221,7 @@ npm run conformance
 npm run bench
 ```
 
-See [Testing](docs/05-project/testing.md) for every check and [Structure](docs/05-project/structure.md)
+See [Testing](docs/05-project/testing.md) for every check and [Structure](docs/05-project/repository-structure.md)
 for where things live. CI runs the same checks on every push.
 
 ## License

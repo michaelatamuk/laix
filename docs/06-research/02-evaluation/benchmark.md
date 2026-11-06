@@ -1,4 +1,4 @@
-# Evaluation and measurement
+# Benchmark evaluation
 
 Turn every claim into a metric, a baseline and an interval. This page covers hypotheses, measurement
 formulas, the benchmark protocol and threats to validity.

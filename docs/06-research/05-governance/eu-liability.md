@@ -148,6 +148,6 @@ For the directive, the deployer should:
   liability for defective products (Product Liability Directive), OJ L,
   18 November 2024.
 - European Commission guidance on AI liability, 2023.
-- LAIX decision contract: [architecture.md](../../04-concepts/architecture.md)
+- LAIX decision contract: [architecture.md](../../04-concepts/system-architecture.md)
 - LAIX audit fields: `decision_id`, `policy_version`, `trace_id`,
   `created_at`, `deliver`, `record` — see the glossary.

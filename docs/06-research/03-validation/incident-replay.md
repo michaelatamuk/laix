@@ -1,4 +1,4 @@
-# Validation collection kit
+# Incident replay
 
 Decision: **incident replay first**, with the **user study as the fallback**.
 

@@ -1,4 +1,4 @@
-# User-study protocol
+# Vignette study protocol
 
 Status: materials are ready; no participants have been recruited.
 

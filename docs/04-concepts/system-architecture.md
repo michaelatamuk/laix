@@ -192,7 +192,7 @@ The split is about selection. All ten return the same decision shape. See
   deep detectors run under a budget. See [live context](../03-appkit/03-live-context.md).
 - **Outcome learning** uses measured outcomes to improve the next choice. See
   [outcome learning](../02-core/04-outcome-learning.md).
-- **LAIX-Bench** runs the same test cases for every class. See [bench](../03-appkit/08-bench.md).
+- **LAIX-Bench** runs the same test cases for every class. See [bench](../03-appkit/08-laix-bench.md).
 
 LAIX is a decision layer. It can host a decision model such as JEV inside a policy. See
 [LAIX and decision models](decision-models.md).

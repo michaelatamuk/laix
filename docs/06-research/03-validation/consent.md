@@ -1,4 +1,4 @@
-# User-study consent template
+# Vignette-study consent
 
 Adapt this text to your organisation and jurisdiction. It is not legal advice.
 

@@ -37,7 +37,7 @@ Each counter becomes `laix_stream_<name>` with a gauge type.
 ## Bench
 
 `run_stream_bench(session, requests)` reports decisions, elapsed time, throughput and the same
-counters. See [bench](08-bench.md).
+counters. See [bench](08-laix-bench.md).
 
 ## Examples
 

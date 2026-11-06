@@ -206,8 +206,8 @@ LAIX keeps the decision and its record.
 
 ## Read next
 
-- [Decision lifecycle](decision-lifecycle.md) — one loop from moment to outcome.
-- [Architecture](../04-concepts/architecture.md) — the full picture.
-- [Host integration](host-integration.md) — the six things a host team checks first.
+- [Decision lifecycle](03-decision-lifecycle.md) — one loop from moment to outcome.
+- [Architecture](../04-concepts/system-architecture.md) — the full picture.
+- [Host integration](04-host-integration.md) — the six things a host team checks first.
 - [The Decision response](../02-core/01-decision-contract.md) — every field in plain language.
 - [FAQ](../04-concepts/faq.md) — models, execution and novelty.

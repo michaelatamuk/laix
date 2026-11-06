@@ -1,6 +1,6 @@
 # Repository structure
 
-This page maps files. Concepts are defined in [architecture](../04-concepts/architecture.md),
+This page maps files. Concepts are defined in [architecture](../04-concepts/system-architecture.md),
 [the Decision response](../02-core/01-decision-contract.md) and [records](../02-core/01-decision-contract.md).
 
 ```text
@@ -28,11 +28,11 @@ laix/
 │   └── typescript/laix/   TypeScript package and tests
 ├── docs/
 │   ├── README.md          audience-first index
-│   ├── 01-start/          quickstart, what-is, lifecycle, host integration
+│   ├── 01-start/          numbered start path
 │   ├── 02-core/           contract, attention, policies, learning, evaluation, planners
-│   ├── 03-appkit/         architecture, integration, streaming, execution, stores, bench
-│   ├── 04-concepts/       architecture, boundaries, PPMA, decision models, privacy, FAQ, glossary
-│   ├── 05-project/        structure, testing, API map, versioning, roadmap
+│   ├── 03-appkit/         architecture, integration, streaming, execution, stores, LAIX-Bench
+│   ├── 04-concepts/       system architecture, boundaries, PPMA, decision models, privacy, FAQ, glossary
+│   ├── 05-project/        repository structure, testing, API map, versioning, roadmap
 │   └── 06-research/
 │       ├── 01-positioning/  prior art, comparators, formal model
 │       ├── 02-evaluation/   evaluation and evidence map

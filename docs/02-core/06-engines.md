@@ -181,7 +181,7 @@ planner chooses the action that is best under that belief.
 | Action | chosen to maximise expected reward under the belief |
 
 `POMDPEngine` plans over a finite model. Belief planning grows quickly with the number of states and
-observations, so keep the model small. See [the app-kit bench](../03-appkit/08-bench.md) for planner
+observations, so keep the model small. See [the app-kit bench](../03-appkit/08-laix-bench.md) for planner
 comparison.
 
 Both MDP and POMDP need a world model: states, transitions and rewards. The app supplies that model;
