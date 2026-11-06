@@ -7,7 +7,7 @@ from typing import Protocol
 
 from laix import DecisionProblem, Plan
 
-from .adapter_result import AdapterResult
+from .result import AdapterResult
 
 
 class ExternalAdapter(Protocol):

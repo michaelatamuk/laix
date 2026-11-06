@@ -1,1 +1,1 @@
-"""External comparison harness for LAIX."""
+"""Benchmark corpora and external comparison harness for LAIX."""

@@ -7,8 +7,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-CASES = ROOT / "benchmarks" / "cases"
-SCHEMA = CASES / "cases.v1.schema.json"
+CASES = ROOT / "benchmarks" / "live" / "v1"
+SCHEMA = CASES / "schema.json"
 SPLITS = ("dev", "test", "adversarial")
 
 
@@ -25,7 +25,7 @@ def main() -> int:
     failures = 0
 
     for split in SPLITS:
-        path = CASES / f"{split}-cases-v1.json"
+        path = CASES / f"{split}.json"
         payload = json.loads(path.read_text(encoding="utf-8"))
         errors = sorted(validator.iter_errors(payload), key=lambda error: list(error.path))
         if errors:

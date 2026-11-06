@@ -9,8 +9,8 @@ from pathlib import Path
 
 from laix import DecisionProblem, LiveDecisionEngine, Plan
 
-from .adapter_result import AdapterResult
-from .langgraph_state import LangGraphState
+from ..result import AdapterResult
+from .state import LangGraphState
 
 try:
     from langgraph.checkpoint.memory import MemorySaver

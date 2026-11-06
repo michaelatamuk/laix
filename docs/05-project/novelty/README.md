@@ -43,7 +43,7 @@ review.
   pattern).
 - Added: `formal-model.md` with exact score formulas and weights, `prior-art.md` matrix
   (10 capabilities × 7 columns), `tests/core/test_invariants.py` (17 property tests, I1–I10),
-  `benchmarks/cases/` (120 cases with dev/test/adversarial splits),
+  `benchmarks/live/v1/` (120 cases with dev/test/adversarial splits),
   `scripts/novelty/bench/run_live_bench_v2.py` (metrics and bootstrap intervals),
   `scripts/novelty/analysis/analyze_results.py` (McNemar, paired bootstrap and effect sizes),
   `scripts/novelty/glue_baseline.py` (hand-built integration baseline),

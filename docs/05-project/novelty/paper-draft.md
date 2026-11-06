@@ -223,7 +223,7 @@ bash scripts/novelty/reproduce.sh
 
 Files:
 
-- `benchmarks/cases/` — 120 cases and schema;
+- `benchmarks/live/v1/` — 120 cases and schema;
 - `results/live_bench_v2/summary.json` — baseline metrics;
 - `results/live_bench_v2/analysis.json` — paired tests and categories;
 - `results/live_bench_v2/ablations.json` — ablation results;

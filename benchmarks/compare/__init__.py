@@ -1,6 +1,8 @@
-"""External adapter package."""
+"""External comparison package."""
 
-from .adapter_result import AdapterResult
-from .external_adapter import ExternalAdapter
+from .adapters.langgraph.adapter import LangGraphAdapter
+from .adapters.protocol import ExternalAdapter
+from .adapters.result import AdapterResult
+from .adapters.temporal.adapter import TemporalAdapter
 
-__all__ = ["AdapterResult", "ExternalAdapter"]
+__all__ = ["AdapterResult", "ExternalAdapter", "LangGraphAdapter", "TemporalAdapter"]

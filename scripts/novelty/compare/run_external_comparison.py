@@ -14,11 +14,9 @@ sys.path.insert(0, str(NOVELTY))
 
 from live_bench_common import RESULTS, load_cases, split_paths
 
-from benchmarks.compare.adapter_result import AdapterResult
-from benchmarks.compare.langgraph_adapter import LangGraphAdapter
-from benchmarks.compare.temporal_adapter import TemporalAdapter
+from benchmarks.compare import AdapterResult, LangGraphAdapter, TemporalAdapter
 
-CAPABILITIES = ROOT / "benchmarks" / "compare" / "capability-matrix.json"
+CAPABILITIES = ROOT / "benchmarks" / "compare" / "capabilities.v1.json"
 
 
 def parse_args() -> argparse.Namespace:

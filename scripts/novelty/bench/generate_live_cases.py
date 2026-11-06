@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[3]
-OUT = ROOT / "benchmarks" / "cases"
+OUT = ROOT / "benchmarks" / "live" / "v1"
 AT = "2026-11-01T10:00:00+00:00"
 PAST = "2026-11-01T09:00:00+00:00"
 FUTURE = "2026-11-01T12:00:00+00:00"
@@ -426,7 +426,7 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     for split, counts in SPLITS.items():
         payload = build_split(split, counts)
-        target = OUT / f"{split}-cases-v1.json"
+        target = OUT / f"{split}.json"
         target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
         print(f"{target.relative_to(ROOT)}: {len(payload['cases'])} cases")
 

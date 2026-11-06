@@ -1,16 +1,22 @@
 # LAIX live bench — case format
 
-This directory holds the live-bench case files. Each file is a list of
-`DecisionProblem` scenarios in JSON. The Python loader converts them into
-`LiveCase` objects for use with `run_live_bench()`.
+`v1/` holds the current live-bench corpus. Each file is a list of `DecisionProblem` scenarios in
+JSON. The Python loader converts them into `LiveCase` objects for use with `run_live_bench()`.
 
-## Current files
+## v1 corpus
 
 | File | Split | Cases |
 |---|---|---:|
-| `dev-cases-v1.json` | dev | 72 |
-| `test-cases-v1.json` | test | 30 |
-| `adversarial-cases-v1.json` | adversarial | 18 |
+| `v1/dev.json` | dev | 72 |
+| `v1/test.json` | test | 30 |
+| `v1/adversarial.json` | adversarial | 18 |
+
+`v1/test.json` is frozen. Add `v2/` rather than editing v1 when the corpus changes.
+
+## Versioning
+
+A corpus version covers the schema and every split, so the version is a directory. Single-file
+artifacts such as `capabilities.v1.json` keep the version in the filename.
 
 Regenerate the corpus with:
 
@@ -20,12 +26,11 @@ python scripts/novelty/bench/generate_live_cases.py
 
 ## Schema
 
-**`cases.v1.schema.json`** — JSON Schema (Draft 2020-12) for all case files in this
-directory. Validate a file with:
+**`v1/schema.json`** — JSON Schema (Draft 2020-12) for every case file in `v1/`. Validate a file with:
 
 ```bash
 # using python-jsonschema
-python -m jsonschema -i my-cases.json benchmarks/cases/cases.v1.schema.json
+python -m jsonschema -i my-cases.json benchmarks/live/v1/schema.json
 ```
 
 ## File format
@@ -239,7 +244,7 @@ def load_cases(path: Path) -> list[LiveCase]:
 
 
 # Usage
-cases = load_cases(Path("benchmarks/cases/dev-cases-v1.json"))
+cases = load_cases(Path("benchmarks/live/v1/dev.json"))
 report = run_live_bench(cases, default_planners())
 print(report.summary())
 ```

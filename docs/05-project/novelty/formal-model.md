@@ -222,7 +222,7 @@ See `examples/python/03-plan/conflict_scenario.py` for a worked example.
 
 ### 2.7 Ablation results (test split, 30 cases)
 
-The expanded corpus is in `benchmarks/cases/`. On the frozen test split:
+The expanded corpus is in `benchmarks/live/v1/`. On the frozen test split:
 
 | Variant | Accuracy | Promise keeping | Irreversible rate | Budget violations |
 |---|---:|---:|---:|---:|

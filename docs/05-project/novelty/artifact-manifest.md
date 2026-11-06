@@ -4,11 +4,11 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 
 ## Benchmark
 
-- `benchmarks/cases/cases.v1.schema.json`
-- `benchmarks/cases/dev-cases-v1.json` (72)
-- `benchmarks/cases/test-cases-v1.json` (30, frozen)
-- `benchmarks/cases/adversarial-cases-v1.json` (18)
-- `benchmarks/cases/README.md`
+- `benchmarks/live/v1/schema.json`
+- `benchmarks/live/v1/dev.json` (72)
+- `benchmarks/live/v1/test.json` (30, frozen)
+- `benchmarks/live/v1/adversarial.json` (18)
+- `benchmarks/live/README.md`
 
 ## Analysis
 
@@ -23,7 +23,9 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 - `scripts/novelty/reproduce.sh`
 - `scripts/novelty/live_bench_common.py`
 - `packages/typescript/laix/scripts/live-bench.mjs`
-- `benchmarks/compare/` (adapter harness, LangGraph adapter, capability matrix)
+- `benchmarks/compare/README.md`
+- `benchmarks/compare/adapters/` (protocol, result, LangGraph and Temporal adapters)
+- `benchmarks/compare/capabilities.v1.json`
 - `benchmarks/compare/requirements-external.txt`
 
 ## Results

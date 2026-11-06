@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "laix/benchmarks/cases/cases.v1.schema.json",
+  "$id": "laix/benchmarks/live/v1/schema.json",
   "title": "LAIX live bench — case file (v1)",
   "description": "Schema for a file of live bench cases. Each case is a DecisionProblem written in JSON that the Python loader converts into a LiveCase for use with run_live_bench().",
   "type": "object",

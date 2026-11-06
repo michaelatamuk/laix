@@ -8,7 +8,7 @@ import { defaultPlanners } from "../src/core/bench/live-bench.ts";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "../../../..");
 const RESULTS = resolve(ROOT, "results/live_bench_v2");
-const CASES = resolve(ROOT, "benchmarks/cases");
+const CASES = resolve(ROOT, "benchmarks/live/v1");
 
 const args = process.argv.slice(2);
 let split = "test";
@@ -59,7 +59,7 @@ function problem(raw) {
 }
 
 function loadCases() {
-  const path = resolve(CASES, `${split}-cases-v1.json`);
+  const path = resolve(CASES, `${split}.json`);
   if (!existsSync(path)) {
     console.error(`missing case file: ${path}`);
     console.error("Run: python scripts/novelty/bench/generate_live_cases.py");

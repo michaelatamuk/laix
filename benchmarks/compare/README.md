@@ -15,12 +15,29 @@ recovery; they do not choose the LAIX verb. A fair comparison therefore measures
 It does **not** claim that `live` beats LangGraph or Temporal at decision accuracy. That would compare
 different tasks.
 
+## Layout
+
+| Path | Contents |
+|---|---|
+| `adapters/protocol.py` | the `ExternalAdapter` protocol |
+| `adapters/result.py` | the `AdapterResult` record |
+| `adapters/langgraph/` | the LangGraph adapter and its state |
+| `adapters/temporal/` | the Temporal adapter template |
+| `capabilities.v1.json` | the capability matrix |
+| `requirements-external.txt` | optional dependencies |
+
+Import the public surface from `benchmarks.compare`:
+
+```python
+from benchmarks.compare import LangGraphAdapter, TemporalAdapter
+```
+
 ## Adapters
 
 | Adapter | Runnable here | What it shows |
 |---|---|---|
-| `langgraph_adapter.py` | optional, needs `langgraph` | a state graph with a decision node and an approval interrupt |
-| `temporal_adapter.py` | template, needs a Temporal server | durable execution, retries, signals and compensation |
+| `adapters/langgraph/adapter.py` | optional, needs `langgraph` | a state graph with a decision node and an approval interrupt |
+| `adapters/temporal/adapter.py` | template, needs a Temporal server | durable execution, retries, signals and compensation |
 | PagerDuty / Camunda | documented only | alerting and BPMN approval/compensation |
 
 ## Install the optional dependency
@@ -64,5 +81,5 @@ graph. Temporal, PagerDuty and Camunda remain documented-only because they need 
 
 ## Capability matrix
 
-`capability-matrix.json` is the machine-readable version of the documented comparison in
+`capabilities.v1.json` is the machine-readable version of the documented comparison in
 `docs/05-project/novelty/comparators.md`.

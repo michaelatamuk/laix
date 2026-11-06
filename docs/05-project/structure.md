@@ -6,8 +6,10 @@ This page maps files. Concepts are defined in [architecture](../04-concepts/arch
 ```text
 laix/
 ├── benchmarks/
-│   ├── cases/             case schema, dev/test/adversarial corpus
-│   └── compare/           external adapter harness and capability matrix
+│   ├── README.md          data vs harness index
+│   ├── live/
+│   │   └── v1/            schema, dev/test/adversarial corpus (frozen)
+│   └── compare/           external adapters, capability matrix, requirements
 ├── data/
 │   └── validation/        incident replay and user-study materials
 ├── results/

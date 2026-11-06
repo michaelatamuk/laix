@@ -47,20 +47,20 @@ confidence intervals.
   runs all 7 planners on all 7 cases; live bench 7/7, single-concern planners partial
 - [x] Write the conflict scenario — `examples/python/03-plan/conflict_scenario.py`
   shows all three concerns firing; UtilityEngine and AttentionAware fail; full score breakdown
-- [x] Create the case schema — `benchmarks/cases/cases.v1.schema.json` (JSON Schema Draft
-  2020-12); `benchmarks/cases/README.md` with field reference, split targets and Python loader
+- [x] Create the case schema — `benchmarks/live/v1/schema.json` (JSON Schema Draft
+  2020-12); `benchmarks/live/README.md` with field reference, split targets and Python loader
   snippet
 
 ### Done
 
-- [x] **Write 120 cases** in `benchmarks/cases/`:
-  - `dev-cases-v1.json` — 72 cases;
-  - `test-cases-v1.json` — 30 cases, frozen for the main table;
-  - `adversarial-cases-v1.json` — 18 held-out cases.
+- [x] **Write 120 cases** in `benchmarks/live/v1/`:
+  - `dev.json` — 72 cases;
+  - `test.json` — 30 cases, frozen for the main table;
+  - `adversarial.json` — 18 held-out cases.
   - Category distribution across all files: promise 20, execution 20, attention 20,
     timing 15, conflict 25, plain 20.
   - Generated deterministically by `scripts/novelty/bench/generate_live_cases.py`; every file validates
-    against `cases.v1.schema.json`.
+    against `schema.json`.
 
 - [x] **Use a dependency-free bootstrap** — `run_live_bench_v2.py` uses a pure-Python
   bootstrap (10,000 resamples, `random.Random(seed)`), so no `numpy` extra is required.
@@ -92,7 +92,7 @@ confidence intervals.
 - [x] **TypeScript live-bench parity** — `packages/typescript/laix/scripts/live-bench.mjs`
   runs the same test split and compares 210 action IDs with Python; all 210 agree.
 
-- [x] **Run the available external adapter** — `benchmarks/compare/langgraph_adapter.py` runs
+- [x] **Run the available external adapter** — `benchmarks/compare/adapters/langgraph/adapter.py` runs
   the same engine on 120 cases (6.9 ms mean, 110 glue lines). Temporal, PagerDuty and Camunda
   remain documented-only.
 
@@ -103,7 +103,7 @@ confidence intervals.
 - [x] **Freeze the test split** — dataset version `1.0.0`; do not change the test cases again
   without a new version and a new baseline.
 
-**Deliverable:** `benchmarks/cases/` (120 cases), `scripts/novelty/bench/run_live_bench_v2.py`,
+**Deliverable:** `benchmarks/live/v1/` (120 cases), `scripts/novelty/bench/run_live_bench_v2.py`,
 `scripts/novelty/bench/run_ablations.py`, `scripts/novelty/bench/summarize_results.py`,
 `results/live_bench_v2/`. Main table reproducible with:
 `python scripts/novelty/bench/run_live_bench_v2.py --split test --seed 42`.
@@ -272,11 +272,11 @@ table is reproducible with one command, and no sentence exceeds the evidence.
   DOI into `CITATION.cff` under `doi:` and commit.
 
 - [ ] **Publish the benchmark** — in the Zenodo deposit include:
-  - `benchmarks/cases/dev-cases-v1.json`
-  - `benchmarks/cases/test-cases-v1.json`
-  - `benchmarks/cases/cases.v1.schema.json`
+  - `benchmarks/live/v1/dev.json`
+  - `benchmarks/live/v1/test.json`
+  - `benchmarks/live/v1/schema.json`
   - `results/live_bench_v2/summary.json`
-  Do **not** include `adversarial-cases-v1.json` in the public deposit (keep it private to
+  Do **not** include `adversarial.json` in the public deposit (keep it private to
   prevent gaming).
 
 **Deliverable:** a tagged release, a Zenodo DOI, a CI job that keeps the main table green.
@@ -308,7 +308,7 @@ table is reproducible with one command, and no sentence exceeds the evidence.
     action taken and the resulting number change.
 
 - [ ] **Independent replication** — share `scripts/novelty/reproduce.sh` and
-  `benchmarks/cases/test-cases-v1.json` with one person outside the team. Ask them to:
+  `benchmarks/live/v1/test.json` with one person outside the team. Ask them to:
   1. Clone the repo on a machine they control.
   2. Run `bash scripts/novelty/reproduce.sh`.
   3. Report whether the main table in the paper matches their output within 0.5 pp.

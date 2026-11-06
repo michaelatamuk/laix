@@ -186,10 +186,10 @@ Record the assumed effect size and the resulting power in the paper.
 
 Create:
 
-- `benchmarks/cases/dev-cases-v1.json`
-- `benchmarks/cases/test-cases-v1.json`
-- `benchmarks/cases/adversarial-cases-v1.json`
-- `benchmarks/cases/README.md`
+- `benchmarks/live/v1/dev.json`
+- `benchmarks/live/v1/test.json`
+- `benchmarks/live/v1/adversarial.json`
+- `benchmarks/live/README.md`
 - `scripts/novelty/bench/generate_live_cases.py`
 - `scripts/novelty/bench/run_live_bench_v2.py`
 - `scripts/novelty/bench/run_ablations.py`

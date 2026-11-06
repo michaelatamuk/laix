@@ -113,7 +113,8 @@ The check resolves relative links across `docs/`, `examples/` and every README.
 | `scripts/novelty/bench/validate_live_cases.py` | JSON Schema validation and duplicate-id check |
 | `scripts/novelty/validation/` | incident preflight, ingest and user-study analysis |
 | `scripts/ci/check_docs_links.py` | relative links in docs, examples and README files |
-| `benchmarks/compare/` | optional external adapter harness and capability matrix |
+| `benchmarks/live/v1/` | versioned corpus and schema |
+| `benchmarks/compare/adapters/` | optional external adapters and capability matrix |
 | examples | every runnable Python and TypeScript example |
 | docs links | relative links in docs, examples and README files |
 
