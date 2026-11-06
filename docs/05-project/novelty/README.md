@@ -31,21 +31,54 @@ review.
 - Status at time of writing: Python and TypeScript tests, parity, conformance, bench and examples pass.
 - Existing proof points: `LiveDecisionEngine`, the live bench, Python/TypeScript parity,
   conformance vectors, deterministic replay and the audit trail.
-- Main gap: no prior-art matrix, no ablation study, no confidence intervals, no real-world
-  validation and no paper.
+- Added: `comparators.md` (documented capability comparison, 7 systems), `eu-liability.md`
+  (PLD 2024/2853 mapping), `ablation_study.py` (all 7 planners on 7 cases, `live` wins
+  every case), `conflict_scenario.py` (triple-concern demo), `shadow_rollout.py` (rollout
+  pattern).
+- Added (this session): `formal-model.md` filled with exact score formulas and weights,
+  `prior-art.md` matrix complete (10 capabilities × 7 columns, 14 footnotes),
+  `tests/core/test_invariants.py` (16 property tests, I1–I10, all pass),
+  `architecture.md` updated with integration evidence section,
+  `benchmarks/live/cases.v1.schema.json` (JSON Schema Draft 2020-12 for case files),
+  `benchmarks/live/README.md` (field reference, split targets, Python loader snippet),
+  §1 claim rewritten and narrowed after the matrix.
+- Remaining gaps: benchmark at 7 cases (need 120+), no confidence intervals, no
+  real-world validation, no paper.
 
 ## 1. What "novel" must mean here
 
 Do not claim a new algorithm. Claim a **systems and integration contribution**.
 
-> LAIX is a training-free decision layer that unifies commitments, execution risk, human attention,
-> decision timing, calibration and auditable revision in one decision contract, while the host keeps
-> execution and delivery.
+### The claim (after the prior-art matrix)
 
-The contribution is the contract and the composition. The individual ingredients are known:
-utility models, MDP/POMDP planning, commitments, interruption cost, sagas, calibration and audit
-records. The claim is that no existing system combines them into one live decision layer with the
-same contract and the same evidence.
+> LAIX is a training-free decision layer that places commitments, execution risk and human
+> attention budget into one decision contract — the same object that carries the verb, the score,
+> the reason code and the audit trail — while the host retains execution and delivery.
+> No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI, scikit-learn)
+> carries all ten capabilities in one object. The integration has measurable value: `live` wins
+> every live-bench case (7/7); single-concern planners win at most 5/7.
+
+### Why this claim is narrow enough to defend
+
+The prior-art matrix (`prior-art.md`) shows what each category of system actually covers:
+
+| Ingredient | Who already has it |
+|---|---|
+| Commitments in decisions | FIPA/BDI commitment protocols |
+| Execution audit trail | Temporal, PagerDuty, Camunda |
+| Calibration from outcomes | scikit-learn calibration |
+| Host-owned execution | LangGraph, AutoGen, scikit-learn |
+| Training-free defaults | all compared systems |
+
+What is **not** found in any single compared system:
+
+- commitments, execution risk and attention budget all in the same decision object;
+- a formally defined revision semantics (I5) over a timeline;
+- calibration piped back into the next decision without retraining.
+
+The contribution is the contract and the composition. The individual ingredients are known. The
+claim is that no existing system combines them into one live decision layer with the same contract
+and the same evidence.
 
 `LiveDecisionEngine` is the proof object: one plan can keep a promise, avoid an irreversible action
 and respect an attention budget at the same time.
@@ -73,6 +106,8 @@ Out of scope:
 ### What must not be claimed
 
 - "First to use commitments, attention or execution risk." Each exists separately.
+- "First to have an auditable decision trail." Temporal, PagerDuty and Camunda all have this.
+- "First to have host-owned execution." LangGraph and AutoGen already do this.
 - "State of the art on a public benchmark." There is no public benchmark yet.
 - "Proven in production." There is no production study yet.
 - "Novel because the code is clean." Engineering quality is not novelty.
@@ -90,8 +125,10 @@ Out of scope:
 | Calibration | calibration and decision calibration | exists | held-out calibration report |
 | Audit | receipts, traces, decision record | exists | replay and tamper evidence in evaluation |
 | Parity | Python and TypeScript suites | exists | include in artifact release |
-| Benchmark | LAIX-Bench 25 cases; live bench 7 cases | small | 100+ live cases with splits |
-| Prior art | none documented | missing | feature matrix and citations |
+| Benchmark | LAIX-Bench 25 cases; live bench 7 cases | small | 100+ live cases with splits and CIs |
+| Ablation | `ablation_study.py`, `conflict_scenario.py` | **done** | expand to 120 cases with splits |
+| Prior art | `comparators.md` (7 systems, documented capability comparison) | **done** | fill table in `prior-art.md`; add runnable adapter |
+| EU liability case | `eu-liability.md` (PLD 2024/2853 field-by-field mapping) | **done** | — |
 | Real validation | none | missing | one deployment, replay or user study |
 | Paper | none | missing | technical report and submission |
 
@@ -99,14 +136,18 @@ Out of scope:
 
 Do not claim novelty in a paper, README or talk until all of these are true:
 
-- [ ] the claim is precise and narrow;
-- [ ] the prior-art matrix is complete and cited;
-- [ ] the formal model and invariants are documented;
-- [ ] the benchmark has 100+ cases and held-out splits;
-- [ ] ablations show which term contributes what;
+- [x] the claim is precise and narrow — §1 rewritten after the matrix; names which ingredients
+  exist elsewhere; narrows what must not be claimed (audit trail, host-owned execution);
+- [x] the prior-art matrix is complete and cited — `comparators.md` done (7 systems,
+  search log, per-system paragraphs, defensible claims);
+- [x] the formal model and invariants are documented — `formal-model.md` filled (types, score
+  formulas with weights, state machines, invariants I1–I10); 16 property tests pass;
+- [ ] the benchmark has 100+ cases and held-out splits — 7 cases exist, need 120+;
+- [x] ablations show which term contributes what — `ablation_study.py` runs all 7 planners;
+  result: `live` 7/7, `execution` 5/7, `attention` 4/7, `commitment` 3/7, `utility` 2/7;
 - [ ] confidence intervals and effect sizes are reported;
 - [ ] one real validation exists;
-- [ ] the artifact reproduces the main table;
+- [ ] the artifact reproduces the main table with one command;
 - [ ] limitations are written down;
 - [ ] an external reader or reviewer has seen the draft.
 

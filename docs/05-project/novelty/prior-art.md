@@ -15,22 +15,46 @@ This page should contain:
 4. a "closest prior work" statement;
 5. a list of claims that remain defensible after the comparison.
 
-### Matrix template
+### Matrix
 
-Use these columns. Mark each cell yes, partial, no, or unknown, and add evidence.
+Representative systems: LangGraph/AutoGen (agent frameworks), Temporal/Airflow (workflow
+engines), PagerDuty/Opsgenie (alert/interruption), FIPA ACL/BDI (commitment protocols),
+Camunda (execution/saga), scikit-learn (calibration). Full paragraphs and citations in
+[comparators.md](comparators.md).
 
-| Capability | Agent frameworks | Workflow engines | Alert/interruption systems | Commitment protocols | Execution/saga tools | Calibration tools | LAIX |
+| Capability | Agent frameworks | Workflow engines | Alert/interruption | Commitment protocols | Execution/saga | Calibration tools | LAIX |
 |---|---|---|---|---|---|---|---|
-| One decision contract | | | | | | | yes |
-| Commitments in the decision | | | | | | | yes |
-| Execution risk in the decision | | | | | | | yes |
-| Human attention budget | | | | | | | yes |
-| Timing and revision semantics | | | | | | | yes |
-| Calibration from outcomes | | | | | | | yes |
-| Auditable decision trail | | | | | | | yes |
-| Host-owned execution | | | | | | | yes |
-| Training-free default | | | | | | | yes |
-| Python/TypeScript parity | | | | | | | yes |
+| One decision contract (verb + reason + score + audit in one object) | no | no | no | partial¹ | no | no | **yes** |
+| Commitments in the decision | no | no | no | **yes**² | no | no | **yes** |
+| Execution risk in the decision (reversible, approval, recovery) | partial³ | partial⁴ | no | no | partial⁵ | no | **yes** |
+| Human attention budget | partial⁶ | no | partial⁷ | no | no | no | **yes** |
+| Timing and revision semantics (cooldown, hysteresis, deadline) | partial⁸ | partial⁹ | partial | partial | no | no | **yes** |
+| Calibration from outcomes (ECE, Brier, decision accuracy) | no | no | partial | no | no | **yes**¹⁰ | **yes** |
+| Auditable decision trail (reason code, score breakdown, trace id) | partial¹¹ | **yes**¹² | **yes**¹³ | no | **yes**¹⁴ | no | **yes** |
+| Host-owned execution | **yes** | no | no | n/a | no | **yes** | **yes** |
+| Training-free default | **yes** | **yes** | **yes** | **yes** | **yes** | **yes** | **yes** |
+| Python/TypeScript parity | **yes** | **yes** | n/a (SaaS) | n/a (academic) | n/a (Java/SaaS) | partial | **yes** |
+
+**Notes** (evidence; see [comparators.md](comparators.md) for full paragraphs and links):
+
+1. FIPA ACL defines message structure; commitment state is first-class but not a live decision object.
+2. FIPA ACL / social commitments formalise promises, violations, discharge and delegation. Source: FIPA FIPA00061; Chopra & Singh 2015.
+3. LangGraph supports human interrupts and retries; not fields in a decision object. Source: langchain-ai.github.io/langgraph/.
+4. Temporal has retries, timers, compensation; execution is durable but there is no verb-with-reason decision object. Source: docs.temporal.io/.
+5. Camunda supports compensation events and human tasks; not a decision contract field. Source: docs.camunda.io/.
+6. LangGraph interrupt mechanism; AutoGen human proxy; no explicit budget field. Source: langgraph docs; microsoft.github.io/autogen/.
+7. PagerDuty on-call schedules implicitly ration alert routing. Source: support.pagerduty.com/.
+8. LangGraph checkpoints and thread memory. Source: langgraph docs.
+9. Temporal timers and signals. Source: docs.temporal.io/.
+10. scikit-learn `CalibratedClassifierCV`, `calibration_curve`, Brier score, ECE. Source: scikit-learn.org/stable/modules/calibration.html.
+11. LangGraph thread history is reproducible but free-form; no structured reason code. Source: langgraph docs.
+12. Temporal full workflow history and replay. Source: docs.temporal.io/.
+13. PagerDuty incident log with timestamps and routing decisions. Source: support.pagerduty.com/.
+14. Camunda process audit log. Source: docs.camunda.io/.
+
+**Closest prior work:** See [comparators.md § Closest prior work statement](comparators.md#closest-prior-work-statement).
+
+**Claims that remain defensible:** See [comparators.md § Claims that remain defensible](comparators.md#claims-that-remain-defensible-after-the-comparison).
 
 ### Candidate categories to compare
 

@@ -1,0 +1,296 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "laix/benchmarks/live/cases.v1.schema.json",
+  "title": "LAIX live bench — case file (v1)",
+  "description": "Schema for a file of live bench cases. Each case is a DecisionProblem written in JSON that the Python loader converts into a LiveCase for use with run_live_bench().",
+  "type": "object",
+  "required": ["schema", "version", "split", "cases"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "laix/live-bench/v1",
+      "description": "Schema identifier. Must be 'laix/live-bench/v1'."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of this case file (e.g. '1.0.0')."
+    },
+    "split": {
+      "type": "string",
+      "enum": ["dev", "test", "adversarial"],
+      "description": "Dataset split. 'dev' cases are used during development; 'test' cases are held out; 'adversarial' cases exercise edge-cases and boundary conditions."
+    },
+    "note": {
+      "type": "string",
+      "description": "Optional free-text description of this file."
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/Case" }
+    }
+  },
+  "$defs": {
+    "Case": {
+      "type": "object",
+      "required": ["id", "name", "tags", "expected_actions", "problem"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "description": "Stable identifier for this case. Must be unique within the file. Use snake_case."
+        },
+        "name": {
+          "type": "string",
+          "description": "Short human-readable name shown in bench output."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "promise",
+              "execution",
+              "attention",
+              "timing",
+              "conflict",
+              "plain",
+              "safety"
+            ]
+          },
+          "minItems": 1,
+          "description": "Category tags. A case can carry more than one tag (e.g. a conflict case carries 'promise' and 'execution'). Tags align with the six benchmark categories: promise (20), execution (20), attention (20), timing (15), conflict (25), plain (20)."
+        },
+        "expected_actions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Action IDs that the ideal planner should choose. More than one means any of them is acceptable. Empty means the case has no expectation (run-only, no correctness score)."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional explanation of why the expected action is correct."
+        },
+        "problem": { "$ref": "#/$defs/Problem" }
+      }
+    },
+    "Problem": {
+      "type": "object",
+      "required": ["subject", "at", "options"],
+      "additionalProperties": false,
+      "properties": {
+        "subject": {
+          "type": "string",
+          "description": "What the task is about."
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Wall-clock time of the decision (ISO-8601 with timezone offset)."
+        },
+        "options": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/Option" },
+          "description": "Candidate actions for this problem."
+        },
+        "situation": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/Situation" }
+          ],
+          "description": "Active constraints on the decision (e.g. a hard risk limit)."
+        },
+        "commitments": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Commitment" },
+          "description": "Open commitments that options may fulfill or violate. Passed as attributes.commitments to the engine."
+        },
+        "attention_budget": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/AttentionBudget" }
+          ],
+          "description": "Remaining human-attention budget. Passed as attributes.attention_budget to the engine."
+        },
+        "approvals": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "enum": ["approved", "rejected", "pending"]
+          },
+          "description": "Pre-fetched approval states keyed by action ID. Passed as attributes.approvals to the engine."
+        }
+      }
+    },
+    "Option": {
+      "type": "object",
+      "required": ["id", "verb", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique option identifier within this problem."
+        },
+        "verb": {
+          "type": "string",
+          "enum": ["wait", "observe", "guide", "ask", "act", "verify", "escalate"],
+          "description": "The move this option represents."
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable label."
+        },
+        "expected_benefit": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "default": 0.0
+        },
+        "cost": {
+          "type": "number",
+          "minimum": 0.0,
+          "default": 0.0
+        },
+        "risk": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "default": 0.0
+        },
+        "interrupt_cost": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "default": 0.0,
+          "description": "Fractional attention cost of running this option."
+        },
+        "latency_ms": {
+          "type": "number",
+          "minimum": 0.0,
+          "default": 0.0
+        },
+        "reversible": {
+          "type": "boolean",
+          "default": true,
+          "description": "False means the action cannot be undone once executed."
+        },
+        "requires_approval": {
+          "type": "boolean",
+          "default": false
+        },
+        "commitments": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "fulfills": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Commitment IDs this option fulfills."
+            },
+            "violates": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Commitment IDs this option violates."
+            },
+            "creates": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Commitment IDs this option creates."
+            }
+          },
+          "description": "Commitment relationships for this option. Passed as option.params.commitments to the engine."
+        },
+        "unknown_risk": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Fraction of execution risk that is unknown (0 = fully understood). Passed as option.params.unknown_risk."
+        }
+      }
+    },
+    "Situation": {
+      "type": "object",
+      "required": ["id", "subject", "constraints"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "constraints": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Constraint" }
+        }
+      }
+    },
+    "Constraint": {
+      "type": "object",
+      "required": ["id", "kind", "value", "hard"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "kind": {
+          "type": "string",
+          "enum": ["risk", "cost", "latency"],
+          "description": "The field being constrained."
+        },
+        "value": {
+          "type": "number",
+          "description": "The threshold value. Options whose field exceeds this value are blocked when hard=true."
+        },
+        "hard": {
+          "type": "boolean",
+          "description": "True means the constraint is a hard gate: violating options are excluded before scoring."
+        }
+      }
+    },
+    "Commitment": {
+      "type": "object",
+      "required": ["id", "subject"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "subject": { "type": "string" },
+        "due": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Deadline (ISO-8601). If before problem.at, the commitment is overdue."
+        },
+        "priority": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "default": 0.0,
+          "description": "0 = normal, 1 = highest. Scales the commitment score terms."
+        },
+        "state": {
+          "type": "string",
+          "enum": ["open", "fulfilled", "violated", "blocked"],
+          "default": "open"
+        }
+      }
+    },
+    "AttentionBudget": {
+      "type": "object",
+      "required": ["total", "spent"],
+      "additionalProperties": false,
+      "properties": {
+        "total": {
+          "type": "number",
+          "minimum": 0.0,
+          "description": "Total attention budget available (fractional, not a count)."
+        },
+        "spent": {
+          "type": "number",
+          "minimum": 0.0,
+          "description": "Budget already consumed. When spent >= total, the budget is exhausted."
+        }
+      }
+    }
+  }
+}

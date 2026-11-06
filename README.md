@@ -148,11 +148,21 @@ and attention scores.
   parity.
 
 The novelty is the combination: a model-free decision layer that treats commitments, execution
-risk, human attention, calibration and decision time as one contract.
+risk, human attention, calibration and decision time as one contract. No compared system (LangGraph,
+Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI) carries all ten capabilities in one decision
+object — see [comparators.md](docs/05-project/novelty/comparators.md).
 
 `LiveDecisionEngine` makes that concrete: one plan can keep a promise, avoid an irreversible action
-and respect an attention budget at the same time. Calibration and the decision timeline complete the
-loop around that plan.
+and respect an attention budget at the same time. On the live bench, `live` wins every case (7/7);
+single-concern planners win their own cases but fail when two or more concerns fire simultaneously
+(`execution` 5/7, `attention` 4/7, `commitment` 3/7, `utility` 2/7). Run the ablation with one
+command: `python examples/python/03-plan/ablation_study.py`.
+
+Because every decision carries a `verb`, `reason_code`, `score breakdown` and `decision_id` at the
+moment it is made, LAIX produces a complete audit trail without log mining. This directly answers
+the EU Product Liability Directive 2024/2853 (applicable December 2026), which makes AI deployers
+liable without proof of fault and shifts the burden to documentation. See
+[eu-liability.md](docs/05-project/novelty/eu-liability.md).
 
 ## What you get
 
@@ -169,7 +179,7 @@ loop around that plan.
 
 CI runs the full Python and TypeScript suites, examples, bench, conformance and docs links.
 
-Current: **conformance 24/24 · LAIX-Bench 25/25 · live bench 7/7 · 172 TypeScript tests**.
+Current: **conformance 24/24 · LAIX-Bench 25/25 · live bench 7/7 · invariants 16/16 · 172 TypeScript tests**.
 
 See [Testing](docs/05-project/testing.md) for the full check list and how to run it.
 

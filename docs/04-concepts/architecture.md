@@ -197,6 +197,37 @@ The split is about selection. All ten return the same decision shape. See
 LAIX is a decision layer. It can host a decision model such as JEV inside a policy. See
 [LAIX and decision models](decision-models.md).
 
+## Integration evidence
+
+The integration is not asserted — it is measured. `LiveDecisionEngine` runs every concern in one
+score. Single-concern planners win their own cases; `live` wins every case because it integrates
+all three.
+
+**Live bench (7 cases, all planners):**
+
+| Planner | Correct / 7 | Note |
+|---|---:|---|
+| `benefit` (naive) | 1 / 7 | ignores risk, commitments, attention |
+| `utility` | 2 / 7 | ignores commitments and attention |
+| `commitment` | 3 / 7 | ignores execution risk and attention |
+| `attention` | 4 / 7 | ignores commitments and execution risk |
+| `execution` | 5 / 7 | ignores commitments and attention |
+| **`live`** | **7 / 7** | integrates all three concerns |
+
+Reproduce with one command: `python examples/python/03-plan/ablation_study.py`.
+
+A worked conflict scenario (all three concerns fire simultaneously) is in
+`examples/python/03-plan/conflict_scenario.py`.
+
+**Prior art:** No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda,
+FIPA/BDI, scikit-learn calibration) carries all ten capabilities in one decision object.
+See [comparators.md](../05-project/novelty/comparators.md) for the full matrix.
+
+**Audit and liability:** Because every decision carries a `verb`, `reason_code`, `score
+breakdown` and `decision_id` at the moment it is made, LAIX produces a complete audit trail
+without log mining. See [eu-liability.md](../05-project/novelty/eu-liability.md) for the
+mapping to EU Product Liability Directive 2024/2853.
+
 ## Rules
 
 1. App words stay in the app. LAIX words stay generic.
