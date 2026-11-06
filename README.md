@@ -235,11 +235,20 @@ remaining difference is accuracy on the other 24 cases, and it is not significan
 
 ### Ablations
 
-![Ablation accuracy on the frozen test split](docs/assets/ablation.png)
+Removing a concern costs accuracy on the frozen test split:
 
-Removing commitments costs **30 accuracy points** (100% → 70%); removing execution risk costs
-**16.7** (→ 83.3%); removing attention costs **3.3** (→ 96.7%). The equal-weights variant also scores
-100%, so on this corpus the gain comes from including the concerns, not from tuning their weights.
+| Variant | Accuracy |
+|---|---:|
+| Full integration | **100%** |
+| No attention | 96.7% |
+| No execution | 83.3% |
+| No commitment | 70% |
+| Utility only | 30% |
+
+Removing commitments costs **30 points**, execution risk **16.7** and attention **3.3**. Equal
+weights also scores 100%, so the gain comes from including the concerns, not from tuning their
+weights. See [the full ablation](docs/06-research/02-evaluation/benchmark.md#ablations-test-split-30-cases)
+for promise, irreversibility and budget columns.
 
 ### Verification
 

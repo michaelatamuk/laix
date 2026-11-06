@@ -348,6 +348,8 @@ names; the JSON keys are listed in the
 
 ### Ablations (test split, 30 cases)
 
+![Ablation accuracy on the frozen test split](../../assets/ablation.png)
+
 | Variant | Accuracy | Promise keeping | Irreversible rate | Budget violations |
 |---|---:|---:|---:|---:|
 | full | 100.00% | 100.00% | 0.00% | 0.00% |
