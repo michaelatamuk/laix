@@ -351,7 +351,7 @@ def render_benchmark_chart() -> None:
         for key, label in PLANNERS
     ]
 
-    fig, panels = plt.subplots(1, 2, figsize=(12, 5.6), dpi=200)
+    fig, panels = plt.subplots(1, 2, figsize=(12, 6.0), dpi=200)
     fig.patch.set_facecolor("white")
     fig.text(
         0.055,
@@ -373,12 +373,27 @@ def render_benchmark_chart() -> None:
         panels[1],
         conflict,
         "Conflict accuracy",
-        "6 cases where concerns collide",
+        "6 cases where concerns conflict",
     )
-    fig.subplots_adjust(left=0.195, right=0.975, top=0.76, bottom=0.14, wspace=0.5)
+    fig.subplots_adjust(left=0.195, right=0.975, top=0.76, bottom=0.2, wspace=0.5)
     fig.text(
         0.055,
-        0.035,
+        0.085,
+        "Accuracy = chosen action is one of the expected actions · whiskers = 95% confidence interval",
+        fontsize=8.5,
+        color=INK_MUTED,
+    )
+    fig.text(
+        0.055,
+        0.052,
+        "Conflict cases are a 6-case subset; compare within each panel · "
+        "LiveDecisionEngine vs glue baseline: +6.7 pp, p = 0.48 (not significant)",
+        fontsize=8.5,
+        color=INK_MUTED,
+    )
+    fig.text(
+        0.055,
+        0.02,
         "Source: results/live-decision-benchmark/metrics/summary.json · "
         "reproduce: bash scripts/novelty/reproduce.sh",
         fontsize=8,
