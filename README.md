@@ -199,29 +199,45 @@ and respects an attention budget. The contribution is the composition; see
 
 ## Results
 
+`live` scores **30/30** on the frozen 30-case test split and **6/6** on the conflict cases. A
+hand-built glue baseline scores 28/30; the **+6.7 pp** difference is **not yet significant**
+(p = 0.48). Every single-concern planner has significantly lower accuracy (McNemar p ≤ 0.008).
+
 ![Accuracy and conflict accuracy on the frozen test split](docs/assets/benchmark.png)
 
-`live` is 30/30 on the frozen 30-case test split. A hand-built glue baseline is 28/30; the difference
-is not yet significant. Single-concern planners lose when concerns conflict.
+| Measure | `live` | Best comparator |
+|---|---:|---:|
+| Accuracy, all 30 cases | **100%** | 93.3% (glue) |
+| Conflict accuracy, 6 cases | **100%** | 100% (glue) |
+| Promise keeping | **100%** | 100% (glue) |
+| Irreversible actions | **0%** | 0% (glue) |
+| Attention-budget violations | **0%** | 0% (glue) |
+| p95 decision latency | **0.22 ms** | — |
+
+The glue baseline matches `live` on conflict, promises, reversibility and budget. The remaining
+difference is accuracy on the other 24 cases, and it is not significant on 30 cases.
+
+### Ablations
+
+![Ablation accuracy on the frozen test split](docs/assets/ablation.png)
+
+Removing commitments costs **30 accuracy points** (100% → 70%); removing execution risk costs
+**16.7** (→ 83.3%); removing attention costs **3.3** (→ 96.7%). The equal-weights variant also scores
+100%, so on this corpus the gain comes from including the concerns, not from tuning their weights.
+
+### Verification
 
 | Check | Result |
-|---|---|
+|---|---:|
 | Python tests | 396 |
 | TypeScript tests | 172 |
 | Attention conformance | 24/24 |
 | LAIX-Bench | 25/25 |
-| Live corpus | 120 cases: 72 dev / 30 test / 18 adversarial |
-| Live test split | `live` 30/30; glue 28/30; conflict 6/6 |
 | Python/TypeScript parity | 210/210 |
 | Invariants | 17/17 |
-| Decision p95 | 0.22 ms on the test split |
-| External adapter | 6-7 ms |
+| Live corpus | 120 cases: 72 dev / 30 test / 18 adversarial |
 
-![Ablation accuracy on the frozen test split](docs/assets/ablation.png)
-
-The 120-case live corpus and the 7-case ablation demo are separate. The 7-case demo shows the
-single-concern planners fail when concerns conflict; the 120-case corpus is the larger evidence set.
-See [Testing](docs/05-project/testing.md) for the commands.
+The LangGraph adapter runs the same engine on 120 decisions at 6–7 ms mean with 0 interrupts.
 
 Reproduce with `bash scripts/novelty/reproduce.sh`. Raw data:
 [results/live-decision-benchmark/](results/live-decision-benchmark/README.md).
