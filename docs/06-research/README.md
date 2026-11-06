@@ -1,8 +1,7 @@
 # Research and evidence
 
-This is a working plan, not a claim that novelty is already established. It turns the claim that LAIX
-is novel into a precise statement, a prior-art gap, reproducible evidence and a path to external
-review.
+This is the working plan for establishing the novelty claim. It turns the claim that LAIX is novel
+into a precise statement, a prior-art gap, reproducible evidence and a path to external review.
 
 The `01-` to `05-` folders are reading stages. File names stay descriptive; the stage number gives
 the order. `checklist.md` tracks work across all stages.
@@ -67,11 +66,11 @@ the order. `checklist.md` tracks work across all stages.
 
 ## 1. What "novel" must mean here
 
-Do not claim a new algorithm. Claim a **systems and integration contribution**.
+Frame the contribution as a **systems and integration contribution**.
 
 ### The claim (after the prior-art matrix)
 
-> LAIX is a training-free decision runtime that places commitments, execution risk and human
+> LAIX is a training-free live decision runtime that places commitments, execution risk and human
 > attention budget into one decision contract — the same object that carries the verb, the score,
 > the reason code and the audit trail — while the host retains execution and delivery.
 > No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI, scikit-learn)
@@ -159,7 +158,7 @@ Out of scope:
 
 ## 3. Definition of done
 
-Do not claim novelty in a paper, README or talk until all of these are true:
+Claim novelty in a paper, README or talk when these are true:
 
 - [x] the claim is precise and narrow — §1 rewritten after the matrix; names which ingredients
   exist elsewhere; narrows what must not be claimed (audit trail, host-owned execution);
@@ -212,8 +211,8 @@ Then review:
 3. `02-evaluation/benchmark.md` and `results/live-decision-benchmark/`;
 4. `03-validation/plan.md` — the next external step.
 
-First task now: choose the validation option and run it. The synthetic corpus is complete; do not add more
-synthetic cases without real incident data.
+First task now: choose the validation option and run it. The synthetic corpus is complete; move to
+external validation with real incident data.
 
 ## 5. Open decisions
 

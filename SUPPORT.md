@@ -19,7 +19,7 @@ behaviour.
 
 ## Security
 
-Do not open a public issue for a vulnerability. Follow [SECURITY.md](SECURITY.md).
+Report vulnerabilities privately through [SECURITY.md](SECURITY.md).
 
 ## Conduct
 

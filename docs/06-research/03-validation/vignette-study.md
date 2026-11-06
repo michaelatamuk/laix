@@ -74,4 +74,4 @@ power and any deviation from this plan in `plan.md`.
 - Vignettes are not real incidents.
 - Participants may anchor on the recommendation.
 - The order and the labels are counterbalanced, but the study is still artificial.
-- Results do not replace deployment evidence.
+- Results complement deployment evidence.

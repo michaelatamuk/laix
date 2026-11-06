@@ -11,6 +11,7 @@ outputs are reproducible without the external slide deck.
 
 from __future__ import annotations
 
+import json
 import math
 from pathlib import Path
 
@@ -19,6 +20,8 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 ROOT = Path(__file__).resolve().parents[2]
 ASSETS = ROOT / "docs" / "assets"
 SOURCE = ASSETS / "source" / "laix-cover.png"
+RESULTS = ROOT / "results" / "live-decision-benchmark" / "metrics" / "summary.json"
+ABLATIONS = ROOT / "results" / "live-decision-benchmark" / "ablations" / "results.json"
 FONT_DIR = Path("C:/Windows/Fonts")
 
 SCALE = 2
@@ -205,14 +208,14 @@ def render_banner() -> None:
     spaced_text(
         draw,
         (left, 118 * SCALE),
-        "DECISION RUNTIME",
+        "LIVE DECISION RUNTIME",
         font("seguisb.ttf", 22 * SCALE),
         TEAL,
         6 * SCALE,
     )
 
-    headline_font = font("segoeuib.ttf", 60 * SCALE)
-    headline_lines = ["The decision runtime", "for AI agents and", "automations"]
+    headline_font = font("segoeuib.ttf", 52 * SCALE)
+    headline_lines = ["The live decision runtime", "for AI agents and", "automations"]
     y = 190 * SCALE
     for line in headline_lines:
         draw.text((left, y), line, font=headline_font, fill=TEXT)
@@ -485,6 +488,288 @@ def render_demo_placeholder() -> None:
     )
 
 
+
+PLANNERS = [
+    ("live", "LiveDecisionEngine", TEAL),
+    ("glue", "glue baseline", PURPLE),
+    ("commitment", "commitment", BLUE),
+    ("first", "first / rule", "#60A5FA"),
+    ("attention", "attention", "#38BDF8"),
+    ("execution", "execution", "#818CF8"),
+    ("utility", "utility", "#64748B"),
+    ("benefit", "benefit", "#475569"),
+]
+
+ABLATIONS_ORDER = [
+    ("full", "full", TEAL),
+    ("equal_weights", "equal weights", TEAL),
+    ("no_attention", "no attention", BLUE),
+    ("no_feasibility_gates", "no feasibility gates", BLUE),
+    ("no_execution", "no execution", BLUE),
+    ("no_commitment", "no commitment", BLUE),
+    ("utility_only", "utility only", MUTED),
+]
+
+
+def chart_panel(
+    draw: ImageDraw.ImageDraw,
+    x: int,
+    y: int,
+    width: int,
+    title: str,
+    subtitle: str,
+    rows: list[tuple[str, float, str]],
+) -> None:
+    draw.text((x, y), title, font=font("segoeuib.ttf", 24), fill=TEXT)
+    draw.text(
+        (x, y + 32),
+        subtitle,
+        font=font("segoeui.ttf", 14),
+        fill=MUTED,
+    )
+    label_width = 190
+    value_width = 70
+    bar_x = x + label_width
+    bar_width = width - label_width - value_width - 10
+    bar_height = 22
+    row_height = 56
+    top = y + 70
+    label_font = font("seguisb.ttf", 13)
+    value_font = font("seguisb.ttf", 13)
+    for index, (label, value, color) in enumerate(rows):
+        row_y = top + index * row_height
+        draw.text((x, row_y + 3), label, font=label_font, fill=TEXT)
+        draw.rounded_rectangle(
+            [bar_x, row_y, bar_x + bar_width, row_y + bar_height],
+            radius=bar_height // 2,
+            fill="#1E293B",
+        )
+        filled = max(0.0, min(1.0, value))
+        if filled > 0:
+            bar_end = bar_x + max(bar_height, int(bar_width * filled))
+            draw.rounded_rectangle(
+                [bar_x, row_y, bar_end, row_y + bar_height],
+                radius=bar_height // 2,
+                fill=color,
+            )
+        draw.text(
+            (bar_x + bar_width + 14, row_y + 3),
+            f"{value * 100:.1f}%",
+            font=value_font,
+            fill=TEXT,
+        )
+
+
+def load_results() -> tuple[dict[str, dict[str, float]], dict[str, dict[str, float]]]:
+    summary = json.loads(RESULTS.read_text(encoding="utf-8"))["planners"]
+    ablations = json.loads(ABLATIONS.read_text(encoding="utf-8"))["planners"]
+    return summary, ablations
+
+
+def render_benchmark_chart() -> None:
+    summary, _ = load_results()
+    canvas = gradient((1600, 900), BG, BG_2).convert("RGBA")
+    glow(canvas, (1300, 100), 500, TEAL, 14, 220)
+    draw = ImageDraw.Draw(canvas)
+    draw.text(
+        (80, 50),
+        "Live decision benchmark",
+        font=font("segoeuib.ttf", 42),
+        fill=TEXT,
+    )
+    draw.text(
+        (80, 106),
+        "Frozen 30-case test split - synthetic corpus - higher is better",
+        font=font("segoeui.ttf", 17),
+        fill=MUTED,
+    )
+    draw.line([(800, 180), (800, 720)], fill="#1E293B", width=1)
+    accuracy = [
+        (label, float(summary[key]["accuracy"]), color)
+        for key, label, color in PLANNERS
+    ]
+    conflict = [
+        (label, float(summary[key]["conflict_accuracy"]), color)
+        for key, label, color in PLANNERS
+    ]
+    chart_panel(draw, 80, 180, 720, "Accuracy", "All 30 cases", accuracy)
+    chart_panel(
+        draw,
+        840,
+        180,
+        680,
+        "Conflict accuracy",
+        "6 cases where concerns collide",
+        conflict,
+    )
+    draw.text(
+        (80, 800),
+        "Source: results/live-decision-benchmark/metrics/summary.json - reproduce: bash scripts/novelty/reproduce.sh",
+        font=font("segoeui.ttf", 12),
+        fill=MUTED,
+    )
+    canvas.convert("RGB").save(ASSETS / "benchmark.png", optimize=True)
+
+
+def render_ablation_chart() -> None:
+    _, ablations = load_results()
+    canvas = gradient((1400, 800), BG, BG_2).convert("RGBA")
+    glow(canvas, (1200, 120), 500, BLUE, 12, 220)
+    draw = ImageDraw.Draw(canvas)
+    draw.text(
+        (80, 50),
+        "Ablations",
+        font=font("segoeuib.ttf", 42),
+        fill=TEXT,
+    )
+    draw.text(
+        (80, 106),
+        "Accuracy on the frozen 30-case test split",
+        font=font("segoeui.ttf", 17),
+        fill=MUTED,
+    )
+    rows = [
+        (label, float(ablations[key]["accuracy"]), color)
+        for key, label, color in ABLATIONS_ORDER
+    ]
+    chart_panel(
+        draw,
+        80,
+        180,
+        1240,
+        "Variant",
+        "Full integration vs removing one concern",
+        rows,
+    )
+    draw.text(
+        (80, 750),
+        "Source: results/live-decision-benchmark/ablations/results.json",
+        font=font("segoeui.ttf", 12),
+        fill=MUTED,
+    )
+    canvas.convert("RGB").save(ASSETS / "ablation.png", optimize=True)
+
+
+def terminal_frame(command: str, output: str | None = None) -> Image.Image:
+    width, height = 1200, 675
+    canvas = gradient((width, height), BG, BG_2).convert("RGBA")
+    draw = ImageDraw.Draw(canvas)
+    draw.rounded_rectangle(
+        [80, 60, width - 80, height - 60],
+        radius=24,
+        fill=SURFACE,
+        outline="#1E293B",
+        width=2,
+    )
+    draw.rounded_rectangle(
+        [80, 60, width - 80, 112],
+        radius=24,
+        fill=SURFACE_2,
+    )
+    for index, color in enumerate(("#EF4444", "#F59E0B", "#22C55E")):
+        cx = 116 + index * 28
+        draw.ellipse([cx - 7, 79, cx + 7, 93], fill=color)
+    draw.text(
+        (370, 78),
+        "live decision runtime",
+        font=font("seguisb.ttf", 18),
+        fill=MUTED,
+    )
+    prompt_font = font("consola.ttf", 24)
+    draw.text((130, 170), "$", font=prompt_font, fill=TEAL)
+    draw.text((162, 170), command, font=prompt_font, fill=TEXT)
+    if output:
+        draw.text((130, 240), output, font=prompt_font, fill=TEAL)
+    return canvas.convert("RGB")
+
+
+def decision_frame() -> Image.Image:
+    width, height = 1200, 675
+    canvas = gradient((width, height), BG, BG_2).convert("RGBA")
+    draw = ImageDraw.Draw(canvas)
+    draw.text(
+        (100, 90),
+        "One decision",
+        font=font("segoeuib.ttf", 52),
+        fill=TEXT,
+    )
+    draw.text(
+        (100, 160),
+        "The same contract for every move.",
+        font=font("segoeui.ttf", 26),
+        fill=MUTED,
+    )
+    rows = [
+        ("action", "safe"),
+        ("reason", "live_decision"),
+        ("promise", "c1 fulfilled"),
+        ("contract", "one decision object"),
+    ]
+    y = 260
+    for label, value in rows:
+        draw.text((100, y), label, font=font("seguisb.ttf", 24), fill=MUTED)
+        draw.text((360, y), value, font=font("consola.ttf", 26), fill=TEAL)
+        y += 62
+    draw.text(
+        (100, 570),
+        "act, ask, wait, verify or escalate - with a reason",
+        font=font("segoeui.ttf", 22),
+        fill=MUTED,
+    )
+    return canvas.convert("RGB")
+
+
+def brand_frame() -> Image.Image:
+    width, height = 1200, 675
+    canvas = gradient((width, height), BG, BG_2).convert("RGBA")
+    draw = ImageDraw.Draw(canvas)
+    mark = Image.open(ASSETS / "avatar.png").convert("RGBA")
+    mark = mark.resize((250, 250), Image.LANCZOS)
+    canvas.alpha_composite(mark, (100, 200))
+    draw.text(
+        (390, 250),
+        "LAIX",
+        font=font("segoeuib.ttf", 76),
+        fill=TEXT,
+    )
+    draw.text(
+        (392, 350),
+        "The live decision runtime",
+        font=font("segoeuib.ttf", 30),
+        fill=TEAL,
+    )
+    draw.text(
+        (392, 400),
+        "One contract. One decision. A reason for every move.",
+        font=font("segoeui.ttf", 22),
+        fill=MUTED,
+    )
+    return canvas.convert("RGB")
+
+
+def render_demo_gif() -> None:
+    command = "python examples/python/03-plan/live_engine.py"
+    frames = [
+        terminal_frame(command),
+        terminal_frame(command, "safe live_decision c1"),
+        decision_frame(),
+        brand_frame(),
+    ]
+    palette_frames = [
+        frame.convert("P", palette=Image.Palette.ADAPTIVE, colors=128)
+        for frame in frames
+    ]
+    palette_frames[0].save(
+        ASSETS / "demo.gif",
+        save_all=True,
+        append_images=palette_frames[1:],
+        duration=[1200, 1600, 2200, 2200],
+        loop=0,
+        optimize=True,
+        disposal=2,
+    )
+
+
 def main() -> int:
     ASSETS.mkdir(parents=True, exist_ok=True)
     if not SOURCE.exists():
@@ -493,6 +778,9 @@ def main() -> int:
     render_banner()
     render_architecture()
     render_demo_placeholder()
+    render_benchmark_chart()
+    render_ablation_chart()
+    render_demo_gif()
     print(f"wrote assets to {ASSETS}")
     return 0
 

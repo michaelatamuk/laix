@@ -1,4 +1,4 @@
-![LAIX — the decision runtime for AI agents and automations](docs/assets/banner.png)
+![LAIX — the live decision runtime for AI agents and automations](docs/assets/banner.png)
 
 [![CI](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
@@ -7,7 +7,7 @@
 
 # LAIX — Live AI Experience
 
-**LAIX is the decision runtime for AI agents and automations that act in the real world.**
+**LAIX is the live decision runtime for AI agents and automations that act in the real world.**
 
 Agent frameworks plan. Workflow engines orchestrate. LAIX decides whether to act, ask, wait, verify
 or escalate — and records why.
@@ -21,9 +21,6 @@ a model the host supplies.
 **Who it is for:** teams building AI agents or automations that take real actions — especially when
 approvals, promises, human attention or auditability matter.
 
-**What it is not:** an agent framework, a workflow engine or a model. It sits between planning and
-execution.
-
 **Status:** `0.9.0` · synthetic evidence complete · external validation pending.
 
 ## Contents
@@ -31,10 +28,11 @@ execution.
 - [Install](#install)
 - [One decision](#one-decision)
 - [Integrated live decision](#integrated-live-decision)
+- [Demo](#demo)
 - [How it works](#how-it-works)
 - [What you get](#what-you-get)
 - [Why LAIX](#why-laix)
-- [Proof](#proof)
+- [Results](#results)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
 - [Security](#security)
@@ -152,15 +150,19 @@ The plan prefers the reversible, promise-keeping option and keeps the commitment
 attention scores. See the full
 [conflict scenario](examples/python/03-plan/conflict_scenario.py).
 
+## Demo
+
+![Animated quickstart: the live engine returns a decision with a reason](docs/assets/demo.gif)
+
+A four-second animated quickstart generated from the actual example output. A full screen recording
+can replace it later.
+
 ## How it works
 
 ![Agent plans, LAIX decides, host executes, outcome closes the loop](docs/assets/architecture.png)
 
 An agent or automation plans the task. LAIX decides the next move. The host executes it. The
 receipt and outcome close the loop and calibrate the next decision.
-
-A recorded 20-30 second walkthrough is still being produced. The placeholder, storyboard and
-recording tools are in the [asset guide](docs/assets/README.md).
 
 ## What you get
 
@@ -185,15 +187,23 @@ recording tools are in the [asset guide](docs/assets/README.md).
 - **Inspectable** — reason code, score breakdown, decision id, trace, conformance vectors and
   Python/TypeScript parity.
 
-The contribution is the integration, not a new algorithm. See
-[comparators](docs/06-research/01-positioning/comparators.md) and the
+The contribution is the integration: one contract for utility, commitments, execution risk and human
+attention. See [comparators](docs/06-research/01-positioning/comparators.md) and the
 [evidence map](docs/06-research/02-evaluation/evidence-map.md).
+
+The proof object is `LiveDecisionEngine`: one plan that keeps a promise, avoids an irreversible action
+and respects an attention budget.
 
 Because every decision carries its reason and score at the moment it is made, LAIX produces an audit
 trail without log mining. The mapping to EU Product Liability Directive 2024/2853 is in
 [eu-liability.md](docs/06-research/05-governance/eu-liability.md).
 
-## Proof
+## Results
+
+![Accuracy and conflict accuracy on the frozen test split](docs/assets/benchmark.png)
+
+`live` is 30/30 on the frozen 30-case test split. A hand-built glue baseline is 28/30; the difference
+is not yet significant. Single-concern planners lose when concerns conflict.
 
 | Check | Result |
 |---|---|
@@ -205,11 +215,17 @@ trail without log mining. The mapping to EU Product Liability Directive 2024/285
 | Live test split | `live` 30/30; glue 28/30; conflict 6/6 |
 | Python/TypeScript parity | 210/210 |
 | Invariants | 17/17 |
+| Decision p95 | 0.22 ms on the test split |
+| External adapter | 6-7 ms |
 
-The 120-case live corpus and the 7-case ablation demo are separate. On the frozen 30-case test split,
-`live` is 30/30 and a hand-built glue baseline is 28/30; the difference is not yet significant. The
-7-case demo shows the single-concern planners fail when concerns conflict. See
-[Testing](docs/05-project/testing.md) for the commands.
+![Ablation accuracy on the frozen test split](docs/assets/ablation.png)
+
+The 120-case live corpus and the 7-case ablation demo are separate. The 7-case demo shows the
+single-concern planners fail when concerns conflict; the 120-case corpus is the larger evidence set.
+See [Testing](docs/05-project/testing.md) for the commands.
+
+Reproduce with `bash scripts/novelty/reproduce.sh`. Raw data:
+[results/live-decision-benchmark/](results/live-decision-benchmark/README.md).
 
 External validation — real incident replay or a participant study — is still pending.
 
@@ -220,7 +236,7 @@ External validation — real incident replay or a participant study — is still
 | [Documentation index](docs/README.md) | start, core, app kit, concepts, project and research |
 | [Quickstart](docs/01-start/02-quickstart.md) | install and first decision |
 | [Decision lifecycle](docs/01-start/03-decision-lifecycle.md) | moment to outcome in one loop |
-| [Core building blocks](docs/02-core/00-architecture.md) | the decision runtime |
+| [Core building blocks](docs/02-core/00-architecture.md) | the live decision runtime |
 | [Commitments](docs/02-core/07-commitments.md) | promises, ledgers, due times and dependencies |
 | [App-kit building blocks](docs/03-appkit/00-architecture.md) | streaming, execution, stores and delivery |
 | [Deployment](docs/03-appkit/10-deployment.md) | production topology, reliability, rollout and retention |
@@ -259,8 +275,8 @@ Questions go to [SUPPORT.md](SUPPORT.md); participation is covered by
 
 ## Security
 
-Do not open a public issue for a vulnerability. Read [SECURITY.md](SECURITY.md) and the
-[security and threat model](docs/04-concepts/security.md).
+Report vulnerabilities privately through [SECURITY.md](SECURITY.md); the
+[security and threat model](docs/04-concepts/security.md) explains the boundaries.
 
 ## Citation
 

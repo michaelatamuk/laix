@@ -138,9 +138,9 @@ The body should say why the change exists, not repeat the diff.
 ## Release
 
 The release process, compatibility rules and schema versions are in
-[Versioning](docs/05-project/versioning.md). Do not tag a release from a pull request.
+[Versioning](docs/05-project/versioning.md). Tag releases from `main`.
 
 ## Security
 
-Read [SECURITY.md](SECURITY.md) before reporting a vulnerability. Do not include exploit
-details in a public issue.
+Read [SECURITY.md](SECURITY.md) before reporting a vulnerability. Keep exploit details out of
+public issues.

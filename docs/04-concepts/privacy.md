@@ -1,6 +1,6 @@
 # Privacy and trust
 
-LAIX is the decision runtime for AI agents and automations that act in the real world. The host owns the data, the transport and the
+LAIX is the live decision runtime for AI agents and automations that act in the real world. The host owns the data, the transport and the
 storage.
 
 ## What the runtime needs

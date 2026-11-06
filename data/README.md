@@ -19,4 +19,4 @@ Each method keeps generated output under `output/`, which is gitignored:
 | `vignette-study/v1/output/results.jsonl` | the offline app, saved by the facilitator |
 | `vignette-study/v1/output/report.json` | `analyze_vignette_study.py` |
 
-Do not commit raw incidents or participant results. See the README inside each method.
+Keep raw incidents and participant results out of the repository. See the README inside each method.

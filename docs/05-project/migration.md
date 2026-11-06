@@ -71,7 +71,7 @@ owned by the host. When their shape changes:
 
 - Keep the previous package version pinned.
 - Keep the previous policy version available.
-- Do not delete old records until the new version has been stable for the retention window.
+- Keep old records until the new version has been stable for the retention window.
 - If a rollback changes the record shape, keep both readers during the transition.
 
 ## Current status

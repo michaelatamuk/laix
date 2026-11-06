@@ -42,5 +42,5 @@ order.
 
 - The participant id is random; there is no name or email field.
 - Results stay in the browser until downloaded.
-- Do not commit participant result files.
+- Keep participant result files out of the repository.
 - Keep consent records separate from results.

@@ -149,12 +149,11 @@ training-free decision object.
 
 1. No compared system carries verb + reason code + commitment state +
    execution risk + attention budget + score breakdown in one decision object.
-2. Host-owned execution is a differentiator: LangGraph is host-owned; Temporal
-   and PagerDuty are not.
-3. Training-free default is not a differentiator: all compared systems have
+2. Host-owned execution is a differentiator: LangGraph leaves execution with the host;
+   Temporal and PagerDuty own it.
+3. Training-free default is common across compared systems: all compared systems have
    rule-based or deterministic defaults.
-4. Calibration from decision outcomes (not class probabilities) is not covered
-   by any compared system.
+4. Calibration from decision outcomes is an open gap across the compared systems.
 5. The integration of all ten capabilities in one contract is the novelty; each
    individual capability has prior art.
 
@@ -162,7 +161,7 @@ training-free decision object.
 
 The LangGraph adapter is runnable when `langgraph` is installed. It puts the same
 `LiveDecisionEngine` inside a state graph with a decision node and an approval interrupt. That
-isolates orchestration overhead; it is not an accuracy comparison.
+isolates orchestration overhead; the comparison is operational.
 
 | Metric | Result |
 |---|---:|

@@ -40,7 +40,7 @@ Required fields: `id`, `at`, `subject`, `options`, `human_action`.
 ## Privacy rules
 
 - Remove names, emails, phone numbers, addresses, account ids and free text that can identify a person.
-- Do not commit raw data. `raw/` and `output/` are gitignored by default.
+- Keep raw data out of the repository. `raw/` and `output/` are gitignored by default.
 - Publish a reviewed anonymised file as a release artifact when it is legally safe.
 - If the data cannot be published, write a data-access statement in
   [validation.md](../../docs/06-research/03-validation/plan.md).

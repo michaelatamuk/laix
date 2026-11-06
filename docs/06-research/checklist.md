@@ -1,6 +1,6 @@
 # Novelty checklist
 
-Work through the phases in order. Do not move to the paper until the evidence exists.
+Work through the phases in order. Move to the paper when the evidence exists.
 
 ---
 
@@ -213,7 +213,7 @@ limitations. At least one metric from outside the benchmark.
 
 ## Phase 4: paper
 
-**Write in this order. Do not write a section before the evidence for it exists.**
+**Write in this order, and write each section when its evidence exists.**
 
 - [x] **Claim–evidence map** — `02-evaluation/evidence-map.md`.
 - [x] **Abstract (≤ 250 words)** — drafted in `04-publication/paper-draft.md`; validation pending.
@@ -322,8 +322,7 @@ table is reproducible with one command, and no sentence exceeds the evidence.
 
 - [ ] **Close the open decisions** — `docs/06-research/README.md` §5 lists six open
   decisions. After the paper is accepted, add a one-sentence answer to each one directly in that
-  file, beneath the question. Do not delete the questions — keep them as a record of what was
-  uncertain. The six questions are:
+  file, beneath the question. Keep the questions as a record of what was uncertain. The six questions are:
   1. Which domain for the real validation? → state the domain used.
   2. Deployment, incident replay or user study? → state the option chosen.
   3. Which venue and paper length? → state the venue, paper length and acceptance status.

@@ -2,7 +2,7 @@
 
 **What is LAIX?**
 
-A decision runtime for AI agents and automations that act in the real world. It turns a request into one decision with a reason,
+A live decision runtime for AI agents and automations that act in the real world. It turns a request into one decision with a reason,
 confidence and trail.
 
 **Does LAIX use a model?**
@@ -11,10 +11,10 @@ The current runtime is policy/rules based and training-free. Planners can use a 
 supplies: states, transitions and rewards. A pretrained model can sit behind `EnginePolicy`, and the
 decision contract stays the same.
 
-**Is LAIX an agent framework?**
+**How does LAIX fit with agent frameworks?**
 
-LAIX is a decision runtime inside one task. It is not an agent framework. The host keeps
-orchestration, memory, execution, storage and delivery.
+LAIX is the live decision runtime inside one task. The host keeps orchestration, memory, execution,
+storage and delivery.
 
 **Where does execution happen?**
 

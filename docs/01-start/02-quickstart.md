@@ -1,6 +1,6 @@
 # Quickstart
 
-**LAIX — Live AI Experience — is the decision runtime for AI agents and automations that act in the real world.** Install it, send one
+**LAIX — Live AI Experience — is the live decision runtime for AI agents and automations that act in the real world.** Install it, send one
 request and read one decision. Then choose the surface you need.
 
 ## Install

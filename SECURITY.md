@@ -1,7 +1,7 @@
 # Security policy
 
-LAIX is a decision library, not a sandbox. The host owns authentication, authorization,
-network security, storage, model access and execution. The security boundary is therefore
+LAIX is a decision library. The host owns authentication, authorization, network security,
+storage, model access and execution. The security boundary is therefore
 shared: LAIX must not widen the host's attack surface, and the host must not trust inputs or
 model output blindly.
 

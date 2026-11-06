@@ -7,7 +7,7 @@ Numbers below come from the frozen synthetic test split and `results/live-decisi
 
 Live AI systems must decide whether to wait, observe, guide, ask, act, verify or escalate before
 the moment passes. Existing tools cover orchestration, durable workflows, alerting or planning
-separately. We present LAIX, a training-free decision runtime that places commitments, execution risk
+separately. We present LAIX, a training-free live decision runtime that places commitments, execution risk
 and human attention budget into one decision contract with the verb, score, reason code and audit
 trail. On a 120-case synthetic corpus, the integrated planner is 30/30 on the frozen test split and
 wins every conflict case. Against a hand-built glue baseline it is +6.7 percentage points
@@ -16,10 +16,10 @@ yet significant. We report the result honestly and define the validation needed 
 
 ## 1. Introduction
 
-A live experience is always in the loop. The host knows the domain; the decision runtime must answer
+A live experience is always in the loop. The host knows the domain; the live decision runtime must answer
 one question: what matters now, and what should the experience do about it?
 
-The contribution is not a new solver. It is a decision contract and a composition:
+The contribution is a decision contract and a composition:
 
 - one object carries the chosen verb, action, confidence, score, reason code and alternatives;
 - commitments, execution risk and attention are first-class terms in that object;
@@ -41,7 +41,7 @@ Use `../01-positioning/comparators.md` as the source. The closest categories are
 - calibration: reliability diagrams, Brier score and expected calibration error.
 
 The documented comparison found no system that carries all ten capabilities in one decision object.
-That is a capability gap, not yet a measured performance claim.
+That is a capability gap; measuring it is the next step.
 
 ## 3. Decision contract and formal model
 
@@ -97,7 +97,7 @@ The layer can:
 - estimate treatment effects with difference in means or inverse propensity weighting;
 - learn a small transition model with rollback.
 
-The calibration and causal paths are not yet evaluated on real outcomes.
+Evaluation on real outcomes is the next step for the calibration and causal paths.
 
 ## 7. Implementation and parity
 
@@ -172,8 +172,7 @@ corpus is too easy, and the next section is the missing evidence.
 
 ### 8.5 Failure analysis
 
-`live` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a
-warning, not a victory. The corpus does not yet contain ambiguous trade-offs, noisy outcomes,
+`live` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a warning. The corpus does not yet contain ambiguous trade-offs, noisy outcomes,
 multi-step dependencies, long-tail incidents or host-specific recovery behaviour. A benchmark with
 no failures cannot support a strong generalisation claim.
 

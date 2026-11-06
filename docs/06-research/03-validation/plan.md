@@ -1,11 +1,11 @@
 # Real-world validation
 
-Synthetic cases are not enough. This page defines the study that shows the runtime works outside the
+Synthetic cases need an external check. This page defines the study that shows the runtime works outside the
 repository tests.
 
 ## Validation options
 
-Synthetic cases are not enough. Choose one:
+Synthetic cases need an external check. Choose one:
 
 ### Option A: incident or support replay
 
@@ -33,8 +33,8 @@ Synthetic cases are not enough. Choose one:
 - measures: promise keeping, irreversible actions, attention spend, missed deadlines,
   undo rate, acceptance rate.
 
-For all options, document consent, privacy, data minimisation and retention. Do not include
-personal data in the public artifact.
+For all options, document consent, privacy, data minimisation and retention. Keep personal data out
+of the public artifact.
 
 ### Acceptance criteria
 

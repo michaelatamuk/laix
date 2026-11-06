@@ -1,7 +1,7 @@
 # Security and threat model
 
-LAIX is a library, not a sandbox. The host owns authentication, authorization, network
-security, storage, model access and execution. LAIX must not widen the host's attack surface,
+LAIX is a decision library. The host owns authentication, authorization, network security,
+storage, model access and execution. LAIX must not widen the host's attack surface,
 and the host must not trust inputs or model output blindly.
 
 ## Trust boundaries
@@ -55,7 +55,7 @@ Controls:
 
 ### 3. Over-broad execution
 
-The host owns execution. A decision is not a permission.
+The host owns execution. A decision still needs authorization before it becomes an action.
 
 Controls:
 

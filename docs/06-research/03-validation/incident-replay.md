@@ -29,7 +29,7 @@ Pick one source with a recorded human action:
 - delivery or scheduling exceptions with a chosen action;
 - account or subscription actions with a recorded outcome.
 
-Do not mix sources for the first study. One source keeps the result interpretable.
+Use one source for the first study; it keeps the result interpretable.
 
 ## What one case needs
 
@@ -163,11 +163,10 @@ Send a **20-row pilot** in the JSONL format. I will:
 - point out ambiguous cases;
 - adjust the mapping before you spend time on the full set.
 
-Do not send raw tickets. Send only the anonymised pilot.
+Send only the anonymised pilot.
 
 ## Privacy
 
-- Do not commit raw data.
-- Keep raw exports outside the repository.
+- Keep raw data and raw exports outside the repository.
 - Commit only the anonymised file when legally allowed.
 - If the data cannot be published, write the access statement in `plan.md`.

@@ -127,12 +127,12 @@ otherwise compare documented capabilities and say so explicitly.
 | Calibration | scikit-learn calibration, conformal prediction | ECE, Brier score, decision accuracy | same outcome data |
 | Human-in-the-loop | mixed-initiative and interruption research | attention cost, acceptance, timing | user study or simulation |
 
-Do not compare LAIX to an agent framework on general agent tasks. Compare on the **live decision
-task**: one request, one decision, with promises, execution risk, attention and audit.
+Compare LAIX on the **live decision task**: one request, one decision, with promises, execution risk,
+attention and audit.
 
 ### Level 3: operational comparison (proves practicality)
 
-Numbers reviewers ask for that are not accuracy:
+Operational numbers beyond accuracy:
 
 | Metric | Why it matters |
 |---|---|
@@ -150,8 +150,8 @@ Numbers reviewers ask for that are not accuracy:
 2. Give each comparator its strongest reasonable configuration.
 3. Tune on the dev split only; freeze the test split before the final run.
 4. Record the exact version, commit, configuration and seed.
-5. Do not use a straw-man baseline.
-6. If a system cannot be run, say "documented capability comparison" and do not report invented
+5. Use the strongest available baseline.
+6. If a system cannot be run, say "documented capability comparison" and report only measured
    performance numbers.
 7. Separate "out-of-the-box" from "task-aligned adapter" results.
 8. Report negative and mixed results.
@@ -192,13 +192,13 @@ The **capability score** is the number of capabilities covered out of the matrix
 - The paper reports both capability and performance comparisons.
 - The limitations section names every comparison that could not be run.
 
-## 3. Finding comparators when you do not know the field
+## 3. Finding comparators in a new field
 
-You do not need to know the field before starting. Use a repeatable search and triage process.
+Start with a repeatable search and triage process.
 
 ### Principle: compare on the task, not the label
 
-Do not search for "systems like LAIX". Search for systems that solve pieces of the same task:
+Search for systems that solve pieces of the same task:
 
 > Given a live request, choose one action under promises, execution risk, attention limits and audit.
 
@@ -335,7 +335,7 @@ That is a possible result, but it must be earned:
 4. Compare against the strongest component or a hand-built glue baseline.
 5. Say "we found no system that ..." with the search date and inclusion criteria.
 
-Do not write "no one does this" without the log.
+Write "no one does this" only with the log.
 
 ### Deliverable
 

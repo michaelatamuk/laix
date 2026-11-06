@@ -1,6 +1,6 @@
 # What is LAIX?
 
-**LAIX — Live AI Experience — is the decision runtime for AI agents and automations that act in the real world.**
+**LAIX — Live AI Experience — is the live decision runtime for AI agents and automations that act in the real world.**
 
 An agent or automation that acts in the real world is always in the loop: it notices what is
 changing, decides what matters and acts before the moment passes. LAIX gives that loop a single

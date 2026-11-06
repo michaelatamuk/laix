@@ -78,8 +78,8 @@ and record it in `CHANGELOG.md`.
 
 ## Execution issues
 
-- **Approval**: a decision with `requires_approval` is not a permission. Move the proposal
-  through approve or reject, then execute.
+- **Approval**: a decision with `requires_approval` still needs an explicit approval. Move the
+  proposal through approve or reject, then execute.
 - **Unknown outcome**: a receipt with status `unknown` must be reconciled before retrying.
 - **Compensation**: use `Saga` when a later step fails; each earlier step needs a registered
   undo or compensation.

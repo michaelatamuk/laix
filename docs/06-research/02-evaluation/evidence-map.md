@@ -37,8 +37,8 @@ Every number below is reproducible from `results/live-decision-benchmark/` and `
 
 ## Rules
 
-- A row without a source is not evidence.
+- Every row needs a source.
 - A row marked "measured" must be reproducible from the listed command or file.
 - A row marked "tested" must fail if the code regresses.
-- A row marked "documented" is an argument, not a measurement.
-- Do not promote a claim from "measured" to "general" without external validation.
+- A row marked "documented" is an argument and is labelled as such.
+- Promote a claim from "measured" to "general" only after external validation.

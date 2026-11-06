@@ -54,8 +54,8 @@ the database and the retention policy.
 - Use `Saga` when one action has several side effects that must be undone together.
 - Retry at the host, not inside the decision. Retrying `decide` is safe; retrying an effect
   is only safe with an idempotency key.
-- Keep approval and execution separate. A decision with `requires_approval` is not a
-  permission to act.
+- Keep approval and execution separate. A decision with `requires_approval` still needs an
+  explicit approval before it becomes an action.
 - Put a deadline on model calls and planner runs. LAIX does not enforce wall-clock timeouts
   for host code.
 

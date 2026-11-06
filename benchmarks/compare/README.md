@@ -2,8 +2,8 @@
 
 The external comparison is deliberately separate from the synthetic decision-accuracy benchmark.
 
-External systems are not decision planners. LangGraph and Temporal orchestrate state, approvals and
-recovery; they do not choose the LAIX verb. A fair comparison therefore measures:
+External systems orchestrate state, approvals and recovery. LAIX chooses the verb. A fair comparison
+therefore measures:
 
 - capability coverage;
 - integration effort;
@@ -76,8 +76,7 @@ The LangGraph adapter ran on all 120 cases:
 | Adapter glue code | 110 lines |
 | Dependencies | `langgraph` |
 
-This is an orchestration comparison, not an accuracy comparison: the same LAIX engine is inside the
-graph. Temporal, PagerDuty and Camunda remain documented-only because they need a server or account.
+This is an orchestration comparison: the same LAIX engine is inside the graph. Temporal, PagerDuty and Camunda remain documented-only because they need a server or account.
 
 ## Capability matrix
 

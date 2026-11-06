@@ -18,7 +18,7 @@ Define hypotheses before running the expanded benchmark.
 | H7 | Integration wins when concerns conflict | accuracy on conflict cases | every single-concern planner | integrated wins or ties on most cases |
 | H8 | Audit and replay are usable | replay equality, trace completeness | none | every decision replayable and traced |
 
-Do not add a hypothesis after seeing the results. Record it, then run the test.
+Record the hypothesis before seeing the results, then run the test.
 
 ## 2. How to turn each claim into a number
 
@@ -29,7 +29,7 @@ effect size. Use this mapping.
 |---|---|---|---|---|
 | Integration is real | conflict win rate | share of conflict cases where LAIX matches or beats the best single-concern planner | best single-concern planner | higher |
 | Integration adds value | integration delta | `accuracy(LAIX) - max(accuracy(single-concern))` on conflict cases | best single-concern | positive |
-| Integration is not a wrapper | ablation delta | metric loss when one term is removed | full `LiveDecisionEngine` | removal hurts |
+| Integration changes the result | ablation delta | metric loss when one term is removed | full `LiveDecisionEngine` | removal hurts |
 | Plain decisions are not damaged | plain-case regret | mean utility gap to the best feasible option on plain cases | utility-only | near zero |
 | Promises are kept | promise-keeping rate | fulfilled commitments / relevant commitments | utility-only | higher |
 | Irreversible actions are avoided | irreversible-action rate | irreversible choices / actionable cases | highest-benefit | lower |
@@ -153,8 +153,7 @@ will trust “LAIX keeps 18% more promises with a 2% utility cost” more than �
 - For proportions, report Cohen's h or the risk difference.
 - For utility and latency, report the median and the paired difference.
 
-A result without an interval is a point estimate, not evidence. A result without a baseline is not a
-result.
+Evidence needs an interval, a baseline and a reported effect size.
 
 ### Power and sample size
 

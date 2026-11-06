@@ -38,14 +38,14 @@
 - **TypeScript engine surface.** `UtilityEngine`, `MDPEngine`, `Simulator` and `compareEngines`.
 - **Examples** for checkpoints, sources, causal attribution, planning, group/shadow, sagas,
   calibration, model learning, utility, MDP and POMDP.
-- **Brand and visuals.** Logo, banner, avatar, architecture diagram, demo placeholder and a
-  reproducible asset renderer in `scripts/docs/`.
+- **Brand and visuals.** Logo, banner, avatar, architecture diagram, benchmark and ablation charts,
+  an animated quickstart, a demo placeholder and a reproducible asset renderer in `scripts/docs/`.
 - **Project docs.** Contributing, security policy, code of conduct, support, deployment,
   troubleshooting, migration, commitments and an expanded API map.
 
 ### Changed
 
-- Repositioned the README around the decision-runtime category, restored the training-free property to the opening, and aligned the docs and package one-liners. No API changes.
+- Repositioned the README around the live decision-runtime category, restored the training-free property to the opening, and aligned the docs and package one-liners. No API changes.
 - Reordered the repository for role-based grouping: `benchmarks/live/v1/` (versioned corpus), `benchmarks/compare/adapters/` (per-system adapters), `data/{incident-replay,vignette-study/v1}/`, `results/live-decision-benchmark/`, `scripts/ci/`, `scripts/novelty/{bench,analysis,compare,incident-replay,vignette-study,shared}/` and `docs/06-research/` (the research dossier moved out of `05-project`). Public APIs and package layout are unchanged.
 - Added `to_decision` / `toDecision` as the one plan-to-decision conversion.
 - TypeScript now mirrors the Python calibration, model-learning and POMDP surface.

@@ -1,6 +1,6 @@
 # laix (TypeScript)
 
-**LAIX — Live AI Experience — is the decision runtime for AI agents and automations that act in the real world.**
+**LAIX — Live AI Experience — is the live decision runtime for AI agents and automations that act in the real world.**
 
 This package contains the contracts, attention, action, the ten decision classes, Live Context,
 streaming, outcome learning, bench, platform, stores, proposals, delivery, execution and records.
