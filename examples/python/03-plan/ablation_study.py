@@ -36,7 +36,7 @@ row_w = max(len(c) for c in CASES)
 header = f"{'case':<{row_w}}  " + "  ".join(f"{p:>{col_w}}" for p in PLANNERS)
 separator = "-" * len(header)
 
-print("Per-case correctness (✓ = right, ✗ = wrong, ? = no expected action)")
+print("Per-case correctness (Y = right, N = wrong, ? = no expected action)")
 print(separator)
 print(header)
 print(separator)
@@ -44,7 +44,7 @@ for case in CASES:
     marks = []
     for planner in PLANNERS:
         v = cell.get((case, planner))
-        marks.append(("✓" if v else ("✗" if v is False else "?")).rjust(col_w))
+        marks.append(("Y" if v else ("N" if v is False else "?")).rjust(col_w))
     print(f"{case:<{row_w}}  " + "  ".join(marks))
 print(separator)
 

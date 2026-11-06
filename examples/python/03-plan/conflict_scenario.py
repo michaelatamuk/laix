@@ -88,7 +88,7 @@ print("-" * 60)
 
 for label, engine in planners.items():
     plan = engine.solve(problem)
-    correct = "✓" if plan.action_id == EXPECTED else "✗"
+    correct = "yes" if plan.action_id == EXPECTED else "no"
     print(f"{label}  {plan.action_id or '?':<6}  {correct:<8}  {plan.reason_code}")
 
 # ------------------------------------------------------------------
@@ -108,14 +108,14 @@ print(f"  commitments fulfilled: {attrs.get('commitments_fulfilled')}")
 print()
 print(
     "Why the results differ:\n"
-    "  UtilityEngine:    fast = 1.0 - 0.6×0.15(interrupt) = 0.91 > safe 0.60 → fast (WRONG)\n"
-    "  ExecutionAware:   fast = 0.91 - 0.35(irreversible) = 0.56 < safe 0.60 → safe (RIGHT,\n"
+    "  UtilityEngine:    fast = 1.0 - 0.6x0.15(interrupt) = 0.91 > safe 0.60 -> fast (WRONG)\n"
+    "  ExecutionAware:   fast = 0.91 - 0.35(irreversible) = 0.56 < safe 0.60 -> safe (RIGHT,\n"
     "                    but only because irreversibility exceeds the benefit gap; misses\n"
     "                    the commitment violation entirely)\n"
-    "  AttentionAware:   fast = 0.91 - 0.6×0.40(interrupt) = 0.67 > safe 0.60 → fast (WRONG,\n"
+    "  AttentionAware:   fast = 0.91 - 0.6x0.40(interrupt) = 0.67 > safe 0.60 -> fast (WRONG,\n"
     "                    no exhausted budget, misses commitment violation and irreversibility)\n"
     "  CommitmentAware:  fast = 0.91 - 1.0(violate) = -0.09 < safe 0.60+0.60(fulfills+due)\n"
-    "                    → safe (RIGHT, but misses execution risk)\n"
+    "                    -> safe (RIGHT, but misses execution risk)\n"
     "  LiveDecisionEngine: all three terms fire together; safe is the only option\n"
     "                      that scores positively across commitment, execution and attention"
 )

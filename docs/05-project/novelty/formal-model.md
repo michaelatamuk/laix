@@ -39,7 +39,7 @@ paper will claim. All formulas match the implementation in `core/engines/planner
 | `id` | `str` | unique id |
 | `subject` | `str` | what was promised |
 | `due` | ISO-8601 | deadline |
-| `status` | `"open" \| "done" \| "violated"` | current state |
+| `status` | `"open" \| "done" \| "cancelled"` | current state |
 | `priority` | `float ∈ [0,1]` | importance (default `0.5`) |
 | `depends_on` | `tuple[str, ...]` | ids that must be `done` first |
 
@@ -269,10 +269,10 @@ The following must hold at all times. Tests live in
 | I4 | **Rejected approval** — an option with `approval_state = "rejected"` is never chosen. |
 | I5 | **Revision monotonicity** — `revision > 0` implies non-null `revised_from`; `event_time` never decreases across revisions in a `Timeline`. |
 | I6 | **Receipt state machine** — no invalid receipt transition is allowed; the receipt status follows the diagram in §3. |
-| I7 | **Trace append-only** — `CausalLedger.add_outcome` never removes an existing entry. |
+| I7 | **Trace append-only** — `Trace.with_event` appends an event and never removes an existing event. |
 | I8 | **Confidence bounds** — `plan.confidence ∈ [0.0, 1.0]` for every plan returned by any planner. |
 | I9 | **Contract consistency** — `EnginePolicy(engine).decide(req)[0]` and `decide(req, policy=EnginePolicy(engine))[0]` return decisions with the same `verb`, `action_id`, `reason_code` and `score`. |
-| I10 | **Parity** — for every conformance case, Python and TypeScript produce decisions with the same `verb`, `reason_code` and `action_id`. |
+| I10 | **Parity infrastructure** — the shared conformance schema and parity tests are present; full verb parity is checked by `tests/test_language_parity.py` and the TypeScript suite. |
 
 ## 5. Acceptance criteria
 

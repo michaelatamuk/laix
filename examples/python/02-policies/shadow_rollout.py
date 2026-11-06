@@ -1,4 +1,4 @@
-"""Shadow policy rollout: test → compare → promote.
+"""Shadow policy rollout: test -> compare -> promote.
 
 A safe pattern for introducing a new policy in production:
 
@@ -55,9 +55,9 @@ REQUESTS = [
     for amount in [200, 480, 520, 750, 1050, 1200]
 ]
 
-PROMOTION_THRESHOLD = 0.5   # promote if candidate disagrees on ≤50 % of requests
+PROMOTION_THRESHOLD = 0.5   # promote if candidate disagrees on <=50 % of requests
 
-print("Phase 1 — shadow run (primary decision is live; candidate is recorded)")
+print("Phase 1 - shadow run (primary decision is live; candidate is recorded)")
 print()
 print(f"{'amount':>8}  {'primary':>10}  {'candidate':>10}  agrees")
 print("-" * 50)
@@ -69,9 +69,9 @@ for req in REQUESTS:
     # We re-decide to show both sides
     primary_plan = primary_policy.decide(req)
     candidate_plan = candidate_policy.decide(req)
-    p_verb = primary_plan[0].verb if primary_plan else "—"
-    c_verb = candidate_plan[0].verb if candidate_plan else "—"
-    agrees = "✓" if p_verb == c_verb else "✗"
+    p_verb = primary_plan[0].verb if primary_plan else "-"
+    c_verb = candidate_plan[0].verb if candidate_plan else "-"
+    agrees = "yes" if p_verb == c_verb else "no"
     amount = req.attributes.get("amount", "?")
     print(f"{amount:>8}  {p_verb:>10}  {c_verb:>10}  {agrees}")
 
@@ -84,10 +84,10 @@ disagreements = len(shadow.differences)
 rate = disagreements / total if total else 0.0
 
 print()
-print(f"Phase 2 — disagreement rate: {disagreements}/{total} = {rate:.0%}")
+print(f"Phase 2 - disagreement rate: {disagreements}/{total} = {rate:.0%}")
 
 if rate <= PROMOTION_THRESHOLD:
-    print(f"  Rate ≤ {PROMOTION_THRESHOLD:.0%}: candidate qualifies for promotion.")
+    print(f"  Rate <= {PROMOTION_THRESHOLD:.0%}: candidate qualifies for promotion.")
 else:
     print(f"  Rate > {PROMOTION_THRESHOLD:.0%}: candidate needs more review.")
 
@@ -96,7 +96,7 @@ else:
 # ------------------------------------------------------------------
 
 print()
-print("Phase 3 — promote candidate to primary; keep old primary as new shadow")
+print("Phase 3 - promote candidate to primary; keep old primary as new shadow")
 print()
 
 new_shadow = ShadowPolicy(candidate_policy, primary_policy)
@@ -107,7 +107,7 @@ test_req = DecisionRequest(
     attributes={"amount": 750},
 )
 promoted_decision = new_shadow.decide(test_req)[0]
-print(f"  request amount=750: primary (promoted) → {promoted_decision.verb}")
+print(f"  request amount=750: primary (promoted) -> {promoted_decision.verb}")
 
 # ------------------------------------------------------------------
 # Summary
@@ -117,6 +117,6 @@ print()
 print("Rollout pattern:")
 print("  1. Wrap with ShadowPolicy(primary, candidate)")
 print("  2. Run against live traffic; candidate never affects the response")
-print("  3. Check shadow.differences — disagreement rate below threshold → promote")
+print("  3. Check shadow.differences - disagreement rate below threshold -> promote")
 print("  4. Swap: ShadowPolicy(candidate, primary)")
 print("  5. Repeat until the new policy is fully trusted")

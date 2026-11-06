@@ -45,7 +45,12 @@ when a decision is challenged:
 from laix import DecisionRequest, Rule, RulePolicy, decide
 
 policy = RulePolicy([
-    Rule(when={"amount": {"gte": 500}}, verb="ask", reason_code="over_approval_limit"),
+    Rule(
+        when={"amount": {"gte": 500}},
+        verb="ask",
+        reason_code="over_approval_limit",
+        requires_approval=True,
+    ),
     Rule(when={"amount": {"lt": 500}},  verb="act", reason_code="within_limit"),
 ])
 
@@ -59,8 +64,8 @@ decision = decide(request, policy=policy)[0]
 
 print(decision.verb)           # ask
 print(decision.reason_code)    # over_approval_limit
-print(decision.requires_approval)  # True (rule sets this for ask verb)
-print(decision.policy_version) # e.g. rule_policy.v1
+print(decision.requires_approval)  # True (the rule requires approval)
+print(decision.policy_version) # rules.v1
 print(decision.decision_id)    # DEC-...
 print(decision.created_at)     # 2026-11-06T14:30:00+00:00
 ```

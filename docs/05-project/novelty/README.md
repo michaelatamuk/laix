@@ -37,7 +37,7 @@ review.
   pattern).
 - Added (this session): `formal-model.md` filled with exact score formulas and weights,
   `prior-art.md` matrix complete (10 capabilities × 7 columns, 14 footnotes),
-  `tests/core/test_invariants.py` (16 property tests, I1–I10, all pass),
+  `tests/core/test_invariants.py` (17 property tests, I1–I10, all pass),
   `architecture.md` updated with integration evidence section,
   `benchmarks/live/cases.v1.schema.json` (JSON Schema Draft 2020-12 for case files),
   `benchmarks/live/README.md` (field reference, split targets, Python loader snippet),
@@ -141,7 +141,7 @@ Do not claim novelty in a paper, README or talk until all of these are true:
 - [x] the prior-art matrix is complete and cited — `comparators.md` done (7 systems,
   search log, per-system paragraphs, defensible claims);
 - [x] the formal model and invariants are documented — `formal-model.md` filled (types, score
-  formulas with weights, state machines, invariants I1–I10); 16 property tests pass;
+  formulas with weights, state machines, invariants I1–I10); 17 property tests pass;
 - [ ] the benchmark has 100+ cases and held-out splits — 7 cases exist, need 120+;
 - [x] ablations show which term contributes what — `ablation_study.py` runs all 7 planners;
   result: `live` 7/7, `execution` 5/7, `attention` 4/7, `commitment` 3/7, `utility` 2/7;

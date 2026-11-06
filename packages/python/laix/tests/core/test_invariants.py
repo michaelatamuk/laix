@@ -14,15 +14,16 @@ import pytest
 from laix import (
     ActionOption,
     AttentionBudget,
-    CausalLedger,
-    Commitment,
     Constraint,
+    Decision,
     DecisionProblem,
     DecisionRequest,
     EnginePolicy,
+    ExecutionBridge,
     ExecutionReceipt,
     LiveDecisionEngine,
     Situation,
+    Trace,
     UtilityEngine,
     decide,
 )
@@ -278,34 +279,50 @@ def test_i6_invalid_receipt_status_raises() -> None:
         )
 
 
+def test_i6_invalid_receipt_transition_raises() -> None:
+    """I6: a receipt cannot be undone unless it was executed."""
+    bridge = ExecutionBridge()
+    decision = Decision(
+        verb="wait",
+        confidence=1.0,
+        reason_code="no_action",
+        rationale="no action to execute",
+    )
+    receipt = bridge.refuse(decision, action=None, actor="system", reason="no action")
+
+    with pytest.raises(ValueError, match="cannot undo"):
+        bridge.undo(receipt.id, actor="system")
+
+
 # ---------------------------------------------------------------------------
 # I7  Trace append-only
 # ---------------------------------------------------------------------------
 
 
-def test_i7_causal_ledger_append_only() -> None:
-    """I7: CausalLedger.add never removes an existing entry."""
-    ledger = CausalLedger()
-    ledger.add("d1", arm="act", outcome=1.0)
-    assert len(ledger.records) == 1
+def test_i7_trace_append_only() -> None:
+    """I7: adding an event appends to the trace and never removes earlier events."""
+    trace = Trace(id="TRC-1", decision_id="DEC-1")
+    assert trace.events == ()
 
-    ledger.add("d2", arm="wait", outcome=0.0)
-    assert len(ledger.records) == 2
+    first = trace.with_event("decided", {"verb": "act"})
+    assert len(first.events) == 1
+    assert trace.events == ()
 
-    ledger.add("d3", arm="act", outcome=0.5)
-    assert len(ledger.records) == 3
+    second = first.with_event("executed")
+    assert len(second.events) == 2
+    assert second.events[0] == first.events[0]
 
 
-def test_i7_causal_ledger_count_monotonically_increases() -> None:
-    """I7: the count never decreases after an add."""
-    ledger = CausalLedger()
+def test_i7_trace_event_count_monotonically_increases() -> None:
+    """I7: the event count never decreases after an event is added."""
+    trace = Trace(id="TRC-2", decision_id="DEC-2")
     counts = []
-    for i in range(10):
-        ledger.add(f"d{i}", arm="act" if i % 2 == 0 else "wait", outcome=float(i % 2))
-        counts.append(len(ledger.records))
+    for index in range(10):
+        trace = trace.with_event("step", {"index": index})
+        counts.append(len(trace.events))
 
-    for i in range(1, len(counts)):
-        assert counts[i] > counts[i - 1], "CausalLedger record count must monotonically increase"
+    for index in range(1, len(counts)):
+        assert counts[index] > counts[index - 1], "Trace event count must monotonically increase"
 
 
 # ---------------------------------------------------------------------------

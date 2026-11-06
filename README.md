@@ -179,7 +179,7 @@ liable without proof of fault and shifts the burden to documentation. See
 
 CI runs the full Python and TypeScript suites, examples, bench, conformance and docs links.
 
-Current: **conformance 24/24 · LAIX-Bench 25/25 · live bench 7/7 · invariants 16/16 · 172 TypeScript tests**.
+Current: **conformance 24/24 · LAIX-Bench 25/25 · live bench 7/7 · invariants 17/17 · 172 TypeScript tests**.
 
 See [Testing](docs/05-project/testing.md) for the full check list and how to run it.
 

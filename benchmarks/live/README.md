@@ -138,8 +138,8 @@ from pathlib import Path
 from laix import (
     ActionOption, AttentionBudget, Commitment, Constraint,
     DecisionProblem, Situation, run_live_bench, default_planners,
+    LiveCase,
 )
-from laix.core.engines.bench import LiveCase
 
 
 def load_cases(path: Path) -> list[LiveCase]:

@@ -140,10 +140,10 @@ not expose a verb-with-reason-code decision object. The closest system in
 alerting is **PagerDuty**, which routes and escalates alerts with an audit log
 but has no commitment model or execution risk estimate. The closest academic
 line is **FIPA ACL / social commitments**, which formalises promise state but
-not execution risk, attention budget or calibration. No system combines all ten
-capabilities in one contract. LAIX is the first to integrate commitment state,
-execution risk, human attention budget, decision timing, calibration and
-auditable revision in a single training-free decision object.
+not execution risk, attention budget or calibration. No compared system combines all ten
+capabilities in one contract. LAIX integrates commitment state, execution risk, human
+attention budget, decision timing, calibration and auditable revision in a single
+training-free decision object.
 
 ## Claims that remain defensible after the comparison
 

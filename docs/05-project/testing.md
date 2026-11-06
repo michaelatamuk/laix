@@ -52,6 +52,7 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 | Check | Result |
 |---|---|
 | Python tests | passed |
+| Invariant tests | 17/17 |
 | TypeScript tests | 172 passed |
 | Attention conformance | 24/24 |
 | LAIX-Bench | 25/25 |
@@ -70,6 +71,7 @@ The check resolves relative links across `docs/`, `examples/` and every README.
 | Check | Covers |
 |---|---|
 | `pytest` | contracts, policies, planners, calibration, timeline, app kit, schema, examples |
+| `tests/core/test_invariants.py` | determinism, hard gates, budget, approval, revision, receipts, trace, confidence, contract and parity infrastructure |
 | `ruff check` | Python syntax, undefined names and unused imports |
 | `tsc` | TypeScript source and public declaration syntax/types |
 | `npm test` | TS contracts, conformance, parity, streaming, timeline, execution, planners |

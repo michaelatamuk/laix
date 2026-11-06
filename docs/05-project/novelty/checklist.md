@@ -29,7 +29,7 @@ actually shows. **DONE.**
   weights for utility, commitment, execution and attention engines
 - [x] Define revision and receipt state machines — documented in `formal-model.md` §3
 - [x] Write invariants I1–I10 as statements in `formal-model.md` — §4 invariant table complete
-- [x] Add property tests: `tests/core/test_invariants.py` — 16 tests, all pass
+- [x] Add property tests: `tests/core/test_invariants.py` — 17 tests, all pass
 
 **Deliverable:** `formal-model.md` filled + tests. Every invariant has a failing test when broken.
 **DONE.**
