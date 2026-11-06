@@ -11,6 +11,9 @@ or escalate — and records why.
 One contract for utility, commitments, execution risk and human attention. The host owns execution,
 data, delivery and storage; LAIX owns the decision and its trail.
 
+LAIX is **training-free**: the default path is deterministic policies and planners; a planner can use
+a model the host supplies.
+
 **Status:** `0.9.0` · synthetic evidence complete · external validation pending.
 
 ## Contents
@@ -151,7 +154,8 @@ attention scores. See the full
 
 - **One decision contract** — attention, action, follow-up, execution and outcomes share the same
   shape, reasons, confidence and trail.
-- **Training-free** — deterministic policies and planners now; the host supplies the model.
+- **Training-free** — no training or fine-tuning; deterministic policies and planners, with an
+  optional model the host supplies.
 - **Live context is part of the decision** — promises, execution risk and human attention are scored
   in the same plan.
 - **The host keeps control** — LAIX decides; the host owns data, execution, storage and delivery.
