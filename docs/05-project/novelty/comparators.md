@@ -158,13 +158,39 @@ training-free decision object.
 5. The integration of all ten capabilities in one contract is the novelty; each
    individual capability has prior art.
 
-## What cannot be compared without a running adapter
+## Measured operational comparison (LangGraph)
 
-- Decision accuracy (correct verb rate) on a shared case set: requires
-  implementing adapters for LangGraph and Temporal on the same cases.
-- Latency comparison: requires running Temporal server.
-- Glue code lines: requires implementing the same invoice scenario in LangGraph
-  and Temporal.
+The LangGraph adapter is runnable when `langgraph` is installed. It puts the same
+`LiveDecisionEngine` inside a state graph with a decision node and an approval interrupt. That
+isolates orchestration overhead; it is not an accuracy comparison.
+
+| Metric | Result |
+|---|---:|
+| Cases | 120 |
+| Decisions | 120 |
+| Approval interrupts | 0 |
+| Mean latency | 6-7 ms |
+| Adapter glue code | 110 lines |
+| Dependencies | `langgraph` |
+| Result file | `results/live_bench_v2/external-comparison.json` |
+
+Reproduce with:
+
+```bash
+python -m pip install -r benchmarks/compare/requirements-external.txt
+python scripts/novelty/run_external_comparison.py --split all
+```
+
+Temporal, PagerDuty and Camunda remain documented-only because they need a server or account.
+
+
+## What remains unmeasured
+
+- LangGraph decision accuracy against LAIX is not meaningful: the adapter runs the same LAIX engine
+  inside the graph. The measured result is orchestration overhead, not planner quality.
+- Temporal requires a Temporal server and a worker for latency, retries and signal measurements.
+- PagerDuty and Camunda require accounts or servers.
+- Glue code for Temporal/Camunda remains a documented estimate until those systems run.
 
 These are Level 2 (external system comparison) tasks; see
 [prior-art.md](prior-art.md) for the protocol.

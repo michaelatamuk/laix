@@ -53,6 +53,9 @@ review.
 - Measured result: `live` 30/30 on the test split, but a hand-built glue baseline is 28/30.
   Against glue, +6.7 pp (95% CI 0.0–0.167, McNemar p = 0.48). The integration advantage over
   single-concern planners is large; the advantage over competent glue code is not yet significant.
+- External operational result: the LangGraph adapter runs the same decision engine on 120 cases
+  (6.9 ms mean, 110 glue lines, 0 interrupts). Temporal, PagerDuty and Camunda remain
+  documented-only because they need servers or accounts.
 - Remaining gaps: no external runnable adapter (the prior-art comparison is documented, not
   measured head-to-head), no real-world validation, no paper and no external review.
 
@@ -141,6 +144,7 @@ Out of scope:
 | Benchmark | 120 live cases + 7-case demo | **done** | harder real-incident cases |
 | Ablation | 7 planner variants on the test split | **done** | — |
 | Glue baseline | `scripts/novelty/glue_baseline.py` | **done** | external adapters still missing |
+| External adapter | LangGraph adapter, 120 decisions, 6.9 ms, 110 glue lines | **done** | Temporal/Camunda need servers |
 | Significance | McNemar, paired bootstrap and effect sizes | **done** | +6.7 pp vs glue is not significant on 30 cases |
 | Prior art | `comparators.md` (7 systems, documented capability comparison) | **done** | runnable adapter still missing |
 | EU liability case | `eu-liability.md` (PLD 2024/2853 field-by-field mapping) | **done** | — |

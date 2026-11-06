@@ -6,7 +6,8 @@ This page maps files. Concepts are defined in [architecture](../04-concepts/arch
 ```text
 laix/
 ├── benchmarks/
-│   └── live/              case schema, dev/test/adversarial corpus
+│   ├── live/              case schema, dev/test/adversarial corpus
+│   └── compare/           external adapter harness and capability matrix
 ├── results/
 │   └── live_bench_v2/     summaries, ablations and raw rows
 ├── packages/

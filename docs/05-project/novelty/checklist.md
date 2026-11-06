@@ -92,6 +92,10 @@ confidence intervals.
 - [x] **TypeScript live-bench parity** — `packages/typescript/laix/scripts/live-bench.mjs`
   runs the same test split and compares 210 action IDs with Python; all 210 agree.
 
+- [x] **Run the available external adapter** — `benchmarks/compare/langgraph_adapter.py` runs
+  the same engine on 120 cases (6.9 ms mean, 110 glue lines). Temporal, PagerDuty and Camunda
+  remain documented-only.
+
 - [x] **Write the failure analysis** — `live` made zero mistakes on the 30 test cases and zero on
   the 18 adversarial cases. The zero-failure result is documented in `evaluation.md` §5 as a
   limitation; the corpus is too easy, and real-incident cases are required next.

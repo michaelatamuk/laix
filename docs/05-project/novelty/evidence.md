@@ -23,6 +23,7 @@ Every number below is reproducible from `results/live_bench_v2/` and `bash scrip
 | The contract is stable | invariant tests | 17/17 | `tests/core/test_invariants.py` | tested |
 | Python and TypeScript agree | conformance + live-bench action parity | 24/24 conformance; 210/210 live actions; 172 TS tests | CI | tested |
 | The layer is auditable | trace and receipt tests | I6–I9 pass | `tests/core/test_invariants.py` | tested |
+| LangGraph can host the same decision | operational adapter | 120 decisions, 0 interrupts, 6-7 ms mean, 110 glue lines | `results/live_bench_v2/external-comparison.json` | measured (operational only) |
 | The audit answers EU PLD questions | field mapping | `verb`, `reason_code`, `policy_version`, `decision_id`, `trace_id`, `created_at` | `eu-liability.md` | documented |
 
 ## Claims that still need evidence

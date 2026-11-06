@@ -1,0 +1,65 @@
+{
+  "schema": "laix/external-capabilities/v1",
+  "systems": {
+    "langgraph": {
+      "one_decision_contract": false,
+      "commitments": false,
+      "execution_risk": "partial",
+      "attention_budget": "partial",
+      "timing_and_revision": "partial",
+      "calibration": false,
+      "auditable_trail": "partial",
+      "host_owned_execution": true,
+      "training_free_default": true,
+      "python_typescript_parity": true
+    },
+    "temporal": {
+      "one_decision_contract": false,
+      "commitments": false,
+      "execution_risk": "partial",
+      "attention_budget": false,
+      "timing_and_revision": "partial",
+      "calibration": false,
+      "auditable_trail": true,
+      "host_owned_execution": false,
+      "training_free_default": true,
+      "python_typescript_parity": true
+    },
+    "pagerduty": {
+      "one_decision_contract": false,
+      "commitments": false,
+      "execution_risk": false,
+      "attention_budget": "partial",
+      "timing_and_revision": false,
+      "calibration": "partial",
+      "auditable_trail": true,
+      "host_owned_execution": false,
+      "training_free_default": true,
+      "python_typescript_parity": false
+    },
+    "camunda": {
+      "one_decision_contract": false,
+      "commitments": false,
+      "execution_risk": "partial",
+      "attention_budget": false,
+      "timing_and_revision": false,
+      "calibration": false,
+      "auditable_trail": true,
+      "host_owned_execution": false,
+      "training_free_default": true,
+      "python_typescript_parity": false
+    },
+    "lax": {
+      "one_decision_contract": true,
+      "commitments": true,
+      "execution_risk": true,
+      "attention_budget": true,
+      "timing_and_revision": true,
+      "calibration": true,
+      "auditable_trail": true,
+      "host_owned_execution": true,
+      "training_free_default": true,
+      "python_typescript_parity": true
+    }
+  }
+}

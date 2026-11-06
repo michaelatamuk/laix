@@ -24,6 +24,13 @@ python scripts/novelty/summarize_results.py
 
 CI runs the same sequence through `bash scripts/novelty/reproduce.sh`.
 
+External comparison is optional and needs an extra dependency:
+
+```powershell
+python -m pip install -r benchmarks/compare/requirements-external.txt
+python scripts/novelty/run_external_comparison.py --split all
+```
+
 With `uv` from the repository root:
 
 ```powershell
@@ -77,6 +84,7 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 | Ablations | full 100%, no commitment 70%, no execution 83.3%, no attention 96.7% |
 | Analysis | McNemar, paired bootstrap and effect sizes |
 | TS live parity | 210/210 action IDs match Python on the test split |
+| LangGraph adapter | 120 decisions, 0 interrupts, 6-7 ms mean, 110 glue lines |
 
 ## Docs
 
@@ -103,6 +111,7 @@ The check resolves relative links across `docs/`, `examples/` and every README.
 | `scripts/novelty/run_ablations.py` | term removal, equal weights and no-feasibility-gates variants |
 | `scripts/novelty/summarize_results.py` | baseline diff for headline metrics |
 | `scripts/novelty/validate_live_cases.py` | JSON Schema validation and duplicate-id check |
+| `benchmarks/compare/` | optional external adapter harness and capability matrix |
 | examples | every runnable Python and TypeScript example |
 | docs links | relative links in docs, examples and README files |
 

@@ -13,6 +13,8 @@
   recorded human decisions.
 - **TypeScript live-bench parity.** The TypeScript planners run the same 30-case test split and
   match Python on all 210 action IDs.
+- **External comparison harness.** A LangGraph adapter runs the same decision engine in a state
+  graph and reports operational overhead; Temporal, PagerDuty and Camunda remain documented-only.
 - **Built-in decision engines.** `UtilityEngine` with hard limits and risk attitude, `MDPEngine`
   with value iteration, and `POMDPEngine` with belief update and finite-horizon planning.
 - **Engine proof.** `Simulator`, seeded scenarios, `compare_engines` with reward and optimality gap,

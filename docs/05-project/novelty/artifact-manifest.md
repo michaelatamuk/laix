@@ -19,9 +19,12 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 - `scripts/novelty/run_ablations.py`
 - `scripts/novelty/summarize_results.py`
 - `scripts/novelty/glue_baseline.py`
+- `scripts/novelty/run_external_comparison.py`
 - `scripts/novelty/reproduce.sh`
 - `scripts/novelty/live_bench_common.py`
 - `packages/typescript/laix/scripts/live-bench.mjs`
+- `benchmarks/compare/` (adapter harness, LangGraph adapter, capability matrix)
+- `benchmarks/compare/requirements-external.txt`
 
 ## Results
 
@@ -31,6 +34,7 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 - `results/live_bench_v2/ablations.json`
 - `results/live_bench_v2/raw.jsonl`
 - `results/live_bench_v2/typescript-summary.json`
+- `results/live_bench_v2/external-comparison.json`
 
 ## Evidence
 

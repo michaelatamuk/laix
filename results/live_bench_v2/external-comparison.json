@@ -1,0 +1,129 @@
+{
+  "adapters": [
+    {
+      "available": true,
+      "decisions": 120,
+      "dependencies": [
+        "langgraph"
+      ],
+      "glue_lines": 110,
+      "interrupts": 0,
+      "mean_latency_ms": 6.753228,
+      "name": "langgraph",
+      "notes": [
+        "same LAIX decision engine inside the graph"
+      ]
+    },
+    {
+      "available": false,
+      "decisions": 0,
+      "dependencies": [
+        "temporalio",
+        "Temporal server"
+      ],
+      "glue_lines": 0,
+      "interrupts": 0,
+      "mean_latency_ms": 0.0,
+      "name": "temporal",
+      "notes": [
+        "optional dependency is not installed"
+      ]
+    },
+    {
+      "available": false,
+      "decisions": 0,
+      "dependencies": [
+        "PagerDuty account"
+      ],
+      "glue_lines": 0,
+      "interrupts": 0,
+      "mean_latency_ms": 0.0,
+      "name": "pagerduty",
+      "notes": [
+        "documented capability comparison only"
+      ]
+    },
+    {
+      "available": false,
+      "decisions": 0,
+      "dependencies": [
+        "Camunda server"
+      ],
+      "glue_lines": 0,
+      "interrupts": 0,
+      "mean_latency_ms": 0.0,
+      "name": "camunda",
+      "notes": [
+        "documented capability comparison only"
+      ]
+    }
+  ],
+  "capabilities": {
+    "schema": "laix/external-capabilities/v1",
+    "systems": {
+      "camunda": {
+        "attention_budget": false,
+        "auditable_trail": true,
+        "calibration": false,
+        "commitments": false,
+        "execution_risk": "partial",
+        "host_owned_execution": false,
+        "one_decision_contract": false,
+        "python_typescript_parity": false,
+        "timing_and_revision": false,
+        "training_free_default": true
+      },
+      "langgraph": {
+        "attention_budget": "partial",
+        "auditable_trail": "partial",
+        "calibration": false,
+        "commitments": false,
+        "execution_risk": "partial",
+        "host_owned_execution": true,
+        "one_decision_contract": false,
+        "python_typescript_parity": true,
+        "timing_and_revision": "partial",
+        "training_free_default": true
+      },
+      "lax": {
+        "attention_budget": true,
+        "auditable_trail": true,
+        "calibration": true,
+        "commitments": true,
+        "execution_risk": true,
+        "host_owned_execution": true,
+        "one_decision_contract": true,
+        "python_typescript_parity": true,
+        "timing_and_revision": true,
+        "training_free_default": true
+      },
+      "pagerduty": {
+        "attention_budget": "partial",
+        "auditable_trail": true,
+        "calibration": "partial",
+        "commitments": false,
+        "execution_risk": false,
+        "host_owned_execution": false,
+        "one_decision_contract": false,
+        "python_typescript_parity": false,
+        "timing_and_revision": false,
+        "training_free_default": true
+      },
+      "temporal": {
+        "attention_budget": false,
+        "auditable_trail": true,
+        "calibration": false,
+        "commitments": false,
+        "execution_risk": "partial",
+        "host_owned_execution": false,
+        "one_decision_contract": false,
+        "python_typescript_parity": true,
+        "timing_and_revision": "partial",
+        "training_free_default": true
+      }
+    }
+  },
+  "cases": 120,
+  "schema": "laix/external-comparison/v1",
+  "split": "all"
+}
