@@ -209,6 +209,166 @@ Define hypotheses before running the expanded benchmark.
 
 Do not add a hypothesis after seeing the results. Record it, then run the test.
 
+## 5.1 How to turn each claim into a number
+
+Reviewers want a table where every sentence has a metric, a baseline, a confidence interval and an
+effect size. Use this mapping.
+
+| Claim | Number | Definition | Baseline | Expected direction |
+|---|---|---|---|---|
+| Integration is real | conflict win rate | share of conflict cases where LAIX matches or beats the best single-concern planner | best single-concern planner | higher |
+| Integration adds value | integration delta | `accuracy(LAIX) - max(accuracy(single-concern))` on conflict cases | best single-concern | positive |
+| Integration is not a wrapper | ablation delta | metric loss when one term is removed | full `LiveDecisionEngine` | removal hurts |
+| Plain decisions are not damaged | plain-case regret | mean utility gap to the best feasible option on plain cases | utility-only | near zero |
+| Promises are kept | promise-keeping rate | fulfilled commitments / relevant commitments | utility-only | higher |
+| Irreversible actions are avoided | irreversible-action rate | irreversible choices / actionable cases | highest-benefit | lower |
+| Attention is respected | budget-violation rate | cases where attention cost exceeds remaining budget / human-facing cases | attention-only | no worse |
+| Attention is not wasted | mean attention spend | mean attention cost per case | attention-only | lower or equal |
+| Safety is preserved | safety-violation rate | hard-constraint violations / cases | highest-benefit | lower |
+| Calibration works | ECE and Brier score | calibration error on held-out outcomes | uncalibrated | lower |
+| The live path is usable | p95 latency | 95th percentile decision latency in ms | single-concern planners | inside the live window |
+| Results are reproducible | replay equality | share of cases with identical decisions on replay | itself | 100% |
+| The artifact is auditable | trace completeness | decisions with a complete trace / decisions | none | 100% |
+
+### Per-case record
+
+Log one row per case and planner. Every metric above should be derivable from this record:
+
+```json
+{
+  "case_id": "string",
+  "category": "promise | execution | attention | timing | conflict | plain",
+  "split": "dev | test | adversarial",
+  "planner": "string",
+  "chosen_action": "string | null",
+  "expected_actions": ["string"],
+  "acceptable_actions": ["string"],
+  "correct": true,
+  "feasible": true,
+  "safety_violation": false,
+  "irreversible": false,
+  "promise_fulfilled": true,
+  "attention_cost": 0.0,
+  "attention_remaining": 0.0,
+  "utility_chosen": 0.0,
+  "utility_best_feasible": 0.0,
+  "latency_ms": 0.0,
+  "confidence": 0.0,
+  "seed": 0
+}
+```
+
+### Formulas
+
+Use these definitions in the analysis script:
+
+```text
+accuracy            = correct / N
+promise-keeping     = fulfilled commitments / relevant commitments
+irreversible rate   = irreversible choices / actionable cases
+budget violations   = (attention_cost > attention_remaining) / human-facing cases
+safety violations   = hard-constraint violations / N
+plain-case regret   = mean((utility_best - utility_chosen) / max(|utility_best|, 1e-9))
+abstention rate     = wait decisions / N
+conflict win rate   = cases(LAIX >= best single-concern) / conflict cases
+integration delta   = accuracy(LAIX) - max(accuracy(single-concern))
+ablation delta      = metric(full) - metric(term removed)
+ECE                 = sum_b (n_b / N) * |accuracy_b - confidence_b|
+Brier score         = mean((confidence - correct)^2)
+p95 latency         = 95th percentile of latency_ms
+replay equality     = identical decisions on replay / N
+```
+
+For utility regret, report both the mean and the share of cases with a gap above a stated threshold
+(for example 0.05 or 0.10). A mean alone can hide a few bad cases.
+
+### Reporting template
+
+Main table:
+
+| Planner | Accuracy | 95% CI | Promise keeping | Irreversible rate | Budget violations | p95 latency |
+|---|---:|---:|---:|---:|---:|---:|
+| First option | | | | | | |
+| Highest benefit | | | | | | |
+| Utility only | | | | | | |
+| Commitment only | | | | | | |
+| Execution only | | | | | | |
+| Attention only | | | | | | |
+| LAIX integrated | | | | | | |
+
+Conflict cases only:
+
+| Planner | Conflict accuracy | Integration delta | Plain-case regret | Abstention rate |
+|---|---:|---:|---:|---:|
+| Best single-concern | | | | |
+| LAIX integrated | | | | |
+
+Ablation table:
+
+| Variant | Accuracy | Promise keeping | Irreversible rate | Budget violations |
+|---|---:|---:|---:|---:|
+| Full LAIX | | | | |
+| Without commitment term | | | | |
+| Without execution term | | | | |
+| Without attention term | | | | |
+| Equal weights | | | | |
+| No feasibility gates | | | | |
+
+Calibration table:
+
+| Planner | Accuracy | ECE | Brier | Decision accuracy at 0.8 confidence |
+|---|---:|---:|---:|---:|
+| Uncalibrated | | | | |
+| Calibrated | | | | |
+
+Prior-art coverage table:
+
+| System | Capabilities covered | Unique to LAIX |
+|---|---:|---:|
+| Compared system A | | |
+| Compared system B | | |
+| LAIX | 10 / 10 | — |
+
+The coverage table is supporting evidence, not a substitute for performance numbers. A reviewer
+will trust “LAIX keeps 18% more promises with a 2% utility cost” more than “LAIX covers 10 features”.
+
+### Statistical tests
+
+- **Paired bootstrap** over cases, 10,000 resamples, for every headline metric.
+- **McNemar's test** for paired binary correctness.
+- **Wilcoxon signed-rank** for latency and utility regret.
+- **Holm–Bonferroni** correction when testing several hypotheses.
+- Report the number of cases, the mean, the 95% confidence interval, the effect size and the p-value.
+- For proportions, report Cohen's h or the risk difference.
+- For utility and latency, report the median and the paired difference.
+
+A result without an interval is a point estimate, not evidence. A result without a baseline is not a
+result.
+
+### Power and sample size
+
+Do a simulation-based power analysis before freezing the test set. The required size depends on how
+often the planners disagree. As a practical rule:
+
+- 40+ discordant cases are a minimum for a paired accuracy comparison;
+- 100+ cases per split are safer;
+- more cases are needed for rare events such as irreversible actions and safety violations.
+
+Record the assumed effect size and the resulting power in the paper.
+
+### What reviewers will look for
+
+1. Absolute numbers, not only percentages.
+2. Confidence intervals and effect sizes.
+3. A strong baseline, not a straw man.
+4. Per-category results, not one aggregate.
+5. Negative and mixed results.
+6. A failure analysis with examples.
+7. Exact commands, seeds, versions and hardware.
+8. A public artifact or a clear reason why it is private.
+9. A clear separation between benchmark evidence and real-world evidence.
+10. Claims that do not exceed the numbers.
+
 ## 6. Benchmark protocol
 
 ### Deliverable
