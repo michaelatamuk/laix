@@ -5,6 +5,10 @@ This page maps files. Concepts are defined in [architecture](../04-concepts/arch
 
 ```text
 laix/
+├── benchmarks/
+│   └── live/              case schema, dev/test/adversarial corpus
+├── results/
+│   └── live_bench_v2/     summaries, ablations and raw rows
 ├── packages/
 │   ├── contracts/         JSON Schema and shared test vectors
 │   ├── python/laix/       Python package and tests
@@ -19,8 +23,7 @@ laix/
 ├── examples/
 │   ├── python/            numbered lifecycle stages
 │   └── typescript/        the same numbered stages
-├── scripts/
-│   └── check_docs_links.py relative link check for docs and READMEs
+├── scripts/               docs links, live corpus, bench, ablations and reproduction
 └── .github/               CI and release workflows
 ```
 

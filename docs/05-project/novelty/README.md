@@ -20,9 +20,11 @@ review.
 | [Prior art and comparison](prior-art.md) | matrix, comparator discovery, fair comparison protocol |
 | [Formal model](formal-model.md) | definitions, score composition, invariants |
 | [Evaluation](evaluation.md) | hypotheses, metrics, benchmark protocol, threats |
+| [Claim–evidence map](evidence.md) | current numbers, sources and missing evidence |
 | [Validation](validation.md) | deployment, incident replay or user study |
 | [Paper and artifact](paper.md) | reproducibility, paper outline, venues |
 | [Checklist](checklist.md) | phased tasks from claim to external review |
+| [Review log](review-log.md) | reviewer comments and changes |
 | [References](references.md) | sources to verify before citing |
 
 ## Snapshot

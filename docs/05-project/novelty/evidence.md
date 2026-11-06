@@ -1,0 +1,39 @@
+# Claim–evidence map
+
+Status: repository-side evidence is complete. External validation and peer review are still pending.
+Every number below is reproducible from `results/live_bench_v2/` and `bash scripts/reproduce.sh`.
+
+## Current claims
+
+| Claim | Metric | Value | Source | Status |
+|---|---|---|---:|---|---|
+| The integration is accurate on the frozen test split | accuracy | 100% (30/30) | `results/live_bench_v2/summary.json` | measured |
+| It beats the best single-concern planner | accuracy delta | +30 pp (100% vs 70%) | `summary.json` | measured |
+| It wins when concerns conflict | conflict accuracy | 100% (6/6) | `summary.json` | measured |
+| It keeps promises | promise-keeping rate | 100% (vs 0% utility-only) | `summary.json` | measured |
+| It avoids irreversible actions | irreversible-action rate | 0% (vs 23.3% highest-benefit) | `summary.json` | measured |
+| It respects the attention budget | budget-violation rate | 0% (vs 70% highest-benefit) | `summary.json` | measured |
+| The integration is doing real work | ablation delta | full 100%; no commitment 70%; no execution 83.3%; no attention 96.7% | `results/live_bench_v2/ablations.json` | measured |
+| The live path is fast enough | p95 latency | under 2 ms on the test split | `summary.json` | measured |
+| The model is deterministic | replay equality | 100% across the invariant suite | `tests/core/test_invariants.py` | tested |
+| The contract is stable | invariant tests | 17/17 | `tests/core/test_invariants.py` | tested |
+| Python and TypeScript agree | conformance + verb parity | 24/24 conformance; 172 TS tests | CI | tested |
+| The layer is auditable | trace and receipt tests | I6–I9 pass | `tests/core/test_invariants.py` | tested |
+| The audit answers EU PLD questions | field mapping | `verb`, `reason_code`, `policy_version`, `decision_id`, `trace_id`, `created_at` | `eu-liability.md` | documented |
+
+## Claims that still need evidence
+
+| Claim | Missing evidence | Next step |
+|---|---|---|
+| The integration beats an external system | runnable adapter comparison | Phase 2 external comparison in `prior-art.md` |
+| The layer works in a real domain | deployment, incident replay or user study | Phase 3 in `checklist.md` |
+| The results generalise | independent replication | Phase 6 in `checklist.md` |
+| The paper's claims are accepted | peer review | Phase 6 in `checklist.md` |
+
+## Rules
+
+- A row without a source is not evidence.
+- A row marked "measured" must be reproducible from the listed command or file.
+- A row marked "tested" must fail if the code regresses.
+- A row marked "documented" is an argument, not a measurement.
+- Do not promote a claim from "measured" to "general" without external validation.
