@@ -63,7 +63,7 @@ These are the codes an attention decision can carry.
 | `commitment_aware` | the commitment planner adjusted the choice |
 | `execution_aware` | the execution planner adjusted the choice |
 | `attention_aware` | the attention planner adjusted the choice |
-| `live_decision` | the integrated live planner chose the action |
+| `live_decision` | `LiveDecisionEngine` chose the action |
 | `mdp_plan` / `pomdp_plan` | a model-based planner returned a plan |
 | `policy_rule` | an authored rule fired |
 | `no_rule` | no authored rule matched |

@@ -22,3 +22,18 @@ Runner: `scripts/novelty/bench/run_live_bench.py`
 | `comparison/external-systems.json` | operational comparison with external adapters |
 
 Regenerate the reports with `bash scripts/novelty/reproduce.sh`.
+
+## Planner keys
+
+The JSON files use the code keys. The docs use the full engine names.
+
+| Key | Planner |
+|---|---|
+| `live` | `LiveDecisionEngine` |
+| `glue` | hand-built glue baseline |
+| `commitment` | `CommitmentAwareEngine` |
+| `execution` | `ExecutionAwareEngine` |
+| `attention` | `AttentionAwareEngine` |
+| `utility` | `UtilityEngine` |
+| `first` | first / rule baseline |
+| `benefit` | benefit-only baseline |

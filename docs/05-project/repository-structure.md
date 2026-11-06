@@ -93,7 +93,7 @@ packages/python/laix/src/laix/
 │   │   │   ├── commitment/  commitment-aware planner, effects and weights
 │   │   │   ├── execution/   execution-aware planner, effects and weights
 │   │   │   ├── attention/   attention-aware planner, budget and effects
-│   │   │   └── live/        integrated live planner and score
+│   │   │   └── live/        LiveDecisionEngine and score
 │   │   ├── simulation/     simulator, scenario, step, result, report and engine score
 │   │   ├── learning/       calibration, decision calibration and model learning
 │   │   ├── bench/          live benchmark, cases, rows, metrics and baselines
@@ -138,7 +138,7 @@ packages/typescript/laix/src/
 │   │   ├── commitment/ commitment-aware planner
 │   │   ├── execution/ execution-aware planner
 │   │   ├── attention/ attention-aware planner and budget
-│   │   └── live/      integrated live planner
+│   │   └── live/      LiveDecisionEngine
 │   ├── learning/      calibration, decision calibration and model learning
 │   ├── bench/         live benchmark and baselines
 │   ├── outcome.ts     outcome ledger and UCB learner

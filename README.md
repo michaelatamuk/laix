@@ -175,7 +175,7 @@ previous one left. See [Decision continuity](docs/02-core/08-decision-continuity
 | Decision contract | one `Decision` shape for attention, action, follow-up and execution |
 | Decision continuity | commitments, budget, approvals, revisions and outcomes carried into the next decision |
 | Policies | action, safety, replanning, allocation, negotiation, preference, verification and escalation |
-| Planners | utility, commitment, execution, attention, integrated live, MDP and POMDP |
+| Planners | UtilityEngine, CommitmentAwareEngine, ExecutionAwareEngine, AttentionAwareEngine, LiveDecisionEngine, MDPEngine and POMDPEngine |
 | Learning | rewards, bandits, causal attribution, calibration and decision calibration |
 | Streaming and execution | event time, checkpoints, timeline, receipts, recovery and records |
 | App kit | stores, platform, delivery, live context and bench |
@@ -199,20 +199,20 @@ and respects an attention budget. The contribution is the composition; see
 
 ## Results
 
-`LiveDecisionEngine` — the `live` planner — scores **30/30** on the frozen 30-case test split and
-**6/6** on the conflict cases. A hand-built glue baseline — the `glue` planner — scores 28/30; the
-**+6.7 pp** difference is **not yet significant** (p = 0.48). Every single-concern planner has
-significantly lower accuracy (McNemar p ≤ 0.008).
+`LiveDecisionEngine` scores **30/30** on the frozen 30-case test split and **6/6** on the conflict
+cases. The hand-built glue baseline scores 28/30; the **+6.7 pp** difference is **not yet
+significant** (p = 0.48). Every single-concern planner has significantly lower accuracy
+(McNemar p ≤ 0.008).
 
 ![Accuracy and conflict accuracy on the frozen test split](docs/assets/benchmark.png)
 
 | Measure | `LiveDecisionEngine` | Best comparator |
 |---|---:|---:|
-| Accuracy, all 30 cases | **100%** | 93.3% (glue) |
-| Conflict accuracy, 6 cases | **100%** | 100% (glue) |
-| Promise keeping | **100%** | 100% (glue) |
-| Irreversible actions | **0%** | 0% (glue) |
-| Attention-budget violations | **0%** | 0% (glue) |
+| Accuracy, all 30 cases | **100%** | 93.3% (glue baseline) |
+| Conflict accuracy, 6 cases | **100%** | 100% (glue baseline) |
+| Promise keeping | **100%** | 100% (glue baseline) |
+| Irreversible actions | **0%** | 0% (glue baseline) |
+| Attention-budget violations | **0%** | 0% (glue baseline) |
 | p95 decision latency | **0.22 ms** | — |
 
 The glue baseline matches `LiveDecisionEngine` on conflict, promises, reversibility and budget. The

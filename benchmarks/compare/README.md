@@ -12,8 +12,8 @@ therefore measures:
 - approval/interrupt behaviour;
 - audit and recovery support.
 
-It does **not** claim that `live` beats LangGraph or Temporal at decision accuracy. That would compare
-different tasks.
+It does **not** claim that `LiveDecisionEngine` beats LangGraph or Temporal at decision accuracy.
+That would compare different tasks.
 
 ## Layout
 

@@ -208,13 +208,13 @@ Reproducible by running `examples/python/03-plan/ablation_study.py`.
 
 | Planner | Correct / 7 | Accuracy |
 |---|---:|---:|
-| `first` | 3 | 43% |
-| `benefit` | 1 | 14% |
-| `utility` | 2 | 29% |
-| `commitment` | 3 | 43% |
-| `execution` | 5 | 71% |
-| `attention` | 4 | 57% |
-| **live** | **7** | **100%** |
+| First / rule | 3 | 43% |
+| Benefit-only | 1 | 14% |
+| `UtilityEngine` | 2 | 29% |
+| `CommitmentAwareEngine` | 3 | 43% |
+| `ExecutionAwareEngine` | 5 | 71% |
+| `AttentionAwareEngine` | 4 | 57% |
+| **`LiveDecisionEngine`** | **7** | **100%** |
 
 The integration adds real value: each single-concern planner wins its own
 cases but fails on cases where two or more concerns fire simultaneously.

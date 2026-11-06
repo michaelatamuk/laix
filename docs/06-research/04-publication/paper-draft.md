@@ -129,16 +129,17 @@ The test split is frozen at dataset version 1.0.0.
 
 | Planner | Accuracy | 95% CI | Promise keeping | Irreversible | Budget violations |
 |---|---:|---:|---:|---:|---:|
-| first | 70.00% | 0.53–0.87 | 58.33% | 13.33% | 77.78% |
-| benefit | 23.33% | 0.10–0.40 | 0.00% | 23.33% | 70.00% |
-| utility | 30.00% | 0.13–0.47 | 0.00% | 23.33% | 70.00% |
-| commitment | 70.00% | 0.53–0.87 | 100.00% | 13.33% | 57.14% |
-| execution | 50.00% | 0.33–0.67 | 8.33% | 6.67% | 62.50% |
-| attention | 53.33% | 0.37–0.70 | 25.00% | 16.67% | 0.00% |
-| glue | 93.33% | 0.83–1.00 | 100.00% | 0.00% | 0.00% |
-| **live** | **100.00%** | **1.00–1.00** | **100.00%** | **0.00%** | **0.00%** |
+| First / rule | 70.00% | 0.53–0.87 | 58.33% | 13.33% | 77.78% |
+| Benefit-only | 23.33% | 0.10–0.40 | 0.00% | 23.33% | 70.00% |
+| UtilityEngine | 30.00% | 0.13–0.47 | 0.00% | 23.33% | 70.00% |
+| CommitmentAwareEngine | 70.00% | 0.53–0.87 | 100.00% | 13.33% | 57.14% |
+| ExecutionAwareEngine | 50.00% | 0.33–0.67 | 8.33% | 6.67% | 62.50% |
+| AttentionAwareEngine | 53.33% | 0.37–0.70 | 25.00% | 16.67% | 0.00% |
+| Glue baseline | 93.33% | 0.83–1.00 | 100.00% | 0.00% | 0.00% |
+| **LiveDecisionEngine** | **100.00%** | **1.00–1.00** | **100.00%** | **0.00%** | **0.00%** |
 
-Conflict cases: `live` and `glue` are 100%; the best single-concern planner is `commitment` at 83.3%.
+Conflict cases: `LiveDecisionEngine` and the glue baseline are 100%; the best single-concern
+planner is `CommitmentAwareEngine` at 83.3%.
 
 ### 8.3 Ablations (test split)
 
@@ -159,20 +160,20 @@ attention costs 3.3. The integration is doing real work.
 
 | Comparator | Accuracy delta | 95% CI | McNemar p | Cohen's h |
 |---|---:|---:|---:|---:|
-| benefit | +76.7 pp | 0.600–0.900 | <0.001 | 2.133 |
-| utility | +70.0 pp | 0.533–0.867 | <0.001 | 1.982 |
-| execution | +50.0 pp | 0.333–0.667 | <0.001 | 1.571 |
-| attention | +46.7 pp | 0.300–0.633 | <0.001 | 1.504 |
-| commitment | +30.0 pp | 0.133–0.467 | 0.008 | 1.159 |
-| first | +30.0 pp | 0.133–0.467 | 0.008 | 1.159 |
-| **glue** | **+6.7 pp** | **0.000–0.167** | **0.480** | **0.522** |
+| Benefit-only | +76.7 pp | 0.600–0.900 | <0.001 | 2.133 |
+| UtilityEngine | +70.0 pp | 0.533–0.867 | <0.001 | 1.982 |
+| ExecutionAwareEngine | +50.0 pp | 0.333–0.667 | <0.001 | 1.571 |
+| AttentionAwareEngine | +46.7 pp | 0.300–0.633 | <0.001 | 1.504 |
+| CommitmentAwareEngine | +30.0 pp | 0.133–0.467 | 0.008 | 1.159 |
+| First / rule | +30.0 pp | 0.133–0.467 | 0.008 | 1.159 |
+| **Glue baseline** | **+6.7 pp** | **0.000–0.167** | **0.480** | **0.522** |
 
 The result against glue is the key limitation: the confidence interval includes zero. The synthetic
 corpus is too easy, and the next section is the missing evidence.
 
 ### 8.5 Failure analysis
 
-`live` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a warning. The corpus does not yet contain ambiguous trade-offs, noisy outcomes,
+`LiveDecisionEngine` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a warning. The corpus does not yet contain ambiguous trade-offs, noisy outcomes,
 multi-step dependencies, long-tail incidents or host-specific recovery behaviour. A benchmark with
 no failures cannot support a strong generalisation claim.
 

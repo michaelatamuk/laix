@@ -131,6 +131,8 @@ The body should say why the change exists, not repeat the diff.
 ## Documentation
 
 - Numbered sections are read in order; reference sections stay unnumbered.
+- Use full engine class names in prose and tables (`LiveDecisionEngine`, `UtilityEngine`); reserve
+  short keys such as `live` for JSON and CLI identifiers.
 - Keep one H1 per page.
 - Use relative links and run `python scripts/ci/check_docs_links.py`.
 - Put new pages in the right section and add them to [docs/README.md](docs/README.md).

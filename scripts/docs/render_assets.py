@@ -226,12 +226,12 @@ def render_banner() -> None:
 PLANNERS = [
     ("live", "LiveDecisionEngine"),
     ("glue", "Glue baseline"),
-    ("commitment", "Commitment"),
+    ("commitment", "CommitmentAwareEngine"),
     ("first", "First / rule"),
-    ("attention", "Attention"),
-    ("execution", "Execution"),
-    ("utility", "Utility"),
-    ("benefit", "Benefit"),
+    ("attention", "AttentionAwareEngine"),
+    ("execution", "ExecutionAwareEngine"),
+    ("utility", "UtilityEngine"),
+    ("benefit", "Benefit-only"),
 ]
 
 ABLATIONS_ORDER = [
@@ -375,7 +375,7 @@ def render_benchmark_chart() -> None:
         "Conflict accuracy",
         "6 cases where concerns collide",
     )
-    fig.subplots_adjust(left=0.155, right=0.975, top=0.76, bottom=0.14, wspace=0.55)
+    fig.subplots_adjust(left=0.195, right=0.975, top=0.76, bottom=0.14, wspace=0.5)
     fig.text(
         0.055,
         0.035,

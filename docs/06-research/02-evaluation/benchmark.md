@@ -236,11 +236,11 @@ Splits:
 
 - first option;
 - highest benefit;
-- utility-only;
-- commitment-only;
-- execution-only;
-- attention-only;
-- integrated live planner.
+- `UtilityEngine` alone;
+- `CommitmentAwareEngine` alone;
+- `ExecutionAwareEngine` alone;
+- `AttentionAwareEngine` alone;
+- `LiveDecisionEngine`.
 
 ### Ablations
 
@@ -316,33 +316,35 @@ Mitigations:
 
 Generated from the frozen test split (30 cases) and the six ablations. The raw rows are in
 `results/live-decision-benchmark/raw/decisions.jsonl`; the summary is in `results/live-decision-benchmark/metrics/summary.json`; the
-baseline is `results/live-decision-benchmark/metrics/baseline.json`.
+baseline is `results/live-decision-benchmark/metrics/baseline.json`. The tables use the full engine
+names; the JSON keys are listed in the
+[results README](../../../results/live-decision-benchmark/README.md#planner-keys).
 
 ### Main table (test split, 30 cases)
 
 | Planner | Accuracy | 95% CI | Promise keeping | Irreversible rate | Budget violations |
 |---|---:|---:|---:|---:|---:|
-| first | 70.00% | 0.53–0.87 | 58.33% | 13.33% | 77.78% |
-| benefit | 23.33% | 0.10–0.40 | 0.00% | 23.33% | 70.00% |
-| utility | 30.00% | 0.13–0.47 | 0.00% | 23.33% | 70.00% |
-| commitment | 70.00% | 0.53–0.87 | 100.00% | 13.33% | 57.14% |
-| execution | 50.00% | 0.33–0.67 | 8.33% | 6.67% | 62.50% |
-| attention | 53.33% | 0.37–0.70 | 25.00% | 16.67% | 0.00% |
-| **glue** | **93.33%** | **0.83–1.00** | **100.00%** | **0.00%** | **0.00%** |
-| **live** | **100.00%** | **1.00–1.00** | **100.00%** | **0.00%** | **0.00%** |
+| First / rule | 70.00% | 0.53–0.87 | 58.33% | 13.33% | 77.78% |
+| Benefit-only | 23.33% | 0.10–0.40 | 0.00% | 23.33% | 70.00% |
+| UtilityEngine | 30.00% | 0.13–0.47 | 0.00% | 23.33% | 70.00% |
+| CommitmentAwareEngine | 70.00% | 0.53–0.87 | 100.00% | 13.33% | 57.14% |
+| ExecutionAwareEngine | 50.00% | 0.33–0.67 | 8.33% | 6.67% | 62.50% |
+| AttentionAwareEngine | 53.33% | 0.37–0.70 | 25.00% | 16.67% | 0.00% |
+| **Glue baseline** | **93.33%** | **0.83–1.00** | **100.00%** | **0.00%** | **0.00%** |
+| **LiveDecisionEngine** | **100.00%** | **1.00–1.00** | **100.00%** | **0.00%** | **0.00%** |
 
 ### Conflict cases (6 cases)
 
 | Planner | Conflict accuracy | 95% CI |
 |---|---:|---:|
-| first | 0.00% | 0.00–0.00 |
-| benefit | 0.00% | 0.00–0.00 |
-| utility | 0.00% | 0.00–0.00 |
-| commitment | 83.33% | 0.50–1.00 |
-| execution | 33.33% | 0.00–0.67 |
-| attention | 66.67% | 0.33–1.00 |
-| **glue** | **100.00%** | **1.00–1.00** |
-| **live** | **100.00%** | **1.00–1.00** |
+| First / rule | 0.00% | 0.00–0.00 |
+| Benefit-only | 0.00% | 0.00–0.00 |
+| UtilityEngine | 0.00% | 0.00–0.00 |
+| CommitmentAwareEngine | 83.33% | 0.50–1.00 |
+| ExecutionAwareEngine | 33.33% | 0.00–0.67 |
+| AttentionAwareEngine | 66.67% | 0.33–1.00 |
+| **Glue baseline** | **100.00%** | **1.00–1.00** |
+| **LiveDecisionEngine** | **100.00%** | **1.00–1.00** |
 
 ### Ablations (test split, 30 cases)
 
@@ -361,27 +363,27 @@ execution risk costs 16.7, and removing attention costs 3.3. The integration is 
 
 ### Paired significance (test split, 30 cases)
 
-`glue` is a hand-built integration baseline: hard gates, then commitments, then reversibility,
-then attention, then utility. It is a stronger comparator than any single-concern planner.
+The glue baseline is hand-built: hard gates, then commitments, then reversibility, then attention,
+then utility. It is a stronger comparator than any single-concern planner.
 
-| Comparator | Accuracy delta | 95% CI | Discordant (live / other) | McNemar chi² | p | Cohen's h |
+| Comparator | Accuracy delta | 95% CI | Discordant (LiveDecisionEngine / other) | McNemar chi² | p | Cohen's h |
 |---|---:|---:|---:|---:|---:|---:|
-| benefit | +76.7 pp | 0.600–0.900 | 23 / 0 | 21.043 | <0.001 | 2.133 |
-| utility | +70.0 pp | 0.533–0.867 | 21 / 0 | 19.048 | <0.001 | 1.982 |
-| execution | +50.0 pp | 0.333–0.667 | 15 / 0 | 13.067 | <0.001 | 1.571 |
-| attention | +46.7 pp | 0.300–0.633 | 14 / 0 | 12.071 | <0.001 | 1.504 |
-| commitment | +30.0 pp | 0.133–0.467 | 9 / 0 | 7.111 | 0.008 | 1.159 |
-| first | +30.0 pp | 0.133–0.467 | 9 / 0 | 7.111 | 0.008 | 1.159 |
-| **glue** | **+6.7 pp** | **0.000–0.167** | **2 / 0** | **0.500** | **0.480** | **0.522** |
+| Benefit-only | +76.7 pp | 0.600–0.900 | 23 / 0 | 21.043 | <0.001 | 2.133 |
+| UtilityEngine | +70.0 pp | 0.533–0.867 | 21 / 0 | 19.048 | <0.001 | 1.982 |
+| ExecutionAwareEngine | +50.0 pp | 0.333–0.667 | 15 / 0 | 13.067 | <0.001 | 1.571 |
+| AttentionAwareEngine | +46.7 pp | 0.300–0.633 | 14 / 0 | 12.071 | <0.001 | 1.504 |
+| CommitmentAwareEngine | +30.0 pp | 0.133–0.467 | 9 / 0 | 7.111 | 0.008 | 1.159 |
+| First / rule | +30.0 pp | 0.133–0.467 | 9 / 0 | 7.111 | 0.008 | 1.159 |
+| **Glue baseline** | **+6.7 pp** | **0.000–0.167** | **2 / 0** | **0.500** | **0.480** | **0.522** |
 
-The comparison against the hand-built glue baseline is the honest one: `live` is better, but the
+The comparison against the hand-built glue baseline is the honest one: `LiveDecisionEngine` is better, but the
 confidence interval includes zero and the result is not significant on 30 cases. The integration
 advantage over single-concern planners is large and significant; the advantage over competent glue
 code needs a larger and harder corpus, and that is exactly what the real validation must test.
 
 ### Failure analysis
 
-`live` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a
+`LiveDecisionEngine` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a
 warning, not a victory: the corpus is synthetic and currently too easy. The next evidence step must
 add cases where the planner is expected to fail or abstain:
 

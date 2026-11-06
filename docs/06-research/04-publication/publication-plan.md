@@ -47,7 +47,7 @@ Acceptance criteria:
 1. Introduction and problem.
 2. Related work and prior-art gap.
 3. Decision contract and formal model.
-4. Integrated live planner.
+4. `LiveDecisionEngine`.
 5. Execution, audit and revision semantics.
 6. Calibration and outcome learning.
 7. Implementation and parity.

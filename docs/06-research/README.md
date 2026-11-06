@@ -43,7 +43,7 @@ the order. `checklist.md` tracks work across all stages.
 - Existing proof points: `LiveDecisionEngine`, the live decision benchmark, Python/TypeScript parity,
   conformance vectors, deterministic replay and the audit trail.
 - Added: `01-positioning/comparators.md` (documented capability comparison, 7 systems), `05-governance/eu-liability.md`
-  (PLD 2024/2853 mapping), `ablation_study.py` (all 7 planners on 7 demo cases, `live` wins
+  (PLD 2024/2853 mapping), `ablation_study.py` (all 7 planners on 7 demo cases, `LiveDecisionEngine` wins
   every case), `conflict_scenario.py` (triple-concern demo), `shadow_rollout.py` (rollout
   pattern).
 - Added: `01-positioning/formal-model.md` with exact score formulas and weights, `01-positioning/prior-art.md` matrix
@@ -55,7 +55,7 @@ the order. `checklist.md` tracks work across all stages.
   `scripts/novelty/bench/validate_live_cases.py` (schema validation),
   `scripts/novelty/bench/run_ablations.py`, `scripts/novelty/bench/summarize_results.py`,
   `results/live-decision-benchmark/` (baseline, analysis and ablations), and a CI reproduction step.
-- Measured result: `live` 30/30 on the test split, but a hand-built glue baseline is 28/30.
+- Measured result: `LiveDecisionEngine` 30/30 on the test split, but a hand-built glue baseline is 28/30.
   Against glue, +6.7 pp (95% CI 0.0–0.167, McNemar p = 0.48). The integration advantage over
   single-concern planners is large; the advantage over competent glue code is not yet significant.
 - External operational result: the LangGraph adapter runs the same decision engine on 120 cases
@@ -74,7 +74,7 @@ Frame the contribution as a **systems and integration contribution**.
 > attention budget into one decision contract — the same object that carries the verb, the score,
 > the reason code and the audit trail — while the host retains execution and delivery.
 > No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI, scikit-learn)
-> carries all ten capabilities in one object. On the frozen test split `live` is 30/30 and wins
+> carries all ten capabilities in one object. On the frozen test split `LiveDecisionEngine` is 30/30 and wins
 > every conflict case; the best single-concern planner is 70%. A hand-built glue baseline reaches
 > 93.3%, so the remaining integration advantage is +6.7 pp and is not significant on 30 cases.
 > That is why real-world validation is still required.

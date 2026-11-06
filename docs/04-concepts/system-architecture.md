@@ -199,20 +199,19 @@ LAIX is a live decision runtime. It can host a decision model such as JEV inside
 
 ## Integration evidence
 
-The integration is measured. `LiveDecisionEngine` runs every concern in one
-score. Single-concern planners win their own cases; `live` wins every case because it integrates
-all three.
+The integration is measured. `LiveDecisionEngine` runs every concern in one score. Single-concern
+planners win their own cases; `LiveDecisionEngine` wins every case because it integrates all three.
 
 **Seven-case live demo (all planners):**
 
 | Planner | Correct / 7 | Note |
 |---|---:|---|
-| `benefit` (naive) | 1 / 7 | ignores risk, commitments, attention |
-| `utility` | 2 / 7 | ignores commitments and attention |
-| `commitment` | 3 / 7 | ignores execution risk and attention |
-| `attention` | 4 / 7 | ignores commitments and execution risk |
-| `execution` | 5 / 7 | ignores commitments and attention |
-| **`live`** | **7 / 7** | integrates all three concerns |
+| Benefit-only (naive) | 1 / 7 | ignores risk, commitments, attention |
+| `UtilityEngine` | 2 / 7 | ignores commitments and attention |
+| `CommitmentAwareEngine` | 3 / 7 | ignores execution risk and attention |
+| `AttentionAwareEngine` | 4 / 7 | ignores commitments and execution risk |
+| `ExecutionAwareEngine` | 5 / 7 | ignores commitments and attention |
+| **`LiveDecisionEngine`** | **7 / 7** | integrates all three concerns |
 
 Reproduce with one command: `python examples/python/03-plan/ablation_study.py`.
 

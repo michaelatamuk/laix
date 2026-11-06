@@ -51,6 +51,9 @@
 - Tightened the README hero, contents and Why section, replaced the slide-style benchmark and ablation images with matplotlib charts generated from the committed result JSON, and replaced the architecture slide with a light vector loop. Removed the generated demo animation; the code examples carry the demo until a real recording exists.
 - Restructured the claim–evidence map into headline, safety, contract, open-claims and evidence-index tables.
 - Split the README results into outcome, ablation and verification tables, with the glue baseline shown as the best comparator.
+- Standardised docs on full engine class names (`LiveDecisionEngine`, `UtilityEngine`,
+  `CommitmentAwareEngine`, `ExecutionAwareEngine`, `AttentionAwareEngine`). Short keys stay in JSON
+  and CLI output and are documented in `results/live-decision-benchmark/README.md`.
 - Reordered the repository for role-based grouping: `benchmarks/live/v1/` (versioned corpus), `benchmarks/compare/adapters/` (per-system adapters), `data/{incident-replay,vignette-study/v1}/`, `results/live-decision-benchmark/`, `scripts/ci/`, `scripts/novelty/{bench,analysis,compare,incident-replay,vignette-study,shared}/` and `docs/06-research/` (the research dossier moved out of `05-project`). Public APIs and package layout are unchanged.
 - Added `to_decision` / `toDecision` as the one plan-to-decision conversion.
 - TypeScript now mirrors the Python calibration, model-learning and POMDP surface.

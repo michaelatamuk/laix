@@ -26,7 +26,8 @@ actually shows. **DONE.**
 ## Phase 1: formal model and invariants
 
 - [x] Define the problem, score and feasibility in `01-positioning/formal-model.md` — exact formulas and
-  weights for utility, commitment, execution and attention engines
+  weights for `UtilityEngine`, `CommitmentAwareEngine`, `ExecutionAwareEngine` and
+  `AttentionAwareEngine`
 - [x] Define revision and receipt state machines — documented in `01-positioning/formal-model.md` §3
 - [x] Write invariants I1–I10 as statements in `01-positioning/formal-model.md` — §4 invariant table complete
 - [x] Add property tests: `tests/core/test_invariants.py` — 17 tests, all pass
@@ -96,7 +97,7 @@ confidence intervals.
   the same engine on 120 cases (6.9 ms mean, 110 glue lines). Temporal, PagerDuty and Camunda
   remain documented-only.
 
-- [x] **Write the failure analysis** — `live` made zero mistakes on the 30 test cases and zero on
+- [x] **Write the failure analysis** — `LiveDecisionEngine` made zero mistakes on the 30 test cases and zero on
   the 18 adversarial cases. The zero-failure result is documented in `02-evaluation/benchmark.md` §5 as a
   limitation; the corpus is too easy, and real-incident cases are required next.
 

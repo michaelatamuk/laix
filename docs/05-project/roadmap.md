@@ -11,17 +11,17 @@ still open.
 | UCB bandit | done |
 | Bench | done |
 | Planner contract | done |
-| Utility planner | done |
-| Commitment-aware planner | done |
-| Execution-aware planner | done |
-| Attention-aware planner | done |
-| Integrated live planner | done |
-| MDP planner | done |
+| `UtilityEngine` | done |
+| `CommitmentAwareEngine` | done |
+| `ExecutionAwareEngine` | done |
+| `AttentionAwareEngine` | done |
+| `LiveDecisionEngine` | done |
+| `MDPEngine` | done |
 | Simulator and planner comparison | done |
 | Planner bench CLI | done |
 | Calibration | done |
 | Model learning | done |
-| POMDP | done |
+| `POMDPEngine` | done |
 | TypeScript parity | done |
 
 ## Build order

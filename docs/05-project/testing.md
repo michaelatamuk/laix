@@ -79,8 +79,8 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 | LAIX-Bench | 25/25 |
 | 7-case live demo | `LiveDecisionEngine` 7/7 |
 | Live corpus | 120 cases: 72 dev / 30 test / 18 adversarial |
-| Live decision benchmark | test split: `live` 30/30; conflict 6/6 |
-| Glue baseline | 28/30; `live` +6.7 pp, p = 0.48 |
+| Live decision benchmark | test split: `LiveDecisionEngine` 30/30; conflict 6/6 |
+| Glue baseline | 28/30; `LiveDecisionEngine` +6.7 pp, p = 0.48 |
 | External validation | pending |
 | Ablations | full 100%, no commitment 70%, no execution 83.3%, no attention 96.7% |
 | Analysis | McNemar, paired bootstrap and effect sizes |
