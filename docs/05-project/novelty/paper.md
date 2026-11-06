@@ -11,7 +11,7 @@ Already present:
 - `CITATION.cff`
 - `scripts/novelty/reproduce.sh`
 - a CI job that runs the live benchmark, analysis and ablations
-- `results/live-bench/harness-v2/` with the reported run
+- `results/live-decision-benchmark/` with the reported run
 - [artifact-manifest.md](artifact-manifest.md)
 
 Still pending:

@@ -16,8 +16,12 @@ laix/
 │   └── vignette-study/
 │       └── v1/            20-vignette instrument and app
 ├── results/
-│   └── live-bench/
-│       └── harness-v2/    raw rows, baseline and reports
+│   └── live-decision-benchmark/
+│       ├── raw/             per-case planner output
+│       ├── metrics/         baseline, summary and significance
+│       ├── ablations/       ablation study
+│       ├── parity/          TypeScript parity
+│       └── comparison/      external systems
 ├── packages/
 │   ├── contracts/         JSON Schema and shared test vectors
 │   ├── python/laix/       Python package and tests

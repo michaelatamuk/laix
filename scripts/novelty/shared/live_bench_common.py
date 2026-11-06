@@ -33,8 +33,7 @@ from laix.core.engines.planners.utility.utility import (
 
 ROOT = Path(__file__).resolve().parents[3]
 CASES = ROOT / "benchmarks" / "live" / "v1"
-RESULTS = ROOT / "results" / "live-bench" / "harness-v2"
-REPORTS = RESULTS / "reports"
+RESULTS = ROOT / "results" / "live-decision-benchmark"
 SPLITS = ("dev", "test", "adversarial")
 
 
@@ -357,9 +356,10 @@ def write_outputs(
     summary_path: Path | None = None,
 ) -> tuple[Path, Path]:
     RESULTS.mkdir(parents=True, exist_ok=True)
-    REPORTS.mkdir(parents=True, exist_ok=True)
-    raw = raw_path or RESULTS / "raw.jsonl"
-    current = summary_path or REPORTS / "summary.json"
+    raw = raw_path or RESULTS / "raw" / "decisions.jsonl"
+    current = summary_path or RESULTS / "metrics" / "summary.json"
+    raw.parent.mkdir(parents=True, exist_ok=True)
+    current.parent.mkdir(parents=True, exist_ok=True)
     raw.write_text(
         "\n".join(json.dumps(row, sort_keys=True) for row in rows) + "\n",
         encoding="utf-8",

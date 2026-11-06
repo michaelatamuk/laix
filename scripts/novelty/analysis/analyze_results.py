@@ -11,9 +11,9 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[3]
-RESULTS = ROOT / "results" / "live-bench" / "harness-v2"
-RAW = RESULTS / "raw.jsonl"
-OUT = RESULTS / "reports" / "significance.json"
+RESULTS = ROOT / "results" / "live-decision-benchmark"
+RAW = RESULTS / "raw" / "decisions.jsonl"
+OUT = RESULTS / "metrics" / "significance.json"
 REFERENCE = "live"
 
 

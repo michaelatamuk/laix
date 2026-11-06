@@ -33,7 +33,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--no-write",
         action="store_true",
-        help="Print results without writing results/live-bench/harness-v2/.",
+        help="Print results without writing results/live-decision-benchmark/.",
     )
     return parser.parse_args()
 

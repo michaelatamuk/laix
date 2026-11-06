@@ -75,7 +75,7 @@ def main() -> int:
         "capabilities": json.loads(CAPABILITIES.read_text(encoding="utf-8")),
         "adapters": [item.to_dict() for item in results],
     }
-    target = RESULTS / "reports" / "external-comparison.json"
+    target = RESULTS / "comparison" / "external-systems.json"
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 

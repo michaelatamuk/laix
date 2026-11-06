@@ -7,8 +7,7 @@ import { defaultPlanners } from "../src/core/bench/live-bench.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "../../../..");
-const RESULTS = resolve(ROOT, "results/live-bench/harness-v2");
-const REPORTS = resolve(RESULTS, "reports");
+const RESULTS = resolve(ROOT, "results/live-decision-benchmark");
 const CASES = resolve(ROOT, "benchmarks/live/v1");
 
 const args = process.argv.slice(2);
@@ -76,7 +75,7 @@ function loadCases() {
 }
 
 function loadPythonRows() {
-  const path = resolve(RESULTS, "raw.jsonl");
+  const path = resolve(RESULTS, "raw/decisions.jsonl");
   if (!existsSync(path)) return null;
   const rows = new Map();
   for (const line of readFileSync(path, "utf8").split(/\r?\n/)) {
@@ -124,7 +123,7 @@ let parity = null;
 if (compare) {
   const python = loadPythonRows();
   if (python === null) {
-    console.error("missing Python raw results: results/live-bench/harness-v2/raw.jsonl");
+    console.error("missing Python raw results: results/live-decision-benchmark/raw/decisions.jsonl");
     process.exit(2);
   }
   const mismatches = [];
@@ -141,9 +140,10 @@ if (compare) {
   summary.parity = parity;
 }
 
-mkdirSync(REPORTS, { recursive: true });
+const parityDir = resolve(RESULTS, "parity");
+mkdirSync(parityDir, { recursive: true });
 writeFileSync(
-  resolve(REPORTS, "typescript-parity.json"),
+  resolve(parityDir, "typescript.json"),
   `${JSON.stringify(summary, null, 2)}\n`,
   "utf8",
 );

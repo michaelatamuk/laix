@@ -5,4 +5,4 @@ external validation data; validation material lives in `data/`.
 
 | Folder | Benchmark |
 |---|---|
-| [`live-bench/`](live-bench/README.md) | the live decision benchmark |
+| [`live-decision-benchmark/`](live-decision-benchmark/README.md) | the live decision benchmark |

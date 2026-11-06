@@ -1,7 +1,7 @@
 # One decision contract for live AI: commitments, execution risk and attention
 
 **Status: draft. Not submittable.** Real-world validation and external review are still pending.
-Numbers below come from the frozen synthetic test split and `results/live-bench/harness-v2/`.
+Numbers below come from the frozen synthetic test split and `results/live-decision-benchmark/`.
 
 ## Abstract
 
@@ -224,7 +224,7 @@ bash scripts/novelty/reproduce.sh
 Files:
 
 - `benchmarks/live/v1/` — 120 cases and schema;
-- `results/live-bench/harness-v2/reports/summary.json` — baseline metrics;
-- `results/live-bench/harness-v2/reports/significance.json` — paired tests and categories;
-- `results/live-bench/harness-v2/reports/ablations.json` — ablation results;
-- `results/live-bench/harness-v2/raw.jsonl` — per-case rows.
+- `results/live-decision-benchmark/metrics/summary.json` — baseline metrics;
+- `results/live-decision-benchmark/metrics/significance.json` — paired tests and categories;
+- `results/live-decision-benchmark/ablations/results.json` — ablation results;
+- `results/live-decision-benchmark/raw/decisions.jsonl` — per-case rows.

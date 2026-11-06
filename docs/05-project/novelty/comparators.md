@@ -172,7 +172,7 @@ isolates orchestration overhead; it is not an accuracy comparison.
 | Mean latency | 6-7 ms |
 | Adapter glue code | 110 lines |
 | Dependencies | `langgraph` |
-| Result file | `results/live-bench/harness-v2/reports/external-comparison.json` |
+| Result file | `results/live-decision-benchmark/comparison/external-systems.json` |
 
 Reproduce with:
 

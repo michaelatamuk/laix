@@ -93,8 +93,8 @@ def main() -> int:
 
     summary = summarize(rows, split=args.split, seed=args.seed)
     RESULTS.mkdir(parents=True, exist_ok=True)
-    (RESULTS / "reports").mkdir(parents=True, exist_ok=True)
-    target = RESULTS / "reports" / "ablations.json"
+    target = RESULTS / "ablations" / "results.json"
+    target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     header = (

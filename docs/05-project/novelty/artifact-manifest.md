@@ -30,13 +30,13 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 
 ## Results
 
-- `results/live-bench/harness-v2/baseline.json`
-- `results/live-bench/harness-v2/raw.jsonl`
-- `results/live-bench/harness-v2/reports/summary.json`
-- `results/live-bench/harness-v2/reports/significance.json`
-- `results/live-bench/harness-v2/reports/ablations.json`
-- `results/live-bench/harness-v2/reports/typescript-parity.json`
-- `results/live-bench/harness-v2/reports/external-comparison.json`
+- `results/live-decision-benchmark/metrics/baseline.json`
+- `results/live-decision-benchmark/raw/decisions.jsonl`
+- `results/live-decision-benchmark/metrics/summary.json`
+- `results/live-decision-benchmark/metrics/significance.json`
+- `results/live-decision-benchmark/ablations/results.json`
+- `results/live-decision-benchmark/parity/typescript.json`
+- `results/live-decision-benchmark/comparison/external-systems.json`
 
 ## Evidence
 
