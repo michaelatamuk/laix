@@ -182,6 +182,7 @@ See [Testing](docs/05-project/testing.md) for the full check list and how to run
 | [Core building blocks](docs/02-core/00-architecture.md) | the decision layer |
 | [App-kit building blocks](docs/03-appkit/00-architecture.md) | streaming, execution, stores and delivery |
 | [FAQ](docs/04-concepts/faq.md) | models, execution and novelty |
+| [Novelty and evidence](docs/05-project/novelty.md) | claim, prior art, experiments and paper plan |
 | [Privacy](docs/04-concepts/privacy.md) | what may be shared, stored or exported |
 | [Examples](examples/README.md) | Python and TypeScript, grouped by lifecycle |
 | [Roadmap](docs/05-project/roadmap.md) | what is done and what is next |
