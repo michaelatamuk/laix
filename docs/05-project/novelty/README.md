@@ -1,0 +1,158 @@
+# Novelty and evidence
+
+This is a working plan, not a claim that novelty is already established. It turns the claim that LAIX
+is novel into a precise statement, a prior-art gap, reproducible evidence and a path to external
+review.
+
+## How to use this folder
+
+1. Read the claim and the current gaps on this page.
+2. Establish the gap in [Prior art and comparison](prior-art.md).
+3. Write the contribution in [Formal model](formal-model.md).
+4. Build the experiments in [Evaluation](evaluation.md).
+5. Run one study outside the test suite in [Validation](validation.md).
+6. Write and release in [Paper and artifact](paper.md).
+7. Track the work in [Checklist](checklist.md).
+8. Verify sources in [References](references.md).
+
+| Page | Contents |
+|---|---|
+| [Prior art and comparison](prior-art.md) | matrix, comparator discovery, fair comparison protocol |
+| [Formal model](formal-model.md) | definitions, score composition, invariants |
+| [Evaluation](evaluation.md) | hypotheses, metrics, benchmark protocol, threats |
+| [Validation](validation.md) | deployment, incident replay or user study |
+| [Paper and artifact](paper.md) | reproducibility, paper outline, venues |
+| [Checklist](checklist.md) | phased tasks from claim to external review |
+| [References](references.md) | sources to verify before citing |
+
+## Snapshot
+
+- Repository: `laix`
+- Status at time of writing: Python and TypeScript tests, parity, conformance, bench and examples pass.
+- Existing proof points: `LiveDecisionEngine`, the live bench, Python/TypeScript parity,
+  conformance vectors, deterministic replay and the audit trail.
+- Main gap: no prior-art matrix, no ablation study, no confidence intervals, no real-world
+  validation and no paper.
+
+## 1. What "novel" must mean here
+
+Do not claim a new algorithm. Claim a **systems and integration contribution**.
+
+> LAIX is a training-free decision layer that unifies commitments, execution risk, human attention,
+> decision timing, calibration and auditable revision in one decision contract, while the host keeps
+> execution and delivery.
+
+The contribution is the contract and the composition. The individual ingredients are known:
+utility models, MDP/POMDP planning, commitments, interruption cost, sagas, calibration and audit
+records. The claim is that no existing system combines them into one live decision layer with the
+same contract and the same evidence.
+
+`LiveDecisionEngine` is the proof object: one plan can keep a promise, avoid an irreversible action
+and respect an attention budget at the same time.
+
+### Scope
+
+In scope:
+
+- one decision contract for wait, observe, guide, ask, act, verify and escalate;
+- commitments, execution risk and human attention as first-class decision terms;
+- decision time, revisions and a timeline;
+- calibration from measured outcomes;
+- host-owned execution, receipts and recovery;
+- deterministic, training-free operation;
+- Python and TypeScript parity.
+
+Out of scope:
+
+- a new solver, planner or learning algorithm;
+- model training or fine-tuning;
+- orchestration, memory, UI, storage or delivery;
+- a general-purpose agent framework;
+- replacing domain policy or human judgment.
+
+### What must not be claimed
+
+- "First to use commitments, attention or execution risk." Each exists separately.
+- "State of the art on a public benchmark." There is no public benchmark yet.
+- "Proven in production." There is no production study yet.
+- "Novel because the code is clean." Engineering quality is not novelty.
+
+## 2. Current assets and gaps
+
+| Area | Current artifact | Status | Gap to close |
+|---|---|---|---|
+| Decision contract | `Decision`, `DecisionProblem`, `Plan`, `EnginePolicy` | exists | formal definition and invariants |
+| Integrated planner | `LiveDecisionEngine` | exists | ablation and sensitivity study |
+| Commitments | `Commitment`, `CommitmentLedger`, commitment planner | exists | larger conflict cases |
+| Execution risk | execution planner, receipts, recovery | exists | measured irreversible-action reduction |
+| Attention | attention planner, budget, signals | exists | measured budget adherence and interruption quality |
+| Timing and revision | stream session, timeline | exists | formal revision invariants |
+| Calibration | calibration and decision calibration | exists | held-out calibration report |
+| Audit | receipts, traces, decision record | exists | replay and tamper evidence in evaluation |
+| Parity | Python and TypeScript suites | exists | include in artifact release |
+| Benchmark | LAIX-Bench 25 cases; live bench 7 cases | small | 100+ live cases with splits |
+| Prior art | none documented | missing | feature matrix and citations |
+| Real validation | none | missing | one deployment, replay or user study |
+| Paper | none | missing | technical report and submission |
+
+## 3. Definition of done
+
+Do not claim novelty in a paper, README or talk until all of these are true:
+
+- [ ] the claim is precise and narrow;
+- [ ] the prior-art matrix is complete and cited;
+- [ ] the formal model and invariants are documented;
+- [ ] the benchmark has 100+ cases and held-out splits;
+- [ ] ablations show which term contributes what;
+- [ ] confidence intervals and effect sizes are reported;
+- [ ] one real validation exists;
+- [ ] the artifact reproduces the main table;
+- [ ] limitations are written down;
+- [ ] an external reader or reviewer has seen the draft.
+
+Until then, use this wording:
+
+> LAIX is an early systems contribution that combines commitments, execution risk and attention in
+> one decision contract. The integration is implemented and tested; external validation is pending.
+
+## 4. Starting on another computer
+
+```powershell
+git clone <repository-url>
+cd laix
+
+cd packages/python/laix
+python -m pytest -q
+ruff check .
+
+cd ../typescript/laix
+npm ci
+npm run typecheck
+npm test
+npm run bench
+npm run conformance
+```
+
+Then open:
+
+1. `README.md` (this page);
+2. `prior-art.md` (fill in the matrix);
+3. `formal-model.md` (write the model);
+4. `benchmarks/live/README.md` (create the case schema first).
+
+First task: write the claim and the prior-art matrix. Do not start with more code.
+
+## 5. Open decisions
+
+- Which domain for the real validation?
+- Deployment, incident replay or user study?
+- Which venue and paper length?
+- Public benchmark or private evaluation set?
+- Which claims are safe if the benchmark gives mixed results?
+- Who is the independent reviewer or replication partner?
+
+## 6. One-line summary
+
+The work is not "invent a new planner". The work is "define, implement, compare and validate one
+decision contract that makes commitments, execution risk, attention, timing, calibration and audit
+parts of the same live decision".

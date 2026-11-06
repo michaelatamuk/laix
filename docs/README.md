@@ -68,7 +68,7 @@ Read in order.
 | [Testing](05-project/testing.md) | pytest, ruff, tsc, bench, conformance and CI |
 | [API map](05-project/api-map.md) | public classes and functions by role |
 | [Versioning](05-project/versioning.md) | package, schema and vector versions |
-| [Novelty and evidence](05-project/novelty.md) | claim, prior-art gap, experiments, validation and paper plan |
+| [Novelty and evidence](05-project/novelty/README.md) | claim, prior-art gap, experiments, validation and paper plan |
 | [Roadmap](05-project/roadmap.md) | what is done and what is next |
 
 ## Examples
@@ -89,7 +89,7 @@ Runnable examples are organized by language and lifecycle in
 | understand the planner contract | [Planners](02-core/06-engines.md) |
 | see the end-to-end loop | [Decision lifecycle](01-start/decision-lifecycle.md) |
 | see the public API | [API map](05-project/api-map.md) |
-| check model use or novelty | [FAQ](04-concepts/faq.md), then [Novelty and evidence](05-project/novelty.md) |
+| check model use or novelty | [FAQ](04-concepts/faq.md), then [Novelty and evidence](05-project/novelty/README.md) |
 | look up a term | [Glossary](04-concepts/glossary.md) |
 | work on the repository | [Testing](05-project/testing.md), then [Structure](05-project/structure.md) |
 

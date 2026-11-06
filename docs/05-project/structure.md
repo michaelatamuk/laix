@@ -15,7 +15,7 @@ laix/
 │   ├── 02-core/           contract, attention, policies, learning, evaluation, planners
 │   ├── 03-appkit/         architecture, integration, streaming, execution, stores, bench
 │   ├── 04-concepts/       architecture, boundaries, PPMA, decision models, privacy, FAQ, glossary
-│   └── 05-project/        structure, testing, API map, versioning, roadmap
+│   └── 05-project/        structure, testing, API map, versioning, roadmap, novelty/
 ├── examples/
 │   ├── python/            numbered lifecycle stages
 │   └── typescript/        the same numbered stages
