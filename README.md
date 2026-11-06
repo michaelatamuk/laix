@@ -180,6 +180,12 @@ previous one left. See [Decision continuity](docs/02-core/08-decision-continuity
 | Streaming and execution | event time, checkpoints, timeline, receipts, recovery and records |
 | App kit | stores, platform, delivery, live context and bench |
 
+**A decision model is not a decision runtime.** JEV, a classifier or an LLM judge returns a judgment.
+LAIX turns that judgment into a task decision: it scores the options against commitments, execution
+risk and attention, returns the move with a reason, and carries the state into the next decision. JEV
+can be the chooser inside a LAIX policy. See
+[LAIX and decision models](docs/04-concepts/decision-models.md).
+
 ## Why LAIX
 
 - **The core stays stateless.** Commitment, budget and execution state live in the request, so the
@@ -253,6 +259,7 @@ External validation — real incident replay or a participant study — is still
 | [Quickstart](docs/01-start/02-quickstart.md) | install and first decision |
 | [Decision lifecycle](docs/01-start/03-decision-lifecycle.md) | moment to outcome in one loop |
 | [Core building blocks](docs/02-core/00-architecture.md) | the live decision runtime |
+| [Decision models](docs/04-concepts/decision-models.md) | JEV, classifiers and judges vs the LAIX runtime |
 | [Commitments](docs/02-core/07-commitments.md) | promises, ledgers, due times and dependencies |
 | [App-kit building blocks](docs/03-appkit/00-architecture.md) | streaming, execution, stores and delivery |
 | [Deployment](docs/03-appkit/10-deployment.md) | production topology, reliability, rollout and retention |

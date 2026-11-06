@@ -22,6 +22,10 @@ engines), PagerDuty/Opsgenie (alert/interruption), FIPA ACL/BDI (commitment prot
 Camunda (execution/saga), scikit-learn (calibration). Full paragraphs and citations in
 [comparators.md](comparators.md).
 
+Decision models such as JEV are a different category: they return a judgment, not a task decision.
+They are compared in [LAIX and decision models](../../04-concepts/decision-models.md), not in this
+matrix.
+
 | Capability | Agent frameworks | Workflow engines | Alert/interruption | Commitment protocols | Execution/saga | Calibration tools | LAIX |
 |---|---|---|---|---|---|---|---|
 | One decision contract (verb + reason + score + audit in one object) | no | no | no | partial¹ | no | no | **yes** |
