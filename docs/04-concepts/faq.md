@@ -7,14 +7,14 @@ confidence and trail.
 
 **Does LAIX use a model?**
 
-The current layer is policy/rules based and training-free. Planners can use a world model the host
+The current runtime is policy/rules based and training-free. Planners can use a world model the host
 supplies: states, transitions and rewards. A pretrained model can sit behind `EnginePolicy`, and the
 decision contract stays the same.
 
 **Is LAIX an agent framework?**
 
-LAIX is a layer inside one task. The host keeps orchestration, memory, execution, storage and
-delivery.
+LAIX is a decision runtime inside one task. It is not an agent framework. The host keeps
+orchestration, memory, execution, storage and delivery.
 
 **Where does execution happen?**
 
@@ -28,12 +28,12 @@ one plan. The detailed evidence plan is in [Research and evidence](../06-researc
 
 **When should I use it?**
 
-When several tasks or products need consistent, timely, safe and auditable decisions, and you want
-one contract instead of separate decision logic in each.
+When several agents, tasks or products need consistent, timely, safe and auditable decisions, and you
+want one contract instead of separate decision logic in each.
 
 **Does LAIX train a model?**
 
-The layer is training-free. Outcome learning, calibration and causal inference use the outcomes the
+The runtime is training-free. Outcome learning, calibration and causal inference use the outcomes the
 host measures.
 
 **What does a decision carry?**

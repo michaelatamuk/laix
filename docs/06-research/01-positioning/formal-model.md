@@ -202,7 +202,7 @@ confidence(best, second) =
 If no feasible option exists, the planner returns `verb = "wait"` with
 `reason_code = "no_feasible_option"`.
 
-### 2.6 Ablation results (live bench, 7 cases)
+### 2.6 Ablation results (seven-case demo)
 
 Reproducible by running `examples/python/03-plan/ablation_study.py`.
 

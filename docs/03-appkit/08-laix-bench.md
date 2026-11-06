@@ -107,9 +107,10 @@ reward and optimality gap (the distance from the best possible reward) per plann
 `python -m laix.appkit.bench --engines` compares `MDPEngine` with a do-nothing baseline on a chain
 and prints reward, steps and optimality gap. `--json` returns the same rows as JSON.
 
-## Live decision bench
+## Seven-case live demo
 
-`run_live_bench()` compares training-free planners on seven compact cases: risk limit, commitment,
+`run_live_bench()` compares training-free planners on seven compact cases. This is the small demo,
+not the 120-case live decision corpus: risk limit, commitment,
 irreversible action, unknown outcome, approval, attention and plain utility.
 
 ```powershell

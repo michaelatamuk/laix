@@ -77,10 +77,11 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 | TypeScript tests | 172 passed |
 | Attention conformance | 24/24 |
 | LAIX-Bench | 25/25 |
-| Live decision bench | `LiveDecisionEngine` 7/7 |
+| 7-case live demo | `LiveDecisionEngine` 7/7 |
 | Live corpus | 120 cases: 72 dev / 30 test / 18 adversarial |
-| Live bench v2 | test split: `live` 30/30; conflict 6/6 |
+| Live decision benchmark | test split: `live` 30/30; conflict 6/6 |
 | Glue baseline | 28/30; `live` +6.7 pp, p = 0.48 |
+| External validation | pending |
 | Ablations | full 100%, no commitment 70%, no execution 83.3%, no attention 96.7% |
 | Analysis | McNemar, paired bootstrap and effect sizes |
 | TS live parity | 210/210 action IDs match Python on the test split |

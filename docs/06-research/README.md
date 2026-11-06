@@ -41,10 +41,10 @@ the order. `checklist.md` tracks work across all stages.
 
 - Repository: `laix`
 - Status at time of writing: Python and TypeScript tests, parity, conformance, bench and examples pass.
-- Existing proof points: `LiveDecisionEngine`, the live bench, Python/TypeScript parity,
+- Existing proof points: `LiveDecisionEngine`, the live decision benchmark, Python/TypeScript parity,
   conformance vectors, deterministic replay and the audit trail.
 - Added: `01-positioning/comparators.md` (documented capability comparison, 7 systems), `05-governance/eu-liability.md`
-  (PLD 2024/2853 mapping), `ablation_study.py` (all 7 planners on 7 cases, `live` wins
+  (PLD 2024/2853 mapping), `ablation_study.py` (all 7 planners on 7 demo cases, `live` wins
   every case), `conflict_scenario.py` (triple-concern demo), `shadow_rollout.py` (rollout
   pattern).
 - Added: `01-positioning/formal-model.md` with exact score formulas and weights, `01-positioning/prior-art.md` matrix
@@ -71,7 +71,7 @@ Do not claim a new algorithm. Claim a **systems and integration contribution**.
 
 ### The claim (after the prior-art matrix)
 
-> LAIX is a training-free decision layer that places commitments, execution risk and human
+> LAIX is a training-free decision runtime that places commitments, execution risk and human
 > attention budget into one decision contract — the same object that carries the verb, the score,
 > the reason code and the audit trail — while the host retains execution and delivery.
 > No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI, scikit-learn)
@@ -99,7 +99,7 @@ What is **not** found in any single compared system:
 - calibration piped back into the next decision without retraining.
 
 The contribution is the contract and the composition. The individual ingredients are known. The
-claim is that no existing system combines them into one live decision layer with the same contract
+claim is that no existing system combines them into one live decision runtime with the same contract
 and the same evidence.
 
 `LiveDecisionEngine` is the proof object: one plan can keep a promise, avoid an irreversible action

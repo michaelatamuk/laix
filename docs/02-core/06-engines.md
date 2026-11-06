@@ -318,11 +318,11 @@ print(plan.attributes["execution_score"])
 print(plan.attributes["attention_score"])
 ```
 
-The plan carries the full breakdown, so the reason is auditable. On the live benchmark the
+The plan carries the full breakdown, so the reason is auditable. On the seven-case live demo the
 integrated planner matches every expected action, while the single-concern planners win their own
 cases.
 
-This is the integration the layer is built around: one decision can keep a promise, avoid an
+This is the integration the runtime is built around: one decision can keep a promise, avoid an
 irreversible action and respect a human-attention budget at the same time.
 
 Runnable examples: [`examples/python/03-plan/live_engine.py`](../../examples/python/03-plan/live_engine.py)

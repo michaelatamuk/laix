@@ -2,9 +2,9 @@
 
 **LAIX — Live AI Experience — is the decision runtime for AI agents and automations that act in the real world.**
 
-A live experience is always in the loop: it notices what is changing, decides what matters and acts
-before the moment passes. LAIX gives that loop a single decision contract. The host builds the
-experience; LAIX owns the decision.
+An agent or automation that acts in the real world is always in the loop: it notices what is
+changing, decides what matters and acts before the moment passes. LAIX gives that loop a single
+decision contract. The host builds the experience; LAIX owns the decision.
 
 > **What matters now, and what should the experience do about it?**
 
@@ -30,15 +30,15 @@ A live experience needs timing, restraint, safety, coherence and a record:
 - **coherent** — one decision shape across attention, action and follow-up;
 - **auditable** — record why it intervened and what happened.
 
-LAIX supplies that layer. The host keeps the experience, memory, UI, execution and delivery.
+LAIX supplies that runtime. The host keeps the experience, memory, UI, execution and delivery.
 
 ## What LAIX adds
 
-LAIX turns those properties into one layer:
+LAIX turns those properties into one runtime:
 
 - **One contract** — attention, action, follow-up, execution and outcomes return the same decision
   shape with a reason, confidence and trail.
-- **Training-free** — the current layer is policy/rules based; planners use a model the host supplies.
+- **Training-free** — the current runtime is policy/rules based; planners use a model the host supplies.
 - **Live context** — promises, execution risk and human attention are part of the decision;
   calibration and decision time complete the loop.
 - **Host control** — LAIX decides; the host owns data, execution, storage and delivery.
@@ -93,7 +93,7 @@ When the task has promises, execution risk or a limited human-attention budget, 
 the decision too: what it promises, what could go wrong after the button is pressed, and how much
 attention it spends. Later outcomes can calibrate the next decision.
 
-LAIX is training-free: the current layer is policy/rules based, and planners use a model the host
+LAIX is training-free: the current runtime is policy/rules based, and planners use a model the host
 supplies.
 
 ## A harder example: water and electricity

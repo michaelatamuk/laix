@@ -3,7 +3,7 @@
 LAIX is the decision runtime for AI agents and automations that act in the real world. The host owns the data, the transport and the
 storage.
 
-## What the layer needs
+## What the runtime needs
 
 - generic subjects, verbs and reasons;
 - comparable numbers for benefit, cost, risk and urgency;

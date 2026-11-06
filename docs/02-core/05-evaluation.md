@@ -35,5 +35,5 @@ Conformance compares the attention decisions with the shared vector file.
 - A causal study.
 - Live sensing and sub-second cases.
 
-These checks show whether a change altered behaviour. User studies show how the layer performs in
+These checks show whether a change altered behaviour. User studies show how the runtime performs in
 the real world.

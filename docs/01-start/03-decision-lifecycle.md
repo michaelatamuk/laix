@@ -9,7 +9,7 @@ moment → attention → decision → execution → outcome → learning → nex
 | Stage | What happens | LAIX piece |
 |---|---|---|
 | **Moment** | Signals, context, situation and options arrive | `DecisionRequest` |
-| **Attention** | The layer decides what matters now | `decide_attention` |
+| **Attention** | The runtime decides what matters now | `decide_attention` |
 | **Decision** | One move is chosen with reason, confidence and trail | policies, planners, `Decision` |
 | **Execution** | The host acts; approval, receipts and recovery stay explicit | `ExecutionBridge`, `Saga` |
 | **Outcome** | The host measures what happened | `Outcome`, stores |

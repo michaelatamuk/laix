@@ -7,7 +7,7 @@ Numbers below come from the frozen synthetic test split and `results/live-decisi
 
 Live AI systems must decide whether to wait, observe, guide, ask, act, verify or escalate before
 the moment passes. Existing tools cover orchestration, durable workflows, alerting or planning
-separately. We present LAIX, a training-free decision layer that places commitments, execution risk
+separately. We present LAIX, a training-free decision runtime that places commitments, execution risk
 and human attention budget into one decision contract with the verb, score, reason code and audit
 trail. On a 120-case synthetic corpus, the integrated planner is 30/30 on the frozen test split and
 wins every conflict case. Against a hand-built glue baseline it is +6.7 percentage points
@@ -16,7 +16,7 @@ yet significant. We report the result honestly and define the validation needed 
 
 ## 1. Introduction
 
-A live experience is always in the loop. The host knows the domain; the decision layer must answer
+A live experience is always in the loop. The host knows the domain; the decision runtime must answer
 one question: what matters now, and what should the experience do about it?
 
 The contribution is not a new solver. It is a decision contract and a composition:

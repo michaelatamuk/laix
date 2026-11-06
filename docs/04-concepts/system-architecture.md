@@ -100,7 +100,7 @@ decision = decide(request, policy=SafetyConstrainedPolicy())[0]
 In the app kit, a `Layer` holds **one active policy** at a time. Every `decide()` call uses that
 policy until you change it.
 
-### One policy for the life of the layer
+### One policy for the life of the runtime
 
 ```python
 from laix import DecisionRequest, Layer, SafetyConstrainedPolicy
@@ -203,7 +203,7 @@ The integration is not asserted — it is measured. `LiveDecisionEngine` runs ev
 score. Single-concern planners win their own cases; `live` wins every case because it integrates
 all three.
 
-**Live bench (7 cases, all planners):**
+**Seven-case live demo (all planners):**
 
 | Planner | Correct / 7 | Note |
 |---|---:|---|

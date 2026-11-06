@@ -193,7 +193,7 @@ External validation — real incident replay or a participant study — is still
 | [Documentation index](docs/README.md) | start, core, app kit, concepts, project and research |
 | [Quickstart](docs/01-start/02-quickstart.md) | install and first decision |
 | [Decision lifecycle](docs/01-start/03-decision-lifecycle.md) | moment to outcome in one loop |
-| [Core building blocks](docs/02-core/00-architecture.md) | the decision layer |
+| [Core building blocks](docs/02-core/00-architecture.md) | the decision runtime |
 | [App-kit building blocks](docs/03-appkit/00-architecture.md) | streaming, execution, stores and delivery |
 | [Research and evidence](docs/06-research/README.md) | claim, prior art, experiments and paper plan |
 | [Privacy](docs/04-concepts/privacy.md) | what may be shared, stored or exported |

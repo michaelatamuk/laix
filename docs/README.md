@@ -1,9 +1,9 @@
 # LAIX documentation
 
-LAIX — **Live AI Experience** — is the decision runtime for AI agents and automations that act in the real world. A live experience is
-always in the loop: it notices what is changing, decides what matters and acts before the moment
-passes. LAIX gives that loop a single decision contract. The host owns the experience; LAIX owns the
-decision.
+LAIX — **Live AI Experience** — is the decision runtime for AI agents and automations that act in the
+real world. An agent or automation is always in the loop: it notices what is changing, decides what
+matters and acts before the moment passes. LAIX gives that loop a single decision contract. The host
+owns the experience; LAIX owns the decision.
 
 > **What matters now, and what should the experience do about it?**
 

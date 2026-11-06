@@ -1,6 +1,6 @@
 # Real-world validation
 
-Synthetic cases are not enough. This page defines the study that shows the layer works outside the
+Synthetic cases are not enough. This page defines the study that shows the runtime works outside the
 repository tests.
 
 ## Validation options

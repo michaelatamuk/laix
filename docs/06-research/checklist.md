@@ -44,7 +44,7 @@ confidence intervals.
 ### Done
 
 - [x] Implement baselines and ablations — `examples/python/03-plan/ablation_study.py`
-  runs all 7 planners on all 7 cases; live bench 7/7, single-concern planners partial
+  runs all 7 planners on all 7 demo cases; LiveDecisionEngine 7/7, single-concern planners partial
 - [x] Write the conflict scenario — `examples/python/03-plan/conflict_scenario.py`
   shows all three concerns firing; UtilityEngine and AttentionAware fail; full score breakdown
 - [x] Create the case schema — `benchmarks/live/v1/schema.json` (JSON Schema Draft

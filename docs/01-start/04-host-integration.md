@@ -1,7 +1,7 @@
 # Host integration
 
-This page is for a product team building a live AI experience with LAIX. It answers the six
-questions a host team usually asks before trying it.
+This page is for a team building an AI agent or automation with LAIX. It answers the six questions
+a host team usually asks before trying it.
 
 ## 1. Where does LAIX plug in?
 
