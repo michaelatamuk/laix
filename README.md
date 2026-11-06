@@ -210,9 +210,9 @@ and respects an attention budget. The contribution is the composition; see
 
 ## Results
 
-`LiveDecisionEngine` scores **30/30** on the frozen 30-case test split and **6/6** on the conflict
-cases. The hand-built glue baseline scores 28/30; the **+6.7 pp** difference is **not yet
-significant** (p = 0.48). Every single-concern planner has significantly lower accuracy
+`LiveDecisionEngine` scores **30/30** on the frozen 30-case test split of the 120-case corpus and
+**6/6** on the conflict cases. The hand-built glue baseline scores 28/30; the **+6.7 pp** difference
+is **not yet significant** (p = 0.48). Every single-concern planner has significantly lower accuracy
 (McNemar p ≤ 0.008).
 
 ![Accuracy and conflict accuracy on the frozen test split](docs/assets/benchmark.png)
@@ -239,44 +239,28 @@ Removing commitments costs **30 accuracy points** (100% → 70%); removing execu
 
 ### Verification
 
-| Check | Result |
-|---|---:|
-| Python tests | 396 |
-| TypeScript tests | 172 |
-| Attention conformance | 24/24 |
-| LAIX-Bench | 25/25 |
-| Python/TypeScript parity | 210/210 |
-| Invariants | 17/17 |
-| Live corpus | 120 cases: 72 dev / 30 test / 18 adversarial |
-
-The LangGraph adapter runs the same engine on 120 decisions at 6–7 ms mean with 0 interrupts.
-
-Reproduce with `bash scripts/novelty/reproduce.sh`. Raw data:
+All checks pass: 396 Python tests, 172 TypeScript tests, 24/24 attention conformance, 210/210
+Python/TypeScript action parity and 17/17 invariants. The full check matrix is in
+[Testing](docs/05-project/testing.md). Reproduce the benchmark with
+`bash scripts/novelty/reproduce.sh`; raw data is in
 [results/live-decision-benchmark/](results/live-decision-benchmark/README.md).
 
 External validation — real incident replay or a participant study — is still pending.
 
 ## Documentation
 
-| Page | Covers |
+| Start with | Covers |
 |---|---|
-| [Documentation index](docs/README.md) | start, core, app kit, concepts, project and research |
+| [Documentation index](docs/README.md) | every guide and reference page |
 | [Quickstart](docs/01-start/02-quickstart.md) | install and first decision |
 | [Decision lifecycle](docs/01-start/03-decision-lifecycle.md) | moment to outcome in one loop |
-| [Core building blocks](docs/02-core/00-architecture.md) | the live decision runtime |
 | [Decision models](docs/04-concepts/decision-models.md) | JEV, classifiers and judges vs the LAIX runtime |
-| [Commitments](docs/02-core/07-commitments.md) | promises, ledgers, due times and dependencies |
-| [App-kit building blocks](docs/03-appkit/00-architecture.md) | streaming, execution, stores and delivery |
 | [Deployment](docs/03-appkit/10-deployment.md) | production topology, reliability, rollout and retention |
-| [Research and evidence](docs/06-research/README.md) | claim, prior art, experiments and paper plan |
-| [Privacy](docs/04-concepts/privacy.md) | what may be shared, stored or exported |
-| [Security](docs/04-concepts/security.md) | threat model, trust boundaries and controls |
-| [Testing](docs/05-project/testing.md) | pytest, ruff, tsc, bench, conformance and CI |
-| [Troubleshooting](docs/05-project/troubleshooting.md) | symptoms, reason codes and execution failures |
-| [Migration](docs/05-project/migration.md) | upgrades, compatibility and deprecation |
-| [API map](docs/05-project/api-map.md) | the public surface by role |
-| [Repository structure](docs/05-project/repository-structure.md) | where each package, module and test lives |
+| [Research and evidence](docs/06-research/README.md) | claims, benchmarks and paper plan |
 | [Examples](examples/README.md) | Python and TypeScript, grouped by lifecycle |
+
+The index also covers core, app kit, commitments, privacy, security, testing, troubleshooting,
+migration, the API map and repository structure.
 
 ## Contributing
 
