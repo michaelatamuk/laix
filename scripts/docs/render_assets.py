@@ -175,55 +175,72 @@ def render_logo() -> None:
 def render_banner() -> None:
     width, height = 1280 * SCALE, 640 * SCALE
     canvas = gradient((width, height), BG, BG_2).convert("RGBA")
-    glow(canvas, (2250, 640), 620, TEAL, 26, 220)
-    glow(canvas, (1900, 320), 420, BLUE, 20, 240)
+    glow(canvas, (2250, 620), 620, TEAL, 24, 220)
+    glow(canvas, (1900, 300), 420, BLUE, 18, 240)
 
-    cover_size = (height, height)
+    cover_size = (500 * SCALE, 500 * SCALE)
+    cover_x = width - cover_size[0] - 60 * SCALE
+    cover_y = 70 * SCALE
     cover = cover_layer(cover_size)
-    canvas.alpha_composite(cover, (width - height, 0))
+    mask = Image.new("L", cover_size, 0)
+    ImageDraw.Draw(mask).rounded_rectangle(
+        [0, 0, cover_size[0], cover_size[1]], radius=28 * SCALE, fill=255
+    )
+    cover.putalpha(mask)
+    canvas.alpha_composite(cover, (cover_x, cover_y))
 
     draw = ImageDraw.Draw(canvas)
-    left = 120
-    draw.line([(left, 96), (left + 72, 96)], fill=TEAL, width=6)
+    draw.rounded_rectangle(
+        [cover_x, cover_y, cover_x + cover_size[0], cover_y + cover_size[1]],
+        radius=28 * SCALE,
+        outline="#1E293B",
+        width=2 * SCALE,
+    )
+    left = 90 * SCALE
+    draw.line(
+        [(left, 90 * SCALE), (left + 64 * SCALE, 90 * SCALE)],
+        fill=TEAL,
+        width=6 * SCALE,
+    )
     spaced_text(
         draw,
-        (left, 138),
+        (left, 118 * SCALE),
         "DECISION RUNTIME",
-        font("seguisb.ttf", 28 * SCALE),
+        font("seguisb.ttf", 22 * SCALE),
         TEAL,
         6 * SCALE,
     )
 
-    headline_font = font("segoeuib.ttf", 78 * SCALE)
+    headline_font = font("segoeuib.ttf", 60 * SCALE)
     headline_lines = ["The decision runtime", "for AI agents and", "automations"]
-    y = 214 * SCALE
+    y = 190 * SCALE
     for line in headline_lines:
         draw.text((left, y), line, font=headline_font, fill=TEXT)
-        y += 90 * SCALE
+        y += 72 * SCALE
 
-    body_font = font("segoeui.ttf", 28 * SCALE)
+    body_font = font("segoeui.ttf", 26 * SCALE)
     body = (
         "Act, ask, wait, verify or escalate - with one contract "
         "and a reason for every move."
     )
-    body_y = 502 * SCALE
-    for line in wrap(draw, body, body_font, 560 * SCALE):
+    body_y = 450 * SCALE
+    for line in wrap(draw, body, body_font, 600 * SCALE):
         draw.text((left, body_y), line, font=body_font, fill=MUTED)
-        body_y += 40 * SCALE
+        body_y += 36 * SCALE
 
-    footer_font = font("seguisb.ttf", 22 * SCALE)
-    footer_y = 596 * SCALE
+    footer_font = font("seguisb.ttf", 21 * SCALE)
+    footer_y = 580 * SCALE
     items = ["Training-free", "Python + TypeScript", "Auditable"]
     x = left
     for index, item in enumerate(items):
         draw.text((x, footer_y), item, font=footer_font, fill=TEXT)
-        x += draw.textlength(item, font=footer_font) + 18 * SCALE
+        x += draw.textlength(item, font=footer_font) + 16 * SCALE
         if index < len(items) - 1:
             draw.ellipse(
                 [x, footer_y + 9 * SCALE, x + 7 * SCALE, footer_y + 16 * SCALE],
                 fill=TEAL,
             )
-            x += 25 * SCALE
+            x += 24 * SCALE
 
     canvas.convert("RGB").resize((1280, 640), Image.LANCZOS).save(
         ASSETS / "banner.png", optimize=True
