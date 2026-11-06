@@ -43,6 +43,10 @@ jobs:
           npm run bench
           npm run conformance
 
+      - name: Live bench parity
+        working-directory: packages/typescript/laix
+        run: npm run live-bench
+
       - name: Build Python package
         run: |
           python -m pip install build

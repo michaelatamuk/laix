@@ -21,6 +21,7 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 - `scripts/glue_baseline.py`
 - `scripts/reproduce.sh`
 - `scripts/live_bench_common.py`
+- `packages/typescript/laix/scripts/live-bench.mjs`
 
 ## Results
 
@@ -29,6 +30,7 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 - `results/live_bench_v2/analysis.json`
 - `results/live_bench_v2/ablations.json`
 - `results/live_bench_v2/raw.jsonl`
+- `results/live_bench_v2/typescript-summary.json`
 
 ## Evidence
 
@@ -45,13 +47,18 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 
 ## Validation harness
 
+- `docs/05-project/novelty/collection-kit.md`
 - `data/validation/README.md`
+- `data/validation/incidents-template.jsonl`
 - `data/validation/vignettes-v1.json`
+- `scripts/check_validation_data.py`
 - `scripts/ingest_incidents.py`
 - `scripts/analyze_validation.py`
 - `scripts/generate_vignettes.py`
 - `scripts/analyze_user_study.py`
 - `docs/05-project/novelty/user-study.md`
+- `docs/05-project/novelty/user-study-consent.md`
+- `docs/05-project/novelty/user-study-recruitment.md`
 
 ## Reproduction
 

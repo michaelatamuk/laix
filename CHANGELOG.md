@@ -11,6 +11,8 @@
   EU Product Liability mapping, paper draft and validation harness.
 - **Validation harness.** Incident ingestion with PII stripping and a comparison script for
   recorded human decisions.
+- **TypeScript live-bench parity.** The TypeScript planners run the same 30-case test split and
+  match Python on all 210 action IDs.
 - **Built-in decision engines.** `UtilityEngine` with hard limits and risk attitude, `MDPEngine`
   with value iteration, and `POMDPEngine` with belief update and finite-horizon planning.
 - **Engine proof.** `Simulator`, seeded scenarios, `compare_engines` with reward and optimality gap,

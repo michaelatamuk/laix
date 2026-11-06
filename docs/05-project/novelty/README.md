@@ -22,6 +22,7 @@ review.
 | [Evaluation](evaluation.md) | hypotheses, metrics, benchmark protocol, threats |
 | [Claim–evidence map](evidence.md) | current numbers, sources and missing evidence |
 | [Validation](validation.md) | deployment, incident replay or user study |
+| [Collection kit](collection-kit.md) | incident replay plan, mapping and fallback |
 | [User study](user-study.md) | 20 vignettes and the blinded protocol |
 | [Paper and artifact](paper.md) | reproducibility, paper outline, venues |
 | [Paper draft](paper-draft.md) | current draft with validation pending |

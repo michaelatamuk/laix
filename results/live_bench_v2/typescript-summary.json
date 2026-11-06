@@ -1,0 +1,54 @@
+{
+  "schema": "laix/typescript-live-bench/v1",
+  "split": "test",
+  "cases": 30,
+  "planners": {
+    "first": {
+      "cases": 30,
+      "checked": 30,
+      "correct": 21,
+      "accuracy": 0.7
+    },
+    "benefit": {
+      "cases": 30,
+      "checked": 30,
+      "correct": 7,
+      "accuracy": 0.23333333333333334
+    },
+    "utility": {
+      "cases": 30,
+      "checked": 30,
+      "correct": 9,
+      "accuracy": 0.3
+    },
+    "commitment": {
+      "cases": 30,
+      "checked": 30,
+      "correct": 21,
+      "accuracy": 0.7
+    },
+    "execution": {
+      "cases": 30,
+      "checked": 30,
+      "correct": 15,
+      "accuracy": 0.5
+    },
+    "attention": {
+      "cases": 30,
+      "checked": 30,
+      "correct": 16,
+      "accuracy": 0.5333333333333333
+    },
+    "live": {
+      "cases": 30,
+      "checked": 30,
+      "correct": 30,
+      "accuracy": 1
+    }
+  },
+  "parity": {
+    "compared": 210,
+    "mismatches": 0,
+    "details": []
+  }
+}

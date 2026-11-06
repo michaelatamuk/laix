@@ -104,6 +104,7 @@ The calibration and causal paths are not yet evaluated on real outcomes.
 - Python: `packages/python/laix`
 - TypeScript: `packages/typescript/laix`
 - Shared conformance cases: 24/24 attention decisions
+- Live-bench action parity: 210/210 Python/TypeScript decisions agree on the test split
 - Python invariant tests: 17/17
 - TypeScript tests: 172
 - CI: Python 3.11/3.13, Node 22/24, docs links and the live-bench reproduction

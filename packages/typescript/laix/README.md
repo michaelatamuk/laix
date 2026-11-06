@@ -54,8 +54,10 @@ The attention policy passes the same 24 decisions as Python. The bench runs the 
 npm.cmd test
 npm.cmd run bench
 npm.cmd run conformance
+npm.cmd run live-bench
 ```
 
 `npm.cmd run conformance` compares every attention decision against
 `packages/contracts/attention.v1.json` and exits non-zero on a mismatch.
 `npm.cmd run bench` runs all decision classes.
+`npm.cmd run live-bench` runs the shared 30-case test split and compares 210 action IDs with Python.

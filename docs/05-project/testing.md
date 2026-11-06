@@ -50,6 +50,7 @@ npm run typecheck:declarations
 npm test
 npm run bench
 npm run conformance
+npm run live-bench
 ```
 
 TypeScript examples:
@@ -75,6 +76,7 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 | Glue baseline | 28/30; `live` +6.7 pp, p = 0.48 |
 | Ablations | full 100%, no commitment 70%, no execution 83.3%, no attention 96.7% |
 | Analysis | McNemar, paired bootstrap and effect sizes |
+| TS live parity | 210/210 action IDs match Python on the test split |
 
 ## Docs
 
@@ -95,6 +97,7 @@ The check resolves relative links across `docs/`, `examples/` and every README.
 | `npm test` | TS contracts, conformance, parity, streaming, timeline, execution, planners |
 | `npm run bench` | 10 suites and 25 deterministic cases |
 | `npm run conformance` | 24 shared attention decisions |
+| `npm run live-bench` | TypeScript runs the 30-case test split and compares 210 action IDs with Python |
 | `scripts/run_live_bench_v2.py` | 120-case corpus, metrics, bootstrap intervals, conflict check |
 | `scripts/analyze_results.py` | McNemar, paired bootstrap, Cohen's h and category breakdown |
 | `scripts/run_ablations.py` | term removal, equal weights and no-feasibility-gates variants |

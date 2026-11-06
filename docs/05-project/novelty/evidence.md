@@ -21,7 +21,7 @@ Every number below is reproducible from `results/live_bench_v2/` and `bash scrip
 | The live path is fast enough | p95 latency | under 2 ms on the test split | `summary.json` | measured |
 | The model is deterministic | replay equality | 100% across the invariant suite | `tests/core/test_invariants.py` | tested |
 | The contract is stable | invariant tests | 17/17 | `tests/core/test_invariants.py` | tested |
-| Python and TypeScript agree | conformance + verb parity | 24/24 conformance; 172 TS tests | CI | tested |
+| Python and TypeScript agree | conformance + live-bench action parity | 24/24 conformance; 210/210 live actions; 172 TS tests | CI | tested |
 | The layer is auditable | trace and receipt tests | I6–I9 pass | `tests/core/test_invariants.py` | tested |
 | The audit answers EU PLD questions | field mapping | `verb`, `reason_code`, `policy_version`, `decision_id`, `trace_id`, `created_at` | `eu-liability.md` | documented |
 

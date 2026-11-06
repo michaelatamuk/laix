@@ -89,6 +89,9 @@ confidence intervals.
 - [x] **Commit the baseline** — `results/live_bench_v2/baseline.json` and `summary.json` are
   the frozen test-split output (`split: test`, `seed: 42`, 30 cases).
 
+- [x] **TypeScript live-bench parity** — `packages/typescript/laix/scripts/live-bench.mjs`
+  runs the same test split and compares 210 action IDs with Python; all 210 agree.
+
 - [x] **Write the failure analysis** — `live` made zero mistakes on the 30 test cases and zero on
   the 18 adversarial cases. The zero-failure result is documented in `evaluation.md` §5 as a
   limitation; the corpus is too easy, and real-incident cases are required next.
@@ -108,11 +111,11 @@ confidence intervals.
 **Goal:** evidence that LAIX decisions match what a knowledgeable person would choose on data the
 team did not write.
 
-- [x] **Build the validation harness** — `scripts/ingest_incidents.py` anonymises a JSONL export,
-  `scripts/analyze_validation.py` compares LAIX, glue and utility against recorded human
-  decisions, `data/validation/vignettes-v1.json` has 20 user-study vignettes,
-  `scripts/analyze_user_study.py` analyses blinded ratings, and `data/validation/README.md` defines
-  the formats and privacy rules.
+- [x] **Build the validation harness** — `docs/05-project/novelty/collection-kit.md`,
+  `data/validation/incidents-template.jsonl`, `scripts/check_validation_data.py`,
+  `scripts/ingest_incidents.py`, `scripts/analyze_validation.py`,
+  `data/validation/vignettes-v1.json` (20 user-study vignettes),
+  `scripts/analyze_user_study.py`, and the consent/recruitment templates.
 
 - [ ] **Record the chosen option** — write one paragraph in
   `docs/05-project/novelty/validation.md` §1 stating: which option (A, B or C) was chosen,
