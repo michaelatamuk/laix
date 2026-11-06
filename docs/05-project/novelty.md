@@ -240,6 +240,170 @@ The **capability score** is the number of capabilities covered out of the matrix
 - The paper reports both capability and performance comparisons.
 - The limitations section names every comparison that could not be run.
 
+## 3.2 Finding comparators when you do not know the field
+
+You do not need to know the field before starting. Use a repeatable search and triage process.
+
+### Principle: compare on the task, not the label
+
+Do not search for "systems like LAIX". Search for systems that solve pieces of the same task:
+
+> Given a live request, choose one action under promises, execution risk, attention limits and audit.
+
+Every candidate should answer at least one of these questions:
+
+- Does it make a decision, or only execute one?
+- Does it represent promises or obligations?
+- Does it model execution risk, approval or recovery?
+- Does it manage human attention or interruption?
+- Does it preserve timing, revision or replay?
+- Does it calibrate confidence or learn from outcomes?
+- Does it produce an auditable decision trail?
+
+### The comparison ladder
+
+Start close, then widen:
+
+1. **Internal baselines** — no literature search needed: first option, highest benefit,
+   utility-only, single-concern planners, ablations.
+2. **Direct competitors** — systems that claim to make live or agent decisions.
+3. **Adjacent systems** — systems that own one part: orchestration, durable execution,
+   alerting, planning, calibration.
+4. **Academic lines** — one mechanism each: commitments, interruption cost, POMDP planning,
+   calibration, sagas.
+5. **Operational alternatives** — build it yourself with glue code, or use a general workflow
+   engine.
+
+### Search protocol
+
+Use the same protocol for every category and keep a search log.
+
+Sources:
+
+- Google Scholar, Semantic Scholar and arXiv;
+- ACM Digital Library, IEEE Xplore, AAAI, AAMAS, CHI, IUI and HHAI proceedings;
+- GitHub topics and search: `ai-agents`, `workflow-engine`, `decision-engine`,
+  `human-in-the-loop`, `durable-execution`, `policy-engine`;
+- official documentation and changelogs of candidate systems;
+- citation chaining: take two or three survey papers and follow both backward and forward;
+- benchmark and dataset papers in the same area.
+
+Search strings to try:
+
+```text
+"live decision" AI system
+"decision layer" agent
+"decision engine" audit approval
+"human-in-the-loop" agent interrupt approval
+"commitment-based" multi-agent protocol
+"social commitments" agent
+"interruption budget" notification
+"notification fatigue" scheduling
+"durable execution" approval workflow
+"compensating transaction" saga workflow
+"policy engine" decision audit
+"calibration" decision confidence
+"decision calibration" accuracy
+"real-time decision support" uncertainty
+```
+
+For each candidate, record:
+
+- name and version;
+- category;
+- task overlap;
+- concern overlap;
+- whether it can be run locally;
+- evidence quality;
+- maintenance status;
+- source link;
+- last checked date.
+
+### Inclusion and exclusion
+
+Include a candidate when at least two are true:
+
+- it makes or gates a decision;
+- it represents commitments, approvals or execution state;
+- it manages attention or interruption;
+- it has audit, replay or recovery;
+- it reports decision-quality or calibration numbers.
+
+Exclude a candidate when:
+
+- it is only a model or a model-serving layer;
+- it is only a UI toolkit;
+- it is only a storage or queue system;
+- it cannot be described without a specific vendor domain.
+
+### Triage score
+
+Score each candidate from 0 to 3:
+
+| Dimension | 0 | 3 |
+|---|---|---|
+| Task overlap | different task | same live decision task |
+| Concern overlap | one unrelated concern | commitments, risk, attention and audit |
+| Runnability | closed or undocumented | runnable adapter with docs |
+| Evidence quality | marketing claim | benchmark or peer-reviewed evidence |
+| Maintenance | abandoned | active releases |
+
+Keep the top two per category. Stop when adding a candidate no longer changes the matrix.
+
+### Starter shortlist
+
+Verify every entry and record the version before using it.
+
+| Candidate | Category | Why it is relevant | Compare on |
+|---|---|---|---|
+| LangGraph | agent orchestration | stateful graph, interrupts, human approval, checkpoints | capability, latency, glue code |
+| AutoGen | multi-agent orchestration | conversation and human input | capability, orchestration overhead |
+| CrewAI | agent orchestration | role-based process and human input | capability, glue code |
+| Semantic Kernel | orchestration and functions | planners, functions and filters | capability, integration effort |
+| Temporal | durable execution | retries, timers, signals, compensation | recovery, audit, operational cost |
+| Airflow | workflow orchestration | DAG scheduling and retries | operational cost, audit |
+| Prefect | workflow orchestration | flows, retries and observability | operational cost |
+| Netflix Conductor | workflow orchestration | durable workflows and task state | recovery, audit |
+| Camunda | BPMN workflow | approvals, compensation, audit | approval and compensation semantics |
+| PagerDuty | alerting and on-call | escalation, routing, on-call policy | attention and escalation |
+| Opsgenie | alerting and on-call | routing and escalation | attention and escalation |
+| AI-Toolbox or pomdp-solve | planning | MDP/POMDP decision quality | decision quality on the same model |
+| scikit-learn calibration | calibration | reliability curves, ECE, Brier | calibration numbers |
+| Commitment-based multi-agent systems | academic | promises, violations, dependencies | formal commitment semantics |
+| Mixed-initiative and interruption research | academic | interruption cost and timing | attention model and user study |
+| Saga and compensation literature | academic | compensating transactions | recovery semantics |
+
+### If no direct comparator exists
+
+That is a possible result, but it must be earned:
+
+1. Run the search protocol and keep the log.
+2. Show the closest system in each category.
+3. Explain the missing combination.
+4. Compare against the strongest component or a hand-built glue baseline.
+5. Say "we found no system that ..." with the search date and inclusion criteria.
+
+Do not write "no one does this" without the log.
+
+### Deliverable
+
+Create `docs/05-project/comparators.md` with:
+
+- the search log;
+- the inclusion and exclusion decisions;
+- the triage scores;
+- one paragraph per final comparator;
+- the adapter plan or the reason it cannot be run;
+- the final comparison table.
+
+### Acceptance criteria
+
+- The search is reproducible from the log.
+- At least two categories have a runnable comparator.
+- The final set includes one direct or adjacent competitor, one planning or calibration
+  comparator, and one academic line.
+- The paper can explain why each comparator is fair.
+
 ## 4. Formal contribution
 
 ### Deliverable
