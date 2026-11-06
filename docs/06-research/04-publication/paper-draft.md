@@ -30,7 +30,7 @@ The contribution is not a new solver. It is a decision contract and a compositio
 
 ## 2. Related work
 
-Use `comparators.md` as the source. The closest categories are:
+Use `../01-positioning/comparators.md` as the source. The closest categories are:
 
 - agent orchestration: LangGraph, AutoGen, CrewAI and Semantic Kernel;
 - durable execution: Temporal, Airflow, Prefect and Conductor;
@@ -45,7 +45,7 @@ That is a capability gap, not yet a measured performance claim.
 
 ## 3. Decision contract and formal model
 
-Summarise `formal-model.md`:
+Summarise `../01-positioning/formal-model.md`:
 
 - `DecisionProblem`: subject, time, situation, options, signals, context and attributes.
 - `ActionOption`: benefit, cost, risk, interruption, latency, reversibility, approval and params.
@@ -60,7 +60,7 @@ The integrated score is:
 total(o) = utility(o) + commitment(o) + execution(o) + attention(o)
 ```
 
-with hard feasibility gates applied before scoring. Invariants I1–I10 are in `formal-model.md` and
+with hard feasibility gates applied before scoring. Invariants I1–I10 are in `../01-positioning/formal-model.md` and
 are covered by `tests/core/test_invariants.py`.
 
 ## 4. Integrated live planning
@@ -179,7 +179,7 @@ no failures cannot support a strong generalisation claim.
 
 ## 9. Real-world validation (pending)
 
-Choose one from `validation.md`:
+Choose one from `../03-validation/plan.md`:
 
 - deployment or pilot;
 - incident or support replay;

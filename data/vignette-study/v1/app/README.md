@@ -15,7 +15,7 @@ The browser opens at the printed local URL; the app itself is served under `/app
 
 ## Facilitator flow
 
-1. Give the participant the consent text in `docs/05-project/novelty/user-study-consent.md`.
+1. Give the participant the consent text in `docs/06-research/03-validation/consent.md`.
 2. Start the server and open the app.
 3. The participant reads each scenario, sees one blinded recommendation, chooses an action and
    rates timeliness, trust and workload.

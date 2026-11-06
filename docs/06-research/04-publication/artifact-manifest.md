@@ -38,22 +38,28 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 - `results/live-decision-benchmark/parity/typescript.json`
 - `results/live-decision-benchmark/comparison/external-systems.json`
 
-## Evidence
+## Research docs
 
-- `docs/05-project/novelty/README.md`
-- `docs/05-project/novelty/prior-art.md`
-- `docs/05-project/novelty/comparators.md`
-- `docs/05-project/novelty/formal-model.md`
-- `docs/05-project/novelty/evaluation.md`
-- `docs/05-project/novelty/evidence.md`
-- `docs/05-project/novelty/eu-liability.md`
-- `docs/05-project/novelty/paper-draft.md`
-- `docs/05-project/novelty/validation.md`
-- `docs/05-project/novelty/checklist.md`
+- `docs/06-research/README.md`
+- `docs/06-research/01-positioning/prior-art.md`
+- `docs/06-research/01-positioning/comparators.md`
+- `docs/06-research/01-positioning/formal-model.md`
+- `docs/06-research/02-evaluation/benchmark.md`
+- `docs/06-research/02-evaluation/evidence-map.md`
+- `docs/06-research/03-validation/plan.md`
+- `docs/06-research/03-validation/incident-replay.md`
+- `docs/06-research/03-validation/vignette-study.md`
+- `docs/06-research/03-validation/consent.md`
+- `docs/06-research/03-validation/recruitment.md`
+- `docs/06-research/04-publication/publication-plan.md`
+- `docs/06-research/04-publication/paper-draft.md`
+- `docs/06-research/04-publication/references.md`
+- `docs/06-research/04-publication/review-log.md`
+- `docs/06-research/05-governance/eu-liability.md`
+- `docs/06-research/checklist.md`
 
 ## Validation harness
 
-- `docs/05-project/novelty/collection-kit.md`
 - `data/README.md`
 - `data/incident-replay/README.md`
 - `data/incident-replay/template.jsonl`
@@ -66,9 +72,6 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 - `scripts/novelty/vignette-study/generate_vignettes.py`
 - `scripts/novelty/vignette-study/analyze_vignette_study.py`
 - `scripts/novelty/vignette-study/serve_vignette_study.py`
-- `docs/05-project/novelty/user-study.md`
-- `docs/05-project/novelty/user-study-consent.md`
-- `docs/05-project/novelty/user-study-recruitment.md`
 
 ## Reproduction
 

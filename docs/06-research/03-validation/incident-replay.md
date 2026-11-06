@@ -102,7 +102,7 @@ Record:
 
 ### Day 6 — write the result
 
-Fill the study record in `validation.md`:
+Fill the study record in `plan.md`:
 
 - chosen option and why;
 - data source and exclusions;
@@ -113,7 +113,7 @@ Fill the study record in `validation.md`:
 
 ### Day 7 — update the paper
 
-Replace the “validation pending” section of `paper-draft.md` with the real numbers.
+Replace the “validation pending” section of `../04-publication/paper-draft.md` with the real numbers.
 
 ## Inclusion rules
 
@@ -149,10 +149,10 @@ If incident data is not available by day 2:
 - use `data/vignette-study/v1/vignettes.json` (20 vignettes);
 - recruit 20–30 colleagues;
 - each session is about 20–30 minutes;
-- follow `user-study.md` and record results as JSONL;
+- follow `vignette-study.md` and record results as JSONL;
 - run `scripts/novelty/vignette-study/analyze_vignette_study.py`.
 
-Consent and recruitment text are in `user-study-consent.md` and `user-study-recruitment.md`.
+Consent and recruitment text are in `consent.md` and `recruitment.md`.
 
 ## What to send me first
 
@@ -170,4 +170,4 @@ Do not send raw tickets. Send only the anonymised pilot.
 - Do not commit raw data.
 - Keep raw exports outside the repository.
 - Commit only the anonymised file when legally allowed.
-- If the data cannot be published, write the access statement in `validation.md`.
+- If the data cannot be published, write the access statement in `plan.md`.

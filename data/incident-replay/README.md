@@ -35,7 +35,7 @@ what a human operator did.
 Required fields: `id`, `at`, `subject`, `options`, `human_action`.
 
 `template.jsonl` is a filled example. The collection plan and field-mapping worksheet are in
-[the collection kit](../../docs/05-project/novelty/collection-kit.md).
+[the collection kit](../../docs/06-research/03-validation/incident-replay.md).
 
 ## Privacy rules
 
@@ -43,7 +43,7 @@ Required fields: `id`, `at`, `subject`, `options`, `human_action`.
 - Do not commit raw data. `raw/` and `output/` are gitignored by default.
 - Publish a reviewed anonymised file as a release artifact when it is legally safe.
 - If the data cannot be published, write a data-access statement in
-  [validation.md](../../docs/05-project/novelty/validation.md).
+  [validation.md](../../docs/06-research/03-validation/plan.md).
 - The ingest script strips common PII keys recursively before writing.
 
 ## Commands

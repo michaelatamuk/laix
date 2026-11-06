@@ -32,7 +32,13 @@ laix/
 │   ├── 02-core/           contract, attention, policies, learning, evaluation, planners
 │   ├── 03-appkit/         architecture, integration, streaming, execution, stores, bench
 │   ├── 04-concepts/       architecture, boundaries, PPMA, decision models, privacy, FAQ, glossary
-│   └── 05-project/        structure, testing, API map, versioning, roadmap, novelty/
+│   ├── 05-project/        structure, testing, API map, versioning, roadmap
+│   └── 06-research/
+│       ├── 01-positioning/  prior art, comparators, formal model
+│       ├── 02-evaluation/   evaluation and evidence map
+│       ├── 03-validation/   plan, incident replay and vignette study
+│       ├── 04-publication/  paper, artifact, references and review
+│       └── 05-governance/   EU liability
 ├── examples/
 │   ├── python/            numbered lifecycle stages
 │   └── typescript/        the same numbered stages

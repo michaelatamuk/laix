@@ -57,7 +57,7 @@ Acceptance criteria:
 
 ### Claim-evidence map
 
-Create a table in the paper and in `evidence.md`:
+Create a table in the paper and in `../02-evaluation/evidence-map.md`:
 
 | Claim | Evidence | Artifact |
 |---|---|---|

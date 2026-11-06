@@ -67,7 +67,7 @@ python scripts/novelty/vignette-study/analyze_vignette_study.py --input data/vig
 ## Sample-size justification
 
 The study is powered for a medium paired effect. Record the assumed effect size, the resulting
-power and any deviation from this plan in `validation.md`.
+power and any deviation from this plan in `plan.md`.
 
 ## Limitations to write up
 

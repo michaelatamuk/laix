@@ -68,8 +68,13 @@ Read in order.
 | [Testing](05-project/testing.md) | pytest, ruff, tsc, bench, conformance and CI |
 | [API map](05-project/api-map.md) | public classes and functions by role |
 | [Versioning](05-project/versioning.md) | package, schema and vector versions |
-| [Novelty and evidence](05-project/novelty/README.md) | claim, prior-art gap, experiments, validation and paper plan |
 | [Roadmap](05-project/roadmap.md) | what is done and what is next |
+
+## Research and evidence
+
+| Page | Covers |
+|---|---|
+| [Research and evidence](06-research/README.md) | claim, prior-art gap, experiments, validation and paper plan |
 
 ## Examples
 
@@ -89,7 +94,7 @@ Runnable examples are organized by language and lifecycle in
 | understand the planner contract | [Planners](02-core/06-engines.md) |
 | see the end-to-end loop | [Decision lifecycle](01-start/decision-lifecycle.md) |
 | see the public API | [API map](05-project/api-map.md) |
-| check model use or novelty | [FAQ](04-concepts/faq.md), then [Novelty and evidence](05-project/novelty/README.md) |
+| check model use or novelty | [FAQ](04-concepts/faq.md), then [Research and evidence](06-research/README.md) |
 | look up a term | [Glossary](04-concepts/glossary.md) |
 | work on the repository | [Testing](05-project/testing.md), then [Structure](05-project/structure.md) |
 
@@ -100,3 +105,4 @@ Runnable examples are organized by language and lifecycle in
 | Product | [What is LAIX?](01-start/what-is-laix.md), [Decision lifecycle](01-start/decision-lifecycle.md), [Boundaries](04-concepts/boundaries.md) |
 | Engineer | [Quickstart](01-start/quickstart.md), [Decision contract](02-core/01-decision-contract.md), [Policies](02-core/03-policies.md), [Planners](02-core/06-engines.md), [App kit](03-appkit/00-architecture.md) |
 | Operator | [Execution](03-appkit/04-execution.md), [Stores](03-appkit/05-stores.md), [Platform](03-appkit/06-platform.md), [Delivery](03-appkit/07-delivery.md), [Metrics](03-appkit/09-metrics.md) |
+| Researcher or reviewer | [Research and evidence](06-research/README.md), then [Prior art](06-research/01-positioning/prior-art.md), [Benchmark](06-research/02-evaluation/benchmark.md) |

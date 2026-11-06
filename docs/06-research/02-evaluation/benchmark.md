@@ -394,7 +394,7 @@ add cases where the planner is expected to fail or abstain:
 
 Record every new failure in this section with the case id, chosen action, expected action and the
 term that dominated incorrectly. A benchmark with no failures cannot support a strong novelty
-claim; the real-world validation in `validation.md` is still required.
+claim; the real-world validation in `../03-validation/plan.md` is still required.
 
 ### Reproduce
 

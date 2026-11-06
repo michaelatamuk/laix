@@ -150,7 +150,7 @@ and attention scores.
 The novelty is the combination: a model-free decision layer that treats commitments, execution
 risk, human attention, calibration and decision time as one contract. No compared system (LangGraph,
 Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI) carries all ten capabilities in one decision
-object — see [comparators.md](docs/05-project/novelty/comparators.md).
+object — see [comparators.md](docs/06-research/01-positioning/comparators.md).
 
 `LiveDecisionEngine` makes that concrete: one plan can keep a promise, avoid an irreversible action
 and respect an attention budget at the same time. On the live bench, `live` wins every case (7/7);
@@ -162,7 +162,7 @@ Because every decision carries a `verb`, `reason_code`, `score breakdown` and `d
 moment it is made, LAIX produces a complete audit trail without log mining. This directly answers
 the EU Product Liability Directive 2024/2853 (applicable December 2026), which makes AI deployers
 liable without proof of fault and shifts the burden to documentation. See
-[eu-liability.md](docs/05-project/novelty/eu-liability.md).
+[eu-liability.md](docs/06-research/05-governance/eu-liability.md).
 
 ## What you get
 
@@ -187,12 +187,12 @@ See [Testing](docs/05-project/testing.md) for the full check list and how to run
 
 | Start | |
 |---|---|
-| [Documentation index](docs/README.md) | start, core, app kit, concepts and project |
+| [Documentation index](docs/README.md) | start, core, app kit, concepts, project and research |
 | [Decision lifecycle](docs/01-start/decision-lifecycle.md) | moment to outcome in one loop |
 | [Core building blocks](docs/02-core/00-architecture.md) | the decision layer |
 | [App-kit building blocks](docs/03-appkit/00-architecture.md) | streaming, execution, stores and delivery |
 | [FAQ](docs/04-concepts/faq.md) | models, execution and novelty |
-| [Novelty and evidence](docs/05-project/novelty/README.md) | claim, prior art, experiments and paper plan |
+| [Research and evidence](docs/06-research/README.md) | claim, prior art, experiments and paper plan |
 | [Privacy](docs/04-concepts/privacy.md) | what may be shared, stored or exported |
 | [Examples](examples/README.md) | Python and TypeScript, grouped by lifecycle |
 | [Roadmap](docs/05-project/roadmap.md) | what is done and what is next |

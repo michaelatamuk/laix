@@ -82,4 +82,4 @@ graph. Temporal, PagerDuty and Camunda remain documented-only because they need 
 ## Capability matrix
 
 `capabilities.v1.json` is the machine-readable version of the documented comparison in
-`docs/05-project/novelty/comparators.md`.
+`docs/06-research/01-positioning/comparators.md`.

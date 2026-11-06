@@ -1,35 +1,41 @@
-# Novelty and evidence
+# Research and evidence
 
 This is a working plan, not a claim that novelty is already established. It turns the claim that LAIX
 is novel into a precise statement, a prior-art gap, reproducible evidence and a path to external
 review.
 
+The `01-` to `05-` folders are reading stages. File names stay descriptive; the stage number gives
+the order. `checklist.md` tracks work across all stages.
+
 ## How to use this folder
 
-1. Read the claim and the current gaps on this page.
-2. Establish the gap in [Prior art and comparison](prior-art.md).
-3. Write the contribution in [Formal model](formal-model.md).
-4. Build the experiments in [Evaluation](evaluation.md).
-5. Run one study outside the test suite in [Validation](validation.md).
-6. Write and release in [Paper and artifact](paper.md).
+1. Read the claim and current gaps on this page.
+2. Establish the gap in [Positioning](01-positioning/prior-art.md).
+3. Build the experiments in [Evaluation](02-evaluation/benchmark.md).
+4. Run one study outside the test suite in [Validation](03-validation/plan.md).
+5. Write and release from [Publication](04-publication/publication-plan.md).
+6. Check the legal framing in [Governance](05-governance/eu-liability.md).
 7. Track the work in [Checklist](checklist.md).
-8. Verify sources in [References](references.md).
 
-| Page | Contents |
-|---|---|
-| [Prior art and comparison](prior-art.md) | matrix, comparator discovery, fair comparison protocol |
-| [Formal model](formal-model.md) | definitions, score composition, invariants |
-| [Evaluation](evaluation.md) | hypotheses, metrics, benchmark protocol, threats |
-| [Claim–evidence map](evidence.md) | current numbers, sources and missing evidence |
-| [Validation](validation.md) | deployment, incident replay or user study |
-| [Collection kit](collection-kit.md) | incident replay plan, mapping and fallback |
-| [User study](user-study.md) | 20 vignettes and the blinded protocol |
-| [Paper and artifact](paper.md) | reproducibility, paper outline, venues |
-| [Paper draft](paper-draft.md) | current draft with validation pending |
-| [Artifact manifest](artifact-manifest.md) | files to release |
-| [Checklist](checklist.md) | phased tasks from claim to external review |
-| [Review log](review-log.md) | reviewer comments and changes |
-| [References](references.md) | sources to verify before citing |
+| Stage | Page | Contents |
+|---|---|---|
+| 01 | [Prior art](01-positioning/prior-art.md) | matrix, comparator discovery, fair comparison protocol |
+| 01 | [Comparators](01-positioning/comparators.md) | documented and measured external comparison |
+| 01 | [Formal model](01-positioning/formal-model.md) | definitions, score composition, invariants |
+| 02 | [Benchmark](02-evaluation/benchmark.md) | hypotheses, metrics, benchmark protocol, threats |
+| 02 | [Evidence map](02-evaluation/evidence-map.md) | claims, numbers, sources and missing evidence |
+| 03 | [Validation plan](03-validation/plan.md) | deployment, incident replay or vignette study |
+| 03 | [Incident replay](03-validation/incident-replay.md) | collection plan, field mapping and fallback |
+| 03 | [Vignette study](03-validation/vignette-study.md) | 20 vignettes and the blinded protocol |
+| 03 | [Consent](03-validation/consent.md) | participant consent text |
+| 03 | [Recruitment](03-validation/recruitment.md) | recruitment template |
+| 04 | [Publication plan](04-publication/publication-plan.md) | reproducibility, paper outline, venues |
+| 04 | [Paper draft](04-publication/paper-draft.md) | current draft with validation pending |
+| 04 | [Artifact manifest](04-publication/artifact-manifest.md) | files to release |
+| 04 | [References](04-publication/references.md) | sources to verify before citing |
+| 04 | [Review log](04-publication/review-log.md) | reviewer comments and changes |
+| 05 | [EU liability](05-governance/eu-liability.md) | PLD 2024/2853 mapping |
+| — | [Checklist](checklist.md) | phased tasks from claim to external review |
 
 ## Snapshot
 
@@ -37,11 +43,11 @@ review.
 - Status at time of writing: Python and TypeScript tests, parity, conformance, bench and examples pass.
 - Existing proof points: `LiveDecisionEngine`, the live bench, Python/TypeScript parity,
   conformance vectors, deterministic replay and the audit trail.
-- Added: `comparators.md` (documented capability comparison, 7 systems), `eu-liability.md`
+- Added: `01-positioning/comparators.md` (documented capability comparison, 7 systems), `05-governance/eu-liability.md`
   (PLD 2024/2853 mapping), `ablation_study.py` (all 7 planners on 7 cases, `live` wins
   every case), `conflict_scenario.py` (triple-concern demo), `shadow_rollout.py` (rollout
   pattern).
-- Added: `formal-model.md` with exact score formulas and weights, `prior-art.md` matrix
+- Added: `01-positioning/formal-model.md` with exact score formulas and weights, `01-positioning/prior-art.md` matrix
   (10 capabilities × 7 columns), `tests/core/test_invariants.py` (17 property tests, I1–I10),
   `benchmarks/live/v1/` (120 cases with dev/test/adversarial splits),
   `scripts/novelty/bench/run_live_bench.py` (metrics and bootstrap intervals),
@@ -76,7 +82,7 @@ Do not claim a new algorithm. Claim a **systems and integration contribution**.
 
 ### Why this claim is narrow enough to defend
 
-The prior-art matrix (`prior-art.md`) shows what each category of system actually covers:
+The prior-art matrix (`01-positioning/prior-art.md`) shows what each category of system actually covers:
 
 | Ingredient | Who already has it |
 |---|---|
@@ -146,10 +152,10 @@ Out of scope:
 | Glue baseline | `scripts/novelty/shared/glue_baseline.py` | **done** | external adapters still missing |
 | External adapter | LangGraph adapter, 120 decisions, 6.9 ms, 110 glue lines | **done** | Temporal/Camunda need servers |
 | Significance | McNemar, paired bootstrap and effect sizes | **done** | +6.7 pp vs glue is not significant on 30 cases |
-| Prior art | `comparators.md` (7 systems, documented capability comparison) | **done** | runnable adapter still missing |
-| EU liability case | `eu-liability.md` (PLD 2024/2853 field-by-field mapping) | **done** | — |
+| Prior art | `01-positioning/comparators.md` (7 systems, documented capability comparison) | **done** | runnable adapter still missing |
+| EU liability case | `05-governance/eu-liability.md` (PLD 2024/2853 field-by-field mapping) | **done** | — |
 | Real validation | incident harness + 20 user-study vignettes ready; no data collected | missing | one deployment, replay or user study |
-| Paper | draft in `paper-draft.md`; validation pending | partial | final draft after real data |
+| Paper | draft in `04-publication/paper-draft.md`; validation pending | partial | final draft after real data |
 
 ## 3. Definition of done
 
@@ -157,9 +163,9 @@ Do not claim novelty in a paper, README or talk until all of these are true:
 
 - [x] the claim is precise and narrow — §1 rewritten after the matrix; names which ingredients
   exist elsewhere; narrows what must not be claimed (audit trail, host-owned execution);
-- [x] the prior-art matrix is complete and cited — `comparators.md` done (7 systems,
+- [x] the prior-art matrix is complete and cited — `01-positioning/comparators.md` done (7 systems,
   search log, per-system paragraphs, defensible claims);
-- [x] the formal model and invariants are documented — `formal-model.md` filled (types, score
+- [x] the formal model and invariants are documented — `01-positioning/formal-model.md` filled (types, score
   formulas with weights, state machines, invariants I1–I10); 17 property tests pass;
 - [x] the benchmark has 100+ cases and held-out splits — 120 cases: 72 dev, 30 test,
   18 adversarial;
@@ -170,7 +176,7 @@ Do not claim novelty in a paper, README or talk until all of these are true:
 - [x] the result against a hand-built glue baseline is reported honestly — +6.7 pp, p = 0.48;
 - [ ] one real validation exists;
 - [x] the artifact reproduces the main table with one command — `bash scripts/novelty/reproduce.sh`;
-- [x] limitations are written down — threats and failure analysis in `evaluation.md`;
+- [x] limitations are written down — threats and failure analysis in `02-evaluation/benchmark.md`;
 - [ ] an external reader or reviewer has seen the draft.
 
 Until then, use this wording:
@@ -202,9 +208,9 @@ bash scripts/novelty/reproduce.sh
 Then review:
 
 1. `README.md` (this page);
-2. `prior-art.md` and `comparators.md`;
-3. `evaluation.md` and `results/live-decision-benchmark/`;
-4. `validation.md` — the next external step.
+2. `01-positioning/prior-art.md` and `01-positioning/comparators.md`;
+3. `02-evaluation/benchmark.md` and `results/live-decision-benchmark/`;
+4. `03-validation/plan.md` — the next external step.
 
 First task now: choose the validation option and run it. The synthetic corpus is complete; do not add more
 synthetic cases without real incident data.

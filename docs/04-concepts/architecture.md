@@ -228,11 +228,11 @@ Reproduce with `bash scripts/novelty/reproduce.sh`.
 
 **Prior art:** No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda,
 FIPA/BDI, scikit-learn calibration) carries all ten capabilities in one decision object.
-See [comparators.md](../05-project/novelty/comparators.md) for the full matrix.
+See [comparators.md](../06-research/01-positioning/comparators.md) for the full matrix.
 
 **Audit and liability:** Because every decision carries a `verb`, `reason_code`, `score
 breakdown` and `decision_id` at the moment it is made, LAIX produces a complete audit trail
-without log mining. See [eu-liability.md](../05-project/novelty/eu-liability.md) for the
+without log mining. See [eu-liability.md](../06-research/05-governance/eu-liability.md) for the
 mapping to EU Product Liability Directive 2024/2853.
 
 ## Rules

@@ -24,7 +24,7 @@ In the host. The optional app kit provides an execution bridge, receipts, recove
 
 The integration: one training-free decision contract for commitments, execution risk, human
 attention, calibration and decision time. `LiveDecisionEngine` combines the three live concerns in
-one plan. The detailed evidence plan is in [Novelty and evidence](../05-project/novelty/README.md).
+one plan. The detailed evidence plan is in [Research and evidence](../06-research/README.md).
 
 **When should I use it?**
 

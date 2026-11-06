@@ -18,7 +18,7 @@ Synthetic cases are not enough. Choose one:
 ### Option B: user study
 
 - materials: `data/vignette-study/v1/vignettes.json` (20 vignettes);
-- protocol: `docs/05-project/novelty/user-study.md`;
+- protocol: `docs/06-research/03-validation/vignette-study.md`;
 - analysis: `scripts/novelty/vignette-study/analyze_vignette_study.py`;
 - ask operators to judge decisions from LAIX and a baseline;
 - blind the source;

@@ -30,7 +30,7 @@ Every number below is reproducible from `results/live-decision-benchmark/` and `
 
 | Claim | Missing evidence | Next step |
 |---|---|---|
-| The integration beats an external system | runnable adapter comparison | Phase 2 external comparison in `prior-art.md` |
+| The integration beats an external system | runnable adapter comparison | Phase 2 external comparison in `../01-positioning/prior-art.md` |
 | The layer works in a real domain | deployment, incident replay or user study | Phase 3 in `checklist.md` |
 | The results generalise | independent replication | Phase 6 in `checklist.md` |
 | The paper's claims are accepted | peer review | Phase 6 in `checklist.md` |

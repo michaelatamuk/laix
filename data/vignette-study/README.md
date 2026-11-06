@@ -16,7 +16,7 @@ Fallback validation path: 20 short operational vignettes, each shown with a blin
 `output/` is gitignored.
 
 The protocol, consent text and recruitment template are in
-[docs/05-project/novelty/user-study.md](../../docs/05-project/novelty/user-study.md).
+[docs/06-research/03-validation/vignette-study.md](../../docs/06-research/03-validation/vignette-study.md).
 
 ## Run the study
 

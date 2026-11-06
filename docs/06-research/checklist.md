@@ -6,32 +6,32 @@ Work through the phases in order. Do not move to the paper until the evidence ex
 
 ## Phase 0: claim and prior art
 
-- [x] Write the one-paragraph claim — `novelty/README.md` §1
-- [x] Write scope and non-goals — `novelty/README.md` §1
-- [x] Build the prior-art matrix — `comparators.md` (documented capability comparison,
+- [x] Write the one-paragraph claim — `README.md` §1
+- [x] Write scope and non-goals — `README.md` §1
+- [x] Build the prior-art matrix — `01-positioning/comparators.md` (documented capability comparison,
   LangGraph, Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI, scikit-learn calibration)
-- [x] Write the closest-prior-work paragraph — `comparators.md` §"Closest prior work statement"
+- [x] Write the closest-prior-work paragraph — `01-positioning/comparators.md` §"Closest prior work statement"
 - [x] Write the EU liability case — `eu-liability.md` (maps every decision field to PLD 2024/2853)
-- [x] Fill the matrix table in `prior-art.md` from `comparators.md` — done; 10 capabilities ×
+- [x] Fill the matrix table in `01-positioning/prior-art.md` from `01-positioning/comparators.md` — done; 10 capabilities ×
   7 columns with 14 footnotes citing primary sources
 - [x] Rewrite the claim after the matrix — §1 rewritten; names which ingredients are found
   elsewhere and what no single system combines; "must not be claimed" extended with audit trail
   and host-owned execution (which Temporal/AutoGen already have)
 
-**Deliverable:** `prior-art.md` complete with citations and the claim narrowed to what the matrix
+**Deliverable:** `01-positioning/prior-art.md` complete with citations and the claim narrowed to what the matrix
 actually shows. **DONE.**
 
 ---
 
 ## Phase 1: formal model and invariants
 
-- [x] Define the problem, score and feasibility in `formal-model.md` — exact formulas and
+- [x] Define the problem, score and feasibility in `01-positioning/formal-model.md` — exact formulas and
   weights for utility, commitment, execution and attention engines
-- [x] Define revision and receipt state machines — documented in `formal-model.md` §3
-- [x] Write invariants I1–I10 as statements in `formal-model.md` — §4 invariant table complete
+- [x] Define revision and receipt state machines — documented in `01-positioning/formal-model.md` §3
+- [x] Write invariants I1–I10 as statements in `01-positioning/formal-model.md` — §4 invariant table complete
 - [x] Add property tests: `tests/core/test_invariants.py` — 17 tests, all pass
 
-**Deliverable:** `formal-model.md` filled + tests. Every invariant has a failing test when broken.
+**Deliverable:** `01-positioning/formal-model.md` filled + tests. Every invariant has a failing test when broken.
 **DONE.**
 
 ---
@@ -97,7 +97,7 @@ confidence intervals.
   remain documented-only.
 
 - [x] **Write the failure analysis** — `live` made zero mistakes on the 30 test cases and zero on
-  the 18 adversarial cases. The zero-failure result is documented in `evaluation.md` §5 as a
+  the 18 adversarial cases. The zero-failure result is documented in `02-evaluation/benchmark.md` §5 as a
   limitation; the corpus is too easy, and real-incident cases are required next.
 
 - [x] **Freeze the test split** — dataset version `1.0.0`; do not change the test cases again
@@ -115,7 +115,7 @@ confidence intervals.
 **Goal:** evidence that LAIX decisions match what a knowledgeable person would choose on data the
 team did not write.
 
-- [x] **Build the validation harness** — `docs/05-project/novelty/collection-kit.md`,
+- [x] **Build the validation harness** — `docs/06-research/03-validation/incident-replay.md`,
   `data/incident-replay/template.jsonl`, `data/vignette-study/v1/app/`,
   `scripts/novelty/incident-replay/preflight_incidents.py`, `scripts/novelty/incident-replay/ingest_incidents.py`,
   `scripts/novelty/incident-replay/analyze_incident_replay.py`, `data/vignette-study/v1/vignettes.json`
@@ -123,19 +123,19 @@ team did not write.
   `scripts/novelty/vignette-study/serve_vignette_study.py`, and the consent/recruitment templates.
 
 - [ ] **Record the chosen option** — write one paragraph in
-  `docs/05-project/novelty/validation.md` §1 stating: which option (A, B or C) was chosen,
+  `docs/06-research/03-validation/plan.md` §1 stating: which option (A, B or C) was chosen,
   why (data availability, feasibility, timeline), and the minimum sample size target. Do this
   before writing any ingestion or analysis code.
 
 - [ ] **Pre-register the analysis plan** — before collecting any data, publish the analysis plan
   on the Open Science Framework (https://osf.io/prereg/). The plan must specify: the chosen
   option, the primary metric, the minimum sample size, the statistical test and the significance
-  threshold (α = 0.05). Copy the OSF registration URL into `validation.md` §1 under
+  threshold (α = 0.05). Copy the OSF registration URL into `03-validation/plan.md` §1 under
   "Pre-registration". This prevents HARKing (hypothesizing after results are known) and is
   required by some venues.
 
 **Choose exactly one of these three options before starting. Record the choice in
-`docs/05-project/novelty/validation.md` §1.**
+`docs/06-research/03-validation/plan.md` §1.**
 
 ### Option A — Incident replay
 
@@ -155,12 +155,12 @@ Replay historical incidents where a person already made a decision.
 5. For the 40+ discordant pairs, run McNemar's test (H0: agreement is symmetric). Report χ²,
    p-value, 95% CI on the agreement rate.
 6. Compute promise-keeping rate, irreversible-action rate and latency on the full set.
-7. Write the method and results in `docs/05-project/novelty/validation.md` §2 and §3.
+7. Write the method and results in `docs/06-research/03-validation/plan.md` §2 and §3.
 
 ### Option B — User study
 
 Materials and protocol are ready: `data/vignette-study/v1/vignettes.json`,
-`docs/05-project/novelty/user-study.md` and `scripts/novelty/vignette-study/analyze_vignette_study.py`. Recruitment is external.
+`docs/06-research/03-validation/vignette-study.md` and `scripts/novelty/vignette-study/analyze_vignette_study.py`. Recruitment is external.
 
 Recruit participants to judge LAIX decisions on vignette scenarios.
 
@@ -175,13 +175,13 @@ Recruit participants to judge LAIX decisions on vignette scenarios.
 4. Use Fleiss' κ to measure inter-rater agreement. Use Wilcoxon signed-rank to compare ratings
    between LAIX decisions and the alternative.
 5. Write the method (participants, procedure, materials, analysis) and results in
-   `docs/05-project/novelty/validation.md` §2 and §3.
+   `docs/06-research/03-validation/plan.md` §2 and §3.
 
 ### Option C — Deployment logging
 
 Deploy LAIX in a real application, log decisions and collect outcomes.
 
-1. Define the deployment domain and application in `docs/05-project/novelty/validation.md` §1
+1. Define the deployment domain and application in `docs/06-research/03-validation/plan.md` §1
    (one paragraph: what the app does, who the users are, what a "decision" means).
 2. Add `OutcomeStore` logging to the application. Log every `decision_id`, chosen verb, and the
    measured outcome (a boolean or float) within 72 hours of the decision.
@@ -191,22 +191,22 @@ Deploy LAIX in a real application, log decisions and collect outcomes.
      the best outcome available.
    - Compute calibration (ECE and Brier) using `calibrate()` from the existing calibration module.
    - Use bootstrap (10 000 resamples) for 95% CIs on all metrics.
-5. Write the method and results in `docs/05-project/novelty/validation.md` §2 and §3.
+5. Write the method and results in `docs/06-research/03-validation/plan.md` §2 and §3.
 
 ### After the option is complete
 
 - [ ] **Minimum check:** confirm 40+ discordant cases exist between LAIX and the human/ground-truth
   baseline. If fewer, the validation is underpowered — collect more data before writing up.
-- [ ] **Write `docs/05-project/novelty/validation.md` §4: Limitations** — list at minimum:
+- [ ] **Write `docs/06-research/03-validation/plan.md` §4: Limitations** — list at minimum:
   - sample size and whether it was pre-registered;
   - domain coverage (which domains are excluded);
   - how the data was collected and by whom;
   - what could make the results not transfer to other domains;
   - any deviation from the pre-registered protocol.
 - [ ] **Commit the anonymised data** (if legally permissible) or write a data-access statement in
-  `validation.md` §5 describing where the data is stored and how to request access.
+  `03-validation/plan.md` §5 describing where the data is stored and how to request access.
 
-**Deliverable:** `docs/05-project/novelty/validation.md` filled with method, results and
+**Deliverable:** `docs/06-research/03-validation/plan.md` filled with method, results and
 limitations. At least one metric from outside the benchmark.
 
 ---
@@ -215,14 +215,14 @@ limitations. At least one metric from outside the benchmark.
 
 **Write in this order. Do not write a section before the evidence for it exists.**
 
-- [x] **Claim–evidence map** — `evidence.md`.
-- [x] **Abstract (≤ 250 words)** — drafted in `paper-draft.md`; validation pending.
-- [x] **Related work** — drafted from `comparators.md` in `paper-draft.md`.
-- [x] **Formal model section** — drafted from `formal-model.md` in `paper-draft.md`.
-- [x] **Evaluation section** — drafted with the current tables in `paper-draft.md`.
-- [x] **Failure-case section** — drafted as the zero-failure limitation in `paper-draft.md`.
+- [x] **Claim–evidence map** — `02-evaluation/evidence-map.md`.
+- [x] **Abstract (≤ 250 words)** — drafted in `04-publication/paper-draft.md`; validation pending.
+- [x] **Related work** — drafted from `01-positioning/comparators.md` in `04-publication/paper-draft.md`.
+- [x] **Formal model section** — drafted from `01-positioning/formal-model.md` in `04-publication/paper-draft.md`.
+- [x] **Evaluation section** — drafted with the current tables in `04-publication/paper-draft.md`.
+- [x] **Failure-case section** — drafted as the zero-failure limitation in `04-publication/paper-draft.md`.
 - [ ] **Data availability statement** — needs the DOI and the validation data decision.
-- [x] **Threats to validity** — drafted in `paper-draft.md`.
+- [x] **Threats to validity** — drafted in `04-publication/paper-draft.md`.
 - [x] **Reproducibility check** — `bash scripts/novelty/reproduce.sh` passes in CI.
 
 **Deliverable:** a draft paper (or technical report) where every claim has a table row, every
@@ -251,7 +251,7 @@ table is reproducible with one command, and no sentence exceeds the evidence.
 
 - [x] **CI job** — the Python CI job runs `bash scripts/novelty/reproduce.sh` on every push.
 
-- [x] **Artifact manifest** — `docs/05-project/novelty/artifact-manifest.md` lists the files for
+- [x] **Artifact manifest** — `docs/06-research/04-publication/artifact-manifest.md` lists the files for
   the release. DOI and tag are still pending.
 
 - [ ] **Tag the release** - once the reproduction script passes on a fresh clone:
@@ -285,7 +285,7 @@ table is reproducible with one command, and no sentence exceeds the evidence.
 
 ## Phase 6: external review
 
-- [x] **Create `docs/05-project/novelty/review-log.md`** — template created; fill it during review.
+- [x] **Create `docs/06-research/04-publication/review-log.md`** — template created; fill it during review.
   It is a table with columns: `date`, `reviewer`, `comment summary`, `action taken`,
   `metric before`, `metric after`. Every change made in response to a reviewer must have a row.
   The file is referenced by the reviewer response protocol below.
@@ -304,7 +304,7 @@ table is reproducible with one command, and no sentence exceeds the evidence.
     split), or (b) narrow the claim. Never expand a claim in a rebuttal.
   - If a reviewer finds a bug in the code: fix it, re-run the benchmark, update the numbers, and
     describe the fix in the camera-ready changelog.
-  - Record all changes in `docs/05-project/novelty/review-log.md` with the reviewer comment, the
+  - Record all changes in `docs/06-research/04-publication/review-log.md` with the reviewer comment, the
     action taken and the resulting number change.
 
 - [ ] **Independent replication** — share `scripts/novelty/reproduce.sh` and
@@ -312,15 +312,15 @@ table is reproducible with one command, and no sentence exceeds the evidence.
   1. Clone the repo on a machine they control.
   2. Run `bash scripts/novelty/reproduce.sh`.
   3. Report whether the main table in the paper matches their output within 0.5 pp.
-  Record the outcome (pass/fail and their machine details) in `docs/05-project/novelty/review-log.md`.
+  Record the outcome (pass/fail and their machine details) in `docs/06-research/04-publication/review-log.md`.
 
 - [ ] **Final claim update** — after acceptance, update three places with the validated numbers:
-  1. `docs/05-project/novelty/README.md` §1 — replace the interim claim with the final
+  1. `docs/06-research/README.md` §1 — replace the interim claim with the final
      peer-reviewed numbers (accuracy, CI, effect size).
   2. `README.md` "Why LAIX" section — replace "pending validation" language with the final numbers.
-  3. `prior-art.md` introduction — add the venue and DOI as the citation anchor.
+  3. `01-positioning/prior-art.md` introduction — add the venue and DOI as the citation anchor.
 
-- [ ] **Close the open decisions** — `docs/05-project/novelty/README.md` §5 lists six open
+- [ ] **Close the open decisions** — `docs/06-research/README.md` §5 lists six open
   decisions. After the paper is accepted, add a one-sentence answer to each one directly in that
   file, beneath the question. Do not delete the questions — keep them as a record of what was
   uncertain. The six questions are:
