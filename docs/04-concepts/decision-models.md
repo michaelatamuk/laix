@@ -93,6 +93,29 @@ The useful distinction:
 If JEV replaces the LAIX action policy, LAIX still supplies the decision contract; the host or app
 kit supplies the lifecycle around the choice.
 
+## Can they be compared?
+
+Yes, but only on a shared axis. A single accuracy leaderboard would be misleading.
+
+| Axis | Comparable? | What to measure |
+|---|---|---|
+| Choosing among the same options | yes | action accuracy, with the same state and options |
+| Confidence | yes | Brier score or ECE on the same labelled cases |
+| Latency and cost | yes | per decision, including the model call |
+| Constraints and approvals | partly | JEV can be told the rules; LAIX enforces them in the contract |
+| Execution, records, continuity | no | outside the decision-model scope |
+
+Three fair experiments:
+
+1. **Chooser swap.** Run JEV as the chooser on the frozen 30-case test split, with the same state and
+   options. Compare chosen-action accuracy and calibration with `LiveDecisionEngine`.
+2. **JEV inside LAIX.** Put JEV behind an `EnginePolicy` and compare it with the built-in planner.
+   This isolates the model from the runtime.
+3. **Runtime baseline.** JEV plus hand-written app code for approval, execution and records vs
+   LAIX. This is the honest runtime comparison, but the glue code is the hard part.
+
+Status: protocol only. A measured comparison needs TypeSafe API access and a frozen model version.
+
 ## A decision that needs a host layer
 
 A plumber sends a £480 invoice. The house rule says:

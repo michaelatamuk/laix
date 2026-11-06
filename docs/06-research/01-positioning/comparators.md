@@ -6,7 +6,8 @@ source code at the version and date noted. No adapter has been run yet; this
 is a capability comparison, not a performance comparison.
 
 Decision models such as JEV return a judgment, not a task decision. They are compared in
-[LAIX and decision models](../../04-concepts/decision-models.md), not in this matrix.
+[LAIX and decision models](../../04-concepts/decision-models.md#can-they-be-compared), not in this
+matrix.
 
 ## Search log
 

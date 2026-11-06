@@ -180,11 +180,16 @@ previous one left. See [Decision continuity](docs/02-core/08-decision-continuity
 | Streaming and execution | event time, checkpoints, timeline, receipts, recovery and records |
 | App kit | stores, platform, delivery, live context and bench |
 
-**A decision model is not a decision runtime.** JEV, a classifier or an LLM judge returns a judgment.
-LAIX turns that judgment into a task decision: it scores the options against commitments, execution
-risk and attention, returns the move with a reason, and carries the state into the next decision. JEV
-can be the chooser inside a LAIX policy. See
-[LAIX and decision models](docs/04-concepts/decision-models.md).
+**JEV returns a judgment. LAIX decides what the task does next.**
+
+| | JEV (decision model) | LAIX (decision runtime) |
+|---|---|---|
+| Returns | A judgment and probability | The next move, with reason, approval, execution and record |
+| Scope | Typed questions | The task decision and its lifecycle |
+| Together | JEV can be the chooser inside a policy | LAIX supplies the contract, continuity and audit |
+
+See [LAIX and decision models](docs/04-concepts/decision-models.md#can-they-be-compared) for a fair
+comparison protocol. A measured chooser swap needs TypeSafe API access.
 
 ## Why LAIX
 

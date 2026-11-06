@@ -54,8 +54,8 @@
 - Standardised docs on full engine class names (`LiveDecisionEngine`, `UtilityEngine`,
   `CommitmentAwareEngine`, `ExecutionAwareEngine`, `AttentionAwareEngine`). Short keys stay in JSON
   and CLI output and are documented in `results/live-decision-benchmark/README.md`.
-- Added a README note and comparison links that distinguish decision models such as JEV from the
-  LAIX decision runtime.
+- Added a README comparison table, a "Can they be compared?" protocol, and comparison links that
+  distinguish decision models such as JEV from the LAIX decision runtime.
 - Reordered the repository for role-based grouping: `benchmarks/live/v1/` (versioned corpus), `benchmarks/compare/adapters/` (per-system adapters), `data/{incident-replay,vignette-study/v1}/`, `results/live-decision-benchmark/`, `scripts/ci/`, `scripts/novelty/{bench,analysis,compare,incident-replay,vignette-study,shared}/` and `docs/06-research/` (the research dossier moved out of `05-project`). Public APIs and package layout are unchanged.
 - Added `to_decision` / `toDecision` as the one plan-to-decision conversion.
 - TypeScript now mirrors the Python calibration, model-learning and POMDP surface.

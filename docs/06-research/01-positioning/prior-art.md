@@ -23,7 +23,8 @@ Camunda (execution/saga), scikit-learn (calibration). Full paragraphs and citati
 [comparators.md](comparators.md).
 
 Decision models such as JEV are a different category: they return a judgment, not a task decision.
-They are compared in [LAIX and decision models](../../04-concepts/decision-models.md), not in this
+They are compared in
+[LAIX and decision models](../../04-concepts/decision-models.md#can-they-be-compared), not in this
 matrix.
 
 | Capability | Agent frameworks | Workflow engines | Alert/interruption | Commitment protocols | Execution/saga | Calibration tools | LAIX |
