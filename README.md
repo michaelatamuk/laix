@@ -170,6 +170,9 @@ previous one left. See [Decision continuity](docs/02-core/08-decision-continuity
 
 ## What you get
 
+LAIX is one decision core plus an optional app kit. The core returns decisions; the app kit adds the
+lifecycle around them.
+
 | Capability | What it covers |
 |---|---|
 | Decision contract | one `Decision` shape for attention, action, follow-up and execution |
@@ -180,13 +183,15 @@ previous one left. See [Decision continuity](docs/02-core/08-decision-continuity
 | Streaming and execution | event time, checkpoints, timeline, receipts, recovery and records |
 | App kit | stores, platform, delivery, live context and bench |
 
+## LAIX and decision models
+
 **JEV returns a judgment. LAIX decides what the task does next.**
 
 | | JEV (decision model) | LAIX (decision runtime) |
 |---|---|---|
 | Returns | A judgment and probability | The next move, with reason, approval, execution and record |
 | Scope | Typed questions | The task decision and its lifecycle |
-| Together | JEV can be the chooser inside a policy | LAIX supplies the contract, continuity and audit |
+| Use together | JEV can be the chooser inside a policy | LAIX supplies the contract, continuity and audit |
 
 See [LAIX and decision models](docs/04-concepts/decision-models.md#can-they-be-compared) for a fair
 comparison protocol. A measured chooser swap needs TypeSafe API access.
@@ -204,9 +209,8 @@ comparison protocol. A measured chooser swap needs TypeSafe API access.
   [eu-liability.md](docs/06-research/05-governance/eu-liability.md).
 
 The proof object is `LiveDecisionEngine`: one plan that keeps a promise, avoids an irreversible action
-and respects an attention budget. The contribution is the composition; see
-[comparators](docs/06-research/01-positioning/comparators.md) and the
-[evidence map](docs/06-research/02-evaluation/evidence-map.md).
+and respects an attention budget. See [comparators](docs/06-research/01-positioning/comparators.md)
+and the [evidence map](docs/06-research/02-evaluation/evidence-map.md).
 
 ## Results
 
