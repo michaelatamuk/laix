@@ -2,7 +2,7 @@
 
 **What is LAIX?**
 
-A decision layer for live AI experiences. It turns a request into one decision with a reason,
+A decision runtime for AI agents and automations that act in the real world. It turns a request into one decision with a reason,
 confidence and trail.
 
 **Does LAIX use a model?**

@@ -2,7 +2,7 @@
 
 ## What LAIX is
 
-**LAIX — Live AI Experience — is the decision layer for live AI experiences.** It answers one
+**LAIX — Live AI Experience — is the decision runtime for AI agents and automations that act in the real world.** It answers one
 question:
 
 > Given this situation, what should the experience do next?
@@ -194,7 +194,7 @@ The split is about selection. All ten return the same decision shape. See
   [outcome learning](../02-core/04-outcome-learning.md).
 - **LAIX-Bench** runs the same test cases for every class. See [bench](../03-appkit/08-laix-bench.md).
 
-LAIX is a decision layer. It can host a decision model such as JEV inside a policy. See
+LAIX is a decision runtime. It can host a decision model such as JEV inside a policy. See
 [LAIX and decision models](decision-models.md).
 
 ## Integration evidence

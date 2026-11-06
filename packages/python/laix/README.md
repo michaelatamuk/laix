@@ -1,6 +1,6 @@
 # laix (Python)
 
-**LAIX — Live AI Experience — is the decision layer for live AI experiences.**
+**LAIX — Live AI Experience — is the decision runtime for AI agents and automations that act in the real world.**
 
 This package contains the contracts, generic policies, runtime, execution, outcomes and decision
 records. It is the Python surface of LAIX.

@@ -1,6 +1,6 @@
 # What is LAIX?
 
-**LAIX — Live AI Experience — is the decision layer for live AI experiences.**
+**LAIX — Live AI Experience — is the decision runtime for AI agents and automations that act in the real world.**
 
 A live experience is always in the loop: it notices what is changing, decides what matters and acts
 before the moment passes. LAIX gives that loop a single decision contract. The host builds the
@@ -20,7 +20,7 @@ Then the product does the work.
 LAIX provides one decision shape, explicit reasons, confidence, approval and a trail. The host
 provides the experience, data, UI, execution and delivery.
 
-## Why a live experience needs a decision layer
+## Why a live experience needs a decision runtime
 
 A live experience needs timing, restraint, safety, coherence and a record:
 
@@ -44,7 +44,7 @@ LAIX turns those properties into one layer:
 - **Host control** — LAIX decides; the host owns data, execution, storage and delivery.
 - **Evidence** — conformance vectors, bench, examples and Python/TypeScript parity.
 
-The contribution is the combination: a coherent decision layer for live experiences.
+The contribution is the combination: a coherent decision runtime for live experiences.
 `LiveDecisionEngine` makes that concrete: one plan can keep a promise, avoid an irreversible action
 and respect an attention budget at the same time. Calibration and the decision timeline complete the
 loop around that plan.
