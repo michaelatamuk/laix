@@ -18,6 +18,7 @@ from laix import (
 )
 from live_bench_common import (
     RESULTS,
+    ROOT,
     evaluate_case,
     load_cases,
     run_planner,
@@ -92,7 +93,8 @@ def main() -> int:
 
     summary = summarize(rows, split=args.split, seed=args.seed)
     RESULTS.mkdir(parents=True, exist_ok=True)
-    target = RESULTS / "ablations.json"
+    (RESULTS / "reports").mkdir(parents=True, exist_ok=True)
+    target = RESULTS / "reports" / "ablations.json"
     target.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     header = (
@@ -106,7 +108,7 @@ def main() -> int:
             f"{name:<22} {item['accuracy']:>7.2%} {item['promise_keeping']:>8.2%} "
             f"{item['irreversible_rate']:>7.2%} {item['budget_violation_rate']:>7.2%}"
         )
-    print(f"\nwrote {target.relative_to(target.parents[2])}")
+    print(f"\nwrote {target.relative_to(ROOT)}")
     return 0
 
 

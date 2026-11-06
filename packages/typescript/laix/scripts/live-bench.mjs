@@ -7,7 +7,8 @@ import { defaultPlanners } from "../src/core/bench/live-bench.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "../../../..");
-const RESULTS = resolve(ROOT, "results/live_bench_v2");
+const RESULTS = resolve(ROOT, "results/live-bench/harness-v2");
+const REPORTS = resolve(RESULTS, "reports");
 const CASES = resolve(ROOT, "benchmarks/live/v1");
 
 const args = process.argv.slice(2);
@@ -123,7 +124,7 @@ let parity = null;
 if (compare) {
   const python = loadPythonRows();
   if (python === null) {
-    console.error("missing Python raw results: results/live_bench_v2/raw.jsonl");
+    console.error("missing Python raw results: results/live-bench/harness-v2/raw.jsonl");
     process.exit(2);
   }
   const mismatches = [];
@@ -140,9 +141,9 @@ if (compare) {
   summary.parity = parity;
 }
 
-mkdirSync(RESULTS, { recursive: true });
+mkdirSync(REPORTS, { recursive: true });
 writeFileSync(
-  resolve(RESULTS, "typescript-summary.json"),
+  resolve(REPORTS, "typescript-parity.json"),
   `${JSON.stringify(summary, null, 2)}\n`,
   "utf8",
 );

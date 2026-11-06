@@ -52,7 +52,7 @@ Then run:
 python scripts/novelty/compare/run_external_comparison.py --split test
 ```
 
-The script writes `results/live_bench_v2/external-comparison.json` and prints the capability and
+The script writes `results/live-bench/harness-v2/reports/external-comparison.json` and prints the capability and
 operational table.
 
 ## Fairness rules

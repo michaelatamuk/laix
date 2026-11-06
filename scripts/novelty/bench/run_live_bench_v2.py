@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from glue_baseline import GlueBaseline
 from laix import default_planners
 from live_bench_common import (
+    ROOT,
     evaluate_case,
     load_cases,
     run_planner,
@@ -32,7 +33,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--no-write",
         action="store_true",
-        help="Print results without writing results/live_bench_v2/.",
+        help="Print results without writing results/live-bench/harness-v2/.",
     )
     return parser.parse_args()
 
@@ -95,8 +96,8 @@ def main() -> int:
     summary = summarize(rows, split=args.split, seed=args.seed)
     if not args.no_write:
         raw, current = write_outputs(rows, summary)
-        print(f"wrote {raw.relative_to(raw.parents[2])}")
-        print(f"wrote {current.relative_to(current.parents[2])}")
+        print(f"wrote {raw.relative_to(ROOT)}")
+        print(f"wrote {current.relative_to(ROOT)}")
         print()
 
     print_table(summary)

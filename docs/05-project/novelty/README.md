@@ -49,7 +49,7 @@ review.
   `scripts/novelty/glue_baseline.py` (hand-built integration baseline),
   `scripts/novelty/bench/validate_live_cases.py` (schema validation),
   `scripts/novelty/bench/run_ablations.py`, `scripts/novelty/bench/summarize_results.py`,
-  `results/live_bench_v2/` (baseline, analysis and ablations), and a CI reproduction step.
+  `results/live-bench/harness-v2/` (baseline, analysis and ablations), and a CI reproduction step.
 - Measured result: `live` 30/30 on the test split, but a hand-built glue baseline is 28/30.
   Against glue, +6.7 pp (95% CI 0.0–0.167, McNemar p = 0.48). The integration advantage over
   single-concern planners is large; the advantage over competent glue code is not yet significant.
@@ -166,7 +166,7 @@ Do not claim novelty in a paper, README or talk until all of these are true:
 - [x] ablations show which term contributes what — test split: full 100%, no attention 96.7%,
   no feasibility gates 93.3%, no execution 83.3%, no commitment 70%, utility-only 30%;
 - [x] confidence intervals and effect sizes are reported — 10,000-resample bootstrap and
-  McNemar in `results/live_bench_v2/analysis.json`;
+  McNemar in `results/live-bench/harness-v2/reports/significance.json`;
 - [x] the result against a hand-built glue baseline is reported honestly — +6.7 pp, p = 0.48;
 - [ ] one real validation exists;
 - [x] the artifact reproduces the main table with one command — `bash scripts/novelty/reproduce.sh`;
@@ -203,7 +203,7 @@ Then review:
 
 1. `README.md` (this page);
 2. `prior-art.md` and `comparators.md`;
-3. `evaluation.md` and `results/live_bench_v2/`;
+3. `evaluation.md` and `results/live-bench/harness-v2/`;
 4. `validation.md` — the next external step.
 
 First task now: choose the validation option and run it. The synthetic corpus is complete; do not add more

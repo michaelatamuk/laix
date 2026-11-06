@@ -16,7 +16,8 @@ laix/
 │   └── vignette-study/
 │       └── v1/            20-vignette instrument and app
 ├── results/
-│   └── live_bench_v2/     summaries, ablations and raw rows
+│   └── live-bench/
+│       └── harness-v2/    raw rows, baseline and reports
 ├── packages/
 │   ├── contracts/         JSON Schema and shared test vectors
 │   ├── python/laix/       Python package and tests

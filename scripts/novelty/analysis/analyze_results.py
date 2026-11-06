@@ -11,8 +11,9 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[3]
-RAW = ROOT / "results" / "live_bench_v2" / "raw.jsonl"
-OUT = ROOT / "results" / "live_bench_v2" / "analysis.json"
+RESULTS = ROOT / "results" / "live-bench" / "harness-v2"
+RAW = RESULTS / "raw.jsonl"
+OUT = RESULTS / "reports" / "significance.json"
 REFERENCE = "live"
 
 
@@ -166,6 +167,7 @@ def main() -> int:
         "comparisons": comparisons,
         "categories": category_breakdown(rows),
     }
+    args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     print("Paired accuracy comparison against live")
@@ -183,7 +185,7 @@ def main() -> int:
             f"{item['live_only_correct']:>4} {item['other_only_correct']:>4} "
             f"{item['chi2']:>8.3f} {item['p_value']:>8.4f} {item['cohens_h']:>8.3f}"
         )
-    print(f"\nwrote {args.out.relative_to(args.out.parents[2])}")
+    print(f"\nwrote {args.out.relative_to(ROOT)}")
     return 0
 
 

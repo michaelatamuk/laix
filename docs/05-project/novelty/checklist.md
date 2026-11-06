@@ -70,7 +70,7 @@ confidence intervals.
   - runs all 7 planners;
   - computes accuracy, promise keeping, irreversible rate, budget violations, safety, latency,
     regret and conflict accuracy with 95% bootstrap intervals;
-  - writes `results/live_bench_v2/raw.jsonl` and `summary.json`;
+  - writes `results/live-bench/harness-v2/raw.jsonl` and `results/live-bench/harness-v2/reports/summary.json`;
   - prints the main and conflict tables;
   - exits 1 if the integrated planner fails a conflict case.
 
@@ -78,15 +78,15 @@ confidence intervals.
   - full, no commitment, no execution, no attention, utility-only, equal weights and
     no-feasibility-gates variants;
   - `LiveDecisionEngine(enforce_feasibility=False)` supports the last variant;
-  - writes `results/live_bench_v2/ablations.json`.
+  - writes `results/live-bench/harness-v2/reports/ablations.json`.
 
 - [x] **Write `scripts/novelty/bench/summarize_results.py`**:
-  - compares `summary.json` against `baseline.json`;
+  - compares `reports/summary.json` against `baseline.json`;
   - prints a diff table;
   - exits 1 if accuracy, promise keeping, irreversible rate or budget violations move by more
     than 0.5 percentage points.
 
-- [x] **Commit the baseline** — `results/live_bench_v2/baseline.json` and `summary.json` are
+- [x] **Commit the baseline** — `results/live-bench/harness-v2/baseline.json` and `reports/summary.json` are
   the frozen test-split output (`split: test`, `seed: 42`, 30 cases).
 
 - [x] **TypeScript live-bench parity** — `packages/typescript/laix/scripts/live-bench.mjs`
@@ -105,7 +105,7 @@ confidence intervals.
 
 **Deliverable:** `benchmarks/live/v1/` (120 cases), `scripts/novelty/bench/run_live_bench_v2.py`,
 `scripts/novelty/bench/run_ablations.py`, `scripts/novelty/bench/summarize_results.py`,
-`results/live_bench_v2/`. Main table reproducible with:
+`results/live-bench/harness-v2/`. Main table reproducible with:
 `python scripts/novelty/bench/run_live_bench_v2.py --split test --seed 42`.
 
 ---
@@ -275,7 +275,7 @@ table is reproducible with one command, and no sentence exceeds the evidence.
   - `benchmarks/live/v1/dev.json`
   - `benchmarks/live/v1/test.json`
   - `benchmarks/live/v1/schema.json`
-  - `results/live_bench_v2/summary.json`
+  - `results/live-bench/harness-v2/reports/summary.json`
   Do **not** include `adversarial.json` in the public deposit (keep it private to
   prevent gaming).
 

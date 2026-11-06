@@ -41,7 +41,7 @@
 
 ### Changed
 
-- Reordered the repository for role-based grouping: `benchmarks/live/v1/` (versioned corpus), `benchmarks/compare/adapters/` (per-system adapters), `data/{incident-replay,vignette-study/v1}/`, `scripts/ci/` and `scripts/novelty/{bench,analysis,validation,compare}/`. Public APIs and package layout are unchanged.
+- Reordered the repository for role-based grouping: `benchmarks/live/v1/` (versioned corpus), `benchmarks/compare/adapters/` (per-system adapters), `data/{incident-replay,vignette-study/v1}/`, `results/live-bench/harness-v2/`, `scripts/ci/` and `scripts/novelty/{bench,analysis,validation,compare}/`. Public APIs and package layout are unchanged.
 - Added `to_decision` / `toDecision` as the one plan-to-decision conversion.
 - TypeScript now mirrors the Python calibration, model-learning and POMDP surface.
 

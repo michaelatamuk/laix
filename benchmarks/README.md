@@ -13,5 +13,5 @@ The corpus and the harness are separate on purpose:
 - `compare/` runs the same `LiveDecisionEngine` inside external orchestration frameworks and reports
   operational overhead, not decision accuracy.
 
-`live/v1` is the corpus version. `results/live_bench_v2/` is the current benchmark run label; it is
+`live/v1` is the corpus version. `results/live-bench/harness-v2/` is the current benchmark run label; it is
 not a second corpus version.

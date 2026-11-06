@@ -75,8 +75,8 @@ def main() -> int:
         "capabilities": json.loads(CAPABILITIES.read_text(encoding="utf-8")),
         "adapters": [item.to_dict() for item in results],
     }
-    RESULTS.mkdir(parents=True, exist_ok=True)
-    target = RESULTS / "external-comparison.json"
+    target = RESULTS / "reports" / "external-comparison.json"
+    target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     print(f"External comparison — {args.split} split, {len(cases)} cases")

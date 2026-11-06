@@ -7,8 +7,9 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_BASELINE = ROOT / "results" / "live_bench_v2" / "baseline.json"
-DEFAULT_CURRENT = ROOT / "results" / "live_bench_v2" / "summary.json"
+RESULTS = ROOT / "results" / "live-bench" / "harness-v2"
+DEFAULT_BASELINE = RESULTS / "baseline.json"
+DEFAULT_CURRENT = RESULTS / "reports" / "summary.json"
 TOLERANCE = 0.005
 METRICS = ("accuracy", "promise_keeping", "irreversible_rate", "budget_violation_rate")
 

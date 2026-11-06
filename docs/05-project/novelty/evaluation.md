@@ -194,7 +194,7 @@ Create:
 - `scripts/novelty/bench/run_live_bench_v2.py`
 - `scripts/novelty/bench/run_ablations.py`
 - `scripts/novelty/bench/summarize_results.py`
-- `results/live_bench_v2/` (generated, versioned summary committed)
+- `results/live-bench/harness-v2/` (generated, versioned summary committed)
 
 ### Case schema
 
@@ -316,8 +316,8 @@ Mitigations:
 ## 5. Results and failure analysis
 
 Generated from the frozen test split (30 cases) and the six ablations. The raw rows are in
-`results/live_bench_v2/raw.jsonl`; the summary is in `results/live_bench_v2/summary.json`; the
-baseline is `results/live_bench_v2/baseline.json`.
+`results/live-bench/harness-v2/raw.jsonl`; the summary is in `results/live-bench/harness-v2/reports/summary.json`; the
+baseline is `results/live-bench/harness-v2/baseline.json`.
 
 ### Main table (test split, 30 cases)
 
