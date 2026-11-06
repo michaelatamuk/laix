@@ -170,7 +170,7 @@ previous one left. See [Decision continuity](docs/02-core/08-decision-continuity
 
 ## What you get
 
-| Capability | What it gives the host |
+| Capability | What it covers |
 |---|---|
 | Decision contract | one `Decision` shape for attention, action, follow-up and execution |
 | Decision continuity | commitments, budget, approvals, revisions and outcomes carried into the next decision |
@@ -182,25 +182,20 @@ previous one left. See [Decision continuity](docs/02-core/08-decision-continuity
 
 ## Why LAIX
 
-- **One decision contract** — attention, action, follow-up, execution and outcomes share the same
-  shape, reasons, confidence and trail.
-- **Live context and continuity** — promises, execution risk and human attention are scored in the
-  plan, and the next decision sees what the last one left.
-- **Training-free, host-owned** — deterministic policies and planners; the host supplies the model
-  and owns data, execution, storage and delivery.
-- **Inspectable** — reason code, score breakdown, decision id, trace, conformance vectors and
-  Python/TypeScript parity.
-
-The contribution is the integration: one contract for utility, commitments, execution risk and human
-attention. See [comparators](docs/06-research/01-positioning/comparators.md) and the
-[evidence map](docs/06-research/02-evaluation/evidence-map.md).
+- **The core stays stateless.** Commitment, budget and execution state live in the request, so the
+  host owns storage and [decision continuity](docs/02-core/08-decision-continuity.md) stays explicit
+  rather than hidden in a memory layer.
+- **The integration is the decision.** Utility, commitments, execution risk and attention are scored
+  in one plan, not by separate policies that can silently cancel each other out.
+- **The reason is part of the result.** Every decision carries its reason code, score breakdown and
+  trace, so audit is produced at decision time, not reconstructed from logs. The mapping to EU
+  Product Liability Directive 2024/2853 is in
+  [eu-liability.md](docs/06-research/05-governance/eu-liability.md).
 
 The proof object is `LiveDecisionEngine`: one plan that keeps a promise, avoids an irreversible action
-and respects an attention budget.
-
-Because every decision carries its reason and score at the moment it is made, LAIX produces an audit
-trail without log mining. The mapping to EU Product Liability Directive 2024/2853 is in
-[eu-liability.md](docs/06-research/05-governance/eu-liability.md).
+and respects an attention budget. The contribution is the composition; see
+[comparators](docs/06-research/01-positioning/comparators.md) and the
+[evidence map](docs/06-research/02-evaluation/evidence-map.md).
 
 ## Results
 
