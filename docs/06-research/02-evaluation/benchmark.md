@@ -444,3 +444,6 @@ code is substantial.
 
 Status: protocol only. The implementation needs TypeSafe API access and a frozen model version.
 See [LAIX and decision models](../../04-concepts/decision-models.md#can-they-be-compared).
+
+For the public benchmark landscape and the component evaluation protocol, see
+[External benchmarks](external-benchmarks.md).

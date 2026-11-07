@@ -23,6 +23,7 @@ the order. `checklist.md` tracks work across all stages.
 | 01 | [Formal model](01-positioning/formal-model.md) | definitions, score composition, invariants |
 | 02 | [Benchmark](02-evaluation/benchmark.md) | hypotheses, metrics, benchmark protocol, threats |
 | 02 | [Evidence map](02-evaluation/evidence-map.md) | claims, numbers, sources and missing evidence |
+| 02 | [External benchmarks](02-evaluation/external-benchmarks.md) | world benchmarks, fit and run protocol |
 | 03 | [Validation plan](03-validation/plan.md) | deployment, incident replay or vignette study |
 | 03 | [Incident replay](03-validation/incident-replay.md) | collection plan, field mapping and fallback |
 | 03 | [Vignette study](03-validation/vignette-study.md) | 20 vignettes and the blinded protocol |
