@@ -10,7 +10,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from ...decisions import ScoreBreakdown
-from .input.context import Context
+from .input.signal_context import SignalContext
 from .input.signal import Signal
 from .timing import hours_until
 
@@ -34,7 +34,7 @@ def due_points(now: datetime, due: str | None) -> float:
     return 0.0
 
 
-def score(signal: Signal, context: Context) -> ScoreBreakdown:
+def score(signal: Signal, context: SignalContext) -> ScoreBreakdown:
     severity = SEVERITY_POINTS.get(signal.severity, 5.0)
     due = due_points(context.now, signal.due)
     confidence = max(0.0, min(1.0, signal.confidence)) * 20.0
@@ -44,7 +44,7 @@ def score(signal: Signal, context: Context) -> ScoreBreakdown:
     return ScoreBreakdown(severity, due, confidence, interruption, learned, total)
 
 
-def cost_of_waiting(signal: Signal, context: Context) -> float:
+def cost_of_waiting(signal: Signal, context: SignalContext) -> float:
     """Points at stake if the decision is silence. Zero without a deadline."""
     factor = WAIT_FACTOR.get(signal.severity, 0.25)
     return round(due_points(context.now, signal.due) * factor, 2)

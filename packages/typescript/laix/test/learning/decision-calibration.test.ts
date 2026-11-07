@@ -7,7 +7,7 @@ import {
   decisionCalibrationReport,
   decisionSamplesFromOutcomes,
 } from "../../src/index.ts";
-import type { Decision, DecisionRequest, Outcome, Policy } from "../../src/index.ts";
+import type { Decision, DecisionRequest, Outcome, DecisionPolicy } from "../../src/index.ts";
 
 describe("decision-level calibration", () => {
   it("bins decisions and adjusts confidence", () => {
@@ -76,7 +76,7 @@ describe("decision-level calibration", () => {
   });
 
   it("wraps any policy and calibrates its decisions", () => {
-    class FakePolicy implements Policy {
+    class FakePolicy implements DecisionPolicy {
       readonly name = "fake";
 
       decide(_request: DecisionRequest): Decision[] {

@@ -40,14 +40,14 @@ Attention request:
 ```python
 from datetime import datetime, timezone
 
-from laix import Context, DecisionRequest, decide
+from laix import SignalContext, DecisionRequest, decide
 
 decision = decide(
     DecisionRequest(
         subject="one decision",
         at="2026-11-01T10:00:00+00:00",
         signals=(signal,),
-        context=Context(
+        context=SignalContext(
             now=datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc),
             quiet_hours=None,
         ),
@@ -70,12 +70,12 @@ decision = decide(
 )[0]
 ```
 
-Both return the same decision shape. With the app kit, `Layer` adds execution, records and delivery:
+Both return the same decision shape. With the app kit, `DecisionClient` adds execution, records and delivery:
 
 ```python
-from laix import DecisionRequest, Layer
+from laix import DecisionRequest, DecisionClient
 
-decision = Layer().decide(
+decision = DecisionClient().decide(
     DecisionRequest(
         subject="one decision",
         at="2026-11-01T10:00:00+00:00",
@@ -88,9 +88,9 @@ decision = Layer().decide(
 TypeScript:
 
 ```ts
-import { Layer } from "laix";
+import { DecisionClient } from "laix";
 
-const [decision] = new Layer().decide({
+const [decision] = new DecisionClient().decide({
   subject: "one decision",
   at: "2026-11-01T10:00:00Z",
   signals: [{ id: "s-1", kind: "deadline", severity: "high", confidence: 0.9 }],
@@ -128,8 +128,8 @@ If the answer is not the one you expected, start with
 | You need | Use |
 |---|---|
 | One answer, no runtime | `decide` |
-| One decision plus execution, records and delivery | `Layer` |
-| Decisions over time | `Layer().stream` |
+| One decision plus execution, records and delivery | `DecisionClient` |
+| Decisions over time | `DecisionClient().stream` |
 | A write boundary with approval and receipts | `ExecutionBridge` |
 | An audit record or a proposal | `DecisionRecord`, `Proposal` |
 

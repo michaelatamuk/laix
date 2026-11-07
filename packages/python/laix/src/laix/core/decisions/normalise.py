@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Iterable
 
-from ..support.errors import PolicyError
+from ..support.errors import DecisionPolicyError
 from ..support.verbs import Verb
 from .response import EvidenceRef, Intent, ScoreBreakdown
 from .response.decision import Decision
@@ -50,8 +50,8 @@ def _breakdown(value: Any) -> ScoreBreakdown | None:
     )
 
 
-def from_attention(decision: Any) -> Decision:
-    """Convert an ``AttentionDecision`` without importing the attention package."""
+def from_signal_attention(decision: Any) -> Decision:
+    """Convert an ``SignalAttentionDecision`` without importing the attention package."""
     return Decision(
         verb=decision.verb,
         confidence=decision.confidence,
@@ -76,7 +76,7 @@ def coerce(value: Any) -> Decision:
     if isinstance(value, Decision):
         return value
     if hasattr(value, "signal_id") and hasattr(value, "verb"):
-        return from_attention(value)
+        return from_signal_attention(value)
     if isinstance(value, dict):
         return Decision(
             verb=str(value.get("verb") or Verb.WAIT),
@@ -99,7 +99,7 @@ def coerce(value: Any) -> Decision:
             target=str(value.get("target") or "one"),
             recipients=tuple(value.get("recipients", ())),
         )
-    raise PolicyError(f"policy returned an unsupported decision: {type(value).__name__}")
+    raise DecisionPolicyError(f"policy returned an unsupported decision: {type(value).__name__}")
 
 
-__all__ = ["coerce", "from_attention"]
+__all__ = ["coerce", "from_signal_attention"]

@@ -2,16 +2,16 @@
 
 **LAIX — Live AI Experience — is the live decision runtime for AI agents and automations that act in the real world.**
 
-This package contains the contracts, attention, action, the ten decision classes, Live Context,
+This package contains the contracts, signal attention, action, the ten decision classes, Live Context,
 streaming, outcome learning, bench, platform, stores, proposals, delivery, execution and records.
 It mirrors the Python decision surface, including calibration, model learning and POMDP planning.
 
 The source is split into `src/core` and `src/appkit`. The package exports one entry point, `laix`.
 
 ```ts
-import { Layer } from "laix";
+import { DecisionClient } from "laix";
 
-const layer = new Layer();
+const layer = new DecisionClient();
 const decisions = layer.decide({
   subject: "one signal",
   at: "2026-11-01T10:00:00Z",
@@ -20,20 +20,20 @@ const decisions = layer.decide({
 });
 ```
 
-`Layer.decide` accepts either `signals` + `context` or `situation` + `options`, and returns the same
-`Decision` shape for both. A policy plugin can be supplied with `new Layer({ policy })`, or
+`DecisionClient.decide` accepts either `signals` + `context` or `situation` + `options`, and returns the same
+`Decision` shape for both. A policy plugin can be supplied with `new DecisionClient({ policy })`, or
 registered with `registerPolicy` and selected with `usePolicy`.
 
 ## Capabilities
 
 | Area | Exports |
 |---|---|
-| Attention | `decide`, `score`, `costOfWaiting`, `OutcomeLog` |
-| Action | `Layer`, `decideAction` |
+| Signal attention | `decide`, `score`, `costOfWaiting`, `SignalAttentionLog` |
+| Action | `DecisionClient`, `decideAction` |
 | Planners | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner`, `POMDPPlanner`, `MdpModel`, `PomdpModel` |
-| Engine and protocol | `LiveDecisionEngine`, `EnginePolicy`, `DecisionEngine`, `DecisionProblem`, `Plan`, `toDecision` |
+| Composite planner and protocol | `LiveCompositePlanner`, `PlannerPolicy`, `Planner`, `PlannerInput`, `PlannerResult`, `toDecision` |
 | Simulation and bench | `Simulator`, `comparePlanners`, `runPlannerBench` |
-| Policy packs | `ActivePerceptionPolicy`, `SafetyConstrainedPolicy`, `ReplanningPolicy`, `AllocationPolicy`, `NegotiationPolicy`, `PreferenceElicitationPolicy`, `VerificationPolicy`, `EscalationPolicy` |
+| DecisionPolicy packs | `ActivePerceptionPolicy`, `SafetyConstrainedPolicy`, `ReplanningPolicy`, `AllocationPolicy`, `NegotiationPolicy`, `PreferenceElicitationPolicy`, `VerificationPolicy`, `EscalationPolicy` |
 | Authoring and target | `RulePolicy`, `Rule`, `TargetedPolicy`, `PlanningPolicy`, `GroupPolicy`, `ShadowPolicy`, `simulate` |
 | Learned policy | `BanditPolicy`, `UCBBandit`, `Arm`, `rewardForLabel`, `CausalLedger`, `ModelLearner`, `CalibrationReport` |
 | Live Context | `LiveContext`, `CallableDetector`, `Detector`, `Detection`, `PerceptionEvent` |
@@ -47,7 +47,7 @@ registered with `registerPolicy` and selected with `usePolicy`.
 | Evaluation | `compare`, `loadCases`, `Case`, `Report` |
 | Bench | `runBench`, `suiteNames` |
 
-The attention policy passes the same 24 decisions as Python. The bench runs the same 10 suites and
+The signal-attention policy passes the same 24 decisions as Python. The bench runs the same 10 suites and
 25 cases as Python.
 
 ## Test
@@ -59,7 +59,7 @@ npm.cmd run conformance
 npm.cmd run live-bench
 ```
 
-`npm.cmd run conformance` compares every attention decision against
-`packages/contracts/attention.v1.json` and exits non-zero on a mismatch.
+`npm.cmd run conformance` compares every signal-attention decision against
+`packages/contracts/signal-attention.v1.json` and exits non-zero on a mismatch.
 `npm.cmd run bench` runs all decision classes.
 `npm.cmd run live-bench` runs the shared 30-case test split and compares 210 action IDs with Python.

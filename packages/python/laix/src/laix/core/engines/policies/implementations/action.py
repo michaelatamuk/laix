@@ -12,7 +12,7 @@ from ....support.time import iso
 from ....support.values import clamp
 from ....support.verbs import Verb
 from .action_policy_config import ActionPolicyConfig
-from .action_policy_request import ActionPolicyRequest
+from .action_policy_input import ActionPolicyInput
 
 
 ACTION_POLICY_VERSION = "0.8.0"
@@ -39,7 +39,7 @@ class ActionPolicy:
     # ------------------------------------------------------------------ decide
     def decide(
         self,
-        request: ActionPolicyRequest,
+        request: ActionPolicyInput,
         *,
         decision_id: str = "",
         trace_id: str = "",
@@ -257,7 +257,7 @@ class ActionPolicy:
         return tuple(rows[: self.config.max_alternatives])
 
 
-def decide_action(request: ActionPolicyRequest, *, config: ActionPolicyConfig | None = None, **kwargs: Any) -> Decision:
+def decide_action(request: ActionPolicyInput, *, config: ActionPolicyConfig | None = None, **kwargs: Any) -> Decision:
     """Functional shortcut for hosts that do not need a policy object."""
     return ActionPolicy(config).decide(request, **kwargs)
 
@@ -267,6 +267,6 @@ __all__ = [
     "ACTION_POLICY_VERSION",
     "ActionPolicy",
     "ActionPolicyConfig",
-    "ActionPolicyRequest",
+    "ActionPolicyInput",
     "decide_action",
 ]

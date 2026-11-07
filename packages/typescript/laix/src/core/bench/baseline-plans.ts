@@ -1,7 +1,7 @@
 import type { ActionOption } from "../contracts.ts";
-import type { Plan } from "../contract/engine.ts";
+import type { PlannerResult } from "../contract/planner.ts";
 
-export function baselinePlan(option: ActionOption, reasonCode: string, rationale: string): Plan {
+export function baselinePlan(option: ActionOption, reasonCode: string, rationale: string): PlannerResult {
   return {
     verb: option.verb,
     confidence: 1,
@@ -14,6 +14,6 @@ export function baselinePlan(option: ActionOption, reasonCode: string, rationale
   };
 }
 
-export function baselineWait(reasonCode: string, rationale: string): Plan {
+export function baselineWait(reasonCode: string, rationale: string): PlannerResult {
   return { verb: "wait", confidence: 1, reasonCode, rationale, score: 0 };
 }

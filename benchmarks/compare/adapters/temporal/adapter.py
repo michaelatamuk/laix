@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from laix import DecisionProblem, Plan
+from laix import PlannerInput, PlannerResult
 
 from ..result import AdapterResult
 
@@ -22,10 +22,10 @@ class TemporalAdapter:
     def available(self) -> bool:
         return False
 
-    def solve(self, problem: DecisionProblem) -> Plan:
+    def solve(self, problem: PlannerInput) -> PlannerResult:
         raise RuntimeError("Temporal comparison requires a Temporal server")
 
-    def run(self, problems: Sequence[DecisionProblem]) -> AdapterResult:
+    def run(self, problems: Sequence[PlannerInput]) -> AdapterResult:
         return AdapterResult(
             name=self.name,
             available=False,

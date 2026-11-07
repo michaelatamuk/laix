@@ -1,8 +1,8 @@
-/** A bill is due tomorrow. Ask the TypeScript Layer whether to show it now. */
+/** A bill is due tomorrow. Ask the TypeScript DecisionClient whether to show it now. */
 
-import { Layer } from "../../../packages/typescript/laix/src/index.ts";
+import { DecisionClient } from "../../../packages/typescript/laix/src/index.ts";
 
-const layer = new Layer();
+const layer = new DecisionClient();
 const [decision] = layer.decide({
   subject: "electricity bill",
   at: "2026-11-01T10:00:00Z",

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { ManualClock, StreamSession, TumblingWindow, fromSync, prometheus, runStreamBench } from "../src/index.ts";
 import type { Decision, DecisionRequest } from "../src/index.ts";
-import { Layer } from "../src/index.ts";
+import { DecisionClient } from "../src/index.ts";
 
 const at = (second: number): string =>
   `2026-11-01T10:00:${String(second).padStart(2, "0")}+00:00`;
@@ -361,8 +361,8 @@ describe("stream session", () => {
     assert.equal(second.value!.rationale, "b");
   });
 
-  it("is available from the Layer", () => {
-    const layer = new Layer();
+  it("is available from the DecisionClient", () => {
+    const layer = new DecisionClient();
     const session = layer.stream({ streamId: "STR-L" });
     const out = session.observe({
       subject: "a",

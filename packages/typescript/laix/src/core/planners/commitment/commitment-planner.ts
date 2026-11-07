@@ -1,5 +1,5 @@
 import type { ActionOption } from "../../contracts.ts";
-import type { DecisionProblem, Plan } from "../../contract/engine.ts";
+import type { PlannerInput, PlannerResult } from "../../contract/planner.ts";
 import type { Commitment } from "../../commitments/commitments.ts";
 import { CommitmentLedger, commitmentDue } from "../../commitments/commitments.ts";
 import {
@@ -79,7 +79,7 @@ export function commitmentEffect(option: ActionOption): CommitmentEffect {
   };
 }
 
-export function activeCommitments(problem: DecisionProblem): Map<string, Commitment> {
+export function activeCommitments(problem: PlannerInput): Map<string, Commitment> {
   const attributes = (problem.attributes ?? {}) as Record<string, unknown>;
   const raw = attributes.commitments ?? attributes.commitment_ledger;
   if (raw === undefined || raw === null) return new Map();
@@ -184,7 +184,7 @@ export class CommitmentPlanner {
     this.utility = new UtilityPlanner(model);
   }
 
-  solve(problem: DecisionProblem): Plan {
+  solve(problem: PlannerInput): PlannerResult {
     const options = [...(problem.options ?? [])];
     if (!options.length) {
       return this.wait("no_options", "there are no options to score");
@@ -299,7 +299,7 @@ export class CommitmentPlanner {
     return Math.min(1, Math.max(0, 0.5 + 0.5 * (gap / Math.max(Math.abs(best), 1e-9))));
   }
 
-  private wait(reasonCode: string, rationale: string): Plan {
+  private wait(reasonCode: string, rationale: string): PlannerResult {
     return { verb: "wait", confidence: 1.0, reasonCode, rationale, score: 0.0 };
   }
 }

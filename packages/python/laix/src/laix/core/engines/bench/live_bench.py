@@ -2,7 +2,7 @@
 
 The benchmark compares deterministic planners on cases that mix risk limits,
 promises, execution risk and plain utility. It is intentionally small and
-auditable: every case is a ``DecisionProblem`` and every row records the chosen
+auditable: every case is a ``PlannerInput`` and every row records the chosen
 action, the expected action, safety, irreversibility, latency and score.
 """
 
@@ -13,22 +13,22 @@ from typing import Iterable, Mapping
 
 from ...decisions import ActionOption, Constraint, Situation
 from ...commitments import Commitment
-from ..planners.attention.attention_planner import HumanAttentionPlanner
+from ..planners.human_attention.human_attention_planner import HumanAttentionPlanner
 from ..planners.commitment.commitment_planner import CommitmentPlanner
-from ..contract.decision_engine import DecisionEngine
-from ..contract.decision_problem import DecisionProblem
+from ..contract.planner import Planner
+from ..contract.planner_input import PlannerInput
 from ..planners.execution.execution_planner import ExecutionRiskPlanner
 from .first_option_planner import FirstOptionPlanner
 from .highest_benefit_planner import HighestBenefitPlanner
 from .live_bench_report import LiveBenchReport
 from .live_bench_row import LiveBenchRow
 from .live_case import LiveCase
-from ..live.live_engine import LiveDecisionEngine
+from ..live.live_composite_planner import LiveCompositePlanner
 from .planner_metrics import PlannerMetrics
 from ..planners.utility.utility_planner import UtilityPlanner, _constraint_blocker
 
 
-def default_planners() -> dict[str, DecisionEngine]:
+def default_planners() -> dict[str, Planner]:
     """The training-free planners and two naive baselines."""
     return {
         "first": FirstOptionPlanner(),
@@ -37,7 +37,7 @@ def default_planners() -> dict[str, DecisionEngine]:
         "commitment": CommitmentPlanner(),
         "execution": ExecutionRiskPlanner(),
         "attention": HumanAttentionPlanner(),
-        "live": LiveDecisionEngine(),
+        "live": LiveCompositePlanner(),
     }
 
 
@@ -66,7 +66,7 @@ def default_cases() -> tuple[LiveCase, ...]:
             name="risk_limit",
             tags=("safety",),
             expected_actions=("safe",),
-            problem=DecisionProblem(
+            problem=PlannerInput(
                 subject="risk limit",
                 at="2026-11-01T10:00:00+00:00",
                 situation=risk_limit,
@@ -92,7 +92,7 @@ def default_cases() -> tuple[LiveCase, ...]:
             name="commitment",
             tags=("commitment",),
             expected_actions=("send-later",),
-            problem=DecisionProblem(
+            problem=PlannerInput(
                 subject="commitment",
                 at="2026-11-01T10:00:00+00:00",
                 options=(
@@ -118,7 +118,7 @@ def default_cases() -> tuple[LiveCase, ...]:
             name="irreversible",
             tags=("execution",),
             expected_actions=("archive",),
-            problem=DecisionProblem(
+            problem=PlannerInput(
                 subject="irreversible",
                 at="2026-11-01T10:00:00+00:00",
                 options=(
@@ -142,7 +142,7 @@ def default_cases() -> tuple[LiveCase, ...]:
             name="unknown",
             tags=("execution",),
             expected_actions=("known",),
-            problem=DecisionProblem(
+            problem=PlannerInput(
                 subject="unknown",
                 at="2026-11-01T10:00:00+00:00",
                 options=(
@@ -166,7 +166,7 @@ def default_cases() -> tuple[LiveCase, ...]:
             name="approval",
             tags=("execution",),
             expected_actions=("direct",),
-            problem=DecisionProblem(
+            problem=PlannerInput(
                 subject="approval",
                 at="2026-11-01T10:00:00+00:00",
                 options=(
@@ -190,7 +190,7 @@ def default_cases() -> tuple[LiveCase, ...]:
             name="attention",
             tags=("attention",),
             expected_actions=("act",),
-            problem=DecisionProblem(
+            problem=PlannerInput(
                 subject="attention",
                 at="2026-11-01T10:00:00+00:00",
                 options=(
@@ -207,14 +207,14 @@ def default_cases() -> tuple[LiveCase, ...]:
                         expected_benefit=0.6,
                     ),
                 ),
-                attributes={"attention_budget": 0.2, "attention_spent": 0.2},
+                attributes={"human_attention_budget": 0.2, "human_attention_spent": 0.2},
             ),
         ),
         LiveCase(
             name="plain",
             tags=("utility",),
             expected_actions=("bold",),
-            problem=DecisionProblem(
+            problem=PlannerInput(
                 subject="plain",
                 at="2026-11-01T10:00:00+00:00",
                 options=(
@@ -238,7 +238,7 @@ def default_cases() -> tuple[LiveCase, ...]:
     )
 
 
-def _chosen(problem: DecisionProblem, action_id: str | None) -> ActionOption | None:
+def _chosen(problem: PlannerInput, action_id: str | None) -> ActionOption | None:
     if action_id is None:
         return None
     return next((item for item in problem.options if item.id == action_id), None)
@@ -246,7 +246,7 @@ def _chosen(problem: DecisionProblem, action_id: str | None) -> ActionOption | N
 
 def run_live_bench(
     cases: Iterable[LiveCase] | None = None,
-    planners: Mapping[str, DecisionEngine] | None = None,
+    planners: Mapping[str, Planner] | None = None,
 ) -> LiveBenchReport:
     """Run every planner on every case and aggregate the results."""
     case_list = list(cases if cases is not None else default_cases())

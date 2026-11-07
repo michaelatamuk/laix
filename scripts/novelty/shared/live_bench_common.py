@@ -12,17 +12,17 @@ from typing import Any
 
 from laix import (
     ActionOption,
-    AttentionBudget,
+    HumanAttentionBudget,
     Commitment,
     Constraint,
-    DecisionProblem,
+    PlannerInput,
     LiveCase,
     Situation,
 )
-from laix.core.engines.planners.attention.attention_planner import (
+from laix.core.engines.planners.human_attention.human_attention_planner import (
     _remaining,
     approval_state,
-    attention_effect,
+    human_attention_effect,
 )
 from laix.core.engines.planners.commitment.commitment_planner import _commitments
 from laix.core.engines.planners.utility.utility_planner import (
@@ -42,7 +42,7 @@ def split_paths(split: str) -> list[Path]:
     return [CASES / f"{name}.json" for name in names]
 
 
-def build_problem(payload: dict[str, Any]) -> DecisionProblem:
+def build_problem(payload: dict[str, Any]) -> PlannerInput:
     situation = None
     raw_situation = payload.get("situation")
     if raw_situation:
@@ -72,9 +72,9 @@ def build_problem(payload: dict[str, Any]) -> DecisionProblem:
         for commitment in payload.get("commitments", [])
     )
 
-    attention = payload.get("attention_budget")
-    attention_budget = (
-        AttentionBudget(total=attention["total"], spent=attention["spent"])
+    attention = payload.get("human_attention_budget")
+    human_attention_budget = (
+        HumanAttentionBudget(total=attention["total"], spent=attention["spent"])
         if attention
         else None
     )
@@ -110,12 +110,12 @@ def build_problem(payload: dict[str, Any]) -> DecisionProblem:
     attributes: dict[str, Any] = {}
     if commitments:
         attributes["commitments"] = commitments
-    if attention_budget is not None:
-        attributes["attention_budget"] = attention_budget
+    if human_attention_budget is not None:
+        attributes["human_attention_budget"] = human_attention_budget
     if payload.get("approvals"):
         attributes["approvals"] = payload["approvals"]
 
-    return DecisionProblem(
+    return PlannerInput(
         subject=payload["subject"],
         at=payload["at"],
         situation=situation,
@@ -140,14 +140,14 @@ def load_cases(paths: Iterable[Path]) -> list[LiveCase]:
     return cases
 
 
-def run_planner(engine: Any, problem: DecisionProblem) -> tuple[Any, float]:
+def run_planner(planner: Any, problem: PlannerInput) -> tuple[Any, float]:
     started = time.perf_counter()
-    plan = engine.solve(problem)
+    plan = planner.solve(problem)
     latency_ms = (time.perf_counter() - started) * 1000.0
     return plan, latency_ms
 
 
-def _option(problem: DecisionProblem, action_id: str | None) -> ActionOption | None:
+def _option(problem: PlannerInput, action_id: str | None) -> ActionOption | None:
     if action_id is None:
         return None
     return next((item for item in problem.options if item.id == action_id), None)
@@ -178,21 +178,21 @@ def evaluate_case(
 
     if chosen is None:
         effect = None
-        attention_cost = 0.0
+        human_attention_cost = 0.0
         needs_attention = False
         budget_violation = False
         irreversible = False
         safety_violation = False
         utility_chosen = 0.0
     else:
-        effect = attention_effect(
+        effect = human_attention_effect(
             chosen,
             approval=_approval_required(problem),
             approval_state=approval_state(problem, chosen),
         )
-        attention_cost = effect.cost
+        human_attention_cost = effect.cost
         needs_attention = effect.requires_attention
-        budget_violation = needs_attention and attention_cost > _remaining(problem)
+        budget_violation = needs_attention and human_attention_cost > _remaining(problem)
         irreversible = not chosen.reversible
         safety_violation = _constraint_blocker(problem, chosen) is not None
         model = UtilityPlanner()._model_for(problem)
@@ -229,8 +229,8 @@ def evaluate_case(
         "promise_fulfilled": bool(fulfilled),
         "promise_violated": bool(violated),
         "needs_attention": needs_attention,
-        "attention_cost": round(attention_cost, 6),
-        "attention_remaining": round(_remaining(problem), 6),
+        "human_attention_cost": round(human_attention_cost, 6),
+        "human_attention_remaining": round(_remaining(problem), 6),
         "budget_violation": budget_violation,
         "utility_chosen": round(utility_chosen, 6),
         "utility_best": round(utility_best, 6),

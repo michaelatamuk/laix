@@ -128,7 +128,7 @@ python -m laix.appkit.bench --live --json
 TypeScript exports the same benchmark as `runBench`, `runStreamBench`, `runPlannerBench`,
 `runLiveBench`, `suiteNames`, `allSuites`, `comparePlanners`, `seededScenarios`, `defaultCases` and
 `liveBenchSummary`. The planner simulation types are `FixedActionPlanner`, `RandomStep`,
-`PlannerScore` and `SimulatorOptions`.
+`PlannerBenchmarkRow` and `SimulatorOptions`.
 
 ## What it proves
 

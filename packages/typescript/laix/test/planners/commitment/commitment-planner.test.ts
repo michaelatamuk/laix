@@ -5,12 +5,12 @@ import {
   UtilityPlanner,
   UtilityModel,
 } from "../../../src/index.ts";
-import type { ActionOption, Commitment, DecisionProblem } from "../../../src/index.ts";
+import type { ActionOption, Commitment, PlannerInput } from "../../../src/index.ts";
 
 function problem(
   options: ActionOption[],
   commitments: Commitment[] = [],
-): DecisionProblem {
+): PlannerInput {
   return {
     subject: "choose",
     at: "2026-11-01T10:00:00Z",

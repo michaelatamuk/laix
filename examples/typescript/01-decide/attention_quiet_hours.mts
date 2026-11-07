@@ -1,8 +1,8 @@
 /** The same bill arrives at night. Quiet hours hold it for the digest. */
 
-import { Layer } from "../../../packages/typescript/laix/src/index.ts";
+import { DecisionClient } from "../../../packages/typescript/laix/src/index.ts";
 
-const [decision] = new Layer().decide({
+const [decision] = new DecisionClient().decide({
   subject: "electricity bill",
   at: "2026-11-01T23:30:00Z",
   signals: [

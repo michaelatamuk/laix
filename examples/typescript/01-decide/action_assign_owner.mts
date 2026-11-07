@@ -1,8 +1,8 @@
 /** An urgent alert assigns an owner; the assignment needs approval. */
 
-import { Layer } from "../../../packages/typescript/laix/src/index.ts";
+import { DecisionClient } from "../../../packages/typescript/laix/src/index.ts";
 
-const [decision] = new Layer().decide({
+const [decision] = new DecisionClient().decide({
   subject: "monitored area alert",
   at: "2026-11-01T10:00:00Z",
   situation: {

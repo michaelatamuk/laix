@@ -10,7 +10,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from laix import LiveDecisionEngine, UtilityPlanner
+from laix import LiveCompositePlanner, UtilityPlanner
 from shared.glue_baseline import GlueBaseline
 from shared.live_bench_common import bootstrap_ci, build_problem, run_planner
 
@@ -48,7 +48,7 @@ def main() -> int:
         return 2
 
     planners = {
-        "live": LiveDecisionEngine(),
+        "live": LiveCompositePlanner(),
         "glue": GlueBaseline(),
         "utility": UtilityPlanner(),
     }
@@ -56,8 +56,8 @@ def main() -> int:
     for payload in rows:
         problem = build_problem(payload)
         human = str(payload["human_action"])
-        for name, engine in planners.items():
-            plan, latency = run_planner(engine, problem)
+        for name, planner in planners.items():
+            plan, latency = run_planner(planner, problem)
             results.append(
                 {
                     "case": payload["id"],

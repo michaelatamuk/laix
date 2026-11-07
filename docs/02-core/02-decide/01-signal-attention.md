@@ -16,7 +16,7 @@ Signal attention and `HumanAttentionPlanner` work at different levels:
 
 ## Scope
 
-| Layer | Owns |
+| DecisionClient | Owns |
 |---|---|
 | **Task attention** | LAIX decides about the signals the host gives it for one task. |
 | **Product proactivity** | The product decides whether it may interrupt the user at all, across apps and tasks. |
@@ -44,7 +44,7 @@ decisions.
 | `reversible` | Whether the intent can be undone. |
 | `handover` | `Intent` used when the signal escalates. |
 
-### `Context`
+### `SignalContext`
 
 | Field | Meaning |
 |---|---|
@@ -55,17 +55,17 @@ decisions.
 | `min_severity` | The least severe signal that may surface. The default is `high`. |
 | `min_confidence` | The confidence floor. The default is `0.0`. |
 | `muted_kinds` | Signal kinds the user muted. |
-| `interruption_budget` | Maximum delivered signals in one cycle, or `None`. |
+| `signal_interruption_budget` | Maximum delivered signals in one cycle, or `None`. |
 | `sent` | Dedupe keys already delivered in the period. |
-| `feedback` | `Feedback` keyed by signal id. |
+| `feedback` | `SignalFeedback` keyed by signal id. |
 | `escalate_after_hours` | How long a critical signal may stay overdue before escalation. |
 | `learned` | Per-kind point adjustment supplied by the host or a bandit. |
 | `allow_act` | Allows `act` when the signal has a reversible intent. The default is `False`. |
 
-`interruption_budget` caps how many signal decisions are delivered in one `decide_attention` call.
-It is separate from the `AttentionBudget` that `HumanAttentionPlanner` uses to price an action.
+`signal_interruption_budget` caps how many signal decisions are delivered in one `decide_signal_attention` call.
+It is separate from the `HumanAttentionBudget` that `HumanAttentionPlanner` uses to price an action.
 
-### `Feedback`
+### `SignalFeedback`
 
 | Field | Meaning |
 |---|---|
@@ -77,13 +77,13 @@ It is separate from the `AttentionBudget` that `HumanAttentionPlanner` uses to p
 `accepted` never suppresses. `snoozed` suppresses while `until` is in the future; a missing or
 unreadable `until` keeps the signal silent. `dismissed`, `wrong` and `assigned` suppress.
 
-`Signal.group_key` and `Context.mode` are host metadata; the current gate set does not read them.
+`Signal.group_key` and `SignalContext.mode` are host metadata; the current gate set does not read them.
 
 ## The gate pipeline
 
 ```mermaid
 flowchart TD
-    signal[Signal + Context] --> ks{stopped?}
+    signal[Signal + SignalContext] --> ks{stopped?}
     ks -->|yes| wait_ks[wait · kill_switch]
     ks -->|no| muted{kind muted?}
     muted -->|yes| wait_m[wait · muted]
@@ -118,7 +118,7 @@ scan. The default result is `guide` with `worth_surfacing`.
 | 5 | `below_floor` | `rank(signal.severity) > rank(context.min_severity)` | `wait` | `below_floor` | false | false |
 | 6 | `already_sent` | `dedupe_key(signal, now)` in `context.sent` | `wait` | `already_sent` | false | false |
 | 7 | `quiet_hours` | quiet hours and severity is not `critical` | `wait` | `quiet_hours` | true | false |
-| 8 | `budget` | `interruption_budget` is set and `delivered >= budget` | `wait` | `budget` | false | false |
+| 8 | `budget` | `signal_interruption_budget` is set and `delivered >= budget` | `wait` | `budget` | false | false |
 | 9 | `overdue_escalation` | severity is `critical` and `escalate_after_hours` is set | `escalate` or `guide` | `overdue_escalation` or `worth_surfacing` | true | true |
 | 10 | `act` | `allow_act`, `signal.intent` is set and `signal.reversible` | `act` | `act` | true | true |
 | — | fallback | no gate fired | `guide` | `worth_surfacing` | true | true |
@@ -157,14 +157,14 @@ and no learned adjustment. The total is 84, printed as `guide worth_surfacing 84
 
 ## Output
 
-`decide_attention` returns one `AttentionDecision` per signal, in input order. It counts delivered
+`decide_signal_attention` returns one `SignalAttentionDecision` per signal, in input order. It counts delivered
 decisions while it walks the list, so the interruption budget applies within one call.
 
 | Field | Meaning |
 |---|---|
 | `signal_id` | The source signal. |
 | `verb` | The chosen verb. |
-| `score` | The total attention score. |
+| `score` | The total signal-attention score. |
 | `reason_code` | The gate that fired. |
 | `confidence` | The signal confidence. |
 | `deliver` | Whether the host should surface it now. |
@@ -178,7 +178,7 @@ decisions while it walks the list, so the interruption budget applies within one
 | `reversible` | Carried from the signal. |
 | `undo_hint` | `withdraw`, `cancel` or `None`. |
 
-`from_attention` converts it to the public `Decision`. The attention decision uses the reason code
+`from_signal_attention` converts it to the public `Decision`. The signal-attention decision uses the reason code
 as its rationale; the structured explanation is in `breakdown` and `attributes`.
 
 ## Helpers
@@ -198,7 +198,7 @@ as its rationale; the structured explanation is in `breakdown` and `attributes`.
 ```python
 from datetime import datetime, timezone
 
-from laix import Context, DecisionRequest, Signal, decide
+from laix import SignalContext, DecisionRequest, Signal, decide
 
 request = DecisionRequest(
     subject="electricity bill",
@@ -213,7 +213,7 @@ request = DecisionRequest(
             due="2026-11-02T09:00:00+00:00",
         ),
     ),
-    context=Context(
+    context=SignalContext(
         now=datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc),
         quiet_hours=("22:00", "06:00"),
         min_severity="medium",
@@ -230,10 +230,10 @@ The same bill at 23:30 returns `wait` with `quiet_hours`; the score is still 84,
 
 ## Conformance
 
-The attention vectors are shared by Python and TypeScript:
+The signal-attention vectors are shared by Python and TypeScript:
 
-- `packages/contracts/attention.v1.json` — decision cases;
-- `packages/contracts/attention-bench.v1.json` — outcome cases.
+- `packages/contracts/signal-attention.v1.json` — decision cases;
+- `packages/contracts/signal-attention-bench.v1.json` — outcome cases.
 
 `npm run conformance` runs the shared vectors. The LAIX-Bench `attention` suite runs the same
 behaviour through the app kit. See [Evaluation](../06-reference/01-evaluation.md).

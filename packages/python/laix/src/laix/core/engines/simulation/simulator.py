@@ -11,9 +11,9 @@ import random
 from typing import Callable, Iterable, Mapping, Sequence
 
 from ...support.time import iso
-from ..contract.decision_engine import DecisionEngine
-from ..contract.decision_problem import DecisionProblem
-from .planner_score import PlannerScore
+from ..contract.planner import Planner
+from ..contract.planner_input import PlannerInput
+from .planner_benchmark_row import PlannerBenchmarkRow
 from ..planners.mdp.mdp_model import MdpModel
 from .scenario import Scenario
 from .simulation_report import SimulationReport
@@ -50,7 +50,7 @@ class Simulator:
         self.random_step = random_step
         self.seed = seed
 
-    def run(self, planner: DecisionEngine) -> SimulationResult:
+    def run(self, planner: Planner) -> SimulationResult:
         state = self.start
         steps: list[SimulationStep] = []
         total = 0.0
@@ -60,7 +60,7 @@ class Simulator:
             else None
         )
         for index in range(self.horizon):
-            problem = DecisionProblem(
+            problem = PlannerInput(
                 subject=self.name,
                 at=iso(),
                 attributes={"state": state},
@@ -152,11 +152,11 @@ class Simulator:
 
 
 def compare_planners(
-    planners: Mapping[str, DecisionEngine],
+    planners: Mapping[str, Planner],
     scenarios: Iterable[Scenario],
 ) -> SimulationReport:
     """Run every planner on every scenario and report reward and optimality gap."""
-    rows: list[PlannerScore] = []
+    rows: list[PlannerBenchmarkRow] = []
     for scenario in scenarios:
         for name, planner in planners.items():
             result = scenario.run(planner)
@@ -171,7 +171,7 @@ def compare_planners(
                     6,
                 )
             rows.append(
-                PlannerScore(
+                PlannerBenchmarkRow(
                     planner=name,
                     scenario=scenario.name,
                     total_reward=result.total_reward,
@@ -238,7 +238,7 @@ def seeded_scenarios(
 
 
 __all__ = [
-    "PlannerScore",
+    "PlannerBenchmarkRow",
     "Scenario",
     "SimulationReport",
     "SimulationResult",

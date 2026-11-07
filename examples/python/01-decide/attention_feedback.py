@@ -10,9 +10,9 @@ The result is:
 
 from datetime import datetime, timezone
 
-from laix import Context, DecisionRequest, Feedback, Layer, Signal
+from laix import SignalContext, DecisionRequest, SignalFeedback, DecisionClient, Signal
 
-decision = Layer().decide(
+decision = DecisionClient().decide(
     DecisionRequest(
         subject="electricity bill",
         at="2026-11-01T10:00:00+00:00",
@@ -26,10 +26,10 @@ decision = Layer().decide(
                 due="2026-11-02T09:00:00+00:00",
             ),
         ),
-        context=Context(
+        context=SignalContext(
             now=datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc),
             quiet_hours=None,
-            feedback={"bill-1": Feedback(state="dismissed")},
+            feedback={"bill-1": SignalFeedback(state="dismissed")},
         ),
     )
 )[0]

@@ -9,9 +9,9 @@ The result is:
 - manager: the target.
 """
 
-from laix import DecisionRequest, EscalationPolicy, Layer, iso
+from laix import DecisionRequest, EscalationPolicy, DecisionClient, iso
 
-decision = Layer(policy=EscalationPolicy()).decide(
+decision = DecisionClient(policy=EscalationPolicy()).decide(
     DecisionRequest(
         subject="production incident",
         at=iso(),

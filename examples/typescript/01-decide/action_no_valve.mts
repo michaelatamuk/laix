@@ -1,8 +1,8 @@
 /** Water and electricity, with no safe valve to close. */
 
-import { Layer } from "../../../packages/typescript/laix/src/index.ts";
+import { DecisionClient } from "../../../packages/typescript/laix/src/index.ts";
 
-const [decision] = new Layer().decide({
+const [decision] = new DecisionClient().decide({
   subject: "water near electricity",
   at: "2026-11-01T10:00:00Z",
   situation: {

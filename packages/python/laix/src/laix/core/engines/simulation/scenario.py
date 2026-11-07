@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from ..contract.decision_engine import DecisionEngine
+from ..contract.planner import Planner
 from .simulation_result import SimulationResult
 
 if TYPE_CHECKING:
@@ -20,7 +20,7 @@ class Scenario:
     simulator: "Simulator"
     optimum: float | None = None
 
-    def run(self, planner: DecisionEngine) -> SimulationResult:
+    def run(self, planner: Planner) -> SimulationResult:
         result = self.simulator.run(planner)
         return SimulationResult(
             scenario=self.name,

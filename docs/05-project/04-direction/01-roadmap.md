@@ -3,7 +3,7 @@
 The planner roadmap is complete. Production depth and external validation remain. This page tracks
 what is done, what is next and what would count as a real step forward.
 
-## Planners and engines
+## Planners and composite planners
 
 | Piece | Status |
 |---|---|
@@ -21,7 +21,7 @@ what is done, what is next and what would count as a real step forward.
 | Calibration | done |
 | Model learning | done |
 | `POMDPPlanner` | done |
-| `LiveDecisionEngine` (composition engine) | done |
+| `LiveCompositePlanner` (composite planner) | done |
 | TypeScript parity | done |
 | Continuity benchmark | done |
 | External validation | open |

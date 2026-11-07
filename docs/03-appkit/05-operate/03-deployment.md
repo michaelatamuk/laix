@@ -42,7 +42,7 @@ retention policy.
 - **Commitments** - load the open ledger and its due times and dependencies.
 - **Execution** - register idempotency keys, undo handlers and compensation steps. See
   [Execution and recovery](../03-execute/01-execution-and-recovery.md).
-- **Model** - pin the model and planner version; keep it behind an `EnginePolicy`.
+- **Model** - pin the model and planner version; keep it behind an `PlannerPolicy`.
 - **Time** - use one clock, one timezone policy and ISO-8601 inputs.
 - **Retention** - define what records, traces and outcomes are kept and for how long.
 

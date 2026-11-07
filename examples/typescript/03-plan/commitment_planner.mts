@@ -4,7 +4,7 @@ import {
 import type {
   ActionOption,
   Commitment,
-  DecisionProblem,
+  PlannerInput,
 } from "../../../packages/typescript/laix/src/index.ts";
 
 const commitments: Commitment[] = [
@@ -32,7 +32,7 @@ const options: ActionOption[] = [
   },
 ];
 
-const problem: DecisionProblem = {
+const problem: PlannerInput = {
   subject: "choose",
   at: "2026-11-01T10:00:00Z",
   options,

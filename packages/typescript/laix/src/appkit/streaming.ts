@@ -3,7 +3,7 @@ import type { Decision, DecisionRequest, Trace } from "../core/contracts.ts";
 import type { StreamCheckpointStore } from "./checkpoint.ts";
 import { TumblingWindow, type WindowBatch } from "./window.ts";
 import { DecisionTimeline } from "./decision-timeline.ts";
-import { AttentionBudget } from "../core/planners/attention/attention-planner.ts";
+import { HumanAttentionBudget } from "../core/planners/human-attention/human-attention-planner.ts";
 import { ManualClock } from "./manual-clock.ts";
 import { StreamStats } from "./stream-stats.ts";
 
@@ -36,7 +36,7 @@ export interface StreamSessionOptions {
   trace?: boolean;
   recorder?: (decision: Decision) => void;
   timeline?: DecisionTimeline;
-  attentionBudget?: AttentionBudget;
+  humanAttentionBudget?: HumanAttentionBudget;
   clock?: Clock;
   idFactory?: () => string;
 }
@@ -57,7 +57,7 @@ export class StreamSession {
   private readonly traceEnabled: boolean;
   private readonly recorder: ((decision: Decision) => void) | null;
   private timeline: DecisionTimeline | null;
-  attentionBudget: AttentionBudget | null;
+  humanAttentionBudget: HumanAttentionBudget | null;
   private clock: Clock;
   private readonly items: Decision[] = [];
   private waiters: Array<() => void> = [];
@@ -110,7 +110,7 @@ export class StreamSession {
     this.traceEnabled = options.trace ?? true;
     this.recorder = options.recorder ?? null;
     this.timeline = options.timeline ?? null;
-    this.attentionBudget = options.attentionBudget ?? null;
+    this.humanAttentionBudget = options.humanAttentionBudget ?? null;
     this.clock = options.clock ?? (() => new Date());
   }
 
@@ -259,7 +259,7 @@ export class StreamSession {
       pending: this.items.map((item) => ({ ...item })),
       traces: [...this.traces.values()],
       timeline: this.timeline ? this.timeline.toDict() : null,
-      attentionBudget: this.attentionBudget ? this.attentionBudget.toDict() : null,
+      humanAttentionBudget: this.humanAttentionBudget ? this.humanAttentionBudget.toDict() : null,
     };
   }
 
@@ -294,9 +294,9 @@ export class StreamSession {
         snapshot.timeline as { decisions?: Decision[] },
       );
     }
-    if (snapshot.attentionBudget && typeof snapshot.attentionBudget === "object") {
-      this.attentionBudget = AttentionBudget.fromDict(
-        snapshot.attentionBudget as { total?: number; spent?: number },
+    if (snapshot.humanAttentionBudget && typeof snapshot.humanAttentionBudget === "object") {
+      this.humanAttentionBudget = HumanAttentionBudget.fromDict(
+        snapshot.humanAttentionBudget as { total?: number; spent?: number },
       );
     }
     const stats = snapshot.stats;
@@ -553,10 +553,10 @@ export class StreamSession {
       }
       this.recorder?.(decision);
       this.timeline?.add(decision);
-      if (this.attentionBudget) {
-        let cost = Number(decision.attributes?.attention_cost ?? 0);
+      if (this.humanAttentionBudget) {
+        let cost = Number(decision.attributes?.human_attention_cost ?? 0);
         if (!cost && decision.requiresApproval) cost = 0.5;
-        this.attentionBudget.spend(cost);
+        this.humanAttentionBudget.spend(cost);
       }
     }
   }

@@ -1,19 +1,19 @@
-/** The eight packaged policy packs behind the same Layer interface. */
+/** The eight packaged policy packs behind the same DecisionClient interface. */
 import {
   ActivePerceptionPolicy,
   AllocationPolicy,
   EscalationPolicy,
-  Layer,
+  DecisionClient,
   NegotiationPolicy,
   PreferenceElicitationPolicy,
   ReplanningPolicy,
   SafetyConstrainedPolicy,
   VerificationPolicy,
 } from "../../../packages/typescript/laix/src/index.ts";
-import type { Policy } from "../../../packages/typescript/laix/src/index.ts";
+import type { DecisionPolicy } from "../../../packages/typescript/laix/src/index.ts";
 
 const at = "2026-11-01T10:00:00Z";
-const cases: Array<[Policy, Record<string, unknown>]> = [
+const cases: Array<[DecisionPolicy, Record<string, unknown>]> = [
   [new ActivePerceptionPolicy(), { uncertainty: 0.8, observations: [{ id: "look-1", information_gain: 0.7, cost: 0.1 }] }],
   [new SafetyConstrainedPolicy(), { risk_limit: 0.2, options: [{ id: "valve", benefit: 0.9, risk: 0.1 }] }],
   [new ReplanningPolicy(), { plans: [{ id: "plan-fast", success_probability: 0.8, cost: 1 }], min_success: 0.7, max_cost: 5 }],
@@ -25,6 +25,6 @@ const cases: Array<[Policy, Record<string, unknown>]> = [
 ];
 
 for (const [policy, attributes] of cases) {
-  const [decision] = new Layer({ policy }).decide({ subject: "one case", at, attributes });
+  const [decision] = new DecisionClient({ policy }).decide({ subject: "one case", at, attributes });
   console.log(policy.name, decision.verb, decision.reasonCode, decision.actionId);
 }

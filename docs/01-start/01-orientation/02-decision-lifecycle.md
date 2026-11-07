@@ -9,7 +9,7 @@ moment -> attention -> decision -> execution -> outcome -> learning -> next deci
 | Stage | What happens | LAIX piece | Owner |
 |---|---|---|---|
 | **Moment** | Signals, context, situation and options arrive. | `DecisionRequest` | Host |
-| **Attention** | The runtime decides what matters now. | `decide_attention` | LAIX |
+| **Attention** | The runtime decides what matters now. | `decide_signal_attention` | LAIX |
 | **Decision** | One move is chosen with a reason, confidence and trail. | policies, planners, `Decision` | LAIX |
 | **Execution** | The host acts; approval, receipts and recovery stay explicit. | `ExecutionBridge`, `Saga` | Host, with the app kit if chosen |
 | **Outcome** | The host measures what happened. | `Outcome`, stores | Host |
@@ -23,9 +23,9 @@ The core is stateless. The host passes the current state into each request.
 A task has a promise due, an irreversible action and a tight attention budget.
 
 1. The request carries the options, the open promise, the execution facts and the budget.
-2. `LiveDecisionEngine` scores each option on utility, commitment, execution risk and attention.
+2. `LiveCompositePlanner` scores each option on utility, commitment, execution risk and attention.
 3. It chooses the option that keeps the promise, avoids the irreversible action and respects the
-   budget. The plan carries the full breakdown.
+   budget. The planner result carries the full breakdown.
 4. The host executes it through its own skill, records the receipt and measures the outcome.
 5. The next decision can use the outcome, the calibration report and the decision timeline.
 
@@ -48,7 +48,7 @@ That hand-off is [decision continuity](../../02-core/04-continuity/01-decision-c
 
 | You have | Use |
 |---|---|
-| One request and one answer | `decide` or `Layer.decide` |
+| One request and one answer | `decide` or `DecisionClient.decide` |
 | A stream of events over time | `StreamSession` |
 | A decision that changes the world | `ExecutionBridge` |
 | State that must survive a restart | `StateStore` and `StreamCheckpointStore` |

@@ -6,7 +6,7 @@ import pytest
 
 from laix import (
     ActionOption,
-    DecisionProblem,
+    PlannerInput,
     ExecutionRiskPlanner,
     ExecutionEffect,
     ExecutionReceipt,
@@ -15,8 +15,8 @@ from laix import (
 )
 
 
-def _problem(*options: ActionOption, **attributes: object) -> DecisionProblem:
-    return DecisionProblem(
+def _problem(*options: ActionOption, **attributes: object) -> PlannerInput:
+    return PlannerInput(
         subject="choose",
         at="2026-11-01T10:00:00+00:00",
         options=options,

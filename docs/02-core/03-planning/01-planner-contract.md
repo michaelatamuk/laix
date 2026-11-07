@@ -5,15 +5,15 @@ A planner adds a formal choice over the options the host already supplied.
 
 The contract has three pieces:
 
-- `DecisionProblem` goes in;
-- `Plan` comes out;
-- `DecisionEngine` is the `solve` interface.
+- `PlannerInput` goes in;
+- `PlannerResult` comes out;
+- `Planner` is the `solve` interface.
 
-`EnginePolicy` adapts a planner or engine to the policy interface.
+`PlannerPolicy` adapts a planner or composite planner to the policy interface.
 
-## `DecisionProblem`
+## `PlannerInput`
 
-`DecisionProblem` is the planner input. `to_problem` projects a `DecisionRequest` onto it.
+`PlannerInput` is the planner input. `to_planner_input` projects a `DecisionRequest` onto it.
 
 | Field | Type | Meaning |
 |---|---|---|
@@ -22,16 +22,16 @@ The contract has three pieces:
 | `situation` | `Situation \| None` | Observations, beliefs, goals and constraints. |
 | `options` | `tuple[ActionOption, ...]` | Actions the planner may choose. |
 | `signals` | `tuple` | Signals, when the planner needs them. |
-| `context` | `Context \| None` | Signal context, when the planner needs it. |
+| `context` | `SignalContext \| None` | Signal context, when the planner needs it. |
 | `attributes` | `dict` | Planner-specific state and inputs. |
 
 The projection carries `subject`, `at`, `situation`, `options`, `signals`, `context` and
 `attributes` from the request. Target, recipients, deadline and confidence belong to the delivery
 envelope; the planner works on the problem.
 
-## `Plan`
+## `PlannerResult`
 
-`Plan` is the planner answer, before it becomes a `Decision`.
+`PlannerResult` is the planner answer, before it becomes a `Decision`.
 
 | Field | Type | Meaning |
 |---|---|---|
@@ -48,75 +48,75 @@ envelope; the planner works on the problem.
 | `alternatives` | `tuple[dict, ...]` | Options that lost and why. |
 | `attributes` | `dict` | Planner-specific breakdown. |
 
-A planner returns one `Plan`. `EnginePolicy` converts it into one `Decision`.
+A planner returns one `PlannerResult`. `PlannerPolicy` converts it into one `Decision`.
 
-## `DecisionEngine`
+## `Planner`
 
 ```python
-class DecisionEngine(Protocol):
-    def solve(self, problem: DecisionProblem) -> Plan: ...
+class Planner(Protocol):
+    def solve(self, problem: PlannerInput) -> PlannerResult: ...
 ```
 
-Every built-in planner and `LiveDecisionEngine` implements this method. An external planner can
+Every built-in planner and `LiveCompositePlanner` implements this method. An external planner can
 implement it too.
 
-## `EnginePolicy`
+## `PlannerPolicy`
 
-`EnginePolicy` is the bridge between the two shapes:
+`PlannerPolicy` is the bridge between the two shapes:
 
 ```python
-from laix import DecisionProblem, EnginePolicy, Plan
+from laix import PlannerInput, PlannerPolicy, PlannerResult
 
-policy = EnginePolicy(engine)
+policy = PlannerPolicy(planner)
 decision = policy.decide(request)[0]
 ```
 
 | Member | Meaning |
 |---|---|
-| `engine` | The `DecisionEngine` instance. |
-| `name` | The policy name; `"engine.v1"` by default. |
+| `planner` | The `Planner` instance. |
+| `name` | The policy name; `"planner.v1"` by default. |
 | `version` | Same as `name`. |
 | `decide(request, *, decision_id="", trace_id="")` | Projects, solves and converts. |
 
-The conversion is `to_decision(plan, request, ...)`:
+The conversion is `to_decision(planner_result, request, ...)`:
 
-- copies the plan fields onto `Decision`;
-- sets `policy_version` to the `EnginePolicy` name;
-- merges `request.attributes` and `plan.attributes`, with the plan winning on a key collision.
+- copies the planner result fields onto `Decision`;
+- sets `policy_version` to the `PlannerPolicy` name;
+- merges `request.attributes` and `planner_result.attributes`, with the planner result winning on a key collision.
 
-`to_problem` and `to_decision` are public. An adapter that calls an engine directly can use them, so
-every engine path returns the same `Decision`.
+`to_planner_input` and `to_decision` are public. An adapter that calls a composite planner directly can use them, so
+every planner path returns the same `Decision`.
 
 ## Sequence
 
 ```mermaid
 sequenceDiagram
     participant Host
-    participant Policy as EnginePolicy
-    participant Engine as DecisionEngine
+    participant DecisionPolicy as PlannerPolicy
+    participant CompositePlanner as Planner
     participant Convert as to_decision
-    Host->>Policy: decide(DecisionRequest)
-    Policy->>Policy: to_problem(request)
-    Policy->>Engine: solve(DecisionProblem)
-    Engine-->>Policy: Plan
-    Policy->>Convert: to_decision(plan, request)
-    Convert-->>Policy: Decision
-    Policy-->>Host: [Decision]
+    Host->>DecisionPolicy: decide(DecisionRequest)
+    DecisionPolicy->>DecisionPolicy: to_planner_input(request)
+    DecisionPolicy->>CompositePlanner: solve(PlannerInput)
+    CompositePlanner-->>DecisionPolicy: PlannerResult
+    DecisionPolicy->>Convert: to_decision(planner_result, request)
+    Convert-->>DecisionPolicy: Decision
+    DecisionPolicy-->>Host: [Decision]
 ```
 
 ## External planners
 
 An external planner can be a classifier, an optimizer or a model service. Wrap it in a thin adapter
-that returns a `Plan`:
+that returns a `PlannerResult`:
 
 ```python
-from laix import DecisionProblem, EnginePolicy, Plan
+from laix import PlannerInput, PlannerPolicy, PlannerResult
 
 class MyPlanner:
     name = "my-planner.v1"
 
-    def solve(self, problem: DecisionProblem) -> Plan:
-        return Plan(
+    def solve(self, problem: PlannerInput) -> PlannerResult:
+        return PlannerResult(
             verb="act",
             confidence=0.88,
             reason_code="my_choice",
@@ -125,10 +125,10 @@ class MyPlanner:
             score=0.91,
         )
 
-decision = EnginePolicy(MyPlanner()).decide(request)[0]
+decision = PlannerPolicy(MyPlanner()).decide(request)[0]
 ```
 
-The adapter owns the mapping from the external output to the `Plan` fields. The policy owns the
+The adapter owns the mapping from the external output to the `PlannerResult` fields. The policy owns the
 conversion to `Decision`.
 
 ## Simulator
@@ -142,7 +142,7 @@ on the same trace.
 | `Scenario` | `name`, `simulator`, `optimum`; `run(planner)` |
 | `SimulationStep` | `step`, `state`, `action`, `reward`, `next_state` |
 | `SimulationResult` | `scenario`, `steps`, `total_reward`, `final_state`; `summary()` |
-| `PlannerScore` | `planner`, `scenario`, `total_reward`, `steps`, `optimality_gap` |
+| `PlannerBenchmarkRow` | `planner`, `scenario`, `total_reward`, `steps`, `optimality_gap` |
 | `SimulationReport` | `rows`; `summary()`, `best()`, `to_dict()` |
 
 `SimulationReport.summary()` groups by planner and returns `runs`, `mean_reward` and `mean_gap`.
@@ -183,28 +183,28 @@ It is reported only when the scenario declares an optimum. Without an optimum, `
 ## Design rules
 
 1. A planner scores the options the host offers.
-2. A planner returns one `Plan` and the same shape as every other planner.
+2. A planner returns one `PlannerResult` and the same shape as every other planner.
 3. A planner is deterministic unless the host supplies a model or a random source.
 4. Hard limits gate the choice. A planner may also block on its own concern.
 5. A planner result is explainable: chosen option, alternatives, score and reason.
-6. `LiveDecisionEngine` composes planners; it does not replace them.
+6. `LiveCompositePlanner` composes planners; it does not replace them.
 7. A planner can be replaced without changing the request or the response handling.
 
 ## Where the code lives
 
 | Path | Contents |
 |---|---|
-| `core/engines/contract/decision_problem.py` | `DecisionProblem` |
-| `core/engines/contract/plan.py` | `Plan` |
-| `core/engines/contract/decision_engine.py` | `DecisionEngine` |
-| `core/engines/contract/engine.py` | `EnginePolicy`, `to_problem`, `to_decision` |
+| `core/engines/contract/planner_input.py` | `PlannerInput` |
+| `core/engines/contract/planner_result.py` | `PlannerResult` |
+| `core/engines/contract/planner.py` | `Planner` |
+| `core/engines/contract/planner_policy.py` | `PlannerPolicy`, `to_planner_input`, `to_decision` |
 | `core/engines/simulation/` | simulator, scenarios and report |
 | `core/engines/planners/` | the six built-in planners |
-| `core/engines/live/` | the composition engine |
+| `core/engines/live/` | the composite planner |
 
 ## Related
 
-- [Policies](../02-decide/03-policies.md) — `EnginePolicy` as a policy.
+- [Policies](../02-decide/03-policies.md) — `PlannerPolicy` as a policy.
 - [Live planners](02-live-planners.md) — the four live planners.
-- [Live decision engine](03-live-decision-engine.md) — composition.
+- [Live composite planner](03-live-composite-planner.md) — composition.
 - [Model-based planners](04-model-based-planners.md) — MDP and POMDP.

@@ -22,7 +22,7 @@ result needs no live cluster and no API key to verify.
 - **Input:** the scenario brief and frozen fixtures only. The model never sees the rubric.
 - **Baseline:** the model's own top remediation.
 - **LAIX chooser:** the model proposes four remediation candidates with expected benefit,
-  reversibility, risk, approval need and destructiveness. `LiveDecisionEngine` always chooses among
+  reversibility, risk, approval need and destructiveness. `LiveCompositePlanner` always chooses among
   them. When it chooses escalation or further investigation, the final answer includes the approved
   remediation path.
 - **LAIX guardrail:** keep the model's top remediation when it is already safe; override only

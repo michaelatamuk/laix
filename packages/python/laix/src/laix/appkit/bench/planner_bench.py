@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ...core.engines.contract.engine import DecisionProblem, Plan
+from ...core.engines.contract.planner_policy import PlannerInput, PlannerResult
 from ...core.engines.planners.mdp.mdp_planner import MDPPlanner, MdpModel, MdpTransition
 from ...core.engines.simulation.simulator import Scenario, SimulationReport, Simulator, compare_planners
 
@@ -13,8 +13,8 @@ class FixedActionPlanner:
     def __init__(self, action: str) -> None:
         self.action = action
 
-    def solve(self, problem: DecisionProblem) -> Plan:
-        return Plan(
+    def solve(self, problem: PlannerInput) -> PlannerResult:
+        return PlannerResult(
             verb="act",
             confidence=1.0,
             reason_code="fixed_action",

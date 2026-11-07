@@ -1,7 +1,7 @@
 """Decision-continuity episode benchmark v0.
 
 Each episode is a short sequence of decisions. The same options are shown to a stateless
-utility planner and to LiveDecisionEngine. Only the stateful planner sees the open commitment,
+utility planner and to LiveCompositePlanner. Only the stateful planner sees the open commitment,
 the attention budget, the approval state and the receipt state.
 
 The reference policy is hand-written and deterministic. It is the ground truth for the episode.
@@ -16,10 +16,10 @@ from pathlib import Path
 
 from laix import (
     ActionOption,
-    AttentionBudget,
+    HumanAttentionBudget,
     Commitment,
-    DecisionProblem,
-    LiveDecisionEngine,
+    PlannerInput,
+    LiveCompositePlanner,
     UtilityPlanner,
 )
 
@@ -218,7 +218,7 @@ def apply_action(state: State, action_id: str, episode: Episode) -> None:
         state.budget_violations += 1
 
 
-def problem_for(episode: Episode, state: State) -> DecisionProblem:
+def problem_for(episode: Episode, state: State) -> PlannerInput:
     due_minute = (state.step + 1) * 60
     due = f"2026-11-01T10:{due_minute:02d}:00+00:00"
     attributes: dict[str, object] = {
@@ -227,12 +227,12 @@ def problem_for(episode: Episode, state: State) -> DecisionProblem:
         )
         if state.c1_open
         else (),
-        "attention_budget": AttentionBudget(total=episode.budget_total, spent=state.budget_spent),
+        "human_attention_budget": HumanAttentionBudget(total=episode.budget_total, spent=state.budget_spent),
         "approvals": {"act": state.approval},
     }
     if state.receipt in {"unknown", "failed"}:
         attributes["execution_state"] = {"act": state.receipt}
-    return DecisionProblem(
+    return PlannerInput(
         subject=episode.id,
         at=f"2026-11-01T10:{state.step * 60:02d}:00+00:00",
         options=options(state),
@@ -259,11 +259,11 @@ def run_episode(episode: Episode) -> dict[str, object]:
         apply_action(reference, ref, episode)
 
         # The stateless planner gets the same static options every step and no episode state.
-        bare = DecisionProblem(subject=episode.id, at="2026-11-01T10:00:00+00:00", options=base_options())
+        bare = PlannerInput(subject=episode.id, at="2026-11-01T10:00:00+00:00", options=base_options())
         stateless_plan = UtilityPlanner().solve(bare)
         apply_action(stateless, effective_action(stateless_plan, stateless), episode)
 
-        stateful_plan = LiveDecisionEngine().solve(problem_for(episode, stateful))
+        stateful_plan = LiveCompositePlanner().solve(problem_for(episode, stateful))
         apply_action(stateful, effective_action(stateful_plan, stateful), episode)
 
     def metrics(state: State) -> dict[str, object]:

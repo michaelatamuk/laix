@@ -3,7 +3,7 @@
 Runs every built-in planner — plus the two naive baselines — on the seven
 standard live-bench cases and prints which planner got each case right.
 
-The key result: single-concern planners win their own cases; LiveDecisionEngine
+The key result: single-concern planners win their own cases; LiveCompositePlanner
 wins every case because it integrates commitment, execution risk and attention
 in one score.
 """
@@ -71,6 +71,6 @@ print("Aggregate (accuracy = correct / cases with expected action)")
 print(report.summary())
 print()
 print(
-    "Result: LiveDecisionEngine wins every case. Single-concern planners "
+    "Result: LiveCompositePlanner wins every case. Single-concern planners "
     "win their own cases but fail when two or more concerns fire at once."
 )

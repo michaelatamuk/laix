@@ -1,7 +1,7 @@
 # Decision continuity
 
 A LAIX decision is one step in a sequence. The next decision sees what the previous one left behind:
-promises, attention budget, approvals, revisions, receipts and outcomes. Decision continuity is the
+promises, human-attention budget, approvals, revisions, receipts and outcomes. Decision continuity is the
 property that each step starts from the current state instead of from zero.
 
 This is what makes LAIX a runtime rather than a one-shot classifier. The core stays stateless; the
@@ -12,7 +12,7 @@ host passes the current state into the next request.
 | State | Shape | Where it lives |
 |---|---|---|
 | Open commitments | `Commitment`, `CommitmentLedger` | core commitments and the host store |
-| Attention budget | `AttentionBudget` | decision attributes |
+| Human-attention budget | `HumanAttentionBudget` | decision attributes |
 | Approval state | `Decision.requires_approval`, `DecisionRecord` | the decision and the audit record |
 | Prior decisions and revisions | `DecisionTimeline` | app-kit streaming |
 | Receipts and recovery | `ExecutionBridge`, `Saga` | app-kit runtime |
@@ -37,15 +37,15 @@ sequenceDiagram
 ```
 
 1. The previous decision may fulfill, violate or create a commitment.
-2. It may spend part of a shared attention budget.
+2. It may spend part of a shared human-attention budget.
 3. It may require approval or leave an execution receipt.
 4. It may supersede an earlier decision and produce a revision.
 5. Its outcome may update a calibration report or a learner.
 
 The next `DecisionRequest` carries the commitments, budget, approvals and receipts that matter. The
-planner receives them in `DecisionProblem.attributes` and scores the current options against that
-state. `LiveDecisionEngine` does this for utility, commitments, execution risk and attention in one
-plan.
+planner receives them in `PlannerInput.attributes` and scores the current options against that
+state. `LiveCompositePlanner` does this for utility, commitments, execution risk and attention in one
+planner result.
 
 ## A sequence
 
@@ -71,7 +71,7 @@ LAIX evaluates the state and returns the decision. The host and the app kit own 
 ## Why it matters
 
 The [continuity benchmark](02-continuity-benchmark.md) measures the mechanism: 12 episodes, 60
-decisions, a stateless planner and a stateful engine.
+decisions, a stateless planner and a stateful composite planner.
 
 - A one-shot classifier answers one question. LAIX carries the consequences into the next decision.
 - An orchestration framework carries state. LAIX adds decision semantics to that state.

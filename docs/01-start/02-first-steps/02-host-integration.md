@@ -28,7 +28,7 @@ from laix import decide
 decision = decide(request)[0]
 ```
 
-If the host also wants the runtime, execution and records, use `Layer` from the app kit. The
+If the host also wants the runtime, execution and records, use `DecisionClient` from the app kit. The
 examples below use the app kit because they show execution and audit. See
 [Integration](../../03-appkit/01-build/01-integration.md).
 
@@ -139,7 +139,7 @@ proposal lifecycles are in
 | User interface | host |
 | Decision shape and policies | LAIX |
 | Task perception contracts | LAIX |
-| Policy bench and parity | LAIX |
+| DecisionPolicy bench and parity | LAIX |
 
 ## Try it
 

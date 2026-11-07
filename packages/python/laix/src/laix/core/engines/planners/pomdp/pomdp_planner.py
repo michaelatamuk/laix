@@ -11,7 +11,7 @@ import math
 from typing import Any, Iterable, Mapping
 
 from ....support.values import clamp
-from ...contract.engine import DecisionProblem, Plan
+from ...contract.planner_policy import PlannerInput, PlannerResult
 from ..mdp.mdp_model import MdpModel
 from ..mdp.mdp_planner import value_iteration
 from .observation_probability import ObservationProbability
@@ -237,7 +237,7 @@ class POMDPPlanner:
         self.belief = dict(belief or {})
         self.version = self.name
 
-    def solve(self, problem: DecisionProblem) -> Plan:
+    def solve(self, problem: PlannerInput) -> PlannerResult:
         attributes = problem.attributes
         belief = self._resolve_belief(attributes)
         horizon = int(attributes.get("horizon", self.model.horizon))
@@ -258,7 +258,7 @@ class POMDPPlanner:
             key=lambda item: (-item[1], item[0]),
         )
         if not rows:
-            return Plan(
+            return PlannerResult(
                 verb="wait",
                 confidence=1.0,
                 reason_code="no_action",
@@ -268,7 +268,7 @@ class POMDPPlanner:
 
         best_action, best_value = rows[0]
         second = rows[1][1] if len(rows) > 1 else None
-        return Plan(
+        return PlannerResult(
             verb="act",
             confidence=self._confidence(best_value, second),
             reason_code="pomdp_plan",

@@ -28,7 +28,7 @@ approvals, promises, human attention or auditability matter.
 
 - [Install](#install)
 - [One decision](#one-decision)
-- [The live decision engine](#the-live-decision-engine)
+- [The live composite planner](#the-live-composite-planner)
 - [How it works](#how-it-works)
 - [Decision continuity](#decision-continuity)
 - [Results](#results)
@@ -63,7 +63,7 @@ See the [quickstart](docs/01-start/02-first-steps/01-quickstart.md) for the full
 ```python
 from datetime import datetime, timezone
 
-from laix import Context, DecisionRequest, Signal, decide
+from laix import SignalContext, DecisionRequest, Signal, decide
 
 decision = decide(
     DecisionRequest(
@@ -72,7 +72,7 @@ decision = decide(
         signals=(
             Signal(id="s-1", kind="deadline", severity="high", confidence=0.9),
         ),
-        context=Context(
+        context=SignalContext(
             now=datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc),
             quiet_hours=None,
         ),
@@ -85,9 +85,9 @@ print(decision.verb, decision.reason_code, decision.confidence)
 TypeScript:
 
 ```ts
-import { Layer } from "laix";
+import { DecisionClient } from "laix";
 
-const [decision] = new Layer().decide({
+const [decision] = new DecisionClient().decide({
   subject: "one decision",
   at: "2026-11-01T10:00:00Z",
   signals: [{ id: "s-1", kind: "deadline", severity: "high", confidence: 0.9 }],
@@ -98,20 +98,20 @@ const [decision] = new Layer().decide({
 Every decision carries a verb, a reason code, confidence, an action and the identifiers that
 connect it to the audit trail.
 
-## The live decision engine
+## The live composite planner
 
 **Live** means the decision is made inside the running loop, at event time, with the current state.
 The core stays stateless: the host supplies commitments, attention budget, approvals and execution
 state with each request.
 
-`LiveDecisionEngine` is the composition engine. It scores the options on utility, promises, execution
-risk and human attention, then returns one plan with the full breakdown.
+`LiveCompositePlanner` is the composite planner. It scores the options on utility, promises, execution
+risk and human attention, then returns one planner result with the full breakdown.
 
 ```python
-from laix import ActionOption, Commitment, DecisionProblem, LiveDecisionEngine
+from laix import ActionOption, Commitment, PlannerInput, LiveCompositePlanner
 
-plan = LiveDecisionEngine().solve(
-    DecisionProblem(
+planner_result = LiveCompositePlanner().solve(
+    PlannerInput(
         subject="send the report",
         at="2026-11-01T10:00:00+00:00",
         options=(
@@ -143,10 +143,10 @@ plan = LiveDecisionEngine().solve(
     )
 )
 
-print(plan.action_id, plan.reason_code)
+print(planner_result.action_id, planner_result.reason_code)
 ```
 
-The plan prefers the reversible, promise-keeping option and keeps the commitment, execution and
+The planner result prefers the reversible, promise-keeping option and keeps the commitment, execution and
 attention scores. See the full
 [conflict scenario](examples/python/03-plan/conflict_scenario.py).
 
@@ -187,7 +187,7 @@ lifecycle around them.
 | Decision continuity | commitments, budget, approvals, revisions and outcomes carried into the next decision |
 | Policies | action, safety, replanning, allocation, negotiation, preference, verification and escalation |
 | Planners | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner` and `POMDPPlanner` |
-| Live decision engine | `LiveDecisionEngine`: composes the four live scores into one plan |
+| Live composite planner | `LiveCompositePlanner`: composes the four live scores into one planner result |
 | Learning | rewards, bandits, causal attribution, calibration and decision calibration |
 | Streaming and execution | event time, checkpoints, timeline, receipts, recovery and records |
 | App kit | stores, platform, delivery, live context and bench |
@@ -211,26 +211,26 @@ comparison protocol. A measured chooser swap needs TypeSafe API access.
   host owns storage and [decision continuity](docs/02-core/04-continuity/01-decision-continuity.md) stays explicit
   rather than hidden in a memory layer.
 - **The integration is the decision.** Utility, commitments, execution risk and attention are scored
-  in one plan, not by separate policies that can silently cancel each other out.
+  in one planner result, not by separate policies that can silently cancel each other out.
 - **The reason is part of the result.** Every decision carries its reason code, score breakdown and
   trace, so audit is produced at decision time, not reconstructed from logs. The mapping to EU
   Product Liability Directive 2024/2853 is in
   [eu-liability.md](docs/06-research/05-governance/eu-liability.md).
 
-The proof object is `LiveDecisionEngine`: one plan that keeps a promise, avoids an irreversible action
+The proof object is `LiveCompositePlanner`: one planner result that keeps a promise, avoids an irreversible action
 and respects an attention budget. See [comparators](docs/06-research/01-positioning/comparators.md)
 and the [evidence map](docs/06-research/02-evaluation/evidence-map.md).
 
 ## Results
 
-`LiveDecisionEngine` scores **30/30** on the frozen 30-case test split of the 120-case corpus and
+`LiveCompositePlanner` scores **30/30** on the frozen 30-case test split of the 120-case corpus and
 **6/6** on the conflict cases. The hand-built glue baseline scores 28/30; the **+6.7 pp** difference
 is **not yet significant** (p = 0.48). Every single-concern planner has significantly lower accuracy
 (McNemar p ≤ 0.008).
 
 ![Accuracy and conflict accuracy on the frozen test split](docs/assets/benchmark.png)
 
-| Measure | `LiveDecisionEngine` | Best comparator |
+| Measure | `LiveCompositePlanner` | Best comparator |
 |---|---:|---:|
 | Accuracy, all 30 cases | **100%** | 93.3% (glue baseline) |
 | Conflict accuracy, 6 cases | **100%** | 100% (glue baseline) |
@@ -239,7 +239,7 @@ is **not yet significant** (p = 0.48). Every single-concern planner has signific
 | Attention-budget violations | **0%** | 0% (glue baseline) |
 | p95 decision latency | **0.22 ms** | — |
 
-The glue baseline matches `LiveDecisionEngine` on conflict, promises, reversibility and budget. The
+The glue baseline matches `LiveCompositePlanner` on conflict, promises, reversibility and budget. The
 remaining difference is accuracy on the other 24 cases, and it is not significant on 30 cases.
 
 ### Ablations
@@ -324,5 +324,5 @@ If you use LAIX in research, cite it via [CITATION.cff](CITATION.cff).
 Apache-2.0. See [LICENSE](LICENSE).
 
 Current release: `0.10.0`. Python and TypeScript share the same decision contract, policies,
-planners, live decision engine, streaming, execution, learning and app-kit surface. See
+planners, live composite planner, streaming, execution, learning and app-kit surface. See
 [CHANGELOG.md](CHANGELOG.md).

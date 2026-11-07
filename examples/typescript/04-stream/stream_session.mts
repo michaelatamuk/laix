@@ -1,7 +1,7 @@
 /** Streaming decisions: one event becomes a decision in a stream session. */
-import { Layer } from "../../../packages/typescript/laix/src/index.ts";
+import { DecisionClient } from "../../../packages/typescript/laix/src/index.ts";
 
-const layer = new Layer();
+const layer = new DecisionClient();
 const stream = layer.stream({ streamId: "STR-DEMO", capacity: 4, cooldownMs: 500 });
 
 stream.observe({

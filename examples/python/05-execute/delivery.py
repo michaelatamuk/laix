@@ -8,10 +8,10 @@ The result is:
 - email: the channel the app asked for.
 """
 
-from laix import Context, DecisionRequest, Layer, NullDelivery, Signal
+from laix import SignalContext, DecisionRequest, DecisionClient, NullDelivery, Signal
 from datetime import datetime, timezone
 
-decision = Layer().decide(
+decision = DecisionClient().decide(
     DecisionRequest(
         subject="electricity bill",
         at="2026-11-01T10:00:00+00:00",
@@ -25,7 +25,7 @@ decision = Layer().decide(
                 due="2026-11-02T09:00:00+00:00",
             ),
         ),
-        context=Context(now=datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc), quiet_hours=None),
+        context=SignalContext(now=datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc), quiet_hours=None),
     )
 )[0]
 

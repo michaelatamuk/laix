@@ -2,15 +2,15 @@
 
 from __future__ import annotations
 
-from laix import Plan, Scenario, Simulator, compare_planners
+from laix import PlannerResult, Scenario, Simulator, compare_planners
 
 
 class FixedPlanner:
     def __init__(self, action: str) -> None:
         self.action = action
 
-    def solve(self, problem) -> Plan:
-        return Plan(
+    def solve(self, problem) -> PlannerResult:
+        return PlannerResult(
             verb="act",
             confidence=1.0,
             reason_code="fixed",

@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 from ...decisions import ActionOption
-from ..contract.plan import Plan
+from ..contract.planner_result import PlannerResult
 
 
-def baseline_plan(option: ActionOption, reason_code: str, rationale: str) -> Plan:
-    return Plan(
+def baseline_plan(option: ActionOption, reason_code: str, rationale: str) -> PlannerResult:
+    return PlannerResult(
         verb=option.verb,
         confidence=1.0,
         reason_code=reason_code,
@@ -19,8 +19,8 @@ def baseline_plan(option: ActionOption, reason_code: str, rationale: str) -> Pla
     )
 
 
-def baseline_wait(reason_code: str, rationale: str) -> Plan:
-    return Plan(
+def baseline_wait(reason_code: str, rationale: str) -> PlannerResult:
+    return PlannerResult(
         verb="wait",
         confidence=1.0,
         reason_code=reason_code,

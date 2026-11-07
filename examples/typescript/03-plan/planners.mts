@@ -6,19 +6,19 @@ import {
   comparePlanners,
 } from "../../../packages/typescript/laix/src/index.ts";
 import type {
-  DecisionEngine,
-  DecisionProblem,
-  Plan,
+  Planner,
+  PlannerInput,
+  PlannerResult,
 } from "../../../packages/typescript/laix/src/index.ts";
 
-class FixedPlanner implements DecisionEngine {
+class FixedPlanner implements Planner {
   private readonly action: string;
 
   constructor(action: string) {
     this.action = action;
   }
 
-  solve(_problem: DecisionProblem): Plan {
+  solve(_problem: PlannerInput): PlannerResult {
     return {
       verb: "act",
       confidence: 1,

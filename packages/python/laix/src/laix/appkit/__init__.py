@@ -6,7 +6,7 @@ memory, ingestion, proactivity, permissions and missions belong to the host.
 """
 
 from .delivery import DeliveryPort, DeliveryReceipt, NullDelivery
-from .layer import Decision, DecisionRequest, Layer
+from .decision_client import Decision, DecisionRequest, DecisionClient
 from .platform import (
     ApprovalDecision,
     ApprovalRequest,
@@ -97,7 +97,7 @@ __all__ = [
     "ExperienceState",
     "InMemoryPlatform",
     "InMemoryStateStore",
-    "Layer",
+    "DecisionClient",
     "LiveContext",
     "ManualClock",
     "NullDelivery",

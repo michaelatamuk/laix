@@ -16,9 +16,9 @@ confidence. It is 10:00, so quiet hours do not apply.
 
 from datetime import datetime, timezone
 
-from laix import Context, DecisionRequest, Layer, Signal
+from laix import SignalContext, DecisionRequest, DecisionClient, Signal
 
-layer = Layer()
+layer = DecisionClient()
 decision = layer.decide(
     DecisionRequest(
         subject="electricity bill",
@@ -33,7 +33,7 @@ decision = layer.decide(
                 due="2026-11-02T09:00:00+00:00",
             ),
         ),
-        context=Context(
+        context=SignalContext(
             now=datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc),
             quiet_hours=("22:00", "06:00"),
             min_severity="medium",

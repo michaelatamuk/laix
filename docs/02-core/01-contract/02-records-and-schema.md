@@ -126,11 +126,11 @@ decision:
 |---|---|---|
 | `DecisionRequest` | `decisions/request/decision_request.py` | the public request |
 | `Signal` | `engines/signals/input/signal.py` | one item that may need attention |
-| `Context` | `engines/signals/input/context.py` | time, quiet hours, thresholds, budget and feedback |
-| `Feedback` | `engines/signals/input/feedback.py` | the last response to a signal |
+| `SignalContext` | `engines/signals/input/signal_context.py` | time, quiet hours, thresholds, budget and feedback |
+| `SignalFeedback` | `engines/signals/input/signal_feedback.py` | the last response to a signal |
 | `EvidenceRef` | `decisions/response/payload/evidence_ref.py` | a reference that supports a decision |
 | `Intent` | `decisions/response/payload/intent.py` | capability and arguments the host can execute |
-| `ScoreBreakdown` | `decisions/response/payload/score_breakdown.py` | the parts of an attention score |
+| `ScoreBreakdown` | `decisions/response/payload/score_breakdown.py` | the parts of a signal-attention score |
 | `Commitment` | `commitments/commitment_record.py` | one promise with a due time and dependencies |
 | `CommitmentLedger` | `commitments/commitment.py` | the open promises for one task |
 | `Detection`, `PerceptionEvent`, `PerceptionFrame` | `perception/` | host-driven perception records |
@@ -145,14 +145,14 @@ A decision carries two versions that mean different things:
 | Field | Version of | Bumps when |
 |---|---|---|
 | `schema_version` | the record shape | a field is added, removed or renamed |
-| `policy_version` | the policy or engine that produced the decision | a rule, weight or threshold changes behaviour |
+| `policy_version` | the policy or planner that produced the decision | a rule, weight or threshold changes behaviour |
 
 A record with `schema_version` is safe to read with the same major shape. A policy version change
 means the decision behaviour changed even when the record shape did not.
 
 The payload records `Situation`, `ActionOption`, `Constraint`, `Observation`, `Belief`, `Goal`,
 `Outcome`, `ExecutionReceipt`, `Trace` and `Decision` carry `schema_version`. `DecisionRequest`,
-`Signal`, `Context`, `Feedback` and `Commitment` do not.
+`Signal`, `SignalContext`, `SignalFeedback` and `Commitment` do not.
 
 ## JSON
 
@@ -218,7 +218,7 @@ The schema enums come from the code:
 | Package | `0.10.0` | `packages/python/laix/pyproject.toml`, `packages/typescript/laix/package.json` |
 | Record schema | `0.8.0` | `core/support/version.py`, `contracts.ts` |
 | Rule sets | `0.8.0` | policy versions and vectors |
-| Attention vectors | `0.8.0` | `attention.v1.json` and conformance fixtures |
+| Signal-attention vectors | `0.8.0` | `signal-attention.v1.json` and conformance fixtures |
 
 The package, the schema and the rule sets move independently.
 
@@ -238,8 +238,8 @@ requires a new schema version and a migration note.
 |---|---|
 | `packages/python/laix/src/laix/core/schema/laix-v1.schema.json` | generated schema for the ten records |
 | `packages/contracts/decision-record.v1.schema.json` | the `DecisionRecord` shape from the app kit |
-| `packages/contracts/attention.v1.json` | attention test cases |
-| `packages/contracts/attention-bench.v1.json` | attention outcome cases |
+| `packages/contracts/signal-attention.v1.json` | signal-attention test cases |
+| `packages/contracts/signal-attention-bench.v1.json` | signal-attention outcome cases |
 
 `DecisionRecord`, `Approval`, `Undo` and `AuditEvent` belong to the app kit. See
 [Execution and recovery](../../03-appkit/03-execute/01-execution-and-recovery.md).

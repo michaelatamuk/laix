@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from laix import ActionOption, Belief, Constraint, DecisionRequest, Layer, Situation
+from laix import ActionOption, Belief, Constraint, DecisionRequest, DecisionClient, Situation
 
 
 def decision(**attributes):
-    return Layer().decide(
+    return DecisionClient().decide(
         DecisionRequest(
             subject="water near electricity",
             at="2026-11-01T10:00:00+00:00",

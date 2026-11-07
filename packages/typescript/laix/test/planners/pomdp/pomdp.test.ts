@@ -12,7 +12,7 @@ import {
   pomdpValue,
   valueIteration,
 } from "../../../src/index.ts";
-import type { DecisionProblem } from "../../../src/index.ts";
+import type { PlannerInput } from "../../../src/index.ts";
 
 function model(): PomdpModel {
   return new PomdpModel({
@@ -36,7 +36,7 @@ function model(): PomdpModel {
   });
 }
 
-function problem(attributes: Record<string, unknown> = {}): DecisionProblem {
+function problem(attributes: Record<string, unknown> = {}): PlannerInput {
   return {
     subject: "choose",
     at: "2026-11-01T10:00:00Z",

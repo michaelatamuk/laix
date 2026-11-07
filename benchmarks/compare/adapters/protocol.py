@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Protocol
 
-from laix import DecisionProblem, Plan
+from laix import PlannerInput, PlannerResult
 
 from .result import AdapterResult
 
@@ -19,10 +19,10 @@ class ExternalAdapter(Protocol):
     def available(self) -> bool:
         ...
 
-    def run(self, problems: Sequence[DecisionProblem]) -> AdapterResult:
+    def run(self, problems: Sequence[PlannerInput]) -> AdapterResult:
         ...
 
-    def solve(self, problem: DecisionProblem) -> Plan:
+    def solve(self, problem: PlannerInput) -> PlannerResult:
         ...
 
 

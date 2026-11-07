@@ -5,12 +5,12 @@ from __future__ import annotations
 from laix import (
     ActionOption,
     DecisionRequest,
-    EnginePolicy,
+    PlannerPolicy,
     UtilityPlanner,
     decide,
 )
 
-policy = EnginePolicy(UtilityPlanner(), name="utility.v1")
+policy = PlannerPolicy(UtilityPlanner(), name="utility.v1")
 decision = decide(
     DecisionRequest(
         subject="choose",

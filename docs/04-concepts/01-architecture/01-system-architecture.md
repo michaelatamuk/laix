@@ -13,8 +13,8 @@ It returns a **decision**. The app runs the chosen option.
 |---|---|
 | `DecisionRequest` | The app's description of the moment: subject, time, signals or a situation, options and limits. |
 | `Decision` | LAIX's answer: one verb, a reason code, confidence and the execution details. |
-| Policy | The chooser. It receives the request and returns one or more decisions. |
-| `Plan` | A planner's internal answer; `EnginePolicy` converts it into a `Decision`. |
+| DecisionPolicy | The chooser. It receives the request and returns one or more decisions. |
+| `PlannerResult` | A planner's internal answer; `PlannerPolicy` converts it into a `Decision`. |
 
 The full vocabulary is in the [glossary](../04-reference/01-glossary.md).
 
@@ -66,13 +66,13 @@ decision = decide(request)[0]
 For the answer plus the runtime, traces, execution and records, use the app kit:
 
 ```python
-from laix import Layer
+from laix import DecisionClient
 
-layer = Layer()
+layer = DecisionClient()
 decision = layer.decide(request)[0]
 ```
 
-`decide` lives in core and loads without the app kit. `Layer` uses the same core selection and adds
+`decide` lives in core and loads without the app kit. `DecisionClient` uses the same core selection and adds
 the app-kit parts.
 
 ## The seven verbs
@@ -102,13 +102,13 @@ from laix import DecisionRequest, SafetyConstrainedPolicy, decide
 decision = decide(request, policy=SafetyConstrainedPolicy())[0]
 ```
 
-In the app kit, a `Layer` holds **one active policy** at a time. Every `decide()` call uses that
+In the app kit, a `DecisionClient` holds **one active policy** at a time. Every `decide()` call uses that
 policy until you change it.
 
 ### One policy for the life of the runtime
 
 ```python
-from laix import DecisionRequest, Layer, SafetyConstrainedPolicy
+from laix import DecisionRequest, DecisionClient, SafetyConstrainedPolicy
 
 request = DecisionRequest(
     subject="leaking sink",
@@ -122,18 +122,18 @@ request = DecisionRequest(
     },
 )
 
-layer = Layer(policy=SafetyConstrainedPolicy())
+layer = DecisionClient(policy=SafetyConstrainedPolicy())
 decision = layer.decide(request)[0]   # act safe_action valve
 ```
 
-`Layer(policy=...)` activates the policy immediately.
+`DecisionClient(policy=...)` activates the policy immediately.
 
 ### Several policies, choose at runtime
 
 ```python
-from laix import Layer, ReplanningPolicy, SafetyConstrainedPolicy
+from laix import DecisionClient, ReplanningPolicy, SafetyConstrainedPolicy
 
-layer = Layer()
+layer = DecisionClient()
 layer.register_policy("safety", SafetyConstrainedPolicy())  # stores it
 layer.register_policy("replan", ReplanningPolicy())         # stores it
 
@@ -155,7 +155,7 @@ decision = decide(request)[0]
 or, with the app kit:
 
 ```python
-layer = Layer()
+layer = DecisionClient()
 decision = layer.decide(request)[0]
 ```
 
@@ -166,12 +166,12 @@ Selection then uses the request shape:
 | `situation` + `options` | built-in action policy |
 | `signals` + `context` | built-in attention |
 
-To use a packaged policy, pass it to `decide` or to `Layer`, or select it with `use_policy`.
+To use a packaged policy, pass it to `decide` or to `DecisionClient`, or select it with `use_policy`.
 Attributes are input to the active policy.
 
 ## The ten decision classes
 
-| # | Class | Input | Policy | Selected by |
+| # | Class | Input | DecisionPolicy | Selected by |
 |---|---|---|---|---|
 | 1 | Attention | `signals` + `context` | built-in attention | request shape |
 | 2 | Action decision | `situation` + `options` | built-in action policy | request shape |
@@ -184,7 +184,7 @@ Attributes are input to the active policy.
 | 9 | Verification | `attributes` | `VerificationPolicy` | explicit policy |
 | 10 | Escalation | `attributes` | `EscalationPolicy` | explicit policy |
 
-There are ten classes. The first two are built into `decide` and `Layer` because they define the two
+There are ten classes. The first two are built into `decide` and `DecisionClient` because they define the two
 request shapes LAIX understands. The other eight are ordinary policy objects that take their inputs
 from `DecisionRequest.attributes`.
 
@@ -206,11 +206,11 @@ LAIX is a live decision runtime. It can host a decision model such as JEV inside
 
 ## Integration evidence
 
-The composition is measured. `LiveDecisionEngine` runs every concern in one score. Single-concern
-planners win their own cases; `LiveDecisionEngine` wins every case because it composes all four
+The composition is measured. `LiveCompositePlanner` runs every concern in one score. Single-concern
+planners win their own cases; `LiveCompositePlanner` wins every case because it composes all four
 scores.
 
-**Seven-case live demo (planners and the engine):**
+**Seven-case live demo (planners and the composite planner):**
 
 | Component | Correct / 7 | Note |
 |---|---:|---|
@@ -219,7 +219,7 @@ scores.
 | `CommitmentPlanner` | 3 / 7 | ignores execution risk and attention |
 | `HumanAttentionPlanner` | 4 / 7 | ignores commitments and execution risk |
 | `ExecutionRiskPlanner` | 5 / 7 | ignores commitments and attention |
-| **`LiveDecisionEngine`** | **7 / 7** | composes all four scores |
+| **`LiveCompositePlanner`** | **7 / 7** | composes all four scores |
 
 Reproduce with one command: `python examples/python/03-plan/ablation_study.py`.
 
@@ -227,7 +227,7 @@ A worked conflict scenario (all three concerns fire simultaneously) is in
 `examples/python/03-plan/conflict_scenario.py`.
 
 **Expanded corpus:** 120 cases across six categories (72 dev, 30 test, 18 adversarial). On the frozen
-test split, `LiveDecisionEngine` is 30/30 and wins every conflict case (6/6). A hand-built glue
+test split, `LiveCompositePlanner` is 30/30 and wins every conflict case (6/6). A hand-built glue
 baseline reaches 28/30 (93.3%), so the remaining integration advantage is +6.7 pp and is not
 significant on 30 cases. Ablations on the same split: full 100%, no attention 96.7%, no feasibility
 gates 93.3%, no execution 83.3%, no commitment 70%, utility-only 30%. Reproduce with
@@ -261,7 +261,7 @@ Liability Directive 2024/2853.
 | New storage | Implement `StateStore` or `OutcomeStore` |
 | New channel | Implement `DeliveryPort` |
 
-The planner contract is in place: `EnginePolicy` wraps JEV, an optimizer or a planner. The built-in
+The planner contract is in place: `PlannerPolicy` wraps JEV, an optimizer or a planner. The built-in
 `UtilityPlanner`, [MDPPlanner](../../02-core/03-planning/04-model-based-planners.md#mdp) and
 `POMDPPlanner` are available behind the same adapter; simulation, calibration and model learning
 support them. See [the planner contract](../../02-core/03-planning/01-planner-contract.md).

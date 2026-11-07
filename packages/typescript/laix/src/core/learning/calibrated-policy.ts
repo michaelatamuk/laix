@@ -1,15 +1,15 @@
 import type { Decision, DecisionRequest } from "../contracts.ts";
 import { calibrateDecision } from "./calibrate-decision.ts";
 import type { DecisionCalibrationReport } from "./decision-calibration-report.ts";
-import type { Policy } from "../policies/registry.ts";
+import type { DecisionPolicy } from "../policies/decision-policy-registry.ts";
 
-export class CalibratedPolicy implements Policy {
+export class CalibratedPolicy implements DecisionPolicy {
   readonly name: string;
-  readonly policy: Policy;
+  readonly policy: DecisionPolicy;
   readonly report: DecisionCalibrationReport;
 
   constructor(
-    policy: Policy,
+    policy: DecisionPolicy,
     report: DecisionCalibrationReport,
     name?: string,
   ) {

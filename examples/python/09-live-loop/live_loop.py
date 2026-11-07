@@ -6,14 +6,14 @@ from datetime import datetime, timezone
 
 from laix import (
     ActionOption,
-    AttentionBudget,
+    HumanAttentionBudget,
     Commitment,
     DecisionCalibrationSample,
     DecisionRequest,
     DecisionTimeline,
-    EnginePolicy,
+    PlannerPolicy,
     ExecutionBridge,
-    LiveDecisionEngine,
+    LiveCompositePlanner,
     ManualClock,
     Outcome,
     StreamSession,
@@ -28,15 +28,15 @@ commitments = (
         due="2026-11-01T09:00:00+00:00",
     ),
 )
-budget = AttentionBudget(total=1.0)
+budget = HumanAttentionBudget(total=1.0)
 timeline = DecisionTimeline()
-policy = EnginePolicy(LiveDecisionEngine(), name="live.v1")
+policy = PlannerPolicy(LiveCompositePlanner(), name="live.v1")
 session = StreamSession(
     policy.decide,
     stream_id="DESK",
     capacity=4,
     timeline=timeline,
-    attention_budget=budget,
+    human_attention_budget=budget,
     clock=ManualClock(datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc)),
 )
 
@@ -62,7 +62,7 @@ request = DecisionRequest(
             params={"commitments": {"fulfills": ["c1"]}},
         ),
     ),
-    attributes={"commitments": commitments, "attention_budget": budget},
+    attributes={"commitments": commitments, "human_attention_budget": budget},
 )
 
 decision = session.observe(request)[0]

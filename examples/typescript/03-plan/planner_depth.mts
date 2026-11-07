@@ -10,10 +10,10 @@ import {
   beliefFromState,
   comparePomdpToMdp,
 } from "../../../packages/typescript/laix/src/index.ts";
-import type { DecisionEngine, DecisionProblem, Plan } from "../../../packages/typescript/laix/src/index.ts";
+import type { Planner, PlannerInput, PlannerResult } from "../../../packages/typescript/laix/src/index.ts";
 
-class AlwaysGo implements DecisionEngine {
-  solve(_problem: DecisionProblem): Plan {
+class AlwaysGo implements Planner {
+  solve(_problem: PlannerInput): PlannerResult {
     return {
       verb: "act",
       confidence: 1,

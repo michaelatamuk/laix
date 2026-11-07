@@ -1,4 +1,4 @@
-import type { DecisionProblem, Plan } from "../../contract/engine.ts";
+import type { PlannerInput, PlannerResult } from "../../contract/planner.ts";
 import { MdpModel } from "./mdp-model.ts";
 
 export { MdpModel };
@@ -101,7 +101,7 @@ export class MDPPlanner {
     this.state = options.state ?? model.start;
   }
 
-  solve(problem: DecisionProblem): Plan {
+  solve(problem: PlannerInput): PlannerResult {
     const state = String(problem.attributes?.state ?? this.state);
     if (!this.model.states.includes(state)) throw new Error(`unknown state: ${state}`);
     const rows = actionValues(this.model, state);

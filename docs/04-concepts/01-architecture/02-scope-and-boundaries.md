@@ -8,10 +8,10 @@ same boundary applies to any host.
 
 ## The three layers
 
-| Layer | Owns | Does not own |
+| DecisionClient | Owns | Does not own |
 |---|---|---|
 | **LAIX core** | The request and decision contract, policies, planners, signal attention, commitments, learning primitives and evaluation primitives. | Storage, UI, execution, delivery, credentials. |
-| **LAIX app kit** | The optional runtime: `Layer`, decision runtime, streaming, execution bridge, records, stores, platform and delivery ports. | The database, transport, credentials and the host's domain rules. |
+| **LAIX app kit** | The optional runtime: `DecisionClient`, decision runtime, streaming, execution bridge, records, stores, platform and delivery ports. | The database, transport, credentials and the host's domain rules. |
 | **Host** | The product, data, UI, execution, storage, delivery, permissions, retention and the domain nouns. | The decision contract and the decision semantics. |
 
 The core is stateless. The app kit adds state and execution surfaces. The host decides which of the
@@ -73,13 +73,13 @@ next request can carry what it learned.
 
 ### Core plus app kit
 
-The host wants the runtime around the decision: a single `Layer`, execution, records, stores,
+The host wants the runtime around the decision: a single `DecisionClient`, execution, records, stores,
 streaming and delivery.
 
 ```python
-from laix import Layer
+from laix import DecisionClient
 
-layer = Layer()
+layer = DecisionClient()
 decision = layer.decide(request)[0]
 ```
 

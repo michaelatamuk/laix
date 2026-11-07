@@ -3,14 +3,14 @@
 from __future__ import annotations
 
 from .....support.verbs import Verb
-from ...input.context import Context
+from ...input.signal_context import SignalContext
 from ...input.signal import Signal
 from ..result import GateResult
 from ...timing import hours_until
 from ..reason import ReasonCode
 
 
-def overdue_escalation(signal: Signal, context: Context, blocked: ReasonCode | None, delivered: int) -> GateResult | None:
+def overdue_escalation(signal: Signal, context: SignalContext, blocked: ReasonCode | None, delivered: int) -> GateResult | None:
     if context.escalate_after_hours is None or signal.severity != "critical":
         return None
     hours = hours_until(context.now, signal.due)

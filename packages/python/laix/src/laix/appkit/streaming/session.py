@@ -18,7 +18,7 @@ from datetime import datetime, timedelta
 from typing import AsyncIterable, AsyncIterator, Awaitable, Callable, Iterable, Sequence
 
 from ...core.decisions import DECISION_STATUSES, Decision, DecisionRequest, Trace
-from ...core.engines.planners.attention.attention_planner import AttentionBudget
+from ...core.engines.planners.human_attention.human_attention_planner import HumanAttentionBudget
 from ...core.support.ids import new_id
 from ...core.support.time import parse_iso, utcnow
 from .checkpoint import StreamCheckpointStore
@@ -66,7 +66,7 @@ class StreamSession:
         trace: bool = True,
         recorder: Recorder | None = None,
         timeline: DecisionTimeline | None = None,
-        attention_budget: AttentionBudget | None = None,
+        human_attention_budget: HumanAttentionBudget | None = None,
         clock: Clock | None = None,
         id_factory: Callable[[], str] | None = None,
     ) -> None:
@@ -104,7 +104,7 @@ class StreamSession:
         self._trace = trace
         self._recorder = recorder
         self.timeline = timeline
-        self.attention_budget = attention_budget
+        self.human_attention_budget = human_attention_budget
         self._clock: Clock = clock or utcnow
         self._items: deque[Decision] = deque()
         self._wake = asyncio.Event()
@@ -373,9 +373,9 @@ class StreamSession:
             "pending": [item.to_dict() for item in self._items],
             "traces": [trace.to_dict() for trace in self._traces.values()],
             "timeline": self.timeline.to_dict() if self.timeline is not None else None,
-            "attention_budget": (
-                self.attention_budget.to_dict()
-                if self.attention_budget is not None
+            "human_attention_budget": (
+                self.human_attention_budget.to_dict()
+                if self.human_attention_budget is not None
                 else None
             ),
         }
@@ -436,9 +436,9 @@ class StreamSession:
         timeline = snapshot.get("timeline")
         if isinstance(timeline, dict):
             self.timeline = DecisionTimeline.from_dict(timeline)
-        budget = snapshot.get("attention_budget")
+        budget = snapshot.get("human_attention_budget")
         if isinstance(budget, dict):
-            self.attention_budget = AttentionBudget.from_dict(budget)
+            self.human_attention_budget = HumanAttentionBudget.from_dict(budget)
 
     # ----------------------------------------------------------------- output
     async def decisions(self) -> AsyncIterator[Decision]:
@@ -587,15 +587,15 @@ class StreamSession:
                 self._recorder(decision)
             if self.timeline is not None:
                 self.timeline.add(decision)
-            if self.attention_budget is not None:
-                cost = decision.attributes.get("attention_cost", 0.0)
+            if self.human_attention_budget is not None:
+                cost = decision.attributes.get("human_attention_cost", 0.0)
                 try:
                     cost_value = float(cost)
                 except (TypeError, ValueError):
                     cost_value = 0.0
                 if cost_value <= 0.0 and decision.requires_approval:
                     cost_value = 0.5
-                self.attention_budget.spend(cost_value)
+                self.human_attention_budget.spend(cost_value)
 
     def trace(self, decision_id: str) -> Trace:
         trace_id = self._trace_by_decision.get(decision_id)

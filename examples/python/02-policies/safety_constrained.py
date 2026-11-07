@@ -9,9 +9,9 @@ The result is:
 - valve: the safe option; the higher-benefit option is too risky.
 """
 
-from laix import DecisionRequest, Layer, SafetyConstrainedPolicy, iso
+from laix import DecisionRequest, DecisionClient, SafetyConstrainedPolicy, iso
 
-decision = Layer(policy=SafetyConstrainedPolicy()).decide(
+decision = DecisionClient(policy=SafetyConstrainedPolicy()).decide(
     DecisionRequest(
         subject="leaking sink",
         at=iso(),

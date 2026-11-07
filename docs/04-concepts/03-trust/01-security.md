@@ -47,7 +47,7 @@ A model can be wrong, manipulated or prompt-injected. LAIX does not make it trus
 
 Controls:
 
-- wrap the model in an `EnginePolicy`; keep the decision contract outside the model;
+- wrap the model in an `PlannerPolicy`; keep the decision contract outside the model;
 - validate the model's proposed action against the available options;
 - keep hard gates and approval flags above the model;
 - prefer deterministic rules for safety, permissions and irreversible actions;
@@ -96,7 +96,7 @@ LAIX is deterministic, not a rate limiter.
 Controls:
 
 - set input-size, option-count and time limits in the host;
-- set a real `AttentionBudget` and execution deadlines;
+- set a real `HumanAttentionBudget` and execution deadlines;
 - rate-limit the adapter that calls a model or planner;
 - do not run unbounded planner models in the request path.
 

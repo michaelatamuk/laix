@@ -1,10 +1,10 @@
-"""Plan one step in a finite MDP."""
+"""PlannerResult one step in a finite MDP."""
 
 from __future__ import annotations
 
 from laix import (
     DecisionRequest,
-    EnginePolicy,
+    PlannerPolicy,
     MdpModel,
     MDPPlanner,
     MdpTransition,
@@ -25,6 +25,6 @@ model = MdpModel(
 )
 decision = decide(
     DecisionRequest(subject="choose", at="2026-11-01T10:00:00+00:00"),
-    policy=EnginePolicy(MDPPlanner(model), name="mdp.v1"),
+    policy=PlannerPolicy(MDPPlanner(model), name="mdp.v1"),
 )[0]
 print(decision.verb, decision.action_id, decision.score)

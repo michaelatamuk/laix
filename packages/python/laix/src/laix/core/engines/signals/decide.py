@@ -1,7 +1,7 @@
-"""The attention algorithm: one signal in, one AttentionDecision out.
+"""The attention algorithm: one signal in, one SignalAttentionDecision out.
 
 This is the file to read first. ``decide_one`` applies the gates in fixed order
-from ``gates.py``, then fills the decision from ``score.py``. ``decide_attention``
+from ``gates.py``, then fills the decision from ``score.py``. ``decide_signal_attention``
 is only the loop around it.
 """
 
@@ -12,8 +12,8 @@ from collections.abc import Iterable, Sequence
 from datetime import datetime
 
 from .gates import GATE_RULES, GateResult, ReasonCode, feedback_blocks, rank
-from .input.context import Context
-from .output.decision import AttentionDecision
+from .input.signal_context import SignalContext
+from .output.signal_attention_decision import SignalAttentionDecision
 from .input.signal import Signal
 from .score import cost_of_waiting, score
 from .output.undo import undo_hint
@@ -30,7 +30,7 @@ def trace_id(signal: Signal, now: datetime, verb: str) -> str:
     return "tr-" + hashlib.sha1(raw).hexdigest()[:12]
 
 
-def decide_one(signal: Signal, context: Context, delivered: int = 0) -> AttentionDecision:
+def decide_one(signal: Signal, context: SignalContext, delivered: int = 0) -> SignalAttentionDecision:
     """Decide one signal by walking ``GATE_RULES`` in order."""
     breakdown = score(signal, context)
     blocked = feedback_blocks(context.feedback.get(signal.id), context.now)
@@ -43,7 +43,7 @@ def decide_one(signal: Signal, context: Context, delivered: int = 0) -> Attentio
     if result is None:
         result = GateResult(Verb.GUIDE, ReasonCode.WORTH_SURFACING, True, True)
 
-    return AttentionDecision(
+    return SignalAttentionDecision(
         signal_id=signal.id,
         verb=result.verb,
         score=breakdown.total,
@@ -66,9 +66,9 @@ def decide_one(signal: Signal, context: Context, delivered: int = 0) -> Attentio
     )
 
 
-def decide_attention(signals: Iterable[Signal], context: Context) -> list[AttentionDecision]:
+def decide_signal_attention(signals: Iterable[Signal], context: SignalContext) -> list[SignalAttentionDecision]:
     """Return one decision per signal, in input order."""
-    out: list[AttentionDecision] = []
+    out: list[SignalAttentionDecision] = []
     delivered = 0
     for signal in signals:
         decision = decide_one(signal, context, delivered)

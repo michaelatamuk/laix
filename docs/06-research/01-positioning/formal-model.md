@@ -5,7 +5,7 @@ paper will claim. All formulas match the implementation in `core/engines/planner
 
 ## 1. Types
 
-### DecisionProblem
+### PlannerInput
 
 | Field | Type | Meaning |
 |---|---|---|
@@ -14,7 +14,7 @@ paper will claim. All formulas match the implementation in `core/engines/planner
 | `situation` | `Situation \| None` | active constraints |
 | `options` | `tuple[ActionOption, ...]` | candidate actions |
 | `signals` | `tuple[Signal, ...]` | attention signals (attention class) |
-| `context` | `Context \| None` | quiet hours and other context |
+| `context` | `SignalContext \| None` | quiet hours and other context |
 | `attributes` | `dict` | domain-specific inputs (commitments, budgets, receipts) |
 
 ### ActionOption
@@ -43,7 +43,7 @@ paper will claim. All formulas match the implementation in `core/engines/planner
 | `priority` | `float ∈ [0,1]` | importance (default `0.5`) |
 | `depends_on` | `tuple[str, ...]` | ids that must be `done` first |
 
-### AttentionBudget
+### HumanAttentionBudget
 
 | Field | Type | Meaning |
 |---|---|---|
@@ -51,7 +51,7 @@ paper will claim. All formulas match the implementation in `core/engines/planner
 | `spent` | `float` | attention already consumed |
 | `remaining` | `float` | `total - spent` |
 
-### Plan (planner output)
+### PlannerResult (planner output)
 
 | Field | Type | Meaning |
 |---|---|---|
@@ -66,12 +66,12 @@ paper will claim. All formulas match the implementation in `core/engines/planner
 
 ### Decision (public contract)
 
-Derived from `Plan` via `EnginePolicy`. Every planner returns the same
-`Decision` shape regardless of which policy or engine produced it.
+Derived from `PlannerResult` via `PlannerPolicy`. Every planner returns the same
+`Decision` shape regardless of which policy or planner produced it.
 
 ## 2. Score composition
 
-`LiveDecisionEngine` computes four additive terms for each option and chooses
+`LiveCompositePlanner` computes four additive terms for each option and chooses
 the option with the highest total:
 
 ```
@@ -164,7 +164,7 @@ the host's `execution_state` receipts.
 | `approval` | 0.15 |
 | `recovery` | 0.25 |
 
-### 2.4 Attention score
+### 2.4 Human-attention score
 
 Let `remaining` = `budget.total - budget.spent`.
 
@@ -173,13 +173,13 @@ attention(o) =
   - w_interrupt   × o.interrupt_cost
   - w_approval    if o.requires_approval == True and not pre-approved
   - w_escalation  if o.verb == "escalate"
-  - w_exhausted   if blocked == "attention budget exhausted"
+  - w_exhausted   if blocked == "human attention budget exhausted"
 ```
 
-An option is blocked (`"attention budget exhausted"`) when `effect.requires_attention`
+An option is blocked (`"human attention budget exhausted"`) when `effect.requires_attention`
 is true and `effect.cost > remaining`.
 
-**Default weights** (`AttentionWeights`):
+**Default weights** (`HumanAttentionWeights`):
 
 | Weight | Default |
 |---|---|
@@ -214,7 +214,7 @@ Reproducible by running `examples/python/03-plan/ablation_study.py`.
 | `CommitmentPlanner` | 3 | 43% |
 | `ExecutionRiskPlanner` | 5 | 71% |
 | `HumanAttentionPlanner` | 4 | 57% |
-| **`LiveDecisionEngine`** | **7** | **100%** |
+| **`LiveCompositePlanner`** | **7** | **100%** |
 
 The composition adds real value: each single-concern planner wins its own
 cases but fails on cases where two or more concerns fire simultaneously.
@@ -279,15 +279,15 @@ The following must hold at all times. Tests live in
 
 | ID | Invariant |
 |---|---|
-| I1 | **Determinism** — the same `DecisionProblem` and planner configuration always produce the same `Plan`. |
+| I1 | **Determinism** — the same `PlannerInput` and planner configuration always produce the same `PlannerResult`. |
 | I2 | **Hard constraint gate** — an option whose `risk` exceeds a hard risk constraint is never the chosen action. |
-| I3 | **Attention budget** — an option with `attention_cost > remaining` that `requires_attention` is never chosen. |
+| I3 | **Human-attention budget** — an option with `human_attention_cost > remaining` that `requires_attention` is never chosen. |
 | I4 | **Rejected approval** — an option with `approval_state = "rejected"` is never chosen. |
 | I5 | **Revision monotonicity** — `revision > 0` implies non-null `revised_from`; `event_time` never decreases across revisions in a `Timeline`. |
 | I6 | **Receipt state machine** — no invalid receipt transition is allowed; the receipt status follows the diagram in §3. |
 | I7 | **Trace append-only** — `Trace.with_event` appends an event and never removes an existing event. |
 | I8 | **Confidence bounds** — `plan.confidence ∈ [0.0, 1.0]` for every plan returned by any planner. |
-| I9 | **Contract consistency** — `EnginePolicy(engine).decide(req)[0]` and `decide(req, policy=EnginePolicy(engine))[0]` return decisions with the same `verb`, `action_id`, `reason_code` and `score`. |
+| I9 | **Contract consistency** — `PlannerPolicy(planner).decide(req)[0]` and `decide(req, policy=PlannerPolicy(planner))[0]` return decisions with the same `verb`, `action_id`, `reason_code` and `score`. |
 | I10 | **Parity infrastructure** — the shared conformance schema and parity tests are present; full verb parity is checked by `tests/test_language_parity.py` and the TypeScript suite. |
 
 ## 5. Acceptance criteria

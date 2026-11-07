@@ -4,7 +4,7 @@ The host owns the task. LAIX only sees the generic request and returns the
 decision, the confidence source and a portable basis.
 """
 
-from laix import ActionOption, Belief, Constraint, DecisionRequest, Layer, Situation
+from laix import ActionOption, Belief, Constraint, DecisionRequest, DecisionClient, Situation
 
 options = (
     ActionOption(id="wait", verb="wait", name="wait", expected_benefit=0.1),
@@ -42,7 +42,7 @@ request = DecisionRequest(
     calibrated=True,
 )
 
-decision = Layer().decide(request)[0]
+decision = DecisionClient().decide(request)[0]
 print(
     decision.verb,
     decision.action_id,

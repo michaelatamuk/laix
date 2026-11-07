@@ -28,9 +28,9 @@ decision = decide(
 For a decision plus runtime, execution, traces and records, use the app kit:
 
 ```python
-from laix import DecisionRequest, Layer
+from laix import DecisionRequest, DecisionClient
 
-layer = Layer()
+layer = DecisionClient()
 decisions = layer.decide(
     DecisionRequest(
         subject="one decision",
@@ -58,13 +58,13 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/decisions/request/` | `decision_request.py` envelope and `payload/` records |
 | `core/decisions/response/` | `decision.py` and `payload/` (evidence ref, intent, score breakdown) |
 | `core/decisions/trail/` | execution receipt and trace |
-| `core/decisions/normalise.py` | `coerce` and `from_attention` |
+| `core/decisions/normalise.py` | `coerce` and `from_signal_attention` |
 | `core/schema/` | `RECORDS`, `RECORD_NAMES`, schema generation, validation and `laix-v1.schema.json` |
 | `core/support/` | time, ids, values, serialization, errors, verb and version helpers |
-| `appkit/layer.py` | the app-kit `Layer`: core selection plus runtime, execution and traces |
-| `core/engines/contract/engine.py` | `DecisionEngine`, `DecisionProblem`, `Plan` and `EnginePolicy` |
+| `appkit/decision_client.py` | the app-kit `DecisionClient`: core selection plus runtime, execution and traces |
+| `core/engines/contract/planner.py` | `Planner`, `PlannerInput`, `PlannerResult` and `PlannerPolicy` |
 | `core/engines/planners/` | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner` and `POMDPPlanner` |
-| `core/engines/live/` | `LiveDecisionEngine` and `CompositeScore` |
+| `core/engines/live/` | `LiveCompositePlanner` and `CompositeScore` |
 | `core/engines/policies/implementations/action.py` | built-in action-selection policy |
 | `core/engines/policies/implementations/active_perception.py` | packaged `observe` policy |
 | `core/engines/policies/implementations/safety_constrained.py` | risk-limited action policy |
@@ -77,10 +77,10 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/engines/policies/implementations/bandit.py` | learned bandit policy |
 | `core/engines/policies/implementations/rules.py` | declarative `Rule` / `RulePolicy` |
 | `core/engines/policies/implementations/target.py` | `TargetedPolicy` for recipient modes |
-| `core/engines/policies/policy.py`, `core/engines/policies/registry.py` | policy plugin protocol and registry |
-| `core/engines/signals/input/`, `output/`, `attention.v1.json` | attention records and decision cases |
+| `core/engines/policies/decision_policy.py`, `core/engines/policies/decision_policy_registry.py` | policy plugin protocol and registry |
+| `core/engines/signals/input/`, `output/`, `signal-attention.v1.json` | signal-attention records and decision cases |
 | `core/engines/signals/gates/implementations/` | one file per gate, ordered by `rules.py` |
-| `core/engines/signals/decide.py`, `timing.py` | attention loop and quiet hours |
+| `core/engines/signals/decide.py`, `timing.py` | signal-attention loop and quiet hours |
 | `appkit/runtime/decision_runtime.py` | the action-decision runtime |
 | `appkit/runtime/execution.py` | approval, idempotency, execute, cancel, undo, unknown outcome, receipts |
 | `core/perception/` | detector, detection and frame records |
@@ -90,11 +90,11 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `appkit/runtime/state_store.py`, `in_memory_state_store.py` | state store contract and in-memory store |
 | `core/engines/resources/` | cheap/deep call admission under budget |
 | `appkit/platform/` | south platform interface, records and in-memory platform |
-| `core/outcome_learning/` | directed metric ledger, store, UCB learner, and attention feedback learning |
+| `core/outcome_learning/` | directed metric ledger, store, UCB learner, and signal-attention feedback learning |
 | `appkit/audit/decision_record.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
 | `appkit/audit/proposal.py` | storage-free proposal and approval lifecycle |
 | `appkit/delivery/` | delivery port, receipt and null delivery |
-| `core/evaluation/` | policy parity, attention replay, and `attention-bench.v1.json` |
+| `core/evaluation/` | policy parity, signal attention replay, and `signal-attention-bench.v1.json` |
 | `appkit/bench/` | LAIX-Bench cases, suites, report and `python -m laix.appkit.bench` |
 
 ## Custom policies
@@ -120,9 +120,9 @@ decision = decide(
 The app kit keeps a policy registry:
 
 ```python
-from laix import Layer
+from laix import DecisionClient
 
-layer = Layer(policy=MyPolicy())
+layer = DecisionClient(policy=MyPolicy())
 decision = layer.decide(
     DecisionRequest(subject="one decision", at="2026-11-01T10:00:00+00:00")
 )[0]

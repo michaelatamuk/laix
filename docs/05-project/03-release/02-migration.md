@@ -41,14 +41,73 @@ version only moves by a small amount. This page is the upgrade path; the version
 6. Update pins in the host, CI and deployment manifests.
 7. Keep the previous package version available for rollback until the new version is stable.
 
+## Vocabulary migration (next release)
+
+The next release renames the planning and attention vocabulary. There are no compatibility aliases.
+
+| Before | After |
+|---|---|
+| `DecisionEngine` | `Planner` |
+| `DecisionProblem` | `PlannerInput` |
+| `Plan` | `PlannerResult` |
+| `EnginePolicy` | `PlannerPolicy` |
+| `LiveDecisionEngine` | `LiveCompositePlanner` |
+| `Policy` | `DecisionPolicy` |
+| `PolicyRegistry` | `DecisionPolicyRegistry` |
+| `PolicyError` | `DecisionPolicyError` |
+| `Layer` | `DecisionClient` |
+| `PlannerScore` | `PlannerBenchmarkRow` |
+| `ActionPolicyRequest` | `ActionPolicyInput` |
+| `decide_attention` | `decide_signal_attention` |
+| `from_attention` | `from_signal_attention` |
+| `AttentionDecision` | `SignalAttentionDecision` |
+| `AttentionOutcome` | `SignalAttentionOutcome` |
+| `OutcomeLog` | `SignalAttentionLog` |
+| `Context` | `SignalContext` |
+| `Feedback` | `SignalFeedback` |
+| `AttentionBudget` | `HumanAttentionBudget` |
+| `AttentionEffect` | `HumanAttentionEffect` |
+| `AttentionScore` | `HumanAttentionScore` |
+| `AttentionWeights` | `HumanAttentionWeights` |
+| `attention_effect` | `human_attention_effect` |
+| `attention_budget` | `human_attention_budget` |
+| `attention_spent` | `human_attention_spent` |
+| `attention_remaining` | `human_attention_remaining` |
+| `attention_budget_blocked` | `human_attention_budget_blocked` |
+| `attention_budget_exhausted` | `human_attention_budget_exhausted` |
+| `attention_aware` | `human_attention_aware` |
+| `attention.v1` | `human-attention.v1` |
+| `attentionBudget` | `humanAttentionBudget` |
+| `CompositeScore.attention` | `CompositeScore.human_attention` |
+
+Paths changed with the names:
+
+| Before | After |
+|---|---|
+| `core/engines/contract/decision_engine.py` | `core/engines/contract/planner.py` |
+| `core/engines/contract/decision_problem.py` | `core/engines/contract/planner_input.py` |
+| `core/engines/contract/plan.py` | `core/engines/contract/planner_result.py` |
+| `core/engines/contract/engine.py` | `core/engines/contract/planner_policy.py` |
+| `core/engines/live/live_engine.py` | `core/engines/live/live_composite_planner.py` |
+| `core/engines/policies/policy.py` | `core/engines/policies/decision_policy.py` |
+| `core/engines/policies/registry.py` | `core/engines/policies/decision_policy_registry.py` |
+| `appkit/layer.py` | `appkit/decision_client.py` |
+| `core/engines/planners/attention/` | `core/engines/planners/human_attention/` |
+| `core/engines/signals/input/context.py` | `core/engines/signals/input/signal_context.py` |
+| `core/engines/signals/input/feedback.py` | `core/engines/signals/input/signal_feedback.py` |
+| `core/engines/signals/output/decision.py` | `core/engines/signals/output/signal_attention_decision.py` |
+| `core/outcome_learning/attention/` | `core/outcome_learning/signal_attention/` |
+| `packages/contracts/attention.v1.json` | `packages/contracts/signal-attention.v1.json` |
+| `packages/contracts/attention-bench.v1.json` | `packages/contracts/signal-attention-bench.v1.json` |
+
 ## Upgrading from a pre-0.10.0 release
 
-0.10.0 separates four layers:
+0.10.0 separated four layers:
 
-- **Planner** — a strategy;
-- **Engine** — a composition;
-- **Policy** — an integration;
-- **Learner** — learning.
+- **Planner** - a strategy;
+- **Engine** (now **CompositePlanner**) - a composition;
+- **DecisionPolicy** - an integration;
+- **Learner** - learning.
 
 | Before | After |
 |---|---|
@@ -60,7 +119,7 @@ version only moves by a small amount. This page is the upgrade path; the version
 | `POMDPEngine` | `POMDPPlanner` |
 | `LiveScore` | `CompositeScore` |
 | `compare_engines` / `compareEngines` | `compare_planners` / `comparePlanners` |
-| `EngineScore` | `PlannerScore` |
+| `EngineScore` | `PlannerBenchmarkRow` |
 | `FixedActionEngine` | `FixedActionPlanner` |
 | `FirstOptionEngine` | `FirstOptionPlanner` |
 | `HighestBenefitEngine` | `HighestBenefitPlanner` |
@@ -70,10 +129,10 @@ Unchanged:
 
 | Surface | Why |
 |---|---|
-| `LiveDecisionEngine` | it is the composition engine |
-| `EnginePolicy` | it is the policy adapter |
+| `LiveCompositePlanner` | it is the composite planner |
+| `PlannerPolicy` | it is the policy adapter |
 | `UCBBandit` | it is a learner |
-| `DecisionEngine` | it is the protocol |
+| `Planner` | it is the protocol |
 | `live_decision` | stable reason code |
 | `live`, `glue`, `commitment`, `execution`, `attention`, `utility`, `first`, `benefit` | stable JSON and bench keys |
 | `LiveCase`, `LiveBench`, `live_bench` | benchmark terms |
@@ -93,7 +152,7 @@ No compatibility aliases are provided. The rename is deliberate: two names for o
 confusion. Update the import instead of keeping both names.
 
 JSON keys and reason codes are data identifiers; class names are code identifiers. They do not
-have to match. For example, the `live` benchmark key maps to `LiveDecisionEngine`, while
+have to match. For example, the `live` benchmark key maps to `LiveCompositePlanner`, while
 `commitment` maps to `CommitmentPlanner`.
 
 ## Compatibility rules
@@ -131,6 +190,6 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.10.0`. The planner/engine/policy/learner naming change is the first
-migration entry that requires host changes. Add a new entry here when a release requires host
-changes; keep it short and concrete.
+The current release is `0.10.0`. The next release includes the vocabulary migration above. The 0.10.0
+planner naming change was the first migration entry that required host changes. Add a new entry here
+when a release requires host changes; keep it short and concrete.

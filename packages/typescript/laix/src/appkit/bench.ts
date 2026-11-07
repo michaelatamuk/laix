@@ -1,5 +1,5 @@
 import type { ActionOption } from "../core/contracts.ts";
-import { Layer } from "./layer.ts";
+import { DecisionClient } from "./decision-client.ts";
 import type { Decision, DecisionRequest } from "../core/contracts.ts";
 import { ActivePerceptionPolicy } from "../core/policies/active-perception.ts";
 import { AllocationPolicy } from "../core/policies/allocation.ts";
@@ -66,7 +66,7 @@ function attentionSuite(): Suite {
   return {
     name: "attention",
     description: "which signal deserves attention now",
-    policy: () => new Layer(),
+    policy: () => new DecisionClient(),
     cases: [
       { id: "attention_bill_day", request: { subject: "bill", at: AT, signals: [signal], context: { now: now.toISOString(), quietHours: ["22:00", "06:00"] } }, expected: { verb: "guide", reasonCode: "worth_surfacing" } },
       { id: "attention_quiet_hours", request: { subject: "bill", at: AT, signals: [signal], context: { now: night.toISOString(), quietHours: ["22:00", "06:00"] } }, expected: { verb: "wait", reasonCode: "quiet_hours" } },
@@ -92,7 +92,7 @@ function actionSuite(): Suite {
   return {
     name: "action",
     description: "which available action to take",
-    policy: () => new Layer(),
+    policy: () => new DecisionClient(),
     cases: [
       { id: "action_sink", request: { subject: "sink", at: AT, situation: { id: "sink-1", at: AT, subject: "sink", beliefs: [{ confidence: 0.95 }], attributes: { urgency: 0.9 } }, options: sink }, expected: { verb: "act", reasonCode: "policy_rule", actionId: "option-close-valve" } },
       { id: "action_payment_approval", request: { subject: "payment", at: AT, situation: { id: "pay-1", at: AT, subject: "payment", beliefs: [{ confidence: 0.95 }], attributes: { urgency: 0.9 } }, options: pay }, expected: { verb: "act", reasonCode: "policy_rule", actionId: "option-pay", requiresApproval: true } },

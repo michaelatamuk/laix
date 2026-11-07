@@ -13,7 +13,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from laix import LiveDecisionEngine, UtilityPlanner
+from laix import LiveCompositePlanner, UtilityPlanner
 from shared.live_bench_common import build_problem
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -48,7 +48,7 @@ def vignette(
     options: list[dict[str, Any]],
     *,
     commitments: list[dict[str, Any]] | None = None,
-    attention_budget: dict[str, float] | None = None,
+    human_attention_budget: dict[str, float] | None = None,
     approvals: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     problem: dict[str, Any] = {
@@ -58,8 +58,8 @@ def vignette(
     }
     if commitments:
         problem["commitments"] = commitments
-    if attention_budget:
-        problem["attention_budget"] = attention_budget
+    if human_attention_budget:
+        problem["human_attention_budget"] = human_attention_budget
     if approvals:
         problem["approvals"] = approvals
     return {
@@ -280,11 +280,11 @@ VIGNETTES = [
 
 
 def main() -> None:
-    engine = LiveDecisionEngine()
+    planner = LiveCompositePlanner()
     baseline = UtilityPlanner()
     for item in VIGNETTES:
         problem = build_problem(item["problem"])
-        plan = engine.solve(problem)
+        plan = planner.solve(problem)
         item["laix_choice"] = plan.action_id
         item["laix_verb"] = plan.verb
         item["laix_reason_code"] = plan.reason_code

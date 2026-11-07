@@ -1,10 +1,10 @@
 import {
-  AttentionBudget,
+  HumanAttentionBudget,
   DecisionCalibrationReport,
   DecisionTimeline,
-  EnginePolicy,
+  PlannerPolicy,
   ExecutionBridge,
-  LiveDecisionEngine,
+  LiveCompositePlanner,
   ManualClock,
   StreamSession,
   calibrateDecision,
@@ -23,14 +23,14 @@ const commitments: Commitment[] = [
     due: "2026-11-01T09:00:00Z",
   },
 ];
-const budget = new AttentionBudget({ total: 1 });
+const budget = new HumanAttentionBudget({ total: 1 });
 const timeline = new DecisionTimeline();
-const policy = new EnginePolicy(new LiveDecisionEngine(), "live.v1");
+const policy = new PlannerPolicy(new LiveCompositePlanner(), "live.v1");
 const session = new StreamSession(policy.decide.bind(policy), {
   streamId: "DESK",
   capacity: 4,
   timeline,
-  attentionBudget: budget,
+  humanAttentionBudget: budget,
   clock: () => new Date("2026-11-01T10:00:00Z"),
 });
 
@@ -57,7 +57,7 @@ const request: DecisionRequest = {
   subject: "live loop",
   at: "2026-11-01T10:00:00Z",
   options,
-  attributes: { commitments, attention_budget: budget },
+  attributes: { commitments, human_attention_budget: budget },
 };
 
 const decision = session.observe(request)[0]!;

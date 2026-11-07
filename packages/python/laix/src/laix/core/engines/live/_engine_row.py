@@ -17,7 +17,7 @@ class _Row:
     blocker: str | None
     commitment: Any
     execution: Any
-    attention: Any
+    human_attention: Any
 
 
 __all__ = ["_Row"]

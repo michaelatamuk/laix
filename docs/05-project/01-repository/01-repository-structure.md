@@ -88,32 +88,32 @@ packages/python/laix/src/laix/
 │   │   ├── request/         decision_request.py envelope; payload records
 │   │   ├── response/        decision.py; payload: evidence ref, intent, score breakdown
 │   │   ├── trail/           execution receipt and trace
-│   │   └── normalise.py     coerce and from_attention
+│   │   └── normalise.py     coerce and from_signal_attention
 │   ├── engines/
-│   │   ├── contract/       engine.py, decision_engine.py, decision_problem.py, plan.py
+│   │   ├── contract/       planner.py, planner_input.py, planner_result.py, planner_policy.py
 │   │   ├── planners/
 │   │   │   ├── utility/     utility planner, model and weights
 │   │   │   ├── mdp/         MDP model, transitions, value iteration and planner
 │   │   │   ├── pomdp/       POMDP model, observations, belief state and planner
 │   │   │   ├── commitment/  commitment-aware planner, effects and weights
 │   │   │   ├── execution/   execution-aware planner, effects and weights
-│   │   │   └── attention/   attention-aware planner, budget and effects
-│   │   ├── live/            LiveDecisionEngine and composite score
+│   │   │   └── human_attention/   human-attention planner, budget and effects
+│   │   ├── live/            LiveCompositePlanner and composite score
 │   │   ├── simulation/     simulator, scenario, step, result, report and planner score
 │   │   ├── learning/       calibration, decision calibration and model learning
 │   │   ├── bench/          live benchmark, cases, rows, metrics and baselines
-│   │   ├── signals/        input, output, gates/, attention.v1.json, decide, score
-│   │   ├── policies/       policy.py, registry.py, simulation.py, implementations/ (packs, rules, target, planning, group)
+│   │   ├── signals/        input, output, gates/, signal-attention.v1.json, decide, score
+│   │   ├── policies/       decision_policy.py, decision_policy_registry.py, simulation.py, implementations/ (packs, rules, target, planning, group)
 │   │   └── resources/      budget, sensing option, plan, scheduler
-│   ├── outcome_learning/    record, ledger, store, bandit, rewards, causal/, attention/
+│   ├── outcome_learning/    record, ledger, store, bandit, rewards, causal/, signal_attention/
 │   ├── commitments/         commitment ledger, stores and planning state
-│   ├── evaluation/          case, row, report, compare, attention replay, attention-bench.v1.json
+│   ├── evaluation/          case, row, report, compare, signal attention replay, signal-attention-bench.v1.json
 │   ├── perception/          detection, detector, event, frame
 │   ├── schema/              build, check, records and laix-v1.schema.json
 │   └── support/             time, ids, values, serialize, errors, verbs, version
 └── appkit/
     ├── __init__.py          optional app surface
-    ├── layer.py             public Layer
+    ├── decision_client.py   public DecisionClient
     ├── runtime/             decision runtime, execution, saga, state, stores
     ├── audit/               decision record, proposal, approval, undo, audit event
     ├── delivery/            port, receipt, null
@@ -133,7 +133,7 @@ packages/typescript/laix/src/
 ├── core/
 │   ├── index.ts       core surface
 │   ├── contracts.ts   core records
-│   ├── contract/engine.ts DecisionEngine, EnginePolicy and to_decision
+│   ├── contract/planner.ts Planner, PlannerInput, PlannerResult, PlannerPolicy and toDecision
 │   ├── commitments/   commitment ledger and stores
 │   ├── causal.ts      causal ledger
 │   ├── planners/
@@ -142,19 +142,19 @@ packages/typescript/laix/src/
 │   │   ├── pomdp/     POMDP model, belief update and planner
 │   │   ├── commitment/ commitment-aware planner
 │   │   ├── execution/ execution-aware planner
-│   │   └── attention/ attention-aware planner and budget
-│   ├── live/          LiveDecisionEngine
+│   │   └── human-attention/ human-attention planner and budget
+│   ├── live/          LiveCompositePlanner
 │   ├── learning/      calibration, decision calibration and model learning
 │   ├── bench/         live benchmark and baselines
 │   ├── outcome.ts     outcome ledger and UCB learner
 │   ├── evaluation.ts  parity harness
 │   ├── perception/perception.ts detector and frame contracts
 │   ├── resources.ts   budget and resource admission
-│   ├── signals/attention.ts attention policy
-│   └── policies/      eight packs, bandit, rules, target, planning, group, shadow, registry
+│   ├── signals/signal-attention.ts signal-attention policy
+│   └── policies/      eight packs, bandit, rules, target, planning, group, shadow, decision-policy-registry
 └── appkit/
     ├── index.ts       optional app surface
-    ├── layer.ts       public Layer and action policy
+    ├── decision-client.ts public DecisionClient and action policy
     ├── live-context.ts host-driven detector loop
     ├── streaming.ts   stream session and checkpoints
     ├── decision-timeline.ts decision timeline semantics
@@ -181,10 +181,10 @@ entry point, `laix`.
 | File | Contents |
 |---|---|
 | `packages/contracts/decision-record.v1.schema.json` | decision record shape |
-| `packages/contracts/attention.v1.json` | attention test cases |
-| `packages/contracts/attention-bench.v1.json` | attention outcome cases |
+| `packages/contracts/signal-attention.v1.json` | signal-attention test cases |
+| `packages/contracts/signal-attention-bench.v1.json` | signal-attention outcome cases |
 
-The Python package keeps a copy of the attention vectors for installation. A test fails if the copy
+The Python package keeps a copy of the signal-attention vectors for installation. A test fails if the copy
 and the canonical file differ.
 
 ## Rules

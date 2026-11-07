@@ -9,7 +9,7 @@ rule change does not always change the package version.
 | TypeScript package | `0.10.0` | `packages/typescript/laix/package.json` |
 | Record schema | `0.8.0` | `core/support/version.py`, `contracts.ts` |
 | Rule sets | `0.8.0` | policy versions and vectors |
-| Attention vectors | `0.8.0` | `attention.v1.json` and conformance fixtures |
+| Signal-attention vectors | `0.8.0` | `signal-attention.v1.json` and conformance fixtures |
 
 ## The axes
 
@@ -17,8 +17,8 @@ rule change does not always change the package version.
 |---|---|---|
 | Package version | The Python and TypeScript packages. | Any user-visible feature, fix or behaviour change. |
 | Record schema | Field names, JSON keys, types and allowed values. | A record shape changes. |
-| Rule set | Policy names, thresholds and reason codes. | A rule changes behaviour. |
-| Attention vectors | The shared attention conformance cases. | A labelled vector or expected decision changes. |
+| Rule set | DecisionPolicy names, thresholds and reason codes. | A rule changes behaviour. |
+| Signal-attention vectors | The shared attention conformance cases. | A labelled vector or expected decision changes. |
 
 A code change that leaves a record shape unchanged leaves the schema unchanged. A new optional field
 is additive; a removed or renamed field is a schema change.
@@ -34,7 +34,7 @@ package and policy versions available for rollback.
 - **Package** - any user-visible change, feature or fix. Both packages move together for a release.
 - **Record schema** - a record shape changes. Regenerate `laix-v1.schema.json` and update
   [Records and schema](../../02-core/01-contract/02-records-and-schema.md).
-- **Rule sets or attention vectors** - a rule, threshold or labelled vector changes behaviour.
+- **Rule sets or signal-attention vectors** - a rule, threshold or labelled vector changes behaviour.
 - **Reason code** - treat it as a behaviour change and call it out in the changelog.
 
 ## Releases

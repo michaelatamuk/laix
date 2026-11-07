@@ -8,7 +8,7 @@ alternatives, so the result is explainable.
 from __future__ import annotations
 
 from ....support.values import clamp
-from ...contract.engine import DecisionProblem, Plan
+from ...contract.planner_policy import PlannerInput, PlannerResult
 from .mdp_model import MdpModel
 from .mdp_transition import MdpTransition
 
@@ -91,13 +91,13 @@ class MDPPlanner:
         self.state = state or model.start
         self.version = self.name
 
-    def solve(self, problem: DecisionProblem) -> Plan:
+    def solve(self, problem: PlannerInput) -> PlannerResult:
         state = str(problem.attributes.get("state", self.state))
         if state not in self.model.states:
             raise ValueError(f"unknown state: {state!r}")
         rows = action_values(self.model, state)
         if not rows:
-            return Plan(
+            return PlannerResult(
                 verb="wait",
                 confidence=1.0,
                 reason_code="terminal_state",
@@ -116,7 +116,7 @@ class MDPPlanner:
             }
             for action, value in rows[1:]
         )
-        return Plan(
+        return PlannerResult(
             verb="act",
             confidence=self._confidence(best_value, second),
             reason_code="mdp_plan",

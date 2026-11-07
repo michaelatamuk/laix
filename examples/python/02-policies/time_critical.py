@@ -5,7 +5,7 @@ Two runs show how confidence changes the answer. The hard risk limit and the
 delay, money, disruption and the value of looking first.
 """
 
-from laix import DecisionRequest, Intent, Layer, Decision
+from laix import DecisionRequest, Intent, DecisionClient, Decision
 
 WINDOW_MINUTES = 6
 RISK_LIMIT = 0.20
@@ -164,7 +164,7 @@ class TradeoffPolicy:
 
 
 def run(confidence: float) -> None:
-    decision = Layer(policy=TradeoffPolicy()).decide(
+    decision = DecisionClient(policy=TradeoffPolicy()).decide(
         DecisionRequest(
             subject="water near electricity",
             at="2026-11-01T10:00:00+00:00",

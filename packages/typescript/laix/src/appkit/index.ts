@@ -2,7 +2,7 @@ export * from "./bench.ts";
 export * from "./checkpoint.ts";
 export * from "./delivery.ts";
 export * from "./planner-bench.ts";
-export * from "./layer.ts";
+export * from "./decision-client.ts";
 export * from "./live-context.ts";
 export * from "./platform.ts";
 export * from "./proposal.ts";

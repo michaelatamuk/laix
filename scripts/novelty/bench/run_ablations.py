@@ -10,10 +10,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from laix import (
-    AttentionWeights,
+    HumanAttentionWeights,
     CommitmentWeights,
     ExecutionWeights,
-    LiveDecisionEngine,
+    LiveCompositePlanner,
     UtilityPlanner,
 )
 from shared.live_bench_common import (
@@ -39,14 +39,14 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def engines() -> dict[str, object]:
+def planners() -> dict[str, object]:
     zero_commitment = CommitmentWeights(
         keep=0.0, violate=0.0, create=0.0, due=0.0, blocked=0.0
     )
     zero_execution = ExecutionWeights(
         irreversible=0.0, unknown=0.0, approval=0.0, recovery=0.0
     )
-    zero_attention = AttentionWeights(
+    zero_attention = HumanAttentionWeights(
         interrupt=0.0, approval=0.0, escalation=0.0, exhausted=0.0
     )
     equal_commitment = CommitmentWeights(
@@ -55,21 +55,21 @@ def engines() -> dict[str, object]:
     equal_execution = ExecutionWeights(
         irreversible=1.0, unknown=1.0, approval=1.0, recovery=1.0
     )
-    equal_attention = AttentionWeights(
+    equal_attention = HumanAttentionWeights(
         interrupt=1.0, approval=1.0, escalation=1.0, exhausted=1.0
     )
     return {
-        "full": LiveDecisionEngine(),
-        "no_commitment": LiveDecisionEngine(commitment_weights=zero_commitment),
-        "no_execution": LiveDecisionEngine(execution_weights=zero_execution),
-        "no_attention": LiveDecisionEngine(attention_weights=zero_attention),
+        "full": LiveCompositePlanner(),
+        "no_commitment": LiveCompositePlanner(commitment_weights=zero_commitment),
+        "no_execution": LiveCompositePlanner(execution_weights=zero_execution),
+        "no_attention": LiveCompositePlanner(human_attention_weights=zero_attention),
         "utility_only": UtilityPlanner(),
-        "equal_weights": LiveDecisionEngine(
+        "equal_weights": LiveCompositePlanner(
             commitment_weights=equal_commitment,
             execution_weights=equal_execution,
-            attention_weights=equal_attention,
+            human_attention_weights=equal_attention,
         ),
-        "no_feasibility_gates": LiveDecisionEngine(enforce_feasibility=False),
+        "no_feasibility_gates": LiveCompositePlanner(enforce_feasibility=False),
     }
 
 
@@ -77,9 +77,9 @@ def main() -> int:
     args = parse_args()
     cases = load_cases(split_paths(args.split))
     rows = []
-    for name, engine in engines().items():
+    for name, planner in planners().items():
         for case in cases:
-            plan, latency = run_planner(engine, case.problem)
+            plan, latency = run_planner(planner, case.problem)
             rows.append(
                 evaluate_case(
                     case,

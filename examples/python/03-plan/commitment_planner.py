@@ -6,7 +6,7 @@ from laix import (
     ActionOption,
     Commitment,
     CommitmentPlanner,
-    DecisionProblem,
+    PlannerInput,
 )
 
 commitments = (
@@ -18,7 +18,7 @@ commitments = (
 )
 
 plan = CommitmentPlanner().solve(
-    DecisionProblem(
+    PlannerInput(
         subject="choose",
         at="2026-11-01T10:00:00+00:00",
         options=(

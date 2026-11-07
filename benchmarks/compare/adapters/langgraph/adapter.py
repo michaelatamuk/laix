@@ -7,7 +7,7 @@ import uuid
 from collections.abc import Sequence
 from pathlib import Path
 
-from laix import DecisionProblem, LiveDecisionEngine, Plan
+from laix import PlannerInput, LiveCompositePlanner, PlannerResult
 
 from ..result import AdapterResult
 from .state import LangGraphState
@@ -22,13 +22,13 @@ except ImportError:  # pragma: no cover - optional dependency
 
 
 class LangGraphAdapter:
-    """Put the same LAIX decision engine inside a LangGraph state machine."""
+    """Put the same LAIX composite planner inside a LangGraph state machine."""
 
     name = "langgraph"
     dependencies = ("langgraph",)
 
     def __init__(self) -> None:
-        self._engine = LiveDecisionEngine()
+        self._engine = LiveCompositePlanner()
         self._graph = None
         if _AVAILABLE:
             self._graph = self._build()
@@ -62,7 +62,7 @@ class LangGraphAdapter:
     def _route(self, state: LangGraphState) -> str:
         return "approval" if state.get("requires_approval") else END
 
-    def solve(self, problem: DecisionProblem) -> Plan:
+    def solve(self, problem: PlannerInput) -> PlannerResult:
         if self._graph is None:
             raise RuntimeError("langgraph is not installed")
         config = {"configurable": {"thread_id": str(uuid.uuid4())}}
@@ -76,7 +76,7 @@ class LangGraphAdapter:
             raise RuntimeError("LangGraph did not return a plan")
         return plan
 
-    def run(self, problems: Sequence[DecisionProblem]) -> AdapterResult:
+    def run(self, problems: Sequence[PlannerInput]) -> AdapterResult:
         if self._graph is None:
             return AdapterResult(
                 name=self.name,
@@ -103,7 +103,7 @@ class LangGraphAdapter:
             mean_latency_ms=elapsed / len(problems) if problems else 0.0,
             dependencies=self.dependencies,
             glue_lines=glue,
-            notes=("same LAIX decision engine inside the graph",),
+            notes=("same LAIX composite planner inside the graph",),
         )
 
 

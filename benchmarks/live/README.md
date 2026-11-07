@@ -1,6 +1,6 @@
 # LAIX live bench — case format
 
-`v1/` holds the current live-bench corpus. Each file is a list of `DecisionProblem` scenarios in
+`v1/` holds the current live-bench corpus. Each file is a list of `PlannerInput` scenarios in
 JSON. The Python loader converts them into `LiveCase` objects for use with `run_live_bench()`.
 
 ## v1 corpus
@@ -112,7 +112,7 @@ python -m jsonschema -i my-cases.json benchmarks/live/v1/schema.json
 | `options` | yes | At least one option. |
 | `situation` | no | Hard constraints (risk limit, cost limit, latency limit). |
 | `commitments` | no | Open commitments that options may fulfill or violate. |
-| `attention_budget` | no | `{ "total": float, "spent": float }`. |
+| `human_attention_budget` | no | `{ "total": float, "spent": float }`. |
 | `approvals` | no | `{ "option_id": "approved" \| "rejected" \| "pending" }`. |
 
 ### Option
@@ -155,8 +155,8 @@ are counted once in the conflict category.
 import json
 from pathlib import Path
 from laix import (
-    ActionOption, AttentionBudget, Commitment, Constraint,
-    DecisionProblem, Situation, run_live_bench, default_planners,
+    ActionOption, HumanAttentionBudget, Commitment, Constraint,
+    PlannerInput, Situation, run_live_bench, default_planners,
     LiveCase,
 )
 
@@ -191,10 +191,10 @@ def load_cases(path: Path) -> list[LiveCase]:
             for cm in p.get("commitments", [])
         )
 
-        attention_budget = None
-        if p.get("attention_budget"):
-            ab = p["attention_budget"]
-            attention_budget = AttentionBudget(total=ab["total"], spent=ab["spent"])
+        human_attention_budget = None
+        if p.get("human_attention_budget"):
+            ab = p["human_attention_budget"]
+            human_attention_budget = HumanAttentionBudget(total=ab["total"], spent=ab["spent"])
 
         options = tuple(
             ActionOption(
@@ -219,12 +219,12 @@ def load_cases(path: Path) -> list[LiveCase]:
         attributes: dict = {}
         if commitments:
             attributes["commitments"] = commitments
-        if attention_budget is not None:
-            attributes["attention_budget"] = attention_budget
+        if human_attention_budget is not None:
+            attributes["human_attention_budget"] = human_attention_budget
         if p.get("approvals"):
             attributes["approvals"] = p["approvals"]
 
-        problem = DecisionProblem(
+        problem = PlannerInput(
             subject=p["subject"],
             at=p["at"],
             situation=situation,

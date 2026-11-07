@@ -47,7 +47,7 @@ function actionOption(raw) {
 function problem(raw) {
   const attributes = {};
   if (raw.commitments && raw.commitments.length) attributes.commitments = raw.commitments;
-  if (raw.attention_budget) attributes.attention_budget = raw.attention_budget;
+  if (raw.human_attention_budget) attributes.human_attention_budget = raw.human_attention_budget;
   if (raw.approvals) attributes.approvals = raw.approvals;
   return {
     subject: raw.subject,

@@ -9,9 +9,9 @@ The result is:
 - plan-fast: the feasible plan with the best success against cost.
 """
 
-from laix import DecisionRequest, Layer, ReplanningPolicy, iso
+from laix import DecisionRequest, DecisionClient, ReplanningPolicy, iso
 
-decision = Layer(policy=ReplanningPolicy()).decide(
+decision = DecisionClient(policy=ReplanningPolicy()).decide(
     DecisionRequest(
         subject="delivery route",
         at=iso(),

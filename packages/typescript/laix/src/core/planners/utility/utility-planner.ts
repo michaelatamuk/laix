@@ -1,5 +1,5 @@
 import type { ActionOption } from "../../contracts.ts";
-import type { DecisionProblem, Plan } from "../../contract/engine.ts";
+import type { PlannerInput, PlannerResult } from "../../contract/planner.ts";
 import { UtilityModel } from "./utility-model.ts";
 import type { RiskAttitude } from "./utility-model.ts";
 
@@ -42,7 +42,7 @@ function limit(kind: string, value: unknown): number | null {
 }
 
 export function constraintBlocker(
-  problem: DecisionProblem,
+  problem: PlannerInput,
   option: ActionOption,
 ): string | null {
   const situation = problem.situation as SituationLike | undefined;
@@ -70,7 +70,7 @@ export function constraintBlocker(
   return null;
 }
 
-export function approvalRequired(problem: DecisionProblem): boolean {
+export function approvalRequired(problem: PlannerInput): boolean {
   const situation = problem.situation as SituationLike | undefined;
   return Boolean(
     situation?.constraints?.some(
@@ -88,7 +88,7 @@ export class UtilityPlanner {
     this.model = model;
   }
 
-  solve(problem: DecisionProblem): Plan {
+  solve(problem: PlannerInput): PlannerResult {
     const options = [...(problem.options ?? [])];
     if (!options.length) return this.wait("no_options", "there are no options to score");
 
@@ -155,7 +155,7 @@ export class UtilityPlanner {
   }
 
   private alternatives(
-    problem: DecisionProblem,
+    problem: PlannerInput,
     options: ActionOption[],
     model: UtilityModel,
     best: ActionOption,
@@ -191,7 +191,7 @@ export class UtilityPlanner {
     return Math.min(1, Math.max(0, 0.5 + 0.5 * (gap / Math.max(Math.abs(best), 1e-9))));
   }
 
-  private wait(reasonCode: string, rationale: string): Plan {
+  private wait(reasonCode: string, rationale: string): PlannerResult {
     return { verb: "wait", confidence: 1.0, reasonCode, rationale, score: 0.0 };
   }
 }

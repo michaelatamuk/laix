@@ -5,9 +5,9 @@ from __future__ import annotations
 from laix import (
     ActionOption,
     ActionPolicy,
-    ActionPolicyRequest,
+    ActionPolicyInput,
     Constraint,
-    DecisionProblem,
+    PlannerInput,
     Situation,
     UtilityPlanner,
     UtilityModel,
@@ -15,8 +15,8 @@ from laix import (
 )
 
 
-def _problem(*options: ActionOption, **attributes: object) -> DecisionProblem:
-    return DecisionProblem(
+def _problem(*options: ActionOption, **attributes: object) -> PlannerInput:
+    return PlannerInput(
         subject="choose",
         at="2026-11-01T10:00:00+00:00",
         options=options,
@@ -91,7 +91,7 @@ def test_utility_planner_agrees_with_the_action_policy() -> None:
         attributes={"confidence": 0.95, "urgency": 0.95},
     )
     action = ActionPolicy().decide(
-        ActionPolicyRequest(situation=situation, options=options)
+        ActionPolicyInput(situation=situation, options=options)
     )
     utility = UtilityPlanner().solve(_problem(*options))
 
@@ -105,7 +105,7 @@ def test_hard_situation_constraint_rejects_an_option() -> None:
         subject="leak",
         constraints=(Constraint(id="risk-limit", kind="risk", value=0.2),),
     )
-    problem = DecisionProblem(
+    problem = PlannerInput(
         subject="choose",
         at="2026-11-01T10:00:00+00:00",
         situation=situation,
@@ -129,7 +129,7 @@ def test_safety_constraint_blocks_every_option() -> None:
         constraints=(Constraint(id="stop", kind="safety", value=True),),
     )
     plan = UtilityPlanner().solve(
-        DecisionProblem(
+        PlannerInput(
             subject="choose",
             at="2026-11-01T10:00:00+00:00",
             situation=situation,
@@ -149,7 +149,7 @@ def test_approval_constraint_sets_the_flag() -> None:
         constraints=(Constraint(id="human", kind="approval", value=True),),
     )
     plan = UtilityPlanner().solve(
-        DecisionProblem(
+        PlannerInput(
             subject="choose",
             at="2026-11-01T10:00:00+00:00",
             situation=situation,

@@ -1,12 +1,12 @@
 # Policies in the app
 
 A policy is the chooser. The core defines the policy contract; the app chooses which policy a
-`Layer` uses, when it changes and how it is rolled out.
+`DecisionClient` uses, when it changes and how it is rolled out.
 
 The contract is small:
 
 ```python
-class Policy:
+class DecisionPolicy:
     name: str
 
     def decide(self, request):
@@ -18,7 +18,7 @@ The core policy page covers the built-in policies, the decision classes and the 
 
 ## The default path
 
-`Layer()` uses the core dispatch rule:
+`DecisionClient()` uses the core dispatch rule:
 
 - a request with signals and context goes to signal attention;
 - a request with a situation and options goes to the action policy;
@@ -29,9 +29,9 @@ You do not register the built-in path. It is the fallback.
 ## Pass a policy
 
 ```python
-from laix import Layer
+from laix import DecisionClient
 
-layer = Layer(policy=my_policy)
+layer = DecisionClient(policy=my_policy)
 decision = layer.decide(request)[0]
 ```
 
@@ -42,7 +42,7 @@ The layer registers the policy under `my_policy.name` and uses it for every deci
 The registry lets one app keep several policies and switch between them:
 
 ```python
-layer = Layer()
+layer = DecisionClient()
 layer.register_policy("quality", QualityPolicy())
 layer.register_policy("fast", FastPolicy())
 
@@ -54,14 +54,14 @@ print(layer.status())     # includes the selected policy and version
 ```
 
 `register_policy` rejects an empty name or an object without `decide`. `use_policy` raises a
-`PolicyError` for an unknown name and lists the registered names in the message.
+`DecisionPolicyError` for an unknown name and lists the registered names in the message.
 
 ## A custom policy
 
 A policy returns one or more decisions in the public shape:
 
 ```python
-from laix import Decision, Layer
+from laix import Decision, DecisionClient
 
 class QualityPolicy:
     name = "quality"
@@ -77,7 +77,7 @@ class QualityPolicy:
             )
         ]
 
-layer = Layer(policy=QualityPolicy())
+layer = DecisionClient(policy=QualityPolicy())
 ```
 
 A custom policy still has to return the same `Decision` shape. The app should not invent verbs or
@@ -91,10 +91,10 @@ both with the decision. A policy change is a deployable change, not a silent edi
 For a safe rollout, wrap the new policy in `ShadowPolicy`:
 
 ```python
-from laix import Layer, ShadowPolicy
+from laix import DecisionClient, ShadowPolicy
 
 shadow = ShadowPolicy(primary=current_policy, shadow=candidate_policy)
-layer = Layer(policy=shadow)
+layer = DecisionClient(policy=shadow)
 
 # Every call returns the primary decision and records a difference when the
 # verb, action or reason code disagrees.
@@ -107,9 +107,9 @@ pinned rollback version. See [Deployment](../05-operate/03-deployment.md#rollout
 ## TypeScript
 
 ```ts
-import { Layer } from "laix";
+import { DecisionClient } from "laix";
 
-const layer = new Layer({ policy: myPolicy });
+const layer = new DecisionClient({ policy: myPolicy });
 layer.registerPolicy("quality", qualityPolicy);
 layer.usePolicy("quality");
 console.log(layer.policies());
@@ -125,6 +125,6 @@ console.log(layer.policies());
 ## Related
 
 - [Integration](01-integration.md) - the adapter around the call.
-- [Single decision](02-single-decision.md) - `Layer` and the one-shot surface.
+- [Single decision](02-single-decision.md) - `DecisionClient` and the one-shot surface.
 - [Policies](../../02-core/02-decide/03-policies.md) - the contract, the decision classes and the wrappers.
 - [Deployment](../05-operate/03-deployment.md) - rollout and rollback.

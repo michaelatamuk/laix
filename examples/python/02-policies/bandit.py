@@ -9,10 +9,10 @@ The result is:
 - 0.75: the learned reward for automatic, including its prior.
 """
 
-from laix import Arm, BanditPolicy, DecisionRequest, Layer, UCBBandit, iso
+from laix import Arm, BanditPolicy, DecisionRequest, DecisionClient, UCBBandit, iso
 
 policy = BanditPolicy(UCBBandit([Arm("manual"), Arm("automatic")]))
-layer = Layer(policy=policy)
+layer = DecisionClient(policy=policy)
 request = DecisionRequest(subject="pick a mode", at=iso())
 
 first = layer.decide(request)[0]

@@ -9,11 +9,11 @@ policy or code.
 1. Is the request valid? Check `subject`, `at`, options, constraints and timezone.
 2. Is the option set what you expect? A verb can only be chosen from the options present.
 3. Are hard constraints removing the option you expected? Check risk, approval and cost.
-4. Is the attention budget exhausted? Check `AttentionBudget` and the attention breakdown.
+4. Is the human attention budget exhausted? Check `HumanAttentionBudget` and the human-attention breakdown.
 5. Is the approval state what you expect? `pending` is not `approved`.
 6. Is the policy version the one you think? Check `policy_version`.
-7. Is the clock the one you think? `at`, `Context.now` and due times must agree.
-8. Is the model or planner returning the action you expect? Wrap it in `EnginePolicy` and
+7. Is the clock the one you think? `at`, `SignalContext.now` and due times must agree.
+8. Is the model or planner returning the action you expect? Wrap it in `PlannerPolicy` and
    inspect its output before blaming the contract.
 
 ## Symptoms
@@ -22,8 +22,8 @@ policy or code.
 |---|---|---|
 | It chose `wait` or `observe` | no option fits, budget is spent, or the signal is below the floor | `breakdown`, `alternatives`, constraints, budget |
 | It chose `act` when you expected `ask` | approval is not required, or risk is below the gate | `requires_approval`, `risk`, `Constraint` values |
-| It asks or escalates too often | attention floor, approval state, or budget is misconfigured | `Context`, `AttentionBudget`, approval map |
-| `PolicyError` | malformed request, unknown kind, or invalid option | exception message, input schema |
+| It asks or escalates too often | attention floor, approval state, or budget is misconfigured | `SignalContext`, `HumanAttentionBudget`, approval map |
+| `DecisionPolicyError` | malformed request, unknown kind, or invalid option | exception message, input schema |
 | `ApprovalRequired` | execution was attempted without approval | approval lifecycle, `requires_approval` |
 | `UnknownAction` | action id is not registered with the execution adapter | adapter registry, decision `action_id` |
 | Duplicate side effect | retry without an idempotency key | `ExecutionBridge` key, receipt status |
@@ -62,9 +62,9 @@ These are the codes an attention decision can carry.
 | `expected_utility` | utility chose the best expected value |
 | `commitment_aware` | the commitment planner adjusted the choice |
 | `execution_aware` | the execution planner adjusted the choice |
-| `attention_aware` | the attention planner adjusted the choice |
-| `live_decision` | `LiveDecisionEngine` chose the action |
-| `mdp_plan` / `pomdp_plan` | a model-based planner returned a plan |
+| `human_attention_aware` | the attention planner adjusted the choice |
+| `live_decision` | `LiveCompositePlanner` chose the action |
+| `mdp_plan` / `pomdp_plan` | a model-based planner returned a planner result |
 | `policy_rule` | an authored rule fired |
 | `no_rule` | no authored rule matched |
 | `safety_blocked` / `no_safe_option` | a safety constraint removed the action |

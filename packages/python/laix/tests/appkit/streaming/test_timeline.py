@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 import pytest
 
 from laix import (
-    AttentionBudget,
+    HumanAttentionBudget,
     Decision,
     DecisionRequest,
     DecisionTimeline,
@@ -167,7 +167,7 @@ def test_timeline_round_trips_through_a_stream_snapshot() -> None:
     assert restored.timeline.history(first.decision_id) == (first,)
 
 
-def test_stream_session_spends_a_shared_attention_budget() -> None:
+def test_stream_session_spends_a_shared_human_attention_budget() -> None:
     def decider(request: DecisionRequest) -> list[Decision]:
         return [
             Decision(
@@ -176,16 +176,16 @@ def test_stream_session_spends_a_shared_attention_budget() -> None:
                 reason_code="stream",
                 rationale="a stream decision",
                 decision_id=f"DEC-{request.at}",
-                attributes={"attention_cost": 0.4},
+                attributes={"human_attention_cost": 0.4},
             )
         ]
 
-    budget = AttentionBudget(total=1.0)
+    budget = HumanAttentionBudget(total=1.0)
     session = StreamSession(
         decider,
         stream_id="STR-1",
         clock=ManualClock(_moment(0)),
-        attention_budget=budget,
+        human_attention_budget=budget,
     )
     session.observe(DecisionRequest(subject="a", at=_at(0)))
     session.observe(DecisionRequest(subject="b", at=_at(1)))
@@ -194,8 +194,8 @@ def test_stream_session_spends_a_shared_attention_budget() -> None:
     snapshot = session.snapshot()
     restored = StreamSession(decider, stream_id="STR-1")
     restored.restore(snapshot)
-    assert restored.attention_budget is not None
-    assert round(restored.attention_budget.remaining(), 6) == 0.2
+    assert restored.human_attention_budget is not None
+    assert round(restored.human_attention_budget.remaining(), 6) == 0.2
 
 
 def test_timeline_round_trips() -> None:

@@ -9,13 +9,13 @@ from laix import (
     Commitment,
     CommitmentPlanner,
     CommitmentWeights,
-    DecisionProblem,
+    PlannerInput,
     UtilityPlanner,
 )
 
 
-def _problem(*options: ActionOption, commitments: tuple[Commitment, ...] = ()) -> DecisionProblem:
-    return DecisionProblem(
+def _problem(*options: ActionOption, commitments: tuple[Commitment, ...] = ()) -> PlannerInput:
+    return PlannerInput(
         subject="choose",
         at="2026-11-01T10:00:00+00:00",
         options=options,

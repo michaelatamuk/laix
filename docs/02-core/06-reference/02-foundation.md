@@ -75,7 +75,7 @@ The app-kit runtime that drives detectors is `LiveContext` with `CallableDetecto
 
 ### Errors
 
-`PolicyError(ValueError)` is raised for an unknown policy, an invalid registration or an unsupported
+`DecisionPolicyError(ValueError)` is raised for an unknown policy, an invalid registration or an unsupported
 policy result.
 
 ### Verbs
@@ -107,7 +107,7 @@ See [Records and schema](../01-contract/02-records-and-schema.md) for the versio
 | `confidence_band` | belief confidence and calibration views |
 | `to_primitive` | record serialization |
 | `to_string_tuple` | evidence, recipients and dependency ids |
-| `PolicyError` | the policy registry and normalization |
+| `DecisionPolicyError` | the policy registry and normalization |
 | `Verb` / `VERBS` | every decision record and policy |
 
 ## Related

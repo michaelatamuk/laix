@@ -6,7 +6,7 @@ host's storage and platform, and proves the result.
 
 Four things define the app kit:
 
-- **One decision.** `Layer` runs the core, and can execute, record and deliver the result.
+- **One decision.** `DecisionClient` runs the core, and can execute, record and deliver the result.
 - **A runtime loop.** `DecisionRuntime` links observation, state, policy, execution and outcome.
 - **A stream.** `StreamSession` keeps event time, cadence, buffers, revisions and checkpoints.
 - **A host boundary.** Stores, platform and delivery are ports. The host owns the database, the
@@ -24,7 +24,7 @@ block-beta
         columns 4
         build_label["Build"]
         adapter["Adapter<br/>event → request"]
-        layer["Layer<br/>one decision"]
+        layer["DecisionClient<br/>one decision"]
         policies["Policies<br/>select · version · shadow"]
     end
 
@@ -78,8 +78,8 @@ block-beta
 
 | Stage | Contract | What it does |
 |---|---|---|
-| Build | `Layer` | Decides, executes, measures and delivers one decision. |
-| Build | `PolicyRegistry` | Registers the policies a layer can select. |
+| Build | `DecisionClient` | Decides, executes, measures and delivers one decision. |
+| Build | `DecisionPolicyRegistry` | Registers the policies a client can select. |
 | Run | `DecisionRuntime` | Links observation, state, policy, execution and outcome. |
 | Run | `StreamSession` | Turns a stream of events into decisions over time. |
 | Run | `LiveContext` | Runs detectors and returns a frame. |
@@ -108,7 +108,7 @@ The records that cross those stages:
 
 ## The boundary
 
-The app kit is optional. A host that only needs the answer calls `decide` or `Layer`. A host that
+The app kit is optional. A host that only needs the answer calls `decide` or `DecisionClient`. A host that
 also executes, records, streams or delivers adds the rest.
 
 The app kit defines the ports. The host implements them:
@@ -138,7 +138,7 @@ Read in order. Each section opens with a short index that lists its pages in rea
 
 | Path | Contents |
 |---|---|
-| `appkit/layer.py` | `Layer`, the one-decision surface. |
+| `appkit/decision_client.py` | `DecisionClient`, the one-decision surface. |
 | `appkit/runtime/` | decision runtime, execution, saga, state and stores. |
 | `appkit/streaming/` | session, window, sources, checkpoint and timeline. |
 | `appkit/live_context/` | the host-driven detector loop. |

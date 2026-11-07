@@ -1,15 +1,15 @@
-import type { DecisionEngine, DecisionProblem, Plan } from "../core/contract/engine.ts";
+import type { Planner, PlannerInput, PlannerResult } from "../core/contract/planner.ts";
 import { MDPPlanner, MdpModel } from "../core/planners/mdp/mdp-planner.ts";
 import { Simulator, comparePlanners, type SimulationReport } from "./simulator.ts";
 
-export class FixedActionPlanner implements DecisionEngine {
+export class FixedActionPlanner implements Planner {
   readonly action: string;
 
   constructor(action: string) {
     this.action = action;
   }
 
-  solve(_problem: DecisionProblem): Plan {
+  solve(_problem: PlannerInput): PlannerResult {
     return {
       verb: "act",
       confidence: 1,

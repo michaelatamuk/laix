@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ..contract.decision_problem import DecisionProblem
+from ..contract.planner_input import PlannerInput
 
 
 @dataclass(frozen=True, slots=True)
@@ -12,7 +12,7 @@ class LiveCase:
     """One live decision case with the action a careful planner should choose."""
 
     name: str
-    problem: DecisionProblem
+    problem: PlannerInput
     expected_actions: tuple[str, ...] = ()
     tags: tuple[str, ...] = ()
 

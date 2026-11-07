@@ -4,17 +4,17 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .planner_score import PlannerScore
+from .planner_benchmark_row import PlannerBenchmarkRow
 
 
 @dataclass(frozen=True, slots=True)
 class SimulationReport:
     """Planner scores across a set of scenarios."""
 
-    rows: tuple[PlannerScore, ...]
+    rows: tuple[PlannerBenchmarkRow, ...]
 
     def summary(self) -> dict[str, dict[str, float]]:
-        buckets: dict[str, list[PlannerScore]] = {}
+        buckets: dict[str, list[PlannerBenchmarkRow]] = {}
         for row in self.rows:
             buckets.setdefault(row.planner, []).append(row)
         return {

@@ -60,7 +60,7 @@ def test_core_files_do_not_import_the_app_kit() -> None:
 
 
 def test_core_surface_has_no_app_kit_objects() -> None:
-    assert not hasattr(laix.core, "Layer")
+    assert not hasattr(laix.core, "DecisionClient")
     assert not hasattr(laix.core, "ExecutionBridge")
     assert hasattr(laix.core, "Signal")
     assert hasattr(laix.core, "DecisionRequest")
@@ -68,7 +68,7 @@ def test_core_surface_has_no_app_kit_objects() -> None:
 
 
 def test_app_kit_exposes_the_integration_surface() -> None:
-    assert hasattr(laix.appkit, "Layer")
+    assert hasattr(laix.appkit, "DecisionClient")
     assert hasattr(laix.appkit, "ExecutionBridge")
 
 

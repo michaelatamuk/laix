@@ -14,9 +14,9 @@ The belief says the sink is about to overflow with 95% confidence. Urgency is
 0.9. Closing the valve has high benefit and low risk, so the rule chooses it.
 """
 
-from laix import ActionOption, Belief, DecisionRequest, Layer, Situation, iso
+from laix import ActionOption, Belief, DecisionRequest, DecisionClient, Situation, iso
 
-layer = Layer()
+layer = DecisionClient()
 decision = layer.decide(
     DecisionRequest(
         subject="kitchen sink",

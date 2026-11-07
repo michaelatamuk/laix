@@ -75,14 +75,14 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 | Python tests | passed |
 | Invariant tests | 17/17 |
 | TypeScript tests | 172 passed |
-| Attention conformance | 24/24 |
+| Signal-attention conformance | 24/24 |
 | LAIX-Bench | 25/25 |
-| 7-case live demo | `LiveDecisionEngine` 7/7 |
+| 7-case live demo | `LiveCompositePlanner` 7/7 |
 | Live corpus | 120 cases: 72 dev / 30 test / 18 adversarial |
-| Live decision benchmark | test split: `LiveDecisionEngine` 30/30; conflict 6/6 |
-| Glue baseline | 28/30; `LiveDecisionEngine` +6.7 pp, p = 0.48 |
+| Live decision benchmark | test split: `LiveCompositePlanner` 30/30; conflict 6/6 |
+| Glue baseline | 28/30; `LiveCompositePlanner` +6.7 pp, p = 0.48 |
 | External validation | pending |
-| Ablations | full 100%, no commitment 70%, no execution 83.3%, no attention 96.7% |
+| Ablations | full 100%, no commitment 70%, no execution 83.3%, no human attention 96.7% |
 | Analysis | McNemar, paired bootstrap and effect sizes |
 | TS live parity | 210/210 action IDs match Python on the test split |
 | LangGraph adapter | 120 decisions, 0 interrupts, 6-7 ms mean, 110 glue lines |
@@ -105,7 +105,7 @@ The check resolves relative links across `docs/`, root Markdown files and every 
 | `tsc` | TypeScript source and public declaration syntax/types |
 | `npm test` | TS contracts, conformance, parity, streaming, timeline, execution, planners |
 | `npm run bench` | 10 suites and 25 deterministic cases |
-| `npm run conformance` | 24 shared attention decisions |
+| `npm run conformance` | 24 shared signal-attention decisions |
 | `npm run live-bench` | TypeScript runs the 30-case test split and compares 210 action IDs with Python |
 | `scripts/novelty/bench/run_live_bench.py` | 120-case corpus, metrics, bootstrap intervals, conflict check |
 | `scripts/novelty/analysis/analyze_results.py` | McNemar, paired bootstrap, Cohen's h and category breakdown |

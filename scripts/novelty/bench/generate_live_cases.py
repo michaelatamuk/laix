@@ -70,7 +70,7 @@ def case(
     *,
     situation: dict[str, Any] | None = None,
     commitments: list[dict[str, Any]] | None = None,
-    attention_budget: dict[str, float] | None = None,
+    human_attention_budget: dict[str, float] | None = None,
     approvals: dict[str, str] | None = None,
     note: str = "",
 ) -> dict[str, Any]:
@@ -79,8 +79,8 @@ def case(
         problem["situation"] = situation
     if commitments is not None:
         problem["commitments"] = commitments
-    if attention_budget is not None:
-        problem["attention_budget"] = attention_budget
+    if human_attention_budget is not None:
+        problem["human_attention_budget"] = human_attention_budget
     if approvals is not None:
         problem["approvals"] = approvals
     return {
@@ -211,7 +211,7 @@ def attention_cases(count: int, prefix: str) -> list[dict[str, Any]]:
                         option("ask", "ask", benefit=0.9, interrupt=0.2),
                         option("act", benefit=0.6),
                     ],
-                    attention_budget={"total": 1.0, "spent": 0.0},
+                    human_attention_budget={"total": 1.0, "spent": 0.0},
                     note="The human-facing option fits the remaining attention budget.",
                 )
             )
@@ -226,7 +226,7 @@ def attention_cases(count: int, prefix: str) -> list[dict[str, Any]]:
                         option("ask", "ask", benefit=0.9, interrupt=0.2),
                         option("act", benefit=0.6),
                     ],
-                    attention_budget={"total": 1.0, "spent": 1.0},
+                    human_attention_budget={"total": 1.0, "spent": 1.0},
                     note="The budget is exhausted, so the direct action is correct.",
                 )
             )
@@ -256,7 +256,7 @@ def attention_cases(count: int, prefix: str) -> list[dict[str, Any]]:
                         option("escalate", "escalate", benefit=0.9, interrupt=0.5),
                         option("act", benefit=0.6),
                     ],
-                    attention_budget={"total": 1.0, "spent": 0.7},
+                    human_attention_budget={"total": 1.0, "spent": 0.7},
                     note="Escalation costs more attention than remains.",
                 )
             )
@@ -271,7 +271,7 @@ def attention_cases(count: int, prefix: str) -> list[dict[str, Any]]:
                         option("guide", "guide", benefit=0.85, interrupt=0.1),
                         option("act", benefit=0.55),
                     ],
-                    attention_budget={"total": 1.0, "spent": 0.0},
+                    human_attention_budget={"total": 1.0, "spent": 0.0},
                     note="The guide option is the best use of available attention.",
                 )
             )
@@ -366,7 +366,7 @@ def conflict_cases(count: int, prefix: str) -> list[dict[str, Any]]:
                 commitments=(
                     [commitment(cid, due=PAST, priority=0.7)] if kind != 2 else None
                 ),
-                attention_budget={"total": 0.5, "spent": 0.1},
+                human_attention_budget={"total": 0.5, "spent": 0.1},
                 note=note,
             )
         )
