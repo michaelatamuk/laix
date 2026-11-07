@@ -157,6 +157,29 @@ from .core.engines.planners.pomdp.pomdp_planner import (
     observation_probability,
     pomdp_value,
 )
+from .core.engines.planners.value.ca_vod_planner import (
+    CAVODPlanner,
+    CAVODScore,
+    CAVODWeights,
+)
+from .core.engines.scheduling.attention_scheduler import (
+    AttentionCandidate,
+    AttentionSchedule,
+    AttentionScheduleRow,
+    AttentionScheduler,
+)
+from .core.engines.continuity.repair import (
+    ContinuityRecord,
+    DEFAULT_CONFLICT_RULES,
+    RepairAction,
+    RepairPlan,
+    repair_continuity,
+)
+from .core.engines.explain.counterfactual import (
+    Counterfactual,
+    CounterfactualReport,
+    counterfactual_attribution,
+)
 from .core.engines.simulation.simulator import (
     PlannerBenchmarkRow,
     Scenario,
@@ -377,6 +400,21 @@ __all__ = [
     "observation_probability",
     "plan_actions",
     "pomdp_value",
+    "CAVODPlanner",
+    "CAVODScore",
+    "CAVODWeights",
+    "AttentionCandidate",
+    "AttentionSchedule",
+    "AttentionScheduleRow",
+    "AttentionScheduler",
+    "ContinuityRecord",
+    "DEFAULT_CONFLICT_RULES",
+    "RepairAction",
+    "RepairPlan",
+    "repair_continuity",
+    "Counterfactual",
+    "CounterfactualReport",
+    "counterfactual_attribution",
     "samples_from_outcomes",
     "seeded_scenarios",
     "value_iteration",

@@ -22,6 +22,10 @@ what is done, what is next and what would count as a real step forward.
 | Model learning | done |
 | `POMDPPlanner` | done |
 | `LiveCompositePlanner` (composite planner) | done |
+| `CAVODPlanner` (value of decision) | prototype |
+| `AttentionScheduler` (AADS) | prototype |
+| `repair_continuity` (CDR) | prototype |
+| `counterfactual_attribution` (CDA) | prototype |
 | TypeScript parity | done |
 | Continuity benchmark | done |
 | External validation | open |
@@ -60,6 +64,10 @@ A candidate counts as differentiated when it has:
 
 A patent-level claim would also need a prior-art search.
 
+The four algorithm prototypes are in
+[Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md), with smoke results in
+[Algorithm prototype results](../../06-research/02-evaluation/algorithm-prototypes.md).
+
 ## Research
 
 The research tracks share one constraint: no model training or fine-tuning; planning runs over a
@@ -76,6 +84,10 @@ building a new planner.
 | 6 | Streaming decision semantics | What are the correct semantics for decisions over event time, revisions and checkpoints? | done |
 | 7 | Decision continuity | What changes when commitments, budget, approvals and revisions carry across a sequence of decisions? | done |
 | 8 | External validation | Do the results hold in another environment, on another corpus, under another team? | open |
+| 9 | CA-VOD | Does commitment- and attention-aware value of information beat the additive composite? | prototype |
+| 10 | AADS | Does index scheduling improve attention use across a fleet of decisions? | prototype |
+| 11 | CDR | Does minimum-cost continuity repair keep the decision history consistent? | prototype |
+| 12 | CDA | Does counterfactual attribution explain a decision better than a score breakdown? | prototype |
 
 A track becomes a paper with a precise problem, strong baselines (including published trained models
 where relevant), ablations, reproducible code and honest limitations. The scope includes outcome

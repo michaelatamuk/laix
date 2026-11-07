@@ -23,6 +23,7 @@ the order. `checklist.md` tracks work across all stages.
 | 01 | [Formal model](01-positioning/formal-model.md) | definitions, score composition, invariants |
 | 01 | [Algorithm directions](01-positioning/04-algorithm-directions.md) | candidate algorithms beyond the composite score |
 | 02 | [Benchmark](02-evaluation/benchmark.md) | hypotheses, metrics, benchmark protocol, threats |
+| 02 | [Algorithm prototype results](02-evaluation/algorithm-prototypes.md) | smoke tests for CA-VOD, AADS, CDR and CDA |
 | 02 | [Evidence map](02-evaluation/evidence-map.md) | claims, numbers, sources and missing evidence |
 | 02 | [External benchmarks](02-evaluation/external-benchmarks.md) | world benchmarks, fit and run protocol |
 | 02 | [Sev1-Bench](02-evaluation/sev1-bench.md) | external SRE incident run: DeepSeek baseline vs LAIX |
@@ -51,6 +52,8 @@ the order. `checklist.md` tracks work across all stages.
   (PLD 2024/2853 mapping), `ablation_study.py` (all 7 planners on 7 demo cases, `LiveCompositePlanner` wins
   every case), `conflict_scenario.py` (triple-concern demo), `shadow_rollout.py` (rollout
   pattern).
+- Added: `01-positioning/04-algorithm-directions.md` (CA-VOD, AADS, CDR, CDA),
+  `02-evaluation/algorithm-prototypes.md` and `scripts/novelty/bench/run_algorithm_bench.py`.
 - Added: `01-positioning/formal-model.md` with exact score formulas and weights, `01-positioning/prior-art.md` matrix
   (10 capabilities × 7 columns), `tests/core/test_invariants.py` (17 property tests, I1–I10),
   `benchmarks/live/v1/` (120 cases with dev/test/adversarial splits),

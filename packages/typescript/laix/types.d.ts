@@ -464,6 +464,139 @@
     solve(problem: PlannerInput): PlannerResult;
   }
 
+  export interface CAVODWeights {
+    information?: number;
+    waiting?: number;
+    uncertainty?: number;
+  }
+  export interface CAVODScore {
+    utility: number;
+    commitment: number;
+    execution: number;
+    human_attention: number;
+    information: number;
+    option: number;
+    total: number;
+  }
+  export class CAVODPlanner implements Planner {
+    readonly name: string;
+    readonly model: UtilityModel;
+    readonly weights: Required<CAVODWeights>;
+    constructor(
+      model?: UtilityModel,
+      options?: {
+        weights?: CAVODWeights;
+        commitmentWeights?: Record<string, number>;
+        executionWeights?: Record<string, number>;
+        humanAttentionWeights?: Record<string, number>;
+        enforceFeasibility?: boolean;
+      },
+    );
+    solve(problem: PlannerInput): PlannerResult;
+  }
+
+  export interface AttentionCandidate {
+    id: string;
+    risk?: number;
+    value?: number;
+    commitment?: boolean;
+    informationValue?: number;
+    waitingCost?: number;
+    reviewCost?: number;
+    changeProbability?: number;
+    deadline?: string | null;
+    params?: Record<string, unknown>;
+  }
+  export interface AttentionScheduleRow {
+    candidateId: string;
+    index: number;
+    expectedGain: number;
+    urgency: number;
+    reviewCost: number;
+    selected: boolean;
+    reason: string;
+  }
+  export interface AttentionSchedule {
+    now: string;
+    budget: number;
+    spent: number;
+    rows: AttentionScheduleRow[];
+    selected: AttentionScheduleRow[];
+    deferred: AttentionScheduleRow[];
+  }
+  export class AttentionScheduler {
+    readonly name: string;
+    constructor(options?: {
+      riskWeight?: number;
+      commitmentWeight?: number;
+      informationWeight?: number;
+      urgencyHorizonSeconds?: number;
+    });
+    schedule(
+      candidates: AttentionCandidate[],
+      options?: { now?: string | Date; budget?: number },
+    ): AttentionSchedule;
+  }
+
+  export type ConflictRule = [string, string, string, string];
+  export interface ContinuityRecord {
+    id: string;
+    kind: string;
+    status: string;
+    refs?: string[];
+    conflicts?: string[];
+    supports?: string[];
+    cost?: number;
+    payload?: Record<string, unknown>;
+  }
+  export interface RepairAction {
+    recordId: string;
+    action: "supersede";
+    fromStatus: string;
+    toStatus: string;
+    cost: number;
+    reason: string;
+  }
+  export interface RepairPlan {
+    conflicts: Array<[string, string]>;
+    actions: RepairAction[];
+    totalCost: number;
+    consistent: boolean;
+  }
+  export const DEFAULT_CONFLICT_RULES: ConflictRule[];
+  export function repairContinuity(
+    records: ContinuityRecord[],
+    rules?: ConflictRule[],
+  ): RepairPlan;
+
+  export type CounterfactualComponent =
+    | "utility"
+    | "commitment"
+    | "execution"
+    | "human_attention";
+  export interface Counterfactual {
+    alternativeId: string;
+    component: CounterfactualComponent;
+    delta: number;
+    chosenTotal: number;
+    alternativeTotal: number;
+    resultingTotal: number;
+    explanation: string;
+  }
+  export interface CounterfactualReport {
+    chosenId: string;
+    chosenTotal: number;
+    counterfactuals: Counterfactual[];
+    minimal: Counterfactual | null;
+  }
+  export function counterfactualAttribution(
+    decision: Decision,
+    options?: {
+      components?: CounterfactualComponent[];
+      margin?: number;
+    },
+  ): CounterfactualReport;
+
   export interface MdpTransition {
     state: string;
     action: string;

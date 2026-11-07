@@ -1,0 +1,105 @@
+{
+  "generated_by": "scripts/novelty/bench/run_algorithm_bench.py",
+  "status": "prototype",
+  "ca_vod": [
+    {
+      "live": {
+        "case": "payment-approval",
+        "action_id": "ask",
+        "verb": "ask",
+        "reason_code": "live_decision",
+        "score": 1.09,
+        "information_value": null,
+        "option_value": null
+      },
+      "ca_vod": {
+        "case": "payment-approval",
+        "action_id": "ask",
+        "verb": "ask",
+        "reason_code": "value_of_decision",
+        "score": 1.405,
+        "information_value": 0.315,
+        "option_value": 0.0
+      }
+    },
+    {
+      "live": {
+        "case": "uncertain-verification",
+        "action_id": "act",
+        "verb": "act",
+        "reason_code": "live_decision",
+        "score": 0.5,
+        "information_value": null,
+        "option_value": null
+      },
+      "ca_vod": {
+        "case": "uncertain-verification",
+        "action_id": "verify",
+        "verb": "verify",
+        "reason_code": "value_of_decision",
+        "score": 0.6375,
+        "information_value": 0.2375,
+        "option_value": 0.0
+      }
+    },
+    {
+      "live": {
+        "case": "wait-option",
+        "action_id": "act",
+        "verb": "act",
+        "reason_code": "live_decision",
+        "score": 0.275,
+        "information_value": null,
+        "option_value": null
+      },
+      "ca_vod": {
+        "case": "wait-option",
+        "action_id": "wait",
+        "verb": "wait",
+        "reason_code": "value_of_decision",
+        "score": 0.325,
+        "information_value": 0.0,
+        "option_value": 0.225
+      }
+    }
+  ],
+  "aads": {
+    "selected": [
+      "refund-approval",
+      "check-evidence"
+    ],
+    "deferred": [
+      "routine-review"
+    ],
+    "spent": 1.5,
+    "budget": 1.5
+  },
+  "cdr": {
+    "conflicts": [
+      [
+        "approval-1",
+        "receipt-1"
+      ]
+    ],
+    "actions": [
+      {
+        "record_id": "approval-1",
+        "action": "supersede",
+        "to_status": "superseded",
+        "cost": 1.0
+      }
+    ],
+    "total_cost": 1.0,
+    "consistent": false
+  },
+  "cda": {
+    "chosen_id": "ask",
+    "minimal": {
+      "alternative_id": "wait",
+      "component": "commitment",
+      "delta": 0.970001,
+      "explanation": "wait overtakes ask if commitment increases by 0.970001"
+    },
+    "counterfactual_count": 8
+  }
+}

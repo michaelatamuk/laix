@@ -6,5 +6,6 @@ python scripts/novelty/bench/run_live_bench.py --split test --seed 42
 python scripts/novelty/analysis/analyze_results.py
 python scripts/novelty/bench/run_ablations.py --split test --seed 42
 python scripts/novelty/bench/summarize_results.py
+python scripts/novelty/bench/run_algorithm_bench.py
 
-echo "All live-bench checks passed"
+echo "All novelty checks passed"
