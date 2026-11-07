@@ -21,12 +21,12 @@ TypeScript mirror.
 | `Row` | `case_id`, `expected`, `actual`, `mismatches`; `passed` |
 | `Report` | `rows`, `fields`; `total`, `passed`, `failed`, `agreement_rate`, `to_dict()` |
 
-`Case.expected` is a tuple of mappings. `compare(cases, decide, fields=...)` runs the callable for
-each case and compares the fields that the expected mapping contains. The default fields are
+`Case.expected` is a tuple of mappings. `compare(cases, decide, *, fields=...)` runs the callable for
+each case and compares the selected fields that the expected mapping contains. The default fields are
 `verb`, `reason_code`, `deliver`, `record` and `requires_approval`.
 
 ```python
-from laix import Case, compare
+from laix import Case, compare, decide
 
 cases = (
     Case(
@@ -36,15 +36,19 @@ cases = (
     ),
 )
 
-report = compare(cases, lambda request: decide(request))
+report = compare(
+    cases,
+    lambda request: decide(request),
+    fields=("verb", "reason_code", "action_id", "requires_approval"),
+)
 print(report.passed, report.total, report.agreement_rate)
 ```
 
 Mismatches are strings such as `decision count 1 != 2` or `item 0: verb got != expected`.
 `Report.agreement_rate` is `1.0` when there are no cases.
 
-`load_cases(document, request_key="request", expected_key="expected")` reads a `cases` list from a
-JSON document.
+`load_cases(document, *, request_key="request", expected_key="expected")` reads a `cases` list from a
+JSON document. `compare_decisions` is the package-level alias for `compare`.
 
 ### Attention evaluation
 
@@ -64,6 +68,10 @@ The attention fixture has its own helpers in `core/evaluation/attention.py`:
 
 The attention fields are `verb`, `reason_code`, `deliver`, `record`, `requires_approval`, `score`,
 `cost_of_waiting`, `undo_hint` and `reversible`.
+
+The attention module also has a `compare(case)` for one vector. It is separate from the generic
+`compare(cases, decide)` above: the generic helper takes a list and a callable, the attention helper
+takes one attention case.
 
 `benchmark` compares three policies: `policy`, `severity_only` and `always_notify`. It reports
 `raised`, `helped`, `harmful`, `neutral`, `missed_helpful`, `precision`, `hazard` and `recall`.
@@ -87,7 +95,8 @@ The live decision benchmark compares training-free planners on fixed cases.
 | `PlannerMetrics` | `planner`, `decisions`, `checked`, `correct`, `accuracy`, `safety_violations`, `irreversible`, `mean_latency_ms`, `mean_score`, `reasons` |
 | `LiveBenchReport` | `rows`, `metrics`, `cases`, `planners`; `summary()`, `to_dict()` |
 
-`LiveBenchReport.to_dict()` uses the keys `cases`, `planners`, `rows` and `metrics`.
+`LiveBenchReport.to_dict()` uses the keys `cases`, `planners`, `rows` and `metrics`. `summary()`
+renders the metrics table, sorted by accuracy.
 
 `default_cases()` returns seven cases:
 
@@ -113,6 +122,10 @@ The live decision benchmark compares training-free planners on fixed cases.
 | `attention` | `HumanAttentionPlanner` |
 | `live` | `LiveDecisionEngine` |
 
+`FirstOptionPlanner` chooses the first option. `HighestBenefitPlanner` chooses the option with the
+highest `expected_benefit`. Both return `wait` with `no_options` when the problem has no options.
+They are comparison baselines outside the LAIX planner family.
+
 `run_live_bench(cases=None, planners=None)` uses the defaults. It runs every planner on every case,
 measures latency with `time.perf_counter()`, checks the chosen action against the expected actions,
 checks safety against the hard constraints and records whether the chosen option is irreversible.
@@ -121,7 +134,7 @@ Accuracy is `correct / checked`, or `0.0` when no case has an expected action. `
 mean of the non-empty planner scores, or `None`. `reasons` is the sorted set of reason codes the
 planner produced.
 
-The external runner adds the `glue` key. `default_planners()` does not include it.
+The external runner adds the `glue` key; `default_planners()` returns the seven keys above.
 
 ### Corpus and evidence
 
@@ -162,7 +175,7 @@ The result files use short keys. They are stable data identifiers; they are not 
 | `first` | `FirstOptionPlanner` |
 | `benefit` | `HighestBenefitPlanner` |
 
-`glue`, `first` and `benefit` are comparison baselines, not LAIX planners.
+`glue`, `first` and `benefit` are comparison baselines outside the LAIX planner family.
 
 ## LAIX-Bench
 

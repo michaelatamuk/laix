@@ -1,8 +1,8 @@
 # Core overview
 
-The LAIX core turns one request into one decision. It has no UI, no storage, no execution and no app
-kit. It provides the decision contract, the decision mechanisms, the decision state, and the learning
-and evaluation primitives that close the loop.
+The LAIX core turns one request into one decision or several decisions. It has no UI, no storage, no
+execution and no app kit. It provides the decision contract, the decision mechanisms, the decision
+state, and the learning and evaluation primitives that close the loop.
 
 ## The five layers
 
@@ -117,9 +117,9 @@ the selection rule and the identity fields.
 | A situation and options, no special policy | The built-in action policy |
 | Options and explicit decision rules | `RulePolicy` |
 | Options and one concern: utility, promises, execution risk or human attention | The matching planner through `EnginePolicy` |
-| Options and several live concerns | `LiveDecisionEngine` |
-| A world model with states and transitions | `MDPPlanner` |
-| A hidden state and observations | `POMDPPlanner` |
+| Options and several live concerns | `LiveDecisionEngine` through `EnginePolicy` |
+| A world model with states and transitions | `MDPPlanner` through `EnginePolicy` |
+| A hidden state and observations | `POMDPPlanner` through `EnginePolicy` |
 | A learned choice among arms | `BanditPolicy` |
 | A planner or engine behind the policy interface | `EnginePolicy` |
 
@@ -144,12 +144,14 @@ The words are not interchangeable.
 | **Signal attention** | The engine that ranks signals and returns `guide`, `wait`, `act` or `escalate`. |
 | **Human-attention planning** | `HumanAttentionPlanner`: the planner that prices interruption, approval and escalation when it chooses an action. |
 | **Attention budget** | Human interruption capacity. It limits how often a decision may involve a person. |
+| **Signal interruption budget** | A per-cycle cap on delivered signal decisions, set by `Context.interruption_budget`. |
 | **Resource budget** | Compute, latency and sensing capacity. `ResourceScheduler` admits or rejects work. |
 
 The full vocabulary is in the [glossary](../04-concepts/glossary.md).
 
 ## What the core owns
 
+- The dispatch entry point.
 - The request and response shapes.
 - The seven verbs and the reason-code contract.
 - The signal-attention rules.
@@ -157,8 +159,10 @@ The full vocabulary is in the [glossary](../04-concepts/glossary.md).
 - The planner contract and the built-in planners.
 - The live decision engine.
 - Commitments as decision state.
+- Resources as capacity: budget, scheduling and sensing options.
 - Outcome, bandit, causal, calibration and model-learning primitives.
 - The evaluation primitives and the live decision benchmark.
+- The record schema, perception records and shared support helpers.
 
 The host owns the experience, the data, the UI, the execution, the durable stores, the delivery
 channels and the retention policy. The host also maps an action to a commitment effect, an outcome to
@@ -180,9 +184,9 @@ a label and a decision to an arm.
 Read in order. Each page builds on the pages before it.
 
 The sequence follows the dependency order: the contract defines the shapes; dispatch defines how a
-request chooses a mechanism; commitments and resources define the state and capacity; signal
-attention and policies define the two decision paths; the planner pages define the optional formal
-choice; learning closes the loop; continuity explains the hand-off; evaluation checks the mechanisms;
+request chooses a mechanism; signal attention defines the signal path; commitments and policies
+define state and action; the planner pages define the optional formal choice; learning closes the
+loop; continuity explains the hand-off; resources define capacity; evaluation checks the mechanisms;
 foundation holds the shared records and helpers.
 
 | Page | Covers |
@@ -190,9 +194,8 @@ foundation holds the shared records and helpers.
 | [Decision contract](01-decision-contract.md) | `DecisionRequest`, `Decision`, the seven verbs and reason codes. |
 | [Records and schema](02-records-and-schema.md) | every record shape, JSON mapping, schema generation and version axes. |
 | [Dispatch](03-dispatch.md) | `decide`, automatic selection, `policy=`, ids and confidence provenance. |
-| [Commitments](05-commitments.md) | the commitment model, ledger, stores and `PlanningPolicy`. |
-| [Resources](11-resources.md) | `Budget`, `ResourcePlan`, `ResourceScheduler` and `SensingOption`. |
 | [Signal attention](04-signal-attention.md) | the gate pipeline, score and reason codes of `decide_attention`. |
+| [Commitments](05-commitments.md) | the commitment model, ledger, stores and how commitments enter a decision. |
 | [Policies](06-policies.md) | the policy protocol, registry, the built-in action policy, the eight decision-class policies, authoring, wrappers and the learned policy. |
 | [Planner contract](07-planning/00-planner-contract.md) | `DecisionProblem`, `Plan`, `DecisionEngine`, `EnginePolicy` and the simulator. |
 | [Live planners](07-planning/01-live-planners.md) | utility, commitment, execution-risk and human-attention scoring. |
@@ -201,6 +204,7 @@ foundation holds the shared records and helpers.
 | [Outcome learning](08-outcome-learning.md) | outcomes, rewards, `UCBBandit`, `BanditPolicy` and causal attribution. |
 | [Calibration and model learning](09-calibration-and-model-learning.md) | prediction and decision calibration, `CalibratedPolicy`, `ModelLearner`. |
 | [Decision continuity](10-decision-continuity.md) | what carries from one decision to the next and how the host passes it. |
+| [Resources](11-resources.md) | `Budget`, `ResourcePlan`, `ResourceScheduler` and `SensingOption`. |
 | [Evaluation](12-evaluation.md) | cases, rows, reports, parity, LAIX-Bench and the live decision benchmark. |
 | [Foundation](13-foundation.md) | perception records and the shared support helpers. |
 

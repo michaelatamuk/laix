@@ -78,6 +78,9 @@ flowchart LR
 | `action_values(model, state, values=None)` | `(action, value)` rows in descending value order |
 | `plan_actions(model, state=None)` | the greedy action sequence |
 
+`plan_actions` stops on a repeated state, a state with no action, or a state with no outgoing
+transition.
+
 A finite `horizon` limits the lookahead. `horizon=None` iterates to convergence or
 `max_iterations`. A horizon of zero returns all-zero values. The planner uses the values of the
 states reached after the first action, so the action values use a lookahead of `horizon - 1`.
@@ -143,6 +146,8 @@ for every reachable `(next_state, action)` pair.
 | `pomdp_value(model, belief, horizon=None)` | the best expected value over the horizon |
 | `compare_pomdp_to_mdp(pomdp, mdp, belief, horizon=None)` | a `PlannerComparison` |
 
+`normalize_belief` turns a zero-mass belief into a uniform belief over the allowed states.
+
 The belief update:
 
 ```text
@@ -203,13 +208,13 @@ See the [planner contract](00-planner-contract.md#simulator).
 - The POMDP value grows quickly with the number of states, actions and observations. Keep the model
   small and purposeful.
 - The planner is deterministic for a fixed model and belief.
-- A model-based planner does not replace the live planners. It is a different decision method.
+- A model-based planner is a different decision method from the live planners.
 
 ## MDP policy and LAIX policy
 
-The MDP literature calls the best action per state a **policy**. That is not the LAIX `Policy`
-layer. In LAIX, `MDPPlanner` is a planner; `EnginePolicy` is the adapter that turns it into a LAIX
-policy. The two uses of the word are unrelated.
+The MDP literature calls the best action per state a **policy**. LAIX uses the word **Policy** for
+the integration layer. In LAIX, `MDPPlanner` is a planner and `EnginePolicy` adapts it to the policy
+interface.
 
 ## Related
 

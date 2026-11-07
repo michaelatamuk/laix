@@ -5,9 +5,9 @@ Signal attention answers one question inside a task:
 > Which signal deserves attention now, and what should the app do with it?
 
 It is a deterministic gate pipeline. The first gate that fires decides the verb. The score is
-recorded for explanation but does not choose the verb.
+recorded for explanation; the gates choose the verb.
 
-Signal attention is not the same as `HumanAttentionPlanner`:
+Signal attention and `HumanAttentionPlanner` work at different levels:
 
 - **Signal attention** ranks the signals the host sends and returns `guide`, `wait`, `act` or
   `escalate`.
@@ -62,6 +62,9 @@ decisions.
 | `learned` | Per-kind point adjustment supplied by the host or a bandit. |
 | `allow_act` | Allows `act` when the signal has a reversible intent. The default is `False`. |
 
+`interruption_budget` caps how many signal decisions are delivered in one `decide_attention` call.
+It is separate from the `AttentionBudget` that `HumanAttentionPlanner` uses to price an action.
+
 ### `Feedback`
 
 | Field | Meaning |
@@ -73,6 +76,8 @@ decisions.
 
 `accepted` never suppresses. `snoozed` suppresses while `until` is in the future; a missing or
 unreadable `until` keeps the signal silent. `dismissed`, `wrong` and `assigned` suppress.
+
+`Signal.group_key` and `Context.mode` are host metadata; the current gate set does not read them.
 
 ## The gate pipeline
 
@@ -120,14 +125,15 @@ scan. The default result is `guide` with `worth_surfacing`.
 
 Three details matter:
 
-- **Quiet hours records but does not deliver.** The decision stays in history with `record=True` and
+- **Quiet hours records with `deliver=False`.** The decision stays in history with `record=True` and
   `deliver=False`.
 - **A critical signal bypasses quiet hours.** If it is overdue beyond `escalate_after_hours`, it
-  escalates. If it is not overdue, the gate returns `guide` and does not fall through to `act`.
-- **`act` requires an opt-in and a reversible intent.** Signal attention never acts by default.
+  escalates. If it is not overdue, the gate returns `guide` and stops the scan.
+- **`act` requires an opt-in and a reversible intent.** Signal attention acts only when `allow_act` is
+  on, the signal has an intent and the intent is reversible.
 
-The `ReasonCode` enum also defines `ask_approval`. The current gate set does not emit it. Approval is
-carried by `requires_approval` on the decision.
+The gate set emits the codes in the table above. `ask_approval` is defined in the `ReasonCode` enum;
+approval is carried by `requires_approval` on the decision.
 
 ## The score
 

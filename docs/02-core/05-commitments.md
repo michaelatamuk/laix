@@ -16,8 +16,9 @@ commitment planner scores that effect with the rest of the decision.
 | `priority` | `float` | Importance in `0..1`. The default is `0.5`. |
 | `payload` | `dict` | Host-owned detail. Keep sensitive data in the host. |
 
-`Commitment.__post_init__` rejects an unknown status. `is_due(now)` compares `due` with the supplied
-clock. `to_dict()` and `from_dict()` round-trip the shape.
+`COMMITMENT_STATUSES` is the tuple `("open", "done", "cancelled")`. `Commitment.__post_init__`
+rejects an unknown status. `is_due(now)` compares `due` with the supplied clock. `to_dict()` and
+`from_dict()` round-trip the shape.
 
 ```python
 from laix import Commitment
@@ -32,8 +33,8 @@ commitment = Commitment(
 
 ## The ledger
 
-`CommitmentLedger` is the in-memory view of the promises for one task. It does not persist itself;
-the host saves it through a `CommitmentStore`.
+`CommitmentLedger` is the in-memory view of the promises for one task. The host saves it through a
+`CommitmentStore`.
 
 | Method | Result |
 |---|---|
@@ -145,29 +146,12 @@ ActionOption(
 ```
 
 The effect can also be written under `params["commitment"]` or at the top level of `params` without
-a wrapper. The
-scoring rules, weights and returned attributes are on the
+a wrapper. The scoring rules, weights and returned attributes are on the
 [commitment planner page](07-planning/01-live-planners.md#commitment-planner).
 
-## `PlanningPolicy`
-
-`PlanningPolicy` is the policy that acts on a ledger. It takes the ledger in its constructor:
-
-```python
-from laix import PlanningPolicy
-
-policy = PlanningPolicy(ledger)
-```
-
-It chooses:
-
-- `act` with `due_commitment` when the next actionable commitment is due;
-- `wait` with `not_due` when it is not due yet;
-- `ask` with `blocked_commitment` when every open commitment is blocked;
-- `wait` with `no_commitment` when there is no open commitment.
-
-It uses `next_actionable()`, `next()` and `blocked_open()`, so the ordering and dependency rules
-above apply directly. The policy contract is on the [policies page](06-policies.md#planningpolicy).
+`PlanningPolicy` consumes a ledger and turns the next actionable commitment into a decision. The
+constructor, the exact reason codes and the policy contract are on the
+[policies page](06-policies.md#planning-policy).
 
 ## What the host owns
 
@@ -177,8 +161,8 @@ above apply directly. The policy contract is on the [policies page](06-policies.
 - whether a commitment is done or cancelled;
 - the mapping from an action to a fulfillment or a violation.
 
-LAIX owns the decision and the record. It does not send the report, publish the summary or decide
-that a promise was kept; the host does that and records the outcome.
+LAIX owns the decision and the record. The host sends the report, publishes the summary, decides that
+a promise was kept and records the outcome.
 
 ## Related
 

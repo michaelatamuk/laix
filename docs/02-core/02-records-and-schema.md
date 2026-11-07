@@ -22,16 +22,18 @@ The schema is generated from ten records. The set is declared in
 | `Belief` | `decisions/request/payload/belief.py` | proposition, confidence, evidence, update time and expiry |
 | `Goal` | `decisions/request/payload/goal.py` | statement, priority, metric, target and deadline |
 | `Constraint` | `decisions/request/payload/constraint.py` | kind, value, hard flag and statement |
-| `ActionOption` | `decisions/request/payload/action_option.py` | id, verb, name, benefit, cost, risk, latency, interruption, reversibility and approval |
+| `ActionOption` | `decisions/request/payload/action_option.py` | id, verb, name, expected benefit, cost, risk, latency, interruption, reversibility and approval |
 | `Situation` | `decisions/request/payload/situation.py` | observations, beliefs, goals, constraints, phase, horizon and attributes |
 | `Outcome` | `outcome_learning/record.py` | decision id, metric, before/after, delta, label, attribution and evidence |
-| `ExecutionReceipt` | `decisions/trail/execution_receipt.py` | action, status, actor, result, idempotency key and error |
+| `ExecutionReceipt` | `decisions/trail/execution_receipt.py` | action name, status, actor, result, idempotency key and error |
 | `Trace` | `decisions/trail/trace.py` | ordered events for one decision |
 | `Decision` | `decisions/response/decision.py` | verb, reason, confidence, action, approval, target and all audit fields |
 
 `build_schema()` derives the JSON Schema from these dataclasses. The committed artefact is
 `core/schema/laix-v1.schema.json`. A test regenerates the schema and fails when the committed file is
 stale.
+
+`Trace.with_event(stage, detail=None, at=None)` returns a new trace with one appended event.
 
 ### Request record fields
 
@@ -133,8 +135,8 @@ decision:
 | `CommitmentLedger` | `commitments/commitment.py` | the open promises for one task |
 | `Detection`, `PerceptionEvent`, `PerceptionFrame` | `perception/` | host-driven perception records |
 
-These shapes have `to_dict()` where persistence matters, but they are not part of the generated
-decision schema. The host owns their durable representation.
+These shapes have `to_dict()` where persistence matters. They sit outside the generated decision
+schema, and the host owns their durable representation.
 
 ## `schema_version` and `policy_version`
 
@@ -192,21 +194,22 @@ The public helpers:
 | `write_schema(path=None)` | write the committed schema file |
 | `check(record_name, payload)` | validate required keys, primitive types and enums |
 
-`check()` is a small structural validator, not a full JSON Schema implementation. It keeps the
+`check()` validates required keys, primitive types and enums for the committed records. It keeps the
 package standard-library only. Use a full JSON Schema validator when the host needs one.
 
 The schema enums come from the code:
 
-| Field | Allowed values |
-|---|---|
-| `verb` | `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` |
-| `phase` | `observe`, `understand`, `decide`, `act`, `verify`, `adapt` |
-| `horizon` | `seconds`, `minutes`, `hours`, `days`, `weeks` |
-| receipt `status` | `pending`, `approved`, `executed`, `refused`, `cancelled`, `failed`, `undone`, `unknown`, `duplicate` |
-| `Decision.status` | `final`, `provisional`, `superseded` |
-| `Decision.target` | `one`, `some`, `all`, `peer`, `gather` |
-| `Outcome.label` | `helped`, `neutral`, `hurt`, `unknown` |
-| `Outcome.direction` | `higher-better`, `lower-better` |
+| Constant | Field | Allowed values |
+|---|---|---|
+| `VERBS` | `verb` | `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` |
+| `PHASES` | `phase` | `observe`, `understand`, `decide`, `act`, `verify`, `adapt` |
+| `HORIZONS` | `horizon` | `seconds`, `minutes`, `hours`, `days`, `weeks` |
+| `EXECUTION_RECEIPT_STATUSES` | receipt `status` | `pending`, `approved`, `executed`, `refused`, `cancelled`, `failed`, `undone`, `unknown`, `duplicate` |
+| `DECISION_STATUSES` | `Decision.status` | `final`, `provisional`, `superseded` |
+| `TARGET_MODES` | `Decision.target` | `one`, `some`, `all`, `peer`, `gather` |
+| `OUTCOME_LABELS` | `Outcome.label` | `helped`, `neutral`, `hurt`, `unknown` |
+| `OUTCOME_DIRECTIONS` | `Outcome.direction` | `higher-better`, `lower-better` |
+| `CONSTRAINT_KINDS` | `Constraint.kind` | `latency`, `cost`, `risk`, `interruption`, `approval`, `safety`, `budget`, `policy` |
 
 ## Version axes
 

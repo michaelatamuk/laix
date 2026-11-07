@@ -1,6 +1,6 @@
 # App-kit building blocks
 
-The core map is [Core building blocks](../02-core/00-overview.md). This page is the optional
+The core map is [Core overview](../02-core/00-overview.md). This page is the optional
 layer around it. Read top-down by role in the live loop: how a host calls in, what runs, what is
 remembered, what comes back, what the host supplies, and how it is checked. Each band has three
 parts, and each part says what it does. The vocabulary is defined in the

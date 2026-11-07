@@ -6,8 +6,8 @@ Two different corrections sit after the decision:
 - **model learning** builds a transition model from observed transitions so a model-based planner can
   use it.
 
-Calibration is not a planner. Model learning is not a policy. Both live in
-`core/engines/learning/`.
+Calibration evaluates confidence. Model learning builds a transition model from observations. Both
+live in `core/engines/learning/`.
 
 ## Prediction calibration
 
@@ -33,8 +33,8 @@ Prediction calibration compares confidence with accuracy.
 confidence is exactly `1.0` and the bin ends at `1.0`, it returns that bin's observed rate.
 Otherwise it applies `confidence - (expected - accuracy)` and clamps to `0..1`.
 
-`calibration_by_policy(samples, bins=10, smoothing=0.0)` groups the report by policy name.
-`samples_from_outcomes(outcomes, confidences, policies=None)` builds samples from outcomes; a
+`calibration_by_policy(samples, *, bins=10, smoothing=0.0)` groups the report by policy name.
+`samples_from_outcomes(outcomes, confidences, *, policies=None)` builds samples from outcomes; a
 `helped` label counts as correct.
 
 ```python
@@ -54,13 +54,13 @@ action were right.
 | `DecisionCalibrationSample` | `confidence`, `correct`, `verb`, `action_id`, `policy` |
 | `DecisionCalibrationReport` | the prediction fields plus `verb_accuracy` and `action_accuracy` |
 
-`decision_calibration_report(samples, bins=10, policy="", smoothing=0.0)` uses the same binning and
+`decision_calibration_report(samples, *, bins=10, policy="", smoothing=0.0)` uses the same binning and
 smoothing. It adds accuracy per verb and per action over the non-empty values.
 
-`decision_samples_from_outcomes(decisions, outcomes, policies=None)` matches decisions to outcomes by
-`decision_id`. A `helped` label counts as correct.
+`decision_samples_from_outcomes(decisions, outcomes, *, policies=None)` matches decisions to outcomes
+by `decision_id`. A `helped` label counts as correct.
 
-`calibrate_decision(decision, report, source="decision-calibration")` returns a copy with:
+`calibrate_decision(decision, report, *, source="decision-calibration")` returns a copy with:
 
 - the adjusted confidence;
 - `calibrated=True`;
@@ -69,7 +69,7 @@ smoothing. It adds accuracy per verb and per action over the non-empty values.
 
 An empty report leaves the decision unchanged.
 
-`CalibratedPolicy(policy, report, name=None)` wraps any policy and calibrates every decision it
+`CalibratedPolicy(policy, report, *, name=None)` wraps any policy and calibrates every decision it
 returns. The name defaults to `<policy-name>.calibrated`.
 
 ```python
@@ -105,6 +105,8 @@ model = learner.to_mdp_model()
 | `commit(validation)` | Keeps the model when its score is at least the best score; restores the best model otherwise. |
 | `snapshot()` / `restore(snapshot)` | Copy and restore the learned tables. |
 | `best_score` | The best committed score. |
+
+`to_mdp_model` needs at least one learned transition.
 
 `commit` returns `True` when the candidate is kept and `False` when it rolls back. The history keeps
 one `(score, kept)` row per call.

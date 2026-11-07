@@ -25,9 +25,9 @@ The contract has three pieces:
 | `context` | `Context \| None` | Signal context, when the planner needs it. |
 | `attributes` | `dict` | Planner-specific state and inputs. |
 
-The projection copies `subject`, `at`, `situation`, `options`, `signals`, `context` and
-`attributes` from the request. It does not copy the request's target, recipients, deadline or
-confidence fields. A planner works on the problem, not on the delivery envelope.
+The projection carries `subject`, `at`, `situation`, `options`, `signals`, `context` and
+`attributes` from the request. Target, recipients, deadline and confidence belong to the delivery
+envelope; the planner works on the problem.
 
 ## `Plan`
 
@@ -145,8 +145,14 @@ on the same trace.
 | `PlannerScore` | `planner`, `scenario`, `total_reward`, `steps`, `optimality_gap` |
 | `SimulationReport` | `rows`; `summary()`, `best()`, `to_dict()` |
 
-`compare_planners(planners, scenarios)` runs every planner on every scenario. `seeded_scenarios(seed)`
-builds repeatable chains with a known optimum.
+`SimulationReport.summary()` groups by planner and returns `runs`, `mean_reward` and `mean_gap`.
+`best()` returns the planner with the highest mean reward. `SimulationResult.summary()` returns the
+scenario, the step count, the total reward and the final state.
+
+`compare_planners(planners, scenarios)` runs every planner on every scenario.
+`seeded_scenarios(seed, *, count=3, horizon=8, actions=("a", "b"))` builds repeatable chains with a
+known optimum. `Simulator.from_mdp(model, seed=...)` builds a deterministic or seeded stochastic rollout
+from an `MdpModel`.
 
 ```python
 from laix import MDPPlanner, Scenario, Simulator, UtilityPlanner, compare_planners
@@ -176,10 +182,10 @@ It is reported only when the scenario declares an optimum. Without an optimum, `
 
 ## Design rules
 
-1. A planner scores the options the host offers. It does not invent options.
+1. A planner scores the options the host offers.
 2. A planner returns one `Plan` and the same shape as every other planner.
 3. A planner is deterministic unless the host supplies a model or a random source.
-4. Hard limits are enforced before scoring. A planner may also block on its own concern.
+4. Hard limits gate the choice. A planner may also block on its own concern.
 5. A planner result is explainable: chosen option, alternatives, score and reason.
 6. `LiveDecisionEngine` composes planners; it does not replace them.
 7. A planner can be replaced without changing the request or the response handling.

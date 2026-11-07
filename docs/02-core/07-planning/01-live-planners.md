@@ -43,8 +43,8 @@ utility = benefit × expected_benefit
         - latency × latency_ms
 ```
 
-`risk_attitude` is `neutral`, `averse` or `seeking`. The risk attitude changes the risk multiplier in
-the formula above.
+`risk_attitude` is `neutral`, `averse` or `seeking`. `RISK_ATTITUDES` is the tuple of those three
+values. The risk attitude changes the risk multiplier in the formula above.
 
 `UtilityModel.feasible(option)` rejects an option when:
 
@@ -97,39 +97,22 @@ The planner reads `max_risk`, `max_cost` and `max_latency_ms` from `DecisionProb
 rebuilds the model when at least one limit override is present. To set `risk_attitude`, pass a
 `UtilityModel` or include a limit override with the attribute.
 
-`ActionOption.utility` is a separate fixed formula used by the built-in action policy and the
+`ActionOption.utility` is a separate fixed tie-break value used by the built-in action policy and the
 baselines:
 
 ```text
 expected_benefit - 0.25 × risk - 0.15 × interrupt_cost
 ```
 
-It is not the `UtilityModel.score` used by `UtilityPlanner`.
+`UtilityPlanner` uses `UtilityModel.score` instead.
 
 ## Commitment planner
 
 `CommitmentPlanner` keeps the utility score and adds the effect of an option on open commitments.
 
-An option declares its effect in `params`:
-
-```python
-ActionOption(
-    id="send-later",
-    verb="act",
-    name="send later",
-    params={
-        "commitments": {
-            "fulfills": ["c1"],
-            "violates": ["c2"],
-            "creates": ["c3"],
-            "hard": True,
-        }
-    },
-)
-```
-
-The effect may also be written under `params["commitment"]` or at the top level of `params`.
-`creates` accepts strings or mappings with an `id`.
+An option declares its effect in `params`. The shape and the accepted aliases are on the
+[commitments page](../05-commitments.md#how-commitments-enter-a-decision). `creates` accepts strings
+or mappings with an `id`.
 
 | Field | Meaning |
 |---|---|
@@ -137,6 +120,10 @@ The effect may also be written under `params["commitment"]` or at the top level 
 | `violates` | Open commitments this option breaks. |
 | `creates` | New commitments this option adds. |
 | `hard` | A violation blocks the option instead of only penalising it. |
+
+`CommitmentEffect` carries those four fields. `commitment_effect(option)` reads them from `params`.
+`CommitmentScore` carries `utility`, `commitment`, `total`, the fulfilled/violated/created ids, the
+due ids and the blocked reason.
 
 The score:
 
@@ -247,6 +234,10 @@ attributes={
 `execution_state` is keyed by option id. `execution_receipts` is scanned for a receipt whose
 `action_name` matches the option id or name.
 
+`ExecutionEffect` carries `unknown_risk` and `recovery_cost`; `execution_effect(option)` reads them
+from `params`. `ExecutionScore` carries `utility`, `execution`, `total`, `irreversible`,
+`unknown_risk`, `recovery_cost`, `requires_approval` and `receipt_status`.
+
 | Item | Value |
 |---|---|
 | Name | `execution.v1` |
@@ -255,16 +246,15 @@ attributes={
 | No feasible option | `wait` with `no_feasible_option` |
 | Plan attributes | `utility`, `execution_score`, `irreversible`, `unknown_risk`, `recovery_cost`, `requires_approval`, `receipt_status` |
 
-The planner blocks only on hard limits and infeasibility. It does not block on execution risk; it
-prices it.
+The planner blocks on hard limits and infeasibility. Execution risk is priced rather than blocked.
 
 ## Human-attention planner
 
 `HumanAttentionPlanner` treats human attention as a budget. It keeps the utility score and charges
 for interruption, approval and escalation.
 
-This planner is not signal attention. Signal attention ranks the signals the host sends; this
-planner prices human involvement when it chooses an action option. See
+Signal attention and this planner work at different levels: signal attention ranks the signals the
+host sends; this planner prices human involvement when it chooses an action option. See
 [Signal attention](../04-signal-attention.md).
 
 An option can declare its attention facts:
@@ -294,6 +284,9 @@ attributes={
 `attention_spent` is subtracted when the budget is a number. `attention_remaining` overrides the
 computed remainder. A shared `AttentionBudget` can be passed as one object.
 
+The attention budget is a planning cost. It is separate from `Context.interruption_budget`, which
+caps the number of delivered signal decisions in one attention cycle.
+
 The effect:
 
 ```text
@@ -305,6 +298,10 @@ cost = interrupt_cost
 
 `interactive` is true for the `ask` and `guide` verbs. `requires_attention` is true when `cost > 0`
 or the option requires approval or escalation.
+
+`AttentionEffect` carries `interrupt_cost`, `requires_approval`, `escalates`, `interactive` and
+`approval_state`; `attention_effect(option, ...)` reads it from `params`. `AttentionScore` carries
+`utility`, `attention`, `total`, `effect`, `remaining` and `blocked`.
 
 The score:
 

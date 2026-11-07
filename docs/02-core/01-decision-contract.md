@@ -47,8 +47,8 @@ request = DecisionRequest(
 | `target` | `str` | `one`, `some`, `all`, `peer` or `gather`. |
 | `recipients` | `tuple[str, ...]` | The users or groups that receive the decision. |
 
-`DecisionRequest` does not carry the chosen action. It describes the situation and the available
-options; the decision mechanism chooses.
+`DecisionRequest` describes the situation and the available options; the decision mechanism chooses
+the action.
 
 ### The two payloads
 
@@ -110,7 +110,7 @@ decision = Decision(
 
 | Field | Meaning |
 |---|---|
-| `score` | The ranking inside one decision mechanism. It is not a probability. |
+| `score` | The ranking inside one decision mechanism. Compare scores only within that mechanism. |
 | `breakdown` | `ScoreBreakdown` parts for an attention decision. |
 | `cost_of_waiting` | The cost of waiting in this situation. |
 | `evidence` | `EvidenceRef` rows that support the decision. |
@@ -159,7 +159,7 @@ decision = Decision(
 - **`score`** is the ranking value inside one mechanism. Attention scores, utility scores, expected
   MDP values and composite live scores use different scales. Do not compare scores across mechanisms.
 
-The same rule applies to `breakdown`: it describes an attention score, not a universal probability.
+`breakdown` describes the parts of an attention score.
 
 ## The seven verbs
 
@@ -182,6 +182,8 @@ A policy decides which verbs it can return:
 |---|---|
 | Signal attention | `guide`, `wait`, `act`, `escalate` |
 | Action policy | `wait`, `observe`, `ask`, `verify`, `act`, `guide`, `escalate` |
+| Active perception | `observe`, `wait` |
+| Safety-constrained action | `act`, `guide`, `wait` |
 | Replanning | `act`, `ask` |
 | Allocation | `act`, `wait` |
 | Negotiation | `act`, `escalate` |
@@ -190,6 +192,9 @@ A policy decides which verbs it can return:
 | Escalation | `escalate`, `ask`, `wait` |
 | Live planners | the chosen option's verb |
 | `MDPPlanner`, `POMDPPlanner` | `act`, `wait` |
+| `RulePolicy` | any verb set by the matching rule |
+| `BanditPolicy` | `act`, `wait` |
+| `PlanningPolicy` | `act`, `ask`, `wait` |
 
 ## Reason codes
 
@@ -201,7 +206,7 @@ Reason codes are grouped by producer:
 
 | Producer | Examples |
 |---|---|
-| Signal attention | `worth_surfacing`, `quiet_hours`, `below_floor`, `low_confidence`, `muted`, `feedback`, `budget`, `already_sent`, `kill_switch`, `overdue_escalation`, `act` |
+| Signal attention | `worth_surfacing`, `quiet_hours`, `below_floor`, `low_confidence`, `muted`, `snoozed`, `wrong`, `assigned`, `dismissed`, `budget`, `already_sent`, `kill_switch`, `overdue_escalation`, `act` |
 | Utility planner | `expected_utility`, `no_options`, `no_feasible_option` |
 | Commitment planner | `commitment_aware` |
 | Execution-risk planner | `execution_aware` |
@@ -211,8 +216,8 @@ Reason codes are grouped by producer:
 | Authored rules | `policy_rule`, `no_rule` |
 | Packaged policies | `safe_action`, `safety_blocked`, `no_safe_option`, `ask_preference`, `verify_outcome`, `escalate_to_target`, `replan`, and the codes listed on the [policies page](06-policies.md) |
 
-The attention `ReasonCode` enum also defines `ask_approval`, but the current gate set does not emit
-it. Approval is carried by `requires_approval` on the decision.
+The gate set emits the codes in the table above. `ask_approval` is a reserved enum value; approval is
+carried by `requires_approval` on the decision.
 
 The pages that define each mechanism list its full set of codes. The
 [troubleshooting guide](../05-project/troubleshooting.md) maps the common codes to symptoms.
