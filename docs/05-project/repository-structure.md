@@ -43,7 +43,7 @@ laix/
 │   ├── README.md          audience-first index
 │   ├── 01-start/          numbered start path
 │   ├── 02-core/           overview; contract/, decide/, planning/, continuity/, learning/, reference/
-│   ├── 03-appkit/         architecture, integration, streaming, execution, stores, LAIX-Bench, deployment
+│   ├── 03-appkit/         overview; build/, run/, execute/, connect/, operate/
 │   ├── 04-concepts/       system architecture, scope and boundaries, PPMA integration, decision models, privacy, security, FAQ, glossary
 │   ├── 05-project/        repository structure, testing, troubleshooting, migration, API map, versioning, roadmap
 │   ├── 06-research/

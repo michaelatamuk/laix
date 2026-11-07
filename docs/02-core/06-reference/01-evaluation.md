@@ -198,7 +198,7 @@ The TypeScript mirror uses `npm run bench`, `npm run bench -- --suite safety`, `
 --planners` and `npm run live-bench`.
 
 The CLI, the case format and the stream bench are documented in
-[LAIX-Bench](../../03-appkit/08-laix-bench.md).
+[LAIX-Bench](../../03-appkit/05-operate/01-bench.md).
 
 ## Conformance and parity
 
@@ -229,5 +229,5 @@ The evidence page describes the scope of each result.
 - [Outcome learning](../05-learning/01-outcome-learning.md)
 - [Calibration and model learning](../05-learning/02-calibration-and-model-learning.md)
 - [Decision continuity](../04-continuity/01-decision-continuity.md)
-- [LAIX-Bench](../../03-appkit/08-laix-bench.md)
+- [LAIX-Bench](../../03-appkit/05-operate/01-bench.md)
 - [Benchmark design](../../06-research/02-evaluation/benchmark.md)

@@ -189,10 +189,10 @@ The split is about selection. All ten return the same decision shape. See
 ## Other parts
 
 - **Live Context** is the perception part. A detector looks at events. Cheap detectors run always;
-  deep detectors run under a budget. See [live context](../03-appkit/03-live-context.md).
+  deep detectors run under a budget. See [live context](../03-appkit/02-run/03-live-context.md).
 - **Outcome learning** uses measured outcomes to improve the next choice. See
   [outcome learning](../02-core/05-learning/01-outcome-learning.md).
-- **LAIX-Bench** runs the same test cases for every class. See [bench](../03-appkit/08-laix-bench.md).
+- **LAIX-Bench** runs the same test cases for every class. See [bench](../03-appkit/05-operate/01-bench.md).
 
 LAIX is a live decision runtime. It can host a decision model such as JEV inside a policy. See
 [LAIX and decision models](decision-models.md).

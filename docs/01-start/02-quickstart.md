@@ -107,8 +107,8 @@ Full fields: [the decision contract](../02-core/01-contract/01-decision-contract
 
 ## Next
 
-- Build a production adapter: [integration](../03-appkit/01-integration.md).
-- Stream events: [streaming](../03-appkit/02-streaming.md).
-- Execute and recover: [execution](../03-appkit/04-execution.md).
+- Build a production adapter: [integration](../03-appkit/01-build/01-integration.md).
+- Stream events: [streaming](../03-appkit/02-run/02-streaming.md).
+- Execute and recover: [execution](../03-appkit/03-execute/01-execution-and-recovery.md).
 - Learn from outcomes: [outcome learning](../02-core/05-learning/01-outcome-learning.md).
 - Runnable examples: [`../../examples/README.md`](../../examples/README.md).

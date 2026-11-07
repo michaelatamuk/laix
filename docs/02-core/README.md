@@ -274,4 +274,4 @@ evaluation and foundation.
 | `core/support/` | ids, time, values, serialization, errors, verbs and version. |
 
 Streaming, execution, records and delivery live in the optional app kit:
-[App-kit overview](../03-appkit/00-architecture.md).
+[App-kit overview](../03-appkit/README.md).

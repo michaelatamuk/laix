@@ -130,7 +130,7 @@ policies use different internal result types.
 | `Layer` | The same core selection plus the runtime, streaming, execution, records, stores and platform. |
 
 `Layer` is optional. The core `decide` never imports it. See
-[App-kit overview](../../03-appkit/00-architecture.md).
+[App-kit overview](../../03-appkit/README.md).
 
 ## Errors
 

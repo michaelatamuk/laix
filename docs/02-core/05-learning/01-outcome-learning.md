@@ -200,4 +200,4 @@ manual automatic 0.75
 - [Policies](../02-decide/03-policies.md#learned-policy) — `BanditPolicy`
 - [Calibration and model learning](02-calibration-and-model-learning.md)
 - [Evaluation](../06-reference/01-evaluation.md)
-- [Stores](../../03-appkit/05-stores.md) — `OutcomeStore`
+- [Stores](../../03-appkit/04-connect/01-stores.md) — `OutcomeStore`
