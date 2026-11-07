@@ -68,6 +68,7 @@
   `ITBench` second); no external result is claimed yet.
 - Documented the power needed for the glue comparison: about 90-120 new held-out cases at the
   current effect size, run once on a pre-registered set.
+- Added a secondary adversarial-split check: 18/18 vs 16/18, combined exact McNemar p = 0.125.
 - Reordered the repository for role-based grouping: `benchmarks/live/v1/` (versioned corpus), `benchmarks/compare/adapters/` (per-system adapters), `data/{incident-replay,vignette-study/v1}/`, `results/live-decision-benchmark/`, `scripts/ci/`, `scripts/novelty/{bench,analysis,compare,incident-replay,vignette-study,shared}/` and `docs/06-research/` (the research dossier moved out of `05-project`). Public APIs and package layout are unchanged.
 - Added `to_decision` / `toDecision` as the one plan-to-decision conversion.
 - TypeScript now mirrors the Python calibration, model-learning and POMDP surface.

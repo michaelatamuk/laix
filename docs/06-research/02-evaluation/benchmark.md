@@ -394,6 +394,13 @@ several hundred cases.
 The 30-case test split is frozen. Do not add cases to it until the result changes. Pre-register a new
 held-out set, ideally from real incidents, and run the analysis once.
 
+LAIX is already at the ceiling on this split (30/30). No planner change can increase that number.
+The next evidence must come from a new, harder held-out set, not from tuning the current one.
+
+A secondary check on the frozen 18-case adversarial split gives LAIX 18/18 and glue 16/18. Combined
+with the test split, that is 4 discordant wins and 0 losses: exact McNemar p = 0.125. Still
+underpowered.
+
 ### Failure analysis
 
 `LiveDecisionEngine` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a
