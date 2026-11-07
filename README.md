@@ -33,59 +33,80 @@ external validation is pending.
 
 ## One decision
 
-A payment above the approval limit is still a confident decision. The policy can choose to pay; the
-decision also says that a person must approve it and that the action is not reversible.
+A payment that needs owner approval is still a confident decision. The default action policy can
+choose to pay; the decision also says that a person must approve it and that the action is not
+reversible.
 
 ```python
 import json
 
-from laix import ActionOption, Belief, Constraint, DecisionRequest, Situation, decide
+from laix import (
+    ActionOption,
+    Belief,
+    Commitment,
+    DecisionRequest,
+    HumanAttentionBudget,
+    Situation,
+    decide,
+)
 
-decision = decide(
-    DecisionRequest(
-        subject="invoice 4832",
+request = DecisionRequest(
+    subject="invoice 4832",
+    at="2026-11-01T10:00:00+00:00",
+    situation=Situation(
+        id="s-1",
         at="2026-11-01T10:00:00+00:00",
-        situation=Situation(
-            id="s-1",
-            at="2026-11-01T10:00:00+00:00",
-            subject="invoice 4832",
-            beliefs=(
-                Belief(
-                    id="b-1",
-                    proposition="the invoice matches the work order",
-                    confidence=0.95,
-                ),
-            ),
-            constraints=(
-                Constraint(id="approval", kind="approval", value=1.0, hard=True),
-            ),
-            attributes={"urgency": 0.8},
-        ),
-        options=(
-            ActionOption(
-                id="pay",
-                verb="act",
-                name="pay the invoice",
-                expected_benefit=0.95,
-                risk=0.05,
-                requires_approval=True,
-                reversible=False,
-            ),
-            ActionOption(
-                id="ask",
-                verb="ask",
-                name="ask the owner",
-                expected_benefit=0.6,
-            ),
-            ActionOption(
-                id="wait",
-                verb="wait",
-                name="wait for the next review",
-                expected_benefit=0.2,
+        subject="invoice 4832",
+        beliefs=(
+            Belief(
+                id="b-1",
+                proposition="the invoice matches the work order",
+                confidence=0.95,
             ),
         ),
-    )
-)[0]
+        attributes={"urgency": 0.8},
+    ),
+    options=(
+        ActionOption(
+            id="pay",
+            verb="act",
+            name="pay the invoice",
+            expected_benefit=0.95,
+            risk=0.05,
+            requires_approval=True,
+            reversible=False,
+            interrupt_cost=0.6,
+            params={"commitments": {"violates": ["c1"]}},  # pays without asking
+        ),
+        ActionOption(
+            id="ask",
+            verb="ask",
+            name="ask the owner for approval",
+            expected_benefit=0.6,
+            interrupt_cost=0.2,
+            params={"commitments": {"fulfills": ["c1"]}},  # asks before paying
+        ),
+        ActionOption(
+            id="wait",
+            verb="wait",
+            name="wait for the next review",
+            expected_benefit=0.2,
+            interrupt_cost=0.0,
+        ),
+    ),
+    attributes={
+        "commitments": (
+            Commitment(
+                id="c1",
+                subject="ask the owner before paying",
+                due="2026-11-01T09:00:00+00:00",
+            ),
+        ),
+        "human_attention_budget": HumanAttentionBudget(total=2.0, spent=0.5),
+    },
+)
+
+decision = decide(request)[0]
 
 print(json.dumps({
     "verb": decision.verb.value,
@@ -106,7 +127,7 @@ print(json.dumps({
   "reason_code": "policy_rule",
   "action_id": "pay",
   "confidence": 0.95,
-  "score": 0.9375,
+  "score": 0.8475,
   "requires_approval": true,
   "reversible": false,
   "decision_id": "DEC-...",
@@ -114,9 +135,10 @@ print(json.dumps({
 }
 ```
 
-The policy selects `pay`, but the decision is not executable yet: `requires_approval` is true and
-`reversible` is false. The app asks the owner before it pays. The approval is part of the decision,
-not a note beside it.
+The default action policy selects `pay` and flags the approval. The host must obtain that approval
+before it executes `pay`. The policy uses one utility score and the approval flag; it does not weigh
+the promise or the attention budget separately. The [live composite
+planner](#the-live-composite-planner) below uses the same request with a planner that does.
 
 The full record is in [the decision contract](docs/02-core/01-contract/01-decision-contract.md).
 The same shape works for signal attention, policies, planners and the live composite planner.
@@ -170,90 +192,54 @@ streaming, delivery and bench.
 The core stays stateless: the host supplies commitments, budget, approvals and execution state with
 each request.
 
-`LiveCompositePlanner` scores the options on utility, promises, execution risk and human attention,
-then returns one `PlannerResult` with the full breakdown.
+`LiveCompositePlanner` is a planner, not a second entry point. **Composite** means it combines four
+scores: utility, promises, execution risk and human attention. It returns a `PlannerResult`;
+`PlannerPolicy` adapts that result to the public `Decision`. The host still calls `decide`, and still
+gets a `Decision`.
+
+The same payment request from [One decision](#one-decision), with a different policy:
 
 ```python
 import json
 
-from laix import (
-    ActionOption,
-    Commitment,
-    HumanAttentionBudget,
-    LiveCompositePlanner,
-    PlannerInput,
-)
+from laix import LiveCompositePlanner, PlannerPolicy, decide
 
-planner_result = LiveCompositePlanner().solve(
-    PlannerInput(
-        subject="checkout latency",
-        at="2026-11-01T10:00:00+00:00",
-        options=(
-            ActionOption(
-                id="restart",
-                verb="act",
-                name="restart now",
-                expected_benefit=1.0,
-                reversible=False,
-                interrupt_cost=0.6,
-                params={"commitments": {"violates": ["c1"]}},
-            ),
-            ActionOption(
-                id="drain",
-                verb="act",
-                name="drain the queue",
-                expected_benefit=0.8,
-                reversible=True,
-                interrupt_cost=0.2,
-                params={
-                    "commitments": {"fulfills": ["c1"]},
-                    "recovery_cost": 0.1,
-                },
-            ),
-            ActionOption(
-                id="page",
-                verb="ask",
-                name="page on-call",
-                expected_benefit=0.6,
-                interrupt_cost=0.4,
-            ),
-        ),
-        attributes={
-            "commitments": (
-                Commitment(
-                    id="c1",
-                    subject="finish the batch",
-                    due="2026-11-01T09:00:00+00:00",
-                ),
-            ),
-            "human_attention_budget": HumanAttentionBudget(total=1.0, spent=0.4),
-        },
-    )
-)
+# request is the same DecisionRequest built in "One decision".
+policy = PlannerPolicy(LiveCompositePlanner(), name="live.v1")
+decision = decide(request, policy=policy)[0]
 
-print(planner_result.action_id, planner_result.reason_code, planner_result.score)
+print(decision.action_id, decision.reason_code, decision.score)
 print(json.dumps({
-    "utility": planner_result.attributes["utility"],
-    "commitment": planner_result.attributes["commitment_score"],
-    "execution": planner_result.attributes["execution_score"],
-    "human_attention": planner_result.attributes["human_attention_score"],
+    "utility": decision.attributes["utility"],
+    "commitment": decision.attributes["commitment_score"],
+    "execution": decision.attributes["execution_score"],
+    "human_attention": decision.attributes["human_attention_score"],
 }, indent=2))
 ```
 
 ```text
-drain live_decision 1.265
+ask live_decision 1.09
 {
-  "utility": 0.77,
+  "utility": 0.57,
   "commitment": 0.6,
-  "execution": -0.025,
+  "execution": -0.0,
   "human_attention": -0.08
 }
 ```
 
-The planner chooses `drain` over `restart`: `restart` has the higher utility, but it breaks the
-commitment and is irreversible. The score shows the trade-off instead of hiding it.
+The composite planner chooses `ask` over `pay`. `pay` has the higher utility, but it breaks the
+commitment to ask the owner before paying; `ask` fulfills that commitment and stays within the
+human-attention budget. The decision carries the four scores, so the trade-off is visible.
 
-The full conflict scenario is in [`examples/python/03-plan/conflict_scenario.py`](examples/python/03-plan/conflict_scenario.py).
+| Same request | Policy | Result |
+|---|---|---|
+| `decide(request)` | `ActionPolicy` (default) | `pay`; approval required |
+| `decide(request, policy=...)` | `PlannerPolicy(LiveCompositePlanner())` | `ask`; commitment `c1` fulfilled |
+
+`decide` is the public entry point. `LiveCompositePlanner` is one chooser behind it. `PlannerPolicy`
+is the adapter that makes a planner return the public `Decision`. They are layers, not alternatives.
+
+A separate conflict scenario is in [`examples/python/03-plan/conflict_scenario.py`](examples/python/03-plan/conflict_scenario.py).
 
 ## Decision continuity
 
