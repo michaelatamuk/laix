@@ -21,6 +21,7 @@ the order. `checklist.md` tracks work across all stages.
 | 01 | [Prior art](01-positioning/prior-art.md) | matrix, comparator discovery, fair comparison protocol |
 | 01 | [Comparators](01-positioning/comparators.md) | documented and measured external comparison |
 | 01 | [Formal model](01-positioning/formal-model.md) | definitions, score composition, invariants |
+| 01 | [Algorithm directions](01-positioning/04-algorithm-directions.md) | candidate algorithms beyond the composite score |
 | 02 | [Benchmark](02-evaluation/benchmark.md) | hypotheses, metrics, benchmark protocol, threats |
 | 02 | [Evidence map](02-evaluation/evidence-map.md) | claims, numbers, sources and missing evidence |
 | 02 | [External benchmarks](02-evaluation/external-benchmarks.md) | world benchmarks, fit and run protocol |
