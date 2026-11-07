@@ -66,6 +66,9 @@
   significance notes.
 - Added an external-benchmark landscape and a component evaluation protocol (`τ-bench` first,
   `ITBench` second); no external result is claimed yet.
+- Ran Sev1-Bench on 18 of 20 scenarios: baseline 0.778, LAIX guardrail 0.778, LAIX chooser 0.733.
+  The chooser regressed on multi-incident triage; the guardrail preserved the model's answer.
+  Results and harness are in `results/external/sev1-bench/`.
 - Documented the power needed for the glue comparison: about 90-120 new held-out cases at the
   current effect size, run once on a pre-registered set.
 - Added a secondary adversarial-split check: 18/18 vs 16/18, combined exact McNemar p = 0.125.

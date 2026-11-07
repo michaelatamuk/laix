@@ -24,6 +24,7 @@ the order. `checklist.md` tracks work across all stages.
 | 02 | [Benchmark](02-evaluation/benchmark.md) | hypotheses, metrics, benchmark protocol, threats |
 | 02 | [Evidence map](02-evaluation/evidence-map.md) | claims, numbers, sources and missing evidence |
 | 02 | [External benchmarks](02-evaluation/external-benchmarks.md) | world benchmarks, fit and run protocol |
+| 02 | [Sev1-Bench](02-evaluation/sev1-bench.md) | external SRE incident run: DeepSeek baseline vs LAIX |
 | 03 | [Validation plan](03-validation/plan.md) | deployment, incident replay or vignette study |
 | 03 | [Incident replay](03-validation/incident-replay.md) | collection plan, field mapping and fallback |
 | 03 | [Vignette study](03-validation/vignette-study.md) | 20 vignettes and the blinded protocol |
@@ -62,8 +63,12 @@ the order. `checklist.md` tracks work across all stages.
 - External operational result: the LangGraph adapter runs the same decision engine on 120 cases
   (6.9 ms mean, 110 glue lines, 0 interrupts). Temporal, PagerDuty and Camunda remain
   documented-only because they need servers or accounts.
-- Remaining gaps: no external runnable adapter (the prior-art comparison is documented, not
-  measured head-to-head), no real-world validation, no paper and no external review.
+- External benchmark: Sev1-Bench on 18 of 20 scenarios. Baseline 0.778, LAIX guardrail 0.778,
+  LAIX chooser 0.733. The benchmark scores single-turn diagnosis and remediation, not approvals,
+  commitments, continuity or audit. See [Sev1-Bench](02-evaluation/sev1-bench.md).
+- Remaining gaps: no external runnable adapter for Temporal, PagerDuty or Camunda, no real-world
+  deployment or incident replay, and no external review. The Sev1-Bench run is a component result,
+  not a deployment.
 
 ## 1. What "novel" must mean here
 

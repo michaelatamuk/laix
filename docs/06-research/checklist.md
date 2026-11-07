@@ -126,6 +126,9 @@ team did not write.
 - [ ] **Run one external benchmark** — τ-bench for policy adherence, then ITBench for incident
   response. Protocol in [external benchmarks](02-evaluation/external-benchmarks.md).
 
+- [x] **First external component run** — Sev1-Bench, 18 of 20 scenarios. Baseline 0.778, LAIX
+  guardrail 0.778, LAIX chooser 0.733; see [Sev1-Bench](02-evaluation/sev1-bench.md).
+
 - [ ] **Record the chosen option** — write one paragraph in
   `docs/06-research/03-validation/plan.md` §1 stating: which option (A, B or C) was chosen,
   why (data availability, feasibility, timeline), and the minimum sample size target. Do this

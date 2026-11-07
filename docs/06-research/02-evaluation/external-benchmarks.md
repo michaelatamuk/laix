@@ -12,6 +12,7 @@ inside a host agent, not as an end-to-end agent.
 |---|---|---|---|
 | [τ-bench](https://github.com/sierra-research/tau-bench) | Multi-turn tool-agent-user tasks, policy adherence and pass^k reliability in retail and airline | **best fit for policy adherence and consistency** | not run; needs an LLM API and a host adapter |
 | [ITBench](https://github.com/itbench-hub/ITBench) / [ITBench-AA](https://artificialanalysis.ai/evaluations/itbench-aa) | SRE incident diagnosis and remediation; ITBench-AA scores root-cause analysis | **best fit for incident response** | not run; public data and harness, heavy snapshots |
+| [Sev1-Bench](https://github.com/edgedelta/sev1-bench) | 20 deterministic SRE incidents from public postmortems; diagnosis, remediation and forbidden actions | **best fit for a runnable incident replay** | [first component run](sev1-bench.md) |
 | [JourneyBench](https://aclanthology.org/2026.eacl-industry.15.pdf) | Customer-support policy adherence and user-journey coverage | good fit for policy-driven support | not run; emerging |
 | [DRIP-R](https://aclanthology.org/2026.findings-emnlp.522/) | Decision-making under ambiguous retail policy | good fit for ambiguity | not run; emerging |
 | [Agentick](https://arxiv.org/abs/2605.06869) | General sequential decision-making across RL, LLM and VLM agents | weak fit; game-like, not enterprise | not run |
@@ -24,6 +25,9 @@ AgentDojo and SafeAgentBench are adjacent: useful for execution risk, not for th
 
 Several projects use the JevBench name. The row above refers to the typed-decision-model benchmark,
 not the game benchmark.
+
+First component run: Sev1-Bench, baseline 0.778 vs guardrail 0.778 (chooser 0.733). See
+[Sev1-Bench](sev1-bench.md).
 
 ## The right experiment
 

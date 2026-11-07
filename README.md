@@ -22,7 +22,7 @@ a model the host supplies.
 **Who it is for:** teams building AI agents or automations that take real actions — especially when
 approvals, promises, human attention or auditability matter.
 
-**Status:** `0.9.0` · synthetic evidence complete · external validation pending.
+**Status:** `0.9.0` · synthetic evidence complete · first external benchmark run · real-world validation pending.
 
 ## Contents
 

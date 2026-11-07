@@ -2,8 +2,7 @@
 
 Status: repository-side evidence is complete. External validation and peer review are still pending.
 
-Every measured number is reproducible from
-[`results/live-decision-benchmark/`](../../../results/live-decision-benchmark/) and
+Every measured number is reproducible from the linked result directory; the internal benchmark uses
 `bash scripts/novelty/reproduce.sh`.
 
 ## Headline results
@@ -17,10 +16,16 @@ Every measured number is reproducible from
 | Ablation: full vs no commitment | **100%** vs **70%** | measured |
 | Ablation: full vs no execution | **100%** vs **83.3%** | measured |
 | Ablation: full vs no attention | **100%** vs **96.7%** | measured |
+| External SRE benchmark (Sev1-Bench) | baseline **0.778**; guardrail **0.778**; chooser 0.733 | measured, negative |
 
 The glue comparison is the honest caveat: the gain is real on this corpus, but the 95% confidence
 interval includes zero and p = 0.48 on 30 cases. The advantage over every single-concern planner is
 significant (McNemar p ≤ 0.008 for each).
+
+Sev1-Bench is a single-turn diagnosis and remediation benchmark. It does not score approvals,
+commitments, continuity or audit, so a null result is expected on its scored axes. The chooser
+integration regressed on multi-incident triage; the guardrail integration preserved the baseline.
+See [Sev1-Bench](sev1-bench.md).
 
 ## Safety and promise keeping
 
