@@ -13,8 +13,9 @@ Agent frameworks plan. Workflow engines orchestrate. LAIX decides whether to act
 or escalate — and makes the choice explicit, scored and auditable.
 
 One contract for utility, commitments, execution risk and human attention — with **decision
-continuity**: every decision carries its commitments, human-attention budget, approvals and revisions into
-the next. The host owns execution, data, delivery and storage; LAIX owns the decision and its trail.
+continuity**: every decision carries its commitments, human-attention budget, approvals and
+revisions into the next. The host owns execution, data, delivery and storage; LAIX owns the
+decision and its trail.
 
 LAIX is **training-free**: the default path is deterministic policies and planners; a planner can use
 a model the host supplies.
@@ -163,7 +164,7 @@ A decision is one step in a sequence. It leaves state for the next decision.
 
 | Step | Decision | State carried forward |
 |---|---|---|
-| 1 | acts, creating commitment `c1` | `c1` open; attention budget 0.6 spent |
+| 1 | acts, creating commitment `c1` | `c1` open; human-attention budget 0.6 spent |
 | 2 | asks because `c1` is due and the budget is low | `c1` still open; approval pending |
 | 3 | verifies after execution | `c1` fulfilled; receipt and outcome recorded |
 
