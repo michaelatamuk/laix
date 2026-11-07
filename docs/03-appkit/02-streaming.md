@@ -4,7 +4,7 @@ The core is stateless: `decide(request)` returns one answer. A live app needs a
 loop around that call — event time, a cooldown, a bounded buffer and decisions
 that can be revised. `StreamSession` is that loop. It lives in the app kit and
 calls the same core. The timeline and checkpoints are how
-[decision continuity](../02-core/08-decision-continuity.md) survives a stream.
+[decision continuity](../02-core/10-decision-continuity.md) survives a stream.
 
 ## Words used here
 

@@ -28,15 +28,23 @@ Read in order.
 
 | Page | Covers |
 |---|---|
-| [Core architecture](02-core/00-architecture.md) | the core building blocks and how they stack |
-| [Decision contract](02-core/01-decision-contract.md) | request, response, records and schema |
-| [Attention](02-core/02-attention.md) | task-level attention and its scope |
-| [Policies](02-core/03-policies.md) | packaged policies, authoring, planning, group and shadow |
-| [Outcome learning](02-core/04-outcome-learning.md) | rewards, UCB, causal attribution, calibration, decision calibration and model learning |
-| [Evaluation](02-core/05-evaluation.md) | cases, comparison and parity |
-| [Planners and engines](02-core/06-engines.md) | the decision contract, UtilityPlanner, CommitmentPlanner, ExecutionRiskPlanner, HumanAttentionPlanner, LiveDecisionEngine, MDPPlanner, POMDPPlanner, simulation and calibration |
-| [Commitments](02-core/07-commitments.md) | promises, ledgers, due times, dependencies and the commitment-aware planner |
-| [Decision continuity](02-core/08-decision-continuity.md) | what carries from one decision to the next |
+| [Core overview](02-core/00-overview.md) | the five layers, the decision loop and the reading map |
+| [Decision contract](02-core/01-decision-contract.md) | `DecisionRequest`, `Decision`, the seven verbs and reason codes |
+| [Records and schema](02-core/02-records-and-schema.md) | the ten schema records, JSON, versions and change rules |
+| [Dispatch](02-core/03-dispatch.md) | `decide`, automatic path selection, ids and confidence provenance |
+| [Commitments](02-core/05-commitments.md) | promises, ledgers, due times, dependencies and `PlanningPolicy` |
+| [Resources](02-core/11-resources.md) | `Budget`, `ResourceScheduler` and sensing options |
+| [Signal attention](02-core/04-signal-attention.md) | the gate pipeline, score, reason codes and the attention scope |
+| [Policies](02-core/06-policies.md) | the policy contract, built-in action policy, eight decision-class policies and wrappers |
+| [Planner contract](02-core/07-planning/00-planner-contract.md) | `DecisionProblem`, `Plan`, `DecisionEngine`, `EnginePolicy` and the simulator |
+| [Live planners](02-core/07-planning/01-live-planners.md) | utility, commitment, execution-risk and human-attention scoring |
+| [Live decision engine](02-core/07-planning/02-live-decision-engine.md) | `LiveDecisionEngine`, `CompositeScore` and the combined plan |
+| [Model-based planners](02-core/07-planning/03-model-based-planners.md) | `MDPPlanner`, `POMDPPlanner`, value iteration and belief update |
+| [Outcome learning](02-core/08-outcome-learning.md) | outcomes, rewards, `UCBBandit`, causal attribution and attention outcomes |
+| [Calibration and model learning](02-core/09-calibration-and-model-learning.md) | prediction and decision calibration, `CalibratedPolicy` and `ModelLearner` |
+| [Decision continuity](02-core/10-decision-continuity.md) | what carries from one decision to the next and the continuity benchmark |
+| [Evaluation](02-core/12-evaluation.md) | cases, reports, the live decision bench and LAIX-Bench |
+| [Foundation](02-core/13-foundation.md) | perception records and the shared support helpers |
 
 ## App kit
 
@@ -107,11 +115,11 @@ Runnable examples are organized by language and lifecycle in
 |---|---|
 | make one decision | [Quickstart](01-start/02-quickstart.md) |
 | plug LAIX into an app | [Host integration](01-start/04-host-integration.md), then [Integration](03-appkit/01-integration.md) |
-| write my own policy | [Policies](02-core/03-policies.md) |
+| write my own policy | [Policies](02-core/06-policies.md) |
 | stream events | [Streaming](03-appkit/02-streaming.md) |
 | execute and recover | [Execution](03-appkit/04-execution.md) |
-| learn from outcomes | [Outcome learning](02-core/04-outcome-learning.md) |
-| understand the planner contract | [Planners](02-core/06-engines.md) |
+| learn from outcomes | [Outcome learning](02-core/08-outcome-learning.md) |
+| understand the planner contract | [Planner contract](02-core/07-planning/00-planner-contract.md) |
 | see the end-to-end loop | [Decision lifecycle](01-start/03-decision-lifecycle.md) |
 | see the public API | [API map](05-project/api-map.md) |
 | operate in production | [Deployment](03-appkit/10-deployment.md), [Metrics](03-appkit/09-metrics.md), [Troubleshooting](05-project/troubleshooting.md) |
@@ -128,7 +136,7 @@ Runnable examples are organized by language and lifecycle in
 | I am… | Start with |
 |---|---|
 | Product | [What is LAIX?](01-start/01-what-is-laix.md), [Decision lifecycle](01-start/03-decision-lifecycle.md), [Scope and boundaries](04-concepts/scope-and-boundaries.md) |
-| Engineer | [Quickstart](01-start/02-quickstart.md), [Decision contract](02-core/01-decision-contract.md), [Policies](02-core/03-policies.md), [Planners](02-core/06-engines.md), [App kit](03-appkit/00-architecture.md) |
+| Engineer | [Quickstart](01-start/02-quickstart.md), [Decision contract](02-core/01-decision-contract.md), [Policies](02-core/06-policies.md), [Planner contract](02-core/07-planning/00-planner-contract.md), [Live decision engine](02-core/07-planning/02-live-decision-engine.md), [App kit](03-appkit/00-architecture.md) |
 | Operator | [Execution](03-appkit/04-execution.md), [Stores](03-appkit/05-stores.md), [Platform](03-appkit/06-platform.md), [Delivery](03-appkit/07-delivery.md), [Deployment](03-appkit/10-deployment.md), [Metrics](03-appkit/09-metrics.md) |
 | Contributor | [Contributing](../CONTRIBUTING.md), [Testing](05-project/testing.md), [Repository structure](05-project/repository-structure.md) |
 | Researcher or reviewer | [Research and evidence](06-research/README.md), then [Prior art](06-research/01-positioning/prior-art.md), [Benchmark](06-research/02-evaluation/benchmark.md) |

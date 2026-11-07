@@ -10,8 +10,11 @@
 | **Policy** | An integration layer: a callable with `decide(request)` that places a decision in the host loop. `EnginePolicy` adapts a `DecisionEngine` to this contract. |
 | **Adapter** | App code that turns app events into requests and decisions into app actions. |
 | **Attention** | The mechanism that ranks signals and decides whether to surface, hold, act or escalate. |
+| **Signal attention** | The gate pipeline in `core/engines/signals/` that ranks signals and returns `guide`, `wait`, `act` or `escalate`. |
 | **Attention-aware planning** | Planning that treats interruption, approval and escalation as a budget. |
+| **Human-attention planning** | `HumanAttentionPlanner`: pricing interruption, approval and escalation when choosing an action. |
 | **Attention budget** | The interruption and approval capacity a task may spend. |
+| **Resource budget** | Compute, latency and sensing capacity, managed by `ResourceScheduler`; distinct from the attention budget. |
 | **Planner** | A strategy that scores the options and chooses one, returning a `Plan`. Built-ins: `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner`, `POMDPPlanner`. |
 | **Engine** | A composition of planners that returns one `Plan`. The built-in engine is `LiveDecisionEngine`. |
 | **Learner** | Code that learns from outcomes and changes future behaviour: `UCBBandit`, `ModelLearner`. |
@@ -20,10 +23,11 @@
 | **Composite score** | The four terms `LiveDecisionEngine` combines for one option: utility, commitment, execution and attention. |
 | **Live decision engine** | `LiveDecisionEngine`: the composition engine that turns the four planner scores into one `Plan`. |
 | **Plan** | A planner's or engine's answer: verb, confidence, reason, action, score and alternatives. |
+| **DecisionProblem** | The planner input: subject, moment, situation, options, signals, context and attributes. |
 | **MDP** | A model with states, actions, transitions, rewards, discount and horizon; the planner chooses the best action. |
 | **POMDP** | An MDP with hidden state; the planner keeps a belief over states and updates it from observations. |
 | **Optimality gap** | The difference between a planner's reward and the best reward available in the model. |
-| **Risk attitude** | How a planner trades expected value against variance: `neutral`, `averse` or `seeking`. |
+| **Risk attitude** | How a planner scales the risk term: `neutral`, `averse` or `seeking`. |
 | **Limits** | Risk, approval, safety and policy constraints that bound a decision; a gate on the request. |
 | **Commitment** | A promised step with a due time, status and dependencies. The planning layer tracks commitments. |
 | **Commitment-aware planning** | Planning with promises, due times and dependencies in the state. |
@@ -53,6 +57,11 @@
 | **Conformance** | Comparing LAIX decisions with the shared vectors to confirm behaviour matches. |
 | **Receipt** | What the host returned after trying to execute or deliver a decision. |
 | **Record** | The auditable lifecycle of a decision: draft, approve, reject, execute, undo, verify. |
+| **Schema** | A machine-readable description of a record's fields, types and allowed values. |
+| **Vector** | A fixed input and its expected output, used as a conformance test. |
+| **Case** | One request and the decision it should produce in an evaluation or bench. |
+| **Suite** | A group of cases for one decision class. |
+| **Agreement** | The share of cases that produced the expected decision. |
 | **Port** | An interface the host implements; LAIX calls it and the host supplies the behaviour. |
 | **Platform** | The host system below LAIX: skills, events and approvals. |
 | **Host** | The application that owns data, UI, execution, storage and delivery. |
