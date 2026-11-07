@@ -16,7 +16,7 @@ moment → attention → decision → execution → outcome → learning → nex
 | **Learning** | Rewards, calibration and causal evidence improve the next choice | `UCBBandit`, `CalibrationReport`, `CalibratedPolicy` |
 | **Next decision** | The loop continues, with revisions and a timeline | `StreamSession`, `DecisionTimeline` |
 
-The state that survives the loop is [decision continuity](../02-core/08-decision-continuity.md):
+The state that survives the loop is [decision continuity](../02-core/10-decision-continuity.md):
 commitments, attention budget, approvals, revisions and outcomes.
 
 ## One pass
@@ -40,6 +40,6 @@ and [`examples/typescript/09-live-loop/live_loop.mts`](../../examples/typescript
 
 ## Read next
 
-- [Core building blocks](../02-core/00-architecture.md)
+- [Core building blocks](../02-core/00-overview.md)
 - [App-kit building blocks](../03-appkit/00-architecture.md)
 - [The decision contract](../02-core/01-decision-contract.md)

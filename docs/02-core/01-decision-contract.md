@@ -1,122 +1,142 @@
 # The decision contract
 
-The contract has two sides:
+Every LAIX path returns the same two shapes:
 
-- the app sends a **request** — what is happening and what it can do;
-- LAIX returns a **response** — one verb, a reason, and optional execution details.
+- `DecisionRequest` goes in;
+- `Decision` comes out.
 
-Records hold the request, the response and the lifecycle around them.
+The shapes are frozen dataclasses in Python and readonly interfaces in TypeScript. Every policy,
+planner and the app kit use them. A caller can switch from a rule policy to a planner without
+changing the request or the response handling.
 
 ## The request
 
-A request is a `DecisionRequest`. It carries either:
+`DecisionRequest` is the public input. It carries one of two payloads:
 
-- `signals` and `context` for attention; or
+- `signals` and `context` for signal attention;
 - `situation` and `options` for an action decision.
 
-### Terms
-
-| Term | Meaning |
-|---|---|
-| **Request** | What the app sends to LAIX: what is happening and what it can do. |
-| **Signal** | One item that might need attention, such as a deadline or a risk. |
-| **Context** | Rules around attention: current time, quiet hours, minimum severity. |
-| **Option** | One thing the app can do. |
-
-### Example
-
-A bill is due tomorrow. The app sends one signal and the attention context.
-
 ```python
-from datetime import datetime, timezone
+from laix import DecisionRequest
 
-from laix import Context, DecisionRequest, Signal
-
-DecisionRequest(
+request = DecisionRequest(
     subject="electricity bill",
     at="2026-11-01T10:00:00+00:00",
-    signals=(Signal(
-        id="bill-1",
-        kind="deadline",
-        title="Electricity bill due tomorrow",
-        severity="high",
-        confidence=0.95,
-        due="2026-11-02T09:00:00+00:00",
-    ),),
-    context=Context(
-        now=datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc),
-        quiet_hours=("22:00", "06:00"),
-        min_severity="medium",
-    ),
+    signals=(signal,),
+    context=context,
 )
 ```
 
-A request also accepts `event_id` for stream dedupe, `target` and `recipients` for
-a group decision, plus `deadline` and `valid_until`. A one-shot decision may leave
-them empty; a stream session copies the deadline and validity onto the response.
+### Fields
+
+| Field | Type | Meaning |
+|---|---|---|
+| `subject` | `str` | What the request is about. |
+| `at` | ISO-8601 `str` | The moment of the decision. |
+| `signals` | `tuple` | Items that may need attention. |
+| `context` | `Context \| None` | Time, quiet hours, thresholds, budget and feedback. |
+| `situation` | `Situation \| None` | Observations, beliefs, goals and constraints. |
+| `options` | `tuple[ActionOption, ...]` | Actions the host can take. |
+| `attributes` | `dict` | Policy-specific inputs such as `risk_limit`, `plans`, `requests` or `commitments`. |
+| `confidence` | `float \| None` | The host's confidence in its own input. |
+| `confidence_source` | `str` | Where that confidence came from. |
+| `calibrated` | `bool` | Whether the host confidence is a calibrated probability. |
+| `deadline` | ISO-8601 `str \| None` | When the decision has to be made. |
+| `valid_until` | ISO-8601 `str \| None` | How long the decision applies. |
+| `event_id` | `str` | Dedupe key for a stream. |
+| `target` | `str` | `one`, `some`, `all`, `peer` or `gather`. |
+| `recipients` | `tuple[str, ...]` | The users or groups that receive the decision. |
+
+`DecisionRequest` does not carry the chosen action. It describes the situation and the available
+options; the decision mechanism chooses.
+
+### The two payloads
+
+```mermaid
+flowchart LR
+    request[DecisionRequest]
+    request --> signals["signals + context"]
+    request --> situation["situation + options"]
+    signals --> attention["Signal attention"]
+    situation --> action["Action policy or planner"]
+    attention --> decision[Decision]
+    action --> decision
+```
+
+A request that carries both payloads is valid. `dispatch` chooses the action path when `situation`
+or `options` is present; otherwise it chooses signal attention. [Dispatch](03-dispatch.md) defines the
+exact rule.
 
 ## The response
 
-The response is a `Decision`; it lives under `core/decisions/response/`.
+`Decision` is the public output. It is immutable and has one verb. The other fields explain the verb,
+identify the chosen option and connect the decision to a record or an execution.
 
-### Terms
+```python
+from laix import Decision
 
-| Term | Meaning |
-|---|---|
-| **Decision response** (`Decision`) | What LAIX sends back: one verb, a reason, and optional execution details. |
-| **Verb** | The word that says what to do next. |
-| **Reason code** | A short stable label for the rule that fired. |
-| **Chosen option id** (`action_id`) | The id of the chosen option, if there is one. |
-| **Confidence** | How sure the rule set is, from `0` to `1`. |
-| **Rule-set version** (`policy_version`) | Which version of the rule set produced the response. |
-
-### Example
-
-LAIX returns:
-
-```text
-guide worth_surfacing 84.0
+decision = Decision(
+    verb="act",
+    confidence=0.92,
+    reason_code="safe_action",
+    rationale="the valve is the highest-benefit option inside the risk limit",
+    action_id="valve",
+    reversible=True,
+)
 ```
 
-| Field | Value | Meaning |
-|---|---|---|
-| `verb` | `guide` | Show the bill now; the user decides when to pay. |
-| `reason_code` | `worth_surfacing` | The attention rules say it is worth showing. |
-| `score` | `84.0` | The rule set's ranking. |
-| `confidence` | `0.95` | How sure the rule set is. |
-| `requires_approval` | `false` | Runs without approval. |
-| `deliver` | `true` | Show it now. |
-| `record` | `true` | Keep it in history. |
+### Fields by role
 
-## The response fields
+**What to do**
 
 | Field | Meaning |
 |---|---|
-| `verb` | What to do next. |
-| `confidence` | How sure the rule set is, `0..1`. |
-| `reason_code` | The rule that fired. Use this in app logic. |
-| `rationale` | Explanation for people. Use `reason_code` in app logic. |
-| `action_id` | The chosen option id, if there is one. |
-| `intent` | `{capability, args}` the app can execute; for a handover, `Intent("handover", {"target", "reason"})`. |
-| `requires_approval` | Ask a person before executing. |
-| `reversible` | Whether the chosen option can be undone. |
+| `verb` | The next move. One of the seven verbs. |
+| `confidence` | How sure the decision is, clamped to `0..1`. |
+| `reason_code` | The stable label for the rule that fired. Use it in app logic. |
+| `rationale` | A human-readable explanation. Do not branch on it. |
+
+**What to run**
+
+| Field | Meaning |
+|---|---|
+| `action_id` | The chosen option id, when the request offered options. |
+| `intent` | `Intent(capability, args)` the host can execute. |
+| `requires_approval` | A person must approve before execution. |
+| `reversible` | Whether the chosen action can be undone. |
 | `undo_hint` | How to undo it. |
-| `score` | Ranking inside one rule set. Use `confidence` for probability. |
-| `breakdown` | Score parts for the decision. |
-| `cost_of_waiting` | Cost of waiting in this situation. |
-| `evidence` | References that support the decision. |
-| `decision_id` | Id for records and outcomes. |
-| `situation_id` | The id of the situation this decision answered, when there is one. |
-| `attributes` | Values the rule set used to reach the decision. |
-| `policy_version` | Which version of the rule set produced it. |
-| `trace_id` | Correlates related events for this decision. |
-| `deliver` | Show now. |
-| `record` | Keep it. |
-| `created_at` | When it was made. |
+
+**Ranking and explanation**
+
+| Field | Meaning |
+|---|---|
+| `score` | The ranking inside one decision mechanism. It is not a probability. |
+| `breakdown` | `ScoreBreakdown` parts for an attention decision. |
+| `cost_of_waiting` | The cost of waiting in this situation. |
+| `evidence` | `EvidenceRef` rows that support the decision. |
+| `alternatives` | The options that lost, with their scores and the reason they lost. |
+| `constraints_applied` | Hard limits that removed options. |
+| `attributes` | Values the decision mechanism used or produced. |
+
+**Identity and audit**
+
+| Field | Meaning |
+|---|---|
+| `decision_id` | The id used by records, outcomes and traces. |
+| `situation_id` | The id of the situation this decision answered. |
+| `policy_version` | The version of the policy or engine that produced the decision. |
+| `trace_id` | Correlates related events. |
+| `created_at` | When the decision was made. |
 | `confidence_source` | Where the confidence came from. |
 | `calibrated` | Whether the confidence is a calibrated probability. |
-| `alternatives` | Other options, their score and why they lost. |
-| `constraints_applied` | Hard limits that changed the option set. |
+| `deliver` | Whether the host should surface the decision now. |
+| `record` | Whether the host should keep it. |
+| `schema_version` | The record-shape version. |
+
+**Stream and lifecycle**
+
+| Field | Meaning |
+|---|---|
 | `stream_id` | The stream session that produced it; empty for a one-shot decision. |
 | `event_time` | When the event happened. |
 | `deadline` | When the decision had to be made. |
@@ -125,37 +145,81 @@ guide worth_surfacing 84.0
 | `revision` | `0` for the first decision, then `1`, `2`, … |
 | `status` | `final`, `provisional` or `superseded`. |
 | `target` | `one`, `some`, `all`, `peer` or `gather`. |
-| `recipients` | The user or group ids that receive the decision. |
+| `recipients` | The users or groups that receive the decision. |
+
+`Decision.__post_init__` validates the verb, the status and the target mode, and clamps confidence.
+`Decision.to_dict()` and `Decision.from_dict()` round-trip the shape.
+
+## Confidence and score
+
+`confidence` and `score` answer different questions:
+
+- **`confidence`** is the decision mechanism's certainty in its choice. It is always `0..1`. The host
+  can calibrate it against measured outcomes.
+- **`score`** is the ranking value inside one mechanism. Attention scores, utility scores, expected
+  MDP values and composite live scores use different scales. Do not compare scores across mechanisms.
+
+The same rule applies to `breakdown`: it describes an attention score, not a universal probability.
 
 ## The seven verbs
 
 | Verb | Meaning |
 |---|---|
-| `wait` | Hold for now; keep watching. |
-| `observe` | Get more information first. |
-| `guide` | Show the situation to a person. |
-| `ask` | Ask a person or agent for information or a decision. |
+| `wait` | Hold for now and keep watching. |
+| `observe` | Get more information before deciding. |
+| `guide` | Show the situation to a person and let them choose. |
+| `ask` | Ask a person or another agent for information or a decision. |
 | `act` | Run the chosen option now. |
 | `verify` | Check whether an earlier step worked. |
-| `escalate` | Hand over to someone with more authority. |
+| `escalate` | Hand the decision to a person with more authority. |
 
-A notification is a `guide` decision plus an app delivery channel. Approval is the
-`requires_approval` flag.
+The verb set is closed. `Decision` rejects any other value. A notification is a `guide` decision plus
+a host delivery channel. Approval is the `requires_approval` flag on a decision, not a separate verb.
 
-## More examples
+A policy decides which verbs it can return:
 
-**Quiet hours.** The same bill at 23:30 returns `wait quiet_hours 84.0`. The score is still high, but
-`deliver` is `false` and `record` is `true`.
+| Mechanism | Verbs |
+|---|---|
+| Signal attention | `guide`, `wait`, `act`, `escalate` |
+| Action policy | `wait`, `observe`, `ask`, `verify`, `act`, `guide`, `escalate` |
+| Replanning | `act`, `ask` |
+| Allocation | `act`, `wait` |
+| Negotiation | `act`, `escalate` |
+| Preference elicitation | `ask`, `act`, `wait` |
+| Verification | `verify`, `wait`, `escalate` |
+| Escalation | `escalate`, `ask`, `wait` |
+| Live planners | the chosen option's verb |
+| `MDPPlanner`, `POMDPPlanner` | `act`, `wait` |
 
-**Look first.** A late parcel with a tracking page returns `observe policy_rule option-check-tracking`.
+## Reason codes
 
-**Act.** An overflowing sink returns `act policy_rule option-close-valve`.
+A **reason code** is a stable, short label for the rule that fired. It is part of the contract: app
+logic branches on `reason_code`, not on `rationale`. A change to a reason code is a behaviour change
+and belongs in the changelog.
 
-**Approval.** A payment returns `act policy_rule option-pay` with `requires_approval = true`.
+Reason codes are grouped by producer:
 
-## Response basis
+| Producer | Examples |
+|---|---|
+| Signal attention | `worth_surfacing`, `quiet_hours`, `below_floor`, `low_confidence`, `muted`, `feedback`, `budget`, `already_sent`, `kill_switch`, `overdue_escalation`, `act` |
+| Utility planner | `expected_utility`, `no_options`, `no_feasible_option` |
+| Commitment planner | `commitment_aware` |
+| Execution-risk planner | `execution_aware` |
+| Human-attention planner | `attention_aware`, `attention_budget_exhausted`, `approval_rejected` |
+| Live decision engine | `live_decision` |
+| Model-based planners | `mdp_plan`, `pomdp_plan`, `terminal_state`, `no_action` |
+| Authored rules | `policy_rule`, `no_rule` |
+| Packaged policies | `safe_action`, `safety_blocked`, `no_safe_option`, `ask_preference`, `verify_outcome`, `escalate_to_target`, `replan`, and the codes listed on the [policies page](06-policies.md) |
 
-`decision.basis()` returns portable evidence rows:
+The attention `ReasonCode` enum also defines `ask_approval`, but the current gate set does not emit
+it. Approval is carried by `requires_approval` on the decision.
+
+The pages that define each mechanism list its full set of codes. The
+[troubleshooting guide](../05-project/troubleshooting.md) maps the common codes to symptoms.
+
+## Evidence basis
+
+`Decision.basis()` returns host-neutral evidence rows:
 
 ```python
 [
@@ -164,126 +228,25 @@ A notification is a `guide` decision plus an app delivery channel. Approval is t
 ]
 ```
 
-The app can put these in its own audit record.
+The rows are built from the reason code, the evidence references, the intent and the constraints
+that were applied. A host can write them into its own audit record without importing LAIX types.
 
-## Records
+## The stable surface
 
-### What a record is
+These are stable identifiers:
 
-A record is a named data shape. It says which fields exist, what type they have and what values are
-allowed. LAIX uses records for requests, decisions, outcomes and the lifecycle around them.
+- the field names on `DecisionRequest` and `Decision`;
+- the seven verbs;
+- the reason codes;
+- the JSON keys produced by `to_dict()`;
+- the `schema_version` and `policy_version` fields.
 
-| Word | Meaning |
-|---|---|
-| **Record** | One data object, such as a decision or an outcome. |
-| **Schema** | A machine-readable description of a record. |
-| **Vector** | A fixed input and its expected output, used as a test case. |
+The task shape, the option fields and the planner scores can grow additively. A removed or renamed
+field is a schema change. [Records and schema](02-records-and-schema.md) describes the version rules.
 
-Two versions travel with a decision, and they mean different things:
+## Related
 
-- `schema_version` is the version of the record shape.
-- `policy_version` is the version of the rule set that produced the decision.
-
-### Request records
-
-| Record | Carries |
-|---|---|
-| `DecisionRequest` | subject, moment, signals, context, situation, options, attributes and confidence |
-| `Signal` | id, kind, title, detail, severity, confidence, due, evidence refs and interruption cost |
-| `Context` | time, quiet hours, thresholds, budget, feedback and escalation |
-| `Feedback` | state, time, until and note |
-| `Observation` | source, kind, confidence, payload, cost and latency |
-| `Belief` | proposition, confidence, evidence, update time and expiry |
-| `Goal` | statement, priority, metric, target and deadline |
-| `Constraint` | kind, value, hard flag and statement |
-| `ActionOption` | id, verb, name, benefit, cost, risk, reversibility and approval |
-| `Situation` | observations, beliefs, goals, constraints, phase, horizon and attributes |
-
-### Response records
-
-| Record | Carries |
-|---|---|
-| `Decision` | verb, chosen option, reason, confidence, alternatives, approval, target and ids |
-| `EvidenceRef` | id, kind, quote, source and confidence |
-| `Intent` | capability and args |
-| `ScoreBreakdown` | severity, due, confidence, interruption, learned and total |
-
-### Outcome and execution records
-
-| Record | Carries |
-|---|---|
-| `Outcome` | decision id, metric, before/after, direction, attribution and label |
-| `ExecutionReceipt` | chosen option, status, actor, result, idempotency key and error |
-| `Trace` | ordered events for one decision |
-
-`ExecutionReceipt` statuses are `pending`, `approved`, `executed`, `refused`, `cancelled`,
-`failed`, `undone`, `unknown` and `duplicate`. A bridge may mark an action `unknown` and
-reconcile it with provider evidence; a duplicate key returns a duplicate receipt.
-
-Every core record carries `schema_version`.
-
-### DecisionRecord lifecycle
-
-The core Decision response is immutable. The app kit wraps it in a `DecisionRecord`, with `Approval`,
-`Undo` and `AuditEvent`, for approval, execution and undo.
-
-```text
-draft -> approved -> executed -> undone
-  |
-  +-> rejected
-```
-
-`executed True` means the record ran and its fingerprint still matches.
-
-## JSON
-
-Python records have `to_dict()` and use snake_case. The JSON Schema uses the same names. TypeScript
-uses camelCase properties for the same concepts.
-
-## Generate the schema
-
-From `packages/python/laix`:
-
-```powershell
-py -c "from laix.core.schema import write_schema; write_schema()"
-```
-
-Check that the committed file is current:
-
-```powershell
-py -m pytest tests/test_laix.py -k schema
-```
-
-## Versions
-
-| Thing | Version |
-|---|---|
-| Package | `0.10.0` |
-| Record schema | `0.8.0` |
-| Rule sets | `0.8.0` |
-| Attention vectors | `0.8.0` |
-
-The package, the schema and the rule sets move separately. A record-shape change bumps the schema; a
-rule or threshold change bumps the rule set.
-
-## Change rules
-
-1. Change a record shape → bump the schema version and regenerate the schema.
-2. Change a rule or threshold → bump the rule-set version.
-3. Change a vector or weight → bump the vector version.
-4. Add a decision class → add a rule set with a name and version. The decision shape stays the same.
-
-The seven verbs are part of the contract: `wait`, `observe`, `guide`, `ask`, `act`, `verify`,
-`escalate`.
-
-## Files
-
-| File | Contents |
-|---|---|
-| `packages/python/laix/src/laix/core/schema/laix-v1.schema.json` | generated schema for all core records, including `Decision` |
-| `packages/contracts/decision-record.v1.schema.json` | `DecisionRecord` shape |
-| `packages/contracts/attention.v1.json` | attention test cases |
-| `packages/contracts/attention-bench.v1.json` | attention outcome cases |
-
-The schema is generated from the Python records, so it is the one decision schema. The test
-vectors are hand-written and shared by both packages.
+- [Records and schema](02-records-and-schema.md) — every record shape and the schema workflow.
+- [Dispatch](03-dispatch.md) — how the request selects a mechanism.
+- [Policies](06-policies.md) — the policy contract.
+- [Planner contract](07-planning/00-planner-contract.md) — the `Plan` shape and its conversion.

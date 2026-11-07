@@ -100,37 +100,20 @@ decisions, elapsed time, throughput and stream counters. See [streaming](02-stre
 
 ## Planner simulation
 
-`Simulator` runs a planner in a deterministic model. `compare_planners(planners, scenarios)` returns
-reward and optimality gap (the distance from the best possible reward) per planner and scenario;
-`seeded_scenarios(seed)` builds repeatable chains with a known optimum. `Simulator.from_mdp(model, seed=...)` gives repeatable stochastic rollouts.
-
 `python -m laix.appkit.bench --planners` compares `MDPPlanner` with a do-nothing baseline on a chain
-and prints reward, steps and optimality gap. `--json` returns the same rows as JSON.
+and prints reward, steps and optimality gap. `--json` returns the same rows as JSON. The
+`Simulator`, `Scenario`, `SimulationReport` and `compare_planners` mechanisms are on the
+[planner contract](../02-core/07-planning/00-planner-contract.md#simulator).
 
-## Seven-case live demo
+## Live decision benchmark
 
-`run_live_bench()` compares training-free planners on seven compact cases. This is the small demo,
-not the 120-case live decision corpus: risk limit, commitment,
-irreversible action, unknown outcome, approval, attention and plain utility.
+`python -m laix.appkit.bench --live` runs the seven-case live decision benchmark. The cases, planner
+keys, corpus and measured results are on the
+[evaluation page](../02-core/12-evaluation.md#live-decision-benchmark).
 
 ```powershell
 python -m laix.appkit.bench --live
 python -m laix.appkit.bench --live --json
 ```
 
-The report has one row per case and planner and aggregates accuracy, safety violations,
-irreversible choices, mean latency and mean score. It is deliberately small and auditable: every
-case is a `DecisionProblem`, and every row records the chosen action and the expected action.
-
-```python
-from laix import run_live_bench
-
-report = run_live_bench()
-print(report.summary())
-```
-
-The current result shows why the planners exist: `UtilityPlanner` wins on plain benefit, while
-`CommitmentPlanner`, `ExecutionRiskPlanner` and `HumanAttentionPlanner` win the cases that include
-promises, execution risk and human attention. `LiveDecisionEngine` composes all four scores and
-matches all seven expected actions. TypeScript exports the same benchmark as `runLiveBench`, `defaultCases` and
-`liveBenchSummary`. See [the planner reference](../02-core/06-engines.md).
+TypeScript exports the same benchmark as `runLiveBench`, `defaultCases` and `liveBenchSummary`.
