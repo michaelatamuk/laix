@@ -110,10 +110,10 @@ policy.
 
 ## Normalization
 
-`coerce` accepts a `Decision`, a mapping with the decision fields, or an object with compatible
-attributes, and returns a `Decision`. For a mapping, it defaults `verb` to `wait`, `reason_code` to
-`policy_rule`, `deliver` and `record` to `True`, `status` to `final` and `target` to `one`. An
-unsupported result raises `PolicyError`.
+`coerce` accepts a `Decision`, an attention-like object with `signal_id` and `verb`, or a mapping
+with the decision fields, and returns a `Decision`. For a mapping, it defaults `verb` to `wait`,
+`reason_code` to `policy_rule`, `deliver` and `record` to `True`, `status` to `final` and `target` to
+`one`. An unsupported result raises `PolicyError`.
 
 `from_attention` converts an `AttentionDecision` into the public shape: it maps the attention verb,
 reason, score and delivery flags onto `Decision`. The reason code becomes the rationale; the

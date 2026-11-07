@@ -14,6 +14,7 @@
 | **Attention-aware planning** | Planning that treats interruption, approval and escalation as a budget. |
 | **Human-attention planning** | `HumanAttentionPlanner`: pricing interruption, approval and escalation when choosing an action. |
 | **Attention budget** | The interruption and approval capacity a task may spend. |
+| **Signal interruption budget** | A per-cycle cap on delivered signal decisions, set by `Context.interruption_budget`. |
 | **Resource budget** | Compute, latency and sensing capacity, managed by `ResourceScheduler`; distinct from the attention budget. |
 | **Planner** | A strategy that scores the options and chooses one, returning a `Plan`. Built-ins: `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner`, `POMDPPlanner`. |
 | **Engine** | A composition of planners that returns one `Plan`. The built-in engine is `LiveDecisionEngine`. |

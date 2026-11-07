@@ -32,9 +32,8 @@ Read in order.
 | [Decision contract](02-core/01-decision-contract.md) | `DecisionRequest`, `Decision`, the seven verbs and reason codes |
 | [Records and schema](02-core/02-records-and-schema.md) | the ten schema records, JSON, versions and change rules |
 | [Dispatch](02-core/03-dispatch.md) | `decide`, automatic path selection, ids and confidence provenance |
-| [Commitments](02-core/05-commitments.md) | promises, ledgers, due times, dependencies and `PlanningPolicy` |
-| [Resources](02-core/11-resources.md) | `Budget`, `ResourceScheduler` and sensing options |
 | [Signal attention](02-core/04-signal-attention.md) | the gate pipeline, score, reason codes and the attention scope |
+| [Commitments](02-core/05-commitments.md) | promises, ledgers, due times, dependencies and stores |
 | [Policies](02-core/06-policies.md) | the policy contract, built-in action policy, eight decision-class policies and wrappers |
 | [Planner contract](02-core/07-planning/00-planner-contract.md) | `DecisionProblem`, `Plan`, `DecisionEngine`, `EnginePolicy` and the simulator |
 | [Live planners](02-core/07-planning/01-live-planners.md) | utility, commitment, execution-risk and human-attention scoring |
@@ -43,6 +42,7 @@ Read in order.
 | [Outcome learning](02-core/08-outcome-learning.md) | outcomes, rewards, `UCBBandit`, causal attribution and attention outcomes |
 | [Calibration and model learning](02-core/09-calibration-and-model-learning.md) | prediction and decision calibration, `CalibratedPolicy` and `ModelLearner` |
 | [Decision continuity](02-core/10-decision-continuity.md) | what carries from one decision to the next and the continuity benchmark |
+| [Resources](02-core/11-resources.md) | `Budget`, `ResourceScheduler` and sensing options |
 | [Evaluation](02-core/12-evaluation.md) | cases, reports, the live decision bench and LAIX-Bench |
 | [Foundation](02-core/13-foundation.md) | perception records and the shared support helpers |
 

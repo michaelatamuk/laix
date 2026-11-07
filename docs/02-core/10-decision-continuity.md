@@ -40,9 +40,10 @@ sequenceDiagram
 4. It may supersede an earlier decision and produce a revision.
 5. Its outcome may update a calibration report or a learner.
 
-The next `DecisionProblem` carries the commitments, budget, approvals and receipts that matter. The
-planner scores the current options against that state. `LiveDecisionEngine` does this for utility,
-commitments, execution risk and attention in one plan.
+The next `DecisionRequest` carries the commitments, budget, approvals and receipts that matter. The
+planner receives them in `DecisionProblem.attributes` and scores the current options against that
+state. `LiveDecisionEngine` does this for utility, commitments, execution risk and attention in one
+plan.
 
 ## A sequence
 

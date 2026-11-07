@@ -38,17 +38,21 @@ registry.register("replan", ReplanningPolicy())
 decision = decide(request, policy=registry.get("replan"))[0]
 ```
 
-`register` validates the name and the `decide` method, and replaces an existing name. `get` raises
-`PolicyError` for an unknown name. `names()` returns the registered names in sorted order.
+`register` validates the registered name and the `decide` method, and replaces an existing name.
+`get` raises `PolicyError` for an unknown name. `names()` returns the registered names in sorted
+order.
 
 ## Built-in action policy
 
 The default action path uses `ActionPolicy`. It reads a `Situation`, the options and merged request
-attributes. It chooses by verb band; it does not reduce everything to one utility score.
+attributes. It chooses by verb band rather than by one utility score.
 
 `dispatch` calls `ActionPolicy` directly and wraps its single `Decision` in a list. `ActionPolicy`
 is not a `Policy` plugin: it has no `name` and its `decide` returns one `Decision`, while the generic
 policy contract returns a list.
+
+`decide_action(request, config=None, **kwargs)` is the functional shortcut when the host does not
+need a policy object.
 
 ### Admission
 
@@ -88,6 +92,10 @@ Every decision carries `reason_code="policy_rule"`. The rationale names the thre
 the chosen option's `utility` (or `0.0`), and `attributes` records the urgency, uncertainty and flags
 the policy used.
 
+`confidence` comes from `Situation.confidence()` unless the merged attributes carry `confidence`.
+`uncertainty` defaults to `1 - confidence`; `urgency` defaults to `0.5`; the boolean flags default to
+`False`.
+
 ### Thresholds
 
 `ActionPolicyConfig` is explicit and tunable:
@@ -99,20 +107,17 @@ the policy used.
 | `ask_uncertainty` | 0.45 | At or above this, the policy considers observing or asking. |
 | `act_urgency` | 0.75 | Minimum urgency for `act`. |
 | `guide_urgency` | 0.45 | Minimum urgency for `guide`. |
-| `max_risk` | 0.90 | Default risk ceiling for the option model. |
-| `max_interrupt` | 0.90 | Default interruption ceiling. |
-| `approval_kinds` | `("approval", "safety")` | Constraint kinds that can require approval. |
 | `max_alternatives` | 6 | Maximum alternative rows. |
 
 The request attributes that drive the bands are `confidence`, `uncertainty`, `urgency`,
 `deadline_breached`, `safety_breached`, `verification_due` and `needs_more_info`.
 
 `ActionPolicyConfig` also declares `max_risk`, `max_interrupt` and `approval_kinds`. The current
-action policy does not consult them; hard limits come from `Situation.constraints`, and approval
-comes from the chosen option or an approval constraint.
+action policy uses the six thresholds above; hard limits come from `Situation.constraints`, and
+approval comes from the chosen option or an approval constraint.
 
-When the chosen option needs approval, the decision sets `requires_approval=True` and adds
-`approval:human-required` to `constraints_applied`.
+When the chosen verb is `act` and the option needs approval, the decision sets
+`requires_approval=True` and adds `approval:human-required` to `constraints_applied`.
 
 ### Option ordering
 
@@ -261,17 +266,7 @@ Operators inside `when`:
 The first matching rule wins. A rule can set `rationale`, `confidence`, `action_id`,
 `requires_approval` and `intent`. The default fallback is `wait` with `no_rule`.
 
-## Wrappers
-
-| Wrapper | What it adds |
-|---|---|
-| `TargetedPolicy` | Sets `target` and `recipients`. `target="request"` takes the mode from the request. |
-| `PlanningPolicy` | Acts on a `CommitmentLedger`. It takes the ledger in the constructor. |
-| `GroupPolicy` | Sets a group target and masks private attributes and evidence. |
-| `ShadowPolicy` | Runs a second policy beside the primary and records differences. |
-| `simulate` | Runs a policy over recorded requests without side effects. |
-
-### `PlanningPolicy`
+## Planning policy
 
 `PlanningPolicy(ledger)` reads the ledger it was constructed with:
 
@@ -280,7 +275,25 @@ The first matching rule wins. A rule can set `rationale`, `confidence`, `action_
 - `ask` with `blocked_commitment` when every open commitment is blocked;
 - `wait` with `no_commitment` when there is no open commitment.
 
+```python
+from laix import DecisionRequest, PlanningPolicy, decide
+
+decision = decide(
+    DecisionRequest(subject="next step", at="2026-11-01T10:00:00+00:00"),
+    policy=PlanningPolicy(ledger),
+)[0]
+```
+
 See [Commitments](05-commitments.md).
+
+## Wrappers
+
+| Wrapper | What it adds |
+|---|---|
+| `TargetedPolicy` | Sets `target` and `recipients`. `target="request"` takes the mode from the request. |
+| `GroupPolicy` | Sets a group target and masks private attributes and evidence. |
+| `ShadowPolicy` | Runs a second policy beside the primary and records differences. |
+| `simulate` | Runs a policy over recorded requests without side effects. |
 
 ### `GroupPolicy`
 
@@ -313,7 +326,7 @@ See [Outcome learning](08-outcome-learning.md).
 
 ## The planner bridge
 
-A planner is not a policy. `EnginePolicy` adapts a `DecisionEngine` to the policy interface. The
+`EnginePolicy` adapts a `DecisionEngine` to the policy interface. The
 [planner contract](07-planning/00-planner-contract.md) defines the adapter, `DecisionProblem` and
 `Plan`.
 
@@ -329,7 +342,7 @@ policy can replace any packaged policy without changing the request or the respo
 | `core/engines/policies/policy.py` | the `Policy` protocol |
 | `core/engines/policies/registry.py` | `PolicyRegistry` |
 | `core/engines/policies/implementations/action.py` | the built-in `ActionPolicy` |
-| `core/engines/policies/implementations/` | the eight packaged policies and the wrappers |
+| `core/engines/policies/implementations/` | the eight decision-class policies, `RulePolicy`, `PlanningPolicy`, the wrappers and `BanditPolicy` |
 | `core/engines/policies/simulation.py` | `ShadowPolicy` and `simulate` |
 | `core/engines/contract/engine.py` | `EnginePolicy` |
 

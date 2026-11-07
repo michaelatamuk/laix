@@ -19,6 +19,9 @@ budget:
 | `max_cost` | 1.0 | Maximum total cost. |
 | `max_latency_ms` | 2000 | Maximum latency for one deep option. |
 
+`LiveContext` in the app kit supplies its own default `Budget` with two deep calls, cost `1.0` and
+latency `500` ms. See [Live Context](../03-appkit/03-live-context.md).
+
 ## Sensing option
 
 `SensingOption`:
@@ -81,8 +84,8 @@ A skipped deep option is recorded in `ResourcePlan.skipped` with its name, reaso
 
 `to_dict()` uses the keys `allowed`, `skipped`, `deepCalls`, `cost`, `reason` and `attributes`.
 
-`ResourceScheduler.should_escalate(confidence, required=0.75)` returns `True` when the confidence is
-below the requirement.
+`ResourceScheduler.should_escalate(confidence, *, required=0.75)` returns `True` when the confidence
+is below the requirement.
 
 ## Where it fits
 
@@ -95,8 +98,8 @@ flowchart LR
     scheduler --> skipped[Skipped with reason]
 ```
 
-The scheduler decides which looks are affordable. It does not choose the decision verb. The action
-policy, a planner or the host uses the allowed looks.
+The scheduler decides which looks are affordable. The action policy, a planner or the host chooses
+the decision verb and uses the allowed looks.
 
 ## Where the code lives
 

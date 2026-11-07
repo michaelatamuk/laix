@@ -40,6 +40,6 @@ and [`examples/typescript/09-live-loop/live_loop.mts`](../../examples/typescript
 
 ## Read next
 
-- [Core building blocks](../02-core/00-overview.md)
+- [Core overview](../02-core/00-overview.md)
 - [App-kit building blocks](../03-appkit/00-architecture.md)
 - [The decision contract](../02-core/01-decision-contract.md)

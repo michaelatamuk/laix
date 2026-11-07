@@ -1,7 +1,7 @@
 # The live decision engine
 
-`LiveDecisionEngine` is the composition engine. It is not a planner. It runs the four live planner
-scores on the same problem and returns one `Plan`.
+`LiveDecisionEngine` is the composition engine. It runs the four live planner scores on the same
+problem and returns one `Plan`.
 
 `live` means the decision is made inside the running loop, at event time, with the current state.
 The core stays stateless; the host supplies the state in the request.
@@ -37,9 +37,9 @@ blockers in the alternatives.
 
 ## Per-option score
 
-The engine uses the shared scoring functions from the four planners. It does not instantiate
-`CommitmentPlanner`, `ExecutionRiskPlanner` or `HumanAttentionPlanner`; it uses their scoring
-functions directly. It keeps a `UtilityPlanner` internally to resolve `UtilityModel` overrides.
+The engine uses the shared scoring functions from the four planners directly, rather than
+instantiating the planner classes. It keeps a `UtilityPlanner` internally to resolve `UtilityModel`
+overrides.
 
 ```text
 utility    = utility_model.score(option)
@@ -80,8 +80,8 @@ model.feasible(option) and blocked is None     if enforce_feasibility
 True                                           otherwise
 ```
 
-The hard `Situation` constraints are the same ones the utility planner uses. The commitment and
-attention terms add their own blockers. The execution term prices risk but does not block.
+The hard `Situation` constraints are the same ones the utility planner uses. Commitment, attention
+and hard constraints block; the execution term prices risk.
 
 If no option is feasible, the engine returns `wait` with `no_feasible_option`. If there are no
 options, it returns `wait` with `no_options`.
@@ -179,8 +179,8 @@ higher utility but loses the commitment term and pays the irreversibility penalt
 | The host compares plans. | The engine compares rows and returns the winner. |
 | The host must reconcile blockers. | Commitment, attention and hard constraints block in one pass. |
 
-The engine does not replace the planners. It composes their scores. The planners remain the direct
-choice when only one concern matters.
+The engine composes the planners' scores. The planners remain the direct choice when only one concern
+matters.
 
 ## Reference results
 

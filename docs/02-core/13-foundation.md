@@ -1,7 +1,7 @@
 # Foundation: perception and support
 
-This page covers the small core types that the rest of the documentation assumes. They are not
-decision mechanisms. They are the records and helpers the mechanisms are built on.
+This page covers the small core types the rest of the documentation builds on: the records and
+helpers below the decision mechanisms.
 
 ## Perception
 
@@ -34,7 +34,7 @@ class Detector(Protocol):
 `deepCalls` and `cost`. It is the frame a detector loop returns after admission.
 
 The app-kit runtime that drives detectors is `LiveContext` with `CallableDetector`. It lives in
-`appkit/live_context/`, not in the core. See [Live Context](../03-appkit/03-live-context.md).
+`appkit/live_context/`. See [Live Context](../03-appkit/03-live-context.md).
 
 ## Support
 
@@ -71,7 +71,7 @@ The app-kit runtime that drives detectors is `LiveContext` with `CallableDetecto
 | `to_primitive(value)` | dataclasses, dicts, lists and tuples converted recursively |
 | `to_string_tuple(value)` | `None` → `()`, a string → `(value,)`, otherwise a tuple of strings |
 
-`to_primitive` is the base of the record `to_dict()` methods. It does not import any app-kit type.
+`to_primitive` is the base of the record `to_dict()` methods and depends only on the standard library.
 
 ### Errors
 
