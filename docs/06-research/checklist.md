@@ -134,6 +134,9 @@ team did not write.
   success, stateless `UtilityEngine` 0% with 36 continuity errors; see
   [continuity benchmark](02-evaluation/continuity-benchmark.md).
 
+- [x] **τ-bench baseline** — 10 retail tasks, DeepSeek V4 Flash, 9/10 passed (`pass^1 = 0.90`).
+  The LAIX policy adapter is the next integration; see [τ-bench](02-evaluation/tau-bench.md).
+
 - [ ] **Record the chosen option** — write one paragraph in
   `docs/06-research/03-validation/plan.md` §1 stating: which option (A, B or C) was chosen,
   why (data availability, feasibility, timeline), and the minimum sample size target. Do this

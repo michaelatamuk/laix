@@ -73,6 +73,8 @@
 - Added a decision-continuity benchmark v0: 12 episodes, 60 decisions. Stateful
   `LiveDecisionEngine` succeeded on 100% of episodes; a stateless `UtilityEngine` on 0% with 36
   continuity errors. This is a synthetic mechanism test, not external validation.
+- Ran the τ-bench retail baseline with DeepSeek V4 Flash: 9/10 tasks, `pass^1 = 0.90`. The LAIX
+  policy adapter is not implemented; τ-bench scores full-agent tool use, not the runtime lifecycle.
 - Documented the power needed for the glue comparison: about 90-120 new held-out cases at the
   current effect size, run once on a pre-registered set.
 - Added a secondary adversarial-split check: 18/18 vs 16/18, combined exact McNemar p = 0.125.

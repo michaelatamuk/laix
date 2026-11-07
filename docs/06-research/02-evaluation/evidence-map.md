@@ -18,6 +18,7 @@ Every measured number is reproducible from the linked result directory; the inte
 | Ablation: full vs no attention | **100%** vs **96.7%** | measured |
 | External SRE benchmark (Sev1-Bench) | baseline **0.800**; guardrail **0.800**; chooser 0.745 (1 forbidden) | measured, negative |
 | Decision continuity (episode v0) | stateful **100%** vs stateless **0%** success; 36 continuity errors | measured, synthetic mechanism |
+| τ-bench retail baseline (DeepSeek) | **9/10** passed, `pass^1 = 0.90` | measured, baseline only |
 
 The glue comparison is the honest caveat: the gain is real on this corpus, but the 95% confidence
 interval includes zero and p = 0.48 on 30 cases. The advantage over every single-concern planner is
@@ -31,6 +32,10 @@ preserved the baseline. See [Sev1-Bench](sev1-bench.md).
 The continuity result is a synthetic mechanism test. It shows that the stateful runtime uses the
 supplied state and the stateless planner does not. It is not external validation. See
 [Continuity benchmark](continuity-benchmark.md).
+
+The τ-bench result is a baseline of the host agent, not a LAIX result. τ-bench scores full-agent
+tool use and policy adherence; a LAIX policy adapter is required before the runtime can be compared.
+See [τ-bench](tau-bench.md).
 
 ## Safety and promise keeping
 

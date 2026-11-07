@@ -26,6 +26,7 @@ the order. `checklist.md` tracks work across all stages.
 | 02 | [External benchmarks](02-evaluation/external-benchmarks.md) | world benchmarks, fit and run protocol |
 | 02 | [Sev1-Bench](02-evaluation/sev1-bench.md) | external SRE incident run: DeepSeek baseline vs LAIX |
 | 02 | [Continuity benchmark](02-evaluation/continuity-benchmark.md) | episode mechanism test: stateless vs stateful |
+| 02 | [τ-bench](02-evaluation/tau-bench.md) | baseline 9/10 retail tasks; LAIX policy adapter pending |
 | 03 | [Validation plan](03-validation/plan.md) | deployment, incident replay or vignette study |
 | 03 | [Incident replay](03-validation/incident-replay.md) | collection plan, field mapping and fallback |
 | 03 | [Vignette study](03-validation/vignette-study.md) | 20 vignettes and the blinded protocol |
