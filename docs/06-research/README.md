@@ -153,7 +153,7 @@ Out of scope:
 | Live composite planner | `LiveCompositePlanner` | exists | real validation still needed |
 | Commitments | `Commitment`, `CommitmentLedger`, commitment planner | exists | larger conflict cases |
 | Execution risk | execution planner, receipts, recovery | exists | measured irreversible-action reduction |
-| Attention | attention planner, budget, signals | exists | measured budget adherence and interruption quality |
+| Signal attention | signal attention, human-attention planner, budget | exists | measured budget adherence and interruption quality |
 | Timing and revision | stream session, timeline | exists | formal revision invariants |
 | Calibration | calibration and decision calibration | exists | held-out calibration report |
 | Audit | receipts, traces, decision record | exists | replay and tamper evidence in evaluation |

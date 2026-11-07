@@ -18,7 +18,7 @@ import yaml
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / "packages" / "python" / "laix" / "src"))
 
-from laix import ActionOption, DecisionProblem, LiveDecisionEngine
+from laix import ActionOption, PlannerInput, LiveCompositePlanner
 
 BENCH = Path(os.environ.get("SEV1_BENCH", REPO / "benchmarks" / "external" / "sev1-bench"))
 OUT = Path(os.environ.get("SEV1_OUT", Path(__file__).resolve().parent))
@@ -200,18 +200,18 @@ def run_one(scenario_dir: Path) -> dict[str, object]:
         )
         for index, candidate in enumerate(candidates)
     )
-    plan = LiveDecisionEngine().solve(
-        DecisionProblem(
+    planner_result = LiveCompositePlanner().solve(
+        PlannerInput(
             subject=scenario_dir.name,
             at="2026-11-01T10:00:00+00:00",
             options=options,
         )
     )
-    chosen = next(item for item in options if item.id == plan.action_id)
+    chosen = next(item for item in options if item.id == planner_result.action_id)
     laix_action = chosen.name
     top_action = options[0].name
     if chosen.name.split(".")[0].strip().lower() in {"escalate to the incident commander", "investigate further"}:
-        laix_action = f"{chosen.name} After approval, the plan is: {top_action}"
+        laix_action = f"{chosen.name} After approval, the planner result is: {top_action}"
 
     def final(action: str) -> str:
         return json.dumps(
@@ -231,7 +231,7 @@ def run_one(scenario_dir: Path) -> dict[str, object]:
         "candidates": candidates,
         "baseline_action": baseline_action,
         "laix_action": laix_action,
-        "laix_reason": plan.reason_code,
+        "laix_reason": planner_result.reason_code,
         "baseline_final": final(baseline_action),
         "laix_final": final(laix_action),
         "elapsed_s": round(elapsed, 1),

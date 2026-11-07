@@ -13,7 +13,7 @@ from litellm import completion
 if os.environ.get("LAIX_SRC"):
     sys.path.insert(0, os.environ["LAIX_SRC"])
 
-from laix import ActionOption, DecisionProblem, LiveDecisionEngine
+from laix import ActionOption, PlannerInput, LiveCompositePlanner
 from tau_bench.agents.base import Agent
 from tau_bench.envs.base import Env
 from tau_bench.types import RESPOND_ACTION_NAME, Action, SolveResult
@@ -49,7 +49,7 @@ class LAIXGuardrailAgent(Agent):
         self.model = model
         self.provider = provider
         self.temperature = temperature
-        self._engine = LiveDecisionEngine()
+        self._planner = LiveCompositePlanner()
         self._asked: set[str] = set()
 
     def _last_user_text(self, messages: list[dict[str, Any]]) -> str:
@@ -98,15 +98,15 @@ class LAIXGuardrailAgent(Agent):
                 interrupt_cost=0.4,
             ),
         )
-        plan = self._engine.solve(
-            DecisionProblem(
+        planner_result = self._planner.solve(
+            PlannerInput(
                 subject=action.name,
                 at="2026-11-01T10:00:00+00:00",
                 options=options,
                 attributes={"approvals": {"act": "pending"}},
             )
         )
-        if plan.requires_approval or plan.action_id in {"ask", "escalate"}:
+        if planner_result.requires_approval or planner_result.action_id in {"ask", "escalate"}:
             self._asked.add(action.name)
             return "ask"
         return "act"

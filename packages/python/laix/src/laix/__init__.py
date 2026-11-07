@@ -32,9 +32,10 @@ from .core.decisions import (
     Situation,
     TARGET_MODES,
     Trace,
+    from_signal_attention,
 )
 from .core.outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
-from .core.outcome_learning import SignalAttentionOutcome, Outcome
+from .core.outcome_learning import SignalAttentionLog, SignalAttentionOutcome, Outcome
 from .core.outcome_learning import CausalEffect, CausalLedger, CausalObservation
 from .core.commitments import (
     COMMITMENT_STATUSES,
@@ -49,7 +50,6 @@ from .core.support.values import confidence_band
 from .core.support.verbs import VERBS, Verb
 from .core.support.version import SCHEMA_VERSION
 from .core import evaluation
-from .core.engines import signals as attention
 from .core.engines.signals import SignalAttentionDecision, SignalContext, SignalFeedback, Signal, decide_signal_attention
 from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
@@ -278,6 +278,7 @@ def __dir__() -> list[str]:
 __all__ = [
     "ActionOption",
     "SignalAttentionDecision",
+    "SignalAttentionLog",
     "SignalAttentionOutcome",
     "ActivePerceptionPolicy",
     "AllocationPolicy",
@@ -382,12 +383,12 @@ __all__ = [
     "apply_proposal",
     "approve_proposal",
     "approve_record",
-    "attention",
     "compare_decisions",
     "create_record",
     "evaluation",
     "load_cases",
     "mark_executed",
+    "from_signal_attention",
     "reject_proposal",
     "reject_record",
     "reward_for_label",

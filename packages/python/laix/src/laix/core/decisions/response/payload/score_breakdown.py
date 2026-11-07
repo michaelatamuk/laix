@@ -1,4 +1,4 @@
-"""The inspectable score breakdown behind an attention decision."""
+"""The inspectable score breakdown behind an signal-attention decision."""
 
 from __future__ import annotations
 

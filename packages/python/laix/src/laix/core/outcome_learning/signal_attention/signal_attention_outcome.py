@@ -1,4 +1,4 @@
-"""What happened after an attention decision."""
+"""What happened after a signal-attention decision."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True, slots=True)
 class SignalAttentionOutcome:
-    """What happened after an attention decision. The label the learner needs."""
+    """What happened after a signal-attention decision. The label the learner needs."""
 
     signal_id: str
     kind: str

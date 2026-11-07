@@ -62,7 +62,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/schema/` | `RECORDS`, `RECORD_NAMES`, schema generation, validation and `laix-v1.schema.json` |
 | `core/support/` | time, ids, values, serialization, errors, verb and version helpers |
 | `appkit/decision_client.py` | the app-kit `DecisionClient`: core selection plus runtime, execution and traces |
-| `core/engines/contract/planner.py` | `Planner`, `PlannerInput`, `PlannerResult` and `PlannerPolicy` |
+| `core/engines/contract/planner.py`, `planner_input.py`, `planner_result.py`, `planner_policy.py` | `Planner`, `PlannerInput`, `PlannerResult` and `PlannerPolicy` |
 | `core/engines/planners/` | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner` and `POMDPPlanner` |
 | `core/engines/live/` | `LiveCompositePlanner` and `CompositeScore` |
 | `core/engines/policies/implementations/action.py` | built-in action-selection policy |

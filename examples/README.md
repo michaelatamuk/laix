@@ -45,17 +45,17 @@ A single example:
 
 ```powershell
 $env:PYTHONPATH = "packages/python/laix/src"
-py examples/python/01-decide/attention_bill_due.py
+py examples/python/01-decide/signal_attention_bill_due.py
 ```
 
 ## 01 Decide
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
-| A bill is due tomorrow. | `attention_bill_due.py` | `attention_bill_due.mts` | `guide worth_surfacing 84` |
-| The same bill arrives at night. | `attention_quiet_hours.py` | `attention_quiet_hours.mts` | `wait quiet_hours 84.0 True False` / `wait quiet_hours 84 true false` |
-| The person dismissed the signal. | `attention_feedback.py` | `attention_feedback.mts` | `wait dismissed` |
-| A power plan is below its required load. | `attention_power_plan.py` | — | `guide worth_surfacing 75.0` |
+| A bill is due tomorrow. | `signal_attention_bill_due.py` | `signal_attention_bill_due.mts` | `guide worth_surfacing 84` |
+| The same bill arrives at night. | `signal_attention_quiet_hours.py` | `signal_attention_quiet_hours.mts` | `wait quiet_hours 84.0 True False` / `wait quiet_hours 84 true false` |
+| The person dismissed the signal. | `signal_attention_feedback.py` | `signal_attention_feedback.mts` | `wait dismissed` |
+| A power plan is below its required load. | `signal_attention_power_plan.py` | — | `guide worth_surfacing 75.0` |
 | A sink is about to overflow. | `action_leaking_sink.py` | `action.mts` | `act policy_rule option-close-valve` |
 | The same sink, through core `decide`. | `action_core_decide.py` | — | `act policy_rule option-close-valve DEC-...` |
 | A bill needs payment and approval. | `action_pay_bill.py` | `action_pay_bill.mts` | `act policy_rule option-pay True` / `true` |

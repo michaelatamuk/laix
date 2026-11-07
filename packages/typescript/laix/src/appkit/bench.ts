@@ -69,7 +69,7 @@ function attentionSuite(): Suite {
     policy: () => new DecisionClient(),
     cases: [
       { id: "attention_bill_day", request: { subject: "bill", at: AT, signals: [signal], context: { now: now.toISOString(), quietHours: ["22:00", "06:00"] } }, expected: { verb: "guide", reasonCode: "worth_surfacing" } },
-      { id: "attention_quiet_hours", request: { subject: "bill", at: AT, signals: [signal], context: { now: night.toISOString(), quietHours: ["22:00", "06:00"] } }, expected: { verb: "wait", reasonCode: "quiet_hours" } },
+      { id: "signal_attention_quiet_hours", request: { subject: "bill", at: AT, signals: [signal], context: { now: night.toISOString(), quietHours: ["22:00", "06:00"] } }, expected: { verb: "wait", reasonCode: "quiet_hours" } },
       { id: "attention_dismissed", request: { subject: "bill", at: AT, signals: [signal], context: { now: now.toISOString(), quietHours: null, feedback: { "bill-1": { state: "dismissed" } } } }, expected: { verb: "wait", reasonCode: "dismissed" } },
     ],
   };

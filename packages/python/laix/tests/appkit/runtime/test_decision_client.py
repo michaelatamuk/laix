@@ -53,7 +53,7 @@ def test_action_request_returns_the_same_shape() -> None:
     assert decisions[0].reason_code == "policy_rule"
 
 
-def test_layer_exposes_a_stream_session() -> None:
+def test_decision_client_exposes_a_stream_session() -> None:
     layer = DecisionClient()
     stream = layer.stream(stream_id="STR-1", capacity=2)
     decisions = stream.observe(

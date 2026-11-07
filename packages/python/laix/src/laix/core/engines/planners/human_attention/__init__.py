@@ -1,1 +1,1 @@
-"""The attention planner package."""
+"""The human-attention planner package."""

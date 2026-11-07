@@ -118,6 +118,7 @@ from .decisions import (
     Situation,
     TARGET_MODES,
     Trace,
+    from_signal_attention,
 )
 from .outcome_learning import (
     CausalEffect,
@@ -265,6 +266,7 @@ __all__ = [
     "Detector",
     "PlannerBenchmarkRow",
     "EvidenceRef",
+    "from_signal_attention",
     "SignalFeedback",
     "Goal",
     "HORIZONS",

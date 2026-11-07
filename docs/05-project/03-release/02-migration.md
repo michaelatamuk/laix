@@ -70,6 +70,9 @@ The next release renames the planning and attention vocabulary. There are no com
 | `AttentionScore` | `HumanAttentionScore` |
 | `AttentionWeights` | `HumanAttentionWeights` |
 | `attention_effect` | `human_attention_effect` |
+| `attention_score` | `human_attention_score` |
+| `attention_cost` | `human_attention_cost` |
+| `attention_weights` | `human_attention_weights` |
 | `attention_budget` | `human_attention_budget` |
 | `attention_spent` | `human_attention_spent` |
 | `attention_remaining` | `human_attention_remaining` |
@@ -79,6 +82,8 @@ The next release renames the planning and attention vocabulary. There are no com
 | `attention.v1` | `human-attention.v1` |
 | `attentionBudget` | `humanAttentionBudget` |
 | `CompositeScore.attention` | `CompositeScore.human_attention` |
+
+Result artifacts under `results/` preserve the names from the run that produced them; they are evidence, not the current API.
 
 Paths changed with the names:
 
@@ -97,8 +102,17 @@ Paths changed with the names:
 | `core/engines/signals/input/feedback.py` | `core/engines/signals/input/signal_feedback.py` |
 | `core/engines/signals/output/decision.py` | `core/engines/signals/output/signal_attention_decision.py` |
 | `core/outcome_learning/attention/` | `core/outcome_learning/signal_attention/` |
+| `core/evaluation/attention.py` | `core/evaluation/signal_attention.py` |
+| `core/engines/simulation/planner_score.py` | `core/engines/simulation/planner_benchmark_row.py` |
+| `core/engines/signals/attention.v1.json` | `core/engines/signals/signal-attention.v1.json` |
 | `packages/contracts/attention.v1.json` | `packages/contracts/signal-attention.v1.json` |
 | `packages/contracts/attention-bench.v1.json` | `packages/contracts/signal-attention-bench.v1.json` |
+| `core/contract/engine.ts` | `core/contract/planner.ts` |
+| `core/live/live-engine.ts` | `core/live/live-composite-planner.ts` |
+| `core/planners/attention/` | `core/planners/human-attention/` |
+| `core/policies/registry.ts` | `core/policies/decision-policy-registry.ts` |
+| `appkit/layer.ts` | `appkit/decision-client.ts` |
+| `core/signals/attention.ts` | `core/signals/signal-attention.ts` |
 
 ## Upgrading from a pre-0.10.0 release
 
@@ -146,7 +160,7 @@ Paths also changed:
 | `utility/utility.py` | `utility/utility_planner.py` |
 | `mdp/mdp.py` | `mdp/mdp_planner.py` |
 | `pomdp/pomdp.py` | `pomdp/pomdp_planner.py` |
-| `engine_score.py` | `planner_score.py` |
+| `engine_score.py` | `planner_benchmark_row.py` |
 
 No compatibility aliases are provided. The rename is deliberate: two names for one role cause
 confusion. Update the import instead of keeping both names.

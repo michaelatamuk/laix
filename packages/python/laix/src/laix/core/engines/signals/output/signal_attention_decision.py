@@ -1,4 +1,4 @@
-"""What the attention policy recommends for one signal, and why."""
+"""What the signal-attention policy recommends for one signal, and why."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from ....decisions import ScoreBreakdown, Intent
 
 @dataclass(frozen=True, slots=True)
 class SignalAttentionDecision:
-    """What the attention policy recommends for one signal, and why."""
+    """What the signal-attention policy recommends for one signal, and why."""
 
     signal_id: str
     verb: str
