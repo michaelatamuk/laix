@@ -170,7 +170,7 @@ A decision is one step in a sequence. It leaves state for the next decision.
 | 3 | verifies after execution | `c1` fulfilled; receipt and outcome recorded |
 
 The next decision sees the commitments, attention budget, approvals, revisions and outcomes the
-previous one left. See [Decision continuity](docs/02-core/10-decision-continuity.md).
+previous one left. See [Decision continuity](docs/02-core/04-continuity/01-decision-continuity.md).
 
 In a 12-episode synthetic mechanism test, the stateful runtime completed **100%** of episodes; a
 stateless utility planner completed **0%** with 36 continuity errors. See the
@@ -208,7 +208,7 @@ comparison protocol. A measured chooser swap needs TypeSafe API access.
 ## Why LAIX
 
 - **The core stays stateless.** Commitment, budget and execution state live in the request, so the
-  host owns storage and [decision continuity](docs/02-core/10-decision-continuity.md) stays explicit
+  host owns storage and [decision continuity](docs/02-core/04-continuity/01-decision-continuity.md) stays explicit
   rather than hidden in a memory layer.
 - **The integration is the decision.** Utility, commitments, execution risk and attention are scored
   in one plan, not by separate policies that can silently cancel each other out.

@@ -50,7 +50,7 @@ attention  = attention_score(option, ...)
 total = utility + commitment + execution + attention
 ```
 
-Each term is computed exactly as on the [live planners](01-live-planners.md) page.
+Each term is computed exactly as on the [live planners](02-live-planners.md) page.
 
 ```mermaid
 flowchart LR
@@ -194,8 +194,8 @@ The engine is the composition object. The benchmark design and the measured evid
 
 ## Related
 
-- [Live planners](01-live-planners.md)
-- [Planner contract](00-planner-contract.md)
-- [Commitments](../05-commitments.md)
-- [Decision continuity](../10-decision-continuity.md)
-- [Evaluation](../12-evaluation.md)
+- [Live planners](02-live-planners.md)
+- [Planner contract](01-planner-contract.md)
+- [Commitments](../02-decide/02-commitments.md)
+- [Decision continuity](../04-continuity/01-decision-continuity.md)
+- [Evaluation](../06-reference/01-evaluation.md)

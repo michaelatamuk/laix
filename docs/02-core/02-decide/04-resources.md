@@ -20,7 +20,7 @@ budget:
 | `max_latency_ms` | 2000 | Maximum latency for one deep option. |
 
 `LiveContext` in the app kit supplies its own default `Budget` with two deep calls, cost `1.0` and
-latency `500` ms. See [Live Context](../03-appkit/03-live-context.md).
+latency `500` ms. See [Live Context](../../03-appkit/03-live-context.md).
 
 ## Sensing option
 
@@ -112,7 +112,7 @@ the decision verb and uses the allowed looks.
 
 ## Related
 
-- [Human-attention planning](07-planning/01-live-planners.md#human-attention-planner)
-- [Signal attention](04-signal-attention.md)
-- [Foundation](13-foundation.md) — perception records
-- [Live Context](../03-appkit/03-live-context.md)
+- [Human-attention planning](../03-planning/02-live-planners.md#human-attention-planner)
+- [Signal attention](01-signal-attention.md)
+- [Foundation](../06-reference/02-foundation.md) — perception records
+- [Live Context](../../03-appkit/03-live-context.md)

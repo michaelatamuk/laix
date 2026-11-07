@@ -158,7 +158,7 @@ The corpus is in `benchmarks/live/v1/`; the frozen result is in
 
 The +6.7 pp difference over glue is not significant on 30 cases (p = 0.48). The benchmark is a
 fixed synthetic corpus. The design and the measured evidence are in
-[the benchmark page](../06-research/02-evaluation/benchmark.md).
+[the benchmark page](../../06-research/02-evaluation/benchmark.md).
 
 ### JSON keys
 
@@ -198,7 +198,7 @@ The TypeScript mirror uses `npm run bench`, `npm run bench -- --suite safety`, `
 --planners` and `npm run live-bench`.
 
 The CLI, the case format and the stream bench are documented in
-[LAIX-Bench](../03-appkit/08-laix-bench.md).
+[LAIX-Bench](../../03-appkit/08-laix-bench.md).
 
 ## Conformance and parity
 
@@ -226,8 +226,8 @@ The evidence page describes the scope of each result.
 
 ## Related
 
-- [Outcome learning](08-outcome-learning.md)
-- [Calibration and model learning](09-calibration-and-model-learning.md)
-- [Decision continuity](10-decision-continuity.md)
-- [LAIX-Bench](../03-appkit/08-laix-bench.md)
-- [Benchmark design](../06-research/02-evaluation/benchmark.md)
+- [Outcome learning](../05-learning/01-outcome-learning.md)
+- [Calibration and model learning](../05-learning/02-calibration-and-model-learning.md)
+- [Decision continuity](../04-continuity/01-decision-continuity.md)
+- [LAIX-Bench](../../03-appkit/08-laix-bench.md)
+- [Benchmark design](../../06-research/02-evaluation/benchmark.md)

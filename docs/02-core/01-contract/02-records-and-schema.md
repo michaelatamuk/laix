@@ -242,10 +242,10 @@ requires a new schema version and a migration note.
 | `packages/contracts/attention-bench.v1.json` | attention outcome cases |
 
 `DecisionRecord`, `Approval`, `Undo` and `AuditEvent` belong to the app kit. See
-[Execution and recovery](../03-appkit/04-execution.md).
+[Execution and recovery](../../03-appkit/04-execution.md).
 
 ## Related
 
 - [Decision contract](01-decision-contract.md) — the request and response in prose.
-- [Foundation](13-foundation.md) — perception and support types.
-- [Versioning](../05-project/versioning.md) — the release and version policy.
+- [Foundation](../06-reference/02-foundation.md) — perception and support types.
+- [Versioning](../../05-project/versioning.md) — the release and version policy.

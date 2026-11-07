@@ -33,7 +33,7 @@ The release page also has a packed `laix-0.10.0.tgz`. See
 ## One decision
 
 The snippets assume the app has already built `signal`, `situation` and `options`; see
-[the decision contract](../02-core/01-decision-contract.md) for their types.
+[the decision contract](../02-core/01-contract/01-decision-contract.md) for their types.
 
 Attention request:
 
@@ -103,12 +103,12 @@ const [decision] = new Layer().decide({
 | `requires_approval` | Ask a person first. |
 | `deliver` / `record` | Show now / keep it. |
 
-Full fields: [the decision contract](../02-core/01-decision-contract.md).
+Full fields: [the decision contract](../02-core/01-contract/01-decision-contract.md).
 
 ## Next
 
 - Build a production adapter: [integration](../03-appkit/01-integration.md).
 - Stream events: [streaming](../03-appkit/02-streaming.md).
 - Execute and recover: [execution](../03-appkit/04-execution.md).
-- Learn from outcomes: [outcome learning](../02-core/08-outcome-learning.md).
+- Learn from outcomes: [outcome learning](../02-core/05-learning/01-outcome-learning.md).
 - Runnable examples: [`../../examples/README.md`](../../examples/README.md).

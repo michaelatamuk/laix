@@ -141,7 +141,7 @@ mean + exploration × sqrt(log(total_pulls + 1) / pulls)   otherwise
 `BanditPolicy` puts the learner behind the policy interface. It reads arms from
 `DecisionRequest.attributes["arms"]` or from the bandit, respects `max_risk`, `budget` and
 `exclude`, and returns `act` with `bandit_choice`, or `wait` with `no_arms` or
-`no_arm_within_limits`. See [Policies](06-policies.md#learned-policy).
+`no_arm_within_limits`. See [Policies](../02-decide/03-policies.md#learned-policy).
 
 ## Causal attribution
 
@@ -197,7 +197,7 @@ manual automatic 0.75
 
 ## Related
 
-- [Policies](06-policies.md#learned-policy) — `BanditPolicy`
-- [Calibration and model learning](09-calibration-and-model-learning.md)
-- [Evaluation](12-evaluation.md)
-- [Stores](../03-appkit/05-stores.md) — `OutcomeStore`
+- [Policies](../02-decide/03-policies.md#learned-policy) — `BanditPolicy`
+- [Calibration and model learning](02-calibration-and-model-learning.md)
+- [Evaluation](../06-reference/01-evaluation.md)
+- [Stores](../../03-appkit/05-stores.md) — `OutcomeStore`

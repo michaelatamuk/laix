@@ -147,11 +147,11 @@ ActionOption(
 
 The effect can also be written under `params["commitment"]` or at the top level of `params` without
 a wrapper. The scoring rules, weights and returned attributes are on the
-[commitment planner page](07-planning/01-live-planners.md#commitment-planner).
+[commitment planner page](../03-planning/02-live-planners.md#commitment-planner).
 
 `PlanningPolicy` consumes a ledger and turns the next actionable commitment into a decision. The
 constructor, the exact reason codes and the policy contract are on the
-[policies page](06-policies.md#planning-policy).
+[policies page](03-policies.md#planning-policy).
 
 ## What the host owns
 
@@ -166,7 +166,7 @@ a promise was kept and records the outcome.
 
 ## Related
 
-- [Decision contract](01-decision-contract.md)
-- [Policies](06-policies.md) — `PlanningPolicy`
-- [Live planners](07-planning/01-live-planners.md#commitment-planner) — `CommitmentPlanner`
-- [Stores](../03-appkit/05-stores.md) — `CommitmentStore`
+- [Decision contract](../01-contract/01-decision-contract.md)
+- [Policies](03-policies.md) — `PlanningPolicy`
+- [Live planners](../03-planning/02-live-planners.md#commitment-planner) — `CommitmentPlanner`
+- [Stores](../../03-appkit/05-stores.md) — `CommitmentStore`

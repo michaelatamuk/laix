@@ -34,7 +34,7 @@ class Detector(Protocol):
 `deepCalls` and `cost`. It is the frame a detector loop returns after admission.
 
 The app-kit runtime that drives detectors is `LiveContext` with `CallableDetector`. It lives in
-`appkit/live_context/`. See [Live Context](../03-appkit/03-live-context.md).
+`appkit/live_context/`. See [Live Context](../../03-appkit/03-live-context.md).
 
 ## Support
 
@@ -94,7 +94,7 @@ wait, observe, guide, ask, act, verify, escalate
 `SCHEMA_VERSION = "0.8.0"` is the record-shape version. It is separate from the package version
 (`0.10.0`) and the rule-set and attention-vector versions (`0.8.0`).
 
-See [Records and schema](02-records-and-schema.md) for the version axes.
+See [Records and schema](../01-contract/02-records-and-schema.md) for the version axes.
 
 ## Where the helpers are used
 
@@ -112,8 +112,8 @@ See [Records and schema](02-records-and-schema.md) for the version axes.
 
 ## Related
 
-- [Decision contract](01-decision-contract.md)
-- [Records and schema](02-records-and-schema.md)
-- [Signal attention](04-signal-attention.md)
-- [Live Context](../03-appkit/03-live-context.md)
-- [Versioning](../05-project/versioning.md)
+- [Decision contract](../01-contract/01-decision-contract.md)
+- [Records and schema](../01-contract/02-records-and-schema.md)
+- [Signal attention](../02-decide/01-signal-attention.md)
+- [Live Context](../../03-appkit/03-live-context.md)
+- [Versioning](../../05-project/versioning.md)

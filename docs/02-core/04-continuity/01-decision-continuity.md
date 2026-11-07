@@ -18,6 +18,8 @@ host passes the current state into the next request.
 | Receipts and recovery | `ExecutionBridge`, `Saga` | app-kit runtime |
 | Outcomes and calibration | `Outcome`, `OutcomeStore`, `CalibrationReport` | core learning and host stores |
 
+Outcomes and calibration are described in [Learning](../05-learning/01-outcome-learning.md).
+
 ## How state reaches the next decision
 
 ```mermaid
@@ -66,29 +68,10 @@ LAIX evaluates the state and returns the decision. The host and the app kit own 
 - `DecisionTimeline` defines revision and event-time semantics;
 - `DecisionRecord` defines the audit lifecycle.
 
-## Continuity benchmark
-
-The continuity benchmark isolates the mechanism. Each episode is five decisions. A stateless
-`UtilityPlanner` sees a static option set and no episode state. A stateful `LiveDecisionEngine` sees
-the open commitment, attention budget, approval state and execution receipt.
-
-| Policy | Episode success | Promise kept | Budget adhered | Approval correct | Continuity errors |
-|---|---:|---:|---:|---:|---:|
-| Reference | 100% | 100% | 100% | 100% | 0 |
-| Stateless `UtilityPlanner` | 0% | 100% | 0% | 100% | 36 |
-| Stateful `LiveDecisionEngine` | 100% | 100% | 100% | 100% | 0 |
-
-The corpus has 12 episodes and 60 decisions. The stateful policy completes every episode. The
-stateless policy repeats actions because it cannot see that the commitment was fulfilled, the
-attention budget was spent and the receipt was pending.
-
-The benchmark is a synthetic mechanism test with a designed action space. It shows that the runtime
-uses the supplied state. The corpus and result are in
-[`benchmarks/continuity/v1/`](../../benchmarks/continuity/v1/README.md) and
-[`results/continuity-benchmark/`](../../results/continuity-benchmark/README.md). The design note is
-[the continuity benchmark page](../06-research/02-evaluation/continuity-benchmark.md).
-
 ## Why it matters
+
+The [continuity benchmark](02-continuity-benchmark.md) measures the mechanism: 12 episodes, 60
+decisions, a stateless planner and a stateful engine.
 
 - A one-shot classifier answers one question. LAIX carries the consequences into the next decision.
 - An orchestration framework carries state. LAIX adds decision semantics to that state.
@@ -96,9 +79,11 @@ uses the supplied state. The corpus and result are in
 
 ## Related
 
-- [Commitments](05-commitments.md)
-- [Human-attention planning](07-planning/01-live-planners.md#human-attention-planner)
-- [Outcome learning](08-outcome-learning.md)
-- [Streaming decisions](../03-appkit/02-streaming.md)
-- [Stores](../03-appkit/05-stores.md)
-- [Execution and recovery](../03-appkit/04-execution.md)
+- [Continuity benchmark](02-continuity-benchmark.md)
+- [Commitments](../02-decide/02-commitments.md)
+- [Human-attention planning](../03-planning/02-live-planners.md#human-attention-planner)
+- [Outcome learning](../05-learning/01-outcome-learning.md)
+- [Evaluation](../06-reference/01-evaluation.md)
+- [Streaming decisions](../../03-appkit/02-streaming.md)
+- [Stores](../../03-appkit/05-stores.md)
+- [Execution and recovery](../../03-appkit/04-execution.md)

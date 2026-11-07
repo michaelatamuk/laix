@@ -1,7 +1,7 @@
 # Repository structure
 
 This page maps files. Concepts are defined in [architecture](../04-concepts/system-architecture.md),
-[the Decision response](../02-core/01-decision-contract.md) and [records](../02-core/02-records-and-schema.md).
+[the Decision response](../02-core/01-contract/01-decision-contract.md) and [records](../02-core/01-contract/02-records-and-schema.md).
 
 ```text
 laix/
@@ -17,6 +17,8 @@ laix/
 │   ├── README.md          data vs harness index
 │   ├── live/
 │   │   └── v1/            schema, dev/test/adversarial corpus (frozen)
+│   ├── continuity/
+│   │   └── v1/            12-episode/60-decision continuity corpus
 │   └── compare/           external adapters, capability matrix, requirements
 ├── data/
 │   ├── README.md          validation methods index
@@ -24,12 +26,15 @@ laix/
 │   └── vignette-study/
 │       └── v1/            20-vignette instrument and app
 ├── results/
-│   └── live-decision-benchmark/
-│       ├── raw/             per-case planner output
-│       ├── metrics/         baseline, summary and significance
-│       ├── ablations/       ablation study
-│       ├── parity/          TypeScript parity
-│       └── comparison/      external systems
+│   ├── live-decision-benchmark/
+│   │   ├── raw/             per-case planner output
+│   │   ├── metrics/         baseline, summary and significance
+│   │   ├── ablations/       ablation study
+│   │   ├── parity/          TypeScript parity
+│   │   └── comparison/      external systems
+│   ├── continuity-benchmark/
+│   │   └── README.md        stateless vs stateful result
+│   └── external/            external comparison output
 ├── packages/
 │   ├── contracts/         JSON Schema and shared test vectors
 │   ├── python/laix/       Python package and tests
@@ -37,7 +42,7 @@ laix/
 ├── docs/
 │   ├── README.md          audience-first index
 │   ├── 01-start/          numbered start path
-│   ├── 02-core/           overview, contract, records, dispatch, commitments, resources, attention, policies, planning/, learning, continuity, evaluation, foundation
+│   ├── 02-core/           overview; contract/, decide/, planning/, continuity/, learning/, reference/
 │   ├── 03-appkit/         architecture, integration, streaming, execution, stores, LAIX-Bench, deployment
 │   ├── 04-concepts/       system architecture, scope and boundaries, PPMA integration, decision models, privacy, security, FAQ, glossary
 │   ├── 05-project/        repository structure, testing, troubleshooting, migration, API map, versioning, roadmap

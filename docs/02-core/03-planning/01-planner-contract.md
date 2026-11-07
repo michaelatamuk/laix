@@ -204,7 +204,7 @@ It is reported only when the scenario declares an optimum. Without an optimum, `
 
 ## Related
 
-- [Policies](../06-policies.md) — `EnginePolicy` as a policy.
-- [Live planners](01-live-planners.md) — the four live planners.
-- [Live decision engine](02-live-decision-engine.md) — composition.
-- [Model-based planners](03-model-based-planners.md) — MDP and POMDP.
+- [Policies](../02-decide/03-policies.md) — `EnginePolicy` as a policy.
+- [Live planners](02-live-planners.md) — the four live planners.
+- [Live decision engine](03-live-decision-engine.md) — composition.
+- [Model-based planners](04-model-based-planners.md) — MDP and POMDP.
