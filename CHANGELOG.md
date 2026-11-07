@@ -80,6 +80,8 @@
   policy adapter is not implemented; τ-bench scores full-agent tool use, not the runtime lifecycle.
 - Added a τ-bench LAIX guardrail adapter and documented that task 0 failed on user-instruction
   drift, not a policy violation.
+- Ran the τ-bench retail slice with the LAIX guardrail: **10/10** vs 9/10 baseline. Single trial,
+  10 tasks; a positive signal, not a significance claim.
 - Documented the power needed for the glue comparison: about 90-120 new held-out cases at the
   current effect size, run once on a pre-registered set.
 - Added a secondary adversarial-split check: 18/18 vs 16/18, combined exact McNemar p = 0.125.

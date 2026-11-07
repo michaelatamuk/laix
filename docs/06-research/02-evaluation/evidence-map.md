@@ -19,6 +19,7 @@ Every measured number is reproducible from the linked result directory; the inte
 | External SRE benchmark (Sev1-Bench) | baseline **0.800**; guardrail **0.800**; chooser 0.745 (1 forbidden) | measured, negative |
 | Decision continuity (episode v0) | stateful **100%** vs stateless **0%** success; 36 continuity errors | measured, synthetic mechanism |
 | τ-bench retail baseline (DeepSeek) | **9/10** passed, `pass^1 = 0.90` | measured, baseline only |
+| τ-bench retail guardrail | LAIX **10/10** vs baseline 9/10, single trial | measured, positive signal |
 
 The glue comparison is the honest caveat: the gain is real on this corpus, but the 95% confidence
 interval includes zero and p = 0.48 on 30 cases. The advantage over every single-concern planner is
@@ -37,6 +38,10 @@ supplied state and the stateless planner does not. It is not external validation
 The τ-bench result is a baseline of the host agent, not a LAIX result. τ-bench scores full-agent
 tool use and policy adherence; a LAIX policy adapter is required before the runtime can be compared.
 See [τ-bench](tau-bench.md).
+
+The τ-bench guardrail result is a positive signal on a 10-task slice: 10/10 vs 9/10 baseline. It is
+one trial and a generic approval gate, not a full policy adapter, so it does not settle the runtime
+claim.
 
 ## Safety and promise keeping
 

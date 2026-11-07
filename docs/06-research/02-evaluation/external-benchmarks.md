@@ -10,7 +10,7 @@ inside a host agent, not as an end-to-end agent.
 
 | Benchmark | What it measures | Fit | Status |
 |---|---|---|---|
-| [τ-bench](https://github.com/sierra-research/tau-bench) | Multi-turn tool-agent-user tasks, policy adherence and pass^k reliability in retail and airline | **best fit for policy adherence and consistency** | baseline 9/10 retail tasks; LAIX policy adapter pending |
+| [τ-bench](https://github.com/sierra-research/tau-bench) | Multi-turn tool-agent-user tasks, policy adherence and pass^k reliability in retail and airline | **best fit for policy adherence and consistency** | baseline 9/10; LAIX guardrail 10/10 on 10 tasks; full policy adapter pending |
 | [ITBench](https://github.com/itbench-hub/ITBench) / [ITBench-AA](https://artificialanalysis.ai/evaluations/itbench-aa) | SRE incident diagnosis and remediation; ITBench-AA scores root-cause analysis | **best fit for incident response** | not run; public data and harness, heavy snapshots |
 | [Sev1-Bench](https://github.com/edgedelta/sev1-bench) | 20 deterministic SRE incidents from public postmortems; diagnosis, remediation and forbidden actions | **best fit for a runnable incident replay** | [first component run](sev1-bench.md) |
 | [JourneyBench](https://aclanthology.org/2026.eacl-industry.15.pdf) | Customer-support policy adherence and user-journey coverage | good fit for policy-driven support | not run; emerging |

@@ -262,6 +262,9 @@ Python/TypeScript action parity and 17/17 invariants. The full check matrix is i
 `bash scripts/novelty/reproduce.sh`; raw data is in
 [results/live-decision-benchmark/](results/live-decision-benchmark/README.md).
 
+On a 10-task τ-bench retail slice, the LAIX guardrail passed **10/10** vs **9/10** for the baseline
+(single trial). See [τ-bench](docs/06-research/02-evaluation/tau-bench.md).
+
 External validation — real incident replay or a participant study — is still pending.
 
 ## Documentation
