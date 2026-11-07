@@ -191,6 +191,7 @@ A policy decides which verbs it can return:
 | Verification | `verify`, `wait`, `escalate` |
 | Escalation | `escalate`, `ask`, `wait` |
 | Live planners | the chosen option's verb |
+| `CAVODPlanner` | the chosen option's verb |
 | `MDPPlanner`, `POMDPPlanner` | `act`, `wait` |
 | `RulePolicy` | any verb set by the matching rule |
 | `BanditPolicy` | `act`, `wait` |
@@ -212,6 +213,7 @@ Reason codes are grouped by producer:
 | Execution-risk planner | `execution_aware` |
 | Human-attention planner | `human_attention_aware`, `human_attention_budget_exhausted`, `approval_rejected` |
 | Live composite planner | `live_decision` |
+| CA-VOD planner | `value_of_decision` |
 | Model-based planners | `mdp_plan`, `pomdp_plan`, `terminal_state`, `no_action` |
 | Authored rules | `policy_rule`, `no_rule` |
 | Packaged policies | `safe_action`, `safety_blocked`, `no_safe_option`, `ask_preference`, `verify_outcome`, `escalate_to_target`, `replan`, and the codes listed on the [policies page](../02-decide/03-policies.md) |

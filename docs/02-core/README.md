@@ -171,6 +171,10 @@ the selection rule and the identity fields.
 | Options and explicit decision rules | `RulePolicy` |
 | Options and one concern: utility, promises, execution risk or human attention | The matching planner through `PlannerPolicy` |
 | Options and several live concerns | `LiveCompositePlanner` through `PlannerPolicy` |
+| Options, uncertainty, information value or a wait option | `CAVODPlanner` through `PlannerPolicy` |
+| Several pending decisions competing for human attention | `AttentionScheduler` |
+| A decision history that may conflict | `repair_continuity` |
+| A decision that needs a counterfactual explanation | `counterfactual_attribution` |
 | A world model with states and transitions | `MDPPlanner` through `PlannerPolicy` |
 | A hidden state and observations | `POMDPPlanner` through `PlannerPolicy` |
 | A learned choice among arms | `BanditPolicy` |
@@ -185,7 +189,7 @@ The words are not interchangeable.
 
 | Term | Meaning |
 |---|---|
-| **Planner** | A strategy that scores the options and chooses one. Built-ins: `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner`, `POMDPPlanner`. |
+| **Planner** | A strategy that scores the options and chooses one. Built-ins: `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `CAVODPlanner`, `MDPPlanner`, `POMDPPlanner`. |
 | **CompositePlanner** | A composition of planners that returns one `PlannerResult`. The built-in composite planner is `LiveCompositePlanner`. |
 | **DecisionPolicy** | An integration layer with `decide(request)`. `PlannerPolicy` adapts a planner or composite planner to that interface. |
 | **Learner** | Code that updates a choice from measured outcomes: `UCBBandit`, `ModelLearner`. |
