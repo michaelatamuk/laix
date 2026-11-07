@@ -28,8 +28,11 @@ from the repository root works.
 | Failed task | `0` |
 
 Task 0 failed on product/item exchange reasoning. Task 0 also passed in a separate single run, so the
-simulated-user path is not deterministic across runs. The full trajectories are in
-`retail-deepseek-v4-flash.json`; the compact rows are in `summary.json`.
+simulated-user path is not deterministic across runs. The failure was user-instruction drift: the
+user changed the request to "only the keyboard" while the benchmark expected the original two-item
+exchange. The upstream τ-bench repository warns that these tasks are outdated; τ²-bench has fixed
+tasks. The full trajectories are in `retail-deepseek-v4-flash.json`; the compact rows are in
+`summary.json`.
 
 ## Why there is no LAIX variant yet
 

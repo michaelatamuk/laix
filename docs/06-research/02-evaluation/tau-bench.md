@@ -12,7 +12,10 @@ multi-turn reliability, but it scores the whole agent, not a decision runtime.
 - Domain: retail.
 - Tasks: 0–9, one trial.
 - Result: **9/10 passed**, `pass^1 = 0.90`.
-- Failed task: 0, on product/item exchange reasoning.
+- Failed task: 0. The model followed the user's latest instruction ("exchange only the
+  keyboard") after the user changed their mind mid-conversation; the benchmark's expected action
+  still assumed the original two-item exchange. This is a task-validity/user-drift issue, not an
+  approval or policy violation.
 
 The full trajectories are in
 [`results/external/tau-bench/`](../../../results/external/tau-bench/README.md).
@@ -48,7 +51,10 @@ contract and guardrail; the model would still do the product and conversation re
 
 - 10 retail tasks, one trial; not the full suite.
 - No airline domain.
-- User-simulator nondeterminism: task 0 passed in a separate run.
+- User-simulator nondeterminism: task 0 passed in a separate run and failed here. The failure was
+  user-instruction drift, not a policy violation: the user changed the request to "only the
+  keyboard" while the benchmark expected the original two-item exchange. The upstream τ-bench
+  repository warns that these tasks are outdated; τ²-bench has fixed tasks.
 - Baseline only; the policy adapter is not implemented.
 - `deepseek-v4-flash` is served through the OpenAI-compatible endpoint, not a native τ-bench
   provider.
