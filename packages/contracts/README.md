@@ -13,7 +13,7 @@ as `packages/python/laix/src/laix/core/schema/laix-v1.schema.json`. It ships ins
 package as the single decision schema.
 
 A runtime is valid when it passes the cases for the policy it implements. Scores are part of the
-attention cases; a weight change creates a new major version.
+signal-attention cases; a weight change creates a new major version.
 
 The Python and TypeScript packages both read `signal-attention.v1.json`. The Python package keeps a copy
 inside the package for installation; this folder is the canonical copy.

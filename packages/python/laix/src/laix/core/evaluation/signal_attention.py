@@ -43,7 +43,7 @@ def context_from(payload: Mapping[str, Any]) -> SignalContext:
         min_severity=str(payload.get("minSeverity", "high")),
         min_confidence=float(payload.get("minConfidence", 0.0)),
         muted_kinds=tuple(payload.get("mutedKinds", ())),
-        signal_interruption_budget=payload.get("interruptionBudget"),
+        signal_interruption_budget=payload.get("signalInterruptionBudget"),
         sent=frozenset(str(item) for item in sent),
         feedback=feedback,
         escalate_after_hours=payload.get("escalateAfterHours"),

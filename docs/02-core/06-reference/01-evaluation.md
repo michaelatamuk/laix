@@ -209,7 +209,7 @@ The CLI, the case format and the stream bench are documented in
 | `pytest` | Python contracts, policies, planners and app-kit behaviour |
 | `npm test` | the same surface in TypeScript |
 
-The conformance run agrees on 24/24 attention decisions. The live-bench parity check agrees on
+The conformance run agrees on 24/24 signal-attention decisions. The live-bench parity check agrees on
 210/210 action ids.
 
 ## What each check proves

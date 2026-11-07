@@ -105,7 +105,6 @@ __all__ = [
     "PerceptionFrame",
     "Platform",
     "Proposal",
-    "EvidenceRef",
     "ResourcePlan",
     "ResourceScheduler",
     "SensingOption",

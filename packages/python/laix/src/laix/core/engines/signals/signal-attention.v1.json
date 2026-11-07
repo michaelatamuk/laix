@@ -203,7 +203,7 @@
       "context": {
         "now": "2026-11-01T10:00:00+02:00",
         "quietHours": null,
-        "interruptionBudget": 1
+        "signalInterruptionBudget": 1
       },
       "signals": [
         {

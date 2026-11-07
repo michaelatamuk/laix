@@ -94,7 +94,7 @@ def _attention_suite() -> Suite:
         policy=DecisionClient,
         cases=(
             BenchCase("attention_bill_day", _attention(signal, morning, quiet_hours=("22:00", "06:00")), {"verb": "guide", "reason_code": "worth_surfacing"}),
-            BenchCase("attention_quiet_hours", _attention(signal, night, quiet_hours=("22:00", "06:00")), {"verb": "wait", "reason_code": "quiet_hours"}),
+            BenchCase("signal_attention_quiet_hours", _attention(signal, night, quiet_hours=("22:00", "06:00")), {"verb": "wait", "reason_code": "quiet_hours"}),
             BenchCase(
                 "attention_dismissed",
                 _attention(signal, morning, quiet_hours=None, feedback={"bill-1": SignalFeedback(state="dismissed")}),

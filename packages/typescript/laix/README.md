@@ -28,7 +28,7 @@ registered with `registerPolicy` and selected with `usePolicy`.
 
 | Area | Exports |
 |---|---|
-| Signal attention | `decide`, `score`, `costOfWaiting`, `SignalAttentionLog` |
+| Signal attention | `decideSignalAttention`, `score`, `costOfWaiting`, `SignalAttentionLog` |
 | Action | `DecisionClient`, `decideAction` |
 | Planners | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner`, `POMDPPlanner`, `MdpModel`, `PomdpModel` |
 | Composite planner and protocol | `LiveCompositePlanner`, `PlannerPolicy`, `Planner`, `PlannerInput`, `PlannerResult`, `toDecision` |

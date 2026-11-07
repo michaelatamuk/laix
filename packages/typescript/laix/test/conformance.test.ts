@@ -7,7 +7,7 @@ const fixture = JSON.parse(
   readFileSync(new URL("../../../contracts/signal-attention.v1.json", import.meta.url), "utf8"),
 );
 
-describe("canonical attention contract", () => {
+describe("canonical signal-attention contract", () => {
   for (const testCase of fixture.cases) {
     it(testCase.id, () => {
       const decisions = decideSignalAttention(testCase.context, testCase.signals);

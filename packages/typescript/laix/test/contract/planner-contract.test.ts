@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 import { PlannerPolicy } from "../../src/index.ts";
 import type { PlannerInput, PlannerResult } from "../../src/index.ts";
 
-class FakeEngine {
+class FakePlanner {
   solve(problem: PlannerInput): PlannerResult {
     assert.equal(problem.subject, "a task");
     assert.equal(problem.options[0]!.id, "a1");
@@ -11,7 +11,7 @@ class FakeEngine {
       verb: "act",
       confidence: 0.91,
       reasonCode: "best_plan",
-      rationale: "the engine selected the best option",
+      rationale: "the planner selected the best option",
       actionId: "a1",
       intent: { capability: "apply", args: { id: "a1" } },
       requiresApproval: true,
@@ -22,9 +22,9 @@ class FakeEngine {
   }
 }
 
-describe("engine policy", () => {
+describe("planner policy", () => {
   it("returns the one decision shape", () => {
-    const policy = new PlannerPolicy(new FakeEngine(), "fake-engine.v1");
+    const policy = new PlannerPolicy(new FakePlanner(), "fake-planner.v1");
     const decision = policy.decide({
       subject: "a task",
       at: "2026-11-01T10:00:00Z",
@@ -35,7 +35,7 @@ describe("engine policy", () => {
     assert.equal(decision.actionId, "a1");
     assert.equal(decision.requiresApproval, true);
     assert.equal(decision.reversible, true);
-    assert.equal(decision.policyVersion, "fake-engine.v1");
+    assert.equal(decision.policyVersion, "fake-planner.v1");
     assert.deepEqual(decision.intent, { capability: "apply", args: { id: "a1" } });
   });
 });

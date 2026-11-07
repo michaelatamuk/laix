@@ -51,7 +51,7 @@ def _breakdown(value: Any) -> ScoreBreakdown | None:
 
 
 def from_signal_attention(decision: Any) -> Decision:
-    """Convert an ``SignalAttentionDecision`` without importing the attention package."""
+    """Convert an ``SignalAttentionDecision`` without importing the signal-attention package."""
     return Decision(
         verb=decision.verb,
         confidence=decision.confidence,

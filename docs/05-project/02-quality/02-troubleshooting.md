@@ -33,9 +33,9 @@ policy or code.
 | Docs link fails | moved page or renamed file | `python scripts/ci/check_docs_links.py` |
 | High latency | model or planner in the hot path | p95/p99, model calls, planner depth |
 
-## Attention reason codes
+## Signal-attention reason codes
 
-These are the codes an attention decision can carry.
+These are the codes a signal-attention decision can carry.
 
 | Code | Meaning |
 |---|---|
@@ -62,7 +62,7 @@ These are the codes an attention decision can carry.
 | `expected_utility` | utility chose the best expected value |
 | `commitment_aware` | the commitment planner adjusted the choice |
 | `execution_aware` | the execution planner adjusted the choice |
-| `human_attention_aware` | the attention planner adjusted the choice |
+| `human_attention_aware` | the human-attention planner adjusted the choice |
 | `live_decision` | `LiveCompositePlanner` chose the action |
 | `mdp_plan` / `pomdp_plan` | a model-based planner returned a planner result |
 | `policy_rule` | an authored rule fired |

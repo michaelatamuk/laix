@@ -24,7 +24,7 @@ from ..planners.commitment.commitment_planner import (
     _commitments,
     _score_option as commitment_score,
 )
-from ._engine_row import _Row
+from ._live_row import _Row
 from ..contract.planner_policy import PlannerInput, PlannerResult
 from .composite_score import CompositeScore
 from ..planners.execution.execution_planner import (

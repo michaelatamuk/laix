@@ -48,7 +48,7 @@ export interface SignalContext {
   minSeverity?: Severity;
   minConfidence?: number;
   mutedKinds?: string[];
-  interruptionBudget?: number | null;
+  signalInterruptionBudget?: number | null;
   sent?: string[];
   feedback?: Record<string, SignalFeedback>;
   escalateAfterHours?: number | null;
@@ -297,7 +297,7 @@ function decideOne(signal: Signal, context: SignalContext, delivered: number): S
     reasonCode = "quiet_hours";
     record = true;
     deliver = false;
-  } else if (context.interruptionBudget !== null && context.interruptionBudget !== undefined && deliveredNow >= context.interruptionBudget) {
+  } else if (context.signalInterruptionBudget !== null && context.signalInterruptionBudget !== undefined && deliveredNow >= context.signalInterruptionBudget) {
     verb = "wait";
     reasonCode = "budget";
     record = false;

@@ -41,7 +41,7 @@ def request() -> DecisionRequest:
     return DecisionRequest(subject="one decision", at="2026-11-01T10:00:00+00:00")
 
 
-def test_a_policy_plugin_drives_the_layer() -> None:
+def test_a_policy_plugin_drives_the_decision_client() -> None:
     layer = DecisionClient(policy=FixedPolicy())
     decisions = layer.decide(request())
     assert decisions[0].verb == "guide"

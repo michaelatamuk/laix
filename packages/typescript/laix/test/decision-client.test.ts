@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { DecisionClient } from "../src/index.ts";
 
-describe("one layer entry point", () => {
+describe("one decision client entry point", () => {
   it("returns the same decision shape for an action request", () => {
     const layer = new DecisionClient();
     const [decision] = layer.decide({

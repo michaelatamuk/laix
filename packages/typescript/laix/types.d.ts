@@ -55,7 +55,7 @@
     minSeverity?: Severity;
     minConfidence?: number;
     mutedKinds?: string[];
-    interruptionBudget?: number | null;
+    signalInterruptionBudget?: number | null;
     sent?: string[];
     feedback?: Record<string, SignalFeedback>;
     escalateAfterHours?: number | null;
@@ -100,14 +100,14 @@
   }
 
   export class SignalAttentionLog {
-    constructor(initial?: Outcome[]);
-    record(outcome: Outcome): void;
-    all(): Outcome[];
+    constructor(initial?: SignalAttentionOutcome[]);
+    record(outcome: SignalAttentionOutcome): void;
+    all(): SignalAttentionOutcome[];
     adjustment(kind: string): number;
     acceptanceRate(): number;
   }
 
-  export function decide(context: SignalContext, signals: Signal[]): Decision[];
+  export function decideSignalAttention(context: SignalContext, signals: Signal[]): SignalAttentionDecision[];
   export function isQuietHours(now: string | Date, quiet?: QuietHours): boolean;
   export function score(signal: Signal, context: SignalContext): ScoreBreakdown;
   export function costOfWaiting(signal: Signal, context: SignalContext): number;
