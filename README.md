@@ -1,4 +1,4 @@
-![LAIX — the live decision runtime with decision continuity for AI agents and automations](docs/assets/banner.png)
+![LAIX — Live Decision for AI agents, between plan and execution](docs/assets/banner.png)
 
 [![CI](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
@@ -7,10 +7,11 @@
 
 # LAIX — Live AI Experience
 
-**LAIX is the live decision runtime for AI agents and automations that act in the real world.**
+**LAIX makes the live decision for AI agents and automations that act in the real world.**
 
-Agent frameworks plan. Workflow engines orchestrate. LAIX decides whether to act, ask, wait, verify
-or escalate — and makes the choice explicit, scored and auditable.
+Agent frameworks plan. Workflow engines orchestrate. LAIX sits between the plan and its execution:
+it decides whether to act, ask, wait, verify or escalate — and makes the choice explicit, scored and
+auditable.
 
 One contract for utility, commitments, execution risk and human attention — with **decision
 continuity**: every decision carries its commitments, human-attention budget, approvals and

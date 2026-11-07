@@ -181,25 +181,22 @@ def render_banner() -> None:
     spaced_text(
         draw,
         (left, 118 * SCALE),
-        "LIVE DECISION RUNTIME",
+        "BETWEEN PLAN AND EXECUTION",
         font("seguisb.ttf", 22 * SCALE),
         TEAL,
         6 * SCALE,
     )
 
-    headline_font = font("segoeuib.ttf", 52 * SCALE)
-    headline_lines = ["The live decision runtime", "for AI agents and", "automations"]
-    y = 190 * SCALE
-    for line in headline_lines:
-        draw.text((left, y), line, font=headline_font, fill=TEXT)
-        y += 72 * SCALE
+    headline_font = font("segoeuib.ttf", 76 * SCALE)
+    draw.text((left, 180 * SCALE), "Live Decision", font=headline_font, fill=TEXT)
+    draw.text((left, 270 * SCALE), "for AI agents", font=headline_font, fill=TEXT)
 
-    body_font = font("segoeui.ttf", 26 * SCALE)
+    body_font = font("segoeui.ttf", 28 * SCALE)
     body = (
-        "Act, ask, wait, verify or escalate - with one contract "
-        "and a reason for every move."
+        "Act, ask, wait, verify or escalate — one decision for every move, "
+        "at the moment it matters."
     )
-    body_y = 450 * SCALE
+    body_y = 420 * SCALE
     for line in wrap(draw, body, body_font, 600 * SCALE):
         draw.text((left, body_y), line, font=body_font, fill=MUTED)
         body_y += 36 * SCALE
