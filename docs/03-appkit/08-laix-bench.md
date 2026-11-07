@@ -103,13 +103,13 @@ decisions, elapsed time, throughput and stream counters. See [streaming](02-stre
 `python -m laix.appkit.bench --planners` compares `MDPPlanner` with a do-nothing baseline on a chain
 and prints reward, steps and optimality gap. `--json` returns the same rows as JSON. The
 `Simulator`, `Scenario`, `SimulationReport` and `compare_planners` mechanisms are on the
-[planner contract](../02-core/07-planning/00-planner-contract.md#simulator).
+[planner contract](../02-core/03-planning/01-planner-contract.md#simulator).
 
 ## Live decision benchmark
 
 `python -m laix.appkit.bench --live` runs the seven-case live decision benchmark. The cases, planner
 keys, corpus and measured results are on the
-[evaluation page](../02-core/12-evaluation.md#live-decision-benchmark).
+[evaluation page](../02-core/06-reference/01-evaluation.md#live-decision-benchmark).
 
 ```powershell
 python -m laix.appkit.bench --live

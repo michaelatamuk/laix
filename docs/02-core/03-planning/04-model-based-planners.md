@@ -198,7 +198,7 @@ the MDP value of the most likely state; a POMDP can be worth less because uncert
 ## Simulator
 
 `Simulator` and `compare_planners` run planners over a model and report reward and optimality gap.
-See the [planner contract](00-planner-contract.md#simulator).
+See the [planner contract](01-planner-contract.md#simulator).
 
 ## Limits
 
@@ -218,8 +218,8 @@ interface.
 
 ## Related
 
-- [Planner contract](00-planner-contract.md)
-- [Live planners](01-live-planners.md)
-- [Calibration and model learning](../09-calibration-and-model-learning.md) — `ModelLearner` builds an
+- [Planner contract](01-planner-contract.md)
+- [Live planners](02-live-planners.md)
+- [Calibration and model learning](../05-learning/02-calibration-and-model-learning.md) — `ModelLearner` builds an
   `MdpModel` from observed transitions.
-- [Simulation and evaluation](../12-evaluation.md)
+- [Simulation and evaluation](../06-reference/01-evaluation.md)

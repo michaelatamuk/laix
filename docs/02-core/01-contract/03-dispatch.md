@@ -130,7 +130,7 @@ policies use different internal result types.
 | `Layer` | The same core selection plus the runtime, streaming, execution, records, stores and platform. |
 
 `Layer` is optional. The core `decide` never imports it. See
-[App-kit overview](../03-appkit/00-architecture.md).
+[App-kit overview](../../03-appkit/00-architecture.md).
 
 ## Errors
 
@@ -145,6 +145,6 @@ policies use different internal result types.
 ## Related
 
 - [Decision contract](01-decision-contract.md) — the request and response shapes.
-- [Signal attention](04-signal-attention.md) — the attention path.
-- [Policies](06-policies.md) — the explicit policy path.
-- [Planner contract](07-planning/00-planner-contract.md) — the `EnginePolicy` path.
+- [Signal attention](../02-decide/01-signal-attention.md) — the attention path.
+- [Policies](../02-decide/03-policies.md) — the explicit policy path.
+- [Planner contract](../03-planning/01-planner-contract.md) — the `EnginePolicy` path.

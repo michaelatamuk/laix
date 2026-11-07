@@ -140,8 +140,8 @@ that the host stores.
 
 ## Related
 
-- [Outcome learning](08-outcome-learning.md)
-- [Model-based planners](07-planning/03-model-based-planners.md)
-- [Policies](06-policies.md)
-- [Records and schema](02-records-and-schema.md)
-- [Versioning](../05-project/versioning.md)
+- [Outcome learning](01-outcome-learning.md)
+- [Model-based planners](../03-planning/04-model-based-planners.md)
+- [Policies](../02-decide/03-policies.md)
+- [Records and schema](../01-contract/02-records-and-schema.md)
+- [Versioning](../../05-project/versioning.md)

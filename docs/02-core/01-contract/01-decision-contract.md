@@ -214,13 +214,13 @@ Reason codes are grouped by producer:
 | Live decision engine | `live_decision` |
 | Model-based planners | `mdp_plan`, `pomdp_plan`, `terminal_state`, `no_action` |
 | Authored rules | `policy_rule`, `no_rule` |
-| Packaged policies | `safe_action`, `safety_blocked`, `no_safe_option`, `ask_preference`, `verify_outcome`, `escalate_to_target`, `replan`, and the codes listed on the [policies page](06-policies.md) |
+| Packaged policies | `safe_action`, `safety_blocked`, `no_safe_option`, `ask_preference`, `verify_outcome`, `escalate_to_target`, `replan`, and the codes listed on the [policies page](../02-decide/03-policies.md) |
 
 The gate set emits the codes in the table above. `ask_approval` is a reserved enum value; approval is
 carried by `requires_approval` on the decision.
 
 The pages that define each mechanism list its full set of codes. The
-[troubleshooting guide](../05-project/troubleshooting.md) maps the common codes to symptoms.
+[troubleshooting guide](../../05-project/troubleshooting.md) maps the common codes to symptoms.
 
 ## Evidence basis
 
@@ -253,5 +253,5 @@ field is a schema change. [Records and schema](02-records-and-schema.md) describ
 
 - [Records and schema](02-records-and-schema.md) — every record shape and the schema workflow.
 - [Dispatch](03-dispatch.md) — how the request selects a mechanism.
-- [Policies](06-policies.md) — the policy contract.
-- [Planner contract](07-planning/00-planner-contract.md) — the `Plan` shape and its conversion.
+- [Policies](../02-decide/03-policies.md) — the policy contract.
+- [Planner contract](../03-planning/01-planner-contract.md) — the `Plan` shape and its conversion.

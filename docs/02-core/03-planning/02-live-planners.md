@@ -111,7 +111,7 @@ expected_benefit - 0.25 × risk - 0.15 × interrupt_cost
 `CommitmentPlanner` keeps the utility score and adds the effect of an option on open commitments.
 
 An option declares its effect in `params`. The shape and the accepted aliases are on the
-[commitments page](../05-commitments.md#how-commitments-enter-a-decision). `creates` accepts strings
+[commitments page](../02-decide/02-commitments.md#how-commitments-enter-a-decision). `creates` accepts strings
 or mappings with an `id`.
 
 | Field | Meaning |
@@ -174,7 +174,7 @@ Commitments enter the problem through `DecisionProblem.attributes["commitments"]
 | No feasible option | `wait` with `no_feasible_option` |
 | Plan attributes | `utility`, `commitment_score`, `commitments_fulfilled`, `commitments_violated`, `commitments_created`, `commitments_due_fulfilled`, `commitments_blocked_fulfilled` |
 
-See [Commitments](../05-commitments.md) for the ledger and store.
+See [Commitments](../02-decide/02-commitments.md) for the ledger and store.
 
 ## Execution-risk planner
 
@@ -255,7 +255,7 @@ for interruption, approval and escalation.
 
 Signal attention and this planner work at different levels: signal attention ranks the signals the
 host sends; this planner prices human involvement when it chooses an action option. See
-[Signal attention](../04-signal-attention.md).
+[Signal attention](../02-decide/01-signal-attention.md).
 
 An option can declare its attention facts:
 
@@ -353,13 +353,13 @@ and `status`. An approved option does not pay the approval cost.
 | `HumanAttentionPlanner` | attention | `AttentionBudget`, approvals, option attention facts | `attention_aware` | approval rejected, budget exhausted, infeasible |
 
 All four share the same `Plan` shape, the same utility model and the same confidence formula. The
-[live decision engine](02-live-decision-engine.md) runs their scoring functions together and returns
+[live decision engine](03-live-decision-engine.md) runs their scoring functions together and returns
 one composite plan.
 
 ## Related
 
-- [Commitments](../05-commitments.md)
-- [Planner contract](00-planner-contract.md)
-- [Live decision engine](02-live-decision-engine.md)
-- [Signal attention](../04-signal-attention.md)
-- [Evaluation](../12-evaluation.md)
+- [Commitments](../02-decide/02-commitments.md)
+- [Planner contract](01-planner-contract.md)
+- [Live decision engine](03-live-decision-engine.md)
+- [Signal attention](../02-decide/01-signal-attention.md)
+- [Evaluation](../06-reference/01-evaluation.md)

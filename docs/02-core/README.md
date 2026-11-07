@@ -1,8 +1,92 @@
 # Core overview
 
-The LAIX core turns one request into one decision or several decisions. It has no UI, no storage, no
-execution and no app kit. It provides the decision contract, the decision mechanisms, the decision
-state, and the learning and evaluation primitives that close the loop.
+LAIX turns one request into one decision or several decisions. It is a decision runtime, not a
+classifier: the core has no UI, no storage and no execution, and the host supplies the state that the
+next decision starts from. Every mechanism returns the same `Decision` shape.
+
+## One decision
+
+A `DecisionRequest` carries a subject, a time and either signals with context or a situation with
+options. `decide` selects the mechanism from the request shape and returns a `Decision`: a verb, a
+reason code, confidence and the chosen action.
+
+```python
+from laix import ActionOption, Constraint, DecisionRequest, Situation, decide
+
+request = DecisionRequest(
+    subject="leaking sink",
+    at="2026-11-01T10:00:00+00:00",
+    situation=Situation(
+        id="situation-1",
+        at="2026-11-01T10:00:00+00:00",
+        subject="leaking sink",
+        constraints=(Constraint(id="risk", kind="risk", value=0.3, hard=True),),
+    ),
+    options=(
+        ActionOption(id="valve", verb="act", name="close the valve", expected_benefit=0.9, risk=0.1),
+        ActionOption(id="hit", verb="act", name="hit the pipe", expected_benefit=1.0, risk=0.9),
+    ),
+)
+
+decision = decide(request)[0]
+print(decision.verb, decision.action_id, decision.reason_code)
+```
+
+The request has a situation and options, so `decide` selects the action policy. The hard risk limit
+removes the second option. The result is one `Decision` with a verb, a reason code and the chosen
+option. Every mechanism in the core returns that same shape.
+
+## The live decision
+
+One concern is often not enough. When the choice depends on value, promises, risk and people at once,
+`LiveDecisionEngine` composes four planners into one `Plan`.
+
+| Planner | Question |
+|---|---|
+| `UtilityPlanner` | What is worth most? |
+| `CommitmentPlanner` | What was promised? |
+| `ExecutionRiskPlanner` | What can go wrong, and how hard is recovery? |
+| `HumanAttentionPlanner` | Is a person needed, and what does that cost? |
+
+Each planner contributes a score. The engine applies the weights, the hard limits and the approval
+state, and returns one plan with a `CompositeScore`. `EnginePolicy` converts that plan into the same
+`Decision` the minimal request produced. The
+[live decision engine](03-planning/03-live-decision-engine.md) page describes the composition.
+
+## The next decision
+
+A decision is a step, not a snapshot. The next request starts from what the previous one left behind:
+open commitments, attention budget, approval state, prior decisions and revisions, receipts, and
+outcomes with calibration. The core stays stateless between calls. The host stores the state and
+passes it into the next request.
+
+```text
+DecisionRequest
+      │
+      ▼
+   dispatch
+      │
+      ├── signal attention ──┐
+      ├── policy ────────────┤
+      └── planner/engine ────┤
+                             ▼
+                          Decision
+                             │
+                             ▼
+                    host executes the action
+                             │
+                             ▼
+                 ExecutionReceipt / Outcome
+                             │
+                             ▼
+                 reward · calibration · learning
+                             │
+                             ▼
+             next DecisionRequest with current state
+```
+
+That hand-off is [decision continuity](04-continuity/01-decision-continuity.md). It is what makes the
+core a runtime: the same chooser sees a different, current state on every step.
 
 ## The five layers
 
@@ -66,37 +150,6 @@ block-beta
 | **Constrain** | Limits, commitments, resources | What is allowed, promised and affordable. |
 | **Foundation** | Schema, perception, support | What the records and helpers rest on. |
 
-## The decision loop
-
-```text
-DecisionRequest
-      │
-      ▼
-   dispatch
-      │
-      ├── signal attention ──┐
-      ├── policy ────────────┤
-      └── planner/engine ────┤
-                             ▼
-                          Decision
-                             │
-                             ▼
-                    host executes the action
-                             │
-                             ▼
-                 ExecutionReceipt / Outcome
-                             │
-                             ▼
-                 reward · calibration · learning
-                             │
-                             ▼
-             next DecisionRequest with current state
-```
-
-The core evaluates one request and returns the resulting decision or decisions. It is stateless
-between calls. The host keeps the state and passes the current commitments, attention budget,
-approvals and receipts into the next request. [Decision continuity](10-decision-continuity.md) describes that hand-off.
-
 ## Ways to get a decision
 
 | Entry point | What it does | Use it when |
@@ -106,7 +159,7 @@ approvals and receipts into the next request. [Decision continuity](10-decision-
 | `decide(request, policy=EnginePolicy(engine))` | Runs a planner or the live engine behind the policy interface. | You want utility, commitments, execution risk or attention scoring. |
 | `Layer` | Uses the same core selection and adds runtime, traces, execution and records. | You want the full app kit. |
 
-`decide` lives in `core/dispatch.py` and imports no app-kit code. [Dispatch](03-dispatch.md) explains
+`decide` lives in `core/dispatch.py` and imports no app-kit code. [Dispatch](01-contract/03-dispatch.md) explains
 the selection rule and the identity fields.
 
 ## Choose a mechanism
@@ -181,60 +234,22 @@ a label and a decision to an arm.
 
 ## Reading map
 
-Read in order. Each page builds on the pages before it.
+Read the sections in order. Each section opens with a short index that lists its pages in reading
+order.
 
-The sequence follows the dependency order: the contract defines the shapes; dispatch defines how a
-request chooses a mechanism; signal attention defines the signal path; commitments and policies
-define state and action; the planner pages define the optional formal choice; learning closes the
-loop; continuity explains the hand-off; resources define capacity; evaluation checks the mechanisms;
-foundation holds the shared records and helpers.
+The sequence follows the dependency order: the contract defines the shapes; the decide section covers
+the signal path, commitments, policies and capacity; planning covers the optional formal choice;
+continuity explains what the next decision inherits; learning changes the chooser; reference covers
+evaluation and foundation.
 
-| Page | Covers |
+| Section | Covers |
 |---|---|
-| [Decision contract](01-decision-contract.md) | `DecisionRequest`, `Decision`, the seven verbs and reason codes. |
-| [Records and schema](02-records-and-schema.md) | every record shape, JSON mapping, schema generation and version axes. |
-| [Dispatch](03-dispatch.md) | `decide`, automatic selection, `policy=`, ids and confidence provenance. |
-| [Signal attention](04-signal-attention.md) | the gate pipeline, score and reason codes of `decide_attention`. |
-| [Commitments](05-commitments.md) | the commitment model, ledger, stores and how commitments enter a decision. |
-| [Policies](06-policies.md) | the policy protocol, registry, the built-in action policy, the eight decision-class policies, authoring, wrappers and the learned policy. |
-| [Planner contract](07-planning/00-planner-contract.md) | `DecisionProblem`, `Plan`, `DecisionEngine`, `EnginePolicy` and the simulator. |
-| [Live planners](07-planning/01-live-planners.md) | utility, commitment, execution-risk and human-attention scoring. |
-| [Live decision engine](07-planning/02-live-decision-engine.md) | `LiveDecisionEngine`, `CompositeScore` and the combined plan. |
-| [Model-based planners](07-planning/03-model-based-planners.md) | `MDPPlanner`, `POMDPPlanner`, value iteration and belief update. |
-| [Outcome learning](08-outcome-learning.md) | outcomes, rewards, `UCBBandit`, `BanditPolicy` and causal attribution. |
-| [Calibration and model learning](09-calibration-and-model-learning.md) | prediction and decision calibration, `CalibratedPolicy`, `ModelLearner`. |
-| [Decision continuity](10-decision-continuity.md) | what carries from one decision to the next and how the host passes it. |
-| [Resources](11-resources.md) | `Budget`, `ResourcePlan`, `ResourceScheduler` and `SensingOption`. |
-| [Evaluation](12-evaluation.md) | cases, rows, reports, parity, LAIX-Bench and the live decision benchmark. |
-| [Foundation](13-foundation.md) | perception records and the shared support helpers. |
-
-## A minimal decision
-
-```python
-from laix import ActionOption, Constraint, DecisionRequest, Situation, decide
-
-request = DecisionRequest(
-    subject="leaking sink",
-    at="2026-11-01T10:00:00+00:00",
-    situation=Situation(
-        id="situation-1",
-        at="2026-11-01T10:00:00+00:00",
-        subject="leaking sink",
-        constraints=(Constraint(id="risk", kind="risk", value=0.3, hard=True),),
-    ),
-    options=(
-        ActionOption(id="valve", verb="act", name="close the valve", expected_benefit=0.9, risk=0.1),
-        ActionOption(id="hit", verb="act", name="hit the pipe", expected_benefit=1.0, risk=0.9),
-    ),
-)
-
-decision = decide(request)[0]
-print(decision.verb, decision.action_id, decision.reason_code)
-```
-
-The request has a situation and options, so `decide` selects the action policy. The hard risk limit
-removes the second option. The result is one `Decision` with a verb, a reason code and the chosen
-option.
+| [Contract](01-contract/README.md) | The request and response shapes, records, schema and dispatch. |
+| [Decide](02-decide/README.md) | Signal attention, commitments, policies and capacity. |
+| [Planning](03-planning/README.md) | The planner contract, live planners, the live engine and model-based planners. |
+| [Continuity](04-continuity/README.md) | A decision is a step in a sequence; the next one sees what the previous one left behind. |
+| [Learning](05-learning/README.md) | Outcomes, rewards, calibration and model learning. |
+| [Reference](06-reference/README.md) | Evaluation and foundation. |
 
 ## Where the code lives
 

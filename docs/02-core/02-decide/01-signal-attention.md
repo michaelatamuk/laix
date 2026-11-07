@@ -12,7 +12,7 @@ Signal attention and `HumanAttentionPlanner` work at different levels:
 - **Signal attention** ranks the signals the host sends and returns `guide`, `wait`, `act` or
   `escalate`.
 - **Human-attention planning** prices interruption, approval and escalation when a planner chooses
-  an action option. See [live planners](07-planning/01-live-planners.md#human-attention-planner).
+  an action option. See [live planners](../03-planning/02-live-planners.md#human-attention-planner).
 
 ## Scope
 
@@ -236,12 +236,12 @@ The attention vectors are shared by Python and TypeScript:
 - `packages/contracts/attention-bench.v1.json` — outcome cases.
 
 `npm run conformance` runs the shared vectors. The LAIX-Bench `attention` suite runs the same
-behaviour through the app kit. See [Evaluation](12-evaluation.md).
+behaviour through the app kit. See [Evaluation](../06-reference/01-evaluation.md).
 
 ## Related
 
-- [Decision contract](01-decision-contract.md)
-- [Dispatch](03-dispatch.md)
-- [Policies](06-policies.md)
-- [Human-attention planning](07-planning/01-live-planners.md#human-attention-planner)
-- [Evaluation](12-evaluation.md)
+- [Decision contract](../01-contract/01-decision-contract.md)
+- [Dispatch](../01-contract/03-dispatch.md)
+- [Policies](03-policies.md)
+- [Human-attention planning](../03-planning/02-live-planners.md#human-attention-planner)
+- [Evaluation](../06-reference/01-evaluation.md)

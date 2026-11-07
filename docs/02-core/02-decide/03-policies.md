@@ -26,7 +26,7 @@ class Policy(Protocol):
 
 `name` is used as the default `policy_version`. A policy may return several decisions. The core
 normalizes each one, adds ids and carries the request's confidence provenance. See
-[Dispatch](03-dispatch.md).
+[Dispatch](../01-contract/03-dispatch.md).
 
 `PolicyRegistry` is a name-to-policy map:
 
@@ -284,7 +284,7 @@ decision = decide(
 )[0]
 ```
 
-See [Commitments](05-commitments.md).
+See [Commitments](02-commitments.md).
 
 ## Wrappers
 
@@ -322,12 +322,12 @@ when the `(verb, action_id, reason_code)` signature differs. It does not change 
 - `act` with `bandit_choice` for the chosen arm.
 
 `record(arm_id, reward)` updates one arm. `learn(outcomes, arm_of)` learns from labelled outcomes.
-See [Outcome learning](08-outcome-learning.md).
+See [Outcome learning](../05-learning/01-outcome-learning.md).
 
 ## The planner bridge
 
 `EnginePolicy` adapts a `DecisionEngine` to the policy interface. The
-[planner contract](07-planning/00-planner-contract.md) defines the adapter, `DecisionProblem` and
+[planner contract](../03-planning/01-planner-contract.md) defines the adapter, `DecisionProblem` and
 `Plan`.
 
 ## Replace a policy
@@ -348,8 +348,8 @@ policy can replace any packaged policy without changing the request or the respo
 
 ## Related
 
-- [Dispatch](03-dispatch.md)
-- [Commitments](05-commitments.md)
-- [Planner contract](07-planning/00-planner-contract.md)
-- [Outcome learning](08-outcome-learning.md)
-- [Evaluation](12-evaluation.md)
+- [Dispatch](../01-contract/03-dispatch.md)
+- [Commitments](02-commitments.md)
+- [Planner contract](../03-planning/01-planner-contract.md)
+- [Outcome learning](../05-learning/01-outcome-learning.md)
+- [Evaluation](../06-reference/01-evaluation.md)

@@ -204,5 +204,5 @@ capabilities. The test suite is the source of truth for behavioural parity.
 - `executed` — the record moved from approved to executed.
 - `True` — the record fingerprint still matches its content.
 
-The full field list is in [`../docs/02-core/01-decision-contract.md`](../docs/02-core/01-decision-contract.md).
-The policy contracts are in [`../docs/02-core/06-policies.md`](../docs/02-core/06-policies.md).
+The full field list is in [`../docs/02-core/01-contract/01-decision-contract.md`](../docs/02-core/01-contract/01-decision-contract.md).
+The policy contracts are in [`../docs/02-core/02-decide/03-policies.md`](../docs/02-core/02-decide/03-policies.md).

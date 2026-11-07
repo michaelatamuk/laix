@@ -29,7 +29,7 @@ still open.
 1. Planner contract — `DecisionProblem`, `Plan`, `DecisionEngine`, `EnginePolicy`, `to_problem` and
    `to_decision`.
 2. Utility and constraint planner — expected utility, hard constraints, risk attitude, explanation.
-3. MDP planner — [states, actions, transitions](../02-core/07-planning/03-model-based-planners.md#mdp), discount,
+3. MDP planner — [states, actions, transitions](../02-core/03-planning/04-model-based-planners.md#mdp), discount,
    horizon, optimality gap.
 4. Simulator and bench — deterministic and seeded stochastic rollouts, comparison and regression.
 5. Calibration — predicted vs observed confidence, per-policy reports, adjustment.
@@ -42,7 +42,7 @@ still open.
 - Execution retries, backoff and timeouts around `ExecutionBridge`.
 - Async execution handlers alongside the current synchronous handlers.
 - Bootstrap intervals and covariate adjustment for causal effects.
-- [MDP policy iteration](../02-core/07-planning/03-model-based-planners.md#mdp) as an alternative to value iteration.
+- [MDP policy iteration](../02-core/03-planning/04-model-based-planners.md#mdp) as an alternative to value iteration.
 - File-backed state and outcome stores for hosts that want an adapter out of the box.
 - A sequence benchmark for decision continuity: episodes of 5-20 decisions with evolving commitments,
   budgets, approvals and revisions.
