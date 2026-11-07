@@ -3,7 +3,7 @@
 This page is for a team building an AI agent or automation with LAIX. It answers the six questions
 a host team usually asks before trying it.
 
-## 1. Where does LAIX plug in?
+## Where LAIX plugs in
 
 A task calls LAIX:
 
@@ -29,9 +29,10 @@ decision = decide(request)[0]
 ```
 
 If the host also wants the runtime, execution and records, use `Layer` from the app kit. The
-examples below use the app kit because they show execution and audit.
+examples below use the app kit because they show execution and audit. See
+[Integration](../../03-appkit/01-build/01-integration.md).
 
-Runnable example: [`examples/python/05-execute/host_adapter.py`](../../examples/python/05-execute/host_adapter.py).
+Runnable example: [`examples/python/05-execute/host_adapter.py`](../../../examples/python/05-execute/host_adapter.py).
 
 It shows:
 
@@ -41,7 +42,7 @@ It shows:
 - the confidence source;
 - the decision basis.
 
-## 2. One reasoning path
+## One reasoning path
 
 The host decides **when** to ask LAIX. LAIX answers when called.
 
@@ -49,7 +50,7 @@ That means a product keeps one orchestrator. LAIX is a tool inside a task.
 
 The example above is the whole flow. The host drives the loop.
 
-## 3. Confidence and calibration
+## Confidence and calibration
 
 The host may calculate confidence. When it does, it passes it in:
 
@@ -73,7 +74,7 @@ decision.calibrated          # True
 LAIX reports confidence as given. A rule score stays a rule score. When the host
 leaves calibration out, the fields stay empty and `calibrated` is false.
 
-## 4. Approval and execution
+## Approval and execution
 
 Approval is a flag on the decision:
 
@@ -84,13 +85,14 @@ decision.requires_approval
 The host asks a person if the flag is true, then runs the chosen option through its own
 execution path. LAIX can provide an execution bridge for a task, but that is part
 of the optional app kit. The bridge also accepts an idempotency key and can mark an
-unknown outcome and reconcile it with provider evidence.
+unknown outcome and reconcile it with provider evidence. See
+[Execution and recovery](../../03-appkit/03-execute/01-execution-and-recovery.md).
 
-Runnable example: [`examples/python/05-execute/host_execution.py`](../../examples/python/05-execute/host_execution.py).
+Runnable example: [`examples/python/05-execute/host_execution.py`](../../../examples/python/05-execute/host_execution.py).
 
 It shows a decision that needs approval, an owner approval, and a receipt.
 
-## 5. Task attention and product proactivity
+## Task attention and product proactivity
 
 LAIX attention answers:
 
@@ -103,7 +105,7 @@ The product answers:
 The product keeps its own proactivity, quiet hours, daily caps and owner
 settings. LAIX attention is a reusable task-level policy.
 
-## 6. Decision basis
+## Decision basis
 
 A decision carries a portable basis:
 
@@ -120,7 +122,9 @@ It returns entries the host can put in its own audit record:
 ]
 ```
 
-The host keeps its own record format. LAIX gives it the evidence and the reason.
+The host keeps its own record format. LAIX gives it the evidence and the reason. The record and
+proposal lifecycles are in
+[Proposals and records](../../03-appkit/03-execute/02-proposals-and-records.md).
 
 ## Ownership
 
@@ -146,3 +150,10 @@ $env:PYTHONPATH = "packages/python/laix/src"
 py examples/python/05-execute/host_adapter.py
 py examples/python/05-execute/host_execution.py
 ```
+
+## Read next
+
+- [Core overview](../../02-core/README.md) - the contract and the mechanisms.
+- [App-kit overview](../../03-appkit/README.md) - the optional runtime.
+- [Decision lifecycle](../01-orientation/02-decision-lifecycle.md) - what survives between decisions.
+- [Scope and boundaries](../../04-concepts/01-architecture/02-scope-and-boundaries.md) - the host boundary.

@@ -9,7 +9,7 @@ The app sends a request. LAIX returns a decision. The app runs the chosen option
 | **Verb** | The word that says what to do. |
 | **Adapter** | App code that builds requests and turns decisions into app actions. |
 
-Start with [the quickstart](../../01-start/02-quickstart.md) to install LAIX.
+Start with [the quickstart](../../01-start/02-first-steps/01-quickstart.md) to install LAIX.
 
 ## The adapter
 

@@ -43,7 +43,7 @@ package and policy versions available for rollback.
 2. Run the full test, bench, conformance and example checks. See [Testing](../02-quality/01-testing.md).
 3. Commit the release.
 4. Tag `vX.Y.Z` and push the tag. The release workflow builds Python and TypeScript packages.
-5. Pin the new tag in the [quickstart](../../01-start/02-quickstart.md) install command and the release
+5. Pin the new tag in the [quickstart](../../01-start/02-first-steps/01-quickstart.md) install command and the release
    notes.
 
 ## Changelog

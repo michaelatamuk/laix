@@ -41,7 +41,7 @@ laix/
 │   └── typescript/laix/   TypeScript package and tests
 ├── docs/
 │   ├── README.md          audience-first index
-│   ├── 01-start/          numbered start path
+│   ├── 01-start/          overview; orientation/, first-steps/
 │   ├── 02-core/           overview; contract/, decide/, planning/, continuity/, learning/, reference/
 │   ├── 03-appkit/         overview; build/, run/, execute/, connect/, operate/
 │   ├── 04-concepts/       overview; architecture/, positioning/, trust/, reference/

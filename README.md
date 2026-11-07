@@ -56,7 +56,7 @@ npm install file:../path/to/laix/packages/typescript/laix
 ```
 
 The Python package needs Python 3.11 or newer. The TypeScript package needs Node 22 or newer.
-See the [quickstart](docs/01-start/02-quickstart.md) for the full setup.
+See the [quickstart](docs/01-start/02-first-steps/01-quickstart.md) for the full setup.
 
 ## One decision
 
@@ -277,8 +277,8 @@ External validation — real incident replay or a participant study — is still
 | Start with | Covers |
 |---|---|
 | [Documentation index](docs/README.md) | every guide and reference page |
-| [Quickstart](docs/01-start/02-quickstart.md) | install and first decision |
-| [Decision lifecycle](docs/01-start/03-decision-lifecycle.md) | moment to outcome in one loop |
+| [Quickstart](docs/01-start/02-first-steps/01-quickstart.md) | install and first decision |
+| [Decision lifecycle](docs/01-start/01-orientation/02-decision-lifecycle.md) | moment to outcome in one loop |
 | [Decision models](docs/04-concepts/02-positioning/01-decision-models.md) | JEV, classifiers and judges vs the LAIX runtime |
 | [Deployment](docs/03-appkit/05-operate/03-deployment.md) | production topology, reliability, rollout and retention |
 | [Research and evidence](docs/06-research/README.md) | claims, benchmarks and paper plan |

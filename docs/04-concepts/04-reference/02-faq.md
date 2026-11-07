@@ -81,7 +81,7 @@ vectors.
 
 ## How do I start?
 
-1. [Quickstart](../../01-start/02-quickstart.md) for the first decision.
+1. [Quickstart](../../01-start/02-first-steps/01-quickstart.md) for the first decision.
 2. [Core overview](../../02-core/README.md) for the contract and the mechanisms.
 3. [App-kit overview](../../03-appkit/README.md) for execution, records and stores.
 4. [Decision models](../02-positioning/01-decision-models.md) if you already use JEV or another model.
