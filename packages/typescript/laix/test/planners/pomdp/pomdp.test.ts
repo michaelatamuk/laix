@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   MdpModel,
-  POMDPEngine,
+  POMDPPlanner,
   PomdpModel,
   beliefEntropy,
   beliefFromState,
@@ -58,14 +58,14 @@ describe("POMDP", () => {
     const belief = beliefFromState("s0", pomdp.states);
     assert.equal(pomdpValue(pomdp, belief), 1);
 
-    const plan = new POMDPEngine(pomdp).solve(problem({ belief }));
+    const plan = new POMDPPlanner(pomdp).solve(problem({ belief }));
     assert.equal(plan.actionId, "go");
     assert.equal(plan.score, 1);
     assert.equal(plan.attributes?.entropy, 0);
   });
 
   it("defaults to a uniform belief", () => {
-    const plan = new POMDPEngine(model()).solve(problem());
+    const plan = new POMDPPlanner(model()).solve(problem());
     assert.equal(plan.actionId, "go");
     assert.deepEqual(plan.attributes?.belief, { s0: 0.5, s1: 0.5 });
   });

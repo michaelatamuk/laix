@@ -1,24 +1,24 @@
-"""Engine scores across a set of scenarios."""
+"""Planner scores across a set of scenarios."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .engine_score import EngineScore
+from .planner_score import PlannerScore
 
 
 @dataclass(frozen=True, slots=True)
 class SimulationReport:
-    """Engine scores across a set of scenarios."""
+    """Planner scores across a set of scenarios."""
 
-    rows: tuple[EngineScore, ...]
+    rows: tuple[PlannerScore, ...]
 
     def summary(self) -> dict[str, dict[str, float]]:
-        buckets: dict[str, list[EngineScore]] = {}
+        buckets: dict[str, list[PlannerScore]] = {}
         for row in self.rows:
-            buckets.setdefault(row.engine, []).append(row)
+            buckets.setdefault(row.planner, []).append(row)
         return {
-            engine: {
+            planner: {
                 "runs": len(items),
                 "mean_reward": round(
                     sum(item.total_reward for item in items) / len(items), 6
@@ -27,7 +27,7 @@ class SimulationReport:
                     sum(item.optimality_gap or 0.0 for item in items) / len(items), 6
                 ),
             }
-            for engine, items in sorted(buckets.items())
+            for planner, items in sorted(buckets.items())
         }
 
     def best(self) -> str | None:
@@ -36,7 +36,7 @@ class SimulationReport:
             return None
         return sorted(
             summary,
-            key=lambda engine: (-summary[engine]["mean_reward"], engine),
+            key=lambda planner: (-summary[planner]["mean_reward"], planner),
         )[0]
 
     def to_dict(self) -> dict[str, object]:

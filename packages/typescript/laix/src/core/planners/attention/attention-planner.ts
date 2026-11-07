@@ -1,12 +1,12 @@
 import type { ActionOption } from "../../contracts.ts";
 import type { DecisionProblem, Plan } from "../../contract/engine.ts";
 import {
-  UtilityEngine,
+  UtilityPlanner,
   UtilityModel,
   approvalRequired,
   constraintBlocker,
-} from "../utility/utility.ts";
-import type { RiskAttitude } from "../utility/utility.ts";
+} from "../utility/utility-planner.ts";
+import type { RiskAttitude } from "../utility/utility-planner.ts";
 import { AttentionBudget } from "./attention-budget.ts";
 
 export { AttentionBudget };
@@ -168,11 +168,11 @@ interface Row {
   blocker: string | null;
 }
 
-export class AttentionAwareEngine {
+export class HumanAttentionPlanner {
   readonly name = "attention.v1";
   readonly model: UtilityModel;
   readonly weights: Required<AttentionWeights>;
-  private readonly utility: UtilityEngine;
+  private readonly utility: UtilityPlanner;
 
   constructor(model: UtilityModel = new UtilityModel(), weights: AttentionWeights = {}) {
     this.model = model;
@@ -185,7 +185,7 @@ export class AttentionAwareEngine {
     for (const [key, value] of Object.entries(this.weights)) {
       if (value < 0) throw new Error(`attention weight ${key} must not be negative`);
     }
-    this.utility = new UtilityEngine(model);
+    this.utility = new UtilityPlanner(model);
   }
 
   solve(problem: DecisionProblem): Plan {

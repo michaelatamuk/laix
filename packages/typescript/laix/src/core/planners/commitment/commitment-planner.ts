@@ -3,12 +3,12 @@ import type { DecisionProblem, Plan } from "../../contract/engine.ts";
 import type { Commitment } from "../../commitments/commitments.ts";
 import { CommitmentLedger, commitmentDue } from "../../commitments/commitments.ts";
 import {
-  UtilityEngine,
+  UtilityPlanner,
   UtilityModel,
   approvalRequired,
   constraintBlocker,
-} from "../utility/utility.ts";
-import type { RiskAttitude } from "../utility/utility.ts";
+} from "../utility/utility-planner.ts";
+import type { RiskAttitude } from "../utility/utility-planner.ts";
 
 export interface CommitmentWeights {
   keep?: number;
@@ -163,11 +163,11 @@ interface Row {
   blocker: string | null;
 }
 
-export class CommitmentAwareEngine {
+export class CommitmentPlanner {
   readonly name = "commitment.v1";
   readonly model: UtilityModel;
   readonly weights: Required<CommitmentWeights>;
-  private readonly utility: UtilityEngine;
+  private readonly utility: UtilityPlanner;
 
   constructor(model: UtilityModel = new UtilityModel(), weights: CommitmentWeights = {}) {
     this.model = model;
@@ -181,7 +181,7 @@ export class CommitmentAwareEngine {
     for (const [key, value] of Object.entries(this.weights)) {
       if (value < 0) throw new Error(`commitment weight ${key} must not be negative`);
     }
-    this.utility = new UtilityEngine(model);
+    this.utility = new UtilityPlanner(model);
   }
 
   solve(problem: DecisionProblem): Plan {

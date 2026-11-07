@@ -7,11 +7,11 @@ import pytest
 from laix import (
     ActionOption,
     DecisionProblem,
-    ExecutionAwareEngine,
+    ExecutionRiskPlanner,
     ExecutionEffect,
     ExecutionReceipt,
     ExecutionWeights,
-    UtilityEngine,
+    UtilityPlanner,
 )
 
 
@@ -25,7 +25,7 @@ def _problem(*options: ActionOption, **attributes: object) -> DecisionProblem:
 
 
 def test_prefers_a_reversible_option_when_utility_is_equal() -> None:
-    plan = ExecutionAwareEngine().solve(
+    plan = ExecutionRiskPlanner().solve(
         _problem(
             ActionOption(
                 id="reversible",
@@ -48,7 +48,7 @@ def test_prefers_a_reversible_option_when_utility_is_equal() -> None:
 
 
 def test_penalizes_an_unknown_outcome() -> None:
-    plan = ExecutionAwareEngine().solve(
+    plan = ExecutionRiskPlanner().solve(
         _problem(
             ActionOption(id="known", verb="act", name="known", expected_benefit=0.7),
             ActionOption(
@@ -65,7 +65,7 @@ def test_penalizes_an_unknown_outcome() -> None:
 
 
 def test_penalizes_recovery_cost() -> None:
-    plan = ExecutionAwareEngine().solve(
+    plan = ExecutionRiskPlanner().solve(
         _problem(
             ActionOption(id="cheap", verb="act", name="cheap", expected_benefit=0.7),
             ActionOption(
@@ -82,7 +82,7 @@ def test_penalizes_recovery_cost() -> None:
 
 
 def test_penalizes_an_approval_step() -> None:
-    plan = ExecutionAwareEngine().solve(
+    plan = ExecutionRiskPlanner().solve(
         _problem(
             ActionOption(id="direct", verb="act", name="direct", expected_benefit=0.7),
             ActionOption(
@@ -98,7 +98,7 @@ def test_penalizes_an_approval_step() -> None:
     assert plan.action_id == "direct"
 
 
-def test_matches_the_utility_engine_without_execution_facts() -> None:
+def test_matches_the_utility_planner_without_execution_facts() -> None:
     options = (
         ActionOption(id="safe", verb="act", name="safe", expected_benefit=0.6, risk=0.1),
         ActionOption(id="bold", verb="act", name="bold", expected_benefit=0.9, risk=0.6),
@@ -106,13 +106,13 @@ def test_matches_the_utility_engine_without_execution_facts() -> None:
     problem = _problem(*options)
 
     assert (
-        ExecutionAwareEngine().solve(problem).action_id
-        == UtilityEngine().solve(problem).action_id
+        ExecutionRiskPlanner().solve(problem).action_id
+        == UtilityPlanner().solve(problem).action_id
     )
 
 
 def test_an_unknown_receipt_penalizes_the_action() -> None:
-    plan = ExecutionAwareEngine().solve(
+    plan = ExecutionRiskPlanner().solve(
         _problem(
             ActionOption(id="known", verb="act", name="known", expected_benefit=0.7),
             ActionOption(id="unknown", verb="act", name="unknown", expected_benefit=0.8),
@@ -132,7 +132,7 @@ def test_an_unknown_receipt_penalizes_the_action() -> None:
 
 
 def test_a_failed_receipt_penalizes_recovery() -> None:
-    plan = ExecutionAwareEngine().solve(
+    plan = ExecutionRiskPlanner().solve(
         _problem(
             ActionOption(id="known", verb="act", name="known", expected_benefit=0.7),
             ActionOption(id="failed", verb="act", name="failed", expected_benefit=0.8),
@@ -144,7 +144,7 @@ def test_a_failed_receipt_penalizes_recovery() -> None:
 
 
 def test_a_pending_receipt_counts_as_approval() -> None:
-    plan = ExecutionAwareEngine().solve(
+    plan = ExecutionRiskPlanner().solve(
         _problem(
             ActionOption(id="direct", verb="act", name="direct", expected_benefit=0.7),
             ActionOption(id="pending", verb="act", name="pending", expected_benefit=0.75),

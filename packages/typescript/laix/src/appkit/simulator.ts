@@ -1,5 +1,5 @@
 import type { DecisionEngine, DecisionProblem } from "../core/contract/engine.ts";
-import type { MdpModel } from "../core/planners/mdp/mdp.ts";
+import type { MdpModel } from "../core/planners/mdp/mdp-planner.ts";
 import { SimulationReport } from "./simulation-report.ts";
 
 export { SimulationReport };
@@ -71,7 +71,7 @@ export class Simulator {
     this.randomStep = options.randomStep;
   }
 
-  run(engine: DecisionEngine): SimulationResult {
+  run(planner: DecisionEngine): SimulationResult {
     let state = this.start;
     const steps: SimulationStep[] = [];
     let total = 0;
@@ -86,7 +86,7 @@ export class Simulator {
         options: [],
         attributes: { state },
       };
-      const plan = engine.solve(problem);
+      const plan = planner.solve(problem);
       const action = plan.actionId ?? null;
       if (action === null || !this.actions.includes(action)) {
         steps.push({ step: index, state, action, reward: 0, nextState: state });
@@ -154,22 +154,22 @@ export interface Scenario {
   optimum?: number | null;
 }
 
-export interface EngineScore {
-  engine: string;
+export interface PlannerScore {
+  planner: string;
   scenario: string;
   totalReward: number;
   steps: number;
   optimalityGap: number | null;
 }
 
-export function compareEngines(
-  engines: Record<string, DecisionEngine>,
+export function comparePlanners(
+  planners: Record<string, DecisionEngine>,
   scenarios: Scenario[],
 ): SimulationReport {
-  const rows: EngineScore[] = [];
+  const rows: PlannerScore[] = [];
   for (const scenario of scenarios) {
-    for (const [name, engine] of Object.entries(engines)) {
-      const result = scenario.simulator.run(engine);
+    for (const [name, planner] of Object.entries(planners)) {
+      const result = scenario.simulator.run(planner);
       const optimum = scenario.optimum ?? null;
       const gap =
         optimum === null
@@ -181,7 +181,7 @@ export function compareEngines(
               ),
             );
       rows.push({
-        engine: name,
+        planner: name,
         scenario: scenario.name,
         totalReward: result.totalReward,
         steps: result.steps.length,

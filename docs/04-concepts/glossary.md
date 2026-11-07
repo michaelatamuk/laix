@@ -7,14 +7,19 @@
 | **Situation** | The current state: what is believed, what the goal is and what actions exist. |
 | **Decision** | The one response shape: verb, confidence, reason, rationale, action, approval, target and trail. |
 | **Verb** | `wait`, `observe`, `guide`, `ask`, `act`, `verify` or `escalate`. |
-| **Policy** | A callable with `decide(request)` that returns decisions. |
+| **Policy** | An integration layer: a callable with `decide(request)` that places a decision in the host loop. `EnginePolicy` adapts a `DecisionEngine` to this contract. |
 | **Adapter** | App code that turns app events into requests and decisions into app actions. |
 | **Attention** | The mechanism that ranks signals and decides whether to surface, hold, act or escalate. |
 | **Attention-aware planning** | Planning that treats interruption, approval and escalation as a budget. |
 | **Attention budget** | The interruption and approval capacity a task may spend. |
-| **Planner** | A solver that returns a `Plan`: utility, MDP, POMDP or an external planner. |
-| **Engine** | The code contract for a planner: `DecisionEngine.solve(problem) -> Plan`; `EnginePolicy` wraps it. |
-| **Plan** | A planner's answer: verb, confidence, reason, action, score and alternatives. |
+| **Planner** | A strategy that scores the options and chooses one, returning a `Plan`. Built-ins: `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner`, `POMDPPlanner`. |
+| **Engine** | A composition of planners that returns one `Plan`. The built-in engine is `LiveDecisionEngine`. |
+| **Learner** | Code that learns from outcomes and changes future behaviour: `UCBBandit`, `ModelLearner`. |
+| **Protocol** | `DecisionEngine`: the `solve(problem) -> Plan` interface. It names the contract, not a component. |
+| **Live** | A decision made inside the running loop, at event time, with the current state. The core stays stateless; the host supplies state, commitments, budget and approvals. |
+| **Composite score** | The four terms `LiveDecisionEngine` combines for one option: utility, commitment, execution and attention. |
+| **Live decision engine** | `LiveDecisionEngine`: the composition engine that turns the four planner scores into one `Plan`. |
+| **Plan** | A planner's or engine's answer: verb, confidence, reason, action, score and alternatives. |
 | **MDP** | A model with states, actions, transitions, rewards, discount and horizon; the planner chooses the best action. |
 | **POMDP** | An MDP with hidden state; the planner keeps a belief over states and updates it from observations. |
 | **Optimality gap** | The difference between a planner's reward and the best reward available in the model. |

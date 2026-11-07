@@ -87,14 +87,14 @@ packages/python/laix/src/laix/
 │   ├── engines/
 │   │   ├── contract/       engine.py, decision_engine.py, decision_problem.py, plan.py
 │   │   ├── planners/
-│   │   │   ├── utility/     utility engine, model and weights
-│   │   │   ├── mdp/         MDP model, transitions, value iteration and engine
-│   │   │   ├── pomdp/       POMDP model, observations, belief state and engine
+│   │   │   ├── utility/     utility planner, model and weights
+│   │   │   ├── mdp/         MDP model, transitions, value iteration and planner
+│   │   │   ├── pomdp/       POMDP model, observations, belief state and planner
 │   │   │   ├── commitment/  commitment-aware planner, effects and weights
 │   │   │   ├── execution/   execution-aware planner, effects and weights
-│   │   │   ├── attention/   attention-aware planner, budget and effects
-│   │   │   └── live/        LiveDecisionEngine and score
-│   │   ├── simulation/     simulator, scenario, step, result, report and engine score
+│   │   │   └── attention/   attention-aware planner, budget and effects
+│   │   ├── live/            LiveDecisionEngine and composite score
+│   │   ├── simulation/     simulator, scenario, step, result, report and planner score
 │   │   ├── learning/       calibration, decision calibration and model learning
 │   │   ├── bench/          live benchmark, cases, rows, metrics and baselines
 │   │   ├── signals/        input, output, gates/, attention.v1.json, decide, score
@@ -115,7 +115,7 @@ packages/python/laix/src/laix/
     ├── platform/            platform, in-memory, skill call, approvals, event, capability
     ├── live_context/        loop and callable detector
     ├── streaming/           session, window, sources, checkpoint, timeline, bench
-    └── bench/               case, suite, row, report, runner, engine bench
+    └── bench/               case, suite, row, report, runner, planner bench
 ```
 
 Import from `laix` in app code, or `laix.core` / `laix.appkit` when the boundary matters.
@@ -132,13 +132,13 @@ packages/typescript/laix/src/
 │   ├── commitments/   commitment ledger and stores
 │   ├── causal.ts      causal ledger
 │   ├── planners/
-│   │   ├── utility/   utility engine and model
-│   │   ├── mdp/       MDP model, value iteration and engine
-│   │   ├── pomdp/     POMDP model, belief update and engine
+│   │   ├── utility/   utility planner and model
+│   │   ├── mdp/       MDP model, value iteration and planner
+│   │   ├── pomdp/     POMDP model, belief update and planner
 │   │   ├── commitment/ commitment-aware planner
 │   │   ├── execution/ execution-aware planner
-│   │   ├── attention/ attention-aware planner and budget
-│   │   └── live/      LiveDecisionEngine
+│   │   └── attention/ attention-aware planner and budget
+│   ├── live/          LiveDecisionEngine
 │   ├── learning/      calibration, decision calibration and model learning
 │   ├── bench/         live benchmark and baselines
 │   ├── outcome.ts     outcome ledger and UCB learner
@@ -154,8 +154,8 @@ packages/typescript/laix/src/
     ├── streaming.ts   stream session and checkpoints
     ├── decision-timeline.ts decision timeline semantics
     ├── checkpoint.ts  in-memory and file checkpoint stores
-    ├── simulator.ts   engine simulator and comparison
-    ├── engine-bench.ts engine bench baseline
+    ├── simulator.ts   planner simulator and comparison
+    ├── planner-bench.ts planner bench baseline
     ├── window.ts      tumbling windows
     ├── sources.ts     queue, sync, NDJSON and SSE sources
     ├── metrics.ts     Prometheus counters

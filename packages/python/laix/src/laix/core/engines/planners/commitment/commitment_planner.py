@@ -21,8 +21,8 @@ from .commitment_effect import CommitmentEffect
 from .commitment_score import CommitmentScore
 from .commitment_weights import CommitmentWeights
 from ...contract.engine import DecisionProblem, Plan
-from ..utility.utility import (
-    UtilityEngine,
+from ..utility.utility_planner import (
+    UtilityPlanner,
     UtilityModel,
     _approval_required,
     _constraint_blocker,
@@ -157,7 +157,7 @@ def _score_option(
     )
 
 
-class CommitmentAwareEngine:
+class CommitmentPlanner:
     """Choose the option with the best utility plus commitment effect."""
 
     name = "commitment.v1"
@@ -169,7 +169,7 @@ class CommitmentAwareEngine:
     ) -> None:
         self.model = model
         self.weights = weights or CommitmentWeights()
-        self._utility = UtilityEngine(model)
+        self._utility = UtilityPlanner(model)
 
     def solve(self, problem: DecisionProblem) -> Plan:
         options = list(problem.options)
@@ -278,7 +278,7 @@ class CommitmentAwareEngine:
 
 
 __all__ = [
-    "CommitmentAwareEngine",
+    "CommitmentPlanner",
     "CommitmentEffect",
     "CommitmentScore",
     "CommitmentWeights",

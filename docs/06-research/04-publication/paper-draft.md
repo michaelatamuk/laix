@@ -9,7 +9,7 @@ Live AI systems must decide whether to wait, observe, guide, ask, act, verify or
 the moment passes. Existing tools cover orchestration, durable workflows, alerting or planning
 separately. We present LAIX, a training-free live decision runtime that places commitments, execution risk
 and human attention budget into one decision contract with the verb, score, reason code and audit
-trail. On a 120-case synthetic corpus, the integrated planner is 30/30 on the frozen test split and
+trail. On a 120-case synthetic corpus, `LiveDecisionEngine` is 30/30 on the frozen test split and
 wins every conflict case. Against a hand-built glue baseline it is +6.7 percentage points
 (95% CI 0.0–0.167, McNemar p = 0.48), so the integration advantage over competent glue code is not
 yet significant. We report the result honestly and define the validation needed to establish it.
@@ -67,12 +67,12 @@ are covered by `tests/core/test_invariants.py`.
 
 `LiveDecisionEngine` adds:
 
-- the utility term from `UtilityEngine`;
+- the utility term from `UtilityPlanner`;
 - a commitment term that rewards keeping promises and penalises violations;
 - an execution term for irreversibility, unknown outcomes, approval and recovery;
 - an attention term for interruption, approval, escalation and exhausted budgets.
 
-The engine is deterministic and returns the same `Plan` shape as every other planner.
+The planner is deterministic and returns the same `Plan` shape as every other planner.
 
 ## 5. Execution, audit and revision
 
@@ -127,19 +127,19 @@ The test split is frozen at dataset version 1.0.0.
 
 ### 8.2 Main result (test split, 30 cases)
 
-| Planner | Accuracy | 95% CI | Promise keeping | Irreversible | Budget violations |
+| Component | Accuracy | 95% CI | Promise keeping | Irreversible | Budget violations |
 |---|---:|---:|---:|---:|---:|
-| First / rule | 70.00% | 0.53–0.87 | 58.33% | 13.33% | 77.78% |
-| Benefit-only | 23.33% | 0.10–0.40 | 0.00% | 23.33% | 70.00% |
-| UtilityEngine | 30.00% | 0.13–0.47 | 0.00% | 23.33% | 70.00% |
-| CommitmentAwareEngine | 70.00% | 0.53–0.87 | 100.00% | 13.33% | 57.14% |
-| ExecutionAwareEngine | 50.00% | 0.33–0.67 | 8.33% | 6.67% | 62.50% |
-| AttentionAwareEngine | 53.33% | 0.37–0.70 | 25.00% | 16.67% | 0.00% |
+| First-option baseline | 70.00% | 0.53-0.87 | 58.33% | 13.33% | 77.78% |
+| Highest-benefit baseline | 23.33% | 0.10-0.40 | 0.00% | 23.33% | 70.00% |
+| UtilityPlanner | 30.00% | 0.13–0.47 | 0.00% | 23.33% | 70.00% |
+| CommitmentPlanner | 70.00% | 0.53–0.87 | 100.00% | 13.33% | 57.14% |
+| ExecutionRiskPlanner | 50.00% | 0.33–0.67 | 8.33% | 6.67% | 62.50% |
+| HumanAttentionPlanner | 53.33% | 0.37–0.70 | 25.00% | 16.67% | 0.00% |
 | Glue baseline | 93.33% | 0.83–1.00 | 100.00% | 0.00% | 0.00% |
 | **LiveDecisionEngine** | **100.00%** | **1.00–1.00** | **100.00%** | **0.00%** | **0.00%** |
 
 Conflict cases: `LiveDecisionEngine` and the glue baseline are 100%; the best single-concern
-planner is `CommitmentAwareEngine` at 83.3%.
+planner is `CommitmentPlanner` at 83.3%.
 
 ### 8.3 Ablations (test split)
 
@@ -154,18 +154,18 @@ planner is `CommitmentAwareEngine` at 83.3%.
 | utility only | 30.00% | 0.00% | 23.33% | 70.00% |
 
 Removing commitments costs 30 accuracy points, removing execution risk costs 16.7 and removing
-attention costs 3.3. The integration is doing real work.
+attention costs 3.3. The composition is doing real work.
 
 ### 8.4 Paired significance
 
 | Comparator | Accuracy delta | 95% CI | McNemar p | Cohen's h |
 |---|---:|---:|---:|---:|
-| Benefit-only | +76.7 pp | 0.600–0.900 | <0.001 | 2.133 |
-| UtilityEngine | +70.0 pp | 0.533–0.867 | <0.001 | 1.982 |
-| ExecutionAwareEngine | +50.0 pp | 0.333–0.667 | <0.001 | 1.571 |
-| AttentionAwareEngine | +46.7 pp | 0.300–0.633 | <0.001 | 1.504 |
-| CommitmentAwareEngine | +30.0 pp | 0.133–0.467 | 0.008 | 1.159 |
-| First / rule | +30.0 pp | 0.133–0.467 | 0.008 | 1.159 |
+| Highest-benefit baseline | +76.7 pp | 0.600–0.900 | <0.001 | 2.133 |
+| UtilityPlanner | +70.0 pp | 0.533–0.867 | <0.001 | 1.982 |
+| ExecutionRiskPlanner | +50.0 pp | 0.333–0.667 | <0.001 | 1.571 |
+| HumanAttentionPlanner | +46.7 pp | 0.300–0.633 | <0.001 | 1.504 |
+| CommitmentPlanner | +30.0 pp | 0.133–0.467 | 0.008 | 1.159 |
+| First-option baseline | +30.0 pp | 0.133–0.467 | 0.008 | 1.159 |
 | **Glue baseline** | **+6.7 pp** | **0.000–0.167** | **0.480** | **0.522** |
 
 The result against glue is the key limitation: the confidence interval includes zero. The synthetic
@@ -198,7 +198,7 @@ documented capability gap.
 
 - synthetic cases may not represent real traffic;
 - the benchmark may encode the authors' assumptions;
-- the integrated planner may win because the baselines are weak;
+- `LiveDecisionEngine` may win because the baselines are weak;
 - the glue baseline narrows the advantage to +6.7 pp and the result is not significant;
 - a single domain limits generality;
 - deterministic cases hide variance;

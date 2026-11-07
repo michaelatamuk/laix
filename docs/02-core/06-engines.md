@@ -1,19 +1,36 @@
-# Planners and the engine contract
+# Planners, engines and the decision contract
 
-The planner contract, the built-in planners and the simulator are implemented in
-`core/engines/`. The planners are grouped under `core/engines/planners/`, and the signal-attention
-engine is under `core/engines/signals/`. Rule policies and packaged policies work on their own;
-planners are optional.
-This page covers the planner contract; attention and policies are separate parts of the Decide layer.
-The vocabulary is defined in the [glossary](../04-concepts/glossary.md).
+The decision components live in `core/engines/`. Planners are grouped under
+`core/engines/planners/`; the live decision engine is under `core/engines/live/`; the
+signal-attention engine is under `core/engines/signals/`. Rule policies and packaged policies
+work on their own; planners are optional. This page covers the planner and engine contract;
+attention and policies are separate parts of the Decide layer. The vocabulary is defined in the
+[glossary](../04-concepts/glossary.md).
+
+## Vocabulary
+
+The words are not interchangeable:
+
+| Layer | Role | Built-ins |
+|---|---|---|
+| **Planner** | A strategy: score the options and choose one. | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner`, `POMDPPlanner` |
+| **Engine** | A composition: run several planners on the same problem and return one `Plan`. | `LiveDecisionEngine` |
+| **Policy** | An integration: place a decision inside the host loop. | `RulePolicy`, `EnginePolicy`, `ShadowPolicy` |
+| **Learner** | Learning from outcomes. | `UCBBandit`, `ModelLearner` |
+| **Protocol** | The `solve(problem) -> Plan` interface. | `DecisionEngine` |
+
+A planner is not an engine, and an engine is not a planner. `LiveDecisionEngine` composes
+planners; it does not replace them. `EnginePolicy` is an adapter between the `DecisionEngine`
+protocol and the host's policy interface.
 
 The goal is:
 
-- one planner contract;
+- one decision protocol;
 - LAIX’s own planners;
+- one composition engine;
 - adapters for external planners;
-- every planner returns the same `Plan`; the adapter returns the same `Decision` and uses the same
-  lifecycle.
+- every planner and every engine returns the same `Plan`; the policy adapter returns the same
+  `Decision` and uses the same lifecycle.
 
 Build order and current status live in [the project roadmap](../05-project/roadmap.md).
 
@@ -24,10 +41,16 @@ DecisionRequest
       │
       ▼
    Policy
-   ├── rule policy
-   └── EnginePolicy             wraps any planner
-          ├── external planner  JEV, OR-Tools (an optimizer), a POMDP library
-          └── LAIX planner      UtilityEngine, MDPEngine, POMDPEngine
+   ├── RulePolicy            matches the situation against authored rules
+   └── EnginePolicy          adapts a DecisionEngine to the policy interface
+          ├── LiveDecisionEngine      composes the live planners
+          │      ├── UtilityPlanner
+          │      ├── CommitmentPlanner
+          │      ├── ExecutionRiskPlanner
+          │      └── HumanAttentionPlanner
+          ├── MDPPlanner
+          ├── POMDPPlanner
+          └── external engine       JEV, OR-Tools (an optimizer), a POMDP library
       │
       ▼
    Decision
@@ -38,8 +61,8 @@ approval -> execute -> verify -> outcome
 
 The rule:
 
-> A planner produces a plan. The layer turns that plan into a decision. All paths return the same
-> decision shape.
+> A planner produces a plan. An engine composes planners into one plan. The layer turns that
+> plan into a decision. All paths return the same decision shape.
 
 ## Core contracts
 
@@ -53,7 +76,7 @@ policy = EnginePolicy(engine)
 decision = policy.decide(request)[0]
 ```
 
-`EnginePolicy` owns the conversion; the planner returns a `Plan`, the policy returns
+`EnginePolicy` owns the conversion; the planner or engine returns a `Plan`, the policy returns
 the one `Decision` shape.
 
 The contracts:
@@ -64,13 +87,13 @@ The contracts:
 | `Plan` | chosen option, expected value, confidence and alternatives |
 | `DecisionEngine` | `solve(problem) -> Plan` |
 | `EnginePolicy` | turns a plan into a `Decision` |
-| `UtilityEngine` | expected utility with hard limits and risk attitude |
-| `CommitmentAwareEngine` | utility plus promise keeping, violations and due commitments |
-| `ExecutionAwareEngine` | utility plus irreversibility, unknown outcomes and recovery cost |
-| `AttentionAwareEngine` | utility plus interruption, approval and escalation cost |
-| `LiveDecisionEngine` | utility plus commitments, execution risk and human attention in one plan |
-| `MdpModel`, `MDPEngine` | finite MDP, value iteration and a greedy plan |
-| `PomdpModel`, `POMDPEngine` | belief update and finite-horizon planning |
+| `UtilityPlanner` | expected utility with hard limits and risk attitude |
+| `CommitmentPlanner` | utility plus promise keeping, violations and due commitments |
+| `ExecutionRiskPlanner` | utility plus irreversibility, unknown outcomes and recovery cost |
+| `HumanAttentionPlanner` | utility plus interruption, approval and escalation cost |
+| `LiveDecisionEngine` | composition: commitments, execution risk and human attention in one plan |
+| `MdpModel`, `MDPPlanner` | finite MDP, value iteration and a greedy plan |
+| `PomdpModel`, `POMDPPlanner` | belief update and finite-horizon planning |
 | `Simulator` | runs a planner in a model |
 | `SimulationReport` | planner comparison, reward and optimality gap |
 | `CalibrationReport` | predicted confidence vs observed accuracy |
@@ -84,7 +107,7 @@ The contracts:
 | 1 | Problem shape | `DecisionProblem`, request projection |
 | 2 | Option model | `ActionOption`, costs, risks and hard limits |
 | 3 | Utility model | `UtilityModel`, weights, risk attitude |
-| 4 | Planner choice | `DecisionEngine.solve`, `UtilityEngine`, `CommitmentAwareEngine`, `ExecutionAwareEngine`, `AttentionAwareEngine`, `LiveDecisionEngine`, `MDPEngine`, `POMDPEngine` |
+| 4 | Planning and composition | Planners: `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner`, `POMDPPlanner`. Engine: `LiveDecisionEngine`. Protocol: `DecisionEngine.solve` |
 | 5 | Calibration | `CalibrationReport`, `DecisionCalibrationReport` and confidence adjustment |
 | 6 | Learning | `ModelLearner` for transitions and rewards |
 | 7 | Explanation | chosen plan, alternatives, expected value |
@@ -114,7 +137,7 @@ stateDiagram-v2
 | Transition | `MdpTransition` | probability of the next state, and its reward |
 | Discount | `MdpModel.discount` | how much future reward matters |
 | Horizon | `MdpModel.horizon` | how many steps to plan |
-| Policy | `MDPEngine` | the action to choose in each state |
+| Policy (MDP term) | `MDPPlanner` | the best action per state; this is not the LAIX `Policy` layer |
 
 The planner computes a value for each state:
 
@@ -144,7 +167,7 @@ happen next, and what is that sequence worth?”. That matters when actions have
 uncertain outcomes, or a cost to waiting.
 
 ```python
-from laix import DecisionProblem, MDPEngine, MdpModel, MdpTransition
+from laix import DecisionProblem, MDPPlanner, MdpModel, MdpTransition
 
 model = MdpModel(
     states=("s0", "s1", "s2"),
@@ -160,7 +183,7 @@ model = MdpModel(
     horizon=2,
 )
 
-plan = MDPEngine(model).solve(
+plan = MDPPlanner(model).solve(
     DecisionProblem(subject="choose", at="2026-11-01T10:00:00+00:00")
 )
 print(plan.action_id, plan.score, plan.alternatives)
@@ -180,7 +203,7 @@ planner chooses the action that is best under that belief.
 | Update | revise the belief from the new observation |
 | Action | chosen to maximise expected reward under the belief |
 
-`POMDPEngine` plans over a finite model. Belief planning grows quickly with the number of states and
+`POMDPPlanner` plans over a finite model. Belief planning grows quickly with the number of states and
 observations, so keep the model small. See [the app-kit bench](../03-appkit/08-laix-bench.md) for planner
 comparison.
 
@@ -203,7 +226,7 @@ ActionOption(
 )
 ```
 
-The engine adds:
+The planner adds:
 
 - a reward for fulfilling an open commitment;
 - an extra reward when the commitment is due;
@@ -214,7 +237,7 @@ The engine adds:
 The reward scales with `Commitment.priority`, so a high-priority promise counts more. A blocked
 commitment counts as fulfilled once its dependencies are `done`.
 
-`CommitmentAwareEngine` returns the same `Plan`. It is deterministic and training-free; the
+`CommitmentPlanner` returns the same `Plan`. It is deterministic and training-free; the
 commitments and due times come from the host. The effect can be written under `commitments` or at
 the top level of `params`.
 
@@ -235,7 +258,7 @@ ActionOption(
 )
 ```
 
-The engine subtracts:
+The planner subtracts:
 
 - a penalty for an irreversible action;
 - a penalty for unknown outcome risk;
@@ -257,7 +280,7 @@ DecisionProblem(
 An `unknown` receipt raises the unknown risk, a `failed`, `refused`, `cancelled` or `undone` receipt
 raises the recovery cost, and a `pending` receipt counts as approval.
 
-`ExecutionAwareEngine` returns the same `Plan`. It is deterministic and training-free; the
+`ExecutionRiskPlanner` returns the same `Plan`. It is deterministic and training-free; the
 execution facts come from the option and the host's constraints.
 
 ## Attention-aware planning
@@ -300,13 +323,14 @@ Approval state can also be passed in `attributes["approvals"]` as a map from act
 `approved`, `pending` or `rejected`. A rejected option is blocked; an approved option avoids the
 approval cost.
 
-`AttentionAwareEngine` returns the same `Plan`. It is deterministic and training-free. It can
+`HumanAttentionPlanner` returns the same `Plan`. It is deterministic and training-free. It can
 prefer a direct action, or wait when every option needs more attention than is left.
 
-## Integrated live planning
+## The live decision engine
 
-`LiveDecisionEngine` puts the three live concerns into one plan: promises, execution risk and human
-attention. It keeps the utility score and adds the commitment, execution and attention terms.
+`LiveDecisionEngine` is the composition engine. It runs the four live planner scores on the same
+problem: utility, commitments, execution risk and human attention. It keeps the utility score and
+adds the commitment, execution and attention terms.
 
 ```python
 from laix import DecisionProblem, LiveDecisionEngine
@@ -319,11 +343,13 @@ print(plan.attributes["attention_score"])
 ```
 
 The plan carries the full breakdown, so the reason is auditable. On the seven-case live demo the
-integrated planner matches every expected action, while the single-concern planners win their own
-cases.
+engine matches every expected action, while the single-concern planners win their own cases.
 
-This is the integration the runtime is built around: one decision can keep a promise, avoid an
+This is the composition the runtime is built around: one decision can keep a promise, avoid an
 irreversible action and respect a human-attention budget at the same time.
+
+`LiveDecisionEngine` is the only engine in this family. Everything else under
+`core/engines/planners/` is a planner; `EnginePolicy` is the adapter; `UCBBandit` is a learner.
 
 Runnable examples: [`examples/python/03-plan/live_engine.py`](../../examples/python/03-plan/live_engine.py)
 and the full loop in [`examples/python/09-live-loop/live_loop.py`](../../examples/python/09-live-loop/live_loop.py).
@@ -333,7 +359,7 @@ and the full loop in [`examples/python/09-live-loop/live_loop.py`](../../example
 ```python
 decision = decide(request, policy=EnginePolicy(JevEngine(...)))[0]
 decision = decide(request, policy=EnginePolicy(OrToolsEngine(...)))[0]
-decision = decide(request, policy=EnginePolicy(MDPEngine(...)))[0]
+decision = decide(request, policy=EnginePolicy(MDPPlanner(...)))[0]
 ```
 
 The external planner can be a classifier, an optimizer or a model service. The adapter maps its
@@ -342,7 +368,7 @@ output into a `Plan`.
 ## Path B: built-in planner
 
 ```python
-class MDPEngine:
+class MDPPlanner:
     def solve(self, problem: DecisionProblem) -> Plan:
         ...
         return Plan(
@@ -355,22 +381,23 @@ class MDPEngine:
             alternatives=(...),
         )
 
-decision = decide(request, policy=EnginePolicy(MDPEngine()))[0]
+decision = decide(request, policy=EnginePolicy(MDPPlanner()))[0]
 ```
 
-Pass the planner through `EnginePolicy(engine)` so every path shares one conversion.
+Pass the planner through `EnginePolicy(planner)` so every path shares one conversion.
 
 Internally this is still a planner-backed policy.
 
 ## Design rules
 
-1. Every planner returns a `Plan`; `EnginePolicy` returns the one `Decision` shape.
-2. Approval, execution, verification and outcome recording stay outside the core.
-3. The app supplies the domain model. LAIX supplies the decision method.
-4. Planners are optional. The rule policies remain.
-5. A planner can be replaced without changing the app adapter.
-6. A planner result must be explainable: chosen plan, alternatives, expected value.
-7. Bench compares planners on the same cases.
+1. Every planner and every engine returns a `Plan`; `EnginePolicy` returns the one `Decision` shape.
+2. Planner means strategy; engine means composition; policy means integration; learner means learning.
+3. Approval, execution, verification and outcome recording stay outside the core.
+4. The app supplies the domain model. LAIX supplies the decision method.
+5. Planners are optional. The rule policies remain.
+6. A planner can be replaced without changing the app adapter.
+7. A planner result must be explainable: chosen plan, alternatives, expected value.
+8. Bench compares planners and engines on the same cases.
 
 ## Limits
 

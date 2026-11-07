@@ -20,7 +20,7 @@ from laix import (
     Commitment,
     DecisionProblem,
     LiveDecisionEngine,
-    UtilityEngine,
+    UtilityPlanner,
 )
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -260,7 +260,7 @@ def run_episode(episode: Episode) -> dict[str, object]:
 
         # The stateless planner gets the same static options every step and no episode state.
         bare = DecisionProblem(subject=episode.id, at="2026-11-01T10:00:00+00:00", options=base_options())
-        stateless_plan = UtilityEngine().solve(bare)
+        stateless_plan = UtilityPlanner().solve(bare)
         apply_action(stateless, effective_action(stateless_plan, stateless), episode)
 
         stateful_plan = LiveDecisionEngine().solve(problem_for(episode, stateful))

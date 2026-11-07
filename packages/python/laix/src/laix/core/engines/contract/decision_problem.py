@@ -1,4 +1,4 @@
-"""What an engine may use to solve one task."""
+"""What a ``DecisionEngine`` receives to solve one task."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import Any
 
 @dataclass(frozen=True, slots=True)
 class DecisionProblem:
-    """What an engine may use to solve one task."""
+    """What a ``DecisionEngine`` receives to solve one task."""
 
     subject: str
     at: str

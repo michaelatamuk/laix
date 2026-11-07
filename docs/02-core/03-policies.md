@@ -106,35 +106,37 @@ accepts `target="request"` to take the mode from the request.
 - **`ShadowPolicy`** — runs a second policy beside the primary, returns the primary decision and
   records every disagreement for comparison.
 
-## Planners
+## Planners and the live engine
 
-A planner is a solver behind the same policy interface. Wrap it with `EnginePolicy`:
+A planner is a strategy behind the same policy interface. `LiveDecisionEngine` is the composition
+engine: it runs several planners and returns one plan. Wrap either with `EnginePolicy`:
 
 ```python
-from laix import DecisionRequest, EnginePolicy, MDPEngine, MdpModel, decide
+from laix import DecisionRequest, EnginePolicy, MDPPlanner, MdpModel, decide
 
 # model = MdpModel(states=..., actions=..., transitions=..., start=...)
 decision = decide(
     DecisionRequest(subject="choose", at="2026-11-01T10:00:00+00:00"),
-    policy=EnginePolicy(MDPEngine(model)),
+    policy=EnginePolicy(MDPPlanner(model)),
 )[0]
 ```
 
-- **`UtilityEngine`** — expected utility over the offered options, with hard limits and
+- **`UtilityPlanner`** — expected utility over the offered options, with hard limits and
   `neutral` / `averse` / `seeking` risk attitudes. Hard `Situation` constraints for risk, cost,
   budget, latency, interruption and safety are enforced before scoring.
-- **`CommitmentAwareEngine`** — utility plus promise keeping, violations and due commitments.
-- **`ExecutionAwareEngine`** — utility plus irreversibility, unknown outcomes and recovery cost.
-- **`AttentionAwareEngine`** — utility plus interruption, approval and escalation cost.
-- **`LiveDecisionEngine`** — utility plus commitments, execution risk and human attention.
-- **`MDPEngine`** — value iteration over a finite `MdpModel`, with a discount and horizon. See
+- **`CommitmentPlanner`** — utility plus promise keeping, violations and due commitments.
+- **`ExecutionRiskPlanner`** — utility plus irreversibility, unknown outcomes and recovery cost.
+- **`HumanAttentionPlanner`** — utility plus interruption, approval and escalation cost.
+- **`LiveDecisionEngine`** — the composition engine, not a planner: it combines utility,
+  commitments, execution risk and human attention in one plan.
+- **`MDPPlanner`** — value iteration over a finite `MdpModel`, with a discount and horizon. See
   [what an MDP is](06-engines.md#what-an-mdp-is).
-- **`POMDPEngine`** — belief update and finite-horizon expectimax over a small `PomdpModel`.
+- **`POMDPPlanner`** — belief update and finite-horizon expectimax over a small `PomdpModel`.
   `compare_pomdp_to_mdp` is a sanity check against the most likely MDP state.
-- **`Simulator`** — runs a planner in a model; `compare_engines` reports reward and optimality gap.
+- **`Simulator`** — runs a planner in a model; `compare_planners` reports reward and optimality gap.
   `Simulator.from_mdp(..., seed=...)` gives repeatable stochastic rollouts.
 - **`ModelLearner`** — learns transitions and rewards; `to_mdp_model()` turns the table into an
-  `MdpModel` for `MDPEngine`.
+  `MdpModel` for `MDPPlanner`.
 
 Risk attitude controls how the utility planner trades expected value against variance: `neutral`
 ignores it, `averse` penalises it, and `seeking` rewards it.

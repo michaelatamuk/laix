@@ -17,8 +17,8 @@ from ...contract.engine import DecisionProblem, Plan
 from .execution_effect import ExecutionEffect
 from .execution_score import ExecutionScore
 from .execution_weights import ExecutionWeights
-from ..utility.utility import (
-    UtilityEngine,
+from ..utility.utility_planner import (
+    UtilityPlanner,
     UtilityModel,
     _approval_required,
     _constraint_blocker,
@@ -113,7 +113,7 @@ def _score_option(
     )
 
 
-class ExecutionAwareEngine:
+class ExecutionRiskPlanner:
     """Choose the option with the best utility plus execution risk."""
 
     name = "execution.v1"
@@ -125,7 +125,7 @@ class ExecutionAwareEngine:
     ) -> None:
         self.model = model
         self.weights = weights or ExecutionWeights()
-        self._utility = UtilityEngine(model)
+        self._utility = UtilityPlanner(model)
 
     def solve(self, problem: DecisionProblem) -> Plan:
         options = list(problem.options)
@@ -239,7 +239,7 @@ class ExecutionAwareEngine:
 
 
 __all__ = [
-    "ExecutionAwareEngine",
+    "ExecutionRiskPlanner",
     "ExecutionEffect",
     "ExecutionScore",
     "ExecutionWeights",

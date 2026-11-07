@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
-  CommitmentAwareEngine,
-  UtilityEngine,
+  CommitmentPlanner,
+  UtilityPlanner,
   UtilityModel,
 } from "../../../src/index.ts";
 import type { ActionOption, Commitment, DecisionProblem } from "../../../src/index.ts";
@@ -35,7 +35,7 @@ function option(
 
 describe("commitment-aware planning", () => {
   it("changes the choice when an option breaks a promise", () => {
-    const plan = new CommitmentAwareEngine().solve(
+    const plan = new CommitmentPlanner().solve(
       problem(
         [
           option("send-now", 1.0, { violates: ["c1"] }),
@@ -52,7 +52,7 @@ describe("commitment-aware planning", () => {
   });
 
   it("weights a due commitment more", () => {
-    const plan = new CommitmentAwareEngine().solve(
+    const plan = new CommitmentPlanner().solve(
       problem(
         [
           option("do-later", 0.6, { fulfills: ["later"] }),
@@ -70,7 +70,7 @@ describe("commitment-aware planning", () => {
   });
 
   it("blocks a hard violation", () => {
-    const plan = new CommitmentAwareEngine().solve(
+    const plan = new CommitmentPlanner().solve(
       problem(
         [
           option("break", 1.0, { violates: ["c1"], hard: true }),
@@ -89,7 +89,7 @@ describe("commitment-aware planning", () => {
   });
 
   it("blocks fulfillment until a dependency is done", () => {
-    const blocked = new CommitmentAwareEngine().solve(
+    const blocked = new CommitmentPlanner().solve(
       problem(
         [
           option("do-c0", 0.5, { fulfills: ["c0"] }),
@@ -103,7 +103,7 @@ describe("commitment-aware planning", () => {
     );
     assert.equal(blocked.actionId, "do-c0");
 
-    const unblocked = new CommitmentAwareEngine().solve(
+    const unblocked = new CommitmentPlanner().solve(
       problem(
         [
           option("do-c0", 0.5),
@@ -119,7 +119,7 @@ describe("commitment-aware planning", () => {
   });
 
   it("scales the reward by priority", () => {
-    const plan = new CommitmentAwareEngine().solve(
+    const plan = new CommitmentPlanner().solve(
       problem(
         [
           option("do-low", 0.5, { fulfills: ["low"] }),
@@ -135,20 +135,20 @@ describe("commitment-aware planning", () => {
     assert.equal(plan.actionId, "do-high");
   });
 
-  it("matches the utility engine when there are no commitments", () => {
+  it("matches the utility planner when there are no commitments", () => {
     const options: ActionOption[] = [
       { id: "safe", verb: "act", name: "safe", expectedBenefit: 0.6, risk: 0.1 },
       { id: "bold", verb: "act", name: "bold", expectedBenefit: 0.9, risk: 0.6 },
     ];
     assert.equal(
-      new CommitmentAwareEngine().solve(problem(options)).actionId,
-      new UtilityEngine().solve(problem(options)).actionId,
+      new CommitmentPlanner().solve(problem(options)).actionId,
+      new UtilityPlanner().solve(problem(options)).actionId,
     );
   });
 
   it("rejects a negative weight", () => {
     assert.throws(
-      () => new CommitmentAwareEngine(new UtilityModel(), { violate: -1 }),
+      () => new CommitmentPlanner(new UtilityModel(), { violate: -1 }),
     );
   });
 });

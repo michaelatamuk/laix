@@ -85,14 +85,14 @@ from .core.engines.policies import (
 from .core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .core.engines.planners.commitment.commitment_planner import (
-    CommitmentAwareEngine,
+    CommitmentPlanner,
     CommitmentEffect,
     CommitmentScore,
     CommitmentWeights,
     commitment_effect,
 )
 from .core.engines.planners.attention.attention_planner import (
-    AttentionAwareEngine,
+    HumanAttentionPlanner,
     AttentionBudget,
     AttentionEffect,
     AttentionScore,
@@ -101,7 +101,7 @@ from .core.engines.planners.attention.attention_planner import (
     attention_effect,
 )
 from .core.engines.planners.execution.execution_planner import (
-    ExecutionAwareEngine,
+    ExecutionRiskPlanner,
     ExecutionEffect,
     ExecutionScore,
     ExecutionWeights,
@@ -116,7 +116,7 @@ from .core.engines.bench.live_bench import (
     default_planners,
     run_live_bench,
 )
-from .core.engines.planners.live.live_engine import LiveDecisionEngine, LiveScore
+from .core.engines.live.live_engine import LiveDecisionEngine, CompositeScore
 from .core.engines.learning.decision_calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
@@ -134,8 +134,8 @@ from .core.engines.learning.calibration import (
     calibration_report,
     samples_from_outcomes,
 )
-from .core.engines.planners.mdp.mdp import (
-    MDPEngine,
+from .core.engines.planners.mdp.mdp_planner import (
+    MDPPlanner,
     MdpModel,
     MdpTransition,
     action_values,
@@ -143,9 +143,9 @@ from .core.engines.planners.mdp.mdp import (
     value_iteration,
 )
 from .core.engines.learning.model_learning import LearnedTransition, ModelLearner
-from .core.engines.planners.pomdp.pomdp import (
+from .core.engines.planners.pomdp.pomdp_planner import (
     ObservationProbability,
-    POMDPEngine,
+    POMDPPlanner,
     PlannerComparison,
     PomdpModel,
     PomdpTransition,
@@ -158,16 +158,16 @@ from .core.engines.planners.pomdp.pomdp import (
     pomdp_value,
 )
 from .core.engines.simulation.simulator import (
-    EngineScore,
+    PlannerScore,
     Scenario,
     SimulationReport,
     SimulationResult,
     SimulationStep,
     Simulator,
-    compare_engines,
+    compare_planners,
     seeded_scenarios,
 )
-from .core.engines.planners.utility.utility import RISK_ATTITUDES, UtilityEngine, UtilityModel, UtilityWeights
+from .core.engines.planners.utility.utility_planner import RISK_ATTITUDES, UtilityPlanner, UtilityModel, UtilityWeights
 from .core.dispatch import decide, select
 
 # The app kit is optional and is imported on first use.  A host that only needs
@@ -304,7 +304,7 @@ __all__ = [
     "CausalObservation",
     "COMMITMENT_STATUSES",
     "Commitment",
-    "CommitmentAwareEngine",
+    "CommitmentPlanner",
     "CommitmentEffect",
     "CommitmentLedger",
     "CommitmentScore",
@@ -319,7 +319,7 @@ __all__ = [
     "DeliveryPort",
     "DeliveryReceipt",
     "PlatformEvent",
-    "EngineScore",
+    "PlannerScore",
     "EvidenceRef",
     "Feedback",
     "InMemoryPlatform",
@@ -345,13 +345,13 @@ __all__ = [
     "Saga",
     "SagaResult",
     "SagaStep",
-    "MDPEngine",
+    "MDPPlanner",
     "MdpModel",
     "MdpTransition",
     "ModelLearner",
     "LearnedTransition",
     "ObservationProbability",
-    "POMDPEngine",
+    "POMDPPlanner",
     "PlannerComparison",
     "PomdpModel",
     "PomdpTransition",
@@ -361,7 +361,7 @@ __all__ = [
     "SimulationResult",
     "SimulationStep",
     "Simulator",
-    "UtilityEngine",
+    "UtilityPlanner",
     "UtilityModel",
     "UtilityWeights",
     "action_values",
@@ -370,7 +370,7 @@ __all__ = [
     "belief_update",
     "calibration_by_policy",
     "calibration_report",
-    "compare_engines",
+    "compare_planners",
     "compare_pomdp_to_mdp",
     "normalize_belief",
     "observation_probability",
@@ -433,14 +433,14 @@ __all__ = [
     "PreferenceElicitationPolicy",
     "EXECUTION_RECEIPT_STATUSES",
     "ExecutionReceipt",
-    "AttentionAwareEngine",
+    "HumanAttentionPlanner",
     "AttentionBudget",
     "AttentionEffect",
     "AttentionScore",
     "AttentionWeights",
     "approval_state",
     "attention_effect",
-    "ExecutionAwareEngine",
+    "ExecutionRiskPlanner",
     "ExecutionEffect",
     "ExecutionScore",
     "ExecutionWeights",
@@ -449,7 +449,7 @@ __all__ = [
     "LiveBenchRow",
     "LiveCase",
     "LiveDecisionEngine",
-    "LiveScore",
+    "CompositeScore",
     "PlannerMetrics",
     "default_cases",
     "default_planners",

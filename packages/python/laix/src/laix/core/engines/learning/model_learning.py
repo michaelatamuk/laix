@@ -11,7 +11,7 @@ import math
 from typing import Any, Iterable
 
 from .learned_transition import LearnedTransition
-from ..planners.mdp.mdp import MdpModel, MdpTransition
+from ..planners.mdp.mdp_planner import MdpModel, MdpTransition
 
 Transition = tuple[str, str, str, float]
 
@@ -96,7 +96,7 @@ class ModelLearner:
         discount: float = 0.9,
         horizon: int | None = 20,
     ) -> MdpModel:
-        """Turn the learned table into a finite MDP for ``MDPEngine``."""
+        """Turn the learned table into a finite MDP for ``MDPPlanner``."""
         learned = self.learned()
         if not learned:
             raise ValueError("no transitions have been learned")

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
-  UtilityEngine,
+  UtilityPlanner,
   defaultCases,
   defaultPlanners,
   liveBenchSummary,
@@ -53,7 +53,7 @@ describe("training-free live benchmark", () => {
 
   it("runs a custom case and planner", () => {
     const first = defaultCases()[0]!;
-    const report = runLiveBench([first], { utility: new UtilityEngine() });
+    const report = runLiveBench([first], { utility: new UtilityPlanner() });
 
     assert.deepEqual(report.cases, [first.name]);
     assert.deepEqual(report.planners, ["utility"]);

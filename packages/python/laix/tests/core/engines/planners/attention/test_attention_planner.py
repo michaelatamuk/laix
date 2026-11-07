@@ -6,11 +6,11 @@ import pytest
 
 from laix import (
     ActionOption,
-    AttentionAwareEngine,
+    HumanAttentionPlanner,
     AttentionBudget,
     AttentionWeights,
     DecisionProblem,
-    UtilityEngine,
+    UtilityPlanner,
 )
 
 
@@ -24,7 +24,7 @@ def _problem(*options: ActionOption, **attributes: object) -> DecisionProblem:
 
 
 def test_low_attention_wins_when_utility_is_close() -> None:
-    plan = AttentionAwareEngine().solve(
+    plan = HumanAttentionPlanner().solve(
         _problem(
             ActionOption(id="direct", verb="act", name="direct", expected_benefit=0.7),
             ActionOption(
@@ -42,7 +42,7 @@ def test_low_attention_wins_when_utility_is_close() -> None:
 
 
 def test_blocks_a_human_option_when_the_budget_is_gone() -> None:
-    plan = AttentionAwareEngine().solve(
+    plan = HumanAttentionPlanner().solve(
         _problem(
             ActionOption(id="ask", verb="ask", name="ask", expected_benefit=0.9),
             ActionOption(id="act", verb="act", name="act", expected_benefit=0.6),
@@ -56,7 +56,7 @@ def test_blocks_a_human_option_when_the_budget_is_gone() -> None:
 
 
 def test_waits_when_every_option_needs_attention() -> None:
-    plan = AttentionAwareEngine().solve(
+    plan = HumanAttentionPlanner().solve(
         _problem(
             ActionOption(id="ask", verb="ask", name="ask", expected_benefit=0.9),
             ActionOption(id="guide", verb="guide", name="guide", expected_benefit=0.8),
@@ -69,7 +69,7 @@ def test_waits_when_every_option_needs_attention() -> None:
 
 
 def test_approval_counts_as_attention() -> None:
-    plan = AttentionAwareEngine().solve(
+    plan = HumanAttentionPlanner().solve(
         _problem(
             ActionOption(id="direct", verb="act", name="direct", expected_benefit=0.7),
             ActionOption(
@@ -86,7 +86,7 @@ def test_approval_counts_as_attention() -> None:
 
 
 def test_a_rejected_approval_blocks_the_option() -> None:
-    plan = AttentionAwareEngine().solve(
+    plan = HumanAttentionPlanner().solve(
         _problem(
             ActionOption(id="rejected", verb="act", name="rejected", expected_benefit=0.9),
             ActionOption(id="direct", verb="act", name="direct", expected_benefit=0.6),
@@ -98,7 +98,7 @@ def test_a_rejected_approval_blocks_the_option() -> None:
 
 
 def test_an_approved_option_does_not_pay_the_approval_cost() -> None:
-    plan = AttentionAwareEngine().solve(
+    plan = HumanAttentionPlanner().solve(
         _problem(
             ActionOption(id="direct", verb="act", name="direct", expected_benefit=0.7),
             ActionOption(
@@ -116,7 +116,7 @@ def test_an_approved_option_does_not_pay_the_approval_cost() -> None:
 
 
 def test_a_pending_approval_still_costs_attention() -> None:
-    plan = AttentionAwareEngine().solve(
+    plan = HumanAttentionPlanner().solve(
         _problem(
             ActionOption(id="direct", verb="act", name="direct", expected_benefit=0.7),
             ActionOption(
@@ -135,7 +135,7 @@ def test_a_pending_approval_still_costs_attention() -> None:
 
 def test_attention_budget_object_is_shared() -> None:
     budget = AttentionBudget(total=1.0, spent=0.9)
-    plan = AttentionAwareEngine().solve(
+    plan = HumanAttentionPlanner().solve(
         _problem(
             ActionOption(id="ask", verb="ask", name="ask", expected_benefit=0.9),
             ActionOption(id="act", verb="act", name="act", expected_benefit=0.6),
@@ -148,7 +148,7 @@ def test_attention_budget_object_is_shared() -> None:
     assert budget.spend(0.1) == 0.0
 
 
-def test_matches_the_utility_engine_without_attention_facts() -> None:
+def test_matches_the_utility_planner_without_attention_facts() -> None:
     options = (
         ActionOption(id="safe", verb="act", name="safe", expected_benefit=0.6, risk=0.1),
         ActionOption(id="bold", verb="act", name="bold", expected_benefit=0.9, risk=0.6),
@@ -156,8 +156,8 @@ def test_matches_the_utility_engine_without_attention_facts() -> None:
     problem = _problem(*options)
 
     assert (
-        AttentionAwareEngine().solve(problem).action_id
-        == UtilityEngine().solve(problem).action_id
+        HumanAttentionPlanner().solve(problem).action_id
+        == UtilityPlanner().solve(problem).action_id
     )
 
 

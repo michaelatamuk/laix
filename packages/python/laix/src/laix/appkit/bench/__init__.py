@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from .case import BenchCase
-from .engine_bench import run_engine_bench
+from .planner_bench import run_planner_bench
 from .report import FIELDS, BenchReport
 from .row import BenchRow
 from .runner import all_suites, main, run_bench, suite_names
@@ -18,6 +18,6 @@ __all__ = [
     "all_suites",
     "main",
     "run_bench",
-    "run_engine_bench",
+    "run_planner_bench",
     "suite_names",
 ]

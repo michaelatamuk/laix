@@ -1,11 +1,11 @@
-"""Compare engines on the same scenario."""
+"""Compare planners on the same scenario."""
 
 from __future__ import annotations
 
-from laix import Plan, Scenario, Simulator, compare_engines
+from laix import Plan, Scenario, Simulator, compare_planners
 
 
-class FixedEngine:
+class FixedPlanner:
     def __init__(self, action: str) -> None:
         self.action = action
 
@@ -28,8 +28,8 @@ scenario = Scenario(
     simulator=Simulator(step, ("right", "wrong"), start="s", horizon=4),
     optimum=4.0,
 )
-report = compare_engines(
-    {"right": FixedEngine("right"), "wrong": FixedEngine("wrong")},
+report = compare_planners(
+    {"right": FixedPlanner("right"), "wrong": FixedPlanner("wrong")},
     [scenario],
 )
 print(report.best(), report.summary()["right"]["mean_reward"], report.summary()["wrong"]["mean_gap"])

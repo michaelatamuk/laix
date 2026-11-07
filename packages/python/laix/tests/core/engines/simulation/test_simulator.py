@@ -1,21 +1,21 @@
-"""Engine simulation and comparison."""
+"""Planner simulation and comparison."""
 
 from __future__ import annotations
 
 from laix import (
     DecisionProblem,
-    MDPEngine,
+    MDPPlanner,
     MdpModel,
     MdpTransition,
     Plan,
     Scenario,
     Simulator,
-    compare_engines,
+    compare_planners,
     seeded_scenarios,
 )
 
 
-class FixedEngine:
+class FixedPlanner:
     def __init__(self, action: str) -> None:
         self.action = action
 
@@ -41,16 +41,16 @@ def _scenario(horizon: int = 4) -> Scenario:
 
 
 def test_simulator_records_each_step() -> None:
-    result = _scenario(2).run(FixedEngine("right"))
+    result = _scenario(2).run(FixedPlanner("right"))
 
     assert result.total_reward == 2.0
     assert len(result.steps) == 2
     assert result.steps[0].action == "right"
 
 
-def test_compare_engines_reports_the_best_and_the_gap() -> None:
-    report = compare_engines(
-        {"right": FixedEngine("right"), "wrong": FixedEngine("wrong")},
+def test_compare_planners_reports_the_best_and_the_gap() -> None:
+    report = compare_planners(
+        {"right": FixedPlanner("right"), "wrong": FixedPlanner("wrong")},
         [_scenario(4)],
     )
     summary = report.summary()
@@ -75,7 +75,7 @@ def test_simulator_from_mdp_runs_the_planner() -> None:
         discount=0.9,
         horizon=2,
     )
-    result = Simulator.from_mdp(model).run(MDPEngine(model))
+    result = Simulator.from_mdp(model).run(MDPPlanner(model))
 
     assert result.total_reward == 3.0
     assert [item.action for item in result.steps] == ["go", "go"]
@@ -87,7 +87,7 @@ def test_seeded_scenarios_are_repeatable() -> None:
 
     assert [item.name for item in first] == [item.name for item in second]
     assert [item.optimum for item in first] == [item.optimum for item in second]
-    report = compare_engines({"a": FixedEngine("a")}, first)
+    report = compare_planners({"a": FixedPlanner("a")}, first)
     assert report.best() == "a"
 
 
@@ -103,13 +103,13 @@ def test_seeded_mdp_simulation_is_repeatable() -> None:
         horizon=1,
     )
     simulator = Simulator.from_mdp(model, seed=7)
-    first = simulator.run(FixedEngine("go"))
-    second = simulator.run(FixedEngine("go"))
+    first = simulator.run(FixedPlanner("go"))
+    second = simulator.run(FixedPlanner("go"))
 
     assert first == second
     assert first.final_state in {"s1", "s2"}
     endings = {
-        Simulator.from_mdp(model, seed=seed).run(FixedEngine("go")).final_state
+        Simulator.from_mdp(model, seed=seed).run(FixedPlanner("go")).final_state
         for seed in range(1, 20)
     }
     assert endings == {"s1", "s2"}

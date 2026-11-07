@@ -1,12 +1,12 @@
 import type { ActionOption } from "../../contracts.ts";
 import type { DecisionProblem, Plan } from "../../contract/engine.ts";
 import {
-  UtilityEngine,
+  UtilityPlanner,
   UtilityModel,
   approvalRequired,
   constraintBlocker,
-} from "../utility/utility.ts";
-import type { RiskAttitude } from "../utility/utility.ts";
+} from "../utility/utility-planner.ts";
+import type { RiskAttitude } from "../utility/utility-planner.ts";
 
 export interface ExecutionWeights {
   irreversible?: number;
@@ -124,11 +124,11 @@ interface Row {
   blocker: string | null;
 }
 
-export class ExecutionAwareEngine {
+export class ExecutionRiskPlanner {
   readonly name = "execution.v1";
   readonly model: UtilityModel;
   readonly weights: Required<ExecutionWeights>;
-  private readonly utility: UtilityEngine;
+  private readonly utility: UtilityPlanner;
 
   constructor(model: UtilityModel = new UtilityModel(), weights: ExecutionWeights = {}) {
     this.model = model;
@@ -141,7 +141,7 @@ export class ExecutionAwareEngine {
     for (const [key, value] of Object.entries(this.weights)) {
       if (value < 0) throw new Error(`execution weight ${key} must not be negative`);
     }
-    this.utility = new UtilityEngine(model);
+    this.utility = new UtilityPlanner(model);
   }
 
   solve(problem: DecisionProblem): Plan {

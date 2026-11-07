@@ -1,1 +1,1 @@
-"""The bench engine package."""
+"""The benchmark package."""

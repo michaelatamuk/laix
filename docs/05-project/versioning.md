@@ -4,8 +4,8 @@ Several things move independently.
 
 | Thing | Version | Source |
 |---|---|---|
-| Python package | `0.9.0` | `packages/python/laix/pyproject.toml` |
-| TypeScript package | `0.9.0` | `packages/typescript/laix/package.json` |
+| Python package | `0.10.0` | `packages/python/laix/pyproject.toml` |
+| TypeScript package | `0.10.0` | `packages/typescript/laix/package.json` |
 | Record schema | `0.8.0` | `core/support/version.py`, `contracts.ts` |
 | Rule sets | `0.8.0` | policy versions and vectors |
 | Attention vectors | `0.8.0` | `attention.v1.json` and conformance fixtures |

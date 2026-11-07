@@ -25,8 +25,8 @@ from laix.core.engines.planners.attention.attention_planner import (
     attention_effect,
 )
 from laix.core.engines.planners.commitment.commitment_planner import _commitments
-from laix.core.engines.planners.utility.utility import (
-    UtilityEngine,
+from laix.core.engines.planners.utility.utility_planner import (
+    UtilityPlanner,
     _approval_required,
     _constraint_blocker,
 )
@@ -195,10 +195,10 @@ def evaluate_case(
         budget_violation = needs_attention and attention_cost > _remaining(problem)
         irreversible = not chosen.reversible
         safety_violation = _constraint_blocker(problem, chosen) is not None
-        model = UtilityEngine()._model_for(problem)
+        model = UtilityPlanner()._model_for(problem)
         utility_chosen = model.score(chosen)
 
-    model = UtilityEngine()._model_for(problem)
+    model = UtilityPlanner()._model_for(problem)
     feasible = [
         option
         for option in problem.options

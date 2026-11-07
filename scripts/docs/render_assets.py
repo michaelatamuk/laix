@@ -226,12 +226,12 @@ def render_banner() -> None:
 PLANNERS = [
     ("live", "LiveDecisionEngine"),
     ("glue", "Glue baseline"),
-    ("commitment", "CommitmentAwareEngine"),
-    ("first", "First / rule"),
-    ("attention", "AttentionAwareEngine"),
-    ("execution", "ExecutionAwareEngine"),
-    ("utility", "UtilityEngine"),
-    ("benefit", "Benefit-only"),
+    ("commitment", "CommitmentPlanner"),
+    ("first", "First-option baseline"),
+    ("attention", "HumanAttentionPlanner"),
+    ("execution", "ExecutionRiskPlanner"),
+    ("utility", "UtilityPlanner"),
+    ("benefit", "Highest-benefit baseline"),
 ]
 
 ABLATIONS_ORDER = [

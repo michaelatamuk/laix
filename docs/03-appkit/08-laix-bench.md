@@ -18,7 +18,7 @@ Python:
 python -m laix.appkit.bench
 python -m laix.appkit.bench --list
 python -m laix.appkit.bench --suite safety
-python -m laix.appkit.bench --engines
+python -m laix.appkit.bench --planners
 python -m laix.appkit.bench --json
 ```
 
@@ -27,7 +27,7 @@ TypeScript:
 ```powershell
 npm.cmd run bench
 npm.cmd run bench -- --suite safety --json
-npm.cmd run bench -- --engines
+npm.cmd run bench -- --planners
 ```
 
 ```text
@@ -100,11 +100,11 @@ decisions, elapsed time, throughput and stream counters. See [streaming](02-stre
 
 ## Planner simulation
 
-`Simulator` runs a planner in a deterministic model. `compare_engines(engines, scenarios)` returns
+`Simulator` runs a planner in a deterministic model. `compare_planners(planners, scenarios)` returns
 reward and optimality gap (the distance from the best possible reward) per planner and scenario;
 `seeded_scenarios(seed)` builds repeatable chains with a known optimum. `Simulator.from_mdp(model, seed=...)` gives repeatable stochastic rollouts.
 
-`python -m laix.appkit.bench --engines` compares `MDPEngine` with a do-nothing baseline on a chain
+`python -m laix.appkit.bench --planners` compares `MDPPlanner` with a do-nothing baseline on a chain
 and prints reward, steps and optimality gap. `--json` returns the same rows as JSON.
 
 ## Seven-case live demo
@@ -129,8 +129,8 @@ report = run_live_bench()
 print(report.summary())
 ```
 
-The current result shows why the new planners exist: utility wins on plain benefit, while the
-commitment-aware, execution-aware and attention-aware planners win the cases that include promises,
-execution risk and human attention. `LiveDecisionEngine` combines all three and matches all seven
-expected actions. TypeScript exports the same benchmark as `runLiveBench`, `defaultCases` and
+The current result shows why the planners exist: `UtilityPlanner` wins on plain benefit, while
+`CommitmentPlanner`, `ExecutionRiskPlanner` and `HumanAttentionPlanner` win the cases that include
+promises, execution risk and human attention. `LiveDecisionEngine` composes all four scores and
+matches all seven expected actions. TypeScript exports the same benchmark as `runLiveBench`, `defaultCases` and
 `liveBenchSummary`. See [the planner reference](../02-core/06-engines.md).

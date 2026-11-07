@@ -1,8 +1,8 @@
-"""Run engines in a model, and compare them on the same scenarios.
+"""Run planners in a model, and compare them on the same scenarios.
 
 The simulator is intentionally small: the host supplies a deterministic step
-function and the engine chooses an action for the current state. That is enough
-to compare a rule policy, a utility engine and an MDP planner on one trace.
+function and the planner chooses an action for the current state. That is enough
+to compare a rule policy, a utility planner and an MDP planner on one trace.
 """
 
 from __future__ import annotations
@@ -13,7 +13,7 @@ from typing import Callable, Iterable, Mapping, Sequence
 from ...support.time import iso
 from ..contract.decision_engine import DecisionEngine
 from ..contract.decision_problem import DecisionProblem
-from .engine_score import EngineScore
+from .planner_score import PlannerScore
 from ..planners.mdp.mdp_model import MdpModel
 from .scenario import Scenario
 from .simulation_report import SimulationReport
@@ -25,7 +25,7 @@ RandomStep = Callable[[str, str, random.Random], tuple[str, float]]
 
 
 class Simulator:
-    """A deterministic environment an engine can be run in."""
+    """A deterministic environment a planner can be run in."""
 
     def __init__(
         self,
@@ -50,7 +50,7 @@ class Simulator:
         self.random_step = random_step
         self.seed = seed
 
-    def run(self, engine: DecisionEngine) -> SimulationResult:
+    def run(self, planner: DecisionEngine) -> SimulationResult:
         state = self.start
         steps: list[SimulationStep] = []
         total = 0.0
@@ -65,7 +65,7 @@ class Simulator:
                 at=iso(),
                 attributes={"state": state},
             )
-            plan = engine.solve(problem)
+            plan = planner.solve(problem)
             action = plan.action_id
             if action is None or action not in self.actions:
                 steps.append(
@@ -151,15 +151,15 @@ class Simulator:
         )
 
 
-def compare_engines(
-    engines: Mapping[str, DecisionEngine],
+def compare_planners(
+    planners: Mapping[str, DecisionEngine],
     scenarios: Iterable[Scenario],
 ) -> SimulationReport:
-    """Run every engine on every scenario and report reward and optimality gap."""
-    rows: list[EngineScore] = []
+    """Run every planner on every scenario and report reward and optimality gap."""
+    rows: list[PlannerScore] = []
     for scenario in scenarios:
-        for name, engine in engines.items():
-            result = scenario.run(engine)
+        for name, planner in planners.items():
+            result = scenario.run(planner)
             gap = None
             if scenario.optimum is not None:
                 gap = round(
@@ -171,8 +171,8 @@ def compare_engines(
                     6,
                 )
             rows.append(
-                EngineScore(
-                    engine=name,
+                PlannerScore(
+                    planner=name,
                     scenario=scenario.name,
                     total_reward=result.total_reward,
                     steps=len(result.steps),
@@ -238,12 +238,12 @@ def seeded_scenarios(
 
 
 __all__ = [
-    "EngineScore",
+    "PlannerScore",
     "Scenario",
     "SimulationReport",
     "SimulationResult",
     "SimulationStep",
     "Simulator",
-    "compare_engines",
+    "compare_planners",
     "seeded_scenarios",
 ]

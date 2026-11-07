@@ -8,7 +8,7 @@ request and read one decision. Then choose the surface you need.
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.9.0#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.10.0#subdirectory=packages/python/laix"
 ```
 
 Local checkout, from the repository root:
@@ -27,7 +27,7 @@ TypeScript:
 }
 ```
 
-The release page also has a packed `laix-0.9.0.tgz`. See
+The release page also has a packed `laix-0.10.0.tgz`. See
 [versioning](../05-project/versioning.md) for tags and schema versions.
 
 ## One decision

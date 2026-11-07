@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from laix import (
     DecisionProblem,
-    MDPEngine,
+    MDPPlanner,
     MdpModel,
     MdpTransition,
     action_values,
@@ -39,8 +39,8 @@ def test_value_iteration_and_action_values() -> None:
     assert action_values(model, "s0")[0] == ("go", 2.8)
 
 
-def test_mdp_engine_returns_the_best_action() -> None:
-    plan = MDPEngine(_model()).solve(
+def test_mdp_planner_returns_the_best_action() -> None:
+    plan = MDPPlanner(_model()).solve(
         DecisionProblem(
             subject="choose",
             at="2026-11-01T10:00:00+00:00",
@@ -55,7 +55,7 @@ def test_mdp_engine_returns_the_best_action() -> None:
 
 
 def test_horizon_limits_lookahead() -> None:
-    plan = MDPEngine(_model(horizon=1)).solve(
+    plan = MDPPlanner(_model(horizon=1)).solve(
         DecisionProblem(subject="choose", at="2026-11-01T10:00:00+00:00")
     )
 

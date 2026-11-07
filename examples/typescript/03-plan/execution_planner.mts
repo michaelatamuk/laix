@@ -1,5 +1,5 @@
 import {
-  ExecutionAwareEngine,
+  ExecutionRiskPlanner,
 } from "../../../packages/typescript/laix/src/index.ts";
 import type {
   ActionOption,
@@ -29,5 +29,5 @@ const problem: DecisionProblem = {
   attributes: {},
 };
 
-const plan = new ExecutionAwareEngine().solve(problem);
+const plan = new ExecutionRiskPlanner().solve(problem);
 console.log(plan.actionId, plan.reasonCode, plan.reversible);

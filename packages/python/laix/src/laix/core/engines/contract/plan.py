@@ -1,4 +1,4 @@
-"""The engine's answer, before it becomes a ``Decision``."""
+"""The planner's answer, before it becomes a ``Decision``."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from ...decisions import Intent
 
 @dataclass(frozen=True, slots=True)
 class Plan:
-    """The engine's answer, before it becomes a ``Decision``."""
+    """The planner's answer, before it becomes a ``Decision``."""
 
     verb: str
     confidence: float

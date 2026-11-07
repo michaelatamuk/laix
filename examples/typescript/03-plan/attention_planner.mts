@@ -1,5 +1,5 @@
 import {
-  AttentionAwareEngine,
+  HumanAttentionPlanner,
 } from "../../../packages/typescript/laix/src/index.ts";
 import type {
   ActionOption,
@@ -18,5 +18,5 @@ const problem: DecisionProblem = {
   attributes: { attention_budget: 0.2, attention_spent: 0.2 },
 };
 
-const plan = new AttentionAwareEngine().solve(problem);
+const plan = new HumanAttentionPlanner().solve(problem);
 console.log(plan.actionId, plan.reasonCode, plan.attributes?.attention_remaining);

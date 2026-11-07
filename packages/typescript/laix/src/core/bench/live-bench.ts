@@ -1,15 +1,15 @@
 import type { ActionOption, Constraint, Situation } from "../contracts.ts";
 import type { DecisionEngine, DecisionProblem } from "../contract/engine.ts";
 import type { Commitment } from "../commitments/commitments.ts";
-import { UtilityEngine, constraintBlocker } from "../planners/utility/utility.ts";
-import { CommitmentAwareEngine } from "../planners/commitment/commitment-planner.ts";
-import { ExecutionAwareEngine } from "../planners/execution/execution-planner.ts";
-import { AttentionAwareEngine } from "../planners/attention/attention-planner.ts";
-import { LiveDecisionEngine } from "../planners/live/live-engine.ts";
-import { FirstOptionEngine } from "./first-option-engine.ts";
-import { HighestBenefitEngine } from "./highest-benefit-engine.ts";
+import { UtilityPlanner, constraintBlocker } from "../planners/utility/utility-planner.ts";
+import { CommitmentPlanner } from "../planners/commitment/commitment-planner.ts";
+import { ExecutionRiskPlanner } from "../planners/execution/execution-planner.ts";
+import { HumanAttentionPlanner } from "../planners/attention/attention-planner.ts";
+import { LiveDecisionEngine } from "../live/live-engine.ts";
+import { FirstOptionPlanner } from "./first-option-planner.ts";
+import { HighestBenefitPlanner } from "./highest-benefit-planner.ts";
 
-export { FirstOptionEngine, HighestBenefitEngine };
+export { FirstOptionPlanner, HighestBenefitPlanner };
 
 export interface LiveCase {
   name: string;
@@ -59,12 +59,12 @@ function round(value: number): number {
 
 export function defaultPlanners(): Record<string, DecisionEngine> {
   return {
-    first: new FirstOptionEngine(),
-    benefit: new HighestBenefitEngine(),
-    utility: new UtilityEngine(),
-    commitment: new CommitmentAwareEngine(),
-    execution: new ExecutionAwareEngine(),
-    attention: new AttentionAwareEngine(),
+    first: new FirstOptionPlanner(),
+    benefit: new HighestBenefitPlanner(),
+    utility: new UtilityPlanner(),
+    commitment: new CommitmentPlanner(),
+    execution: new ExecutionRiskPlanner(),
+    attention: new HumanAttentionPlanner(),
     live: new LiveDecisionEngine(),
   };
 }
@@ -231,10 +231,10 @@ export function runLiveBench(
   planners: Record<string, DecisionEngine> = defaultPlanners(),
 ): LiveBenchReport {
   const rows: LiveBenchRow[] = [];
-  for (const [plannerName, engine] of Object.entries(planners)) {
+  for (const [plannerName, planner] of Object.entries(planners)) {
     for (const testCase of cases) {
       const started = Date.now();
-      const result = engine.solve(testCase.problem);
+      const result = planner.solve(testCase.problem);
       const latencyMs = Date.now() - started;
       const option = chosen(testCase.problem, result.actionId ?? null);
       const safe = !option || constraintBlocker(testCase.problem, option) === null;

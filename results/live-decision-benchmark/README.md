@@ -25,15 +25,18 @@ Regenerate the reports with `bash scripts/novelty/reproduce.sh`.
 
 ## Planner keys
 
-The JSON files use the code keys. The docs use the full engine names.
+The JSON files use the short code keys. The docs use the full class names. A key is a stable data
+identifier; it does not have to match a class name.
 
-| Key | Planner |
-|---|---|
-| `live` | `LiveDecisionEngine` |
-| `glue` | hand-built glue baseline |
-| `commitment` | `CommitmentAwareEngine` |
-| `execution` | `ExecutionAwareEngine` |
-| `attention` | `AttentionAwareEngine` |
-| `utility` | `UtilityEngine` |
-| `first` | first / rule baseline |
-| `benefit` | benefit-only baseline |
+| Key | Component | Type |
+|---|---|---|
+| `live` | `LiveDecisionEngine` | engine |
+| `glue` | hand-built glue baseline | external baseline |
+| `commitment` | `CommitmentPlanner` | planner |
+| `execution` | `ExecutionRiskPlanner` | planner |
+| `attention` | `HumanAttentionPlanner` | planner |
+| `utility` | `UtilityPlanner` | planner |
+| `first` | `FirstOptionPlanner` | naive baseline |
+| `benefit` | `HighestBenefitPlanner` | naive baseline |
+
+`glue`, `first` and `benefit` are comparison baselines, not LAIX planners.

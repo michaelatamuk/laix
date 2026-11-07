@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 
-from laix.appkit.bench import main, run_bench, run_engine_bench, suite_names
+from laix.appkit.bench import main, run_bench, run_planner_bench, suite_names
 
 
 def test_bench_runs_every_decision_class() -> None:
@@ -49,8 +49,8 @@ def test_bench_cli_can_fail_under(capsys) -> None:
     capsys.readouterr()
 
 
-def test_engine_bench_compares_planners() -> None:
-    report = run_engine_bench()
+def test_planner_bench_compares_planners() -> None:
+    report = run_planner_bench()
     summary = report.summary()
 
     assert summary["mdp"]["mean_reward"] == 4.0
@@ -60,8 +60,8 @@ def test_engine_bench_compares_planners() -> None:
     assert report.best() == "mdp"
 
 
-def test_engine_bench_cli_json(capsys) -> None:
-    assert main(["--engines", "--json"]) == 0
+def test_planner_bench_cli_json(capsys) -> None:
+    assert main(["--planners", "--json"]) == 0
     document = json.loads(capsys.readouterr().out)
     assert document["best"] == "mdp"
     assert len(document["rows"]) == 2

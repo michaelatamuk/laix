@@ -7,10 +7,10 @@ import pytest
 from laix import (
     ActionOption,
     Commitment,
-    CommitmentAwareEngine,
+    CommitmentPlanner,
     CommitmentWeights,
     DecisionProblem,
-    UtilityEngine,
+    UtilityPlanner,
 )
 
 
@@ -35,7 +35,7 @@ def _option(identifier: str, benefit: float, *, commitments: dict | None = None)
 
 def test_violating_a_commitment_changes_the_choice() -> None:
     commitments = (Commitment(id="c1", subject="send the report", priority=1.0),)
-    plan = CommitmentAwareEngine().solve(
+    plan = CommitmentPlanner().solve(
         _problem(
             _option("send-now", 1.0, commitments={"violates": ["c1"]}),
             _option("send-later", 0.6, commitments={"fulfills": ["c1"]}),
@@ -63,7 +63,7 @@ def test_due_commitment_gets_extra_weight() -> None:
             due="2026-11-01T09:00:00+00:00",
         ),
     )
-    plan = CommitmentAwareEngine().solve(
+    plan = CommitmentPlanner().solve(
         _problem(
             _option("do-later", 0.6, commitments={"fulfills": ["later"]}),
             _option("do-now", 0.6, commitments={"fulfills": ["now"]}),
@@ -80,7 +80,7 @@ def test_a_dependency_blocks_fulfillment() -> None:
         Commitment(id="c0", subject="prerequisite"),
         Commitment(id="c1", subject="dependent", depends_on=("c0",)),
     )
-    plan = CommitmentAwareEngine().solve(
+    plan = CommitmentPlanner().solve(
         _problem(
             _option("do-c0", 0.5, commitments={"fulfills": ["c0"]}),
             _option("do-c1", 0.5, commitments={"fulfills": ["c1"]}),
@@ -97,7 +97,7 @@ def test_a_done_dependency_unblocks_fulfillment() -> None:
         Commitment(id="c0", subject="prerequisite", status="done"),
         Commitment(id="c1", subject="dependent", depends_on=("c0",)),
     )
-    plan = CommitmentAwareEngine().solve(
+    plan = CommitmentPlanner().solve(
         _problem(
             _option("do-c0", 0.5),
             _option("do-c1", 0.5, commitments={"fulfills": ["c1"]}),
@@ -113,7 +113,7 @@ def test_priority_scales_the_reward() -> None:
         Commitment(id="low", subject="low", priority=0.1),
         Commitment(id="high", subject="high", priority=1.0),
     )
-    plan = CommitmentAwareEngine().solve(
+    plan = CommitmentPlanner().solve(
         _problem(
             _option("do-low", 0.5, commitments={"fulfills": ["low"]}),
             _option("do-high", 0.5, commitments={"fulfills": ["high"]}),
@@ -125,7 +125,7 @@ def test_priority_scales_the_reward() -> None:
 
 
 def test_creating_a_commitment_costs_future_flexibility() -> None:
-    plan = CommitmentAwareEngine().solve(
+    plan = CommitmentPlanner().solve(
         _problem(
             _option("simple", 0.7),
             _option("promise-more", 0.7, commitments={"creates": ["c-new"]}),
@@ -138,7 +138,7 @@ def test_creating_a_commitment_costs_future_flexibility() -> None:
 
 def test_hard_violation_blocks_an_option() -> None:
     commitments = (Commitment(id="c1", subject="do not break this"),)
-    plan = CommitmentAwareEngine().solve(
+    plan = CommitmentPlanner().solve(
         _problem(
             _option("break", 1.0, commitments={"violates": ["c1"], "hard": True}),
             _option("keep", 0.4, commitments={"fulfills": ["c1"]}),
@@ -151,7 +151,7 @@ def test_hard_violation_blocks_an_option() -> None:
     assert "blocked by hard commitment" in alternatives["break"]["rejected_because"]
 
 
-def test_no_commitments_matches_the_utility_engine() -> None:
+def test_no_commitments_matches_the_utility_planner() -> None:
     options = (
         ActionOption(id="safe", verb="act", name="safe", expected_benefit=0.6, risk=0.1),
         ActionOption(id="bold", verb="act", name="bold", expected_benefit=0.9, risk=0.6),
@@ -159,8 +159,8 @@ def test_no_commitments_matches_the_utility_engine() -> None:
     problem = _problem(*options)
 
     assert (
-        CommitmentAwareEngine().solve(problem).action_id
-        == UtilityEngine().solve(problem).action_id
+        CommitmentPlanner().solve(problem).action_id
+        == UtilityPlanner().solve(problem).action_id
     )
 
 

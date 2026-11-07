@@ -457,7 +457,7 @@
     feasible(option: ActionOption): boolean;
     score(option: ActionOption): number;
   }
-  export class UtilityEngine implements DecisionEngine {
+  export class UtilityPlanner implements DecisionEngine {
     readonly name: string;
     readonly model: UtilityModel;
     constructor(model?: UtilityModel);
@@ -499,7 +499,7 @@
     state: string,
     values?: Record<string, number>,
   ): Array<[string, number]>;
-  export class MDPEngine implements DecisionEngine {
+  export class MDPPlanner implements DecisionEngine {
     readonly name: string;
     readonly model: MdpModel;
     readonly state: string;
@@ -643,7 +643,7 @@
     belief: BeliefState,
     options?: { horizon?: number },
   ): PlannerComparison;
-  export class POMDPEngine implements DecisionEngine {
+  export class POMDPPlanner implements DecisionEngine {
     readonly name: string;
     readonly model: PomdpModel;
     readonly belief: BeliefState;
@@ -1120,22 +1120,22 @@
     simulator: Simulator;
     optimum?: number | null;
   }
-  export interface EngineScore {
-    engine: string;
+  export interface PlannerScore {
+    planner: string;
     scenario: string;
     totalReward: number;
     steps: number;
     optimalityGap: number | null;
   }
   export class SimulationReport {
-    readonly rows: EngineScore[];
-    constructor(rows: EngineScore[]);
+    readonly rows: PlannerScore[];
+    constructor(rows: PlannerScore[]);
     summary(): Record<string, { runs: number; meanReward: number; meanGap: number }>;
     best(): string | null;
     toDict(): Record<string, unknown>;
   }
-  export function compareEngines(
-    engines: Record<string, DecisionEngine>,
+  export function comparePlanners(
+    planners: Record<string, DecisionEngine>,
     scenarios: Scenario[],
   ): SimulationReport;
   export function seededScenarios(
@@ -1143,12 +1143,12 @@
     options?: { count?: number; horizon?: number; actions?: string[] },
   ): Scenario[];
 
-  export class FixedActionEngine implements DecisionEngine {
+  export class FixedActionPlanner implements DecisionEngine {
     readonly action: string;
     constructor(action: string);
     solve(problem: DecisionProblem): Plan;
   }
-  export function runEngineBench(horizon?: number): SimulationReport;
+  export function runPlannerBench(horizon?: number): SimulationReport;
 
   export type DecisionStatus = "final" | "provisional" | "superseded";
   export type TargetMode = "one" | "some" | "all" | "peer" | "gather";

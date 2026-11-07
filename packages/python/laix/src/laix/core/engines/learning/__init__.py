@@ -1,1 +1,1 @@
-"""The learning engine package."""
+"""The learning package."""

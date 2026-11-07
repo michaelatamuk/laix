@@ -13,30 +13,30 @@ from typing import Iterable, Mapping
 
 from ...decisions import ActionOption, Constraint, Situation
 from ...commitments import Commitment
-from ..planners.attention.attention_planner import AttentionAwareEngine
-from ..planners.commitment.commitment_planner import CommitmentAwareEngine
+from ..planners.attention.attention_planner import HumanAttentionPlanner
+from ..planners.commitment.commitment_planner import CommitmentPlanner
 from ..contract.decision_engine import DecisionEngine
 from ..contract.decision_problem import DecisionProblem
-from ..planners.execution.execution_planner import ExecutionAwareEngine
-from .first_option_engine import FirstOptionEngine
-from .highest_benefit_engine import HighestBenefitEngine
+from ..planners.execution.execution_planner import ExecutionRiskPlanner
+from .first_option_planner import FirstOptionPlanner
+from .highest_benefit_planner import HighestBenefitPlanner
 from .live_bench_report import LiveBenchReport
 from .live_bench_row import LiveBenchRow
 from .live_case import LiveCase
-from ..planners.live.live_engine import LiveDecisionEngine
+from ..live.live_engine import LiveDecisionEngine
 from .planner_metrics import PlannerMetrics
-from ..planners.utility.utility import UtilityEngine, _constraint_blocker
+from ..planners.utility.utility_planner import UtilityPlanner, _constraint_blocker
 
 
 def default_planners() -> dict[str, DecisionEngine]:
     """The training-free planners and two naive baselines."""
     return {
-        "first": FirstOptionEngine(),
-        "benefit": HighestBenefitEngine(),
-        "utility": UtilityEngine(),
-        "commitment": CommitmentAwareEngine(),
-        "execution": ExecutionAwareEngine(),
-        "attention": AttentionAwareEngine(),
+        "first": FirstOptionPlanner(),
+        "benefit": HighestBenefitPlanner(),
+        "utility": UtilityPlanner(),
+        "commitment": CommitmentPlanner(),
+        "execution": ExecutionRiskPlanner(),
+        "attention": HumanAttentionPlanner(),
         "live": LiveDecisionEngine(),
     }
 
@@ -51,7 +51,7 @@ def _situation(*constraints: Constraint, subject: str = "case") -> Situation:
 
 
 def default_cases() -> tuple[LiveCase, ...]:
-    """Six compact cases that separate the planners."""
+    """Seven compact cases that separate the planners."""
     risk_limit = _situation(
         Constraint(id="risk-limit", kind="risk", value=0.4, hard=True),
         subject="risk limit",
@@ -252,10 +252,10 @@ def run_live_bench(
     case_list = list(cases if cases is not None else default_cases())
     planner_map = dict(planners if planners is not None else default_planners())
     rows: list[LiveBenchRow] = []
-    for planner_name, engine in planner_map.items():
+    for planner_name, planner in planner_map.items():
         for case in case_list:
             started = time.perf_counter()
-            plan = engine.solve(case.problem)
+            plan = planner.solve(case.problem)
             latency_ms = (time.perf_counter() - started) * 1000.0
             option = _chosen(case.problem, plan.action_id)
             safe = option is None or _constraint_blocker(case.problem, option) is None
@@ -315,8 +315,8 @@ def run_live_bench(
 
 
 __all__ = [
-    "FirstOptionEngine",
-    "HighestBenefitEngine",
+    "FirstOptionPlanner",
+    "HighestBenefitPlanner",
     "LiveBenchReport",
     "LiveBenchRow",
     "LiveCase",
