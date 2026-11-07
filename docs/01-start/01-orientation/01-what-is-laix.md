@@ -39,7 +39,7 @@ LAIX turns those properties into one runtime:
 - **One contract** — attention, action, follow-up, execution and outcomes return the same decision
   shape with a reason, confidence and trail.
 - **Training-free** — the current runtime is policy/rules based; planners use a model the host supplies.
-- **Live context** — promises, execution risk and human attention are part of the decision;
+- **Live decision** - promises, execution risk and human attention are part of the decision;
   calibration and decision time complete the loop.
 - **Host control** — LAIX decides; the host owns data, execution, storage and delivery.
 - **Evidence** — conformance vectors, bench, examples and Python/TypeScript parity.
@@ -189,7 +189,7 @@ interruption cost. An app that needs money, delay, disruption and information va
 terms in its own policy.
 
 Runnable example:
-[`examples/python/02-policies/time_critical.py`](../../examples/python/02-policies/time_critical.py).
+[`examples/python/02-policies/time_critical.py`](../../../examples/python/02-policies/time_critical.py).
 
 ## What the host owns
 
@@ -206,8 +206,8 @@ LAIX keeps the decision and its record.
 
 ## Read next
 
-- [Decision lifecycle](03-decision-lifecycle.md) — one loop from moment to outcome.
-- [Architecture](../04-concepts/01-architecture/01-system-architecture.md) — the full picture.
-- [Host integration](04-host-integration.md) — the six things a host team checks first.
-- [The Decision response](../02-core/01-contract/01-decision-contract.md) — every field in plain language.
-- [FAQ](../04-concepts/04-reference/02-faq.md) — models, execution and novelty.
+- [Decision lifecycle](02-decision-lifecycle.md) - one loop from moment to outcome.
+- [Architecture](../../04-concepts/01-architecture/01-system-architecture.md) — the full picture.
+- [Host integration](../02-first-steps/02-host-integration.md) — the six things a host team checks first.
+- [The Decision response](../../02-core/01-contract/01-decision-contract.md) — every field in plain language.
+- [FAQ](../../04-concepts/04-reference/02-faq.md) — models, execution and novelty.

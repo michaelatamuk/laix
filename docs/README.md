@@ -17,10 +17,9 @@ unnumbered.
 
 | Page | Answers |
 |---|---|
-| [What is LAIX?](01-start/01-what-is-laix.md) | What problem does it solve, in plain language? |
-| [Quickstart](01-start/02-quickstart.md) | How do I install it and make one decision? |
-| [Decision lifecycle](01-start/03-decision-lifecycle.md) | How one decision moves from moment to outcome? |
-| [Host integration](01-start/04-host-integration.md) | Where does LAIX plug in, and what does the host keep? |
+| [Start overview](01-start/README.md) | the shortest path from zero to one decision |
+| [Orientation](01-start/01-orientation/README.md) | what LAIX is and how one decision moves through the loop |
+| [First steps](01-start/02-first-steps/README.md) | install, make one decision and integrate a host |
 
 ## Core
 
@@ -93,14 +92,14 @@ Runnable examples are organized by language and lifecycle in
 
 | I want to… | Read |
 |---|---|
-| make one decision | [Quickstart](01-start/02-quickstart.md) |
-| plug LAIX into an app | [Host integration](01-start/04-host-integration.md), then [Integration](03-appkit/01-build/01-integration.md) |
+| make one decision | [Quickstart](01-start/02-first-steps/01-quickstart.md) |
+| plug LAIX into an app | [Host integration](01-start/02-first-steps/02-host-integration.md), then [Integration](03-appkit/01-build/01-integration.md) |
 | write my own policy | [Policies](02-core/02-decide/03-policies.md), [Policies in the app](03-appkit/01-build/03-policies-in-the-app.md) |
 | stream events | [Streaming](03-appkit/02-run/02-streaming.md) |
 | execute and recover | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md) |
 | learn from outcomes | [Outcome learning](02-core/05-learning/01-outcome-learning.md) |
 | understand the planner contract | [Planner contract](02-core/03-planning/01-planner-contract.md) |
-| see the end-to-end loop | [Decision lifecycle](01-start/03-decision-lifecycle.md) |
+| see the end-to-end loop | [Decision lifecycle](01-start/01-orientation/02-decision-lifecycle.md) |
 | see the public API | [API map](05-project/01-repository/02-api-map.md) |
 | operate in production | [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md), [Troubleshooting](05-project/02-quality/02-troubleshooting.md) |
 | troubleshoot a decision | [Troubleshooting](05-project/02-quality/02-troubleshooting.md) |
@@ -115,8 +114,8 @@ Runnable examples are organized by language and lifecycle in
 
 | I am… | Start with |
 |---|---|
-| Product | [What is LAIX?](01-start/01-what-is-laix.md), [Decision lifecycle](01-start/03-decision-lifecycle.md), [Scope and boundaries](04-concepts/01-architecture/02-scope-and-boundaries.md) |
-| Engineer | [Quickstart](01-start/02-quickstart.md), [Decision contract](02-core/01-contract/01-decision-contract.md), [Policies](02-core/02-decide/03-policies.md), [Planner contract](02-core/03-planning/01-planner-contract.md), [Live decision engine](02-core/03-planning/03-live-decision-engine.md), [App kit](03-appkit/README.md) |
+| Product | [What is LAIX?](01-start/01-orientation/01-what-is-laix.md), [Decision lifecycle](01-start/01-orientation/02-decision-lifecycle.md), [Scope and boundaries](04-concepts/01-architecture/02-scope-and-boundaries.md) |
+| Engineer | [Quickstart](01-start/02-first-steps/01-quickstart.md), [Decision contract](02-core/01-contract/01-decision-contract.md), [Policies](02-core/02-decide/03-policies.md), [Planner contract](02-core/03-planning/01-planner-contract.md), [Live decision engine](02-core/03-planning/03-live-decision-engine.md), [App kit](03-appkit/README.md) |
 | Operator | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md), [Stores](03-appkit/04-connect/01-stores.md), [Platform](03-appkit/04-connect/02-platform.md), [Delivery](03-appkit/04-connect/03-delivery.md), [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md) |
 | Contributor | [Contributing](../CONTRIBUTING.md), [Testing](05-project/02-quality/01-testing.md), [Repository structure](05-project/01-repository/01-repository-structure.md) |
 | Researcher or reviewer | [Research and evidence](06-research/README.md), then [Prior art](06-research/01-positioning/prior-art.md), [Benchmark](06-research/02-evaluation/benchmark.md) |
