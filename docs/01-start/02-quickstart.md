@@ -28,7 +28,7 @@ TypeScript:
 ```
 
 The release page also has a packed `laix-0.10.0.tgz`. See
-[versioning](../05-project/versioning.md) for tags and schema versions.
+[versioning](../05-project/03-release/01-versioning.md) for tags and schema versions.
 
 ## One decision
 

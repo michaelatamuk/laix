@@ -27,7 +27,7 @@ policy or code.
 | `ApprovalRequired` | execution was attempted without approval | approval lifecycle, `requires_approval` |
 | `UnknownAction` | action id is not registered with the execution adapter | adapter registry, decision `action_id` |
 | Duplicate side effect | retry without an idempotency key | `ExecutionBridge` key, receipt status |
-| Missing decision record | recorder or execution bridge was not wired | `Layer(recorder=...)`, `DecisionRecord` store |
+| Missing decision record | the host did not create a record | `create_record`, your record store, or the stream `recorder` callback |
 | Streaming drops events | buffer full, cooldown or hysteresis | `on_full`, capacity, cooldown, counters |
 | Python and TypeScript disagree | version skew or a parity regression | `npm run conformance`, `npm run live-bench` |
 | Docs link fails | moved page or renamed file | `python scripts/ci/check_docs_links.py` |
@@ -90,10 +90,10 @@ and record it in `CHANGELOG.md`.
 - Measure the decision and the execution separately.
 - Remove model calls from the hot path when deterministic rules are enough.
 - Reduce option count, planner depth or stream capacity before adding infrastructure.
-- Use the [benchmark](../03-appkit/05-operate/01-bench.md) and
-  [evaluation](../06-research/02-evaluation/benchmark.md) for repeatable numbers.
+- Use the [benchmark](../../03-appkit/05-operate/01-bench.md) and
+  [evaluation](../../06-research/02-evaluation/benchmark.md) for repeatable numbers.
 
 ## Getting help
 
 Include the version, package, a minimal request, the actual decision, the expected decision
-and the reason code. See [SUPPORT.md](../../SUPPORT.md).
+and the reason code. See [SUPPORT.md](../../../SUPPORT.md).

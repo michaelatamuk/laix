@@ -263,7 +263,7 @@ for promise, irreversibility and budget columns.
 
 All checks pass: 396 Python tests, 172 TypeScript tests, 24/24 attention conformance, 210/210
 Python/TypeScript action parity and 17/17 invariants. The full check matrix is in
-[Testing](docs/05-project/testing.md). Reproduce the benchmark with
+[Testing](docs/05-project/02-quality/01-testing.md). Reproduce the benchmark with
 `bash scripts/novelty/reproduce.sh`; raw data is in
 [results/live-decision-benchmark/](results/live-decision-benchmark/README.md).
 
@@ -304,7 +304,7 @@ npm run bench
 ```
 
 CI runs the same checks on every push, plus the live benchmark, TypeScript parity, examples and docs
-links. See [Testing](docs/05-project/testing.md) for every check.
+links. See [Testing](docs/05-project/02-quality/01-testing.md) for every check.
 
 For setup, design rules and the pull-request checklist, read [CONTRIBUTING.md](CONTRIBUTING.md).
 Questions go to [SUPPORT.md](SUPPORT.md); participation is covered by

@@ -116,4 +116,4 @@ See [Records and schema](../01-contract/02-records-and-schema.md) for the versio
 - [Records and schema](../01-contract/02-records-and-schema.md)
 - [Signal attention](../02-decide/01-signal-attention.md)
 - [Live Context](../../03-appkit/02-run/03-live-context.md)
-- [Versioning](../../05-project/versioning.md)
+- [Versioning](../../05-project/03-release/01-versioning.md)

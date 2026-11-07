@@ -2,11 +2,11 @@
 
 LAIX is pre-1.0. Treat every minor release as potentially breaking, even when the package
 version only moves by a small amount. This page is the upgrade path; the version axes are in
-[Versioning](versioning.md).
+[Versioning](01-versioning.md).
 
 ## Before an upgrade
 
-1. Read the release section in [CHANGELOG.md](../../CHANGELOG.md).
+1. Read the release section in [CHANGELOG.md](../../../CHANGELOG.md).
 2. Note the current package, record-schema and rule-set versions.
 3. Capture a baseline: test results, bench summary and one representative decision record.
 4. Run the current test suite before changing anything, so a failure is attributable.
@@ -41,7 +41,7 @@ version only moves by a small amount. This page is the upgrade path; the version
 6. Update pins in the host, CI and deployment manifests.
 7. Keep the previous package version available for rollback until the new version is stable.
 
-## Planner naming migration (0.10.0)
+## Upgrading from a pre-0.10.0 release
 
 0.10.0 separates four layers:
 

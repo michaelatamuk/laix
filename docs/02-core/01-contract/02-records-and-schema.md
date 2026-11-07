@@ -248,4 +248,4 @@ requires a new schema version and a migration note.
 
 - [Decision contract](01-decision-contract.md) — the request and response in prose.
 - [Foundation](../06-reference/02-foundation.md) — perception and support types.
-- [Versioning](../../05-project/versioning.md) — the release and version policy.
+- [Versioning](../../05-project/03-release/01-versioning.md) — the release and version policy.
