@@ -4,7 +4,7 @@ The result is:
 
     act policy_rule option-close-valve DEC-...
 
-``decide`` selects the action engine from the request shape, returns the same
+``decide`` selects the action policy from the request shape, returns the same
 ``Decision`` shape as the app kit, and gives it a decision id. There is no
 runtime, trace, execution or record here; those live in ``laix.appkit``.
 """

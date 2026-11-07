@@ -70,7 +70,7 @@ the order. `checklist.md` tracks work across all stages.
   remediation, not approvals, commitments, continuity or audit. See
   [Sev1-Bench](02-evaluation/sev1-bench.md).
 - Continuity benchmark v0: 12 episodes, 60 decisions. Stateful `LiveDecisionEngine` 100% success,
-  stateless `UtilityEngine` 0% with 36 continuity errors. Synthetic mechanism test, not external
+  stateless `UtilityPlanner` 0% with 36 continuity errors. Synthetic mechanism test, not external
   validation. See [continuity benchmark](02-evaluation/continuity-benchmark.md).
 - Remaining gaps: no external runnable adapter for Temporal, PagerDuty or Camunda, no real-world
   deployment or incident replay, and no external review. The Sev1-Bench run is a component result,
@@ -150,7 +150,7 @@ Out of scope:
 | Area | Current artifact | Status | Gap to close |
 |---|---|---|---|
 | Decision contract | `Decision`, `DecisionProblem`, `Plan`, `EnginePolicy` | exists | formal definition and invariants |
-| Integrated planner | `LiveDecisionEngine` | exists | real validation still needed |
+| Live decision engine | `LiveDecisionEngine` | exists | real validation still needed |
 | Commitments | `Commitment`, `CommitmentLedger`, commitment planner | exists | larger conflict cases |
 | Execution risk | execution planner, receipts, recovery | exists | measured irreversible-action reduction |
 | Attention | attention planner, budget, signals | exists | measured budget adherence and interruption quality |

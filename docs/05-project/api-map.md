@@ -26,9 +26,12 @@ map by role, not a generated signature reference; the package `__all__` lists ev
 | `CommitmentLedger` | the open promises for one task, with due and blocked queries |
 | `CommitmentStore` | the persistence port for a ledger |
 | `InMemoryCommitmentStore`, `FileCommitmentStore` | the built-in stores |
-| `CommitmentAwareEngine` | the planner that scores fulfill, violate and create effects |
+| `CommitmentPlanner` | the planner that scores fulfill, violate and create effects |
 
 ## Decision mechanisms
+
+The layer rule is: **Planner** is a strategy, **Engine** is a composition, **Policy** is an
+integration, **Learner** is learning. The protocol is `DecisionEngine`.
 
 | Name | Purpose |
 |---|---|
@@ -36,15 +39,15 @@ map by role, not a generated signature reference; the package `__all__` lists ev
 | `AttentionDecision`, `AttentionBudget` | the attention result and its budget |
 | `Policy` / `PolicyRegistry` | the smallest policy contract and a registry |
 | `Rule`, `RulePolicy`, `TargetedPolicy` | authored rules and target modes |
-| `EnginePolicy` | wrap a planner as a policy |
+| `EnginePolicy` | adapt a `DecisionEngine` to the policy interface |
 | `PlanningPolicy` | act on the next actionable commitment |
 | `GroupPolicy`, `ShadowPolicy`, `ShadowDifference` | sharing boundary and shadow comparison |
-| `UtilityEngine` | expected utility with hard limits and risk attitude |
-| `ExecutionAwareEngine` | irreversibility, unknown outcomes, approval and recovery |
-| `AttentionAwareEngine` | interruption, approval, escalation and a shared budget |
-| `LiveDecisionEngine` | commitments, execution risk and attention in one plan |
-| `MDPEngine`, `POMDPEngine` | model-based planning over a host-supplied model |
-| `Simulator`, `compare_engines` | run and compare planners |
+| `UtilityPlanner` | expected utility with hard limits and risk attitude |
+| `ExecutionRiskPlanner` | irreversibility, unknown outcomes, approval and recovery |
+| `HumanAttentionPlanner` | interruption, approval, escalation and a shared budget |
+| `LiveDecisionEngine` | the composition engine: commitments, execution risk and attention in one plan |
+| `MDPPlanner`, `POMDPPlanner` | model-based planning over a host-supplied model |
+| `Simulator`, `compare_planners` | run and compare planners |
 
 ## Perception and resources
 
@@ -99,6 +102,6 @@ map by role, not a generated signature reference; the package `__all__` lists ev
 
 - Start with `DecisionRequest` and `Decision`; they are the contract.
 - Use `decide` for the core, or `Layer` when you want the app kit.
-- Use `EnginePolicy` to put a planner or model behind the same contract.
+- Use `EnginePolicy` to put a planner or an engine behind the policy contract.
 - Use `ExecutionBridge` and `DecisionRecord` when the decision changes the world.
 - The app kit is optional; importing `laix` does not load it until first use.

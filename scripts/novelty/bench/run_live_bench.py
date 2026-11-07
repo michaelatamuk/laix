@@ -108,9 +108,9 @@ def main() -> int:
         return 2
     failed = live["conflict_accuracy"] < 1.0
     if failed:
-        print("\nFAIL: the integrated planner did not win every conflict case.", file=sys.stderr)
+        print("\nFAIL: LiveDecisionEngine did not win every conflict case.", file=sys.stderr)
         return 1
-    print("\nOK: the integrated planner won every conflict case.")
+    print("\nOK: LiveDecisionEngine won every conflict case.")
     return 0
 
 

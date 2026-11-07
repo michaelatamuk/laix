@@ -66,7 +66,7 @@ block-beta
 | **Foundation** | Schema · Sensing · Support | Shared records and utilities. |
 
 Limits is a gate: it is the `Constraint` set on the request, enforced by policies and the utility
-engine. Commitments live in `core/commitments`; `PlanningPolicy` is a policy wrapper.
+planner. Commitments live in `core/commitments`; `PlanningPolicy` is a policy wrapper.
 
 ## Which path runs
 
@@ -82,7 +82,7 @@ With `policy=`, it uses the policy you pass. Constrain applies to every path.
 Attention and policies produce the choice. A policy can be a rule set or an `EnginePolicy` wrapping
 a planner. Limits, commitments and resources constrain every path.
 Packaged and custom policies are selected explicitly. `RulePolicy` and `TargetedPolicy` are the
-authoring and target wrappers. `UtilityEngine`, `MDPEngine` and `POMDPEngine` are built-in planners
+authoring and target wrappers. `UtilityPlanner`, `MDPPlanner` and `POMDPPlanner` are built-in planners
 behind `EnginePolicy`. See [what an MDP is](06-engines.md#what-an-mdp-is).
 
 ## Learning loop
@@ -104,7 +104,8 @@ outcome → label → feedback → better attention
 | Contract | **Execution trail** | execution receipt, trace | Support |
 | Decide | **Attention** | signals, priority, timing | Contract, support |
 | Decide | **Policies** | eight packs, planner adapter, rule, target, planning wrapper, group and shadow wrappers | Contract, learning, support |
-| Decide | **Planners** (in a policy) | expected utility, [MDP](06-engines.md#what-an-mdp-is) value iteration, POMDP belief planning, commitment-aware, execution-aware, attention-aware and `LiveDecisionEngine` selection | Contract, support |
+| Decide | **Planners** (in a policy) | expected utility, [MDP](06-engines.md#what-an-mdp-is) value iteration, POMDP belief planning, commitment-aware, execution-aware and attention-aware strategies | Contract, support |
+| Decide | **Live decision engine** | `LiveDecisionEngine` composes the four live scores into one plan | Contract, planners, support |
 | Constrain | **Limits** | risk, approval, safety and policy constraints | Contract, support |
 | Constrain | **Commitments** | promises, due times, dependencies and stores | Support |
 | Constrain | **Resources** | budget, latency, sensing options and schedule | Support |
@@ -117,7 +118,7 @@ outcome → label → feedback → better attention
 - **Capabilities** — Decide chooses explicitly or automatically; Learn turns outcomes into a better policy or attention; Evaluate checks the decision runtime.
 - **Contract** — the request describes what is happening and what the app can do; the response carries the verb, reason, confidence, action, approval and target; the trail records what happened.
 - **Path choice** — `signals + context` → Attention; `situation + options` → Action policy. A packaged or custom policy is selected explicitly with `policy=...`.
-- **Decide** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation, plus `EnginePolicy`, `RulePolicy`, `TargetedPolicy`, `PlanningPolicy`, `GroupPolicy` and `ShadowPolicy`. Planners sit inside a policy via `EnginePolicy`; `UtilityEngine`, `MDPEngine`, `POMDPEngine`, `CommitmentAwareEngine`, `ExecutionAwareEngine`, `AttentionAwareEngine` and `LiveDecisionEngine` add expected utility, value iteration, belief planning, commitment-aware, execution-aware, attention-aware and integrated selection, with simulator, calibration and model learning.
+- **Decide** — Attention ranks signals; Policies cover action, safety, replanning, allocation, negotiation, preference, verification and escalation, plus `EnginePolicy`, `RulePolicy`, `TargetedPolicy`, `PlanningPolicy`, `GroupPolicy` and `ShadowPolicy`. Planners sit inside a policy via `EnginePolicy`: `UtilityPlanner`, `MDPPlanner`, `POMDPPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner` and `HumanAttentionPlanner` add expected utility, value iteration, belief planning, commitment-aware, execution-aware and attention-aware strategies. `LiveDecisionEngine` is the composition engine that runs the four live scores and returns one plan. The layer also carries the simulator, calibration and model learning.
 - **Constrain** — Limits declare risk, approval, safety and policy constraints; Commitments track promises and dependencies; Resources cover budget, latency and sensing options.
 - **Foundation** — Schema validates records; Sensing defines detectors, events and frames; Support provides shared types and helpers.
 

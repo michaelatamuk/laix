@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+### Breaking
+
+- **Planner / Engine / Policy / Learner naming.** The built-in strategies are now `UtilityPlanner`,
+  `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner` and
+  `POMDPPlanner`. `LiveDecisionEngine` remains the composition engine, `EnginePolicy` remains the
+  policy adapter, `UCBBandit` remains a learner, and `DecisionEngine` remains the protocol.
+- Renamed `LiveScore` to `CompositeScore` and moved the engine to `core/engines/live/`.
+- Renamed `compare_engines` / `compareEngines` to `compare_planners` / `comparePlanners`,
+  `EngineScore` to `PlannerScore`, `FixedActionEngine` to `FixedActionPlanner`,
+  `FirstOptionEngine` to `FirstOptionPlanner`, `HighestBenefitEngine` to
+  `HighestBenefitPlanner`, and `run_engine_bench` / `runEngineBench` to
+  `run_planner_bench` / `runPlannerBench`.
+- JSON keys and reason codes are unchanged: `live`, `glue`, `commitment`, `execution`, `attention`,
+  `utility`, `first`, `benefit` and `live_decision`.
+- No compatibility aliases are provided; see the
+  [migration guide](docs/05-project/migration.md).
+
 ### Added
 
 - **Live decision benchmark.** A 120-case corpus across promise, execution, attention, timing,
@@ -15,17 +32,17 @@
   match Python on all 210 action IDs.
 - **External comparison harness.** A LangGraph adapter runs the same decision engine in a state
   graph and reports operational overhead; Temporal, PagerDuty and Camunda remain documented-only.
-- **Built-in decision engines.** `UtilityEngine` with hard limits and risk attitude, `MDPEngine`
-  with value iteration, and `POMDPEngine` with belief update and finite-horizon planning.
-- **Engine proof.** `Simulator`, seeded scenarios, `compare_engines` with reward and optimality gap,
-  `CalibrationReport` and `ModelLearner` with rollback.
+- **Built-in planners.** `UtilityPlanner` with hard limits and risk attitude, `MDPPlanner`
+  with value iteration, and `POMDPPlanner` with belief update and finite-horizon planning.
+- **Planner proof.** `Simulator`, seeded scenarios, `compare_planners` with reward and optimality
+  gap, `CalibrationReport` and `ModelLearner` with rollback.
 - **Python planning and execution depth.** `CommitmentStore` with in-memory and file stores,
   `PlanningPolicy` skipping blocked commitments, and `ExecutionBridge.run_steps` with
   receipt-linked compensation.
 - **Causal depth.** `add_outcome`, `from_outcomes`, standard errors, 95% intervals and
   `effect_by_context`.
-- **Engine and stream depth.** `ModelLearner.to_mdp_model`, seeded stochastic MDP rollouts,
-  `compare_pomdp_to_mdp`, a Python `--engines` bench, NDJSON/SSE error policies and checkpoint
+- **Planner and stream depth.** `ModelLearner.to_mdp_model`, seeded stochastic MDP rollouts,
+  `compare_pomdp_to_mdp`, a Python `--planners` bench, NDJSON/SSE error policies and checkpoint
   stream-id validation.
 - **Privacy depth.** `GroupPolicy` masks nested attributes, intent arguments, alternatives and
   evidence, and can replace the rationale and undo hint.
@@ -35,7 +52,8 @@
 - **TypeScript parity for the 0.9.0 depth work.** Checkpoint stores, NDJSON/SSE sources,
   `CausalLedger`, commitments and `PlanningPolicy`, `GroupPolicy`, `ShadowPolicy` / `simulate` and
   `Saga`.
-- **TypeScript engine surface.** `UtilityEngine`, `MDPEngine`, `Simulator` and `compareEngines`.
+- **TypeScript planner surface.** `UtilityPlanner`, `MDPPlanner`, `Simulator` and
+  `comparePlanners`.
 - **Examples** for checkpoints, sources, causal attribution, planning, group/shadow, sagas,
   calibration, model learning, utility, MDP and POMDP.
 - **Brand and visuals.** Logo, banner, avatar, a vector how-it-works loop, benchmark and ablation
@@ -51,8 +69,8 @@
 - Tightened the README hero, contents and Why section, replaced the slide-style benchmark and ablation images with matplotlib charts generated from the committed result JSON, and replaced the architecture slide with a light vector loop. Removed the generated demo animation; the code examples carry the demo until a real recording exists.
 - Restructured the claim–evidence map into headline, safety, contract, open-claims and evidence-index tables.
 - Split the README results into outcome, ablation and verification tables, with the glue baseline shown as the best comparator.
-- Standardised docs on full engine class names (`LiveDecisionEngine`, `UtilityEngine`,
-  `CommitmentAwareEngine`, `ExecutionAwareEngine`, `AttentionAwareEngine`). Short keys stay in JSON
+- Standardised docs on full engine class names (`LiveDecisionEngine`, `UtilityPlanner`,
+  `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`). Short keys stay in JSON
   and CLI output and are documented in `results/live-decision-benchmark/README.md`.
 - Added a README comparison table, a "Can they be compared?" protocol, and comparison links that
   distinguish decision models such as JEV from the LAIX decision runtime.
@@ -74,7 +92,7 @@
   0.656, chooser 0.637. The guardrail removed the one forbidden recommendation without losing
   score.
 - Added a decision-continuity benchmark v0: 12 episodes, 60 decisions. Stateful
-  `LiveDecisionEngine` succeeded on 100% of episodes; a stateless `UtilityEngine` on 0% with 36
+  `LiveDecisionEngine` succeeded on 100% of episodes; a stateless `UtilityPlanner` on 0% with 36
   continuity errors. This is a synthetic mechanism test, not external validation.
 - Ran the τ-bench retail baseline with DeepSeek V4 Flash: 9/10 tasks, `pass^1 = 0.90`. The LAIX
   policy adapter is not implemented; τ-bench scores full-agent tool use, not the runtime lifecycle.

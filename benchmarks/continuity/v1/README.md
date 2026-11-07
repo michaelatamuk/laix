@@ -31,7 +31,7 @@ State that evolves:
 
 - **Reference:** a hand-written deterministic policy that uses the full state. It is the ground
   truth.
-- **Stateless:** `UtilityEngine` on a static option set. It never sees commitments, attention,
+- **Stateless:** `UtilityPlanner` on a static option set. It never sees commitments, attention,
   approval or prior actions.
 - **Stateful:** `LiveDecisionEngine` with the commitment, `AttentionBudget`, approval map and
   execution state in `DecisionProblem.attributes`. The host asks for approval when the plan sets

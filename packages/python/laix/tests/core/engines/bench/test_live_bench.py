@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from laix import UtilityEngine, default_cases, default_planners, run_live_bench
+from laix import UtilityPlanner, default_cases, default_planners, run_live_bench
 
 
 def _row(report, case: str, planner: str):
@@ -60,7 +60,7 @@ def test_report_serializes_and_prints() -> None:
 
 def test_custom_case_and_planner() -> None:
     case = default_cases()[0]
-    report = run_live_bench([case], {"utility": UtilityEngine()})
+    report = run_live_bench([case], {"utility": UtilityPlanner()})
 
     assert report.cases == (case.name,)
     assert report.planners == ("utility",)

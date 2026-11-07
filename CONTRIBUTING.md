@@ -50,8 +50,11 @@ dependencies.
 ## Design rules
 
 - **One class per file.** Functions may share a small module with their owner.
-- **Group by role**, not by feature accident: `contract/`, `planners/`, `simulation/`,
+- **Group by role**, not by feature accident: `contract/`, `planners/`, `live/`, `simulation/`,
   `learning/`, `bench/`, `commitments/`, `perception/`, `policies/`, `signals/`.
+- **Use one name per role.** `Planner` is a strategy, `Engine` is a composition, `Policy` is an
+  integration, `Learner` is learning, and `DecisionEngine` is the protocol. Do not call a planner an
+  engine, and do not call the composition a planner.
 - **Keep the public API in `__init__.py` and `index.ts`.**
 - **Mirror the Python surface in TypeScript.** Parity is tested, not assumed.
 - **Use generic vocabulary.** No app, domain or vendor names in the core.
@@ -131,8 +134,8 @@ The body should say why the change exists, not repeat the diff.
 ## Documentation
 
 - Numbered sections are read in order; reference sections stay unnumbered.
-- Use full engine class names in prose and tables (`LiveDecisionEngine`, `UtilityEngine`); reserve
-  short keys such as `live` for JSON and CLI identifiers.
+- Use full class names in prose and tables (`LiveDecisionEngine`, `UtilityPlanner`); reserve short
+  keys such as `live` for stable JSON and CLI identifiers.
 - Keep one H1 per page.
 - Use relative links and run `python scripts/ci/check_docs_links.py`.
 - Put new pages in the right section and add them to [docs/README.md](docs/README.md).

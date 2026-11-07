@@ -3,7 +3,7 @@
 The planner and production-depth roadmap is complete. This page tracks what is done and what is
 still open.
 
-## Planners
+## Planners and engines
 
 | Piece | Status |
 |---|---|
@@ -11,17 +11,17 @@ still open.
 | UCB bandit | done |
 | Bench | done |
 | Planner contract | done |
-| `UtilityEngine` | done |
-| `CommitmentAwareEngine` | done |
-| `ExecutionAwareEngine` | done |
-| `AttentionAwareEngine` | done |
-| `LiveDecisionEngine` | done |
-| `MDPEngine` | done |
+| `UtilityPlanner` | done |
+| `CommitmentPlanner` | done |
+| `ExecutionRiskPlanner` | done |
+| `HumanAttentionPlanner` | done |
+| `MDPPlanner` | done |
 | Simulator and planner comparison | done |
 | Planner bench CLI | done |
 | Calibration | done |
 | Model learning | done |
-| `POMDPEngine` | done |
+| `POMDPPlanner` | done |
+| `LiveDecisionEngine` (composition engine) | done |
 | TypeScript parity | done |
 
 ## Build order

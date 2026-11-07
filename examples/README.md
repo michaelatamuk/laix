@@ -8,7 +8,7 @@ examples/
 ├── python/
 │   ├── 01-decide/       signals, situations, actions and the core call
 │   ├── 02-policies/     packaged policies, authoring, planning, group and shadow
-│   ├── 03-plan/         utility, MDP, POMDP, simulation and engine bench
+│   ├── 03-plan/         utility, MDP, POMDP, simulation and planner bench
 │   ├── 04-stream/       sessions, windows, flow control, checkpoints and sources
 │   ├── 05-execute/      execution, multi-step recovery, records, platform and delivery
 │   ├── 06-learn/        outcomes, causal attribution, calibration and model learning
@@ -89,16 +89,16 @@ py examples/python/01-decide/attention_bill_due.py
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
-| Utility with hard limits | `utility_engine.py` | `engines.mts` | `act bold 0.75` |
+| Utility with hard limits | `utility_planner.py` | `planners.mts` | `act bold 0.75` |
 | Commitment-aware planning | `commitment_planner.py` | `commitment_planner.mts` | `send-later commitment_aware c1` |
 | Execution-aware planning | `execution_planner.py` | `execution_planner.mts` | `archive execution_aware True` / `true` |
 | Attention-aware planning | `attention_planner.py` | `attention_planner.mts` | `act attention_aware 0.0` / `0` |
-| Integrated live decision | `live_engine.py` | `live_engine.mts` | `safe live_decision c1` |
-| One-step MDP plan | `mdp_engine.py` | `engines.mts` | `act go 2.8` |
-| POMDP belief planning | `pomdp.py` | `pomdp.mts` | `act go 2.8` |
-| Compare planners on one scenario | `simulator.py` | `engines.mts` | `right 4.0 1.0` |
-| Engine bench baseline | `engine_bench.py` | `engine_bench.mts` | `mdp 4.0 1.0` |
-| Constraints, stochastic rollout, POMDP check | `engine_depth.py` | `engine_depth.mts` | `safe blocked by risk:risk-limit` / `s1 1.0` / `s0 0.0 go` |
+| Live decision engine | `live_engine.py` | `live_engine.mts` | `safe live_decision c1` |
+| One-step MDP plan | `mdp_planner.py` | `planners.mts` | `act go 2.8` |
+| POMDP belief planning | `pomdp_planner.py` | `pomdp_planner.mts` | `act go 2.8` |
+| Compare planners on one scenario | `simulator.py` | `planners.mts` | `right 4.0 1.0` |
+| Planner bench baseline | `planner_bench.py` | `planner_bench.mts` | `mdp 4.0 1.0` |
+| Constraints, stochastic rollout, POMDP check | `planner_depth.py` | `planner_depth.mts` | `safe blocked by risk:risk-limit` / `s1 1.0` / `s0 0.0 go` |
 
 ## 04 Stream
 

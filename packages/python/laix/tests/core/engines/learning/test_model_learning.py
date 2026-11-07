@@ -48,7 +48,7 @@ def test_snapshot_round_trips() -> None:
     assert restored.expected_reward("s0", "go") == 2.0
 
 
-def test_learned_model_feeds_the_mdp_engine() -> None:
+def test_learned_model_feeds_the_mdp_planner() -> None:
     learner = ModelLearner()
     learner.observe("s0", "go", "s1", 1.0)
     learner.observe("s1", "go", "s1", 2.0)

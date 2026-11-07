@@ -1,5 +1,5 @@
 import {
-  CommitmentAwareEngine,
+  CommitmentPlanner,
 } from "../../../packages/typescript/laix/src/index.ts";
 import type {
   ActionOption,
@@ -39,6 +39,6 @@ const problem: DecisionProblem = {
   attributes: { commitments },
 };
 
-const plan = new CommitmentAwareEngine().solve(problem);
+const plan = new CommitmentPlanner().solve(problem);
 const fulfilled = (plan.attributes?.commitments_fulfilled as string[]).join(",");
 console.log(plan.actionId, plan.reasonCode, fulfilled);

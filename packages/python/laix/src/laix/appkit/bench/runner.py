@@ -30,7 +30,7 @@ from ...core.engines.policies import (
 )
 from ..layer import Layer
 from .case import BenchCase
-from .engine_bench import run_engine_bench
+from .planner_bench import run_planner_bench
 from .report import BenchReport
 from .row import BenchRow
 from .suite import Suite
@@ -333,13 +333,13 @@ def _print_table(report: BenchReport) -> None:
             print(f"FAIL {row.suite}/{row.case}: {'; '.join(row.mismatches)}")
 
 
-def _print_engine_table(report: Any) -> None:
-    print(f"{'engine':24} {'scenario':20} {'reward':>8} {'steps':>6} {'gap':>8}")
+def _print_planner_table(report: Any) -> None:
+    print(f"{'planner':24} {'scenario':20} {'reward':>8} {'steps':>6} {'gap':>8}")
     print("-" * 70)
     for row in report.rows:
         gap = "n/a" if row.optimality_gap is None else f"{row.optimality_gap:.3f}"
         print(
-            f"{row.engine:24} {row.scenario:20} {row.total_reward:>8.3f} "
+            f"{row.planner:24} {row.scenario:20} {row.total_reward:>8.3f} "
             f"{row.steps:>6} {gap:>8}"
         )
     print("-" * 70)
@@ -349,7 +349,7 @@ def _print_engine_table(report: Any) -> None:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="laix.appkit.bench", description="Run the LAIX decision-class bench.")
     parser.add_argument("--suite", action="append", choices=suite_names(), help="run one or more suites")
-    parser.add_argument("--engines", action="store_true", help="compare decision engines on a chain")
+    parser.add_argument("--planners", action="store_true", help="compare planners on a chain")
     parser.add_argument("--live", action="store_true", help="compare training-free live planners")
     parser.add_argument("--json", action="store_true", help="print the report as JSON")
     parser.add_argument("--list", action="store_true", help="list suites and exit")
@@ -369,12 +369,12 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(live_report.summary())
         return 0
 
-    if args.engines:
-        engine_report = run_engine_bench()
+    if args.planners:
+        planner_report = run_planner_bench()
         if args.json:
-            print(json.dumps(engine_report.to_dict(), indent=2))
+            print(json.dumps(planner_report.to_dict(), indent=2))
         else:
-            _print_engine_table(engine_report)
+            _print_planner_table(planner_report)
         return 0
 
     report = run_bench(args.suite)
@@ -393,6 +393,6 @@ __all__ = [
     "all_suites",
     "main",
     "run_bench",
-    "run_engine_bench",
+    "run_planner_bench",
     "suite_names",
 ]

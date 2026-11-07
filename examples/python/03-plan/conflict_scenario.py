@@ -1,7 +1,7 @@
 """Triple-conflict demo: commitment + irreversible action + attention.
 
 The same scenario is run through five planners. Each single-concern planner
-misses at least one concern. LiveDecisionEngine is the only one that integrates
+misses at least one concern. LiveDecisionEngine is the only one that composes
 all three and chooses the safe option.
 
 Scenario
@@ -19,13 +19,13 @@ from __future__ import annotations
 
 from laix import (
     ActionOption,
-    AttentionAwareEngine,
     Commitment,
-    CommitmentAwareEngine,
+    CommitmentPlanner,
     DecisionProblem,
-    ExecutionAwareEngine,
+    ExecutionRiskPlanner,
+    HumanAttentionPlanner,
     LiveDecisionEngine,
-    UtilityEngine,
+    UtilityPlanner,
 )
 
 # ------------------------------------------------------------------
@@ -71,11 +71,11 @@ problem = DecisionProblem(
 # ------------------------------------------------------------------
 
 planners = {
-    "UtilityEngine      ": UtilityEngine(),
-    "CommitmentAware    ": CommitmentAwareEngine(),
-    "ExecutionAware     ": ExecutionAwareEngine(),
-    "AttentionAware     ": AttentionAwareEngine(),
-    "LiveDecisionEngine ": LiveDecisionEngine(),
+    "UtilityPlanner": UtilityPlanner(),
+    "CommitmentPlanner": CommitmentPlanner(),
+    "ExecutionRiskPlanner": ExecutionRiskPlanner(),
+    "HumanAttentionPlanner": HumanAttentionPlanner(),
+    "LiveDecisionEngine": LiveDecisionEngine(),
 }
 
 EXPECTED = "safe"
@@ -86,8 +86,8 @@ print()
 print(f"{'Planner':<22}  {'chose':<6}  {'correct':<8}  reason_code")
 print("-" * 60)
 
-for label, engine in planners.items():
-    plan = engine.solve(problem)
+for label, planner in planners.items():
+    plan = planner.solve(problem)
     correct = "yes" if plan.action_id == EXPECTED else "no"
     print(f"{label}  {plan.action_id or '?':<6}  {correct:<8}  {plan.reason_code}")
 
@@ -108,7 +108,7 @@ print(f"  commitments fulfilled: {attrs.get('commitments_fulfilled')}")
 print()
 print(
     "Why the results differ:\n"
-    "  UtilityEngine:    fast = 1.0 - 0.6x0.15(interrupt) = 0.91 > safe 0.60 -> fast (WRONG)\n"
+    "  UtilityPlanner:    fast = 1.0 - 0.6x0.15(interrupt) = 0.91 > safe 0.60 -> fast (WRONG)\n"
     "  ExecutionAware:   fast = 0.91 - 0.35(irreversible) = 0.56 < safe 0.60 -> safe (RIGHT,\n"
     "                    but only because irreversibility exceeds the benefit gap; misses\n"
     "                    the commitment violation entirely)\n"

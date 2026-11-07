@@ -1,4 +1,4 @@
-import type { MdpModelOptions, MdpTransition } from "./mdp.ts";
+import type { MdpModelOptions, MdpTransition } from "./mdp-planner.ts";
 
 export class MdpModel {
   readonly states: string[];

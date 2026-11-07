@@ -1,28 +1,28 @@
-import type { EngineScore } from "./simulator.ts";
+import type { PlannerScore } from "./simulator.ts";
 
 function round(value: number): number {
   return Math.round(value * 1e6) / 1e6;
 }
 
 export class SimulationReport {
-  readonly rows: EngineScore[];
+  readonly rows: PlannerScore[];
 
-  constructor(rows: EngineScore[]) {
+  constructor(rows: PlannerScore[]) {
     this.rows = rows;
   }
 
   summary(): Record<string, { runs: number; meanReward: number; meanGap: number }> {
-    const buckets = new Map<string, EngineScore[]>();
+    const buckets = new Map<string, PlannerScore[]>();
     for (const row of this.rows) {
-      const items = buckets.get(row.engine) ?? [];
+      const items = buckets.get(row.planner) ?? [];
       items.push(row);
-      buckets.set(row.engine, items);
+      buckets.set(row.planner, items);
     }
     return Object.fromEntries(
       [...buckets.entries()]
         .sort(([left], [right]) => (left < right ? -1 : 1))
-        .map(([engine, items]) => [
-          engine,
+        .map(([planner, items]) => [
+          planner,
           {
             runs: items.length,
             meanReward: round(
@@ -39,9 +39,9 @@ export class SimulationReport {
 
   best(): string | null {
     const summary = this.summary();
-    const engines = Object.keys(summary);
-    if (!engines.length) return null;
-    return engines.sort((left, right) =>
+    const planners = Object.keys(summary);
+    if (!planners.length) return null;
+    return planners.sort((left, right) =>
       summary[right]!.meanReward !== summary[left]!.meanReward
         ? summary[right]!.meanReward - summary[left]!.meanReward
         : left < right

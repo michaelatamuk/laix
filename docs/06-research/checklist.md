@@ -26,8 +26,8 @@ actually shows. **DONE.**
 ## Phase 1: formal model and invariants
 
 - [x] Define the problem, score and feasibility in `01-positioning/formal-model.md` — exact formulas and
-  weights for `UtilityEngine`, `CommitmentAwareEngine`, `ExecutionAwareEngine` and
-  `AttentionAwareEngine`
+  weights for `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner` and
+  `HumanAttentionPlanner`
 - [x] Define revision and receipt state machines — documented in `01-positioning/formal-model.md` §3
 - [x] Write invariants I1–I10 as statements in `01-positioning/formal-model.md` — §4 invariant table complete
 - [x] Add property tests: `tests/core/test_invariants.py` — 17 tests, all pass
@@ -47,7 +47,7 @@ confidence intervals.
 - [x] Implement baselines and ablations — `examples/python/03-plan/ablation_study.py`
   runs all 7 planners on all 7 demo cases; LiveDecisionEngine 7/7, single-concern planners partial
 - [x] Write the conflict scenario — `examples/python/03-plan/conflict_scenario.py`
-  shows all three concerns firing; UtilityEngine and AttentionAware fail; full score breakdown
+  shows all three concerns firing; `UtilityPlanner` and `HumanAttentionPlanner` fail; full score breakdown
 - [x] Create the case schema — `benchmarks/live/v1/schema.json` (JSON Schema Draft
   2020-12); `benchmarks/live/README.md` with field reference, split targets and Python loader
   snippet
@@ -73,7 +73,7 @@ confidence intervals.
     regret and conflict accuracy with 95% bootstrap intervals;
   - writes `results/live-decision-benchmark/raw/decisions.jsonl` and `results/live-decision-benchmark/metrics/summary.json`;
   - prints the main and conflict tables;
-  - exits 1 if the integrated planner fails a conflict case.
+  - exits 1 if `LiveDecisionEngine` fails a conflict case.
 
 - [x] **Write `scripts/novelty/bench/run_ablations.py`**:
   - full, no commitment, no execution, no attention, utility-only, equal weights and
@@ -131,7 +131,7 @@ team did not write.
   [Sev1-Bench](02-evaluation/sev1-bench.md).
 
 - [x] **Continuity benchmark v0** — 12 episodes, 60 decisions. Stateful `LiveDecisionEngine` 100%
-  success, stateless `UtilityEngine` 0% with 36 continuity errors; see
+  success, stateless `UtilityPlanner` 0% with 36 continuity errors; see
   [continuity benchmark](02-evaluation/continuity-benchmark.md).
 
 - [x] **τ-bench baseline** — 10 retail tasks, DeepSeek V4 Flash, 9/10 passed (`pass^1 = 0.90`).

@@ -38,7 +38,7 @@ Acceptance criteria:
 
 1. live AI systems need timely, safe and auditable decisions;
 2. existing tools cover orchestration, workflows, alerting or planning separately;
-3. LAIX contributes one contract and one integrated planner;
+3. LAIX contributes one contract, planners and one composition engine;
 4. evaluation on N cases and one real validation;
 5. limitations and open problems.
 

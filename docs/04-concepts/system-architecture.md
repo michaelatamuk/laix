@@ -199,19 +199,20 @@ LAIX is a live decision runtime. It can host a decision model such as JEV inside
 
 ## Integration evidence
 
-The integration is measured. `LiveDecisionEngine` runs every concern in one score. Single-concern
-planners win their own cases; `LiveDecisionEngine` wins every case because it integrates all three.
+The composition is measured. `LiveDecisionEngine` runs every concern in one score. Single-concern
+planners win their own cases; `LiveDecisionEngine` wins every case because it composes all four
+scores.
 
-**Seven-case live demo (all planners):**
+**Seven-case live demo (planners and the engine):**
 
-| Planner | Correct / 7 | Note |
+| Component | Correct / 7 | Note |
 |---|---:|---|
-| Benefit-only (naive) | 1 / 7 | ignores risk, commitments, attention |
-| `UtilityEngine` | 2 / 7 | ignores commitments and attention |
-| `CommitmentAwareEngine` | 3 / 7 | ignores execution risk and attention |
-| `AttentionAwareEngine` | 4 / 7 | ignores commitments and execution risk |
-| `ExecutionAwareEngine` | 5 / 7 | ignores commitments and attention |
-| **`LiveDecisionEngine`** | **7 / 7** | integrates all three concerns |
+| Highest-benefit baseline (naive) | 1 / 7 | ignores risk, commitments, attention |
+| `UtilityPlanner` | 2 / 7 | ignores commitments and attention |
+| `CommitmentPlanner` | 3 / 7 | ignores execution risk and attention |
+| `HumanAttentionPlanner` | 4 / 7 | ignores commitments and execution risk |
+| `ExecutionRiskPlanner` | 5 / 7 | ignores commitments and attention |
+| **`LiveDecisionEngine`** | **7 / 7** | composes all four scores |
 
 Reproduce with one command: `python examples/python/03-plan/ablation_study.py`.
 
@@ -219,7 +220,7 @@ A worked conflict scenario (all three concerns fire simultaneously) is in
 `examples/python/03-plan/conflict_scenario.py`.
 
 **Expanded corpus:** 120 cases across six categories (72 dev, 30 test, 18 adversarial).
-On the frozen test split, the integrated planner is 30/30 and wins every conflict case (6/6).
+On the frozen test split, `LiveDecisionEngine` is 30/30 and wins every conflict case (6/6).
 A hand-built glue baseline reaches 28/30 (93.3%), so the remaining integration advantage is
 +6.7 pp and is not significant on 30 cases. Ablations on the same split: full 100%, no attention
 96.7%, no feasibility gates 93.3%, no execution 83.3%, no commitment 70%, utility-only 30%.
@@ -254,7 +255,7 @@ mapping to EU Product Liability Directive 2024/2853.
 | New channel | Implement `DeliveryPort` |
 
 The planner contract is in place: `EnginePolicy` wraps JEV, an optimizer or a planner. The built-in
-`UtilityEngine`, [MDPEngine](../02-core/06-engines.md#what-an-mdp-is) and `POMDPEngine` are
+`UtilityPlanner`, [MDPPlanner](../02-core/06-engines.md#what-an-mdp-is) and `POMDPPlanner` are
 available behind the same adapter; simulation, calibration and model learning support them. See
 [the planner reference](../02-core/06-engines.md).
 

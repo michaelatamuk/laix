@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from laix import (
     ActionOption,
-    AttentionAwareEngine,
     DecisionProblem,
+    HumanAttentionPlanner,
 )
 
-plan = AttentionAwareEngine().solve(
+plan = HumanAttentionPlanner().solve(
     DecisionProblem(
         subject="choose",
         at="2026-11-01T10:00:00+00:00",

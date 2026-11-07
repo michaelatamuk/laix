@@ -19,8 +19,8 @@ from laix.core.engines.planners.commitment.commitment_planner import (
     _commitments,
     commitment_effect,
 )
-from laix.core.engines.planners.utility.utility import (
-    UtilityEngine,
+from laix.core.engines.planners.utility.utility_planner import (
+    UtilityPlanner,
     _approval_required,
     _constraint_blocker,
 )
@@ -36,7 +36,7 @@ class GlueBaseline:
         if not options:
             return self._wait("no_options", "there are no options")
 
-        model = UtilityEngine()._model_for(problem)
+        model = UtilityPlanner()._model_for(problem)
         active = _commitments(problem)
         remaining = _remaining(problem)
 

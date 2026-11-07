@@ -64,7 +64,7 @@ params={
 - `creates` adds the cost of taking on another promise;
 - a blocked fulfillment is penalised instead of counted as kept.
 
-The `CommitmentAwareEngine` keeps the ordinary utility score and adds the commitment term.
+The `CommitmentPlanner` keeps the ordinary utility score and adds the commitment term.
 `LiveDecisionEngine` includes the same term alongside execution risk and attention.
 
 ## Where commitments live in the decision
@@ -88,5 +88,5 @@ decide that a promise was kept; the host does that and records the outcome.
 
 - [Decision contract](01-decision-contract.md)
 - [Policies](03-policies.md) — `PlanningPolicy`
-- [Planners and the engine contract](06-engines.md) — `CommitmentAwareEngine`
+- [Planners, engines and the decision contract](06-engines.md) - `CommitmentPlanner`
 - [Stores](../03-appkit/05-stores.md) — `CommitmentStore`

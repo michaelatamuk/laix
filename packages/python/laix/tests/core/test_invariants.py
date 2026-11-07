@@ -24,7 +24,7 @@ from laix import (
     LiveDecisionEngine,
     Situation,
     Trace,
-    UtilityEngine,
+    UtilityPlanner,
     decide,
 )
 from laix.core.decisions.trail.execution_receipt import EXECUTION_RECEIPT_STATUSES
@@ -113,7 +113,7 @@ def test_i2_hard_constraint_gate_risk_limit() -> None:
         options=(risky, safe),
     )
 
-    for engine in (UtilityEngine(), LiveDecisionEngine()):
+    for engine in (UtilityPlanner(), LiveDecisionEngine()):
         plan = engine.solve(problem)
         assert plan.action_id != "risky", (
             f"{engine.__class__.__name__} chose the risky option despite hard risk gate"
@@ -333,16 +333,16 @@ def test_i7_trace_event_count_monotonically_increases() -> None:
 def test_i8_confidence_bounds_all_planners() -> None:
     """I8: confidence ∈ [0.0, 1.0] for every planner on many problems."""
     from laix import (
-        AttentionAwareEngine,
-        CommitmentAwareEngine,
-        ExecutionAwareEngine,
+        HumanAttentionPlanner,
+        CommitmentPlanner,
+        ExecutionRiskPlanner,
     )
 
     engines = [
-        UtilityEngine(),
-        CommitmentAwareEngine(),
-        ExecutionAwareEngine(),
-        AttentionAwareEngine(),
+        UtilityPlanner(),
+        CommitmentPlanner(),
+        ExecutionRiskPlanner(),
+        HumanAttentionPlanner(),
         LiveDecisionEngine(),
     ]
     problems = [
@@ -382,7 +382,7 @@ def test_i9_contract_consistency_engine_policy_vs_decide() -> None:
             ActionOption(id="hold", verb="wait", name="hold", expected_benefit=0.5),
         ),
     )
-    engine = UtilityEngine()
+    engine = UtilityPlanner()
     policy = EnginePolicy(engine)
 
     via_policy = policy.decide(request)[0]

@@ -108,7 +108,7 @@ better outcome. They answer different questions.
   onto the observed rate.
 - **`ModelLearner`** — learns transition probabilities and expected rewards from observed
   transitions. `commit(validation)` keeps the model when it beats the best one and rolls back
-  otherwise. `to_mdp_model()` feeds the learned table to `MDPEngine`.
+  otherwise. `to_mdp_model()` feeds the learned table to `MDPPlanner`.
 
 ### Decision-level calibration
 
@@ -122,7 +122,7 @@ the samples from decisions and measured outcomes. `CalibratedPolicy(policy, repo
 policy and calibrates every decision it returns, so the adjustment applies without changing the
 call site. The report uses the observed decisions directly.
 
-Both are available in Python and TypeScript, alongside the utility, MDP and POMDP engines and the
+Both are available in Python and TypeScript, alongside the utility, MDP and POMDP planners and the
 simulator.
 
 ## App and LAIX

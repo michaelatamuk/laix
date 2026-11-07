@@ -20,8 +20,8 @@ class Scenario:
     simulator: "Simulator"
     optimum: float | None = None
 
-    def run(self, engine: DecisionEngine) -> SimulationResult:
-        result = self.simulator.run(engine)
+    def run(self, planner: DecisionEngine) -> SimulationResult:
+        result = self.simulator.run(planner)
         return SimulationResult(
             scenario=self.name,
             steps=result.steps,

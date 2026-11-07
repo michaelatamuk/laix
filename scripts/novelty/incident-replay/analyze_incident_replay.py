@@ -10,7 +10,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from laix import LiveDecisionEngine, UtilityEngine
+from laix import LiveDecisionEngine, UtilityPlanner
 from shared.glue_baseline import GlueBaseline
 from shared.live_bench_common import bootstrap_ci, build_problem, run_planner
 
@@ -50,7 +50,7 @@ def main() -> int:
     planners = {
         "live": LiveDecisionEngine(),
         "glue": GlueBaseline(),
-        "utility": UtilityEngine(),
+        "utility": UtilityPlanner(),
     }
     results: list[dict[str, Any]] = []
     for payload in rows:

@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
-  AttentionAwareEngine,
+  HumanAttentionPlanner,
   AttentionBudget,
-  UtilityEngine,
+  UtilityPlanner,
   UtilityModel,
 } from "../../../src/index.ts";
 import type { ActionOption, DecisionProblem } from "../../../src/index.ts";
@@ -30,7 +30,7 @@ function option(
 
 describe("attention-aware planning", () => {
   it("prefers low attention when utility is close", () => {
-    const plan = new AttentionAwareEngine().solve(
+    const plan = new HumanAttentionPlanner().solve(
       problem([
         option("direct", 0.7),
         {
@@ -48,7 +48,7 @@ describe("attention-aware planning", () => {
   });
 
   it("blocks a human option when the budget is gone", () => {
-    const plan = new AttentionAwareEngine().solve(
+    const plan = new HumanAttentionPlanner().solve(
       problem(
         [
           { id: "ask", verb: "ask", name: "ask", expectedBenefit: 0.9 },
@@ -62,7 +62,7 @@ describe("attention-aware planning", () => {
   });
 
   it("waits when every option needs attention", () => {
-    const plan = new AttentionAwareEngine().solve(
+    const plan = new HumanAttentionPlanner().solve(
       problem(
         [
           { id: "ask", verb: "ask", name: "ask", expectedBenefit: 0.9 },
@@ -77,7 +77,7 @@ describe("attention-aware planning", () => {
   });
 
   it("counts approval as attention", () => {
-    const plan = new AttentionAwareEngine().solve(
+    const plan = new HumanAttentionPlanner().solve(
       problem([
         option("direct", 0.7),
         option("approval", 0.75, { requiresApproval: true }),
@@ -88,7 +88,7 @@ describe("attention-aware planning", () => {
   });
 
   it("honors approval state", () => {
-    const rejected = new AttentionAwareEngine().solve(
+    const rejected = new HumanAttentionPlanner().solve(
       problem(
         [
           option("rejected", 0.9),
@@ -99,7 +99,7 @@ describe("attention-aware planning", () => {
     );
     assert.equal(rejected.actionId, "direct");
 
-    const approved = new AttentionAwareEngine().solve(
+    const approved = new HumanAttentionPlanner().solve(
       problem(
         [
           option("direct", 0.7),
@@ -113,7 +113,7 @@ describe("attention-aware planning", () => {
 
   it("shares an attention budget object", () => {
     const budget = new AttentionBudget({ total: 1, spent: 0.9 });
-    const plan = new AttentionAwareEngine().solve(
+    const plan = new HumanAttentionPlanner().solve(
       problem(
         [
           { id: "ask", verb: "ask", name: "ask", expectedBenefit: 0.9 },
@@ -129,20 +129,20 @@ describe("attention-aware planning", () => {
     assert.equal(AttentionBudget.fromDict(budget.toDict()).remaining(), 0);
   });
 
-  it("matches the utility engine without attention facts", () => {
+  it("matches the utility planner without attention facts", () => {
     const options = [
       option("safe", 0.6, { risk: 0.1 }),
       option("bold", 0.9, { risk: 0.6 }),
     ];
     assert.equal(
-      new AttentionAwareEngine().solve(problem(options)).actionId,
-      new UtilityEngine().solve(problem(options)).actionId,
+      new HumanAttentionPlanner().solve(problem(options)).actionId,
+      new UtilityPlanner().solve(problem(options)).actionId,
     );
   });
 
   it("rejects a negative weight", () => {
     assert.throws(
-      () => new AttentionAwareEngine(new UtilityModel(), { interrupt: -1 }),
+      () => new HumanAttentionPlanner(new UtilityModel(), { interrupt: -1 }),
     );
   });
 });

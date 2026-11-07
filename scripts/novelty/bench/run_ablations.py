@@ -14,7 +14,7 @@ from laix import (
     CommitmentWeights,
     ExecutionWeights,
     LiveDecisionEngine,
-    UtilityEngine,
+    UtilityPlanner,
 )
 from shared.live_bench_common import (
     RESULTS,
@@ -63,7 +63,7 @@ def engines() -> dict[str, object]:
         "no_commitment": LiveDecisionEngine(commitment_weights=zero_commitment),
         "no_execution": LiveDecisionEngine(execution_weights=zero_execution),
         "no_attention": LiveDecisionEngine(attention_weights=zero_attention),
-        "utility_only": UtilityEngine(),
+        "utility_only": UtilityPlanner(),
         "equal_weights": LiveDecisionEngine(
             commitment_weights=equal_commitment,
             execution_weights=equal_execution,

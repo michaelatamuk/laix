@@ -5,10 +5,10 @@ from __future__ import annotations
 from laix import (
     ActionOption,
     DecisionProblem,
-    ExecutionAwareEngine,
+    ExecutionRiskPlanner,
 )
 
-plan = ExecutionAwareEngine().solve(
+plan = ExecutionRiskPlanner().solve(
     DecisionProblem(
         subject="choose",
         at="2026-11-01T10:00:00+00:00",

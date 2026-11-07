@@ -5,7 +5,7 @@
 | Policy | Success | Promise kept | Budget adhered | Approval correct | Continuity errors |
 |---|---:|---:|---:|---:|---:|
 | Reference | 100% | 100% | 100% | 100% | 0 |
-| Stateless `UtilityEngine` | 0% | 100% | 0% | 100% | 36 |
+| Stateless `UtilityPlanner` | 0% | 100% | 0% | 100% | 36 |
 | Stateful `LiveDecisionEngine` | 100% | 100% | 100% | 100% | 0 |
 
 The stateless planner keeps choosing the action because it cannot see that the commitment was

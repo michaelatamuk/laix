@@ -18,8 +18,8 @@ from .attention_effect import AttentionEffect
 from .attention_score import AttentionScore
 from .attention_weights import AttentionWeights
 from ...contract.engine import DecisionProblem, Plan
-from ..utility.utility import (
-    UtilityEngine,
+from ..utility.utility_planner import (
+    UtilityPlanner,
     UtilityModel,
     _approval_required,
     _constraint_blocker,
@@ -143,7 +143,7 @@ def _score_option(
     )
 
 
-class AttentionAwareEngine:
+class HumanAttentionPlanner:
     """Choose the option with the best utility plus human-attention cost."""
 
     name = "attention.v1"
@@ -155,7 +155,7 @@ class AttentionAwareEngine:
     ) -> None:
         self.model = model
         self.weights = weights or AttentionWeights()
-        self._utility = UtilityEngine(model)
+        self._utility = UtilityPlanner(model)
 
     def solve(self, problem: DecisionProblem) -> Plan:
         options = list(problem.options)
@@ -274,7 +274,7 @@ class AttentionAwareEngine:
 
 
 __all__ = [
-    "AttentionAwareEngine",
+    "HumanAttentionPlanner",
     "AttentionBudget",
     "AttentionEffect",
     "AttentionScore",

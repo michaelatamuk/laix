@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
-  ExecutionAwareEngine,
-  UtilityEngine,
+  ExecutionRiskPlanner,
+  UtilityPlanner,
   UtilityModel,
 } from "../../../src/index.ts";
 import type { ActionOption, DecisionProblem, Receipt } from "../../../src/index.ts";
@@ -29,7 +29,7 @@ function option(
 
 describe("execution-aware planning", () => {
   it("prefers a reversible option when utility is equal", () => {
-    const plan = new ExecutionAwareEngine().solve(
+    const plan = new ExecutionRiskPlanner().solve(
       problem([
         option("reversible", 0.7, { reversible: true }),
         option("irreversible", 0.7, { reversible: false }),
@@ -41,7 +41,7 @@ describe("execution-aware planning", () => {
   });
 
   it("penalizes an unknown outcome", () => {
-    const plan = new ExecutionAwareEngine().solve(
+    const plan = new ExecutionRiskPlanner().solve(
       problem([
         option("known", 0.7),
         option("unknown", 0.8, { params: { unknown_risk: 0.8 } }),
@@ -52,7 +52,7 @@ describe("execution-aware planning", () => {
   });
 
   it("penalizes recovery cost", () => {
-    const plan = new ExecutionAwareEngine().solve(
+    const plan = new ExecutionRiskPlanner().solve(
       problem([
         option("cheap", 0.7),
         option("expensive", 0.8, { params: { recovery_cost: 1.0 } }),
@@ -63,7 +63,7 @@ describe("execution-aware planning", () => {
   });
 
   it("penalizes an approval step", () => {
-    const plan = new ExecutionAwareEngine().solve(
+    const plan = new ExecutionRiskPlanner().solve(
       problem([
         option("direct", 0.7),
         option("approval", 0.75, { requiresApproval: true }),
@@ -81,7 +81,7 @@ describe("execution-aware planning", () => {
       status: "unknown",
       actor: "operator",
     };
-    const plan = new ExecutionAwareEngine().solve(
+    const plan = new ExecutionRiskPlanner().solve(
       problem(
         [option("known", 0.7), option("unknown", 0.8)],
         { execution_receipts: [receipt] },
@@ -92,7 +92,7 @@ describe("execution-aware planning", () => {
   });
 
   it("penalizes a failed receipt and a pending approval", () => {
-    const failed = new ExecutionAwareEngine().solve(
+    const failed = new ExecutionRiskPlanner().solve(
       problem(
         [option("known", 0.7), option("failed", 0.8)],
         { execution_state: { failed: "failed" } },
@@ -100,7 +100,7 @@ describe("execution-aware planning", () => {
     );
     assert.equal(failed.actionId, "known");
 
-    const pending = new ExecutionAwareEngine().solve(
+    const pending = new ExecutionRiskPlanner().solve(
       problem(
         [option("direct", 0.7), option("pending", 0.75)],
         { execution_state: { pending: "pending" } },
@@ -109,20 +109,20 @@ describe("execution-aware planning", () => {
     assert.equal(pending.actionId, "direct");
   });
 
-  it("matches the utility engine without execution facts", () => {
+  it("matches the utility planner without execution facts", () => {
     const options = [
       option("safe", 0.6, { risk: 0.1 }),
       option("bold", 0.9, { risk: 0.6 }),
     ];
     assert.equal(
-      new ExecutionAwareEngine().solve(problem(options)).actionId,
-      new UtilityEngine().solve(problem(options)).actionId,
+      new ExecutionRiskPlanner().solve(problem(options)).actionId,
+      new UtilityPlanner().solve(problem(options)).actionId,
     );
   });
 
   it("rejects a negative weight", () => {
     assert.throws(
-      () => new ExecutionAwareEngine(new UtilityModel(), { recovery: -1 }),
+      () => new ExecutionRiskPlanner(new UtilityModel(), { recovery: -1 }),
     );
   });
 });

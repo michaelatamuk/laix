@@ -22,13 +22,13 @@ a model the host supplies.
 **Who it is for:** teams building AI agents or automations that take real actions — especially when
 approvals, promises, human attention or auditability matter.
 
-**Status:** `0.9.0` · synthetic + continuity evidence · first external benchmark run · real-world validation pending.
+**Status:** `0.10.0` · synthetic + continuity evidence · first external benchmark run · real-world validation pending.
 
 ## Contents
 
 - [Install](#install)
 - [One decision](#one-decision)
-- [Integrated live decision](#integrated-live-decision)
+- [The live decision engine](#the-live-decision-engine)
 - [How it works](#how-it-works)
 - [Decision continuity](#decision-continuity)
 - [Results](#results)
@@ -40,7 +40,7 @@ approvals, promises, human attention or auditability matter.
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.9.0#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.10.0#subdirectory=packages/python/laix"
 ```
 
 From a local checkout, at the repository root:
@@ -98,10 +98,14 @@ const [decision] = new Layer().decide({
 Every decision carries a verb, a reason code, confidence, an action and the identifiers that
 connect it to the audit trail.
 
-## Integrated live decision
+## The live decision engine
 
-`LiveDecisionEngine` scores the options on utility, promises, execution risk and human attention,
-then returns one plan with the full breakdown.
+**Live** means the decision is made inside the running loop, at event time, with the current state.
+The core stays stateless: the host supplies commitments, attention budget, approvals and execution
+state with each request.
+
+`LiveDecisionEngine` is the composition engine. It scores the options on utility, promises, execution
+risk and human attention, then returns one plan with the full breakdown.
 
 ```python
 from laix import ActionOption, Commitment, DecisionProblem, LiveDecisionEngine
@@ -182,7 +186,8 @@ lifecycle around them.
 | Decision contract | one `Decision` shape for attention, action, follow-up and execution |
 | Decision continuity | commitments, budget, approvals, revisions and outcomes carried into the next decision |
 | Policies | action, safety, replanning, allocation, negotiation, preference, verification and escalation |
-| Planners | UtilityEngine, CommitmentAwareEngine, ExecutionAwareEngine, AttentionAwareEngine, LiveDecisionEngine, MDPEngine and POMDPEngine |
+| Planners | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner` and `POMDPPlanner` |
+| Live decision engine | `LiveDecisionEngine`: composes the four live scores into one plan |
 | Learning | rewards, bandits, causal attribution, calibration and decision calibration |
 | Streaming and execution | event time, checkpoints, timeline, receipts, recovery and records |
 | App kit | stores, platform, delivery, live context and bench |
@@ -318,5 +323,6 @@ If you use LAIX in research, cite it via [CITATION.cff](CITATION.cff).
 
 Apache-2.0. See [LICENSE](LICENSE).
 
-Current release: `0.9.0`. Python and TypeScript share the same decision contract, policies, planners,
-streaming, execution, learning and app-kit surface. See [CHANGELOG.md](CHANGELOG.md).
+Current release: `0.10.0`. Python and TypeScript share the same decision contract, policies,
+planners, live decision engine, streaming, execution, learning and app-kit surface. See
+[CHANGELOG.md](CHANGELOG.md).

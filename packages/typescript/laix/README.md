@@ -30,7 +30,9 @@ registered with `registerPolicy` and selected with `usePolicy`.
 |---|---|
 | Attention | `decide`, `score`, `costOfWaiting`, `OutcomeLog` |
 | Action | `Layer`, `decideAction` |
-| Engine | `EnginePolicy`, `DecisionEngine`, `DecisionProblem`, `Plan`, `toDecision`, `UtilityEngine`, `MDPEngine`, `MdpModel`, `POMDPEngine`, `PomdpModel`, `Simulator`, `compareEngines`, `runEngineBench` |
+| Planners | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner`, `POMDPPlanner`, `MdpModel`, `PomdpModel` |
+| Engine and protocol | `LiveDecisionEngine`, `EnginePolicy`, `DecisionEngine`, `DecisionProblem`, `Plan`, `toDecision` |
+| Simulation and bench | `Simulator`, `comparePlanners`, `runPlannerBench` |
 | Policy packs | `ActivePerceptionPolicy`, `SafetyConstrainedPolicy`, `ReplanningPolicy`, `AllocationPolicy`, `NegotiationPolicy`, `PreferenceElicitationPolicy`, `VerificationPolicy`, `EscalationPolicy` |
 | Authoring and target | `RulePolicy`, `Rule`, `TargetedPolicy`, `PlanningPolicy`, `GroupPolicy`, `ShadowPolicy`, `simulate` |
 | Learned policy | `BanditPolicy`, `UCBBandit`, `Arm`, `rewardForLabel`, `CausalLedger`, `ModelLearner`, `CalibrationReport` |

@@ -2,7 +2,7 @@ import type {
   ObservationProbability,
   PomdpModelOptions,
   PomdpTransition,
-} from "./pomdp.ts";
+} from "./pomdp-planner.ts";
 
 export class PomdpModel {
   readonly states: string[];

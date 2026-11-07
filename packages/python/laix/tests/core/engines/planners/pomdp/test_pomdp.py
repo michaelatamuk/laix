@@ -7,7 +7,7 @@ from laix import (
     MdpModel,
     MdpTransition,
     ObservationProbability,
-    POMDPEngine,
+    POMDPPlanner,
     PomdpModel,
     PomdpTransition,
     belief_entropy,
@@ -60,12 +60,12 @@ def test_belief_update_uses_the_observation() -> None:
     assert observation_probability(_model(), belief, "go", "o1") == 1.0
 
 
-def test_pomdp_value_and_engine() -> None:
+def test_pomdp_value_and_planner() -> None:
     model = _model()
     belief = belief_from_state("s0", ("s0", "s1"))
     assert pomdp_value(model, belief) == 1.0
 
-    plan = POMDPEngine(model).solve(
+    plan = POMDPPlanner(model).solve(
         DecisionProblem(
             subject="choose",
             at="2026-11-01T10:00:00+00:00",
@@ -79,8 +79,8 @@ def test_pomdp_value_and_engine() -> None:
     assert plan.attributes["entropy"] == 0.0
 
 
-def test_pomdp_engine_defaults_to_a_uniform_belief() -> None:
-    plan = POMDPEngine(_model()).solve(
+def test_pomdp_planner_defaults_to_a_uniform_belief() -> None:
+    plan = POMDPPlanner(_model()).solve(
         DecisionProblem(subject="choose", at="2026-11-01T10:00:00+00:00")
     )
 

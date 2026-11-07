@@ -1,4 +1,4 @@
-"""What one engine did in one scenario."""
+"""What one planner did in one scenario."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from .simulation_step import SimulationStep
 
 @dataclass(frozen=True, slots=True)
 class SimulationResult:
-    """What one engine did in one scenario."""
+    """What one planner did in one scenario."""
 
     scenario: str
     steps: tuple[SimulationStep, ...]

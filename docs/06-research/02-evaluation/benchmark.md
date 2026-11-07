@@ -236,10 +236,10 @@ Splits:
 
 - first option;
 - highest benefit;
-- `UtilityEngine` alone;
-- `CommitmentAwareEngine` alone;
-- `ExecutionAwareEngine` alone;
-- `AttentionAwareEngine` alone;
+- `UtilityPlanner` alone;
+- `CommitmentPlanner` alone;
+- `ExecutionRiskPlanner` alone;
+- `HumanAttentionPlanner` alone;
 - `LiveDecisionEngine`.
 
 ### Ablations
@@ -293,7 +293,7 @@ Document these explicitly:
 
 - synthetic cases may not represent real traffic;
 - the benchmark may encode the authors' assumptions;
-- the integrated planner may win because the baselines are weak;
+- `LiveDecisionEngine` may win because the baselines are weak;
 - a single domain limits generality;
 - deterministic cases hide variance;
 - the attention model is a simplification of human workload;
@@ -316,33 +316,33 @@ Mitigations:
 
 Generated from the frozen test split (30 cases) and the six ablations. The raw rows are in
 `results/live-decision-benchmark/raw/decisions.jsonl`; the summary is in `results/live-decision-benchmark/metrics/summary.json`; the
-baseline is `results/live-decision-benchmark/metrics/baseline.json`. The tables use the full engine
+baseline is `results/live-decision-benchmark/metrics/baseline.json`. The tables use the full class
 names; the JSON keys are listed in the
 [results README](../../../results/live-decision-benchmark/README.md#planner-keys).
 
 ### Main table (test split, 30 cases)
 
-| Planner | Accuracy | 95% CI | Promise keeping | Irreversible rate | Budget violations |
+| Component | Accuracy | 95% CI | Promise keeping | Irreversible rate | Budget violations |
 |---|---:|---:|---:|---:|---:|
-| First / rule | 70.00% | 0.53–0.87 | 58.33% | 13.33% | 77.78% |
-| Benefit-only | 23.33% | 0.10–0.40 | 0.00% | 23.33% | 70.00% |
-| UtilityEngine | 30.00% | 0.13–0.47 | 0.00% | 23.33% | 70.00% |
-| CommitmentAwareEngine | 70.00% | 0.53–0.87 | 100.00% | 13.33% | 57.14% |
-| ExecutionAwareEngine | 50.00% | 0.33–0.67 | 8.33% | 6.67% | 62.50% |
-| AttentionAwareEngine | 53.33% | 0.37–0.70 | 25.00% | 16.67% | 0.00% |
+| First-option baseline | 70.00% | 0.53–0.87 | 58.33% | 13.33% | 77.78% |
+| Highest-benefit baseline | 23.33% | 0.10–0.40 | 0.00% | 23.33% | 70.00% |
+| UtilityPlanner | 30.00% | 0.13–0.47 | 0.00% | 23.33% | 70.00% |
+| CommitmentPlanner | 70.00% | 0.53–0.87 | 100.00% | 13.33% | 57.14% |
+| ExecutionRiskPlanner | 50.00% | 0.33–0.67 | 8.33% | 6.67% | 62.50% |
+| HumanAttentionPlanner | 53.33% | 0.37–0.70 | 25.00% | 16.67% | 0.00% |
 | **Glue baseline** | **93.33%** | **0.83–1.00** | **100.00%** | **0.00%** | **0.00%** |
 | **LiveDecisionEngine** | **100.00%** | **1.00–1.00** | **100.00%** | **0.00%** | **0.00%** |
 
 ### Conflict cases (6 cases)
 
-| Planner | Conflict accuracy | 95% CI |
+| Component | Conflict accuracy | 95% CI |
 |---|---:|---:|
-| First / rule | 0.00% | 0.00–0.00 |
-| Benefit-only | 0.00% | 0.00–0.00 |
-| UtilityEngine | 0.00% | 0.00–0.00 |
-| CommitmentAwareEngine | 83.33% | 0.50–1.00 |
-| ExecutionAwareEngine | 33.33% | 0.00–0.67 |
-| AttentionAwareEngine | 66.67% | 0.33–1.00 |
+| First-option baseline | 0.00% | 0.00–0.00 |
+| Highest-benefit baseline | 0.00% | 0.00–0.00 |
+| UtilityPlanner | 0.00% | 0.00–0.00 |
+| CommitmentPlanner | 83.33% | 0.50–1.00 |
+| ExecutionRiskPlanner | 33.33% | 0.00–0.67 |
+| HumanAttentionPlanner | 66.67% | 0.33–1.00 |
 | **Glue baseline** | **100.00%** | **1.00–1.00** |
 | **LiveDecisionEngine** | **100.00%** | **1.00–1.00** |
 
@@ -370,12 +370,12 @@ then utility. It is a stronger comparator than any single-concern planner.
 
 | Comparator | Accuracy delta | 95% CI | Discordant (LiveDecisionEngine / other) | McNemar chi² | p | Cohen's h |
 |---|---:|---:|---:|---:|---:|---:|
-| Benefit-only | +76.7 pp | 0.600–0.900 | 23 / 0 | 21.043 | <0.001 | 2.133 |
-| UtilityEngine | +70.0 pp | 0.533–0.867 | 21 / 0 | 19.048 | <0.001 | 1.982 |
-| ExecutionAwareEngine | +50.0 pp | 0.333–0.667 | 15 / 0 | 13.067 | <0.001 | 1.571 |
-| AttentionAwareEngine | +46.7 pp | 0.300–0.633 | 14 / 0 | 12.071 | <0.001 | 1.504 |
-| CommitmentAwareEngine | +30.0 pp | 0.133–0.467 | 9 / 0 | 7.111 | 0.008 | 1.159 |
-| First / rule | +30.0 pp | 0.133–0.467 | 9 / 0 | 7.111 | 0.008 | 1.159 |
+| Highest-benefit baseline | +76.7 pp | 0.600–0.900 | 23 / 0 | 21.043 | <0.001 | 2.133 |
+| UtilityPlanner | +70.0 pp | 0.533–0.867 | 21 / 0 | 19.048 | <0.001 | 1.982 |
+| ExecutionRiskPlanner | +50.0 pp | 0.333–0.667 | 15 / 0 | 13.067 | <0.001 | 1.571 |
+| HumanAttentionPlanner | +46.7 pp | 0.300–0.633 | 14 / 0 | 12.071 | <0.001 | 1.504 |
+| CommitmentPlanner | +30.0 pp | 0.133–0.467 | 9 / 0 | 7.111 | 0.008 | 1.159 |
+| First-option baseline | +30.0 pp | 0.133–0.467 | 9 / 0 | 7.111 | 0.008 | 1.159 |
 | **Glue baseline** | **+6.7 pp** | **0.000–0.167** | **2 / 0** | **0.500** | **0.480** | **0.522** |
 
 The comparison against the hand-built glue baseline is the honest one: `LiveDecisionEngine` is better, but the

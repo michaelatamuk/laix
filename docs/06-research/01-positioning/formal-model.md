@@ -206,17 +206,17 @@ If no feasible option exists, the planner returns `verb = "wait"` with
 
 Reproducible by running `examples/python/03-plan/ablation_study.py`.
 
-| Planner | Correct / 7 | Accuracy |
+| Component | Correct / 7 | Accuracy |
 |---|---:|---:|
-| First / rule | 3 | 43% |
-| Benefit-only | 1 | 14% |
-| `UtilityEngine` | 2 | 29% |
-| `CommitmentAwareEngine` | 3 | 43% |
-| `ExecutionAwareEngine` | 5 | 71% |
-| `AttentionAwareEngine` | 4 | 57% |
+| First-option baseline | 3 | 43% |
+| Highest-benefit baseline | 1 | 14% |
+| `UtilityPlanner` | 2 | 29% |
+| `CommitmentPlanner` | 3 | 43% |
+| `ExecutionRiskPlanner` | 5 | 71% |
+| `HumanAttentionPlanner` | 4 | 57% |
 | **`LiveDecisionEngine`** | **7** | **100%** |
 
-The integration adds real value: each single-concern planner wins its own
+The composition adds real value: each single-concern planner wins its own
 cases but fails on cases where two or more concerns fire simultaneously.
 See `examples/python/03-plan/conflict_scenario.py` for a worked example.
 

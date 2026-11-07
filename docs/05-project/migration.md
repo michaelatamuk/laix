@@ -41,6 +41,61 @@ version only moves by a small amount. This page is the upgrade path; the version
 6. Update pins in the host, CI and deployment manifests.
 7. Keep the previous package version available for rollback until the new version is stable.
 
+## Planner naming migration (0.10.0)
+
+0.10.0 separates four layers:
+
+- **Planner** — a strategy;
+- **Engine** — a composition;
+- **Policy** — an integration;
+- **Learner** — learning.
+
+| Before | After |
+|---|---|
+| `UtilityEngine` | `UtilityPlanner` |
+| `CommitmentAwareEngine` | `CommitmentPlanner` |
+| `ExecutionAwareEngine` | `ExecutionRiskPlanner` |
+| `AttentionAwareEngine` | `HumanAttentionPlanner` |
+| `MDPEngine` | `MDPPlanner` |
+| `POMDPEngine` | `POMDPPlanner` |
+| `LiveScore` | `CompositeScore` |
+| `compare_engines` / `compareEngines` | `compare_planners` / `comparePlanners` |
+| `EngineScore` | `PlannerScore` |
+| `FixedActionEngine` | `FixedActionPlanner` |
+| `FirstOptionEngine` | `FirstOptionPlanner` |
+| `HighestBenefitEngine` | `HighestBenefitPlanner` |
+| `run_engine_bench` / `runEngineBench` | `run_planner_bench` / `runPlannerBench` |
+
+Unchanged:
+
+| Surface | Why |
+|---|---|
+| `LiveDecisionEngine` | it is the composition engine |
+| `EnginePolicy` | it is the policy adapter |
+| `UCBBandit` | it is a learner |
+| `DecisionEngine` | it is the protocol |
+| `live_decision` | stable reason code |
+| `live`, `glue`, `commitment`, `execution`, `attention`, `utility`, `first`, `benefit` | stable JSON and bench keys |
+| `LiveCase`, `LiveBench`, `live_bench` | benchmark terms |
+| `benchmarks/live`, `results/live-decision-benchmark` | benchmark names |
+
+Paths also changed:
+
+| Before | After |
+|---|---|
+| `core/engines/planners/live/` | `core/engines/live/` |
+| `utility/utility.py` | `utility/utility_planner.py` |
+| `mdp/mdp.py` | `mdp/mdp_planner.py` |
+| `pomdp/pomdp.py` | `pomdp/pomdp_planner.py` |
+| `engine_score.py` | `planner_score.py` |
+
+No compatibility aliases are provided. The rename is deliberate: two names for one role cause
+confusion. Update the import instead of keeping both names.
+
+JSON keys and reason codes are data identifiers; class names are code identifiers. They do not
+have to match. For example, the `live` benchmark key maps to `LiveDecisionEngine`, while
+`commitment` maps to `CommitmentPlanner`.
+
 ## Compatibility rules
 
 - Public entry points, record fields and the decision shape are the compatibility surface.
@@ -76,5 +131,6 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.9.0`. There are no historical migration entries yet. Add one here
-when a release requires host changes; keep it short and concrete.
+The current release is `0.10.0`. The planner/engine/policy/learner naming change is the first
+migration entry that requires host changes. Add a new entry here when a release requires host
+changes; keep it short and concrete.
