@@ -72,7 +72,7 @@ A decision record is only useful if the host stores it safely.
 Controls:
 
 - store records append-only or with an immutable audit log;
-- use `DecisionRecord.verify` to detect record changes;
+- use `verify_record` to detect record changes;
 - keep the full `trace_id`, `decision_id`, `policy_version` and `created_at`;
 - separate the decision store from the execution credentials;
 - restrict who can write or delete records.
@@ -123,7 +123,7 @@ Controls:
 - [ ] Keep secrets and raw data out of decisions, traces and logs.
 - [ ] Set budgets, deadlines and rate limits.
 - [ ] Apply retention and deletion rules.
-- [ ] Report vulnerabilities through [SECURITY.md](../../SECURITY.md).
+- [ ] Report vulnerabilities through [SECURITY.md](../../../SECURITY.md).
 
 ## Out of scope
 

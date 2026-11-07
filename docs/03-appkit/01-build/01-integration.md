@@ -140,7 +140,7 @@ LAIX:    whether to act now, how, with what approval, and whether it worked
 ## Privacy
 
 Keep secrets and raw customer data in the host. Pass references where possible. `GroupPolicy` masks
-configured fields before sharing; see [privacy](../../04-concepts/privacy.md).
+configured fields before sharing; see [privacy](../../04-concepts/03-trust/02-privacy.md).
 
 ## Boundary
 

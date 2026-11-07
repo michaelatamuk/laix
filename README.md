@@ -202,7 +202,7 @@ lifecycle around them.
 | Scope | Typed questions | The task decision and its lifecycle |
 | Use together | JEV can be the chooser inside a policy | LAIX supplies the contract, continuity and audit |
 
-See [LAIX and decision models](docs/04-concepts/decision-models.md#can-they-be-compared) for a fair
+See [LAIX and decision models](docs/04-concepts/02-positioning/01-decision-models.md#can-they-be-compared) for a fair
 comparison protocol. A measured chooser swap needs TypeSafe API access.
 
 ## Why LAIX
@@ -279,7 +279,7 @@ External validation — real incident replay or a participant study — is still
 | [Documentation index](docs/README.md) | every guide and reference page |
 | [Quickstart](docs/01-start/02-quickstart.md) | install and first decision |
 | [Decision lifecycle](docs/01-start/03-decision-lifecycle.md) | moment to outcome in one loop |
-| [Decision models](docs/04-concepts/decision-models.md) | JEV, classifiers and judges vs the LAIX runtime |
+| [Decision models](docs/04-concepts/02-positioning/01-decision-models.md) | JEV, classifiers and judges vs the LAIX runtime |
 | [Deployment](docs/03-appkit/05-operate/03-deployment.md) | production topology, reliability, rollout and retention |
 | [Research and evidence](docs/06-research/README.md) | claims, benchmarks and paper plan |
 | [Examples](examples/README.md) | Python and TypeScript, grouped by lifecycle |
@@ -313,7 +313,7 @@ Questions go to [SUPPORT.md](SUPPORT.md); participation is covered by
 ## Security
 
 Report vulnerabilities privately through [SECURITY.md](SECURITY.md); the
-[security and threat model](docs/04-concepts/security.md) explains the boundaries.
+[security and threat model](docs/04-concepts/03-trust/01-security.md) explains the boundaries.
 
 ## Citation
 

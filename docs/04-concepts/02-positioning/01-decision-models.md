@@ -63,9 +63,9 @@ to the optional app kit when the host chooses it.
 
 Both can choose among a fixed set of options. In the leak example:
 
-- the state is “water is coming under the door, urgency is high”;
-- the options are “wait, look closer, ask the owner, turn off the valve, call the manager”;
-- both LAIX and JEV can return “turn off the valve”.
+- the state is "water is coming under the door, urgency is high";
+- the options are "wait, look closer, ask the owner, turn off the valve, call the manager";
+- both LAIX and JEV can return "turn off the valve".
 
 So the choice among options is the same kind of problem.
 
@@ -81,7 +81,7 @@ The difference is how the choice is made and what happens around it.
 | Output | full `Decision` | choice plus probabilities |
 | Around the choice | the host, or app kit, adds approval, execution and verification | judgment only |
 
-LAIX’s built-in action policy is itself a small decision model: a rule-based one. JEV is a different
+LAIX's built-in action policy is itself a small decision model: a rule-based one. JEV is a different
 kind of decision model: a calibrated classifier over typed answers.
 
 The useful distinction:
@@ -121,7 +121,7 @@ Status: protocol only. A measured comparison needs TypeSafe API access and a fro
 A plumber sends a £480 invoice. The house rule says:
 
 - invoices under £500 may be paid automatically if they match the work order;
-- invoices at or above £500 need the owner’s approval;
+- invoices at or above £500 need the owner's approval;
 - after payment, check that the bank confirms it;
 - if payment fails, call the owner.
 
@@ -162,7 +162,7 @@ JEV and LAIX both depend on the app for domain meaning:
 
 - JEV turns state into a judgment;
 - LAIX turns a request into a decision; the host or app kit adds the lifecycle;
-- the app knows what “pay the invoice” means.
+- the app knows what "pay the invoice" means.
 
 ## When LAIX is actually needed
 
@@ -190,18 +190,18 @@ system must decide:
 | Allocation | Which technician should take the job? |
 | Replanning | Should we send a second technician? |
 | Safety | Is it safe to enter the building? |
-| Negotiation | Should we accept the customer’s price? |
+| Negotiation | Should we accept the customer's price? |
 | Ask | Does a €300 extra part need office approval? |
 | Verification | Did the technician finish the job? |
 | Escalation | Should we call the manager now? |
 
-JEV can judge “is this a gas leak?” or “does this photo show mould?”. The app can dispatch a
+JEV can judge "is this a gas leak?" or "does this photo show mould?". The app can dispatch a
 technician, charge a card and send a message.
 
-Across eight decision classes, the team otherwise writes eight separate decision paths, or one ad-hoc engine. Each path grows its own approval rule, audit format, verification step and tests. They drift apart.
+Across eight decision needs, the team otherwise writes eight separate decision paths, or one ad-hoc engine. Each path grows its own approval rule, audit format, verification step and tests. They drift apart.
 
 With LAIX, the app still keeps the jobs, technicians, photos and payments. LAIX supplies one
-decision contract for all eight decision classes. The optional app kit adds one approval rule, one
+decision contract for all eight decision needs. The optional app kit adds one approval rule, one
 execution receipt, one audit shape and one bench.
 
 At this point the team would otherwise be building a decision runtime themselves. LAIX is that
@@ -216,7 +216,7 @@ runtime, already built.
 | Shared approval, audit, verification and bench | LAIX app kit |
 | Policy experiments or shadow comparisons | LAIX |
 
-LAIX replaces the bespoke decision runtime an app would otherwise write. JEV and the app’s domain
+LAIX replaces the bespoke decision runtime an app would otherwise write. JEV and the app's domain
 logic stay in place.
 
 ## Using them together
@@ -296,4 +296,4 @@ LAIX is the runtime that can use a decision model. It works alongside JEV and ot
 In PPMA, the comparison is the Commander's LLM ask vs a LAIX policy for one bounded task. JEV is a
 judgment engine that can sit inside either path.
 
-For the PPMA case, see [PPMA + LAIX](ppma-integration.md).
+For the PPMA case, see [PPMA + LAIX](02-ppma-integration.md).

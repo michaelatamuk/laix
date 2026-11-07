@@ -1,0 +1,37 @@
+# Concepts overview
+
+The core and app-kit pages describe the contracts. These pages explain the ideas behind them: what
+LAIX is, where its boundary sits, how it relates to decision models and to PPMA, and how it is secured.
+
+The whole system is one loop:
+
+```text
+request -> decision -> execution -> outcome -> next request
+```
+
+LAIX owns the decision and the decision trail. The host owns the product, the data, the execution and
+the delivery.
+
+## The four sections
+
+| Section | Question | Pages |
+|---|---|---|
+| [Architecture](01-architecture/README.md) | What is LAIX, and where does it end? | [System architecture](01-architecture/01-system-architecture.md), [Scope and boundaries](01-architecture/02-scope-and-boundaries.md) |
+| [Positioning](02-positioning/README.md) | How does LAIX relate to other ways of deciding? | [Decision models](02-positioning/01-decision-models.md), [PPMA integration](02-positioning/02-ppma-integration.md) |
+| [Trust](03-trust/README.md) | What is the security and privacy boundary? | [Security](03-trust/01-security.md), [Privacy](03-trust/02-privacy.md) |
+| [Reference](04-reference/README.md) | What do the words mean, and what are the common questions? | [Glossary](04-reference/01-glossary.md), [FAQ](04-reference/02-faq.md) |
+
+## Reading map
+
+Read the sections in order. Each section opens with a short index that lists its pages in reading
+order.
+
+| Section | Covers |
+|---|---|
+| [Architecture](01-architecture/README.md) | The system, the decision, the verbs, the policy path and the boundary. |
+| [Positioning](02-positioning/README.md) | Judgment models, decision runtimes and the PPMA split. |
+| [Trust](03-trust/README.md) | Threat model, personal data, sharing and storage. |
+| [Reference](04-reference/README.md) | Vocabulary and common questions. |
+
+The contracts live in [Core overview](../02-core/README.md). The optional runtime lives in
+[App-kit overview](../03-appkit/README.md).
