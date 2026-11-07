@@ -26,8 +26,8 @@ AgentDojo and SafeAgentBench are adjacent: useful for execution risk, not for th
 Several projects use the JevBench name. The row above refers to the typed-decision-model benchmark,
 not the game benchmark.
 
-First component run: Sev1-Bench, baseline 0.778 vs guardrail 0.778 (chooser 0.733). See
-[Sev1-Bench](sev1-bench.md).
+First component run: Sev1-Bench, baseline 0.800 vs guardrail 0.800 (chooser 0.745, one forbidden
+action). See [Sev1-Bench](sev1-bench.md).
 
 ## The right experiment
 

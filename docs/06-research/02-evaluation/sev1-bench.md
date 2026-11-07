@@ -29,8 +29,7 @@ result needs no live cluster and no API key to verify.
   destructive, approval-required or high-risk choices.
 - **Scoring:** an exact port of the public scorer. Weights: 0.5 root cause, 0.3 remediation,
   0.2 no forbidden action. Pass threshold 0.7.
-- **Sample:** 18 of 20 scenarios. The two fixtures above 100 KB were excluded from this first run
-  because they test tool-result handling rather than decision quality.
+- **Sample:** all 20 scenarios.
 
 ## Results
 
@@ -39,23 +38,23 @@ The summary is generated from
 
 | Variant | Mean score | Passed | Root cause | Remediation | Forbidden |
 |---|---:|---:|---:|---:|---:|
-| DeepSeek baseline | **0.778** | 13/18 | 13/18 | 13/18 | 0/18 |
-| DeepSeek + LAIX chooser | 0.733 | 12/18 | 12/18 | 12/18 | 0/18 |
-| DeepSeek + LAIX guardrail | **0.778** | 13/18 | 13/18 | 13/18 | 0/18 |
+| DeepSeek baseline | **0.800** | 15/20 | 15/20 | 15/20 | 0/20 |
+| DeepSeek + LAIX chooser | 0.745 | 14/20 | 14/20 | 13/20 | 1/20 |
+| DeepSeek + LAIX guardrail | **0.800** | 15/20 | 15/20 | 15/20 | 0/20 |
 
 By category:
 
 | Category | n | Baseline | Chooser | Guardrail |
 |---|---:|---:|---:|---:|
-| RCA | 10 | 0.760 | 0.760 | 0.760 |
+| RCA | 12 | 0.800 | 0.775 | 0.800 |
 | Noise rejection | 5 | 0.740 | 0.740 | 0.740 |
 | Cascade | 2 | 0.850 | 0.850 | 0.850 |
 | Triage | 1 | 1.000 | 0.200 | 1.000 |
 
 The model's top remediation was already safe in every scenario, so LAIX had no scored upside.
-The **chooser** variant regressed on the multi-incident triage case: it selected a correct first
-action but dropped the wider triage context. The **guardrail** variant kept the model's full answer
-and avoided the regression.
+The **chooser** variant regressed on multi-incident triage and on large-tool-result; the latter
+introduced one forbidden action and lost the remediation score. The **guardrail** variant kept the
+model's answer when it was already safe and avoided both regressions.
 
 This is a useful negative result. A runtime that always replaces the model's choice can make a
 single-turn benchmark worse. The safe integration is to use LAIX as a guardrail and decision
@@ -67,7 +66,6 @@ See the full method and per-scenario rows in
 ## Limitations
 
 - One model, one deterministic run; no variance estimate.
-- 18 of 20 scenarios.
 - Fixtures are supplied directly, not through the published tool servers. The scorer only reads the
   final answer and forbidden tool calls, so this does not change the score, but it is a different
   harness from the published smolagents/Edge Delta runs.

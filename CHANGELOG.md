@@ -66,9 +66,13 @@
   significance notes.
 - Added an external-benchmark landscape and a component evaluation protocol (`τ-bench` first,
   `ITBench` second); no external result is claimed yet.
-- Ran Sev1-Bench on 18 of 20 scenarios: baseline 0.778, LAIX guardrail 0.778, LAIX chooser 0.733.
-  The chooser regressed on multi-incident triage; the guardrail preserved the model's answer.
-  Results and harness are in `results/external/sev1-bench/`.
+- Ran Sev1-Bench on all 20 scenarios: baseline 0.800, LAIX guardrail 0.800, LAIX chooser 0.745
+  with one forbidden action. The chooser regressed on multi-incident triage and large-tool-result;
+  the guardrail preserved the model's answer. Results and harness are in
+  `results/external/sev1-bench/`.
+- Added a decision-continuity benchmark v0: 12 episodes, 60 decisions. Stateful
+  `LiveDecisionEngine` succeeded on 100% of episodes; a stateless `UtilityEngine` on 0% with 36
+  continuity errors. This is a synthetic mechanism test, not external validation.
 - Documented the power needed for the glue comparison: about 90-120 new held-out cases at the
   current effect size, run once on a pre-registered set.
 - Added a secondary adversarial-split check: 18/18 vs 16/18, combined exact McNemar p = 0.125.

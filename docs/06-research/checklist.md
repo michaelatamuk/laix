@@ -126,8 +126,13 @@ team did not write.
 - [ ] **Run one external benchmark** — τ-bench for policy adherence, then ITBench for incident
   response. Protocol in [external benchmarks](02-evaluation/external-benchmarks.md).
 
-- [x] **First external component run** — Sev1-Bench, 18 of 20 scenarios. Baseline 0.778, LAIX
-  guardrail 0.778, LAIX chooser 0.733; see [Sev1-Bench](02-evaluation/sev1-bench.md).
+- [x] **First external component run** — Sev1-Bench, all 20 scenarios. Baseline 0.800, LAIX
+  guardrail 0.800, LAIX chooser 0.745 with one forbidden action; see
+  [Sev1-Bench](02-evaluation/sev1-bench.md).
+
+- [x] **Continuity benchmark v0** — 12 episodes, 60 decisions. Stateful `LiveDecisionEngine` 100%
+  success, stateless `UtilityEngine` 0% with 36 continuity errors; see
+  [continuity benchmark](02-evaluation/continuity-benchmark.md).
 
 - [ ] **Record the chosen option** — write one paragraph in
   `docs/06-research/03-validation/plan.md` §1 stating: which option (A, B or C) was chosen,

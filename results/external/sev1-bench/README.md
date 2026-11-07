@@ -1,6 +1,6 @@
 # Sev1-Bench external run
 
-Status: first external component run, 18 of 20 scenarios. This is not a substitute for real
+Status: first external component run, 20 of 20 scenarios. This is not a substitute for real
 incident replay.
 
 [Sev1-Bench](https://github.com/edgedelta/sev1-bench) is a deterministic benchmark built from
@@ -13,8 +13,7 @@ fixtures, a brief and a hidden rubric. The scorer is a pure function of the fina
 - Input: the scenario brief and frozen fixtures only. The model never sees the rubric.
 - Scoring: an exact port of the public scorer. Weights are 0.5 root cause, 0.3 remediation and
   0.2 no forbidden action; pass threshold 0.7.
-- Sample: 18 of 20 scenarios. The two fixtures above 100 KB were excluded from this first run
-  because they test tool-result handling rather than decision quality.
+- Sample: all 20 scenarios.
 
 Three variants were scored from the same model output:
 
@@ -28,15 +27,15 @@ Three variants were scored from the same model output:
 
 | Variant | Mean | Passed | Root cause | Remediation | Forbidden |
 |---|---:|---:|---:|---:|---:|
-| Baseline | **0.778** | 13/18 | 13/18 | 13/18 | 0/18 |
-| LAIX chooser | 0.733 | 12/18 | 12/18 | 12/18 | 0/18 |
-| LAIX guardrail | **0.778** | 13/18 | 13/18 | 13/18 | 0/18 |
+| Baseline | **0.800** | 15/20 | 15/20 | 15/20 | 0/20 |
+| LAIX chooser | 0.745 | 14/20 | 14/20 | 13/20 | 1/20 |
+| LAIX guardrail | **0.800** | 15/20 | 15/20 | 15/20 | 0/20 |
 
 By category:
 
 | Category | n | Baseline | Chooser | Guardrail |
 |---|---:|---:|---:|---:|
-| RCA | 10 | 0.760 | 0.760 | 0.760 |
+| RCA | 12 | 0.800 | 0.775 | 0.800 |
 | Noise rejection | 5 | 0.740 | 0.740 | 0.740 |
 | Cascade | 2 | 0.850 | 0.850 | 0.850 |
 | Triage | 1 | 1.000 | 0.200 | 1.000 |
@@ -47,9 +46,10 @@ On this benchmark, the model's top remediation was already safe in every scenari
 had no scored upside: accuracy, calibration, approval and continuity are not measured by this
 benchmark.
 
-The **chooser** integration regressed on the multi-incident triage case. It selected a correct
-first action but dropped the wider triage context, so the final answer failed the rubric. The
-**guardrail** integration kept the model's full answer and avoided the regression.
+The **chooser** integration regressed on two scenarios. On multi-incident triage it selected a
+correct first action but dropped the wider triage context. On the large-tool-result scenario it
+introduced one forbidden action and lost the remediation score. The **guardrail** integration kept
+the model's answer when it was already safe and avoided both regressions.
 
 This is a useful negative result: a runtime that always replaces the model's choice can make a
 single-turn benchmark worse. The safe integration is to use LAIX as a guardrail and decision
@@ -71,7 +71,6 @@ The raw rows, including per-scenario candidates and all three scores, are in `re
 ## Limitations
 
 - One model, one deterministic run; no variance estimate.
-- 18 of 20 scenarios.
 - Fixtures are supplied directly rather than through the published tool servers. The scorer only
   reads the final answer and forbidden tool calls, so the score is unaffected, but the harness
   differs from the published smolagents and Edge Delta runs.

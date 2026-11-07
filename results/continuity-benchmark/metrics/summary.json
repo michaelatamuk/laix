@@ -1,0 +1,639 @@
+{
+  "episodes": 12,
+  "steps": 60,
+  "reference": {
+    "success": 1.0,
+    "promise_kept": 1.0,
+    "budget_adhered": 1.0,
+    "approval_correct": 1.0,
+    "continuity_errors": 0
+  },
+  "stateless": {
+    "success": 0.0,
+    "promise_kept": 1.0,
+    "budget_adhered": 0.0,
+    "approval_correct": 1.0,
+    "continuity_errors": 36
+  },
+  "stateful": {
+    "success": 1.0,
+    "promise_kept": 1.0,
+    "budget_adhered": 1.0,
+    "approval_correct": 1.0,
+    "continuity_errors": 0
+  },
+  "rows": [
+    {
+      "episode": "ep-001",
+      "due_step": 3,
+      "receipt_outcome": "ok",
+      "budget_total": 1.2,
+      "reference": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      },
+      "stateless": {
+        "actions": [
+          "ask",
+          "act",
+          "act",
+          "act",
+          "act"
+        ],
+        "promise_kept": true,
+        "budget_adhered": false,
+        "approval_correct": true,
+        "continuity_errors": 3,
+        "budget_spent": 1.65,
+        "success": false
+      },
+      "stateful": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      }
+    },
+    {
+      "episode": "ep-002",
+      "due_step": 2,
+      "receipt_outcome": "failed",
+      "budget_total": 1.2,
+      "reference": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "escalate",
+          "escalate"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 1.1,
+        "success": true
+      },
+      "stateless": {
+        "actions": [
+          "ask",
+          "act",
+          "act",
+          "act",
+          "act"
+        ],
+        "promise_kept": true,
+        "budget_adhered": false,
+        "approval_correct": true,
+        "continuity_errors": 3,
+        "budget_spent": 1.65,
+        "success": false
+      },
+      "stateful": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      }
+    },
+    {
+      "episode": "ep-003",
+      "due_step": 3,
+      "receipt_outcome": "ok",
+      "budget_total": 1.2,
+      "reference": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      },
+      "stateless": {
+        "actions": [
+          "ask",
+          "act",
+          "act",
+          "act",
+          "act"
+        ],
+        "promise_kept": true,
+        "budget_adhered": false,
+        "approval_correct": true,
+        "continuity_errors": 3,
+        "budget_spent": 1.65,
+        "success": false
+      },
+      "stateful": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      }
+    },
+    {
+      "episode": "ep-004",
+      "due_step": 2,
+      "receipt_outcome": "failed",
+      "budget_total": 1.2,
+      "reference": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "escalate",
+          "escalate"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 1.1,
+        "success": true
+      },
+      "stateless": {
+        "actions": [
+          "ask",
+          "act",
+          "act",
+          "act",
+          "act"
+        ],
+        "promise_kept": true,
+        "budget_adhered": false,
+        "approval_correct": true,
+        "continuity_errors": 3,
+        "budget_spent": 1.65,
+        "success": false
+      },
+      "stateful": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      }
+    },
+    {
+      "episode": "ep-005",
+      "due_step": 3,
+      "receipt_outcome": "ok",
+      "budget_total": 1.2,
+      "reference": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      },
+      "stateless": {
+        "actions": [
+          "ask",
+          "act",
+          "act",
+          "act",
+          "act"
+        ],
+        "promise_kept": true,
+        "budget_adhered": false,
+        "approval_correct": true,
+        "continuity_errors": 3,
+        "budget_spent": 1.65,
+        "success": false
+      },
+      "stateful": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      }
+    },
+    {
+      "episode": "ep-006",
+      "due_step": 2,
+      "receipt_outcome": "failed",
+      "budget_total": 1.2,
+      "reference": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "escalate",
+          "escalate"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 1.1,
+        "success": true
+      },
+      "stateless": {
+        "actions": [
+          "ask",
+          "act",
+          "act",
+          "act",
+          "act"
+        ],
+        "promise_kept": true,
+        "budget_adhered": false,
+        "approval_correct": true,
+        "continuity_errors": 3,
+        "budget_spent": 1.65,
+        "success": false
+      },
+      "stateful": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      }
+    },
+    {
+      "episode": "ep-007",
+      "due_step": 3,
+      "receipt_outcome": "ok",
+      "budget_total": 1.2,
+      "reference": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      },
+      "stateless": {
+        "actions": [
+          "ask",
+          "act",
+          "act",
+          "act",
+          "act"
+        ],
+        "promise_kept": true,
+        "budget_adhered": false,
+        "approval_correct": true,
+        "continuity_errors": 3,
+        "budget_spent": 1.65,
+        "success": false
+      },
+      "stateful": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      }
+    },
+    {
+      "episode": "ep-008",
+      "due_step": 2,
+      "receipt_outcome": "failed",
+      "budget_total": 1.2,
+      "reference": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "escalate",
+          "escalate"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 1.1,
+        "success": true
+      },
+      "stateless": {
+        "actions": [
+          "ask",
+          "act",
+          "act",
+          "act",
+          "act"
+        ],
+        "promise_kept": true,
+        "budget_adhered": false,
+        "approval_correct": true,
+        "continuity_errors": 3,
+        "budget_spent": 1.65,
+        "success": false
+      },
+      "stateful": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      }
+    },
+    {
+      "episode": "ep-009",
+      "due_step": 3,
+      "receipt_outcome": "ok",
+      "budget_total": 1.2,
+      "reference": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      },
+      "stateless": {
+        "actions": [
+          "ask",
+          "act",
+          "act",
+          "act",
+          "act"
+        ],
+        "promise_kept": true,
+        "budget_adhered": false,
+        "approval_correct": true,
+        "continuity_errors": 3,
+        "budget_spent": 1.65,
+        "success": false
+      },
+      "stateful": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      }
+    },
+    {
+      "episode": "ep-010",
+      "due_step": 2,
+      "receipt_outcome": "failed",
+      "budget_total": 1.2,
+      "reference": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "escalate",
+          "escalate"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 1.1,
+        "success": true
+      },
+      "stateless": {
+        "actions": [
+          "ask",
+          "act",
+          "act",
+          "act",
+          "act"
+        ],
+        "promise_kept": true,
+        "budget_adhered": false,
+        "approval_correct": true,
+        "continuity_errors": 3,
+        "budget_spent": 1.65,
+        "success": false
+      },
+      "stateful": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      }
+    },
+    {
+      "episode": "ep-011",
+      "due_step": 3,
+      "receipt_outcome": "ok",
+      "budget_total": 1.2,
+      "reference": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      },
+      "stateless": {
+        "actions": [
+          "ask",
+          "act",
+          "act",
+          "act",
+          "act"
+        ],
+        "promise_kept": true,
+        "budget_adhered": false,
+        "approval_correct": true,
+        "continuity_errors": 3,
+        "budget_spent": 1.65,
+        "success": false
+      },
+      "stateful": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      }
+    },
+    {
+      "episode": "ep-012",
+      "due_step": 2,
+      "receipt_outcome": "failed",
+      "budget_total": 1.2,
+      "reference": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "escalate",
+          "escalate"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 1.1,
+        "success": true
+      },
+      "stateless": {
+        "actions": [
+          "ask",
+          "act",
+          "act",
+          "act",
+          "act"
+        ],
+        "promise_kept": true,
+        "budget_adhered": false,
+        "approval_correct": true,
+        "continuity_errors": 3,
+        "budget_spent": 1.65,
+        "success": false
+      },
+      "stateful": {
+        "actions": [
+          "ask",
+          "act",
+          "verify",
+          "wait",
+          "wait"
+        ],
+        "promise_kept": true,
+        "budget_adhered": true,
+        "approval_correct": true,
+        "continuity_errors": 0,
+        "budget_spent": 0.7,
+        "success": true
+      }
+    }
+  ]
+}

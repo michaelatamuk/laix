@@ -22,7 +22,7 @@ a model the host supplies.
 **Who it is for:** teams building AI agents or automations that take real actions — especially when
 approvals, promises, human attention or auditability matter.
 
-**Status:** `0.9.0` · synthetic evidence complete · first external benchmark run · real-world validation pending.
+**Status:** `0.9.0` · synthetic + continuity evidence · first external benchmark run · real-world validation pending.
 
 ## Contents
 
@@ -167,6 +167,10 @@ A decision is one step in a sequence. It leaves state for the next decision.
 
 The next decision sees the commitments, attention budget, approvals, revisions and outcomes the
 previous one left. See [Decision continuity](docs/02-core/08-decision-continuity.md).
+
+In a 12-episode synthetic mechanism test, the stateful runtime completed **100%** of episodes; a
+stateless utility planner completed **0%** with 36 continuity errors. See the
+[continuity benchmark](docs/06-research/02-evaluation/continuity-benchmark.md).
 
 ## What you get
 

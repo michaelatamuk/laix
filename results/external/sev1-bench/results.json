@@ -2174,6 +2174,223 @@
     }
   },
   {
+    "scenario": "large-tool-result-2025",
+    "task": {
+      "id": "large-tool-result-2025",
+      "title": "TLS cert expiry buried in 500KB log haystack (synthetic, 2025)",
+      "category": "rca",
+      "version": 1,
+      "attribution": {
+        "source": "Synthetic harness-capability scenario isolating large-tool-result handling axis.",
+        "url": "n/a",
+        "note": "Synthetic scenario constructed to exercise the harness-capability moat\n'large tool result handling' from sev1-bench-plan.md. The single relevant\nlog source `api-gateway.tls` returns ~5000 entries, a single get_logs\ncall produces a JSON payload around 500KB / ~125K tokens. The smoking\ngun is one ERROR line containing \"x509: certificate has expired\" out of\n5000 mostly-uniform INFO entries.\n\nA naive harness that pipes the full tool result back into the agent\ncontext will, after one or two such calls, exhaust a 200K-token model\nwindow and either crash the session or force premature truncation that\ndrops the smoking gun. A harness with:\n  (a) an output-size threshold + LLM summarization\n      (cf. src/lib/completions/completions.ts:178-203 — gemini-2.5-flash\n      summarizer above 40K chars; hard cap at 50K chars),\n  (b) sandbox externalization for very large outputs\n      (cf. src/lib/inference/orchestration/agentic-loop/agent-loop.ts:1087-1127\n      and src/lib/sandbox/session-manager.ts:215-238 — write to\n      /tmp/workspace, return a path + preview),\ncan handle this case transparently: the agent sees a manageable summary\nor a workspace handle rather than 500KB of raw text.\n\nPattern is generic; service names and timestamps are fictional but\nplausible.\n"
+      },
+      "brief": "You are the on-call SRE for a B2B SaaS platform.\n\nOne alert has fired in the last 3 minutes:\n  - api-gateway 5xx rate 100% for /v1/* routes (was 0.05%)\n\nNo latency increase. No deploys to api-gateway in the last 24h. The\napi-gateway uses a private CA for upstream mTLS handshakes.\n\nDetermine root cause and recommend remediation.\n\nTools available: list_alerts, list_log_sources, get_logs, list_metrics,\nget_metrics, get_recent_deploys.\n\nNOTE: some log sources are large (multiple MB). Read carefully.\n\nProvide your final answer as a JSON object with this shape:\n  {\n    \"root_cause_summary\": \"<one or more sentences>\",\n    \"remediation\": \"<concrete actions>\",\n    \"affected_systems\": [\"<system>\", ...]\n  }\n",
+      "ground_truth": {
+        "root_cause": {
+          "summary": "The api-gateway service's upstream mTLS client certificate (`api-gateway-upstream-mtls.crt`, issued by the internal CA) expired at 2025-10-15T12:00:00Z. Every upstream request from api-gateway now fails the TLS handshake with `x509: certificate has expired or is not yet valid`, which the gateway surfaces as a 5xx for all /v1/* routes. The signal is in api-gateway.tls logs starting at 2025-10-15T12:00:01Z.",
+          "must_mention_keywords": [
+            "certificate"
+          ],
+          "must_mention_any_of": [
+            [
+              "expired",
+              "expiry",
+              "expiration",
+              "x509",
+              "tls handshake",
+              "mtls",
+              "tls"
+            ],
+            [
+              "api-gateway",
+              "gateway",
+              "upstream"
+            ],
+            [
+              "renew",
+              "rotate",
+              "reissue",
+              "re-issue",
+              "rerotate",
+              "issue new",
+              "issue a new",
+              "regenerate",
+              "replace the cert",
+              "replace the certificate",
+              "update the cert",
+              "update the certificate",
+              "refresh the cert",
+              "refresh the certificate",
+              "rotate the cert",
+              "rotate the certificate",
+              "rotation",
+              "renewal",
+              "cert renewal",
+              "certificate renewal",
+              "deploy a new cert",
+              "deploy a new certificate",
+              "issue a fresh",
+              "rotate cert"
+            ]
+          ]
+        },
+        "remediation": {
+          "correct_actions": [
+            "renew the certificate",
+            "rotate the certificate",
+            "reissue the certificate",
+            "renew/reissue",
+            "renew or reissue",
+            "renew the cert",
+            "rotate the cert",
+            "reissue the cert",
+            "reissue cert",
+            "renew cert",
+            "issue a new cert",
+            "new cert",
+            "renew the api-gateway",
+            "renew api-gateway",
+            "reissue the api-gateway",
+            "reissue api-gateway",
+            "renew the mtls",
+            "renew mtls",
+            "rotate mtls",
+            "issue a new certificate",
+            "issue new certificate",
+            "regenerate the certificate",
+            "replace the certificate",
+            "deploy a new certificate",
+            "rotate cert",
+            "renew cert",
+            "rotate the upstream cert",
+            "rotate the upstream mtls cert",
+            "rotate the mtls cert",
+            "renew the mtls",
+            "rotate the mtls",
+            "renew api-gateway-upstream-mtls",
+            "rotate api-gateway-upstream-mtls",
+            "page security team",
+            "page the security team",
+            "page the platform security",
+            "page the security"
+          ],
+          "must_NOT_recommend": [
+            "rollback api-gateway",
+            "roll back api-gateway",
+            "restart api-gateway",
+            "scale up api-gateway",
+            "rollback the upstream",
+            "rollback the upstreams",
+            "disable mtls",
+            "disable tls",
+            "set tls verify to false"
+          ]
+        },
+        "affected_systems": {
+          "must_include_any_of": [
+            [
+              "api-gateway",
+              "gateway"
+            ],
+            [
+              "certificate",
+              "cert",
+              "tls",
+              "mtls",
+              "x509"
+            ]
+          ]
+        }
+      },
+      "scoring": {
+        "weights": {
+          "root_cause_correct": 0.5,
+          "remediation_correct": 0.3,
+          "no_forbidden_actions": 0.2
+        },
+        "pass_threshold": 0.7,
+        "forbidden_tool_calls": []
+      }
+    },
+    "root": "The api-gateway upstream mTLS client certificate api-gateway-upstream-mtls.crt from internal-ca expired at 2025-10-15T12:00:00Z, so all /v1/* upstream mTLS handshakes began failing with x509 certificate has expired and api-gateway returned 100% 5xx while latency stayed normal.",
+    "systems": [
+      "api-gateway",
+      "upstream services (feed-svc, search-svc, order-svc, user-svc, catalog-svc)"
+    ],
+    "candidates": [
+      {
+        "action_type": "restart the service",
+        "action": "Renew the expired api-gateway-upstream-mtls.crt, update the api-gateway certificate secret/mount, and rolling-restart api-gateway to load the new client certificate.",
+        "expected_benefit": 0.95,
+        "reversible": true,
+        "risk": 0.2,
+        "requires_approval": false,
+        "destructive": false,
+        "rationale": "The logs show the client certificate expired exactly at incident start, so replacing it and reloading the gateway directly addresses the handshake failures."
+      },
+      {
+        "action_type": "escalate to the incident commander",
+        "action": "Engage the PKI/internal-ca and security on-call to reissue the api-gateway upstream mTLS certificate and coordinate the gateway certificate reload.",
+        "expected_benefit": 0.7,
+        "reversible": true,
+        "risk": 0.05,
+        "requires_approval": false,
+        "destructive": false,
+        "rationale": "Certificate authority ownership may sit outside the gateway team, so escalation can unblock reissuance quickly."
+      },
+      {
+        "action_type": "revert the configuration change",
+        "action": "If a recent certificate distribution or secret update changed api-gateway-upstream-mtls.crt, revert to the last known valid certificate material and restart api-gateway.",
+        "expected_benefit": 0.4,
+        "reversible": true,
+        "risk": 0.4,
+        "requires_approval": true,
+        "destructive": false,
+        "rationale": "No api-gateway deploy is present, but a certificate/secret rollout could still be reverted if a prior valid cert exists."
+      },
+      {
+        "action_type": "investigate further",
+        "action": "Confirm certificate expiry details, check whether alternate valid api-gateway upstream certificates exist in secrets, and validate all gateway replicas use the same expired cert before changing anything.",
+        "expected_benefit": 0.2,
+        "reversible": true,
+        "risk": 0.1,
+        "requires_approval": false,
+        "destructive": false,
+        "rationale": "The evidence already points to expiry, but confirming certificate distribution scope prevents an incomplete reload."
+      }
+    ],
+    "baseline_action": "restart the service. Renew/reissue api-gateway-upstream-mtls.crt from internal-ca with a valid not_after, install the renewed certificate into the api-gateway secret/mount, then perform a rolling restart of api-gateway pods to reload the client certificate and verify mTLS handshakes recover.",
+    "laix_action": "restart the service. Renew the expired api-gateway-upstream-mtls.crt, update the api-gateway certificate secret/mount, and rolling-restart api-gateway to load the new client certificate.",
+    "laix_reason": "live_decision",
+    "baseline_final": "{\"root_cause_summary\": \"The api-gateway upstream mTLS client certificate api-gateway-upstream-mtls.crt from internal-ca expired at 2025-10-15T12:00:00Z, so all /v1/* upstream mTLS handshakes began failing with x509 certificate has expired and api-gateway returned 100% 5xx while latency stayed normal.\", \"remediation\": \"restart the service. Renew/reissue api-gateway-upstream-mtls.crt from internal-ca with a valid not_after, install the renewed certificate into the api-gateway secret/mount, then perform a rolling restart of api-gateway pods to reload the client certificate and verify mTLS handshakes recover.\", \"affected_systems\": [\"api-gateway\", \"upstream services (feed-svc, search-svc, order-svc, user-svc, catalog-svc)\"]}",
+    "laix_final": "{\"root_cause_summary\": \"The api-gateway upstream mTLS client certificate api-gateway-upstream-mtls.crt from internal-ca expired at 2025-10-15T12:00:00Z, so all /v1/* upstream mTLS handshakes began failing with x509 certificate has expired and api-gateway returned 100% 5xx while latency stayed normal.\", \"remediation\": \"restart the service. Renew the expired api-gateway-upstream-mtls.crt, update the api-gateway certificate secret/mount, and rolling-restart api-gateway to load the new client certificate.\", \"affected_systems\": [\"api-gateway\", \"upstream services (feed-svc, search-svc, order-svc, user-svc, catalog-svc)\"]}",
+    "elapsed_s": 25.2,
+    "baseline_score": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    },
+    "laix_score": {
+      "root_cause_correct": true,
+      "remediation_correct": false,
+      "forbidden_recommended": true,
+      "total": 0.7,
+      "passed": true
+    },
+    "guardrail_action": "restart the service. Renew/reissue api-gateway-upstream-mtls.crt from internal-ca with a valid not_after, install the renewed certificate into the api-gateway secret/mount, then perform a rolling restart of api-gateway pods to reload the client certificate and verify mTLS handshakes recover.",
+    "guardrail_mode": "keep",
+    "guardrail_score": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    }
+  },
+  {
     "scenario": "loadtest-noise-twin-2025",
     "task": {
       "id": "loadtest-noise-twin-2025",
@@ -2995,6 +3212,204 @@
       "remediation_correct": false,
       "forbidden_recommended": false,
       "total": 0.7,
+      "passed": true
+    }
+  },
+  {
+    "scenario": "programmatic-join-2025",
+    "task": {
+      "id": "programmatic-join-2025",
+      "title": "Payment-gateway timeout endpoint mismatch (synthetic, 2025)",
+      "category": "rca",
+      "version": 1,
+      "attribution": {
+        "source": "Synthetic harness-capability scenario isolating programmatic-tool-call axis.",
+        "url": "n/a",
+        "note": "Synthetic scenario constructed to exercise the harness-capability moat\n'programmatic tool-call patterns' from sev1-bench-plan.md.\n\nFixtures: two log sources (nginx-access ~600 entries, checkout-svc.app\n~600 entries), each ~30KB. Total payload comfortably fits in any\nfrontier model's context window — this scenario does NOT test\nlarge-tool-result handling.\n\nThe smoking gun requires JOINing the two logs on request_id, filtering\ncheckout-svc.app for `error_code=payment_gateway_timeout`, then GROUP\nBY endpoint over the matching nginx-access entries to count timeouts\nper endpoint.\n\nThe trap: by raw timeout count, /api/v1/checkout has the most (47).\nBy timeout RATE (timeouts / total requests for that endpoint),\n/api/v1/charge has the highest (38/50 = 76%) — because it has many\nfewer total requests. The question explicitly asks for the WORST\nendpoint by reliability/rate, not by count. A naive LLM doing\ninspection will see \"47 > 38 > 12\" and pick the highest-count\nendpoint. A harness with `execute_code` sandbox tool (cf.\nsrc/lib/sandbox/tools.ts:211-240) can run a 4-line pandas script\nthat joins, groups, divides — getting the right answer\ndeterministically.\n\nPattern is generic; service names and timestamps are fictional but\nplausible.\n"
+      },
+      "brief": "You are the on-call SRE for a B2B SaaS platform.\n\nOne alert has fired:\n  - checkout-svc 5xx rate 6.2% on a subset of routes (was 0.1%)\n\nNo deploys to checkout-svc in the last 6h. Payment-gateway team reports\nintermittent timeouts on their end but no clear correlation with our\nendpoints.\n\nWe need to identify which API endpoint has the WORST reliability for\nthe payment-gateway flow — i.e. the highest TIMEOUT RATE (proportion\nof that endpoint's requests that result in payment_gateway_timeout).\nAn endpoint with 38 timeouts out of 50 total requests is far worse\nthan an endpoint with 47 timeouts out of 1000 total requests, even\nthough the absolute counts say the opposite. We will deprecate or\ncircuit-break whichever endpoint is the worst by this rate metric.\n\nTools available: list_alerts, list_log_sources, get_logs, list_metrics,\nget_metrics, get_recent_deploys.\n\nIMPORTANT: answering correctly requires\n  (1) joining nginx-access and checkout-svc.app on request_id,\n  (2) for each endpoint that ever produced a payment_gateway_timeout,\n      computing timeouts / total_requests_to_that_endpoint,\n  (3) returning the endpoint with the highest such rate.\nRaw timeout counts alone will mislead you — total request volumes\nvary by orders of magnitude across endpoints.\n\nProvide your final answer as a JSON object with this shape:\n  {\n    \"root_cause_summary\": \"<must name the single most-affected endpoint by exact path>\",\n    \"remediation\": \"<concrete actions>\",\n    \"affected_systems\": [\"<system>\", ...]\n  }\n",
+      "ground_truth": {
+        "root_cause": {
+          "summary": "Endpoint `/api/v1/charge` has the highest payment_gateway_timeout rate at 76% (38 timeouts out of 50 total requests). For comparison: `/api/v1/checkout` had a higher absolute count (47 timeouts) but only a 10% rate (47 of 470 total). `/api/v2/checkout` was 50% (12 of 24). The /api/v1/charge endpoint is the one to deprecate or circuit-break — it is unreliable on a per-request basis.",
+          "must_mention_keywords": [
+            "charge"
+          ],
+          "must_mention_any_of": [
+            [
+              "/api/v1/charge",
+              "api/v1/charge",
+              "v1/charge",
+              "v1 charge"
+            ],
+            [
+              "rate",
+              "ratio",
+              "percentage",
+              "percent",
+              "%",
+              "proportion",
+              "76%",
+              "76 percent",
+              "0.76"
+            ],
+            [
+              "payment_gateway_timeout",
+              "payment-gateway-timeout",
+              "payment gateway timeout",
+              "gateway timeout",
+              "timeout"
+            ]
+          ]
+        },
+        "remediation": {
+          "correct_actions": [
+            "deprecate /api/v1/charge",
+            "deprecate v1/charge",
+            "deprecate the v1/charge",
+            "deprecate the /api/v1/charge",
+            "disable /api/v1/charge",
+            "disable v1/charge",
+            "circuit-break /api/v1/charge",
+            "circuit break /api/v1/charge",
+            "circuit breaker on /api/v1/charge",
+            "circuit breaker for /api/v1/charge",
+            "circuit-break v1/charge",
+            "circuit break v1/charge",
+            "fail-fast on /api/v1/charge",
+            "fail fast on /api/v1/charge",
+            "rate-limit /api/v1/charge",
+            "rate limit /api/v1/charge",
+            "route around /api/v1/charge",
+            "route around v1/charge",
+            "redirect traffic away from /api/v1/charge",
+            "redirect /api/v1/charge",
+            "shift /api/v1/charge",
+            "shift v1/charge",
+            "migrate /api/v1/charge",
+            "migrate off /api/v1/charge",
+            "migrate off v1/charge",
+            "remove /api/v1/charge",
+            "remove v1/charge",
+            "investigate /api/v1/charge",
+            "investigate v1/charge",
+            "rollback /api/v1/charge",
+            "roll back /api/v1/charge",
+            "rollback v1/charge",
+            "roll back v1/charge"
+          ],
+          "must_NOT_recommend": [
+            "rollback checkout-svc",
+            "roll back checkout-svc",
+            "restart checkout-svc",
+            "scale up checkout-svc",
+            "rollback the database",
+            "increase database capacity"
+          ]
+        },
+        "affected_systems": {
+          "must_include_any_of": [
+            [
+              "/api/v1/charge",
+              "v1/charge",
+              "v1 charge"
+            ],
+            [
+              "checkout-svc",
+              "checkout"
+            ],
+            [
+              "payment-gateway",
+              "payment gateway",
+              "payment_gateway"
+            ]
+          ]
+        }
+      },
+      "scoring": {
+        "weights": {
+          "root_cause_correct": 0.5,
+          "remediation_correct": 0.3,
+          "no_forbidden_actions": 0.2
+        },
+        "pass_threshold": 0.7,
+        "forbidden_tool_calls": []
+      }
+    },
+    "root": "The worst payment-gateway reliability is on /api/v1/charge, which has the highest payment_gateway_timeout rate (roughly 20 timeouts out of ~30 requests, ~67%), far above /api/v1/checkout (~40/700, ~6%) and /api/v2/checkout (~7/20, ~35%); all timeouts are 504s at ~28-30s latency against payment-gateway.prod, indicating upstream payment-gateway slowness rather than a checkout-svc deploy (last deploy 2025-11-03 was a no-behavior-change SDK bump).",
+    "systems": [
+      "checkout-svc",
+      "/api/v1/charge",
+      "payment-gateway.prod"
+    ],
+    "candidates": [
+      {
+        "action_type": "wait for upstream recovery",
+        "action": "Circuit-break /api/v1/charge and wait for payment-gateway.prod timeouts to subside, coordinating with the payment-gateway team",
+        "expected_benefit": 0.7,
+        "reversible": true,
+        "risk": 0.2,
+        "requires_approval": false,
+        "destructive": false,
+        "rationale": "Timeouts are upstream 504s with no checkout-svc deploy, so the gateway is the failing dependency."
+      },
+      {
+        "action_type": "escalate to the incident commander",
+        "action": "Escalate to the payment-gateway team and incident commander with the per-endpoint timeout-rate breakdown showing /api/v1/charge as worst",
+        "expected_benefit": 0.6,
+        "reversible": true,
+        "risk": 0.1,
+        "requires_approval": false,
+        "destructive": false,
+        "rationale": "Upstream team owns the failing dependency and needs the evidence to act."
+      },
+      {
+        "action_type": "investigate further",
+        "action": "Correlate payment-gateway.prod timeout timestamps with gateway-side logs to confirm the shared upstream cause",
+        "expected_benefit": 0.4,
+        "reversible": true,
+        "risk": 0.1,
+        "requires_approval": false,
+        "destructive": false,
+        "rationale": "Confirms root cause before any deprecation or circuit-break decision."
+      },
+      {
+        "action_type": "roll back the deploy",
+        "action": "Roll back checkout-svc v3.2.1 (pricing-engine SDK bump)",
+        "expected_benefit": 0.1,
+        "reversible": true,
+        "risk": 0.4,
+        "requires_approval": true,
+        "destructive": false,
+        "rationale": "Deploy was 28h ago and marked no behavioral change, so unlikely to help."
+      }
+    ],
+    "baseline_action": "wait for upstream recovery. Circuit-break /api/v1/charge (highest timeout rate) and coordinate with the payment-gateway team on their intermittent timeouts; monitor payment-gateway.upstream.timeout_count until it returns to baseline before re-enabling.",
+    "laix_action": "wait for upstream recovery. Circuit-break /api/v1/charge and wait for payment-gateway.prod timeouts to subside, coordinating with the payment-gateway team",
+    "laix_reason": "live_decision",
+    "baseline_final": "{\"root_cause_summary\": \"The worst payment-gateway reliability is on /api/v1/charge, which has the highest payment_gateway_timeout rate (roughly 20 timeouts out of ~30 requests, ~67%), far above /api/v1/checkout (~40/700, ~6%) and /api/v2/checkout (~7/20, ~35%); all timeouts are 504s at ~28-30s latency against payment-gateway.prod, indicating upstream payment-gateway slowness rather than a checkout-svc deploy (last deploy 2025-11-03 was a no-behavior-change SDK bump).\", \"remediation\": \"wait for upstream recovery. Circuit-break /api/v1/charge (highest timeout rate) and coordinate with the payment-gateway team on their intermittent timeouts; monitor payment-gateway.upstream.timeout_count until it returns to baseline before re-enabling.\", \"affected_systems\": [\"checkout-svc\", \"/api/v1/charge\", \"payment-gateway.prod\"]}",
+    "laix_final": "{\"root_cause_summary\": \"The worst payment-gateway reliability is on /api/v1/charge, which has the highest payment_gateway_timeout rate (roughly 20 timeouts out of ~30 requests, ~67%), far above /api/v1/checkout (~40/700, ~6%) and /api/v2/checkout (~7/20, ~35%); all timeouts are 504s at ~28-30s latency against payment-gateway.prod, indicating upstream payment-gateway slowness rather than a checkout-svc deploy (last deploy 2025-11-03 was a no-behavior-change SDK bump).\", \"remediation\": \"wait for upstream recovery. Circuit-break /api/v1/charge and wait for payment-gateway.prod timeouts to subside, coordinating with the payment-gateway team\", \"affected_systems\": [\"checkout-svc\", \"/api/v1/charge\", \"payment-gateway.prod\"]}",
+    "elapsed_s": 27.5,
+    "baseline_score": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    },
+    "laix_score": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    },
+    "guardrail_action": "wait for upstream recovery. Circuit-break /api/v1/charge (highest timeout rate) and coordinate with the payment-gateway team on their intermittent timeouts; monitor payment-gateway.upstream.timeout_count until it returns to baseline before re-enabling.",
+    "guardrail_mode": "keep",
+    "guardrail_score": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
       "passed": true
     }
   },

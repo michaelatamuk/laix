@@ -16,7 +16,8 @@ Every measured number is reproducible from the linked result directory; the inte
 | Ablation: full vs no commitment | **100%** vs **70%** | measured |
 | Ablation: full vs no execution | **100%** vs **83.3%** | measured |
 | Ablation: full vs no attention | **100%** vs **96.7%** | measured |
-| External SRE benchmark (Sev1-Bench) | baseline **0.778**; guardrail **0.778**; chooser 0.733 | measured, negative |
+| External SRE benchmark (Sev1-Bench) | baseline **0.800**; guardrail **0.800**; chooser 0.745 (1 forbidden) | measured, negative |
+| Decision continuity (episode v0) | stateful **100%** vs stateless **0%** success; 36 continuity errors | measured, synthetic mechanism |
 
 The glue comparison is the honest caveat: the gain is real on this corpus, but the 95% confidence
 interval includes zero and p = 0.48 on 30 cases. The advantage over every single-concern planner is
@@ -24,8 +25,12 @@ significant (McNemar p ≤ 0.008 for each).
 
 Sev1-Bench is a single-turn diagnosis and remediation benchmark. It does not score approvals,
 commitments, continuity or audit, so a null result is expected on its scored axes. The chooser
-integration regressed on multi-incident triage; the guardrail integration preserved the baseline.
-See [Sev1-Bench](sev1-bench.md).
+integration regressed on multi-incident triage and large-tool-result; the guardrail integration
+preserved the baseline. See [Sev1-Bench](sev1-bench.md).
+
+The continuity result is a synthetic mechanism test. It shows that the stateful runtime uses the
+supplied state and the stateless planner does not. It is not external validation. See
+[Continuity benchmark](continuity-benchmark.md).
 
 ## Safety and promise keeping
 
