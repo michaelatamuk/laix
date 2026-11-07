@@ -1,6 +1,6 @@
 # Repository structure
 
-This page maps files. Concepts are defined in [architecture](../04-concepts/system-architecture.md),
+This page maps files. Concepts are defined in [architecture](../04-concepts/01-architecture/01-system-architecture.md),
 [the Decision response](../02-core/01-contract/01-decision-contract.md) and [records](../02-core/01-contract/02-records-and-schema.md).
 
 ```text
@@ -44,7 +44,7 @@ laix/
 │   ├── 01-start/          numbered start path
 │   ├── 02-core/           overview; contract/, decide/, planning/, continuity/, learning/, reference/
 │   ├── 03-appkit/         overview; build/, run/, execute/, connect/, operate/
-│   ├── 04-concepts/       system architecture, scope and boundaries, PPMA integration, decision models, privacy, security, FAQ, glossary
+│   ├── 04-concepts/       overview; architecture/, positioning/, trust/, reference/
 │   ├── 05-project/        repository structure, testing, troubleshooting, migration, API map, versioning, roadmap
 │   ├── 06-research/
 │   │   ├── 01-positioning/  prior art, comparators, formal model

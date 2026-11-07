@@ -57,4 +57,4 @@ privacy violations, does not degrade service and gives us reasonable time to fix
 ## More
 
 The threat model, trust boundaries and recommended controls are in
-[docs/04-concepts/security.md](docs/04-concepts/security.md).
+[docs/04-concepts/03-trust/01-security.md](docs/04-concepts/03-trust/01-security.md).

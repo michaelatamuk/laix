@@ -148,4 +148,4 @@ Read in order. Each section opens with a short index that lists its pages in rea
 | `appkit/bench/` | case, suite, row, report, runner and planner bench. |
 
 The core map is [Core overview](../02-core/README.md). The vocabulary is in the
-[glossary](../04-concepts/glossary.md).
+[glossary](../04-concepts/04-reference/01-glossary.md).

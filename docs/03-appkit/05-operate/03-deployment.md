@@ -76,8 +76,8 @@ retention policy.
 - Apply `GroupPolicy` before sharing a decision outside its original target.
 - Re-check authorization and approval in the execution adapter.
 - Store decision records append-only or in an immutable audit log.
-- Read [Security and threat model](../../04-concepts/security.md) and
-  [Privacy and trust](../../04-concepts/privacy.md).
+- Read [Security and threat model](../../04-concepts/03-trust/01-security.md) and
+  [Privacy and trust](../../04-concepts/03-trust/02-privacy.md).
 
 ## Capacity and latency
 

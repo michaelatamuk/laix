@@ -1,7 +1,10 @@
 # PPMA integration: the task-decision runtime
 
-PPMA (the activation layer above LAIX; see the [glossary](glossary.md)) decides what the system
-does next. LAIX decides what one task does next.
+PPMA (the activation layer above LAIX; see the [glossary](../04-reference/01-glossary.md)) decides what
+the system does next. LAIX decides what one task does next.
+
+The generic boundary is in [Scope and boundaries](../01-architecture/02-scope-and-boundaries.md). This
+page is the PPMA-specific path.
 
 ## 1. What LAIX decides
 
@@ -57,7 +60,7 @@ committing.
 
 PPMA's core rules and filters validate, constrain, hold and calibrate the command.
 
-## 3. The PPMA–LAIX boundary
+## 3. The PPMA-LAIX boundary
 
 ### What each decides
 
@@ -94,12 +97,12 @@ The difference is clearest in latency. PPMA's command choice is taken when the m
 It also adds:
 
 - **One task-decision contract** across the Commander, missions and apps.
-- **Decision semantics** — constraints, approval, escalation and verification travel with the decision.
-- **Policy composition** — models and deterministic rules sit inside one policy.
+- **Decision semantics** - constraints, approval, escalation and verification travel with the decision.
+- **Policy composition** - models and deterministic rules sit inside one policy.
 - **Fewer model calls** - a bounded decision that fits a policy runs as a policy.
-- **Replay and comparison** — policies can be tested, replayed and benchmarked.
-- **Model independence** — swap the model behind the same contract.
-- **Reuse without Core changes** — a policy lives outside `ppma.core`; PPMA adds decision classes without new Core modules.
+- **Replay and comparison** - policies can be tested, replayed and benchmarked.
+- **Model independence** - swap the model behind the same contract.
+- **Reuse without Core changes** - a policy lives outside `ppma.core`; PPMA adds decision classes without new Core modules.
 
 ## 5. How PPMA would call LAIX
 
@@ -110,7 +113,7 @@ PPMA input
   → LAIX task policy
        reads    situation · options · constraints
        applies  rules, model judgment, or both
-       returns  decision — verb · reason · confidence · action · approval
+       returns  decision - verb · reason · confidence · action · approval
   → PPMA calibrates, records, commits, executes
 ```
 
@@ -143,7 +146,7 @@ PPMA records the LAIX decision id as a reference. LAIX confidence is a source es
 
 ## 6. If you already use a judgment model
 
-JEV gives you the judgment — one closed question in, an answer with probabilities out. LAIX gives you the decision: the move, reason, action, approval, reversibility, verification and record, under the same contract across tasks. JEV can sit inside a LAIX policy.
+JEV gives you the judgment - one closed question in, an answer with probabilities out. LAIX gives you the decision: the move, reason, action, approval, reversibility, verification and record, under the same contract across tasks. JEV can sit inside a LAIX policy.
 
 ### Example: paying a supplier invoice
 
@@ -176,6 +179,6 @@ PPMA issues `ui.ask`, records the decision, pays on approval and verifies the ba
 
 ### JEV alone or with LAIX
 
-**Use JEV alone when** the output is one judgment and the app already knows what to do with it. App code can add approval, reversibility, verification and the record for one task; the second task writes them again, and the copies drift — one gates in the UI, another in a flag, a third forgets `reversible`.
+**Use JEV alone when** the output is one judgment and the app already knows what to do with it. App code can add approval, reversibility, verification and the record for one task; the second task writes them again, and the copies drift - one gates in the UI, another in a flag, a third forgets `reversible`.
 
 **Use JEV with LAIX when** the judgment must become a task decision with constraints, approval, escalation, verification and a record. LAIX supplies it once, under the same contract across tasks.

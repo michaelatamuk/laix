@@ -1,17 +1,22 @@
 # System architecture
 
-## What LAIX is
-
-**LAIX — Live AI Experience — is the live decision runtime for AI agents and automations that act in the real world.** It answers one
-question:
+**LAIX - Live AI Experience - is the live decision runtime for AI agents and automations that act in
+the real world.** It answers one question:
 
 > Given this situation, what should the experience do next?
 
 It returns a **decision**. The app runs the chosen option.
 
-## Terms
+## The four objects
 
-The vocabulary is defined once in the [glossary](glossary.md).
+| Object | Role |
+|---|---|
+| `DecisionRequest` | The app's description of the moment: subject, time, signals or a situation, options and limits. |
+| `Decision` | LAIX's answer: one verb, a reason code, confidence and the execution details. |
+| Policy | The chooser. It receives the request and returns one or more decisions. |
+| `Plan` | A planner's internal answer; `EnginePolicy` converts it into a `Decision`. |
+
+The full vocabulary is in the [glossary](../04-reference/01-glossary.md).
 
 ## Flow
 
@@ -43,7 +48,7 @@ A decision always contains:
 | What to do | `verb`, `confidence`, `reason_code`, `rationale` |
 | What to run | `action_id`, `intent`, `requires_approval`, `reversible`, `undo_hint` |
 | Ranking | `score`, `breakdown`, `cost_of_waiting` |
-| Support | `evidence`, `intent` |
+| Support | `evidence`, `target` |
 | Audit | `decision_id`, `policy_version`, `trace_id`, `deliver`, `record`, `created_at` |
 
 The `verb` is the core answer. The other fields explain it and help the app execute it.
@@ -67,8 +72,8 @@ layer = Layer()
 decision = layer.decide(request)[0]
 ```
 
-`decide` lives in core and loads without the app kit. `Layer` uses the same core selection and
-adds the app-kit parts.
+`decide` lives in core and loads without the app kit. `Layer` uses the same core selection and adds
+the app-kit parts.
 
 ## The seven verbs
 
@@ -184,18 +189,20 @@ request shapes LAIX understands. The other eight are ordinary policy objects tha
 from `DecisionRequest.attributes`.
 
 The split is about selection. All ten return the same decision shape. See
-[packaged policies](../02-core/02-decide/03-policies.md).
+[packaged policies](../../02-core/02-decide/03-policies.md).
 
 ## Other parts
 
 - **Live Context** is the perception part. A detector looks at events. Cheap detectors run always;
-  deep detectors run under a budget. See [live context](../03-appkit/02-run/03-live-context.md).
+  deep detectors run under a budget. See
+  [live context](../../03-appkit/02-run/03-live-context.md).
 - **Outcome learning** uses measured outcomes to improve the next choice. See
-  [outcome learning](../02-core/05-learning/01-outcome-learning.md).
-- **LAIX-Bench** runs the same test cases for every class. See [bench](../03-appkit/05-operate/01-bench.md).
+  [outcome learning](../../02-core/05-learning/01-outcome-learning.md).
+- **LAIX-Bench** runs the same test cases for every class. See
+  [bench](../../03-appkit/05-operate/01-bench.md).
 
 LAIX is a live decision runtime. It can host a decision model such as JEV inside a policy. See
-[LAIX and decision models](decision-models.md).
+[LAIX and decision models](../02-positioning/01-decision-models.md).
 
 ## Integration evidence
 
@@ -219,21 +226,21 @@ Reproduce with one command: `python examples/python/03-plan/ablation_study.py`.
 A worked conflict scenario (all three concerns fire simultaneously) is in
 `examples/python/03-plan/conflict_scenario.py`.
 
-**Expanded corpus:** 120 cases across six categories (72 dev, 30 test, 18 adversarial).
-On the frozen test split, `LiveDecisionEngine` is 30/30 and wins every conflict case (6/6).
-A hand-built glue baseline reaches 28/30 (93.3%), so the remaining integration advantage is
-+6.7 pp and is not significant on 30 cases. Ablations on the same split: full 100%, no attention
-96.7%, no feasibility gates 93.3%, no execution 83.3%, no commitment 70%, utility-only 30%.
-Reproduce with `bash scripts/novelty/reproduce.sh`.
+**Expanded corpus:** 120 cases across six categories (72 dev, 30 test, 18 adversarial). On the frozen
+test split, `LiveDecisionEngine` is 30/30 and wins every conflict case (6/6). A hand-built glue
+baseline reaches 28/30 (93.3%), so the remaining integration advantage is +6.7 pp and is not
+significant on 30 cases. Ablations on the same split: full 100%, no attention 96.7%, no feasibility
+gates 93.3%, no execution 83.3%, no commitment 70%, utility-only 30%. Reproduce with
+`bash scripts/novelty/reproduce.sh`.
 
-**Prior art:** No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda,
-FIPA/BDI, scikit-learn calibration) carries all ten capabilities in one decision object.
-See [comparators.md](../06-research/01-positioning/comparators.md) for the full matrix.
+**Prior art:** No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI,
+scikit-learn calibration) carries all ten capabilities in one decision object. See
+[comparators.md](../../06-research/01-positioning/comparators.md) for the full matrix.
 
-**Audit and liability:** Because every decision carries a `verb`, `reason_code`, `score
-breakdown` and `decision_id` at the moment it is made, LAIX produces a complete audit trail
-without log mining. See [eu-liability.md](../06-research/05-governance/eu-liability.md) for the
-mapping to EU Product Liability Directive 2024/2853.
+**Audit and liability:** Because every decision carries a `verb`, `reason_code`, score breakdown and
+`decision_id` at the moment it is made, LAIX produces a complete audit trail without log mining. See
+[eu-liability.md](../../06-research/05-governance/eu-liability.md) for the mapping to EU Product
+Liability Directive 2024/2853.
 
 ## Rules
 
@@ -255,8 +262,8 @@ mapping to EU Product Liability Directive 2024/2853.
 | New channel | Implement `DeliveryPort` |
 
 The planner contract is in place: `EnginePolicy` wraps JEV, an optimizer or a planner. The built-in
-`UtilityPlanner`, [MDPPlanner](../02-core/03-planning/04-model-based-planners.md#mdp) and `POMDPPlanner` are
-available behind the same adapter; simulation, calibration and model learning support them. See
-[the planner contract](../02-core/03-planning/01-planner-contract.md).
+`UtilityPlanner`, [MDPPlanner](../../02-core/03-planning/04-model-based-planners.md#mdp) and
+`POMDPPlanner` are available behind the same adapter; simulation, calibration and model learning
+support them. See [the planner contract](../../02-core/03-planning/01-planner-contract.md).
 
-Core vs app kit vs host is defined in [boundaries](scope-and-boundaries.md).
+Core vs app kit vs host is defined in [scope and boundaries](02-scope-and-boundaries.md).

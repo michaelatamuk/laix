@@ -51,14 +51,11 @@ Read in order.
 
 | Page | Answers |
 |---|---|
-| [System architecture](04-concepts/system-architecture.md) | how the whole system fits together |
-| [Scope and boundaries](04-concepts/scope-and-boundaries.md) | where PPMA, LAIX, core, app kit and host end |
-| [Decision models](04-concepts/decision-models.md) | how LAIX relates to judgment and decision models |
-| [PPMA integration](04-concepts/ppma-integration.md) | why and how PPMA would use LAIX |
-| [Privacy](04-concepts/privacy.md) | what may be shared, stored or exported |
-| [Security](04-concepts/security.md) | trust boundaries, threats and controls |
-| [FAQ](04-concepts/faq.md) | models, execution, novelty and when to use LAIX |
-| [Glossary](04-concepts/glossary.md) | the vocabulary used across the docs |
+| [Concepts overview](04-concepts/README.md) | the ideas behind the contracts |
+| [Architecture](04-concepts/01-architecture/README.md) | what LAIX is, how it decides and where its boundary sits |
+| [Positioning](04-concepts/02-positioning/README.md) | how LAIX relates to decision models and PPMA |
+| [Trust](04-concepts/03-trust/README.md) | security, privacy and the host boundary |
+| [Reference](04-concepts/04-reference/README.md) | vocabulary and common questions |
 
 ## Project
 
@@ -113,15 +110,15 @@ Runnable examples are organized by language and lifecycle in
 | upgrade a deployment | [Migration](05-project/migration.md) |
 | report a vulnerability | [Security](../SECURITY.md) |
 | contribute | [Contributing](../CONTRIBUTING.md), then [Testing](05-project/testing.md) |
-| check model use or novelty | [FAQ](04-concepts/faq.md), then [Research and evidence](06-research/README.md) |
-| look up a term | [Glossary](04-concepts/glossary.md) |
+| check model use or novelty | [FAQ](04-concepts/04-reference/02-faq.md), then [Research and evidence](06-research/README.md) |
+| look up a term | [Glossary](04-concepts/04-reference/01-glossary.md) |
 | work on the repository | [Testing](05-project/testing.md), then [Repository structure](05-project/repository-structure.md) |
 
 ## Reading paths
 
 | I am… | Start with |
 |---|---|
-| Product | [What is LAIX?](01-start/01-what-is-laix.md), [Decision lifecycle](01-start/03-decision-lifecycle.md), [Scope and boundaries](04-concepts/scope-and-boundaries.md) |
+| Product | [What is LAIX?](01-start/01-what-is-laix.md), [Decision lifecycle](01-start/03-decision-lifecycle.md), [Scope and boundaries](04-concepts/01-architecture/02-scope-and-boundaries.md) |
 | Engineer | [Quickstart](01-start/02-quickstart.md), [Decision contract](02-core/01-contract/01-decision-contract.md), [Policies](02-core/02-decide/03-policies.md), [Planner contract](02-core/03-planning/01-planner-contract.md), [Live decision engine](02-core/03-planning/03-live-decision-engine.md), [App kit](03-appkit/README.md) |
 | Operator | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md), [Stores](03-appkit/04-connect/01-stores.md), [Platform](03-appkit/04-connect/02-platform.md), [Delivery](03-appkit/04-connect/03-delivery.md), [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md) |
 | Contributor | [Contributing](../CONTRIBUTING.md), [Testing](05-project/testing.md), [Repository structure](05-project/repository-structure.md) |
