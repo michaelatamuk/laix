@@ -27,7 +27,8 @@ significant (McNemar p ≤ 0.008 for each).
 Sev1-Bench is a single-turn diagnosis and remediation benchmark. It does not score approvals,
 commitments, continuity or audit, so a null result is expected on its scored axes. The chooser
 integration regressed on multi-incident triage and large-tool-result; the guardrail integration
-preserved the baseline. See [Sev1-Bench](sev1-bench.md).
+preserved the baseline. See [Sev1-Bench](sev1-bench.md). On a V4 Pro robustness run, the guardrail
+also matched the baseline mean and removed the one forbidden recommendation.
 
 The continuity result is a synthetic mechanism test. It shows that the stateful runtime uses the
 supplied state and the stateless planner does not. It is not external validation. See

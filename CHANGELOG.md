@@ -70,6 +70,9 @@
   with one forbidden action. The chooser regressed on multi-incident triage and large-tool-result;
   the guardrail preserved the model's answer. Results and harness are in
   `results/external/sev1-bench/`.
+- Repeated Sev1-Bench with DeepSeek V4 Pro on 16 successful scenarios: baseline 0.656, guardrail
+  0.656, chooser 0.637. The guardrail removed the one forbidden recommendation without losing
+  score.
 - Added a decision-continuity benchmark v0: 12 episodes, 60 decisions. Stateful
   `LiveDecisionEngine` succeeded on 100% of episodes; a stateless `UtilityEngine` on 0% with 36
   continuity errors. This is a synthetic mechanism test, not external validation.

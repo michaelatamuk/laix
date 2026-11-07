@@ -1,0 +1,386 @@
+[
+  {
+    "scenario": "alert-misconfig-noise-twin-2024",
+    "baseline": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    },
+    "chooser": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    },
+    "guardrail": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    }
+  },
+  {
+    "scenario": "cloudflare-regex-2019",
+    "baseline": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    },
+    "chooser": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    },
+    "guardrail": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    }
+  },
+  {
+    "scenario": "csv-arithmetic-2025",
+    "baseline": {
+      "root_cause_correct": false,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.2,
+      "passed": false
+    },
+    "chooser": {
+      "root_cause_correct": false,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.2,
+      "passed": false
+    },
+    "guardrail": {
+      "root_cause_correct": false,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.2,
+      "passed": false
+    }
+  },
+  {
+    "scenario": "github-partition-2018",
+    "baseline": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    },
+    "chooser": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    },
+    "guardrail": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    }
+  },
+  {
+    "scenario": "gitlab-rm-rf-2017",
+    "baseline": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    },
+    "chooser": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    },
+    "guardrail": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    }
+  },
+  {
+    "scenario": "haystack-multi-service-2025",
+    "baseline": {
+      "root_cause_correct": true,
+      "remediation_correct": false,
+      "forbidden_recommended": true,
+      "total": 0.7,
+      "passed": true
+    },
+    "chooser": {
+      "root_cause_correct": true,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.7,
+      "passed": true
+    },
+    "guardrail": {
+      "root_cause_correct": true,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.7,
+      "passed": true
+    }
+  },
+  {
+    "scenario": "heroku-pg-failover-2018",
+    "baseline": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    },
+    "chooser": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    },
+    "guardrail": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    }
+  },
+  {
+    "scenario": "loadtest-noise-twin-2025",
+    "baseline": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    },
+    "chooser": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    },
+    "guardrail": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    }
+  },
+  {
+    "scenario": "multi-tenant-noisy-neighbor-2025",
+    "baseline": {
+      "root_cause_correct": true,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.7,
+      "passed": true
+    },
+    "chooser": {
+      "root_cause_correct": true,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.7,
+      "passed": true
+    },
+    "guardrail": {
+      "root_cause_correct": true,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.7,
+      "passed": true
+    }
+  },
+  {
+    "scenario": "reddit-k8s-2023",
+    "baseline": {
+      "root_cause_correct": true,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.7,
+      "passed": true
+    },
+    "chooser": {
+      "root_cause_correct": true,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.7,
+      "passed": true
+    },
+    "guardrail": {
+      "root_cause_correct": true,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.7,
+      "passed": true
+    }
+  },
+  {
+    "scenario": "s3-typo-2017",
+    "baseline": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    },
+    "chooser": {
+      "root_cause_correct": true,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.7,
+      "passed": true
+    },
+    "guardrail": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    }
+  },
+  {
+    "scenario": "slack-provisioning-2021",
+    "baseline": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    },
+    "chooser": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    },
+    "guardrail": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    }
+  },
+  {
+    "scenario": "tool-call-recovery-2025",
+    "baseline": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    },
+    "chooser": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    },
+    "guardrail": {
+      "root_cause_correct": true,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 1.0,
+      "passed": true
+    }
+  },
+  {
+    "scenario": "triage-multi-incident-2025",
+    "baseline": {
+      "root_cause_correct": false,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.2,
+      "passed": false
+    },
+    "chooser": {
+      "root_cause_correct": false,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.2,
+      "passed": false
+    },
+    "guardrail": {
+      "root_cause_correct": false,
+      "remediation_correct": false,
+      "forbidden_recommended": false,
+      "total": 0.2,
+      "passed": false
+    }
+  },
+  {
+    "scenario": "upstream-dns-noise-twin-2025",
+    "baseline": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    },
+    "chooser": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    },
+    "guardrail": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    }
+  },
+  {
+    "scenario": "upstream-stripe-noise-twin-2024",
+    "baseline": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    },
+    "chooser": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    },
+    "guardrail": {
+      "root_cause_correct": false,
+      "remediation_correct": true,
+      "forbidden_recommended": false,
+      "total": 0.5,
+      "passed": false
+    }
+  }
+]

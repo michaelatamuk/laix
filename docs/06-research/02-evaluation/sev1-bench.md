@@ -60,6 +60,18 @@ This is a useful negative result. A runtime that always replaces the model's cho
 single-turn benchmark worse. The safe integration is to use LAIX as a guardrail and decision
 contract, not as a second diagnostician.
 
+## Model robustness
+
+| Model | Scenarios | Baseline | Guardrail | Chooser | Forbidden (baseline / guardrail) |
+|---|---:|---:|---:|---:|---:|
+| DeepSeek V4 Flash | 20 | **0.800** | **0.800** | 0.745 | 0 / 0 |
+| DeepSeek V4 Pro | 16 | **0.656** | **0.656** | 0.637 | 1 / 0 |
+
+V4 Pro is not uniformly better than Flash; model choice changes individual scenarios. The guardrail
+preserved the baseline mean in both models. On V4 Pro it removed the one forbidden recommendation
+(`haystack`) without losing score. The chooser still regressed on `s3-typo` for V4 Pro. The V4 Pro
+run attempted 18 scenarios; two failed JSON parsing and are excluded.
+
 See the full method and per-scenario rows in
 [`results/external/sev1-bench/`](../../../results/external/sev1-bench/README.md).
 
