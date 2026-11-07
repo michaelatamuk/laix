@@ -144,4 +144,4 @@ that the host stores.
 - [Model-based planners](../03-planning/04-model-based-planners.md)
 - [Policies](../02-decide/03-policies.md)
 - [Records and schema](../01-contract/02-records-and-schema.md)
-- [Versioning](../../05-project/versioning.md)
+- [Versioning](../../05-project/03-release/01-versioning.md)

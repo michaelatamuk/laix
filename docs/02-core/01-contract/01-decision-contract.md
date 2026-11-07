@@ -220,7 +220,7 @@ The gate set emits the codes in the table above. `ask_approval` is a reserved en
 carried by `requires_approval` on the decision.
 
 The pages that define each mechanism list its full set of codes. The
-[troubleshooting guide](../../05-project/troubleshooting.md) maps the common codes to symptoms.
+[troubleshooting guide](../../05-project/02-quality/02-troubleshooting.md) maps the common codes to symptoms.
 
 ## Evidence basis
 

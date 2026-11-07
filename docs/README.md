@@ -61,14 +61,11 @@ Read in order.
 
 | Page | Covers |
 |---|---|
-| [Repository structure](05-project/repository-structure.md) | where each package, module and test lives |
-| [Testing](05-project/testing.md) | pytest, ruff, tsc, bench, conformance and CI |
-| [Troubleshooting](05-project/troubleshooting.md) | symptoms, reason codes, execution failures and performance |
-| [Migration](05-project/migration.md) | upgrades, compatibility, deprecation and data migration |
-| [API map](05-project/api-map.md) | public classes and functions by role |
-| [Versioning](05-project/versioning.md) | package, schema and vector versions |
-| [Roadmap](05-project/roadmap.md) | what is done and what is next |
-| [Adoption plan](05-project/adoption-plan.md) | benchmarks, design partners, distribution, compliance and the first wedge |
+| [Project overview](05-project/README.md) | the working, release and direction pages |
+| [Repository](05-project/01-repository/README.md) | structure and the public API map |
+| [Quality](05-project/02-quality/README.md) | testing, CI and troubleshooting |
+| [Release](05-project/03-release/README.md) | versioning, migration and deprecation |
+| [Direction](05-project/04-direction/README.md) | roadmap and adoption |
 | [Brand assets](assets/README.md) | logo, banner, architecture and demo placeholder |
 
 ## Research and evidence
@@ -104,15 +101,15 @@ Runnable examples are organized by language and lifecycle in
 | learn from outcomes | [Outcome learning](02-core/05-learning/01-outcome-learning.md) |
 | understand the planner contract | [Planner contract](02-core/03-planning/01-planner-contract.md) |
 | see the end-to-end loop | [Decision lifecycle](01-start/03-decision-lifecycle.md) |
-| see the public API | [API map](05-project/api-map.md) |
-| operate in production | [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md), [Troubleshooting](05-project/troubleshooting.md) |
-| troubleshoot a decision | [Troubleshooting](05-project/troubleshooting.md) |
-| upgrade a deployment | [Migration](05-project/migration.md) |
+| see the public API | [API map](05-project/01-repository/02-api-map.md) |
+| operate in production | [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md), [Troubleshooting](05-project/02-quality/02-troubleshooting.md) |
+| troubleshoot a decision | [Troubleshooting](05-project/02-quality/02-troubleshooting.md) |
+| upgrade a deployment | [Migration](05-project/03-release/02-migration.md) |
 | report a vulnerability | [Security](../SECURITY.md) |
-| contribute | [Contributing](../CONTRIBUTING.md), then [Testing](05-project/testing.md) |
+| contribute | [Contributing](../CONTRIBUTING.md), then [Testing](05-project/02-quality/01-testing.md) |
 | check model use or novelty | [FAQ](04-concepts/04-reference/02-faq.md), then [Research and evidence](06-research/README.md) |
 | look up a term | [Glossary](04-concepts/04-reference/01-glossary.md) |
-| work on the repository | [Testing](05-project/testing.md), then [Repository structure](05-project/repository-structure.md) |
+| work on the repository | [Testing](05-project/02-quality/01-testing.md), then [Repository structure](05-project/01-repository/01-repository-structure.md) |
 
 ## Reading paths
 
@@ -121,5 +118,5 @@ Runnable examples are organized by language and lifecycle in
 | Product | [What is LAIX?](01-start/01-what-is-laix.md), [Decision lifecycle](01-start/03-decision-lifecycle.md), [Scope and boundaries](04-concepts/01-architecture/02-scope-and-boundaries.md) |
 | Engineer | [Quickstart](01-start/02-quickstart.md), [Decision contract](02-core/01-contract/01-decision-contract.md), [Policies](02-core/02-decide/03-policies.md), [Planner contract](02-core/03-planning/01-planner-contract.md), [Live decision engine](02-core/03-planning/03-live-decision-engine.md), [App kit](03-appkit/README.md) |
 | Operator | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md), [Stores](03-appkit/04-connect/01-stores.md), [Platform](03-appkit/04-connect/02-platform.md), [Delivery](03-appkit/04-connect/03-delivery.md), [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md) |
-| Contributor | [Contributing](../CONTRIBUTING.md), [Testing](05-project/testing.md), [Repository structure](05-project/repository-structure.md) |
+| Contributor | [Contributing](../CONTRIBUTING.md), [Testing](05-project/02-quality/01-testing.md), [Repository structure](05-project/01-repository/01-repository-structure.md) |
 | Researcher or reviewer | [Research and evidence](06-research/README.md), then [Prior art](06-research/01-positioning/prior-art.md), [Benchmark](06-research/02-evaluation/benchmark.md) |

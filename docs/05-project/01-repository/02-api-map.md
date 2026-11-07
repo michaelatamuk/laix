@@ -1,7 +1,8 @@
 # API map
 
 One page for the public surface. Python and TypeScript export the same concepts. This is a
-map by role, not a generated signature reference; the package `__all__` lists every export.
+map by role, not a generated signature reference. The package `__all__` lists the core exports; the
+app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` surface.
 
 ## Contract
 
@@ -45,7 +46,7 @@ integration, **Learner** is learning. The protocol is `DecisionEngine`.
 | `UtilityPlanner` | expected utility with hard limits and risk attitude |
 | `ExecutionRiskPlanner` | irreversibility, unknown outcomes, approval and recovery |
 | `HumanAttentionPlanner` | interruption, approval, escalation and a shared budget |
-| `LiveDecisionEngine` | the composition engine: commitments, execution risk and attention in one plan |
+| `LiveDecisionEngine` | the composition engine: utility, commitments, execution risk and attention in one plan |
 | `MDPPlanner`, `POMDPPlanner` | model-based planning over a host-supplied model |
 | `Simulator`, `compare_planners` | run and compare planners |
 
@@ -82,7 +83,7 @@ integration, **Learner** is learning. The protocol is `DecisionEngine`.
 | `ExecutionBridge`, `Saga` | execution boundary, receipts, recovery and compensation |
 | `ExperienceState`, `StateStore` | live state and its port |
 | `DecisionRecord`, `create_record`, `approve_record`, `reject_record`, `mark_executed`, `verify_record` | the audit lifecycle |
-| `Proposal`, `approve_proposal`, `reject_proposal`, `undo_proposal` | the proposal lifecycle |
+| `Proposal`, `approve_proposal`, `reject_proposal`, `apply_proposal`, `undo_proposal` | the proposal lifecycle |
 | `ApprovalRequest`, `ApprovalDecision` | approval hand-off |
 | `Platform`, `InMemoryPlatform`, `SkillCall` | host skills, events and approvals |
 | `DeliveryPort`, `DeliveryReceipt`, `NullDelivery` | delivery boundary and receipt |
@@ -95,8 +96,11 @@ integration, **Learner** is learning. The protocol is `DecisionEngine`.
 | `run_live_bench` / `runLiveBench` | compare training-free planners on the seven-case demo |
 | `default_cases`, `default_planners` | the demo case set and planner set |
 | `LiveBenchReport`, `LiveBenchRow`, `PlannerMetrics` | the live-bench report |
-| `Bench`, `Metrics` | LAIX-Bench and Prometheus counters |
-| `run_stream_bench` | stream throughput and counters |
+| `run_stream_bench`, `StreamBenchResult` | stream throughput and counters |
+| `prometheus`, `StreamStats` | Prometheus counters from a stream |
+| `BenchCase`, `BenchReport`, `BenchRow`, `Suite`, `run_bench`, `suite_names`, `run_planner_bench` | LAIX-Bench, from `laix.appkit.bench` |
+
+The bench runner classes are exported from `laix.appkit.bench`. The rest are in `laix`.
 
 ## Reading the API
 
