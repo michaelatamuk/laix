@@ -1,4 +1,4 @@
-# Integrating LAIX
+# Integration
 
 The app sends a request. LAIX returns a decision. The app runs the chosen option.
 
@@ -9,16 +9,26 @@ The app sends a request. LAIX returns a decision. The app runs the chosen option
 | **Verb** | The word that says what to do. |
 | **Adapter** | App code that builds requests and turns decisions into app actions. |
 
-Start with [the quickstart](../01-start/02-quickstart.md) to install LAIX.
+Start with [the quickstart](../../01-start/02-quickstart.md) to install LAIX.
 
-## Build the adapter
+## The adapter
 
 The adapter does two things:
 
 1. Turn the app's event into a `DecisionRequest`.
 2. Turn the returned `Decision` into an app step.
 
-### Attention
+| Direction | The app owns | LAIX owns |
+|---|---|---|
+| Input | event, ids, time, context, options, constraints | selection, reason code, score, confidence |
+| Output | approval UI, execution, records, delivery | verb, rationale, action, trace id |
+
+The adapter stays in the app. LAIX does not read the app's database, call its transport or run its
+skills.
+
+## Build the request
+
+A signal request asks what deserves attention:
 
 ```python
 from laix import Context, DecisionRequest, Layer, Signal
@@ -35,7 +45,7 @@ decision = Layer().decide(
 )[0]
 ```
 
-### Options
+An option request asks what to do:
 
 ```python
 from laix import ActionOption, Belief, DecisionRequest, Layer, Situation
@@ -61,7 +71,7 @@ decision = Layer().decide(
 )[0]
 ```
 
-### TypeScript
+TypeScript uses the same shapes:
 
 ```ts
 import { Layer } from "laix";
@@ -73,6 +83,22 @@ const [decision] = new Layer().decide({
   context: { now: "2026-11-01T10:00:00Z", quietHours: ["22:00", "06:00"] },
 });
 ```
+
+The request shape is defined in [the decision contract](../../02-core/01-contract/01-decision-contract.md).
+
+## Read the decision
+
+The adapter branches on fields, not on prose:
+
+| Field | Use |
+|---|---|
+| `verb` | The app step: wait, observe, guide, ask, act, verify or escalate. |
+| `reason_code` | Stable branch key; do not parse `rationale`. |
+| `action_id` | The option the app should run. |
+| `requires_approval` | Pause and ask before executing. |
+| `confidence` | How sure the decision is, with its source. |
+| `trace_id` | The handle for the decision trail. |
+| `deliver` / `record` | Whether to deliver or record the decision. |
 
 ## Host confidence
 
@@ -102,37 +128,6 @@ The returned decision carries the same source and calibration flag. A rule score
 The production adapter stays in the app. `examples/python/05-execute/host_adapter.py` shows a
 generic adapter.
 
-## Custom policy
-
-```python
-from laix import Decision, Layer
-
-class QualityPolicy:
-    name = "quality"
-    version = "0.9.0"
-
-    def decide(self, request):
-        return [
-            Decision(
-                verb="guide",
-                confidence=0.8,
-                reason_code="policy_rule",
-                rationale="open a watch",
-            )
-        ]
-
-layer = Layer(policy=QualityPolicy())
-```
-
-Or select it at runtime:
-
-```python
-layer.register_policy("quality", QualityPolicy())
-layer.use_policy("quality")
-```
-
-TypeScript uses `new Layer({ policy })`, `registerPolicy` and `usePolicy`.
-
 ## Manager boundary
 
 A manager service keeps memory and long-lived plans. LAIX returns the decision for the moment.
@@ -145,4 +140,18 @@ LAIX:    whether to act now, how, with what approval, and whether it worked
 ## Privacy
 
 Keep secrets and raw customer data in the host. Pass references where possible. `GroupPolicy` masks
-configured fields before sharing; see [privacy](../04-concepts/privacy.md).
+configured fields before sharing; see [privacy](../../04-concepts/privacy.md).
+
+## Boundary
+
+- The adapter owns the mapping between app events and `DecisionRequest`.
+- The adapter owns execution, approval UI, credentials and transport.
+- LAIX owns the decision, its reason code, its score and its trace.
+- A policy choice is an app decision; see [Policies in the app](03-policies-in-the-app.md).
+
+## Related
+
+- [Single decision](02-single-decision.md) - `Layer` and the one-shot surface.
+- [Policies in the app](03-policies-in-the-app.md) - selection, registration and rollout.
+- [Streaming](../02-run/02-streaming.md) - decisions over time.
+- [Execution and recovery](../03-execute/01-execution-and-recovery.md) - the write boundary.

@@ -169,4 +169,4 @@ a promise was kept and records the outcome.
 - [Decision contract](../01-contract/01-decision-contract.md)
 - [Policies](03-policies.md) — `PlanningPolicy`
 - [Live planners](../03-planning/02-live-planners.md#commitment-planner) — `CommitmentPlanner`
-- [Stores](../../03-appkit/05-stores.md) — `CommitmentStore`
+- [Stores](../../03-appkit/04-connect/01-stores.md) — `CommitmentStore`

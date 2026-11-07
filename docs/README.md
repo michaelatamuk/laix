@@ -40,17 +40,12 @@ Read in order.
 
 | Page | Covers |
 |---|---|
-| [App-kit architecture](03-appkit/00-architecture.md) | surface, runtime, state, result, ports and proof |
-| [Integration](03-appkit/01-integration.md) | adapters, confidence, rollout and custom policies |
-| [Streaming](03-appkit/02-streaming.md) | event time, cadence, backpressure, checkpoints, timeline and sources |
-| [Live Context](03-appkit/03-live-context.md) | detectors, admission and frames |
-| [Execution](03-appkit/04-execution.md) | receipts, idempotency, multi-step recovery, records |
-| [Stores](03-appkit/05-stores.md) | state, checkpoints, commitments and outcomes |
-| [Platform](03-appkit/06-platform.md) | skills, events and approvals |
-| [Delivery](03-appkit/07-delivery.md) | ports, receipts and the host transport |
-| [LAIX-Bench](03-appkit/08-laix-bench.md) | LAIX-Bench, stream bench and planner simulation |
-| [Metrics](03-appkit/09-metrics.md) | stream counters, Prometheus and latency |
-| [Deployment](03-appkit/10-deployment.md) | production topology, reliability, observability, rollout and retention |
+| [App-kit overview](03-appkit/README.md) | surface, runtime, execution, ports and proof |
+| [Build](03-appkit/01-build/README.md) | adapter, one decision and policy selection |
+| [Run](03-appkit/02-run/README.md) | decision runtime, streaming and live context |
+| [Execute](03-appkit/03-execute/README.md) | execution, recovery, proposals and records |
+| [Connect](03-appkit/04-connect/README.md) | stores, platform and delivery |
+| [Operate](03-appkit/05-operate/README.md) | bench, metrics and deployment |
 
 ## Concepts
 
@@ -76,6 +71,7 @@ Read in order.
 | [API map](05-project/api-map.md) | public classes and functions by role |
 | [Versioning](05-project/versioning.md) | package, schema and vector versions |
 | [Roadmap](05-project/roadmap.md) | what is done and what is next |
+| [Adoption plan](05-project/adoption-plan.md) | benchmarks, design partners, distribution, compliance and the first wedge |
 | [Brand assets](assets/README.md) | logo, banner, architecture and demo placeholder |
 
 ## Research and evidence
@@ -104,15 +100,15 @@ Runnable examples are organized by language and lifecycle in
 | I want to… | Read |
 |---|---|
 | make one decision | [Quickstart](01-start/02-quickstart.md) |
-| plug LAIX into an app | [Host integration](01-start/04-host-integration.md), then [Integration](03-appkit/01-integration.md) |
-| write my own policy | [Policies](02-core/02-decide/03-policies.md) |
-| stream events | [Streaming](03-appkit/02-streaming.md) |
-| execute and recover | [Execution](03-appkit/04-execution.md) |
+| plug LAIX into an app | [Host integration](01-start/04-host-integration.md), then [Integration](03-appkit/01-build/01-integration.md) |
+| write my own policy | [Policies](02-core/02-decide/03-policies.md), [Policies in the app](03-appkit/01-build/03-policies-in-the-app.md) |
+| stream events | [Streaming](03-appkit/02-run/02-streaming.md) |
+| execute and recover | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md) |
 | learn from outcomes | [Outcome learning](02-core/05-learning/01-outcome-learning.md) |
 | understand the planner contract | [Planner contract](02-core/03-planning/01-planner-contract.md) |
 | see the end-to-end loop | [Decision lifecycle](01-start/03-decision-lifecycle.md) |
 | see the public API | [API map](05-project/api-map.md) |
-| operate in production | [Deployment](03-appkit/10-deployment.md), [Metrics](03-appkit/09-metrics.md), [Troubleshooting](05-project/troubleshooting.md) |
+| operate in production | [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md), [Troubleshooting](05-project/troubleshooting.md) |
 | troubleshoot a decision | [Troubleshooting](05-project/troubleshooting.md) |
 | upgrade a deployment | [Migration](05-project/migration.md) |
 | report a vulnerability | [Security](../SECURITY.md) |
@@ -126,7 +122,7 @@ Runnable examples are organized by language and lifecycle in
 | I am… | Start with |
 |---|---|
 | Product | [What is LAIX?](01-start/01-what-is-laix.md), [Decision lifecycle](01-start/03-decision-lifecycle.md), [Scope and boundaries](04-concepts/scope-and-boundaries.md) |
-| Engineer | [Quickstart](01-start/02-quickstart.md), [Decision contract](02-core/01-contract/01-decision-contract.md), [Policies](02-core/02-decide/03-policies.md), [Planner contract](02-core/03-planning/01-planner-contract.md), [Live decision engine](02-core/03-planning/03-live-decision-engine.md), [App kit](03-appkit/00-architecture.md) |
-| Operator | [Execution](03-appkit/04-execution.md), [Stores](03-appkit/05-stores.md), [Platform](03-appkit/06-platform.md), [Delivery](03-appkit/07-delivery.md), [Deployment](03-appkit/10-deployment.md), [Metrics](03-appkit/09-metrics.md) |
+| Engineer | [Quickstart](01-start/02-quickstart.md), [Decision contract](02-core/01-contract/01-decision-contract.md), [Policies](02-core/02-decide/03-policies.md), [Planner contract](02-core/03-planning/01-planner-contract.md), [Live decision engine](02-core/03-planning/03-live-decision-engine.md), [App kit](03-appkit/README.md) |
+| Operator | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md), [Stores](03-appkit/04-connect/01-stores.md), [Platform](03-appkit/04-connect/02-platform.md), [Delivery](03-appkit/04-connect/03-delivery.md), [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md) |
 | Contributor | [Contributing](../CONTRIBUTING.md), [Testing](05-project/testing.md), [Repository structure](05-project/repository-structure.md) |
 | Researcher or reviewer | [Research and evidence](06-research/README.md), then [Prior art](06-research/01-positioning/prior-art.md), [Benchmark](06-research/02-evaluation/benchmark.md) |
