@@ -1,4 +1,4 @@
-"""LAIX attention â€” a small, domain-free decision layer for the right moment.
+"""LAIX signal attention - a small, domain-free decision layer for the right moment.
 
 Given a candidate intervention, the current context and the user's limits,
 should the product **wait, observe, guide, ask, act, verify or escalate**?
@@ -11,11 +11,11 @@ from __future__ import annotations
 
 from ...decisions import ScoreBreakdown, Intent
 from ...support.verbs import VERBS
-from .output.decision import AttentionDecision
-from .input.context import Context
-from .input.feedback import FEEDBACK_STATES, Feedback
+from .output.signal_attention_decision import SignalAttentionDecision
+from .input.signal_context import SignalContext
+from .input.signal_feedback import FEEDBACK_STATES, SignalFeedback
 from .input.severity import SEVERITY_RANK
-from .decide import decide_attention, decide_one, dedupe_key, rollup, trace_id
+from .decide import decide_signal_attention, decide_one, dedupe_key, rollup, trace_id
 from .gates import GATES, GATE_RULES, REASONS, Gate, ReasonCode, feedback_blocks, rank
 from .score import SEVERITY_POINTS, WAIT_FACTOR, cost_of_waiting, score
 from .output.undo import undo_hint
@@ -36,13 +36,13 @@ __all__ = [
     "VERBS",
     "WAIT_FACTOR",
     "ScoreBreakdown",
-    "Context",
-    "AttentionDecision",
-    "Feedback",
+    "SignalContext",
+    "SignalAttentionDecision",
+    "SignalFeedback",
     "Intent",
     "Signal",
     "cost_of_waiting",
-    "decide_attention",
+    "decide_signal_attention",
     "decide_one",
     "dedupe_key",
     "feedback_blocks",

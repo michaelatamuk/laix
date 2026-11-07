@@ -1,4 +1,4 @@
-import type { DecisionEngine, DecisionProblem } from "../core/contract/engine.ts";
+import type { Planner, PlannerInput } from "../core/contract/planner.ts";
 import type { MdpModel } from "../core/planners/mdp/mdp-planner.ts";
 import { SimulationReport } from "./simulation-report.ts";
 
@@ -71,7 +71,7 @@ export class Simulator {
     this.randomStep = options.randomStep;
   }
 
-  run(planner: DecisionEngine): SimulationResult {
+  run(planner: Planner): SimulationResult {
     let state = this.start;
     const steps: SimulationStep[] = [];
     let total = 0;
@@ -80,7 +80,7 @@ export class Simulator {
         ? seededRandom(this.seed)
         : undefined;
     for (let index = 0; index < this.horizon; index += 1) {
-      const problem: DecisionProblem = {
+      const problem: PlannerInput = {
         subject: this.name,
         at: new Date().toISOString(),
         options: [],
@@ -154,7 +154,7 @@ export interface Scenario {
   optimum?: number | null;
 }
 
-export interface PlannerScore {
+export interface PlannerBenchmarkRow {
   planner: string;
   scenario: string;
   totalReward: number;
@@ -163,10 +163,10 @@ export interface PlannerScore {
 }
 
 export function comparePlanners(
-  planners: Record<string, DecisionEngine>,
+  planners: Record<string, Planner>,
   scenarios: Scenario[],
 ): SimulationReport {
-  const rows: PlannerScore[] = [];
+  const rows: PlannerBenchmarkRow[] = [];
   for (const scenario of scenarios) {
     for (const [name, planner] of Object.entries(planners)) {
       const result = scenario.simulator.run(planner);

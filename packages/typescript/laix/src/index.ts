@@ -1,19 +1,19 @@
 export * from "./appkit/index.ts";
-export * from "./core/signals/attention.ts";
+export * from "./core/signals/signal-attention.ts";
 export * from "./core/perception/perception.ts";
 export * from "./core/resources.ts";
 
 export * from "./core/evaluation.ts";
-export * from "./core/contract/engine.ts";
+export * from "./core/contract/planner.ts";
 export * from "./core/causal.ts";
 export * from "./core/commitments/commitments.ts";
 export * from "./core/commitments/store.ts";
 export * from "./core/planners/utility/utility-planner.ts";
 export * from "./core/planners/commitment/commitment-planner.ts";
 export * from "./core/planners/execution/execution-planner.ts";
-export * from "./core/planners/attention/attention-planner.ts";
+export * from "./core/planners/human-attention/human-attention-planner.ts";
 export * from "./core/bench/live-bench.ts";
-export * from "./core/live/live-engine.ts";
+export * from "./core/live/live-composite-planner.ts";
 export * from "./core/planners/mdp/mdp-planner.ts";
 export * from "./core/learning/calibration.ts";
 export * from "./core/learning/decision-calibration.ts";
@@ -34,8 +34,8 @@ export * from "./core/policies/group.ts";
 export * from "./core/policies/simulation.ts";
 export * from "./core/policies/rules.ts";
 export * from "./core/policies/target.ts";
-export { PolicyError, PolicyRegistry } from "./core/policies/registry.ts";
-export type { Policy } from "./core/policies/registry.ts";
+export { DecisionPolicyError, DecisionPolicyRegistry } from "./core/policies/decision-policy-registry.ts";
+export type { DecisionPolicy } from "./core/policies/decision-policy-registry.ts";
 
 export { PHASES, POLICY_VERSION, SCHEMA_VERSION, VERBS, clamp, confidenceBand, iso, newId } from "./core/contracts.ts";
 export type {

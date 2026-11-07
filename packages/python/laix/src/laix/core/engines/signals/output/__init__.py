@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .decision import AttentionDecision
+from .signal_attention_decision import SignalAttentionDecision
 from .undo import undo_hint
 
-__all__ = ["AttentionDecision", "undo_hint"]
+__all__ = ["SignalAttentionDecision", "undo_hint"]

@@ -9,9 +9,9 @@ The result is:
 - look-1: the chosen observation.
 """
 
-from laix import ActivePerceptionPolicy, DecisionRequest, Layer, iso
+from laix import ActivePerceptionPolicy, DecisionRequest, DecisionClient, iso
 
-decision = Layer(policy=ActivePerceptionPolicy()).decide(
+decision = DecisionClient(policy=ActivePerceptionPolicy()).decide(
     DecisionRequest(
         subject="late parcel",
         at=iso(),

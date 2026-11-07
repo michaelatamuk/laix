@@ -12,7 +12,7 @@
   export type OutcomeResult = "helped" | "neutral" | "hurt" | "unknown";
   export type FeedbackState = "accepted" | "dismissed" | "snoozed" | "wrong" | "assigned";
 
-  export interface Feedback {
+  export interface SignalFeedback {
     state: FeedbackState;
     at?: string;
     until?: string;
@@ -48,7 +48,7 @@
 
   export type QuietHours = [string, string] | string | null;
 
-  export interface Context {
+  export interface SignalContext {
     now: string | Date;
     quietHours?: QuietHours;
     stopped?: boolean;
@@ -57,7 +57,7 @@
     mutedKinds?: string[];
     interruptionBudget?: number | null;
     sent?: string[];
-    feedback?: Record<string, Feedback>;
+    feedback?: Record<string, SignalFeedback>;
     escalateAfterHours?: number | null;
     learned?: Record<string, number>;
     allowAct?: boolean;
@@ -72,7 +72,7 @@
     total: number;
   }
 
-  export interface AttentionDecision {
+  export interface SignalAttentionDecision {
     signalId: string;
     verb: Verb;
     score: number;
@@ -91,7 +91,7 @@
     undoHint: "withdraw" | "cancel" | null;
   }
 
-  export interface AttentionOutcome {
+  export interface SignalAttentionOutcome {
     candidateId: string;
     verb: Verb;
     result: OutcomeResult;
@@ -99,7 +99,7 @@
     note?: string;
   }
 
-  export class OutcomeLog {
+  export class SignalAttentionLog {
     constructor(initial?: Outcome[]);
     record(outcome: Outcome): void;
     all(): Outcome[];
@@ -107,10 +107,10 @@
     acceptanceRate(): number;
   }
 
-  export function decide(context: Context, signals: Signal[]): Decision[];
+  export function decide(context: SignalContext, signals: Signal[]): Decision[];
   export function isQuietHours(now: string | Date, quiet?: QuietHours): boolean;
-  export function score(signal: Signal, context: Context): ScoreBreakdown;
-  export function costOfWaiting(signal: Signal, context: Context): number;
+  export function score(signal: Signal, context: SignalContext): ScoreBreakdown;
+  export function costOfWaiting(signal: Signal, context: SignalContext): number;
 
   export type RecordStatus = "draft" | "approved" | "rejected" | "executed" | "undone";
   export type ApprovalState = "pending" | "approved" | "rejected";
@@ -202,13 +202,13 @@
   export function canonical(value: unknown): string;
 
   export type Verb = "wait" | "observe" | "guide" | "ask" | "act" | "verify" | "escalate";
-  export interface Policy {
+  export interface DecisionPolicy {
     name: string;
     decide(request: DecisionRequest): Decision[];
   }
-  export class Layer {
-    constructor(options?: { policy?: Policy });
-    registerPolicy(name: string, policy: Policy): void;
+  export class DecisionClient {
+    constructor(options?: { policy?: DecisionPolicy });
+    registerPolicy(name: string, policy: DecisionPolicy): void;
     usePolicy(name: string): void;
     decide(request: DecisionRequest): Decision[];
     stream(options?: {
@@ -235,7 +235,7 @@
     subject: string;
     at: string;
     signals?: Signal[];
-    context?: Context;
+    context?: SignalContext;
     situation?: Situation;
     options?: ActionOption[];
     attributes?: Record<string, unknown>;
@@ -284,7 +284,7 @@
     target?: TargetMode;
     recipients?: string[];
   }
-  export interface DecisionProblem {
+  export interface PlannerInput {
     subject: string;
     at: string;
     situation?: unknown;
@@ -293,7 +293,7 @@
     context?: unknown;
     attributes: Record<string, unknown>;
   }
-  export interface Plan {
+  export interface PlannerResult {
     verb: Verb;
     confidence: number;
     reasonCode: string;
@@ -307,18 +307,18 @@
     alternatives?: Array<Record<string, unknown>>;
     attributes?: Record<string, unknown>;
   }
-  export interface DecisionEngine {
-    solve(problem: DecisionProblem): Plan;
+  export interface Planner {
+    solve(problem: PlannerInput): PlannerResult;
   }
-  export class EnginePolicy {
+  export class PlannerPolicy {
     readonly name: string;
-    readonly engine: DecisionEngine;
-    constructor(engine: DecisionEngine, name?: string);
+    readonly planner: Planner;
+    constructor(planner: Planner, name?: string);
     decide(request: DecisionRequest): Decision[];
   }
-  export function toProblem(request: DecisionRequest): DecisionProblem;
+  export function toPlannerInput(request: DecisionRequest): PlannerInput;
   export function toDecision(
-    plan: Plan,
+    plannerResult: PlannerResult,
     request: DecisionRequest,
     options?: { decisionId?: string; traceId?: string; policyVersion?: string },
   ): Decision;
@@ -457,11 +457,11 @@
     feasible(option: ActionOption): boolean;
     score(option: ActionOption): number;
   }
-  export class UtilityPlanner implements DecisionEngine {
+  export class UtilityPlanner implements Planner {
     readonly name: string;
     readonly model: UtilityModel;
     constructor(model?: UtilityModel);
-    solve(problem: DecisionProblem): Plan;
+    solve(problem: PlannerInput): PlannerResult;
   }
 
   export interface MdpTransition {
@@ -499,12 +499,12 @@
     state: string,
     values?: Record<string, number>,
   ): Array<[string, number]>;
-  export class MDPPlanner implements DecisionEngine {
+  export class MDPPlanner implements Planner {
     readonly name: string;
     readonly model: MdpModel;
     readonly state: string;
     constructor(model: MdpModel, options?: { state?: string });
-    solve(problem: DecisionProblem): Plan;
+    solve(problem: PlannerInput): PlannerResult;
   }
   export function planActions(model: MdpModel, state?: string): string[];
 
@@ -643,12 +643,12 @@
     belief: BeliefState,
     options?: { horizon?: number },
   ): PlannerComparison;
-  export class POMDPPlanner implements DecisionEngine {
+  export class POMDPPlanner implements Planner {
     readonly name: string;
     readonly model: PomdpModel;
     readonly belief: BeliefState;
     constructor(model: PomdpModel, options?: { belief?: BeliefState });
-    solve(problem: DecisionProblem): Plan;
+    solve(problem: PlannerInput): PlannerResult;
   }
   export interface ActionOption {    id: string;
     verb: Verb;
@@ -718,49 +718,49 @@
     events: TraceEvent[];
   }
 
-  export class PolicyError extends Error {}
-  export class PolicyRegistry {
-    register(name: string, policy: Policy): void;
-    get(name: string): Policy;
+  export class DecisionPolicyError extends Error {}
+  export class DecisionPolicyRegistry {
+    register(name: string, policy: DecisionPolicy): void;
+    get(name: string): DecisionPolicy;
     names(): string[];
   }
 
-  export class ActivePerceptionPolicy implements Policy {
+  export class ActivePerceptionPolicy implements DecisionPolicy {
     name: string;
     version: string;
     decide(request: DecisionRequest): Decision[];
   }
-  export class SafetyConstrainedPolicy implements Policy {
+  export class SafetyConstrainedPolicy implements DecisionPolicy {
     name: string;
     version: string;
     decide(request: DecisionRequest): Decision[];
   }
-  export class ReplanningPolicy implements Policy {
+  export class ReplanningPolicy implements DecisionPolicy {
     name: string;
     version: string;
     decide(request: DecisionRequest): Decision[];
   }
-  export class AllocationPolicy implements Policy {
+  export class AllocationPolicy implements DecisionPolicy {
     name: string;
     version: string;
     decide(request: DecisionRequest): Decision[];
   }
-  export class NegotiationPolicy implements Policy {
+  export class NegotiationPolicy implements DecisionPolicy {
     name: string;
     version: string;
     decide(request: DecisionRequest): Decision[];
   }
-  export class PreferenceElicitationPolicy implements Policy {
+  export class PreferenceElicitationPolicy implements DecisionPolicy {
     name: string;
     version: string;
     decide(request: DecisionRequest): Decision[];
   }
-  export class VerificationPolicy implements Policy {
+  export class VerificationPolicy implements DecisionPolicy {
     name: string;
     version: string;
     decide(request: DecisionRequest): Decision[];
   }
-  export class EscalationPolicy implements Policy {
+  export class EscalationPolicy implements DecisionPolicy {
     name: string;
     version: string;
     decide(request: DecisionRequest): Decision[];
@@ -791,7 +791,7 @@
     );
     decide(request: DecisionRequest): Decision[];
   }
-  export class PlanningPolicy implements Policy {
+  export class PlanningPolicy implements DecisionPolicy {
     readonly name: string;
     readonly ledger: CommitmentLedger;
     constructor(ledger: CommitmentLedger);
@@ -805,7 +805,7 @@
     rationale?: string;
     undoHint?: string;
   }
-  export class GroupPolicy implements Policy {
+  export class GroupPolicy implements DecisionPolicy {
     readonly name: string;
     readonly policy: { decide(request: DecisionRequest): Decision[] };
     readonly target: TargetMode;
@@ -825,7 +825,7 @@
     primary: Decision[];
     shadow: Decision[];
   }
-  export class ShadowPolicy implements Policy {
+  export class ShadowPolicy implements DecisionPolicy {
     readonly name: string;
     readonly primary: PolicyLike;
     readonly shadow: PolicyLike;
@@ -1109,7 +1109,7 @@
     readonly seed: number | undefined;
     readonly randomStep: RandomStep | undefined;
     constructor(step: Step, actions: string[], options: SimulatorOptions);
-    run(engine: DecisionEngine): SimulationResult;
+    run(planner: Planner): SimulationResult;
     static fromMdp(
       model: MdpModel,
       options?: { start?: string; seed?: number },
@@ -1120,7 +1120,7 @@
     simulator: Simulator;
     optimum?: number | null;
   }
-  export interface PlannerScore {
+  export interface PlannerBenchmarkRow {
     planner: string;
     scenario: string;
     totalReward: number;
@@ -1128,14 +1128,14 @@
     optimalityGap: number | null;
   }
   export class SimulationReport {
-    readonly rows: PlannerScore[];
-    constructor(rows: PlannerScore[]);
+    readonly rows: PlannerBenchmarkRow[];
+    constructor(rows: PlannerBenchmarkRow[]);
     summary(): Record<string, { runs: number; meanReward: number; meanGap: number }>;
     best(): string | null;
     toDict(): Record<string, unknown>;
   }
   export function comparePlanners(
-    planners: Record<string, DecisionEngine>,
+    planners: Record<string, Planner>,
     scenarios: Scenario[],
   ): SimulationReport;
   export function seededScenarios(
@@ -1143,10 +1143,10 @@
     options?: { count?: number; horizon?: number; actions?: string[] },
   ): Scenario[];
 
-  export class FixedActionPlanner implements DecisionEngine {
+  export class FixedActionPlanner implements Planner {
     readonly action: string;
     constructor(action: string);
-    solve(problem: DecisionProblem): Plan;
+    solve(problem: PlannerInput): PlannerResult;
   }
   export function runPlannerBench(horizon?: number): SimulationReport;
 

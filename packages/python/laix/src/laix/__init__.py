@@ -34,7 +34,7 @@ from .core.decisions import (
     Trace,
 )
 from .core.outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
-from .core.outcome_learning import AttentionOutcome, Outcome
+from .core.outcome_learning import SignalAttentionOutcome, Outcome
 from .core.outcome_learning import CausalEffect, CausalLedger, CausalObservation
 from .core.commitments import (
     COMMITMENT_STATUSES,
@@ -50,7 +50,7 @@ from .core.support.verbs import VERBS, Verb
 from .core.support.version import SCHEMA_VERSION
 from .core import evaluation
 from .core.engines import signals as attention
-from .core.engines.signals import AttentionDecision, Context, Feedback, Signal, decide_attention
+from .core.engines.signals import SignalAttentionDecision, SignalContext, SignalFeedback, Signal, decide_signal_attention
 from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
 from .core.evaluation import load_cases
@@ -63,11 +63,11 @@ from .core.engines.policies import (
     EscalationPolicy,
     NegotiationPolicy,
     ACTION_POLICY_VERSION,
-    Policy,
+    DecisionPolicy,
     ActionPolicyConfig,
-    PolicyError,
-    PolicyRegistry,
-    ActionPolicyRequest,
+    DecisionPolicyError,
+    DecisionPolicyRegistry,
+    ActionPolicyInput,
     PreferenceElicitationPolicy,
     ReplanningPolicy,
     SafetyConstrainedPolicy,
@@ -91,14 +91,14 @@ from .core.engines.planners.commitment.commitment_planner import (
     CommitmentWeights,
     commitment_effect,
 )
-from .core.engines.planners.attention.attention_planner import (
+from .core.engines.planners.human_attention.human_attention_planner import (
     HumanAttentionPlanner,
-    AttentionBudget,
-    AttentionEffect,
-    AttentionScore,
-    AttentionWeights,
+    HumanAttentionBudget,
+    HumanAttentionEffect,
+    HumanAttentionScore,
+    HumanAttentionWeights,
     approval_state,
-    attention_effect,
+    human_attention_effect,
 )
 from .core.engines.planners.execution.execution_planner import (
     ExecutionRiskPlanner,
@@ -116,7 +116,7 @@ from .core.engines.bench.live_bench import (
     default_planners,
     run_live_bench,
 )
-from .core.engines.live.live_engine import LiveDecisionEngine, CompositeScore
+from .core.engines.live.live_composite_planner import LiveCompositePlanner, CompositeScore
 from .core.engines.learning.decision_calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
@@ -125,7 +125,7 @@ from .core.engines.learning.decision_calibration import (
     decision_calibration_report,
     decision_samples_from_outcomes,
 )
-from .core.engines.contract.engine import DecisionEngine, DecisionProblem, EnginePolicy, Plan, to_decision, to_problem
+from .core.engines.contract.planner_policy import Planner, PlannerInput, PlannerPolicy, PlannerResult, to_decision, to_planner_input
 from .core.engines.learning.calibration import (
     CalibrationBin,
     CalibrationReport,
@@ -158,7 +158,7 @@ from .core.engines.planners.pomdp.pomdp_planner import (
     pomdp_value,
 )
 from .core.engines.simulation.simulator import (
-    PlannerScore,
+    PlannerBenchmarkRow,
     Scenario,
     SimulationReport,
     SimulationResult,
@@ -199,7 +199,7 @@ _APPKIT_NAMES: dict[str, dict[str, str]] = {
         "DeliveryReceipt": "DeliveryReceipt",
         "NullDelivery": "NullDelivery",
     },
-    ".appkit.layer": {"Layer": "Layer"},
+    ".appkit.decision_client": {"DecisionClient": "DecisionClient"},
     ".appkit.live_context": {
         "CallableDetector": "CallableDetector",
         "LiveContext": "LiveContext",
@@ -277,8 +277,8 @@ def __dir__() -> list[str]:
 
 __all__ = [
     "ActionOption",
-    "AttentionDecision",
-    "AttentionOutcome",
+    "SignalAttentionDecision",
+    "SignalAttentionOutcome",
     "ActivePerceptionPolicy",
     "AllocationPolicy",
     "Approval",
@@ -313,19 +313,19 @@ __all__ = [
     "CommitmentStore",
     "FileCommitmentStore",
     "InMemoryCommitmentStore",
-    "Context",
+    "SignalContext",
     "DecisionRecord",
     "DecisionRequest",
     "DeliveryPort",
     "DeliveryReceipt",
     "PlatformEvent",
-    "PlannerScore",
+    "PlannerBenchmarkRow",
     "EvidenceRef",
-    "Feedback",
+    "SignalFeedback",
     "InMemoryPlatform",
     "InMemoryStateStore",
     "Intent",
-    "Layer",
+    "DecisionClient",
     "LiveContext",
     "ManualClock",
     "NullDelivery",
@@ -333,9 +333,9 @@ __all__ = [
     "NegotiationPolicy",
     "OutcomeStore",
     "Platform",
-    "Policy",
-    "PolicyError",
-    "PolicyRegistry",
+    "DecisionPolicy",
+    "DecisionPolicyError",
+    "DecisionPolicyRegistry",
     "Proposal",
     "Report",
     "Row",
@@ -402,13 +402,13 @@ __all__ = [
     "Constraint",
     "Decision",
     "DECISION_STATUSES",
-    "DecisionEngine",
-    "DecisionProblem",
-    "EnginePolicy",
-    "Plan",
+    "Planner",
+    "PlannerInput",
+    "PlannerPolicy",
+    "PlannerResult",
     "TARGET_MODES",
     "to_decision",
-    "to_problem",
+    "to_planner_input",
     "ActionPolicy",
     "DecisionRuntime",
     "Detection",
@@ -429,17 +429,17 @@ __all__ = [
     "PerceptionEvent",
     "PerceptionFrame",
     "ActionPolicyConfig",
-    "ActionPolicyRequest",
+    "ActionPolicyInput",
     "PreferenceElicitationPolicy",
     "EXECUTION_RECEIPT_STATUSES",
     "ExecutionReceipt",
     "HumanAttentionPlanner",
-    "AttentionBudget",
-    "AttentionEffect",
-    "AttentionScore",
-    "AttentionWeights",
+    "HumanAttentionBudget",
+    "HumanAttentionEffect",
+    "HumanAttentionScore",
+    "HumanAttentionWeights",
     "approval_state",
-    "attention_effect",
+    "human_attention_effect",
     "ExecutionRiskPlanner",
     "ExecutionEffect",
     "ExecutionScore",
@@ -448,7 +448,7 @@ __all__ = [
     "LiveBenchReport",
     "LiveBenchRow",
     "LiveCase",
-    "LiveDecisionEngine",
+    "LiveCompositePlanner",
     "CompositeScore",
     "PlannerMetrics",
     "default_cases",
@@ -496,7 +496,7 @@ __all__ = [
     "confidence_band",
     "decide",
     "decide_action",
-    "decide_attention",
+    "decide_signal_attention",
     "iso",
     "parse_iso",
     "select",

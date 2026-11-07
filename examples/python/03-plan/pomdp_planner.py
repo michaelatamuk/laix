@@ -1,9 +1,9 @@
-"""Plan under a belief in a small POMDP."""
+"""PlannerResult under a belief in a small POMDP."""
 
 from __future__ import annotations
 
 from laix import (
-    DecisionProblem,
+    PlannerInput,
     ObservationProbability,
     PomdpModel,
     POMDPPlanner,
@@ -31,7 +31,7 @@ model = PomdpModel(
     horizon=2,
 )
 plan = POMDPPlanner(model).solve(
-    DecisionProblem(
+    PlannerInput(
         subject="choose",
         at="2026-11-01T10:00:00+00:00",
         attributes={"belief": belief_from_state("s0", model.states)},

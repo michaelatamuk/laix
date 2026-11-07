@@ -1,7 +1,7 @@
 """A small expected-utility planner with hard limits.
 
 The planner is deliberately deterministic: it scores the options the app already
-offered, rejects options outside a hard limit, and returns the same ``Plan``
+offered, rejects options outside a hard limit, and returns the same ``PlannerResult``
 shape as every other planner. A domain can replace it with an optimizer or a
 learned model without changing the policy adapter.
 """
@@ -12,7 +12,7 @@ from typing import Any
 
 from ....decisions import ActionOption
 from ....support.values import clamp
-from ...contract.engine import DecisionProblem, Plan
+from ...contract.planner_policy import PlannerInput, PlannerResult
 from .utility_model import RISK_ATTITUDES, UtilityModel
 from .utility_weights import UtilityWeights
 
@@ -37,7 +37,7 @@ def _limit(kind: str, value: Any) -> float | None:
     return numeric
 
 
-def _constraint_blocker(problem: DecisionProblem, option: ActionOption) -> str | None:
+def _constraint_blocker(problem: PlannerInput, option: ActionOption) -> str | None:
     """Return a reason when a hard situation constraint rejects the option."""
     situation = getattr(problem, "situation", None)
     if situation is None:
@@ -67,7 +67,7 @@ def _constraint_blocker(problem: DecisionProblem, option: ActionOption) -> str |
     return None
 
 
-def _approval_required(problem: DecisionProblem) -> bool:
+def _approval_required(problem: PlannerInput) -> bool:
     situation = getattr(problem, "situation", None)
     if situation is None:
         return False
@@ -87,7 +87,7 @@ class UtilityPlanner:
     def __init__(self, model: UtilityModel | None = None) -> None:
         self.model = model or UtilityModel()
 
-    def solve(self, problem: DecisionProblem) -> Plan:
+    def solve(self, problem: PlannerInput) -> PlannerResult:
         options = list(problem.options)
         if not options:
             return self._wait("no_options", "there are no options to score")
@@ -110,7 +110,7 @@ class UtilityPlanner:
         )
         best_score, best = scored[0]
         second_score = scored[1][0] if len(scored) > 1 else None
-        return Plan(
+        return PlannerResult(
             verb=best.verb,
             confidence=self._confidence(best_score, second_score),
             reason_code="expected_utility",
@@ -128,7 +128,7 @@ class UtilityPlanner:
             },
         )
 
-    def _model_for(self, problem: DecisionProblem) -> UtilityModel:
+    def _model_for(self, problem: PlannerInput) -> UtilityModel:
         attributes = problem.attributes
         overrides = {
             "max_risk": attributes.get("max_risk"),
@@ -159,7 +159,7 @@ class UtilityPlanner:
 
     @staticmethod
     def _alternatives(
-        problem: DecisionProblem,
+        problem: PlannerInput,
         options: list[ActionOption],
         model: UtilityModel,
         best: ActionOption,
@@ -188,8 +188,8 @@ class UtilityPlanner:
         return tuple(rows)
 
     @staticmethod
-    def _wait(reason_code: str, rationale: str) -> Plan:
-        return Plan(
+    def _wait(reason_code: str, rationale: str) -> PlannerResult:
+        return PlannerResult(
             verb="wait",
             confidence=1.0,
             reason_code=reason_code,

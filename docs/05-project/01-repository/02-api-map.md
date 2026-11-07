@@ -31,22 +31,22 @@ app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` 
 
 ## Decision mechanisms
 
-The layer rule is: **Planner** is a strategy, **Engine** is a composition, **Policy** is an
-integration, **Learner** is learning. The protocol is `DecisionEngine`.
+The layer rule is: **Planner** is a strategy, **CompositePlanner** is a composition, **DecisionPolicy** is an
+integration, **Learner** is learning. The protocol is `Planner`.
 
 | Name | Purpose |
 |---|---|
-| `decide_attention`, `Signal`, `Context`, `Feedback` | rank signals and choose the attention verb |
-| `AttentionDecision`, `AttentionBudget` | the attention result and its budget |
-| `Policy` / `PolicyRegistry` | the smallest policy contract and a registry |
+| `decide_signal_attention`, `Signal`, `SignalContext`, `SignalFeedback` | rank signals and choose the attention verb |
+| `SignalAttentionDecision`, `HumanAttentionBudget` | the attention result and its budget |
+| `DecisionPolicy` / `DecisionPolicyRegistry` | the smallest policy contract and a registry |
 | `Rule`, `RulePolicy`, `TargetedPolicy` | authored rules and target modes |
-| `EnginePolicy` | adapt a `DecisionEngine` to the policy interface |
+| `PlannerPolicy` | adapt a `Planner` to the policy interface |
 | `PlanningPolicy` | act on the next actionable commitment |
 | `GroupPolicy`, `ShadowPolicy`, `ShadowDifference` | sharing boundary and shadow comparison |
 | `UtilityPlanner` | expected utility with hard limits and risk attitude |
 | `ExecutionRiskPlanner` | irreversibility, unknown outcomes, approval and recovery |
 | `HumanAttentionPlanner` | interruption, approval, escalation and a shared budget |
-| `LiveDecisionEngine` | the composition engine: utility, commitments, execution risk and attention in one plan |
+| `LiveCompositePlanner` | the composite planner: utility, commitments, execution risk and attention in one planner result |
 | `MDPPlanner`, `POMDPPlanner` | model-based planning over a host-supplied model |
 | `Simulator`, `compare_planners` | run and compare planners |
 
@@ -64,7 +64,7 @@ integration, **Learner** is learning. The protocol is `DecisionEngine`.
 | Name | Purpose |
 |---|---|
 | `Outcome`, `OutcomeLedger`, `OutcomeStore` | measured results and their store |
-| `AttentionOutcome` | the attention-specific outcome shape |
+| `SignalAttentionOutcome` | the attention-specific outcome shape |
 | `UCBBandit`, `BanditPolicy`, `Arm` | reward-driven choice |
 | `CalibrationReport`, `CalibrationBin` | confidence vs observed accuracy |
 | `DecisionCalibrationReport`, `DecisionCalibrationSample`, `CalibratedPolicy` | decision accuracy and calibrated decisions |
@@ -76,7 +76,7 @@ integration, **Learner** is learning. The protocol is `DecisionEngine`.
 
 | Name | Purpose |
 |---|---|
-| `Layer` | one decision with the optional runtime |
+| `DecisionClient` | one decision with the optional runtime |
 | `DecisionRuntime` | the app-kit decision loop |
 | `StreamSession`, `DecisionTimeline` | event-time decisions, revisions and checkpoints |
 | `StreamStats`, `DeadLetterQueue`, `TumblingWindow` | stream counters, failures and windows |
@@ -105,7 +105,7 @@ The bench runner classes are exported from `laix.appkit.bench`. The rest are in 
 ## Reading the API
 
 - Start with `DecisionRequest` and `Decision`; they are the contract.
-- Use `decide` for the core, or `Layer` when you want the app kit.
-- Use `EnginePolicy` to put a planner or an engine behind the policy contract.
+- Use `decide` for the core, or `DecisionClient` when you want the app kit.
+- Use `PlannerPolicy` to put a planner or a composite planner behind the policy contract.
 - Use `ExecutionBridge` and `DecisionRecord` when the decision changes the world.
 - The app kit is optional; importing `laix` does not load it until first use.

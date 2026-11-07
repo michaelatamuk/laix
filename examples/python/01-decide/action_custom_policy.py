@@ -1,6 +1,6 @@
-"""Use a custom policy with the same Layer API."""
+"""Use a custom policy with the same DecisionClient API."""
 
-from laix import DecisionRequest, Layer, Decision
+from laix import DecisionRequest, DecisionClient, Decision
 
 
 class AlwaysWait:
@@ -18,7 +18,7 @@ class AlwaysWait:
         ]
 
 
-layer = Layer(policy=AlwaysWait())
+layer = DecisionClient(policy=AlwaysWait())
 decision = layer.decide(
     DecisionRequest(subject="one decision", at="2026-11-01T10:00:00+00:00")
 )[0]

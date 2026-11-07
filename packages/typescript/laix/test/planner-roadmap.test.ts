@@ -16,9 +16,9 @@ import {
 } from "../src/index.ts";
 import type {
   ActionOption,
-  DecisionEngine,
-  DecisionProblem,
-  Plan,
+  Planner,
+  PlannerInput,
+  PlannerResult,
   Scenario,
 } from "../src/index.ts";
 
@@ -38,7 +38,7 @@ function mdp(): MdpModel {
   });
 }
 
-function problem(attributes: Record<string, unknown> = {}): DecisionProblem {
+function problem(attributes: Record<string, unknown> = {}): PlannerInput {
   return {
     subject: "choose",
     at: "2026-11-01T10:00:00Z",
@@ -47,14 +47,14 @@ function problem(attributes: Record<string, unknown> = {}): DecisionProblem {
   };
 }
 
-class FixedPlanner implements DecisionEngine {
+class FixedPlanner implements Planner {
   readonly action: string;
 
   constructor(action: string) {
     this.action = action;
   }
 
-  solve(_problem: DecisionProblem): Plan {
+  solve(_problem: PlannerInput): PlannerResult {
     return {
       verb: "act",
       confidence: 1,

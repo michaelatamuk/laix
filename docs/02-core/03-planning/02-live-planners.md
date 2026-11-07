@@ -10,9 +10,9 @@ they add to the utility score:
 | `ExecutionRiskPlanner` | irreversibility, unknown outcomes, approval and recovery cost |
 | `HumanAttentionPlanner` | interruption, approval and escalation cost |
 
-Each is a `DecisionEngine`: it implements `solve(problem) -> Plan`. Each is deterministic and
+Each is a `Planner`: it implements `solve(problem) -> PlannerResult`. Each is deterministic and
 training-free. Each reads its special facts from the option's `params` and from
-`DecisionProblem.attributes`.
+`PlannerInput.attributes`.
 
 ## Shared utility model
 
@@ -69,10 +69,10 @@ clamp(0.5 + 0.5 × gap / |best|)          otherwise, gap = max(0, best - second)
 `UtilityPlanner` chooses the feasible option with the highest expected utility.
 
 ```python
-from laix import ActionOption, DecisionProblem, UtilityPlanner
+from laix import ActionOption, PlannerInput, UtilityPlanner
 
 plan = UtilityPlanner().solve(
-    DecisionProblem(
+    PlannerInput(
         subject="choose",
         at="2026-11-01T10:00:00+00:00",
         options=(
@@ -90,10 +90,10 @@ print(plan.action_id, plan.reason_code, plan.score)
 | Success reason | `expected_utility` |
 | Empty options | `wait` with `no_options` |
 | No feasible option | `wait` with `no_feasible_option` |
-| Plan attributes | `utility`, `risk_attitude` |
+| PlannerResult attributes | `utility`, `risk_attitude` |
 | Alternatives | `action_id`, `verb`, `name`, `utility`, `rejected_because` |
 
-The planner reads `max_risk`, `max_cost` and `max_latency_ms` from `DecisionProblem.attributes`. It
+The planner reads `max_risk`, `max_cost` and `max_latency_ms` from `PlannerInput.attributes`. It
 rebuilds the model when at least one limit override is present. To set `risk_attitude`, pass a
 `UtilityModel` or include a limit override with the attribute.
 
@@ -162,7 +162,7 @@ Weights:
 A commitment is blocked when it is missing or any `depends_on` item is missing or not `done`. A hard
 violation sets `blocked` to `hard commitment: <ids>` and removes the option.
 
-Commitments enter the problem through `DecisionProblem.attributes["commitments"]` or the alias
+Commitments enter the problem through `PlannerInput.attributes["commitments"]` or the alias
 `attributes["commitment_ledger"]`. The value may be a `CommitmentLedger`, a mapping with a
 `commitments` key, or an iterable of `Commitment` objects or mappings.
 
@@ -172,7 +172,7 @@ Commitments enter the problem through `DecisionProblem.attributes["commitments"]
 | Success reason | `commitment_aware` |
 | Empty options | `wait` with `no_options` |
 | No feasible option | `wait` with `no_feasible_option` |
-| Plan attributes | `utility`, `commitment_score`, `commitments_fulfilled`, `commitments_violated`, `commitments_created`, `commitments_due_fulfilled`, `commitments_blocked_fulfilled` |
+| PlannerResult attributes | `utility`, `commitment_score`, `commitments_fulfilled`, `commitments_violated`, `commitments_created`, `commitments_due_fulfilled`, `commitments_blocked_fulfilled` |
 
 See [Commitments](../02-decide/02-commitments.md) for the ledger and store.
 
@@ -215,7 +215,7 @@ Weights:
 | `approval` | 0.15 |
 | `recovery` | 0.25 |
 
-The host can pass execution state in `DecisionProblem.attributes`:
+The host can pass execution state in `PlannerInput.attributes`:
 
 ```python
 attributes={
@@ -244,7 +244,7 @@ from `params`. `ExecutionScore` carries `utility`, `execution`, `total`, `irreve
 | Success reason | `execution_aware` |
 | Empty options | `wait` with `no_options` |
 | No feasible option | `wait` with `no_feasible_option` |
-| Plan attributes | `utility`, `execution_score`, `irreversible`, `unknown_risk`, `recovery_cost`, `requires_approval`, `receipt_status` |
+| PlannerResult attributes | `utility`, `execution_score`, `irreversible`, `unknown_risk`, `recovery_cost`, `requires_approval`, `receipt_status` |
 
 The planner blocks on hard limits and infeasibility. Execution risk is priced rather than blocked.
 
@@ -274,17 +274,17 @@ The host supplies the budget:
 
 ```python
 attributes={
-    "attention_budget": 0.2,
-    "attention_spent": 0.2,
+    "human_attention_budget": 0.2,
+    "human_attention_spent": 0.2,
     "approvals": {"guide": "rejected"},
 }
 ```
 
-`attention_budget` may be a number, a mapping with `total` and `spent`, or an `AttentionBudget`.
-`attention_spent` is subtracted when the budget is a number. `attention_remaining` overrides the
-computed remainder. A shared `AttentionBudget` can be passed as one object.
+`human_attention_budget` may be a number, a mapping with `total` and `spent`, or a `HumanAttentionBudget`.
+`human_attention_spent` is subtracted when the budget is a number. `human_attention_remaining` overrides the
+computed remainder. A shared `HumanAttentionBudget` can be passed as one object.
 
-The attention budget is a planning cost. It is separate from `Context.interruption_budget`, which
+The human-attention budget is a planning cost. It is separate from `SignalContext.signal_interruption_budget`, which
 caps the number of delivered signal decisions in one attention cycle.
 
 The effect:
@@ -299,9 +299,9 @@ cost = interrupt_cost
 `interactive` is true for the `ask` and `guide` verbs. `requires_attention` is true when `cost > 0`
 or the option requires approval or escalation.
 
-`AttentionEffect` carries `interrupt_cost`, `requires_approval`, `escalates`, `interactive` and
-`approval_state`; `attention_effect(option, ...)` reads it from `params`. `AttentionScore` carries
-`utility`, `attention`, `total`, `effect`, `remaining` and `blocked`.
+`HumanAttentionEffect` carries `interrupt_cost`, `requires_approval`, `escalates`, `interactive` and
+`approval_state`; `human_attention_effect(option, ...)` reads it from `params`. `HumanAttentionScore` carries
+`utility`, `human_attention`, `total`, `effect`, `remaining` and `blocked`.
 
 The score:
 
@@ -311,7 +311,7 @@ attention = -interrupt_weight × interrupt_cost
             - escalation_weight × (1 if escalates else 0)
             - exhausted_weight × (1 if blocked else 0)
 
-total = utility + attention
+total = utility + human_attention
 remaining_after = max(0, remaining - cost)
 ```
 
@@ -328,7 +328,7 @@ Blocking:
 
 - `approval_state == "rejected"` blocks the option with `approval rejected`;
 - an option that requires attention and costs more than the remaining budget blocks with
-  `attention budget exhausted`;
+  `human attention budget exhausted`;
 - otherwise the option is admissible.
 
 Approval state comes from `attributes["approvals"]`, keyed by option id or name. The value may be a
@@ -337,11 +337,11 @@ and `status`. An approved option does not pay the approval cost.
 
 | Item | Value |
 |---|---|
-| Name | `attention.v1` |
-| Success reason | `attention_aware` |
+| Name | `human-attention.v1` |
+| Success reason | `human_attention_aware` |
 | Empty options | `wait` with `no_options` |
-| No feasible option | `wait` with `approval_rejected` or `attention_budget_exhausted` |
-| Plan attributes | `utility`, `attention_score`, `attention_cost`, `attention_remaining`, `attention_budget_blocked`, `approval_state` |
+| No feasible option | `wait` with `approval_rejected` or `human_attention_budget_exhausted` |
+| PlannerResult attributes | `utility`, `human_attention_score`, `human_attention_cost`, `human_attention_remaining`, `human_attention_budget_blocked`, `approval_state` |
 
 ## Comparison
 
@@ -350,16 +350,16 @@ and `status`. An approved option does not pay the approval cost.
 | `UtilityPlanner` | utility | model, option cost/risk/latency, hard constraints | `expected_utility` | infeasible, hard constraint |
 | `CommitmentPlanner` | commitment | commitments, option `fulfills`/`violates`/`creates` | `commitment_aware` | hard commitment violation, infeasible |
 | `ExecutionRiskPlanner` | execution | reversibility, `unknown_risk`, `recovery_cost`, receipts, approval | `execution_aware` | infeasible, hard constraint |
-| `HumanAttentionPlanner` | attention | `AttentionBudget`, approvals, option attention facts | `attention_aware` | approval rejected, budget exhausted, infeasible |
+| `HumanAttentionPlanner` | human attention | `HumanAttentionBudget`, approvals, option attention facts | `human_attention_aware` | approval rejected, budget exhausted, infeasible |
 
-All four share the same `Plan` shape, the same utility model and the same confidence formula. The
-[live decision engine](03-live-decision-engine.md) runs their scoring functions together and returns
+All four share the same `PlannerResult` shape, the same utility model and the same confidence formula. The
+[live composite planner](03-live-composite-planner.md) runs their scoring functions together and returns
 one composite plan.
 
 ## Related
 
 - [Commitments](../02-decide/02-commitments.md)
 - [Planner contract](01-planner-contract.md)
-- [Live decision engine](03-live-decision-engine.md)
+- [Live composite planner](03-live-composite-planner.md)
 - [Signal attention](../02-decide/01-signal-attention.md)
 - [Evaluation](../06-reference/01-evaluation.md)

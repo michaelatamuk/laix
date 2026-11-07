@@ -1,1 +1,1 @@
-"""The live decision engine package."""
+"""The live composite planner package."""

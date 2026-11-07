@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from .arm import Arm
-from .attention import AttentionOutcome, OutcomeLog
+from .signal_attention import SignalAttentionOutcome, SignalAttentionLog
 from .bandit import UCBBandit
 from .causal import CausalEffect, CausalLedger, CausalObservation
 from .ledger import OutcomeLedger
@@ -13,7 +13,7 @@ from .store import OutcomeStore
 
 __all__ = [
     "Arm",
-    "AttentionOutcome",
+    "SignalAttentionOutcome",
     "CausalEffect",
     "CausalLedger",
     "CausalObservation",
@@ -21,7 +21,7 @@ __all__ = [
     "OUTCOME_LABELS",
     "Outcome",
     "OutcomeLabel",
-    "OutcomeLog",
+    "SignalAttentionLog",
     "OutcomeLedger",
     "OutcomeStore",
     "UCBBandit",

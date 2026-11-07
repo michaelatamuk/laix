@@ -9,9 +9,9 @@ The result is:
 - ['a', 'b']: the requests that fit the budget, best value per cost first.
 """
 
-from laix import AllocationPolicy, DecisionRequest, Layer, iso
+from laix import AllocationPolicy, DecisionRequest, DecisionClient, iso
 
-decision = Layer(policy=AllocationPolicy()).decide(
+decision = DecisionClient(policy=AllocationPolicy()).decide(
     DecisionRequest(
         subject="weekly work",
         at=iso(),

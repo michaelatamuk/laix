@@ -9,7 +9,7 @@ Live AI systems must decide whether to wait, observe, guide, ask, act, verify or
 the moment passes. Existing tools cover orchestration, durable workflows, alerting or planning
 separately. We present LAIX, a training-free live decision runtime that places commitments, execution risk
 and human attention budget into one decision contract with the verb, score, reason code and audit
-trail. On a 120-case synthetic corpus, `LiveDecisionEngine` is 30/30 on the frozen test split and
+trail. On a 120-case synthetic corpus, `LiveCompositePlanner` is 30/30 on the frozen test split and
 wins every conflict case. Against a hand-built glue baseline it is +6.7 percentage points
 (95% CI 0.0–0.167, McNemar p = 0.48), so the integration advantage over competent glue code is not
 yet significant. We report the result honestly and define the validation needed to establish it.
@@ -26,7 +26,7 @@ The contribution is a decision contract and a composition:
 - the decision is deterministic, training-free and replayable;
 - the host keeps execution, storage and delivery.
 
-`LiveDecisionEngine` is the proof object.
+`LiveCompositePlanner` is the proof object.
 
 ## 2. Related work
 
@@ -47,12 +47,12 @@ That is a capability gap; measuring it is the next step.
 
 Summarise `../01-positioning/formal-model.md`:
 
-- `DecisionProblem`: subject, time, situation, options, signals, context and attributes.
+- `PlannerInput`: subject, time, situation, options, signals, context and attributes.
 - `ActionOption`: benefit, cost, risk, interruption, latency, reversibility, approval and params.
 - `Commitment`: id, subject, due time, status, priority and dependencies.
-- `AttentionBudget`: total, spent and remaining.
-- `Plan`: verb, action, confidence, score, reason code, rationale and alternatives.
-- `Decision`: the public shape produced by `EnginePolicy`.
+- `HumanAttentionBudget`: total, spent and remaining.
+- `PlannerResult`: verb, action, confidence, score, reason code, rationale and alternatives.
+- `Decision`: the public shape produced by `PlannerPolicy`.
 
 The integrated score is:
 
@@ -65,14 +65,14 @@ are covered by `tests/core/test_invariants.py`.
 
 ## 4. Integrated live planning
 
-`LiveDecisionEngine` adds:
+`LiveCompositePlanner` adds:
 
 - the utility term from `UtilityPlanner`;
 - a commitment term that rewards keeping promises and penalises violations;
 - an execution term for irreversibility, unknown outcomes, approval and recovery;
 - an attention term for interruption, approval, escalation and exhausted budgets.
 
-The planner is deterministic and returns the same `Plan` shape as every other planner.
+The planner is deterministic and returns the same `PlannerResult` shape as every other planner.
 
 ## 5. Execution, audit and revision
 
@@ -136,9 +136,9 @@ The test split is frozen at dataset version 1.0.0.
 | ExecutionRiskPlanner | 50.00% | 0.33–0.67 | 8.33% | 6.67% | 62.50% |
 | HumanAttentionPlanner | 53.33% | 0.37–0.70 | 25.00% | 16.67% | 0.00% |
 | Glue baseline | 93.33% | 0.83–1.00 | 100.00% | 0.00% | 0.00% |
-| **LiveDecisionEngine** | **100.00%** | **1.00–1.00** | **100.00%** | **0.00%** | **0.00%** |
+| **LiveCompositePlanner** | **100.00%** | **1.00–1.00** | **100.00%** | **0.00%** | **0.00%** |
 
-Conflict cases: `LiveDecisionEngine` and the glue baseline are 100%; the best single-concern
+Conflict cases: `LiveCompositePlanner` and the glue baseline are 100%; the best single-concern
 planner is `CommitmentPlanner` at 83.3%.
 
 ### 8.3 Ablations (test split)
@@ -173,7 +173,7 @@ corpus is too easy, and the next section is the missing evidence.
 
 ### 8.5 Failure analysis
 
-`LiveDecisionEngine` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a warning. The corpus does not yet contain ambiguous trade-offs, noisy outcomes,
+`LiveCompositePlanner` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a warning. The corpus does not yet contain ambiguous trade-offs, noisy outcomes,
 multi-step dependencies, long-tail incidents or host-specific recovery behaviour. A benchmark with
 no failures cannot support a strong generalisation claim.
 
@@ -198,7 +198,7 @@ documented capability gap.
 
 - synthetic cases may not represent real traffic;
 - the benchmark may encode the authors' assumptions;
-- `LiveDecisionEngine` may win because the baselines are weak;
+- `LiveCompositePlanner` may win because the baselines are weak;
 - the glue baseline narrows the advantage to +6.7 pp and the result is not significant;
 - a single domain limits generality;
 - deterministic cases hide variance;

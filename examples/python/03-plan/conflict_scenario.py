@@ -1,7 +1,7 @@
 """Triple-conflict demo: commitment + irreversible action + attention.
 
 The same scenario is run through five planners. Each single-concern planner
-misses at least one concern. LiveDecisionEngine is the only one that composes
+misses at least one concern. LiveCompositePlanner is the only one that composes
 all three and chooses the safe option.
 
 Scenario
@@ -21,10 +21,10 @@ from laix import (
     ActionOption,
     Commitment,
     CommitmentPlanner,
-    DecisionProblem,
+    PlannerInput,
     ExecutionRiskPlanner,
     HumanAttentionPlanner,
-    LiveDecisionEngine,
+    LiveCompositePlanner,
     UtilityPlanner,
 )
 
@@ -42,7 +42,7 @@ commitments = (
     ),
 )
 
-problem = DecisionProblem(
+problem = PlannerInput(
     subject="choose next action",
     at=AT,
     options=(
@@ -75,7 +75,7 @@ planners = {
     "CommitmentPlanner": CommitmentPlanner(),
     "ExecutionRiskPlanner": ExecutionRiskPlanner(),
     "HumanAttentionPlanner": HumanAttentionPlanner(),
-    "LiveDecisionEngine": LiveDecisionEngine(),
+    "LiveCompositePlanner": LiveCompositePlanner(),
 }
 
 EXPECTED = "safe"
@@ -92,18 +92,18 @@ for label, planner in planners.items():
     print(f"{label}  {plan.action_id or '?':<6}  {correct:<8}  {plan.reason_code}")
 
 # ------------------------------------------------------------------
-# Full breakdown from LiveDecisionEngine
+# Full breakdown from LiveCompositePlanner
 # ------------------------------------------------------------------
 
 print()
-print("LiveDecisionEngine score breakdown:")
-live_plan = LiveDecisionEngine().solve(problem)
+print("LiveCompositePlanner score breakdown:")
+live_plan = LiveCompositePlanner().solve(problem)
 attrs = live_plan.attributes
 print(f"  chosen:           {live_plan.action_id}")
 print(f"  utility_score:    {attrs.get('utility')}")
 print(f"  commitment_score: {attrs.get('commitment_score')}")
 print(f"  execution_score:  {attrs.get('execution_score')}")
-print(f"  attention_score:  {attrs.get('attention_score')}")
+print(f"  human_attention_score:  {attrs.get('human_attention_score')}")
 print(f"  commitments fulfilled: {attrs.get('commitments_fulfilled')}")
 print()
 print(
@@ -116,6 +116,6 @@ print(
     "                    no exhausted budget, misses commitment violation and irreversibility)\n"
     "  CommitmentAware:  fast = 0.91 - 1.0(violate) = -0.09 < safe 0.60+0.60(fulfills+due)\n"
     "                    -> safe (RIGHT, but misses execution risk)\n"
-    "  LiveDecisionEngine: all three terms fire together; safe is the only option\n"
+    "  LiveCompositePlanner: all three terms fire together; safe is the only option\n"
     "                      that scores positively across commitment, execution and attention"
 )

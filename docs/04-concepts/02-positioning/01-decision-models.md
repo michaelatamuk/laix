@@ -108,8 +108,8 @@ Yes, but only on a shared axis. A single accuracy leaderboard would be misleadin
 Three fair experiments:
 
 1. **Chooser swap.** Run JEV as the chooser on the frozen 30-case test split, with the same state and
-   options. Compare chosen-action accuracy and calibration with `LiveDecisionEngine`.
-2. **JEV inside LAIX.** Put JEV behind an `EnginePolicy` and compare it with the built-in planner.
+   options. Compare chosen-action accuracy and calibration with `LiveCompositePlanner`.
+2. **JEV inside LAIX.** Put JEV behind an `PlannerPolicy` and compare it with the built-in planner.
    This isolates the model from the runtime.
 3. **Runtime baseline.** JEV plus hand-written app code for approval, execution and records vs
    LAIX. This is the honest runtime comparison, but the glue code is the hard part.
@@ -198,7 +198,7 @@ system must decide:
 JEV can judge "is this a gas leak?" or "does this photo show mould?". The app can dispatch a
 technician, charge a card and send a message.
 
-Across eight decision needs, the team otherwise writes eight separate decision paths, or one ad-hoc engine. Each path grows its own approval rule, audit format, verification step and tests. They drift apart.
+Across eight decision needs, the team otherwise writes eight separate decision paths, or one ad-hoc runtime. Each path grows its own approval rule, audit format, verification step and tests. They drift apart.
 
 With LAIX, the app still keeps the jobs, technicians, photos and payments. LAIX supplies one
 decision contract for all eight decision needs. The optional app kit adds one approval rule, one
@@ -214,7 +214,7 @@ runtime, already built.
 | One app, one decision | App code, possibly with JEV |
 | Many apps or many decision classes | LAIX |
 | Shared approval, audit, verification and bench | LAIX app kit |
-| Policy experiments or shadow comparisons | LAIX |
+| DecisionPolicy experiments or shadow comparisons | LAIX |
 
 LAIX replaces the bespoke decision runtime an app would otherwise write. JEV and the app's domain
 logic stay in place.
@@ -294,6 +294,6 @@ LAIX is the runtime that can use a decision model. It works alongside JEV and ot
 ## In PPMA, the comparison is different
 
 In PPMA, the comparison is the Commander's LLM ask vs a LAIX policy for one bounded task. JEV is a
-judgment engine that can sit inside either path.
+judgment model that can sit inside either path.
 
 For the PPMA case, see [PPMA + LAIX](02-ppma-integration.md).

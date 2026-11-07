@@ -39,7 +39,7 @@ option. Every mechanism in the core returns that same shape.
 ## The live decision
 
 One concern is often not enough. When the choice depends on value, promises, risk and people at once,
-`LiveDecisionEngine` composes four planners into one `Plan`.
+`LiveCompositePlanner` composes four planners into one `PlannerResult`.
 
 | Planner | Question |
 |---|---|
@@ -48,15 +48,15 @@ One concern is often not enough. When the choice depends on value, promises, ris
 | `ExecutionRiskPlanner` | What can go wrong, and how hard is recovery? |
 | `HumanAttentionPlanner` | Is a person needed, and what does that cost? |
 
-Each planner contributes a score. The engine applies the weights, the hard limits and the approval
-state, and returns one plan with a `CompositeScore`. `EnginePolicy` converts that plan into the same
+Each planner contributes a score. The composite planner applies the weights, the hard limits and the approval
+state, and returns one `PlannerResult` with a `CompositeScore`. `PlannerPolicy` converts that planner result into the same
 `Decision` the minimal request produced. The
-[live decision engine](03-planning/03-live-decision-engine.md) page describes the composition.
+[live composite planner](03-planning/03-live-composite-planner.md) page describes the composition.
 
 ## The next decision
 
 A decision is a step, not a snapshot. The next request starts from what the previous one left behind:
-open commitments, attention budget, approval state, prior decisions and revisions, receipts, and
+open commitments, human-attention budget, approval state, prior decisions and revisions, receipts, and
 outcomes with calibration. The core stays stateless between calls. The host stores the state and
 passes it into the next request.
 
@@ -68,7 +68,7 @@ DecisionRequest
       │
       ├── signal attention ──┐
       ├── policy ────────────┤
-      └── planner/engine ────┤
+      └── planner/composite planner ────┤
                              ▼
                           Decision
                              │
@@ -116,7 +116,7 @@ block-beta
         attention["Signal attention<br/>what matters now?"]
         policies["Policies<br/>what should I do?"]
         planners["Planners<br/>score the options"]
-        engine["LiveDecisionEngine<br/>compose the scores"]
+        composite["LiveCompositePlanner<br/>compose the scores"]
     end
 
     block:constrain_layer
@@ -142,11 +142,11 @@ block-beta
     style foundation_label fill:transparent,stroke:transparent,font-weight:bold
 ```
 
-| Layer | Contains | Answers |
+| DecisionClient | Contains | Answers |
 |---|---|---|
 | **Capabilities** | Decide, Learn, Evaluate | What the core can do. |
 | **Contract** | `DecisionRequest`, `Decision`, `ExecutionReceipt`, `Trace` | What crosses the boundary. |
-| **Decide** | Signal attention, policies, planners, `LiveDecisionEngine` | What to do next. |
+| **Decide** | Signal attention, policies, planners, `LiveCompositePlanner` | What to do next. |
 | **Constrain** | Limits, commitments, resources | What is allowed, promised and affordable. |
 | **Foundation** | Schema, perception, support | What the records and helpers rest on. |
 
@@ -156,8 +156,8 @@ block-beta
 |---|---|---|
 | `decide(request)` | Selects signal attention or the action policy from the request shape. | You want the answer only. |
 | `decide(request, policy=...)` | Runs the policy you pass. | You want a packaged, authored or learned policy. |
-| `decide(request, policy=EnginePolicy(engine))` | Runs a planner or the live engine behind the policy interface. | You want utility, commitments, execution risk or attention scoring. |
-| `Layer` | Uses the same core selection and adds runtime, traces, execution and records. | You want the full app kit. |
+| `decide(request, policy=PlannerPolicy(planner))` | Runs a planner or the live composite planner behind the policy interface. | You want utility, commitments, execution risk or attention scoring. |
+| `DecisionClient` | Uses the same core selection and adds runtime, traces, execution and records. | You want the full app kit. |
 
 `decide` lives in `core/dispatch.py` and imports no app-kit code. [Dispatch](01-contract/03-dispatch.md) explains
 the selection rule and the identity fields.
@@ -169,12 +169,12 @@ the selection rule and the identity fields.
 | Signals and a context | Signal attention |
 | A situation and options, no special policy | The built-in action policy |
 | Options and explicit decision rules | `RulePolicy` |
-| Options and one concern: utility, promises, execution risk or human attention | The matching planner through `EnginePolicy` |
-| Options and several live concerns | `LiveDecisionEngine` through `EnginePolicy` |
-| A world model with states and transitions | `MDPPlanner` through `EnginePolicy` |
-| A hidden state and observations | `POMDPPlanner` through `EnginePolicy` |
+| Options and one concern: utility, promises, execution risk or human attention | The matching planner through `PlannerPolicy` |
+| Options and several live concerns | `LiveCompositePlanner` through `PlannerPolicy` |
+| A world model with states and transitions | `MDPPlanner` through `PlannerPolicy` |
+| A hidden state and observations | `POMDPPlanner` through `PlannerPolicy` |
 | A learned choice among arms | `BanditPolicy` |
-| A planner or engine behind the policy interface | `EnginePolicy` |
+| A planner or composite planner behind the policy interface | `PlannerPolicy` |
 
 The request shape selects signal attention or the action policy. Every other row is an explicit
 `policy=` choice.
@@ -186,18 +186,18 @@ The words are not interchangeable.
 | Term | Meaning |
 |---|---|
 | **Planner** | A strategy that scores the options and chooses one. Built-ins: `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner`, `POMDPPlanner`. |
-| **Engine** | A composition of planners that returns one `Plan`. The built-in engine is `LiveDecisionEngine`. |
-| **Policy** | An integration layer with `decide(request)`. `EnginePolicy` adapts a planner or engine to that interface. |
+| **CompositePlanner** | A composition of planners that returns one `PlannerResult`. The built-in composite planner is `LiveCompositePlanner`. |
+| **DecisionPolicy** | An integration layer with `decide(request)`. `PlannerPolicy` adapts a planner or composite planner to that interface. |
 | **Learner** | Code that updates a choice from measured outcomes: `UCBBandit`, `ModelLearner`. |
-| **Protocol** | `DecisionEngine`: the `solve(problem) -> Plan` interface. |
+| **Protocol** | `Planner`: the `solve(problem) -> PlannerResult` interface. |
 | **Decision** | The public answer. One verb, one reason, confidence, action, approval and trail identifiers. |
-| **Plan** | The planner's internal answer. `EnginePolicy` converts it into a `Decision`. |
+| **PlannerResult** | The planner's internal answer. `PlannerPolicy` converts it into a `Decision`. |
 | **`DecisionRequest`** | The public input. It carries signals and context, or a situation and options. |
-| **`DecisionProblem`** | The planner input. It is the request projected onto the planner contract. |
-| **Signal attention** | The engine that ranks signals and returns `guide`, `wait`, `act` or `escalate`. |
+| **`PlannerInput`** | The planner input. It is the request projected onto the planner contract. |
+| **Signal attention** | The mechanism that ranks signals and returns `guide`, `wait`, `act` or `escalate`. |
 | **Human-attention planning** | `HumanAttentionPlanner`: the planner that prices interruption, approval and escalation when it chooses an action. |
-| **Attention budget** | Human interruption capacity. It limits how often a decision may involve a person. |
-| **Signal interruption budget** | A per-cycle cap on delivered signal decisions, set by `Context.interruption_budget`. |
+| **Human-attention budget** | Human interruption capacity; `HumanAttentionBudget`. It limits how often a decision may involve a person. |
+| **Signal interruption budget** | A per-cycle cap on delivered signal decisions, set by `SignalContext.signal_interruption_budget`. |
 | **Resource budget** | Compute, latency and sensing capacity. `ResourceScheduler` admits or rejects work. |
 
 The full vocabulary is in the [glossary](../04-concepts/04-reference/01-glossary.md).
@@ -210,7 +210,7 @@ The full vocabulary is in the [glossary](../04-concepts/04-reference/01-glossary
 - The signal-attention rules.
 - The policy contract and the packaged policies.
 - The planner contract and the built-in planners.
-- The live decision engine.
+- The live composite planner.
 - Commitments as decision state.
 - Resources as capacity: budget, scheduling and sensing options.
 - Outcome, bandit, causal, calibration and model-learning primitives.
@@ -224,11 +224,11 @@ a label and a decision to an arm.
 ## Invariants
 
 - One request shape: `DecisionRequest` in, `Decision` out.
-- One response shape on every path: signal attention, policies, planners and the engine.
+- One response shape on every path: signal attention, policies, planners and the composite planner.
 - Seven verbs: `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate`.
 - Reason codes are stable; app logic branches on them, not on `rationale`.
 - The core is stateless between calls. The host supplies state.
-- A planner returns one `Plan`; `EnginePolicy` converts it to one `Decision`.
+- A planner returns one `PlannerResult`; `PlannerPolicy` converts it to one `Decision`.
 - Hard limits gate the choice before a decision is returned.
 - Record field names, JSON keys and schema versions are versioned; class names are code identifiers.
 
@@ -246,7 +246,7 @@ evaluation and foundation.
 |---|---|
 | [Contract](01-contract/README.md) | The request and response shapes, records, schema and dispatch. |
 | [Decide](02-decide/README.md) | Signal attention, commitments, policies and capacity. |
-| [Planning](03-planning/README.md) | The planner contract, live planners, the live engine and model-based planners. |
+| [Planning](03-planning/README.md) | The planner contract, live planners, the live composite planner and model-based planners. |
 | [Continuity](04-continuity/README.md) | A decision is a step in a sequence; the next one sees what the previous one left behind. |
 | [Learning](05-learning/README.md) | Outcomes, rewards, calibration and model learning. |
 | [Reference](06-reference/README.md) | Evaluation and foundation. |
@@ -258,10 +258,10 @@ evaluation and foundation.
 | `core/decisions/` | request, response and trail records. |
 | `core/dispatch.py` | `decide` and `select`. |
 | `core/engines/signals/` | signal attention, gates, score and timing. |
-| `core/engines/policies/` | policy protocol, registry and packaged policies. |
-| `core/engines/contract/` | `DecisionProblem`, `Plan`, `DecisionEngine` and `EnginePolicy`. |
+| `core/engines/policies/` | decision-policy protocol, registry and packaged policies. |
+| `core/engines/contract/` | `PlannerInput`, `PlannerResult`, `Planner` and `PlannerPolicy`. |
 | `core/engines/planners/` | utility, commitment, execution, human-attention, MDP and POMDP planners. |
-| `core/engines/live/` | `LiveDecisionEngine` and `CompositeScore`. |
+| `core/engines/live/` | `LiveCompositePlanner` and `CompositeScore`. |
 | `core/engines/simulation/` | simulator, scenarios and planner comparison. |
 | `core/engines/bench/` | the live decision benchmark. |
 | `core/engines/resources/` | budget, resource plan, scheduler and sensing options. |

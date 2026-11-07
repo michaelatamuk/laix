@@ -168,19 +168,19 @@ the sample sizes, the method, a standard error and a 95% interval.
 The propensity must be in `0..1`. A value of exactly `0` or `1` is accepted by `add`, but it cannot
 be used for inverse weighting, so `effect` falls back to difference in means.
 
-## Attention outcomes
+## Signal-attention outcomes
 
 Signal attention has its own outcome shapes:
 
-- `AttentionOutcome` carries `signal_id`, `kind`, `verb`, `result`, `reason_code`, `score` and `at`.
-- `OutcomeLog` keeps the latest `limit` records (default 500) and reports `total`, `precision`,
+- `SignalAttentionOutcome` carries `signal_id`, `kind`, `verb`, `result`, `reason_code`, `score` and `at`.
+- `SignalAttentionLog` keeps the latest `limit` records (default 500) and reports `total`, `precision`,
   `hazard_rate`, `adjustment`, `calibration` and `by_kind`.
 - `labels.py` maps a feedback state and reason to a result: `accepted`/`confirmed`/`signed` →
   `helped`; `wrong`/`false_alarm` → `hurt`; `dismissed`/`snoozed`/`assigned` → a reason-based
   neutral or hurt; otherwise `unknown`.
 
-`OutcomeLog.adjustment(kind, weight=12.0)` returns a per-kind point adjustment. A host can place it
-in `Context.learned` so the next signal decision uses it.
+`SignalAttentionLog.adjustment(kind, weight=12.0)` returns a per-kind point adjustment. A host can place it
+in `SignalContext.learned` so the next signal decision uses it.
 
 ## What the app owns
 

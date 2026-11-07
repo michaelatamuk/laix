@@ -1,4 +1,4 @@
-# Canonical attention conformance
+# Canonical signal-attention conformance
 
 - Contract: `laix` v0.8.0
 - Cases: **24**

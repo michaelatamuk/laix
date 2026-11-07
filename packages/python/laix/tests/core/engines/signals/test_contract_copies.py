@@ -15,12 +15,12 @@ PACKAGED_BENCH = Path(evaluation_pkg.__file__).resolve().parent
 
 
 def test_attention_vectors_are_in_sync() -> None:
-    canonical = json.loads((CANONICAL / "attention.v1.json").read_text(encoding="utf-8"))
-    packaged = json.loads((PACKAGED / "attention.v1.json").read_text(encoding="utf-8"))
+    canonical = json.loads((CANONICAL / "signal-attention.v1.json").read_text(encoding="utf-8"))
+    packaged = json.loads((PACKAGED / "signal-attention.v1.json").read_text(encoding="utf-8"))
     assert packaged == canonical
 
 
 def test_attention_bench_is_in_sync() -> None:
-    canonical = json.loads((CANONICAL / "attention-bench.v1.json").read_text(encoding="utf-8"))
-    packaged = json.loads((PACKAGED_BENCH / "attention-bench.v1.json").read_text(encoding="utf-8"))
+    canonical = json.loads((CANONICAL / "signal-attention-bench.v1.json").read_text(encoding="utf-8"))
+    packaged = json.loads((PACKAGED_BENCH / "signal-attention-bench.v1.json").read_text(encoding="utf-8"))
     assert packaged == canonical

@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from laix import ActionOption, Belief, DecisionRequest, Layer, Situation, iso
+from laix import ActionOption, Belief, DecisionRequest, DecisionClient, Situation, iso
 
-decision = Layer().decide(
+decision = DecisionClient().decide(
     DecisionRequest(
         subject="quality reading",
         at=iso(),

@@ -24,7 +24,7 @@ This is a single trial on 10 tasks. It is a positive signal, not a significance 
 
 The adapter in
 [`results/external/tau-bench/adapter/`](../../../results/external/tau-bench/adapter/README.md) passes
-read-only tools through and sends mutating tools through `LiveDecisionEngine`:
+read-only tools through and sends mutating tools through `LiveCompositePlanner`:
 
 - act when the user has confirmed;
 - otherwise ask for confirmation;

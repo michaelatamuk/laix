@@ -1,4 +1,4 @@
-"""Core-only entry point: choose an engine and return decisions.
+"""Core-only entry point: choose a policy or planner and return decisions.
 
 This module never imports the app kit. It is the small surface a host can use
 when it wants decisions without runtime traces, execution or records.
@@ -10,9 +10,9 @@ from collections.abc import Callable
 from dataclasses import replace
 from typing import Any
 
-from .decisions import Decision, DecisionRequest, coerce, from_attention
-from .engines.signals import decide_attention
-from .engines.policies import ActionPolicy, ActionPolicyRequest
+from .decisions import Decision, DecisionRequest, coerce, from_signal_attention
+from .engines.signals import decide_signal_attention
+from .engines.policies import ActionPolicy, ActionPolicyInput
 from .support.ids import new_id
 
 
@@ -57,8 +57,8 @@ def decide(
     """Return decisions without the app kit.
 
     Pass ``policy=`` to use a specific policy. Otherwise the request shape
-    selects the built-in action policy or the attention engine. Every decision
-    gets a ``decision_id``; a ``trace_id`` is generated when the engine did not
+    selects the built-in action policy or signal attention. Every decision
+    gets a ``decision_id``; a ``trace_id`` is generated when the planner did not
     provide one.
     """
     make_id = id_factory or new_id
@@ -72,7 +72,7 @@ def decide(
     if route == "action":
         if request.situation is None:
             raise ValueError("action selection needs a situation")
-        action_request = ActionPolicyRequest(
+        action_request = ActionPolicyInput(
             situation=request.situation,
             options=request.options,
             attributes=attributes_for(request),
@@ -86,8 +86,8 @@ def decide(
     if request.context is None:
         raise ValueError("attention allocation needs a context with now")
     return [
-        annotate_confidence(_identify(from_attention(item), make_id), request)
-        for item in decide_attention(request.signals, request.context)
+        annotate_confidence(_identify(from_signal_attention(item), make_id), request)
+        for item in decide_signal_attention(request.signals, request.context)
     ]
 
 

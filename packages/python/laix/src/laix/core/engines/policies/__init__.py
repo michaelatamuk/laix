@@ -6,10 +6,10 @@ the policies import ``decisions``; lazy loading keeps that cycle out of import t
 
 from __future__ import annotations
 
-from ...support.errors import PolicyError
-from .implementations.action import ACTION_POLICY_VERSION, ActionPolicy, ActionPolicyConfig, ActionPolicyRequest, decide_action
-from .policy import Policy
-from .registry import PolicyRegistry
+from ...support.errors import DecisionPolicyError
+from .implementations.action import ACTION_POLICY_VERSION, ActionPolicy, ActionPolicyConfig, ActionPolicyInput, decide_action
+from .decision_policy import DecisionPolicy
+from .decision_policy_registry import DecisionPolicyRegistry
 from .simulation import ShadowDifference, ShadowPolicy, simulate
 
 _LAZY = {
@@ -56,11 +56,11 @@ __all__ = [
     "PlanningPolicy",
     "GroupPolicy",
     "ACTION_POLICY_VERSION",
-    "Policy",
+    "DecisionPolicy",
     "ActionPolicyConfig",
-    "PolicyError",
-    "PolicyRegistry",
-    "ActionPolicyRequest",
+    "DecisionPolicyError",
+    "DecisionPolicyRegistry",
+    "ActionPolicyInput",
     "decide_action",
     "ShadowDifference",
     "ShadowPolicy",

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from laix import ActionOption, Belief, DecisionRequest, Layer, Situation
+from laix import ActionOption, Belief, DecisionRequest, DecisionClient, Situation
 
 
 def request(**kwargs) -> DecisionRequest:
@@ -25,7 +25,7 @@ def request(**kwargs) -> DecisionRequest:
 
 
 def test_host_confidence_is_carried_with_its_source() -> None:
-    decision = Layer().decide(
+    decision = DecisionClient().decide(
         request(confidence=0.86, confidence_source="host-calibrated", calibrated=True)
     )[0]
 
@@ -35,7 +35,7 @@ def test_host_confidence_is_carried_with_its_source() -> None:
 
 
 def test_decision_basis_is_host_neutral() -> None:
-    decision = Layer().decide(request(confidence=0.86, confidence_source="host"))[0]
+    decision = DecisionClient().decide(request(confidence=0.86, confidence_source="host"))[0]
     basis = decision.basis()
 
     assert basis[0]["kind"] == "reason"

@@ -8,7 +8,7 @@ import {
   ExperienceState,
   InMemoryPlatform,
   InMemoryStateStore,
-  Layer,
+  DecisionClient,
   LiveContext,
   NullDelivery,
   SafetyConstrainedPolicy,
@@ -33,7 +33,7 @@ describe("typescript parity", () => {
 
   it("learns from rewards in a bandit policy", () => {
     const policy = new BanditPolicy(new UCBBandit([{ id: "manual" }, { id: "automatic" }]));
-    const layer = new Layer({ policy });
+    const layer = new DecisionClient({ policy });
     const request = { subject: "pick a mode", at: "2026-11-01T10:00:00Z" };
     assert.equal(layer.decide(request)[0].actionId, "manual");
     policy.record("manual", 0);
@@ -108,7 +108,7 @@ describe("typescript parity", () => {
   });
 
   it("carries host confidence and its source", () => {
-    const layer = new Layer();
+    const layer = new DecisionClient();
     const [decision] = layer.decide({
       subject: "one task",
       at: "2026-11-01T10:00:00Z",
@@ -133,7 +133,7 @@ describe("typescript parity", () => {
   });
 
   it("escalates when a safety boundary is breached and no safe action remains", () => {
-    const layer = new Layer();
+    const layer = new DecisionClient();
     const [decision] = layer.decide({
       subject: "water near electricity",
       at: "2026-11-01T10:00:00Z",
@@ -155,8 +155,8 @@ describe("typescript parity", () => {
     assert.equal(decision.actionId, "manager");
   });
 
-  it("uses a policy plugin through Layer", () => {
-    const layer = new Layer({ policy: new SafetyConstrainedPolicy() });
+  it("uses a policy plugin through DecisionClient", () => {
+    const layer = new DecisionClient({ policy: new SafetyConstrainedPolicy() });
     const [decision] = layer.decide({
       subject: "sink",
       at: "2026-11-01T10:00:00Z",

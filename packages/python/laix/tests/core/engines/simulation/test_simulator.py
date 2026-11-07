@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 from laix import (
-    DecisionProblem,
+    PlannerInput,
     MDPPlanner,
     MdpModel,
     MdpTransition,
-    Plan,
+    PlannerResult,
     Scenario,
     Simulator,
     compare_planners,
@@ -19,8 +19,8 @@ class FixedPlanner:
     def __init__(self, action: str) -> None:
         self.action = action
 
-    def solve(self, problem: DecisionProblem) -> Plan:
-        return Plan(
+    def solve(self, problem: PlannerInput) -> PlannerResult:
+        return PlannerResult(
             verb="act",
             confidence=1.0,
             reason_code="fixed",

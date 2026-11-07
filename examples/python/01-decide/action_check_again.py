@@ -14,9 +14,9 @@ The parcel looks late, but a cheap check can settle it. The rule prefers that
 check before asking the courier.
 """
 
-from laix import ActionOption, Belief, DecisionRequest, Layer, Situation, iso
+from laix import ActionOption, Belief, DecisionRequest, DecisionClient, Situation, iso
 
-layer = Layer()
+layer = DecisionClient()
 decision = layer.decide(
     DecisionRequest(
         subject="late parcel",

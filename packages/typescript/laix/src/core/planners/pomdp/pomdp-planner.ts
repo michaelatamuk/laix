@@ -1,4 +1,4 @@
-import type { DecisionProblem, Plan } from "../../contract/engine.ts";
+import type { PlannerInput, PlannerResult } from "../../contract/planner.ts";
 import { MdpModel, valueIteration } from "../mdp/mdp-planner.ts";
 import { clamp } from "../../contracts.ts";
 import { PomdpModel } from "./pomdp-model.ts";
@@ -233,7 +233,7 @@ export class POMDPPlanner {
     this.belief = { ...(options.belief ?? {}) };
   }
 
-  solve(problem: DecisionProblem): Plan {
+  solve(problem: PlannerInput): PlannerResult {
     const belief = this.resolveBelief(problem.attributes ?? {});
     const horizon = Number(problem.attributes?.horizon ?? this.model.horizon);
     const depth = Math.max(-1, horizon - 1);

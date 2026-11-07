@@ -9,11 +9,11 @@ from __future__ import annotations
 
 from typing import Any
 
-from laix import Plan
-from laix.core.engines.planners.attention.attention_planner import (
+from laix import PlannerResult
+from laix.core.engines.planners.human_attention.human_attention_planner import (
     _remaining,
     approval_state,
-    attention_effect,
+    human_attention_effect,
 )
 from laix.core.engines.planners.commitment.commitment_planner import (
     _commitments,
@@ -31,7 +31,7 @@ class GlueBaseline:
 
     name = "glue.v1"
 
-    def solve(self, problem: Any) -> Plan:
+    def solve(self, problem: Any) -> PlannerResult:
         options = list(problem.options)
         if not options:
             return self._wait("no_options", "there are no options")
@@ -65,7 +65,7 @@ class GlueBaseline:
         approval = _approval_required(problem)
         affordable = []
         for option in candidates:
-            effect = attention_effect(
+            effect = human_attention_effect(
                 option,
                 approval=approval,
                 approval_state=approval_state(problem, option),
@@ -79,7 +79,7 @@ class GlueBaseline:
 
         candidates.sort(key=lambda option: (-model.score(option), option.id))
         best = candidates[0]
-        return Plan(
+        return PlannerResult(
             verb=best.verb,
             confidence=1.0,
             reason_code="glue_baseline",
@@ -92,8 +92,8 @@ class GlueBaseline:
         )
 
     @staticmethod
-    def _wait(reason_code: str, rationale: str) -> Plan:
-        return Plan(
+    def _wait(reason_code: str, rationale: str) -> PlannerResult:
+        return PlannerResult(
             verb="wait",
             confidence=1.0,
             reason_code=reason_code,

@@ -1,11 +1,11 @@
 import type { ActionOption, Constraint, Situation } from "../contracts.ts";
-import type { DecisionEngine, DecisionProblem } from "../contract/engine.ts";
+import type { Planner, PlannerInput } from "../contract/planner.ts";
 import type { Commitment } from "../commitments/commitments.ts";
 import { UtilityPlanner, constraintBlocker } from "../planners/utility/utility-planner.ts";
 import { CommitmentPlanner } from "../planners/commitment/commitment-planner.ts";
 import { ExecutionRiskPlanner } from "../planners/execution/execution-planner.ts";
-import { HumanAttentionPlanner } from "../planners/attention/attention-planner.ts";
-import { LiveDecisionEngine } from "../live/live-engine.ts";
+import { HumanAttentionPlanner } from "../planners/human-attention/human-attention-planner.ts";
+import { LiveCompositePlanner } from "../live/live-composite-planner.ts";
 import { FirstOptionPlanner } from "./first-option-planner.ts";
 import { HighestBenefitPlanner } from "./highest-benefit-planner.ts";
 
@@ -13,7 +13,7 @@ export { FirstOptionPlanner, HighestBenefitPlanner };
 
 export interface LiveCase {
   name: string;
-  problem: DecisionProblem;
+  problem: PlannerInput;
   expectedActions: string[];
   tags: string[];
 }
@@ -57,7 +57,7 @@ function round(value: number): number {
   return Math.round(value * 1e6) / 1e6;
 }
 
-export function defaultPlanners(): Record<string, DecisionEngine> {
+export function defaultPlanners(): Record<string, Planner> {
   return {
     first: new FirstOptionPlanner(),
     benefit: new HighestBenefitPlanner(),
@@ -65,7 +65,7 @@ export function defaultPlanners(): Record<string, DecisionEngine> {
     commitment: new CommitmentPlanner(),
     execution: new ExecutionRiskPlanner(),
     attention: new HumanAttentionPlanner(),
-    live: new LiveDecisionEngine(),
+    live: new LiveCompositePlanner(),
   };
 }
 
@@ -201,7 +201,7 @@ export function defaultCases(): LiveCase[] {
           { id: "ask", verb: "ask", name: "ask", expectedBenefit: 0.9 },
           { id: "act", verb: "act", name: "act", expectedBenefit: 0.6 },
         ],
-        attributes: { attention_budget: 0.2, attention_spent: 0.2 },
+        attributes: { human_attention_budget: 0.2, human_attention_spent: 0.2 },
       },
     },
     {
@@ -221,14 +221,14 @@ export function defaultCases(): LiveCase[] {
   ];
 }
 
-function chosen(problem: DecisionProblem, actionId: string | null): ActionOption | undefined {
+function chosen(problem: PlannerInput, actionId: string | null): ActionOption | undefined {
   if (!actionId) return undefined;
   return problem.options.find((option) => option.id === actionId);
 }
 
 export function runLiveBench(
   cases: LiveCase[] = defaultCases(),
-  planners: Record<string, DecisionEngine> = defaultPlanners(),
+  planners: Record<string, Planner> = defaultPlanners(),
 ): LiveBenchReport {
   const rows: LiveBenchRow[] = [];
   for (const [plannerName, planner] of Object.entries(planners)) {

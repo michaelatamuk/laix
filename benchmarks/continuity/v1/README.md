@@ -3,7 +3,7 @@
 Status: synthetic mechanism test. Not a generalisation claim.
 
 This corpus tests whether a decision runtime carries state from one decision into the next. A
-stateless utility planner sees a fixed option set and no episode state. `LiveDecisionEngine` sees
+stateless utility planner sees a fixed option set and no episode state. `LiveCompositePlanner` sees
 the open commitment, attention budget, approval state and execution receipt.
 
 ## Episode
@@ -33,8 +33,8 @@ State that evolves:
   truth.
 - **Stateless:** `UtilityPlanner` on a static option set. It never sees commitments, attention,
   approval or prior actions.
-- **Stateful:** `LiveDecisionEngine` with the commitment, `AttentionBudget`, approval map and
-  execution state in `DecisionProblem.attributes`. The host asks for approval when the plan sets
+- **Stateful:** `LiveCompositePlanner` with the commitment, `HumanAttentionBudget`, approval map and
+  execution state in `PlannerInput.attributes`. The host asks for approval when the plan sets
   `requires_approval`.
 
 ## Metrics

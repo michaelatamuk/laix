@@ -9,9 +9,9 @@ The result is:
 - 12.5: halfway between the offer and the target, never below the reservation.
 """
 
-from laix import DecisionRequest, Layer, NegotiationPolicy, iso
+from laix import DecisionRequest, DecisionClient, NegotiationPolicy, iso
 
-decision = Layer(policy=NegotiationPolicy()).decide(
+decision = DecisionClient(policy=NegotiationPolicy()).decide(
     DecisionRequest(
         subject="contract renewal",
         at=iso(),

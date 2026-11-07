@@ -1,5 +1,5 @@
 import type { ActionOption } from "../../contracts.ts";
-import type { DecisionProblem, Plan } from "../../contract/engine.ts";
+import type { PlannerInput, PlannerResult } from "../../contract/planner.ts";
 import {
   UtilityPlanner,
   UtilityModel,
@@ -57,7 +57,7 @@ export function executionEffect(option: ActionOption): ExecutionEffect {
 }
 
 export function receiptStatus(
-  problem: DecisionProblem,
+  problem: PlannerInput,
   option: ActionOption,
 ): string | null {
   const attributes = (problem.attributes ?? {}) as Record<string, unknown>;
@@ -144,7 +144,7 @@ export class ExecutionRiskPlanner {
     this.utility = new UtilityPlanner(model);
   }
 
-  solve(problem: DecisionProblem): Plan {
+  solve(problem: PlannerInput): PlannerResult {
     const options = [...(problem.options ?? [])];
     if (!options.length) {
       return this.wait("no_options", "there are no options to score");
@@ -259,7 +259,7 @@ export class ExecutionRiskPlanner {
     return Math.min(1, Math.max(0, 0.5 + 0.5 * (gap / Math.max(Math.abs(best), 1e-9))));
   }
 
-  private wait(reasonCode: string, rationale: string): Plan {
+  private wait(reasonCode: string, rationale: string): PlannerResult {
     return { verb: "wait", confidence: 1.0, reasonCode, rationale, score: 0.0 };
   }
 }

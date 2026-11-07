@@ -9,7 +9,7 @@ contracts in detail.
 |---|---|
 | **Request** | One `DecisionRequest`: the subject, moment, signals or situation, options and limits the app supplies. |
 | **Signal** | One item that might need attention, such as a deadline, risk or change. |
-| **Context** | The signal-side input: current time, quiet hours, interruption budget and other ambient facts. |
+| **SignalContext** | The signal-side input: current time, quiet hours, interruption budget and other ambient facts. |
 | **Situation** | The action-side input: what is believed, what the goal is, the options and the constraints. |
 | **Option** | One `ActionOption`: an id, a verb, a name, expected benefit, cost, risk and reversibility. |
 | **Constraint** | A hard or soft limit on the choice, such as risk, approval, safety, cost or latency. |
@@ -30,21 +30,21 @@ contracts in detail.
 
 | Term | Meaning |
 |---|---|
-| **Policy** | A chooser with `name` and `decide(request)`. It returns one or more decisions. |
-| **Planner** | A strategy that scores the options and returns a `Plan`. |
-| **Engine** | A composition of planners that returns one `Plan`; `LiveDecisionEngine` is the built-in engine. |
-| **Protocol** | `DecisionEngine`: the `solve(problem) -> Plan` interface. It names the contract, not a component. |
-| **Plan** | A planner's or engine's internal answer: verb, confidence, reason, action, score and alternatives. |
-| **DecisionProblem** | The planner input: subject, moment, situation, options, signals, context and attributes. |
-| **Composite score** | The four terms `LiveDecisionEngine` combines for one option: utility, commitment, execution and attention. |
-| **Live decision engine** | `LiveDecisionEngine`: the composition engine that turns the four planner scores into one `Plan`. |
-| **Attention** | The mechanism that ranks signals and decides whether to surface, hold, act or escalate. |
+| **DecisionPolicy** | A chooser with `name` and `decide(request)`. It returns one or more decisions. |
+| **Planner** | A strategy that scores the options and returns a `PlannerResult`. |
+| **CompositePlanner** | A composition of planners that returns one `PlannerResult`; `LiveCompositePlanner` is the built-in composite planner. |
+| **Protocol** | `Planner`: the `solve(problem) -> PlannerResult` interface. It names the contract, not a component. |
+| **PlannerResult** | A planner's internal answer: verb, confidence, reason, action, score and alternatives. |
+| **PlannerInput** | The planner input: subject, moment, situation, options, signals, context and attributes. |
+| **Composite score** | The four terms `LiveCompositePlanner` combines for one option: utility, commitment, execution and human attention. |
+| **Live composite planner** | `LiveCompositePlanner`: the composite planner that turns the four planner scores into one `PlannerResult`. |
+| **Attention** | The shared idea: what deserves a person's limited time. Two mechanisms use it: signal attention and human-attention planning. |
 | **Signal attention** | The gate pipeline in `core/engines/signals/` that ranks signals and returns `guide`, `wait`, `act` or `escalate`. |
 | **Human-attention planning** | `HumanAttentionPlanner`: pricing interruption, approval and escalation when choosing an action. |
-| **Attention budget** | The interruption and approval capacity a task may spend. |
-| **Signal interruption budget** | A per-cycle cap on delivered signal decisions, set by `Context.interruption_budget`. |
-| **Resource budget** | Compute, latency and sensing capacity, managed by `ResourceScheduler`; distinct from the attention budget. |
-| **Decision class** | One of the ten request/ policy shapes: attention, action, active perception, safety, replanning, allocation, negotiation, preference, verification and escalation. |
+| **Human-attention budget** | The interruption and approval capacity a task may spend; HumanAttentionBudget. |
+| **Signal interruption budget** | A per-cycle cap on delivered signal decisions, set by `SignalContext.signal_interruption_budget`. |
+| **Resource budget** | Compute, latency and sensing capacity, managed by `ResourceScheduler`; distinct from the human-attention budget. |
+| **Decision class** | One of the ten request/policy shapes: signal attention, action, active perception, safety, replanning, allocation, negotiation, preference, verification and escalation. |
 | **Shadow policy** | A wrapper that returns the primary decision and records where the shadow policy disagrees. |
 | **Group policy** | The policy that sets target and recipients and masks private fields before sharing. |
 
@@ -91,13 +91,13 @@ contracts in detail.
 | **Vector** | A fixed input and its expected output, used as a conformance test. |
 | **Bench** | A deterministic set of cases, suites and reports. |
 
-## Context and product
+## Host and product
 
 | Term | Meaning |
 |---|---|
-| **Core** | The stateless decision package: contract, policies, planners, attention, commitments, learning and evaluation primitives. |
+| **Core** | The stateless decision package: contract, policies, planners, signal attention, commitments, learning and evaluation primitives. |
 | **App kit** | The optional LAIX layer around the core: runtime, streaming, execution, stores, platform and bench. |
-| **Layer** | The app-kit one-decision surface. |
+| **DecisionClient** | The app-kit one-decision surface. |
 | **Decision runtime** | `DecisionRuntime`: the app-kit loop that links observation, state, policy, execution and outcome. |
 | **Host** | The application that owns data, UI, execution, storage and delivery. |
 | **Live** | A decision made inside the running loop, at event time, with the current state. |

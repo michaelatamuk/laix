@@ -24,7 +24,7 @@ otherwise                                  -> ValueError
 ```mermaid
 flowchart TD
     start[DecisionRequest] --> policy{policy passed?}
-    policy -->|yes| policy_path[Policy path]
+    policy -->|yes| policy_path[DecisionPolicy path]
     policy -->|no| shape{situation or options?}
     shape -->|yes| action_path[Action path]
     shape -->|no| attention_shape{signals or context?}
@@ -37,7 +37,7 @@ policy always wins, even when the request has a situation or signals.
 
 ## The three paths
 
-### Policy path
+### DecisionPolicy path
 
 When `policy` is passed, `decide` calls `policy.decide(request)`. Every returned item is normalized
 with `coerce`, gets an id and inherits the request's confidence provenance.
@@ -50,11 +50,11 @@ A policy may return more than one decision. The list is preserved.
 
 ### Action path
 
-The action path needs a `situation`. It builds an `ActionPolicyRequest` from the situation, the
+The action path needs a `situation`. It builds an `ActionPolicyInput` from the situation, the
 options and the merged attributes, then runs the built-in `ActionPolicy`.
 
 ```python
-action_request = ActionPolicyRequest(
+action_request = ActionPolicyInput(
     situation=request.situation,
     options=request.options,
     attributes=attributes_for(request),
@@ -66,11 +66,11 @@ If the request has options but no situation, `decide` raises `ValueError`.
 
 ### Attention path
 
-The attention path needs `context`. It calls `decide_attention(request.signals, request.context)`,
-converts each `AttentionDecision` with `from_attention`, and returns the list.
+The signal-attention path needs `context`. It calls `decide_signal_attention(request.signals, request.context)`,
+converts each `SignalAttentionDecision` with `from_signal_attention`, and returns the list.
 
 ```python
-attention_decisions = decide_attention(request.signals, request.context)
+attention_decisions = decide_signal_attention(request.signals, request.context)
 ```
 
 If the request has signals but no context, `decide` raises `ValueError`, because attention needs a
@@ -110,26 +110,26 @@ policy.
 
 ## Normalization
 
-`coerce` accepts a `Decision`, an attention-like object with `signal_id` and `verb`, or a mapping
+`coerce` accepts a `Decision`, a signal-attention-like object with `signal_id` and `verb`, or a mapping
 with the decision fields, and returns a `Decision`. For a mapping, it defaults `verb` to `wait`,
 `reason_code` to `policy_rule`, `deliver` and `record` to `True`, `status` to `final` and `target` to
-`one`. An unsupported result raises `PolicyError`.
+`one`. An unsupported result raises `DecisionPolicyError`.
 
-`from_attention` converts an `AttentionDecision` into the public shape: it maps the attention verb,
+`from_signal_attention` converts an `SignalAttentionDecision` into the public shape: it maps the attention verb,
 reason, score and delivery flags onto `Decision`. The reason code becomes the rationale; the
 structured explanation stays in `breakdown` and `attributes`.
 
 The normalization step is why every path returns the same shape even though signal attention and
 policies use different internal result types.
 
-## `decide` and `Layer`
+## `decide` and `DecisionClient`
 
 | Entry point | Adds |
 |---|---|
 | `decide` | Selection, normalization, ids and confidence provenance. |
-| `Layer` | The same core selection plus the runtime, streaming, execution, records, stores and platform. |
+| `DecisionClient` | The same core selection plus the runtime, streaming, execution, records, stores and platform. |
 
-`Layer` is optional. The core `decide` never imports it. See
+`DecisionClient` is optional. The core `decide` never imports it. See
 [App-kit overview](../../03-appkit/README.md).
 
 ## Errors
@@ -138,7 +138,7 @@ policies use different internal result types.
 |---|---|
 | No policy, no situation/options, no signals/context | `ValueError` from `select`. |
 | Action route without a situation | `ValueError`. |
-| Attention route without a context | `ValueError`. |
+| Signal-attention route without a context | `ValueError`. |
 | Unknown verb in a `Decision` | `ValueError` from `Decision.__post_init__`. |
 | Unknown status or target mode | `ValueError` from `Decision.__post_init__`. |
 
@@ -147,4 +147,4 @@ policies use different internal result types.
 - [Decision contract](01-decision-contract.md) — the request and response shapes.
 - [Signal attention](../02-decide/01-signal-attention.md) — the attention path.
 - [Policies](../02-decide/03-policies.md) — the explicit policy path.
-- [Planner contract](../03-planning/01-planner-contract.md) — the `EnginePolicy` path.
+- [Planner contract](../03-planning/01-planner-contract.md) — the `PlannerPolicy` path.

@@ -45,7 +45,7 @@ confidence intervals.
 ### Done
 
 - [x] Implement baselines and ablations — `examples/python/03-plan/ablation_study.py`
-  runs all 7 planners on all 7 demo cases; LiveDecisionEngine 7/7, single-concern planners partial
+  runs all 7 planners on all 7 demo cases; LiveCompositePlanner 7/7, single-concern planners partial
 - [x] Write the conflict scenario — `examples/python/03-plan/conflict_scenario.py`
   shows all three concerns firing; `UtilityPlanner` and `HumanAttentionPlanner` fail; full score breakdown
 - [x] Create the case schema — `benchmarks/live/v1/schema.json` (JSON Schema Draft
@@ -73,12 +73,12 @@ confidence intervals.
     regret and conflict accuracy with 95% bootstrap intervals;
   - writes `results/live-decision-benchmark/raw/decisions.jsonl` and `results/live-decision-benchmark/metrics/summary.json`;
   - prints the main and conflict tables;
-  - exits 1 if `LiveDecisionEngine` fails a conflict case.
+  - exits 1 if `LiveCompositePlanner` fails a conflict case.
 
 - [x] **Write `scripts/novelty/bench/run_ablations.py`**:
   - full, no commitment, no execution, no attention, utility-only, equal weights and
     no-feasibility-gates variants;
-  - `LiveDecisionEngine(enforce_feasibility=False)` supports the last variant;
+  - `LiveCompositePlanner(enforce_feasibility=False)` supports the last variant;
   - writes `results/live-decision-benchmark/ablations/results.json`.
 
 - [x] **Write `scripts/novelty/bench/summarize_results.py`**:
@@ -94,10 +94,10 @@ confidence intervals.
   runs the same test split and compares 210 action IDs with Python; all 210 agree.
 
 - [x] **Run the available external adapter** — `benchmarks/compare/adapters/langgraph/adapter.py` runs
-  the same engine on 120 cases (6.9 ms mean, 110 glue lines). Temporal, PagerDuty and Camunda
+  the same composite planner on 120 cases (6.9 ms mean, 110 glue lines). Temporal, PagerDuty and Camunda
   remain documented-only.
 
-- [x] **Write the failure analysis** — `LiveDecisionEngine` made zero mistakes on the 30 test cases and zero on
+- [x] **Write the failure analysis** — `LiveCompositePlanner` made zero mistakes on the 30 test cases and zero on
   the 18 adversarial cases. The zero-failure result is documented in `02-evaluation/benchmark.md` §5 as a
   limitation; the corpus is too easy, and real-incident cases are required next.
 
@@ -130,7 +130,7 @@ team did not write.
   guardrail 0.800, LAIX chooser 0.745 with one forbidden action; see
   [Sev1-Bench](02-evaluation/sev1-bench.md).
 
-- [x] **Continuity benchmark v0** — 12 episodes, 60 decisions. Stateful `LiveDecisionEngine` 100%
+- [x] **Continuity benchmark v0** — 12 episodes, 60 decisions. Stateful `LiveCompositePlanner` 100%
   success, stateless `UtilityPlanner` 0% with 36 continuity errors; see
   [continuity benchmark](02-evaluation/continuity-benchmark.md).
 
@@ -162,7 +162,7 @@ Replay historical incidents where a person already made a decision.
    and the human disagree.
 2. Write an ingestion script in `scripts/novelty/incident-replay/ingest_incidents.py` that:
    - Reads the raw export.
-   - Maps each incident to a `DecisionProblem` JSON (using the case schema).
+   - Maps each incident to a `PlannerInput` JSON (using the case schema).
    - Strips all PII: names, emails, IPs, customer IDs, free-text that could identify a person.
    - Writes `data/incident-replay/output/anonymised.jsonl` (each line: one problem + human
      decision label).

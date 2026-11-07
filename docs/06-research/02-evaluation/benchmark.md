@@ -29,7 +29,7 @@ effect size. Use this mapping.
 |---|---|---|---|---|
 | Integration is real | conflict win rate | share of conflict cases where LAIX matches or beats the best single-concern planner | best single-concern planner | higher |
 | Integration adds value | integration delta | `accuracy(LAIX) - max(accuracy(single-concern))` on conflict cases | best single-concern | positive |
-| Integration changes the result | ablation delta | metric loss when one term is removed | full `LiveDecisionEngine` | removal hurts |
+| Integration changes the result | ablation delta | metric loss when one term is removed | full `LiveCompositePlanner` | removal hurts |
 | Plain decisions are not damaged | plain-case regret | mean utility gap to the best feasible option on plain cases | utility-only | near zero |
 | Promises are kept | promise-keeping rate | fulfilled commitments / relevant commitments | utility-only | higher |
 | Irreversible actions are avoided | irreversible-action rate | irreversible choices / actionable cases | highest-benefit | lower |
@@ -59,8 +59,8 @@ Log one row per case and planner. Every metric above should be derivable from th
   "safety_violation": false,
   "irreversible": false,
   "promise_fulfilled": true,
-  "attention_cost": 0.0,
-  "attention_remaining": 0.0,
+  "human_attention_cost": 0.0,
+  "human_attention_remaining": 0.0,
   "utility_chosen": 0.0,
   "utility_best_feasible": 0.0,
   "latency_ms": 0.0,
@@ -77,7 +77,7 @@ Use these definitions in the analysis script:
 accuracy            = correct / N
 promise-keeping     = fulfilled commitments / relevant commitments
 irreversible rate   = irreversible choices / actionable cases
-budget violations   = (attention_cost > attention_remaining) / human-facing cases
+budget violations   = (human_attention_cost > human_attention_remaining) / human-facing cases
 safety violations   = hard-constraint violations / N
 plain-case regret   = mean((utility_best - utility_chosen) / max(|utility_best|, 1e-9))
 abstention rate     = wait decisions / N
@@ -240,11 +240,11 @@ Splits:
 - `CommitmentPlanner` alone;
 - `ExecutionRiskPlanner` alone;
 - `HumanAttentionPlanner` alone;
-- `LiveDecisionEngine`.
+- `LiveCompositePlanner`.
 
 ### Ablations
 
-Run `LiveDecisionEngine` with each term removed:
+Run `LiveCompositePlanner` with each term removed:
 
 - no commitment term;
 - no execution term;
@@ -293,7 +293,7 @@ Document these explicitly:
 
 - synthetic cases may not represent real traffic;
 - the benchmark may encode the authors' assumptions;
-- `LiveDecisionEngine` may win because the baselines are weak;
+- `LiveCompositePlanner` may win because the baselines are weak;
 - a single domain limits generality;
 - deterministic cases hide variance;
 - the attention model is a simplification of human workload;
@@ -331,7 +331,7 @@ names; the JSON keys are listed in the
 | ExecutionRiskPlanner | 50.00% | 0.33–0.67 | 8.33% | 6.67% | 62.50% |
 | HumanAttentionPlanner | 53.33% | 0.37–0.70 | 25.00% | 16.67% | 0.00% |
 | **Glue baseline** | **93.33%** | **0.83–1.00** | **100.00%** | **0.00%** | **0.00%** |
-| **LiveDecisionEngine** | **100.00%** | **1.00–1.00** | **100.00%** | **0.00%** | **0.00%** |
+| **LiveCompositePlanner** | **100.00%** | **1.00–1.00** | **100.00%** | **0.00%** | **0.00%** |
 
 ### Conflict cases (6 cases)
 
@@ -344,7 +344,7 @@ names; the JSON keys are listed in the
 | ExecutionRiskPlanner | 33.33% | 0.00–0.67 |
 | HumanAttentionPlanner | 66.67% | 0.33–1.00 |
 | **Glue baseline** | **100.00%** | **1.00–1.00** |
-| **LiveDecisionEngine** | **100.00%** | **1.00–1.00** |
+| **LiveCompositePlanner** | **100.00%** | **1.00–1.00** |
 
 ### Ablations (test split, 30 cases)
 
@@ -368,7 +368,7 @@ execution risk costs 16.7, and removing attention costs 3.3. The integration is 
 The glue baseline is hand-built: hard gates, then commitments, then reversibility, then attention,
 then utility. It is a stronger comparator than any single-concern planner.
 
-| Comparator | Accuracy delta | 95% CI | Discordant (LiveDecisionEngine / other) | McNemar chi² | p | Cohen's h |
+| Comparator | Accuracy delta | 95% CI | Discordant (LiveCompositePlanner / other) | McNemar chi² | p | Cohen's h |
 |---|---:|---:|---:|---:|---:|---:|
 | Highest-benefit baseline | +76.7 pp | 0.600–0.900 | 23 / 0 | 21.043 | <0.001 | 2.133 |
 | UtilityPlanner | +70.0 pp | 0.533–0.867 | 21 / 0 | 19.048 | <0.001 | 1.982 |
@@ -378,7 +378,7 @@ then utility. It is a stronger comparator than any single-concern planner.
 | First-option baseline | +30.0 pp | 0.133–0.467 | 9 / 0 | 7.111 | 0.008 | 1.159 |
 | **Glue baseline** | **+6.7 pp** | **0.000–0.167** | **2 / 0** | **0.500** | **0.480** | **0.522** |
 
-The comparison against the hand-built glue baseline is the honest one: `LiveDecisionEngine` is better, but the
+The comparison against the hand-built glue baseline is the honest one: `LiveCompositePlanner` is better, but the
 confidence interval includes zero and the result is not significant on 30 cases. The integration
 advantage over single-concern planners is large and significant; the advantage over competent glue
 code needs a larger and harder corpus, and that is exactly what the real validation must test.
@@ -403,7 +403,7 @@ underpowered.
 
 ### Failure analysis
 
-`LiveDecisionEngine` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a
+`LiveCompositePlanner` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a
 warning, not a victory: the corpus is synthetic and currently too easy. The next evidence step must
 add cases where the planner is expected to fail or abstain:
 
@@ -456,7 +456,7 @@ Status: design only. The implementation is the next benchmark extension.
 
 JEV is a decision model, not a runtime. A fair comparison is a chooser swap: the same state, the
 same options and the same expected actions. Measure chosen-action accuracy, calibration (Brier or
-ECE) and latency or cost. Then compare JEV inside a `LiveDecisionEngine` policy to isolate the model
+ECE) and latency or cost. Then compare JEV inside a `LiveCompositePlanner` policy to isolate the model
 from the runtime. A full JEV plus app-code baseline would be the runtime comparison, but the glue
 code is substantial.
 

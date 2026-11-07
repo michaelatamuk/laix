@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 from .baseline_plans import baseline_plan, baseline_wait
-from ..contract.decision_problem import DecisionProblem
-from ..contract.plan import Plan
+from ..contract.planner_input import PlannerInput
+from ..contract.planner_result import PlannerResult
 
 
 class FirstOptionPlanner:
@@ -12,7 +12,7 @@ class FirstOptionPlanner:
 
     name = "first.v1"
 
-    def solve(self, problem: DecisionProblem) -> Plan:
+    def solve(self, problem: PlannerInput) -> PlannerResult:
         if not problem.options:
             return baseline_wait("no_options", "there are no options")
         option = problem.options[0]

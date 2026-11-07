@@ -7,7 +7,7 @@ from laix import (
     AllocationPolicy,
     DecisionRequest,
     EscalationPolicy,
-    Layer,
+    DecisionClient,
     NegotiationPolicy,
     PreferenceElicitationPolicy,
     ReplanningPolicy,
@@ -21,7 +21,7 @@ def request(**attributes):
 
 
 def decide(policy, **attributes):
-    return Layer(policy=policy).decide(request(**attributes))[0]
+    return DecisionClient(policy=policy).decide(request(**attributes))[0]
 
 
 def test_active_perception_observes_when_uncertainty_is_high() -> None:

@@ -9,7 +9,7 @@ The result is:
 - 1.0: full agreement.
 """
 
-from laix import Case, DecisionRequest, Layer, Decision, compare_decisions, iso
+from laix import Case, DecisionRequest, DecisionClient, Decision, compare_decisions, iso
 
 
 class AlwaysWait:
@@ -28,7 +28,7 @@ class AlwaysWait:
 
 
 def decide(request):
-    return Layer(policy=AlwaysWait()).decide(request)
+    return DecisionClient(policy=AlwaysWait()).decide(request)
 
 
 cases = (

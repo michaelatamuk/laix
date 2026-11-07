@@ -3,5 +3,5 @@
 from __future__ import annotations
 
 
-class PolicyError(ValueError):
+class DecisionPolicyError(ValueError):
     """Raised when a policy name is unknown or a policy returns an invalid result."""

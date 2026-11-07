@@ -1,4 +1,4 @@
-"""Plan the next move from a commitment ledger."""
+"""PlannerResult the next move from a commitment ledger."""
 
 from __future__ import annotations
 

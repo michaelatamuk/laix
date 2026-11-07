@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
-  AttentionBudget,
+  HumanAttentionBudget,
   DecisionTimeline,
   ManualClock,
   StreamSession,
@@ -112,14 +112,14 @@ describe("decision timeline", () => {
         reasonCode: "stream",
         rationale: "a stream decision",
         decisionId: `DEC-${request.at}`,
-        attributes: { attention_cost: 0.4 },
+        attributes: { human_attention_cost: 0.4 },
       },
     ];
-    const budget = new AttentionBudget({ total: 1 });
+    const budget = new HumanAttentionBudget({ total: 1 });
     const session = new StreamSession(decider, {
       streamId: "STR-1",
       clock: () => new Date("2026-11-01T10:00:00Z"),
-      attentionBudget: budget,
+      humanAttentionBudget: budget,
     });
     session.observe({ subject: "a", at: "2026-11-01T10:00:00Z" });
     session.observe({ subject: "b", at: "2026-11-01T10:00:01Z" });
@@ -128,7 +128,7 @@ describe("decision timeline", () => {
     const restored = new StreamSession(decider, { streamId: "STR-1" });
     restored.restore(session.snapshot());
     assert.equal(
-      Math.round((restored.attentionBudget?.remaining() ?? 0) * 1e6) / 1e6,
+      Math.round((restored.humanAttentionBudget?.remaining() ?? 0) * 1e6) / 1e6,
       0.2,
     );
   });

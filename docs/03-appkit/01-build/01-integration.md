@@ -31,16 +31,16 @@ skills.
 A signal request asks what deserves attention:
 
 ```python
-from laix import Context, DecisionRequest, Layer, Signal
+from laix import SignalContext, DecisionRequest, DecisionClient, Signal
 
-decision = Layer().decide(
+decision = DecisionClient().decide(
     DecisionRequest(
         subject="one decision",
         at=now,
         signals=(
             Signal(id="s-1", kind="deadline", severity="high", confidence=0.9),
         ),
-        context=Context(now=now, quiet_hours=("22:00", "06:00")),
+        context=SignalContext(now=now, quiet_hours=("22:00", "06:00")),
     )
 )[0]
 ```
@@ -48,9 +48,9 @@ decision = Layer().decide(
 An option request asks what to do:
 
 ```python
-from laix import ActionOption, Belief, DecisionRequest, Layer, Situation
+from laix import ActionOption, Belief, DecisionRequest, DecisionClient, Situation
 
-decision = Layer().decide(
+decision = DecisionClient().decide(
     DecisionRequest(
         subject="one decision",
         at=now,
@@ -74,9 +74,9 @@ decision = Layer().decide(
 TypeScript uses the same shapes:
 
 ```ts
-import { Layer } from "laix";
+import { DecisionClient } from "laix";
 
-const [decision] = new Layer().decide({
+const [decision] = new DecisionClient().decide({
   subject: "one decision",
   at: "2026-11-01T10:00:00Z",
   signals: [{ id: "s-1", kind: "deadline", severity: "high", confidence: 0.9 }],
@@ -151,7 +151,7 @@ configured fields before sharing; see [privacy](../../04-concepts/03-trust/02-pr
 
 ## Related
 
-- [Single decision](02-single-decision.md) - `Layer` and the one-shot surface.
+- [Single decision](02-single-decision.md) - `DecisionClient` and the one-shot surface.
 - [Policies in the app](03-policies-in-the-app.md) - selection, registration and rollout.
 - [Streaming](../02-run/02-streaming.md) - decisions over time.
 - [Execution and recovery](../03-execute/01-execution-and-recovery.md) - the write boundary.

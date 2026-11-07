@@ -1,7 +1,7 @@
 # Continuity benchmark
 
 The continuity benchmark isolates the mechanism. Each episode is five decisions. A stateless
-`UtilityPlanner` sees a static option set and no episode state. A stateful `LiveDecisionEngine` sees
+`UtilityPlanner` sees a static option set and no episode state. A stateful `LiveCompositePlanner` sees
 the open commitment, attention budget, approval state and execution receipt.
 
 ## Setup
@@ -10,17 +10,17 @@ the open commitment, attention budget, approval state and execution receipt.
 |---|---|
 | Reference | full state; hand-written ground truth |
 | Stateless `UtilityPlanner` | a static option set only |
-| Stateful `LiveDecisionEngine` | commitments, budget, approvals and receipts in `DecisionProblem.attributes` |
+| Stateful `LiveCompositePlanner` | commitments, budget, approvals and receipts in `PlannerInput.attributes` |
 
-The host asks for approval when the plan sets `requires_approval`.
+The host asks for approval when the planner result sets `requires_approval`.
 
 ## Result
 
-| Policy | Episode success | Promise kept | Budget adhered | Approval correct | Continuity errors |
+| DecisionPolicy | Episode success | Promise kept | Budget adhered | Approval correct | Continuity errors |
 |---|---:|---:|---:|---:|---:|
 | Reference | 100% | 100% | 100% | 100% | 0 |
 | Stateless `UtilityPlanner` | 0% | 100% | 0% | 100% | 36 |
-| Stateful `LiveDecisionEngine` | 100% | 100% | 100% | 100% | 0 |
+| Stateful `LiveCompositePlanner` | 100% | 100% | 100% | 100% | 0 |
 
 The corpus has 12 episodes and 60 decisions. The stateful policy completes every episode. The
 stateless policy repeats actions because it cannot see that the commitment was fulfilled, the

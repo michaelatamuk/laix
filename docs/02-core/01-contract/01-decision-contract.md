@@ -34,10 +34,10 @@ request = DecisionRequest(
 | `subject` | `str` | What the request is about. |
 | `at` | ISO-8601 `str` | The moment of the decision. |
 | `signals` | `tuple` | Items that may need attention. |
-| `context` | `Context \| None` | Time, quiet hours, thresholds, budget and feedback. |
+| `context` | `SignalContext \| None` | Time, quiet hours, thresholds, budget and feedback. |
 | `situation` | `Situation \| None` | Observations, beliefs, goals and constraints. |
 | `options` | `tuple[ActionOption, ...]` | Actions the host can take. |
-| `attributes` | `dict` | Policy-specific inputs such as `risk_limit`, `plans`, `requests` or `commitments`. |
+| `attributes` | `dict` | DecisionPolicy-specific inputs such as `risk_limit`, `plans`, `requests` or `commitments`. |
 | `confidence` | `float \| None` | The host's confidence in its own input. |
 | `confidence_source` | `str` | Where that confidence came from. |
 | `calibrated` | `bool` | Whether the host confidence is a calibrated probability. |
@@ -111,7 +111,7 @@ decision = Decision(
 | Field | Meaning |
 |---|---|
 | `score` | The ranking inside one decision mechanism. Compare scores only within that mechanism. |
-| `breakdown` | `ScoreBreakdown` parts for an attention decision. |
+| `breakdown` | `ScoreBreakdown` parts for a signal-attention decision. |
 | `cost_of_waiting` | The cost of waiting in this situation. |
 | `evidence` | `EvidenceRef` rows that support the decision. |
 | `alternatives` | The options that lost, with their scores and the reason they lost. |
@@ -124,7 +124,7 @@ decision = Decision(
 |---|---|
 | `decision_id` | The id used by records, outcomes and traces. |
 | `situation_id` | The id of the situation this decision answered. |
-| `policy_version` | The version of the policy or engine that produced the decision. |
+| `policy_version` | The version of the policy or planner that produced the decision. |
 | `trace_id` | Correlates related events. |
 | `created_at` | When the decision was made. |
 | `confidence_source` | Where the confidence came from. |
@@ -156,10 +156,10 @@ decision = Decision(
 
 - **`confidence`** is the decision mechanism's certainty in its choice. It is always `0..1`. The host
   can calibrate it against measured outcomes.
-- **`score`** is the ranking value inside one mechanism. Attention scores, utility scores, expected
+- **`score`** is the ranking value inside one mechanism. Signal-attention scores, utility scores, expected
   MDP values and composite live scores use different scales. Do not compare scores across mechanisms.
 
-`breakdown` describes the parts of an attention score.
+`breakdown` describes the parts of a signal-attention score.
 
 ## The seven verbs
 
@@ -210,8 +210,8 @@ Reason codes are grouped by producer:
 | Utility planner | `expected_utility`, `no_options`, `no_feasible_option` |
 | Commitment planner | `commitment_aware` |
 | Execution-risk planner | `execution_aware` |
-| Human-attention planner | `attention_aware`, `attention_budget_exhausted`, `approval_rejected` |
-| Live decision engine | `live_decision` |
+| Human-attention planner | `human_attention_aware`, `human_attention_budget_exhausted`, `approval_rejected` |
+| Live composite planner | `live_decision` |
 | Model-based planners | `mdp_plan`, `pomdp_plan`, `terminal_state`, `no_action` |
 | Authored rules | `policy_rule`, `no_rule` |
 | Packaged policies | `safe_action`, `safety_blocked`, `no_safe_option`, `ask_preference`, `verify_outcome`, `escalate_to_target`, `replan`, and the codes listed on the [policies page](../02-decide/03-policies.md) |
@@ -254,4 +254,4 @@ field is a schema change. [Records and schema](02-records-and-schema.md) describ
 - [Records and schema](02-records-and-schema.md) — every record shape and the schema workflow.
 - [Dispatch](03-dispatch.md) — how the request selects a mechanism.
 - [Policies](../02-decide/03-policies.md) — the policy contract.
-- [Planner contract](../03-planning/01-planner-contract.md) — the `Plan` shape and its conversion.
+- [Planner contract](../03-planning/01-planner-contract.md) — the `PlannerResult` shape and its conversion.

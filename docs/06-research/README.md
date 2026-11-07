@@ -44,10 +44,10 @@ the order. `checklist.md` tracks work across all stages.
 
 - Repository: `laix`
 - Status at time of writing: Python and TypeScript tests, parity, conformance, bench and examples pass.
-- Existing proof points: `LiveDecisionEngine`, the live decision benchmark, Python/TypeScript parity,
+- Existing proof points: `LiveCompositePlanner`, the live decision benchmark, Python/TypeScript parity,
   conformance vectors, deterministic replay and the audit trail.
 - Added: `01-positioning/comparators.md` (documented capability comparison, 7 systems), `05-governance/eu-liability.md`
-  (PLD 2024/2853 mapping), `ablation_study.py` (all 7 planners on 7 demo cases, `LiveDecisionEngine` wins
+  (PLD 2024/2853 mapping), `ablation_study.py` (all 7 planners on 7 demo cases, `LiveCompositePlanner` wins
   every case), `conflict_scenario.py` (triple-concern demo), `shadow_rollout.py` (rollout
   pattern).
 - Added: `01-positioning/formal-model.md` with exact score formulas and weights, `01-positioning/prior-art.md` matrix
@@ -59,17 +59,17 @@ the order. `checklist.md` tracks work across all stages.
   `scripts/novelty/bench/validate_live_cases.py` (schema validation),
   `scripts/novelty/bench/run_ablations.py`, `scripts/novelty/bench/summarize_results.py`,
   `results/live-decision-benchmark/` (baseline, analysis and ablations), and a CI reproduction step.
-- Measured result: `LiveDecisionEngine` 30/30 on the test split, but a hand-built glue baseline is 28/30.
+- Measured result: `LiveCompositePlanner` 30/30 on the test split, but a hand-built glue baseline is 28/30.
   Against glue, +6.7 pp (95% CI 0.0–0.167, McNemar p = 0.48). The integration advantage over
   single-concern planners is large; the advantage over competent glue code is not yet significant.
-- External operational result: the LangGraph adapter runs the same decision engine on 120 cases
+- External operational result: the LangGraph adapter runs the same composite planner on 120 cases
   (6.9 ms mean, 110 glue lines, 0 interrupts). Temporal, PagerDuty and Camunda remain
   documented-only because they need servers or accounts.
 - External benchmark: Sev1-Bench on all 20 scenarios. Baseline 0.800, LAIX guardrail 0.800,
   LAIX chooser 0.745 (one forbidden action). The benchmark scores single-turn diagnosis and
   remediation, not approvals, commitments, continuity or audit. See
   [Sev1-Bench](02-evaluation/sev1-bench.md).
-- Continuity benchmark v0: 12 episodes, 60 decisions. Stateful `LiveDecisionEngine` 100% success,
+- Continuity benchmark v0: 12 episodes, 60 decisions. Stateful `LiveCompositePlanner` 100% success,
   stateless `UtilityPlanner` 0% with 36 continuity errors. Synthetic mechanism test, not external
   validation. See [continuity benchmark](02-evaluation/continuity-benchmark.md).
 - Remaining gaps: no external runnable adapter for Temporal, PagerDuty or Camunda, no real-world
@@ -86,7 +86,7 @@ Frame the contribution as a **systems and integration contribution**.
 > attention budget into one decision contract — the same object that carries the verb, the score,
 > the reason code and the audit trail — while the host retains execution and delivery.
 > No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI, scikit-learn)
-> carries all ten capabilities in one object. On the frozen test split `LiveDecisionEngine` is 30/30 and wins
+> carries all ten capabilities in one object. On the frozen test split `LiveCompositePlanner` is 30/30 and wins
 > every conflict case; the best single-concern planner is 70%. A hand-built glue baseline reaches
 > 93.3%, so the remaining integration advantage is +6.7 pp and is not significant on 30 cases.
 > That is why real-world validation is still required.
@@ -113,7 +113,7 @@ The contribution is the contract and the composition. The individual ingredients
 claim is that no existing system combines them into one live decision runtime with the same contract
 and the same evidence.
 
-`LiveDecisionEngine` is the proof object: one plan can keep a promise, avoid an irreversible action
+`LiveCompositePlanner` is the proof object: one plan can keep a promise, avoid an irreversible action
 and respect an attention budget at the same time.
 
 ### Scope
@@ -149,8 +149,8 @@ Out of scope:
 
 | Area | Current artifact | Status | Gap to close |
 |---|---|---|---|
-| Decision contract | `Decision`, `DecisionProblem`, `Plan`, `EnginePolicy` | exists | formal definition and invariants |
-| Live decision engine | `LiveDecisionEngine` | exists | real validation still needed |
+| Decision contract | `Decision`, `PlannerInput`, `PlannerResult`, `PlannerPolicy` | exists | formal definition and invariants |
+| Live composite planner | `LiveCompositePlanner` | exists | real validation still needed |
 | Commitments | `Commitment`, `CommitmentLedger`, commitment planner | exists | larger conflict cases |
 | Execution risk | execution planner, receipts, recovery | exists | measured irreversible-action reduction |
 | Attention | attention planner, budget, signals | exists | measured budget adherence and interruption quality |

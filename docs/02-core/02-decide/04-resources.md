@@ -4,10 +4,10 @@ Resources are compute, latency and sensing capacity. They are different from the
 budget:
 
 - **Resource budget** limits how much work the runtime may do: deep calls, cost and latency.
-- **Attention budget** limits how often a decision may involve a person: interruption, approval and
+- **Human-attention budget** limits how often a decision may involve a person: interruption, approval and
   escalation.
 
-`HumanAttentionPlanner` uses `AttentionBudget`. `ResourceScheduler` uses `Budget`.
+`HumanAttentionPlanner` uses `HumanAttentionBudget`. `ResourceScheduler` uses `Budget`.
 
 ## Budget
 

@@ -20,7 +20,7 @@ from ._commitment_row import _Row
 from .commitment_effect import CommitmentEffect
 from .commitment_score import CommitmentScore
 from .commitment_weights import CommitmentWeights
-from ...contract.engine import DecisionProblem, Plan
+from ...contract.planner_policy import PlannerInput, PlannerResult
 from ..utility.utility_planner import (
     UtilityPlanner,
     UtilityModel,
@@ -56,7 +56,7 @@ def commitment_effect(option: ActionOption) -> CommitmentEffect:
     )
 
 
-def _commitments(problem: DecisionProblem) -> dict[str, Commitment]:
+def _commitments(problem: PlannerInput) -> dict[str, Commitment]:
     attributes = problem.attributes or {}
     raw = attributes.get("commitments")
     if raw is None:
@@ -87,7 +87,7 @@ def _blocked(commitment_id: str, commitments: dict[str, Commitment]) -> bool:
     return False
 
 
-def _now(problem: DecisionProblem) -> datetime:
+def _now(problem: PlannerInput) -> datetime:
     return parse_iso(problem.at) or datetime.now(timezone.utc)
 
 
@@ -171,7 +171,7 @@ class CommitmentPlanner:
         self.weights = weights or CommitmentWeights()
         self._utility = UtilityPlanner(model)
 
-    def solve(self, problem: DecisionProblem) -> Plan:
+    def solve(self, problem: PlannerInput) -> PlannerResult:
         options = list(problem.options)
         if not options:
             return self._wait("no_options", "there are no options to score")
@@ -203,7 +203,7 @@ class CommitmentPlanner:
         feasible.sort(key=lambda row: (-row.score.total, row.option.id))
         best = feasible[0]
         second = feasible[1].score.total if len(feasible) > 1 else None
-        return Plan(
+        return PlannerResult(
             verb=best.option.verb,
             confidence=self._confidence(best.score.total, second),
             reason_code="commitment_aware",
@@ -267,8 +267,8 @@ class CommitmentPlanner:
         return clamp(0.5 + 0.5 * (gap / max(abs(best), 1e-9)))
 
     @staticmethod
-    def _wait(reason_code: str, rationale: str) -> Plan:
-        return Plan(
+    def _wait(reason_code: str, rationale: str) -> PlannerResult:
+        return PlannerResult(
             verb="wait",
             confidence=1.0,
             reason_code=reason_code,

@@ -21,7 +21,7 @@ LAIX in one path: understand the loop, then make the first decision.
 - Python 3.11 or newer, or Node 22 or newer.
 - The core package for a decision; the optional app kit for execution, records, stores and streaming.
 - No model is required. The default policies are deterministic rules; a model can sit behind
-  `EnginePolicy`.
+  `PlannerPolicy`.
 
 ## Reading map
 

@@ -4,7 +4,7 @@ LAIX decides. The host asks a person when the decision needs approval and runs
 the action through its own execution bridge.
 """
 
-from laix import ActionOption, Belief, DecisionRequest, Layer, Situation
+from laix import ActionOption, Belief, DecisionRequest, DecisionClient, Situation
 
 options = (
     ActionOption(id="wait", verb="wait", name="wait", expected_benefit=0.1),
@@ -18,7 +18,7 @@ options = (
     ),
 )
 
-layer = Layer()
+layer = DecisionClient()
 decision = layer.decide(
     DecisionRequest(
         subject="bathroom repair",

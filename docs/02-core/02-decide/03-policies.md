@@ -18,7 +18,7 @@ Most policies read their inputs from `DecisionRequest.attributes`. `PlanningPoli
 ## The policy contract
 
 ```python
-class Policy(Protocol):
+class DecisionPolicy(Protocol):
     name: str
 
     def decide(self, request) -> list[Decision]: ...
@@ -28,10 +28,10 @@ class Policy(Protocol):
 normalizes each one, adds ids and carries the request's confidence provenance. See
 [Dispatch](../01-contract/03-dispatch.md).
 
-`PolicyRegistry` is a name-to-policy map:
+`DecisionPolicyRegistry` is a name-to-policy map:
 
 ```python
-registry = PolicyRegistry()
+registry = DecisionPolicyRegistry()
 registry.register("safety", SafetyConstrainedPolicy())
 registry.register("replan", ReplanningPolicy())
 
@@ -39,7 +39,7 @@ decision = decide(request, policy=registry.get("replan"))[0]
 ```
 
 `register` validates the registered name and the `decide` method, and replaces an existing name.
-`get` raises `PolicyError` for an unknown name. `names()` returns the registered names in sorted
+`get` raises `DecisionPolicyError` for an unknown name. `names()` returns the registered names in sorted
 order.
 
 ## Built-in action policy
@@ -48,7 +48,7 @@ The default action path uses `ActionPolicy`. It reads a `Situation`, the options
 attributes. It chooses by verb band rather than by one utility score.
 
 `dispatch` calls `ActionPolicy` directly and wraps its single `Decision` in a list. `ActionPolicy`
-is not a `Policy` plugin: it has no `name` and its `decide` returns one `Decision`, while the generic
+is not a `DecisionPolicy` plugin: it has no `name` and its `decide` returns one `Decision`, while the generic
 policy contract returns a list.
 
 `decide_action(request, config=None, **kwargs)` is the functional shortcut when the host does not
@@ -137,7 +137,7 @@ Pass a packaged policy explicitly. They are deterministic defaults and read only
 Most packaged policies attach an `Intent` for the chosen action, observation, question, check or
 handover. The host executes the capability; the policy does not.
 
-| Decision class | Policy class | Question | Verbs | Reason codes |
+| Decision class | DecisionPolicy class | Question | Verbs | Reason codes |
 |---|---|---|---|---|
 | Active perception | `ActivePerceptionPolicy` | Should we look first? | `observe`, `wait` | `observe_for_information`, `uncertainty_low`, `no_observation`, `observation_not_worth_it` |
 | Safety-constrained action | `SafetyConstrainedPolicy` | Is the option safe? | `act`, `guide`, `wait` | `safe_action`, `safe_to_show`, `safety_blocked`, `no_safe_option` |
@@ -326,9 +326,9 @@ See [Outcome learning](../05-learning/01-outcome-learning.md).
 
 ## The planner bridge
 
-`EnginePolicy` adapts a `DecisionEngine` to the policy interface. The
-[planner contract](../03-planning/01-planner-contract.md) defines the adapter, `DecisionProblem` and
-`Plan`.
+`PlannerPolicy` adapts a `Planner` to the policy interface. The
+[planner contract](../03-planning/01-planner-contract.md) defines the adapter, `PlannerInput` and
+`PlannerResult`.
 
 ## Replace a policy
 
@@ -339,12 +339,12 @@ policy can replace any packaged policy without changing the request or the respo
 
 | Path | Contents |
 |---|---|
-| `core/engines/policies/policy.py` | the `Policy` protocol |
-| `core/engines/policies/registry.py` | `PolicyRegistry` |
+| `core/engines/policies/decision_policy.py` | the `DecisionPolicy` protocol |
+| `core/engines/policies/decision_policy_registry.py` | `DecisionPolicyRegistry` |
 | `core/engines/policies/implementations/action.py` | the built-in `ActionPolicy` |
 | `core/engines/policies/implementations/` | the eight decision-class policies, `RulePolicy`, `PlanningPolicy`, the wrappers and `BanditPolicy` |
 | `core/engines/policies/simulation.py` | `ShadowPolicy` and `simulate` |
-| `core/engines/contract/engine.py` | `EnginePolicy` |
+| `core/engines/contract/planner_policy.py` | `PlannerPolicy` |
 
 ## Related
 

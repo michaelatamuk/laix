@@ -1,12 +1,12 @@
 # Single decision
 
-`Layer` is the one-decision surface of the app kit. It wraps the core, keeps the runtime, and can
+`DecisionClient` is the one-decision surface of the app kit. It wraps the core, keeps the runtime, and can
 execute, measure and deliver the result.
 
 ```python
-from laix import ActionOption, Constraint, DecisionRequest, Layer, Situation
+from laix import ActionOption, Constraint, DecisionRequest, DecisionClient, Situation
 
-layer = Layer()
+layer = DecisionClient()
 
 request = DecisionRequest(
     subject="invoice",
@@ -27,10 +27,10 @@ decision = layer.decide(request)[0]
 print(decision.verb, decision.reason_code, decision.action_id)
 ```
 
-The request has a situation and options, so `Layer` selects the action path. The hard risk limit
+The request has a situation and options, so `DecisionClient` selects the action path. The hard risk limit
 removes any unsafe option before the choice.
 
-## What `Layer` owns
+## What `DecisionClient` owns
 
 | Method | Returns | Use |
 |---|---|---|
@@ -46,15 +46,15 @@ removes any unsafe option before the choice.
 | `policies()` | `tuple[str, ...]` | List the registered policies. |
 | `bridge()` | `ExecutionBridge` | The execution bridge behind the layer. |
 
-`Layer` is a convenience surface, not a second core. The decision contract, the verbs and the reason
+`DecisionClient` is a convenience surface, not a second core. The decision contract, the verbs and the reason
 codes are the same.
 
-## `Layer` or `decide`
+## `DecisionClient` or `decide`
 
 | Surface | What you get | Use it when |
 |---|---|---|
 | `decide(request)` | The answer only. | You already have execution and records. |
-| `Layer().decide(request)` | The answer plus the runtime, policy registry, execution bridge, records and delivery. | You want one object for a complete app step. |
+| `DecisionClient().decide(request)` | The answer plus the runtime, policy registry, execution bridge, records and delivery. | You want one object for a complete app step. |
 
 The core entry point is described in [Dispatch](../../02-core/01-contract/03-dispatch.md).
 
@@ -113,9 +113,9 @@ the receipt.
 ## TypeScript
 
 ```ts
-import { Layer } from "laix";
+import { DecisionClient } from "laix";
 
-const layer = new Layer();
+const layer = new DecisionClient();
 const [decision] = layer.decide({
   subject: "invoice",
   at: "2026-11-01T10:00:00Z",
@@ -130,7 +130,7 @@ TypeScript exposes the same `decide`, `stream`, `execute`, `measure`, `deliver`,
 
 ## Boundary
 
-`Layer.decide` evaluates one request. It does not keep an event-time watermark or a stream buffer;
+`DecisionClient.decide` evaluates one request. It does not keep an event-time watermark or a stream buffer;
 use [Streaming](../02-run/02-streaming.md) for that. It does not choose the policy for you beyond the
 built-in dispatch rule; use [Policies in the app](03-policies-in-the-app.md) for selection and rollout.
 
@@ -138,5 +138,5 @@ built-in dispatch rule; use [Policies in the app](03-policies-in-the-app.md) for
 
 - [Integration](01-integration.md) - the adapter around the call.
 - [Policies in the app](03-policies-in-the-app.md) - the policy registry and rollout.
-- [Decision runtime](../02-run/01-decision-runtime.md) - the loop behind `Layer`.
+- [Decision runtime](../02-run/01-decision-runtime.md) - the loop behind `DecisionClient`.
 - [Execution and recovery](../03-execute/01-execution-and-recovery.md) - the write boundary.

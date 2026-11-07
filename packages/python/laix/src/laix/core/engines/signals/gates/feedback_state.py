@@ -1,10 +1,10 @@
-"""Feedback suppression: has the user already rejected this signal?"""
+"""SignalFeedback suppression: has the user already rejected this signal?"""
 
 from __future__ import annotations
 
 from datetime import datetime
 
-from ..input.feedback import Feedback
+from ..input.signal_feedback import SignalFeedback
 from .reason import FEEDBACK_REASONS, ReasonCode
 
 
@@ -21,7 +21,7 @@ def snoozed_until_future(until: str | None, now: datetime) -> bool:
     return moment > now
 
 
-def feedback_blocks(feedback: Feedback | None, now: datetime) -> ReasonCode | None:
+def feedback_blocks(feedback: SignalFeedback | None, now: datetime) -> ReasonCode | None:
     """Return the blocking reason, or None when the signal may proceed."""
     if feedback is None or feedback.state == "accepted":
         return None

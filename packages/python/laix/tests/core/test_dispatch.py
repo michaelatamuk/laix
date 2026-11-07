@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from laix.core import ActionOption, Decision, DecisionRequest, Situation, decide
-from laix.core.engines.signals import Context, Signal
+from laix.core.engines.signals import SignalContext, Signal
 
 
 def at(hour: int = 10) -> datetime:
@@ -60,7 +60,7 @@ def test_attention_decisions_keep_their_trace_id_and_get_a_decision_id() -> None
         subject="room-1",
         at=at().isoformat(),
         signals=(signal,),
-        context=Context(now=at(), quiet_hours=None),
+        context=SignalContext(now=at(), quiet_hours=None),
     )
     decision = decide(request)[0]
     assert decision.trace_id

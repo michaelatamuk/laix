@@ -1,23 +1,23 @@
 /**
- * Canonical attention-contract conformance.
+ * Canonical signal-attention conformance.
  *
- * Reads `packages/contracts/attention.v1.json` (the same file the Python implementation
+ * Reads `packages/contracts/signal-attention.v1.json` (the same file the Python implementation
  * uses) and fails if any of the 23 behavioural cases disagree.
  *
  * Run from packages/typescript/laix:
  *   node --experimental-strip-types scripts/conformance.mjs
  */
 import { readFileSync, writeFileSync } from "node:fs";
-import { decideAttention } from "../src/index.ts";
+import { decideSignalAttention } from "../src/index.ts";
 
-const source = new URL("../../../contracts/attention.v1.json", import.meta.url);
+const source = new URL("../../../contracts/signal-attention.v1.json", import.meta.url);
 const fixture = JSON.parse(readFileSync(source, "utf8"));
 
 const rows = [];
 let pass = 0;
 
 for (const testCase of fixture.cases) {
-  const decisions = decideAttention(testCase.context, testCase.signals);
+  const decisions = decideSignalAttention(testCase.context, testCase.signals);
   const byId = new Map(decisions.map((decision) => [decision.signalId, decision]));
 
   for (const expected of testCase.expected) {
@@ -66,7 +66,7 @@ for (const testCase of fixture.cases) {
 
 const total = rows.length;
 const lines = [
-  "# Canonical attention conformance",
+  "# Canonical signal-attention conformance",
   "",
   `- Contract: \`${fixture.contract}\` v${fixture.version}`,
   `- Cases: **${total}**`,
@@ -82,7 +82,7 @@ const lines = [
 ];
 
 writeFileSync(new URL("../CONFORMANCE.md", import.meta.url), lines.join("\n"), "utf8");
-console.log(`attention conformance: ${pass}/${total} decisions agree`);
+console.log(`signal-attention conformance: ${pass}/${total} decisions agree`);
 if (pass !== total) {
   for (const row of rows.filter((item) => !item.pass)) {
     console.error(`${row.case}/${row.signal}: ${row.problems.join("; ")}`);

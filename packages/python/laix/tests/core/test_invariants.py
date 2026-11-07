@@ -13,15 +13,15 @@ import pytest
 
 from laix import (
     ActionOption,
-    AttentionBudget,
+    HumanAttentionBudget,
     Constraint,
     Decision,
-    DecisionProblem,
+    PlannerInput,
     DecisionRequest,
-    EnginePolicy,
+    PlannerPolicy,
     ExecutionBridge,
     ExecutionReceipt,
-    LiveDecisionEngine,
+    LiveCompositePlanner,
     Situation,
     Trace,
     UtilityPlanner,
@@ -36,8 +36,8 @@ from laix.core.decisions.trail.execution_receipt import EXECUTION_RECEIPT_STATUS
 AT = "2026-11-01T10:00:00+00:00"
 
 
-def _problem(*options: ActionOption, **attributes: object) -> DecisionProblem:
-    return DecisionProblem(
+def _problem(*options: ActionOption, **attributes: object) -> PlannerInput:
+    return PlannerInput(
         subject="invariant case",
         at=AT,
         options=options,
@@ -79,7 +79,7 @@ def test_i1_determinism() -> None:
         _option("b", benefit=0.6, risk=0.1),
         _option("c", benefit=0.7),
     )
-    engine = LiveDecisionEngine()
+    engine = LiveCompositePlanner()
     plan_1 = engine.solve(problem)
     plan_2 = engine.solve(problem)
     plan_3 = engine.solve(problem)
@@ -105,15 +105,15 @@ def test_i2_hard_constraint_gate_risk_limit() -> None:
         subject="risk limit",
         constraints=(Constraint(id="risk-limit", kind="risk", value=0.4, hard=True),),
     )
-    # Pass situation as a DecisionProblem field, not via attributes.
-    problem = DecisionProblem(
+    # Pass situation as a PlannerInput field, not via attributes.
+    problem = PlannerInput(
         subject="invariant case",
         at=AT,
         situation=situation,
         options=(risky, safe),
     )
 
-    for engine in (UtilityPlanner(), LiveDecisionEngine()):
+    for engine in (UtilityPlanner(), LiveCompositePlanner()):
         plan = engine.solve(problem)
         assert plan.action_id != "risky", (
             f"{engine.__class__.__name__} chose the risky option despite hard risk gate"
@@ -131,13 +131,13 @@ def test_i2_hard_constraint_gate_blocks_all_options() -> None:
         subject="risk limit",
         constraints=(Constraint(id="risk-limit", kind="risk", value=0.3, hard=True),),
     )
-    problem = DecisionProblem(
+    problem = PlannerInput(
         subject="invariant case",
         at=AT,
         situation=situation,
         options=(risky_a, risky_b),
     )
-    plan = LiveDecisionEngine().solve(problem)
+    plan = LiveCompositePlanner().solve(problem)
 
     assert plan.verb == "wait"
 
@@ -147,7 +147,7 @@ def test_i2_hard_constraint_gate_blocks_all_options() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_i3_attention_budget_blocks_asking_when_exhausted() -> None:
+def test_i3_human_attention_budget_blocks_asking_when_exhausted() -> None:
     """I3: option that needs attention is blocked when the budget is spent."""
     ask = _option("ask", benefit=0.9, verb="ask")
     act = _option("act", benefit=0.6, verb="act")
@@ -155,16 +155,16 @@ def test_i3_attention_budget_blocks_asking_when_exhausted() -> None:
     problem = _problem(
         ask,
         act,
-        attention_budget=AttentionBudget(total=1.0, spent=1.0),
+        human_attention_budget=HumanAttentionBudget(total=1.0, spent=1.0),
     )
-    plan = LiveDecisionEngine().solve(problem)
+    plan = LiveCompositePlanner().solve(problem)
 
     assert plan.action_id == "act", (
         "attention engine should choose act when budget is exhausted"
     )
 
 
-def test_i3_attention_budget_allows_asking_when_budget_remains() -> None:
+def test_i3_human_attention_budget_allows_asking_when_budget_remains() -> None:
     """I3 inverse: option that needs attention is allowed when budget is available."""
     ask = _option("ask", benefit=0.9, verb="ask")
     act = _option("act", benefit=0.3, verb="act")
@@ -172,9 +172,9 @@ def test_i3_attention_budget_allows_asking_when_budget_remains() -> None:
     problem = _problem(
         ask,
         act,
-        attention_budget=AttentionBudget(total=1.0, spent=0.0),
+        human_attention_budget=HumanAttentionBudget(total=1.0, spent=0.0),
     )
-    plan = LiveDecisionEngine().solve(problem)
+    plan = LiveCompositePlanner().solve(problem)
 
     assert plan.action_id == "ask"
 
@@ -190,7 +190,7 @@ def test_i4_rejected_approval_never_chosen() -> None:
     fallback = _option("fallback", benefit=0.4)
 
     problem = _problem(rejected, fallback, approvals={"rejected": "rejected"})
-    plan = LiveDecisionEngine().solve(problem)
+    plan = LiveCompositePlanner().solve(problem)
 
     assert plan.action_id == "fallback", (
         "rejected option must not be chosen regardless of utility"
@@ -203,7 +203,7 @@ def test_i4_rejected_approval_all_rejected_waits() -> None:
     opt_b = _option("b", benefit=0.8)
 
     problem = _problem(opt_a, opt_b, approvals={"a": "rejected", "b": "rejected"})
-    plan = LiveDecisionEngine().solve(problem)
+    plan = LiveCompositePlanner().solve(problem)
 
     assert plan.verb == "wait"
 
@@ -343,7 +343,7 @@ def test_i8_confidence_bounds_all_planners() -> None:
         CommitmentPlanner(),
         ExecutionRiskPlanner(),
         HumanAttentionPlanner(),
-        LiveDecisionEngine(),
+        LiveCompositePlanner(),
     ]
     problems = [
         _problem(),  # no options → wait
@@ -373,7 +373,7 @@ def test_i8_confidence_bounds_all_planners() -> None:
 
 
 def test_i9_contract_consistency_engine_policy_vs_decide() -> None:
-    """I9: EnginePolicy(engine).decide(req) equals decide(req, policy=EnginePolicy(engine))."""
+    """I9: PlannerPolicy(engine).decide(req) equals decide(req, policy=PlannerPolicy(engine))."""
     request = DecisionRequest(
         subject="invoice",
         at=AT,
@@ -383,7 +383,7 @@ def test_i9_contract_consistency_engine_policy_vs_decide() -> None:
         ),
     )
     engine = UtilityPlanner()
-    policy = EnginePolicy(engine)
+    policy = PlannerPolicy(engine)
 
     via_policy = policy.decide(request)[0]
     via_decide = decide(request, policy=policy)[0]

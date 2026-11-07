@@ -1,7 +1,7 @@
 """The decision shapes: request, decision and normalisation into one answer.
 
 ``Decision`` and ``DecisionRequest`` are the two shapes a host and a policy
-exchange. ``coerce`` and ``from_attention`` normalise any policy result into
+exchange. ``coerce`` and ``from_signal_attention`` normalise any policy result into
 the one public ``Decision``.
 """
 
@@ -22,7 +22,7 @@ from .request import (
     Situation,
 )
 from .response import EvidenceRef, Intent, ScoreBreakdown
-from .normalise import coerce, from_attention
+from .normalise import coerce, from_signal_attention
 from .response.decision import DECISION_STATUSES, TARGET_MODES, Decision
 from .trail.execution_receipt import EXECUTION_RECEIPT_STATUSES, ExecutionReceipt
 from .trail.trace import Trace
@@ -50,5 +50,5 @@ __all__ = [
     "Trace",
     "VERBS",
     "coerce",
-    "from_attention",
+    "from_signal_attention",
 ]

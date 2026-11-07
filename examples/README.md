@@ -85,15 +85,15 @@ py examples/python/01-decide/attention_bill_due.py
 | Commitment planning | `planning.py` | `planning.mts` | `act due_commitment a` |
 | Persist a commitment ledger | `planning_store.py` | `planning_store.mts` | `send the draft` |
 
-## 03 Plan
+## 03 PlannerResult
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
 | Utility with hard limits | `utility_planner.py` | `planners.mts` | `act bold 0.75` |
 | Commitment-aware planning | `commitment_planner.py` | `commitment_planner.mts` | `send-later commitment_aware c1` |
 | Execution-aware planning | `execution_planner.py` | `execution_planner.mts` | `archive execution_aware True` / `true` |
-| Attention-aware planning | `attention_planner.py` | `attention_planner.mts` | `act attention_aware 0.0` / `0` |
-| Live decision engine | `live_engine.py` | `live_engine.mts` | `safe live_decision c1` |
+| Human-attention planning | `human_attention_planner.py` | `human_attention_planner.mts` | `act human_attention_aware 0.0` / `0` |
+| Live composite planner | `live_composite_planner.py` | `live_composite_planner.mts` | `safe live_decision c1` |
 | One-step MDP plan | `mdp_planner.py` | `planners.mts` | `act go 2.8` |
 | POMDP belief planning | `pomdp_planner.py` | `pomdp_planner.mts` | `act go 2.8` |
 | Compare planners on one scenario | `simulator.py` | `planners.mts` | `right 4.0 1.0` |

@@ -5,16 +5,16 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from laix import (
-    Context,
+    SignalContext,
     DecisionRequest,
     EvidenceRef,
-    Layer,
+    DecisionClient,
     Signal,
     approve_record,
     create_record,
 )
 
-decision = Layer().decide(
+decision = DecisionClient().decide(
     DecisionRequest(
         subject="contract promise",
         at="2026-11-01T10:00:00+00:00",
@@ -29,7 +29,7 @@ decision = Layer().decide(
                 evidence_refs=("quote-17",),
             ),
         ),
-        context=Context(
+        context=SignalContext(
             now=datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc),
             quiet_hours=None,
             min_severity="medium",

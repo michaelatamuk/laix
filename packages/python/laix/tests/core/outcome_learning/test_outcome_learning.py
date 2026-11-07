@@ -6,7 +6,7 @@ from laix import (
     Arm,
     BanditPolicy,
     DecisionRequest,
-    Layer,
+    DecisionClient,
     Outcome,
     UCBBandit,
     reward_for_label,
@@ -67,7 +67,7 @@ def test_bandit_learns_from_labelled_outcomes() -> None:
 
 def test_bandit_policy_changes_its_choice_after_feedback() -> None:
     policy = BanditPolicy(UCBBandit([Arm("manual"), Arm("automatic")]))
-    layer = Layer(policy=policy)
+    layer = DecisionClient(policy=policy)
     request = DecisionRequest(subject="pick a mode", at="2026-11-01T10:00:00+00:00")
 
     first = layer.decide(request)[0]
@@ -83,7 +83,7 @@ def test_bandit_policy_changes_its_choice_after_feedback() -> None:
 
 
 def test_bandit_policy_waits_without_arms() -> None:
-    decision = Layer(policy=BanditPolicy()).decide(
+    decision = DecisionClient(policy=BanditPolicy()).decide(
         DecisionRequest(subject="pick", at="2026-11-01T10:00:00+00:00")
     )[0]
     assert decision.verb == "wait"

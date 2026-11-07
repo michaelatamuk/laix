@@ -85,7 +85,7 @@ tool, a plan step or a `DISPATCH`.
 | Flow policy, holding and app execution policy | PPMA |
 | Task goal, options and constraints | PPMA |
 | Task decision | LAIX |
-| Policy composition and decision semantics | LAIX |
+| DecisionPolicy composition and decision semantics | LAIX |
 | Calibration, provenance, commit and execution | PPMA |
 
 ## 4. Why PPMA should use LAIX
@@ -98,7 +98,7 @@ It also adds:
 
 - **One task-decision contract** across the Commander, missions and apps.
 - **Decision semantics** - constraints, approval, escalation and verification travel with the decision.
-- **Policy composition** - models and deterministic rules sit inside one policy.
+- **DecisionPolicy composition** - models and deterministic rules sit inside one policy.
 - **Fewer model calls** - a bounded decision that fits a policy runs as a policy.
 - **Replay and comparison** - policies can be tested, replayed and benchmarked.
 - **Model independence** - swap the model behind the same contract.

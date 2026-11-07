@@ -27,7 +27,7 @@ from ...core.outcome_learning import Outcome
 from ...core.support.time import iso
 from .execution import ApprovalRequired, ExecutionBridge
 from ...core.outcome_learning import OutcomeLedger
-from ...core.engines.policies.implementations.action import ActionPolicy, ActionPolicyRequest
+from ...core.engines.policies.implementations.action import ActionPolicy, ActionPolicyInput
 from ...core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .state import ExperienceState
 
@@ -70,7 +70,7 @@ class DecisionRuntime:
     ) -> Decision:
         decision_id = self._id("DEC")
         trace_id = self._id("TRC")
-        request = ActionPolicyRequest(situation=situation, options=tuple(options), attributes=dict(attributes or {}))
+        request = ActionPolicyInput(situation=situation, options=tuple(options), attributes=dict(attributes or {}))
         decision = self.policy.decide(request, decision_id=decision_id, trace_id=trace_id)
         self._decisions[decision.decision_id] = decision
         for option in request.options:

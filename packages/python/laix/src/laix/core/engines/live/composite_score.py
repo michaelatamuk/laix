@@ -12,7 +12,7 @@ class CompositeScore:
     utility: float
     commitment: float
     execution: float
-    attention: float
+    human_attention: float
     total: float
 
 

@@ -21,7 +21,7 @@ from laix.core.decisions import (
 )
 from laix.core.support.time import iso, utcnow
 from laix.appkit.runtime import ExecutionBridge
-from laix.core.engines.policies import ActionPolicy, ActionPolicyConfig, ActionPolicyRequest
+from laix.core.engines.policies import ActionPolicy, ActionPolicyConfig, ActionPolicyInput
 from laix.core.engines.resources import Budget, ResourceScheduler, SensingOption
 from laix.appkit.runtime import DecisionRuntime
 from laix.core.schema import SCHEMA_PATH, build_schema, check, dumps_schema
@@ -139,7 +139,7 @@ def test_state_round_trips_through_snapshot() -> None:
 
 
 def test_policy_acts_when_urgency_and_confidence_are_high() -> None:
-    request = ActionPolicyRequest(situation(urgency=0.9), options())
+    request = ActionPolicyInput(situation(urgency=0.9), options())
     decision = ActionPolicy().decide(request, decision_id="D1", trace_id="T1")
     assert decision.verb == "act"
     assert decision.action_id == "a-act"
@@ -150,7 +150,7 @@ def test_policy_acts_when_urgency_and_confidence_are_high() -> None:
 def test_policy_observes_when_more_information_is_cheap() -> None:
     observe = ActionOption(id="a-observe", verb="observe", name="take_another_look", expected_benefit=0.6)
     decision = ActionPolicy().decide(
-        ActionPolicyRequest(situation(urgency=0.9, needs_more_info=True), (*options(), observe))
+        ActionPolicyInput(situation(urgency=0.9, needs_more_info=True), (*options(), observe))
     )
     assert decision.verb == "observe"
     assert decision.action_id == "a-observe"
@@ -162,29 +162,29 @@ def test_policy_asks_when_uncertain() -> None:
         beliefs=(Belief(id="b", proposition="weak", confidence=0.3),),
         attributes={"urgency": 0.9},
     )
-    decision = ActionPolicy().decide(ActionPolicyRequest(weak, options()))
+    decision = ActionPolicy().decide(ActionPolicyInput(weak, options()))
     assert decision.verb == "ask"
 
 
 def test_policy_escalates_before_acting_on_breach() -> None:
-    decision = ActionPolicy().decide(ActionPolicyRequest(situation(urgency=0.99, deadline_breached=True), options()))
+    decision = ActionPolicy().decide(ActionPolicyInput(situation(urgency=0.99, deadline_breached=True), options()))
     assert decision.verb == "escalate"
 
 
 def test_policy_verifies_pending_outcome() -> None:
     decision = ActionPolicy().decide(
-        ActionPolicyRequest(situation(urgency=0.99, verification_due=True), options())
+        ActionPolicyInput(situation(urgency=0.99, verification_due=True), options())
     )
     assert decision.verb == "verify"
 
 
 def test_policy_guides_a_mid_urgency_event() -> None:
-    decision = ActionPolicy().decide(ActionPolicyRequest(situation(urgency=0.6), options()))
+    decision = ActionPolicy().decide(ActionPolicyInput(situation(urgency=0.6), options()))
     assert decision.verb == "guide"
 
 
 def test_policy_waits_when_nothing_clears_the_threshold() -> None:
-    decision = ActionPolicy().decide(ActionPolicyRequest(situation(urgency=0.1), options()))
+    decision = ActionPolicy().decide(ActionPolicyInput(situation(urgency=0.1), options()))
     assert decision.verb == "wait"
 
 
@@ -196,7 +196,7 @@ def test_policy_blocks_actions_that_break_hard_constraints() -> None:
         attributes=sit.attributes,
     )
     slow = ActionOption(id="a-slow", verb="act", name="slow_act", latency_ms=500, expected_benefit=0.99)
-    decision = ActionPolicy().decide(ActionPolicyRequest(sit, (*options(), slow)))
+    decision = ActionPolicy().decide(ActionPolicyInput(sit, (*options(), slow)))
     assert decision.action_id != "a-slow"
     assert any("latency" in item for item in decision.constraints_applied)
     assert any(item["action_id"] == "a-slow" for item in decision.alternatives)
@@ -211,7 +211,7 @@ def test_approval_flag_is_scoped_to_actions() -> None:
         constraints=(Constraint(id="approve", kind="approval", value="required", hard=True),),
         attributes={"urgency": 0.6},
     )
-    guide = ActionPolicy().decide(ActionPolicyRequest(sit, options()))
+    guide = ActionPolicy().decide(ActionPolicyInput(sit, options()))
     assert guide.verb == "guide"
     assert guide.requires_approval is False
 
@@ -223,14 +223,14 @@ def test_approval_flag_is_scoped_to_actions() -> None:
         constraints=sit.constraints,
         attributes={"urgency": 0.99},
     )
-    act = ActionPolicy().decide(ActionPolicyRequest(act_sit, options()))
+    act = ActionPolicy().decide(ActionPolicyInput(act_sit, options()))
     assert act.verb == "act"
     assert act.requires_approval is True
 
 
 def test_policy_requires_approval_for_destructive_actions() -> None:
     destructive = ActionOption(id="a-delete", verb="act", name="delete", destructive=True, expected_benefit=0.99)
-    decision = ActionPolicy().decide(ActionPolicyRequest(situation(urgency=0.99), (*options(), destructive)))
+    decision = ActionPolicy().decide(ActionPolicyInput(situation(urgency=0.99), (*options(), destructive)))
     assert decision.verb == "act"
     assert decision.requires_approval is True
     assert "approval:human-required" in decision.constraints_applied
@@ -242,13 +242,13 @@ def test_policy_safety_constraint_forces_wait() -> None:
         constraints=(Constraint(id="safe", kind="safety", value="blocked", hard=True),),
         attributes={"urgency": 0.99},
     )
-    decision = ActionPolicy().decide(ActionPolicyRequest(sit, options()))
+    decision = ActionPolicy().decide(ActionPolicyInput(sit, options()))
     assert decision.verb == "wait"
     assert "safety" in decision.rationale
 
 
 def test_policy_is_deterministic() -> None:
-    request = ActionPolicyRequest(situation(urgency=0.9), options())
+    request = ActionPolicyInput(situation(urgency=0.9), options())
     policy = ActionPolicy()
     first = policy.decide(request, decision_id="D", trace_id="T", created_at="2026-01-01T00:00:00+00:00")
     second = policy.decide(request, decision_id="D", trace_id="T", created_at="2026-01-01T00:00:00+00:00")
@@ -257,7 +257,7 @@ def test_policy_is_deterministic() -> None:
 
 def test_policy_config_is_tunable() -> None:
     strict = ActionPolicy(ActionPolicyConfig(act_urgency=0.99, act_confidence=0.99))
-    assert strict.decide(ActionPolicyRequest(situation(urgency=0.9), options())).verb == "guide"
+    assert strict.decide(ActionPolicyInput(situation(urgency=0.9), options())).verb == "guide"
 
 
 # -------------------------------------------------------------------- runtime

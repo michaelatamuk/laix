@@ -2,7 +2,7 @@
 
 LAIX has three evaluation layers. They answer different questions.
 
-| Layer | Question | Location |
+| DecisionClient | Question | Location |
 |---|---|---|
 | **Core evaluation** | Did a policy or planner return the expected decision? | `core/evaluation/` |
 | **Live decision benchmark** | Which planner is accurate and safe on the fixed live cases? | `core/engines/bench/` |
@@ -52,11 +52,11 @@ JSON document. `compare_decisions` is the package-level alias for `compare`.
 
 ### Attention evaluation
 
-The attention fixture has its own helpers in `core/evaluation/attention.py`:
+The attention fixture has its own helpers in `core/evaluation/signal_attention.py`:
 
 | Helper | Purpose |
 |---|---|
-| `context_from(payload)` | Build a `Context` from JSON keys. |
+| `context_from(payload)` | Build a `SignalContext` from JSON keys. |
 | `signal_from(payload)` | Build a `Signal` from JSON keys. |
 | `run_case(case)` | Run one attention case. |
 | `compare(case)` | Compare one case and return its mismatches. |
@@ -120,7 +120,7 @@ renders the metrics table, sorted by accuracy.
 | `commitment` | `CommitmentPlanner` |
 | `execution` | `ExecutionRiskPlanner` |
 | `attention` | `HumanAttentionPlanner` |
-| `live` | `LiveDecisionEngine` |
+| `live` | `LiveCompositePlanner` |
 
 `FirstOptionPlanner` chooses the first option. `HighestBenefitPlanner` chooses the option with the
 highest `expected_benefit`. Both return `wait` with `no_options` when the problem has no options.
@@ -148,7 +148,7 @@ The external runner adds the `glue` key; `default_planners()` returns the seven 
 The corpus is in `benchmarks/live/v1/`; the frozen result is in
 `results/live-decision-benchmark/`. The current test-split result:
 
-| Measure | `LiveDecisionEngine` | Best comparator |
+| Measure | `LiveCompositePlanner` | Best comparator |
 |---|---:|---:|
 | Accuracy, 30 cases | 100% | 93.3% (glue baseline) |
 | Conflict accuracy, 6 cases | 100% | 100% (glue baseline) |
@@ -166,7 +166,7 @@ The result files use short keys. They are stable data identifiers; they are not 
 
 | Key | Component |
 |---|---|
-| `live` | `LiveDecisionEngine` |
+| `live` | `LiveCompositePlanner` |
 | `glue` | hand-built glue baseline |
 | `commitment` | `CommitmentPlanner` |
 | `execution` | `ExecutionRiskPlanner` |
@@ -204,7 +204,7 @@ The CLI, the case format and the stream bench are documented in
 
 | Check | What it compares |
 |---|---|
-| `npm run conformance` | the attention decisions against `packages/contracts/attention.v1.json` |
+| `npm run conformance` | the signal-attention decisions against `packages/contracts/signal-attention.v1.json` |
 | `npm run live-bench` | Python and TypeScript actions on the live corpus |
 | `pytest` | Python contracts, policies, planners and app-kit behaviour |
 | `npm test` | the same surface in TypeScript |

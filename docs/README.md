@@ -30,7 +30,7 @@ Read in order.
 | [Core overview](02-core/README.md) | the five layers, the decision loop and the reading map |
 | [Contract](02-core/01-contract/README.md) | request, response, records, schema and dispatch |
 | [Decide](02-core/02-decide/README.md) | signal attention, commitments, policies and resources |
-| [Planning](02-core/03-planning/README.md) | planner contract, live planners, live engine and model-based planners |
+| [Planning](02-core/03-planning/README.md) | planner contract, live planners, live composite planner and model-based planners |
 | [Continuity](02-core/04-continuity/README.md) | decision continuity and the continuity benchmark |
 | [Learning](02-core/05-learning/README.md) | outcomes, rewards, calibration and model learning |
 | [Reference](02-core/06-reference/README.md) | evaluation and foundation |
@@ -115,7 +115,7 @@ Runnable examples are organized by language and lifecycle in
 | I am… | Start with |
 |---|---|
 | Product | [What is LAIX?](01-start/01-orientation/01-what-is-laix.md), [Decision lifecycle](01-start/01-orientation/02-decision-lifecycle.md), [Scope and boundaries](04-concepts/01-architecture/02-scope-and-boundaries.md) |
-| Engineer | [Quickstart](01-start/02-first-steps/01-quickstart.md), [Decision contract](02-core/01-contract/01-decision-contract.md), [Policies](02-core/02-decide/03-policies.md), [Planner contract](02-core/03-planning/01-planner-contract.md), [Live decision engine](02-core/03-planning/03-live-decision-engine.md), [App kit](03-appkit/README.md) |
+| Engineer | [Quickstart](01-start/02-first-steps/01-quickstart.md), [Decision contract](02-core/01-contract/01-decision-contract.md), [Policies](02-core/02-decide/03-policies.md), [Planner contract](02-core/03-planning/01-planner-contract.md), [Live composite planner](02-core/03-planning/03-live-composite-planner.md), [App kit](03-appkit/README.md) |
 | Operator | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md), [Stores](03-appkit/04-connect/01-stores.md), [Platform](03-appkit/04-connect/02-platform.md), [Delivery](03-appkit/04-connect/03-delivery.md), [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md) |
 | Contributor | [Contributing](../CONTRIBUTING.md), [Testing](05-project/02-quality/01-testing.md), [Repository structure](05-project/01-repository/01-repository-structure.md) |
 | Researcher or reviewer | [Research and evidence](06-research/README.md), then [Prior art](06-research/01-positioning/prior-art.md), [Benchmark](06-research/02-evaluation/benchmark.md) |

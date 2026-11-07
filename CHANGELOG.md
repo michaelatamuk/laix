@@ -4,18 +4,26 @@
 
 ### Breaking
 
-- **Planner / Engine / Policy / Learner naming.** The built-in strategies are now `UtilityPlanner`,
-  `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner` and
-  `POMDPPlanner`. `LiveDecisionEngine` remains the composition engine, `EnginePolicy` remains the
-  policy adapter, `UCBBandit` remains a learner, and `DecisionEngine` remains the protocol.
-- Renamed `LiveScore` to `CompositeScore` and moved the engine to `core/engines/live/`.
-- Renamed `compare_engines` / `compareEngines` to `compare_planners` / `comparePlanners`,
-  `EngineScore` to `PlannerScore`, `FixedActionEngine` to `FixedActionPlanner`,
-  `FirstOptionEngine` to `FirstOptionPlanner`, `HighestBenefitEngine` to
-  `HighestBenefitPlanner`, and `run_engine_bench` / `runEngineBench` to
-  `run_planner_bench` / `runPlannerBench`.
-- JSON keys and reason codes are unchanged: `live`, `glue`, `commitment`, `execution`, `attention`,
-  `utility`, `first`, `benefit` and `live_decision`.
+- **Planner vocabulary.** The planner contract is now `Planner` (`DecisionEngine`), `PlannerInput`
+  (`DecisionProblem`), `PlannerResult` (`Plan`) and `PlannerPolicy` (`EnginePolicy`).
+  `LiveDecisionEngine` is now `LiveCompositePlanner`.
+- **Policy vocabulary.** `Policy` is now `DecisionPolicy`, with `DecisionPolicyRegistry` and
+  `DecisionPolicyError`. `Layer` is now `DecisionClient`.
+- **Attention vocabulary.** `decide_attention` is now `decide_signal_attention`. The signal-side
+  records are `SignalContext`, `SignalFeedback`, `SignalAttentionDecision`,
+  `SignalAttentionOutcome` and `SignalAttentionLog`. The planning-side records are
+  `HumanAttentionBudget`, `HumanAttentionEffect`, `HumanAttentionScore` and
+  `HumanAttentionWeights`.
+- **File and vector names.** The contract, live planner, policy, app-kit client, signal, human
+  attention and outcome paths moved with the names. The attention vectors are now
+  `signal-attention.v1.json` and `signal-attention-bench.v1.json`.
+- **Data identifiers.** Benchmark keys stay unchanged. Human-attention attributes and reason codes
+  use the `human_attention_*` prefix.
+- Renamed `LiveScore` to `CompositeScore`, `EngineScore` to `PlannerBenchmarkRow`,
+  `compare_engines` / `compareEngines` to `compare_planners` / `comparePlanners`, and the
+  `*Engine` planners to `*Planner`.
+- JSON keys and reason codes for the benchmark stay unchanged: `live`, `glue`, `commitment`,
+  `execution`, `attention`, `utility`, `first`, `benefit` and `live_decision`.
 - No compatibility aliases are provided; see the
   [migration guide](docs/05-project/03-release/02-migration.md).
 
@@ -30,7 +38,7 @@
   recorded human decisions.
 - **TypeScript live-bench parity.** The TypeScript planners run the same 30-case test split and
   match Python on all 210 action IDs.
-- **External comparison harness.** A LangGraph adapter runs the same decision engine in a state
+- **External comparison harness.** A LangGraph adapter runs the same composite planner in a state
   graph and reports operational overhead; Temporal, PagerDuty and Camunda remain documented-only.
 - **Built-in planners.** `UtilityPlanner` with hard limits and risk attitude, `MDPPlanner`
   with value iteration, and `POMDPPlanner` with belief update and finite-horizon planning.
@@ -69,7 +77,7 @@
 - Tightened the README hero, contents and Why section, replaced the slide-style benchmark and ablation images with matplotlib charts generated from the committed result JSON, and replaced the architecture slide with a light vector loop. Removed the generated demo animation; the code examples carry the demo until a real recording exists.
 - Restructured the claim–evidence map into headline, safety, contract, open-claims and evidence-index tables.
 - Split the README results into outcome, ablation and verification tables, with the glue baseline shown as the best comparator.
-- Standardised docs on full engine class names (`LiveDecisionEngine`, `UtilityPlanner`,
+- Standardised docs on full engine class names (`LiveCompositePlanner`, `UtilityPlanner`,
   `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`). Short keys stay in JSON
   and CLI output and are documented in `results/live-decision-benchmark/README.md`.
 - Added a README comparison table, a "Can they be compared?" protocol, and comparison links that
@@ -92,7 +100,7 @@
   0.656, chooser 0.637. The guardrail removed the one forbidden recommendation without losing
   score.
 - Added a decision-continuity benchmark v0: 12 episodes, 60 decisions. Stateful
-  `LiveDecisionEngine` succeeded on 100% of episodes; a stateless `UtilityPlanner` on 0% with 36
+  `LiveCompositePlanner` succeeded on 100% of episodes; a stateless `UtilityPlanner` on 0% with 36
   continuity errors. This is a synthetic mechanism test, not external validation.
 - Ran the τ-bench retail baseline with DeepSeek V4 Flash: 9/10 tasks, `pass^1 = 0.90`. The LAIX
   policy adapter is not implemented; τ-bench scores full-agent tool use, not the runtime lifecycle.
@@ -122,11 +130,11 @@
   `Decision` / `DecisionRequest`: event time, dedupe, cooldown, hysteresis, budget,
   backpressure, revisions, deadlines, checkpoints and traces. Queue/sync sources,
   Prometheus counters and a stream bench are included.
-- **Engine contract.** `DecisionEngine`, `DecisionProblem`, `Plan` and `EnginePolicy`
+- **Engine contract.** `Planner`, `PlannerInput`, `PlannerResult` and `PlannerPolicy`
   so JEV, an optimizer, a POMDP library or a LAIX planner can sit behind one policy.
 - **Execution integrity.** Idempotency keys, `duplicate` receipts, `unknown` outcomes
   and reconciliation in `ExecutionBridge`.
-- **Policy authoring and target.** `RulePolicy` with declarative rules, and
+- **DecisionPolicy authoring and target.** `RulePolicy` with declarative rules, and
   `TargetedPolicy` with `one` / `some` / `all` / `peer` / `gather` targets.
 - **TypeScript parity** for the streaming runtime, engine policy, execution integrity,
   target fields, rule policies and targeted policies.

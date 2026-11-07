@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "laix/benchmarks/live/v1/schema.json",
   "title": "LAIX live bench — case file (v1)",
-  "description": "Schema for a file of live bench cases. Each case is a DecisionProblem written in JSON that the Python loader converts into a LiveCase for use with run_live_bench().",
+  "description": "Schema for a file of live bench cases. Each case is a PlannerInput written in JSON that the Python loader converts into a LiveCase for use with run_live_bench().",
   "type": "object",
   "required": ["schema", "version", "split", "cases"],
   "additionalProperties": false,
@@ -106,14 +106,14 @@
         "commitments": {
           "type": "array",
           "items": { "$ref": "#/$defs/Commitment" },
-          "description": "Open commitments that options may fulfill or violate. Passed as attributes.commitments to the engine."
+          "description": "Open commitments that options may fulfill or violate. Passed as attributes.commitments to the planner."
         },
-        "attention_budget": {
+        "human_attention_budget": {
           "oneOf": [
             { "type": "null" },
-            { "$ref": "#/$defs/AttentionBudget" }
+            { "$ref": "#/$defs/HumanAttentionBudget" }
           ],
-          "description": "Remaining human-attention budget. Passed as attributes.attention_budget to the engine."
+          "description": "Remaining human-attention budget. Passed as attributes.human_attention_budget to the planner."
         },
         "approvals": {
           "type": "object",
@@ -121,7 +121,7 @@
             "type": "string",
             "enum": ["approved", "rejected", "pending"]
           },
-          "description": "Pre-fetched approval states keyed by action ID. Passed as attributes.approvals to the engine."
+          "description": "Pre-fetched approval states keyed by action ID. Passed as attributes.approvals to the planner."
         }
       }
     },
@@ -201,7 +201,7 @@
               "description": "Commitment IDs this option creates."
             }
           },
-          "description": "Commitment relationships for this option. Passed as option.params.commitments to the engine."
+          "description": "Commitment relationships for this option. Passed as option.params.commitments to the planner."
         },
         "unknown_risk": {
           "type": "number",
@@ -275,7 +275,7 @@
         }
       }
     },
-    "AttentionBudget": {
+    "HumanAttentionBudget": {
       "type": "object",
       "required": ["total", "spent"],
       "additionalProperties": false,

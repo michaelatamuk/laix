@@ -134,7 +134,7 @@ The three are independent. A host can use any of them without the others.
 
 ## Version axes
 
-The package version is `0.10.0`. The record schema, rule sets and attention vectors are `0.8.0`.
+The package version is `0.10.0`. The record schema, rule sets and signal-attention vectors are `0.8.0`.
 Calibration and model learning do not change the record shape; they add reports and learned tables
 that the host stores.
 

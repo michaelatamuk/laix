@@ -1,8 +1,8 @@
-/** The kitchen sink is about to overflow. Ask the TypeScript Layer what to do. */
+/** The kitchen sink is about to overflow. Ask the TypeScript DecisionClient what to do. */
 
-import { Layer } from "../../../packages/typescript/laix/src/index.ts";
+import { DecisionClient } from "../../../packages/typescript/laix/src/index.ts";
 
-const layer = new Layer();
+const layer = new DecisionClient();
 const [decision] = layer.decide({
   subject: "kitchen sink",
   at: "2026-11-01T10:00:00Z",

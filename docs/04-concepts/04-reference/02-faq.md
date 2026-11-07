@@ -15,7 +15,7 @@ service. See [Decision models](../02-positioning/01-decision-models.md).
 
 The built-in policies are deterministic rules and the runtime is training-free. A planner can use a
 world model the host supplies: states, transitions and rewards. A pretrained model can sit behind
-`EnginePolicy` or inside a custom policy, and the decision contract stays the same.
+`PlannerPolicy` or inside a custom policy, and the decision contract stays the same.
 
 ## Does LAIX train a model?
 
@@ -36,7 +36,7 @@ decision id and trace id. The full shape is in
 ## What is the novelty?
 
 The integration: one training-free decision contract for commitments, execution risk, human
-attention, calibration and decision time. `LiveDecisionEngine` combines the four live concerns in one
+attention, calibration and decision time. `LiveCompositePlanner` combines the four live concerns in one
 plan. The contract also carries approval, reversibility, verification and the audit trail, which are
 usually rebuilt in each app.
 

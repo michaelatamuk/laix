@@ -4,9 +4,9 @@ The breaker crosses water and the valve is out of reach. The safe action set is
 empty, so the safety boundary escalates to a qualified person.
 """
 
-from laix import ActionOption, Belief, Constraint, DecisionRequest, Layer, Situation
+from laix import ActionOption, Belief, Constraint, DecisionRequest, DecisionClient, Situation
 
-decision = Layer().decide(
+decision = DecisionClient().decide(
     DecisionRequest(
         subject="water near electricity",
         at="2026-11-01T10:00:00+00:00",

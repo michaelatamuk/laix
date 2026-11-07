@@ -5,11 +5,11 @@ from __future__ import annotations
 from laix import (
     ActionOption,
     Constraint,
-    DecisionProblem,
+    PlannerInput,
     MdpModel,
     MdpTransition,
     ObservationProbability,
-    Plan,
+    PlannerResult,
     PomdpModel,
     POMDPPlanner,
     PomdpTransition,
@@ -22,8 +22,8 @@ from laix import (
 
 
 class AlwaysGo:
-    def solve(self, problem: DecisionProblem) -> Plan:
-        return Plan(
+    def solve(self, problem: PlannerInput) -> PlannerResult:
+        return PlannerResult(
             verb="act",
             confidence=1.0,
             reason_code="fixed",
@@ -40,7 +40,7 @@ situation = Situation(
     constraints=(Constraint(id="risk-limit", kind="risk", value=0.2),),
 )
 utility = UtilityPlanner().solve(
-    DecisionProblem(
+    PlannerInput(
         subject="choose",
         at="2026-11-01T10:00:00+00:00",
         situation=situation,
@@ -106,7 +106,7 @@ comparison = compare_pomdp_to_mdp(
     horizon=1,
 )
 plan = POMDPPlanner(pomdp).solve(
-    DecisionProblem(
+    PlannerInput(
         subject="choose",
         at="2026-11-01T10:00:00+00:00",
         attributes={"belief": belief_from_state("s0", pomdp.states)},

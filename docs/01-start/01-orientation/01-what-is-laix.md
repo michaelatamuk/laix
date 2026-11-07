@@ -45,15 +45,15 @@ LAIX turns those properties into one runtime:
 - **Evidence** — conformance vectors, bench, examples and Python/TypeScript parity.
 
 The contribution is the combination: a coherent decision runtime for live experiences.
-`LiveDecisionEngine` makes that concrete: one plan can keep a promise, avoid an irreversible action
+`LiveCompositePlanner` makes that concrete: one planner result can keep a promise, avoid an irreversible action
 and respect an attention budget at the same time. Calibration and the decision timeline complete the
-loop around that plan.
+loop around that planner result.
 
 ## Model-optional
 
 Training-free means LAIX does not train or fine-tune a model. The default path is policies and
 rules. A planner can use a world model the host supplies: states, transitions and rewards. A
-pretrained model can sit behind `EnginePolicy`, and the decision contract stays the same.
+pretrained model can sit behind `PlannerPolicy`, and the decision contract stays the same.
 
 ## How it fits
 

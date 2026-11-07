@@ -15,7 +15,7 @@ import json
 from datetime import datetime, timezone
 from typing import Any, Mapping, Sequence
 
-from ...core.engines.signals import Context, Feedback, Signal
+from ...core.engines.signals import SignalContext, SignalFeedback, Signal
 from ...core.engines.bench.live_bench import run_live_bench
 from ...core.decisions import ActionOption, Belief, DecisionRequest, Situation
 from ...core.engines.policies import (
@@ -28,7 +28,7 @@ from ...core.engines.policies import (
     SafetyConstrainedPolicy,
     VerificationPolicy,
 )
-from ..layer import Layer
+from ..decision_client import DecisionClient
 from .case import BenchCase
 from .planner_bench import run_planner_bench
 from .report import BenchReport
@@ -61,7 +61,7 @@ def _attention(signal: Signal, moment: datetime, **context: Any) -> DecisionRequ
         subject=signal.title or signal.id,
         at=AT,
         signals=(signal,),
-        context=Context(now=moment, **context),
+        context=SignalContext(now=moment, **context),
     )
 
 
@@ -91,13 +91,13 @@ def _attention_suite() -> Suite:
     return Suite(
         name="attention",
         description="which signal deserves attention now",
-        policy=Layer,
+        policy=DecisionClient,
         cases=(
             BenchCase("attention_bill_day", _attention(signal, morning, quiet_hours=("22:00", "06:00")), {"verb": "guide", "reason_code": "worth_surfacing"}),
             BenchCase("attention_quiet_hours", _attention(signal, night, quiet_hours=("22:00", "06:00")), {"verb": "wait", "reason_code": "quiet_hours"}),
             BenchCase(
                 "attention_dismissed",
-                _attention(signal, morning, quiet_hours=None, feedback={"bill-1": Feedback(state="dismissed")}),
+                _attention(signal, morning, quiet_hours=None, feedback={"bill-1": SignalFeedback(state="dismissed")}),
                 {"verb": "wait", "reason_code": "dismissed"},
             ),
         ),
@@ -142,7 +142,7 @@ def _action_suite() -> Suite:
     return Suite(
         name="action",
         description="which available action to take",
-        policy=Layer,
+        policy=DecisionClient,
         cases=(
             BenchCase("action_sink", _action(sink, sink_options), {"verb": "act", "reason_code": "policy_rule", "action_id": "option-close-valve"}),
             BenchCase(

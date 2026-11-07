@@ -10,7 +10,7 @@ Two different things live here:
 The corpus and the harness are separate on purpose:
 
 - `live/v1/` holds the schema and the dev, test and adversarial splits;
-- `compare/` runs the same `LiveDecisionEngine` inside external orchestration frameworks and reports
+- `compare/` runs the same `LiveCompositePlanner` inside external orchestration frameworks and reports
   operational overhead, not decision accuracy.
 
 `live/v1` is the corpus version. `results/live-decision-benchmark/` is the current benchmark run label; it is

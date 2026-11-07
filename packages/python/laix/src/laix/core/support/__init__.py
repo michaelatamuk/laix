@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .errors import PolicyError
+from .errors import DecisionPolicyError
 from .ids import new_id, new_execution_receipt_id
 from .serialize import to_primitive, to_string_tuple
 from .time import iso, parse_iso, utcnow
@@ -11,7 +11,7 @@ from .verbs import VERBS, Verb
 from .version import SCHEMA_VERSION
 
 __all__ = [
-    "PolicyError",
+    "DecisionPolicyError",
     "SCHEMA_VERSION",
     "VERBS",
     "Verb",

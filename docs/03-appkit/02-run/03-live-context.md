@@ -115,7 +115,7 @@ TypeScript exports the same `LiveContext`, `CallableDetector` and `PerceptionFra
 ## Boundary
 
 Live Context is perception, not decision. It returns a frame; the app turns the frame into a
-`DecisionRequest` and calls the core or `Layer`. It does not choose a verb, execute an action or
+`DecisionRequest` and calls the core or `DecisionClient`. It does not choose a verb, execute an action or
 deliver a result.
 
 Use it when detectors are expensive or uncertain and the budget matters. For a single detector call,

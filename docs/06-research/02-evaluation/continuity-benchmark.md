@@ -20,21 +20,21 @@ Each episode carries:
 
 Three policies are compared:
 
-| Policy | Sees |
+| DecisionPolicy | Sees |
 |---|---|
 | Reference | Full state; hand-written ground truth |
 | Stateless | A static option set; no commitments, budget, approval or history |
-| Stateful | Full state through `DecisionProblem.attributes` and `LiveDecisionEngine` |
+| Stateful | Full state through `PlannerInput.attributes` and `LiveCompositePlanner` |
 
 The host asks for approval when a plan sets `requires_approval`.
 
 ## Result
 
-| Policy | Success | Promise kept | Budget adhered | Approval correct | Continuity errors |
+| DecisionPolicy | Success | Promise kept | Budget adhered | Approval correct | Continuity errors |
 |---|---:|---:|---:|---:|---:|
 | Reference | 100% | 100% | 100% | 100% | 0 |
 | Stateless `UtilityPlanner` | 0% | 100% | 0% | 100% | 36 |
-| Stateful `LiveDecisionEngine` | 100% | 100% | 100% | 100% | 0 |
+| Stateful `LiveCompositePlanner` | 100% | 100% | 100% | 100% | 0 |
 
 The stateless planner repeats the action because it cannot see that the commitment was fulfilled,
 the attention budget was spent and the receipt was pending. The stateful runtime moves from approval
@@ -42,7 +42,7 @@ to action to verification.
 
 ## What it proves
 
-It proves the **mechanism**: when the host supplies the state, `LiveDecisionEngine` uses it and a
+It proves the **mechanism**: when the host supplies the state, `LiveCompositePlanner` uses it and a
 stateless planner does not. It does not prove that real operators, real incidents or production
 systems behave like the reference policy.
 

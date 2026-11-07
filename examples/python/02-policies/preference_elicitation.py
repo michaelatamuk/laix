@@ -9,9 +9,9 @@ The result is:
 - q2: the question with the best information gain per cost.
 """
 
-from laix import DecisionRequest, Layer, PreferenceElicitationPolicy, iso
+from laix import DecisionRequest, DecisionClient, PreferenceElicitationPolicy, iso
 
-decision = Layer(policy=PreferenceElicitationPolicy()).decide(
+decision = DecisionClient(policy=PreferenceElicitationPolicy()).decide(
     DecisionRequest(
         subject="notification style",
         at=iso(),

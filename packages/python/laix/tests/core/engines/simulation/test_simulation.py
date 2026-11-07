@@ -1,4 +1,4 @@
-"""Policy simulation and shadow mode."""
+"""DecisionPolicy simulation and shadow mode."""
 
 from __future__ import annotations
 

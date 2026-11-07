@@ -88,10 +88,10 @@ states reached after the first action, so the action values use a lookahead of `
 ### `MDPPlanner`
 
 ```python
-from laix import DecisionProblem, MDPPlanner
+from laix import PlannerInput, MDPPlanner
 
 plan = MDPPlanner(model).solve(
-    DecisionProblem(subject="choose", at="2026-11-01T10:00:00+00:00")
+    PlannerInput(subject="choose", at="2026-11-01T10:00:00+00:00")
 )
 print(plan.action_id, plan.score)
 ```
@@ -102,7 +102,7 @@ print(plan.action_id, plan.score)
 | State | `problem.attributes["state"]`, else the constructor state, else `model.start` |
 | Success reason | `mdp_plan` |
 | Terminal state | `wait` with `terminal_state` |
-| Plan attributes | `state`, `expected_value`, `discount`, `horizon` |
+| PlannerResult attributes | `state`, `expected_value`, `discount`, `horizon` |
 | Alternatives | `action_id`, `value`, `rejected_because="lower expected value"` |
 
 An unknown state raises `ValueError`. A terminal state has no available action and returns `wait`.
@@ -168,10 +168,10 @@ flowchart LR
 ### `POMDPPlanner`
 
 ```python
-from laix import DecisionProblem, POMDPPlanner, PomdpModel
+from laix import PlannerInput, POMDPPlanner, PomdpModel
 
 plan = POMDPPlanner(model).solve(
-    DecisionProblem(subject="choose", at="2026-11-01T10:00:00+00:00")
+    PlannerInput(subject="choose", at="2026-11-01T10:00:00+00:00")
 )
 print(plan.action_id, plan.score)
 ```
@@ -189,7 +189,7 @@ The belief resolution order:
 | Horizon | `problem.attributes["horizon"]`, else `model.horizon` |
 | Success reason | `pomdp_plan` |
 | No action | `wait` with `no_action` |
-| Plan attributes | `belief`, `entropy`, `horizon` |
+| PlannerResult attributes | `belief`, `entropy`, `horizon` |
 | Alternatives | `action_id`, `value`, `rejected_because="lower expected value"` |
 
 `compare_pomdp_to_mdp` is a diagnostic, not an optimality proof. It compares the belief value with
@@ -212,8 +212,8 @@ See the [planner contract](01-planner-contract.md#simulator).
 
 ## MDP policy and LAIX policy
 
-The MDP literature calls the best action per state a **policy**. LAIX uses the word **Policy** for
-the integration layer. In LAIX, `MDPPlanner` is a planner and `EnginePolicy` adapts it to the policy
+The MDP literature calls the best action per state a **policy**. LAIX uses the word **DecisionPolicy** for
+the integration layer. In LAIX, `MDPPlanner` is a planner and `PlannerPolicy` adapts it to the policy
 interface.
 
 ## Related

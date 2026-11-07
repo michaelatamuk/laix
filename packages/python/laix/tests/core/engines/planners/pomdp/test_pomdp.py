@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from laix import (
-    DecisionProblem,
+    PlannerInput,
     MdpModel,
     MdpTransition,
     ObservationProbability,
@@ -66,7 +66,7 @@ def test_pomdp_value_and_planner() -> None:
     assert pomdp_value(model, belief) == 1.0
 
     plan = POMDPPlanner(model).solve(
-        DecisionProblem(
+        PlannerInput(
             subject="choose",
             at="2026-11-01T10:00:00+00:00",
             attributes={"belief": belief},
@@ -81,7 +81,7 @@ def test_pomdp_value_and_planner() -> None:
 
 def test_pomdp_planner_defaults_to_a_uniform_belief() -> None:
     plan = POMDPPlanner(_model()).solve(
-        DecisionProblem(subject="choose", at="2026-11-01T10:00:00+00:00")
+        PlannerInput(subject="choose", at="2026-11-01T10:00:00+00:00")
     )
 
     assert plan.action_id == "go"

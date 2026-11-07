@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from laix import (
-    DecisionProblem,
+    PlannerInput,
     MDPPlanner,
     MdpModel,
     MdpTransition,
@@ -41,7 +41,7 @@ def test_value_iteration_and_action_values() -> None:
 
 def test_mdp_planner_returns_the_best_action() -> None:
     plan = MDPPlanner(_model()).solve(
-        DecisionProblem(
+        PlannerInput(
             subject="choose",
             at="2026-11-01T10:00:00+00:00",
             attributes={"state": "s0"},
@@ -56,7 +56,7 @@ def test_mdp_planner_returns_the_best_action() -> None:
 
 def test_horizon_limits_lookahead() -> None:
     plan = MDPPlanner(_model(horizon=1)).solve(
-        DecisionProblem(subject="choose", at="2026-11-01T10:00:00+00:00")
+        PlannerInput(subject="choose", at="2026-11-01T10:00:00+00:00")
     )
 
     assert plan.action_id == "go"

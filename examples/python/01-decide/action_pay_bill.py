@@ -15,9 +15,9 @@ The layer makes the choice; the application asks for approval because the
 chosen action requires it.
 """
 
-from laix import ActionOption, Belief, DecisionRequest, Layer, Situation, iso
+from laix import ActionOption, Belief, DecisionRequest, DecisionClient, Situation, iso
 
-layer = Layer()
+layer = DecisionClient()
 decision = layer.decide(
     DecisionRequest(
         subject="electricity bill payment",

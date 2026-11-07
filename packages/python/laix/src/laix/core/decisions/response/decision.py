@@ -1,4 +1,4 @@
-"""The one decision shape returned by every policy, ``decide`` and ``Layer``."""
+"""The one decision shape returned by every policy, ``decide`` and ``DecisionClient``."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ TARGET_MODES = ("one", "some", "all", "peer", "gather")
 
 @dataclass(frozen=True, slots=True)
 class Decision:
-    """The one decision shape returned by every policy, ``decide`` and ``Layer``."""
+    """The one decision shape returned by every policy, ``decide`` and ``DecisionClient``."""
 
     verb: str
     confidence: float

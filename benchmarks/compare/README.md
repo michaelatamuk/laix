@@ -12,7 +12,7 @@ therefore measures:
 - approval/interrupt behaviour;
 - audit and recovery support.
 
-It does **not** claim that `LiveDecisionEngine` beats LangGraph or Temporal at decision accuracy.
+It does **not** claim that `LiveCompositePlanner` beats LangGraph or Temporal at decision accuracy.
 That would compare different tasks.
 
 ## Layout
@@ -57,8 +57,8 @@ operational table.
 
 ## Fairness rules
 
-- Use the same case split and the same `DecisionProblem` inputs.
-- Put the same `LiveDecisionEngine` inside each framework; the framework owns orchestration, not the
+- Use the same case split and the same `PlannerInput` inputs.
+- Put the same `LiveCompositePlanner` inside each framework; the framework owns orchestration, not the
   decision.
 - Report which parts are runnable and which are documented only.
 - Report dependencies and glue code, not only latency.
@@ -76,7 +76,7 @@ The LangGraph adapter ran on all 120 cases:
 | Adapter glue code | 110 lines |
 | Dependencies | `langgraph` |
 
-This is an orchestration comparison: the same LAIX engine is inside the graph. Temporal, PagerDuty and Camunda remain documented-only because they need a server or account.
+This is an orchestration comparison: the same LAIX composite planner is inside the graph. Temporal, PagerDuty and Camunda remain documented-only because they need a server or account.
 
 ## Capability matrix
 

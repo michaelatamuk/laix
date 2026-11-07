@@ -9,9 +9,9 @@ The result is:
 - api: the check with the best confidence gain per cost.
 """
 
-from laix import DecisionRequest, Layer, VerificationPolicy, iso
+from laix import DecisionRequest, DecisionClient, VerificationPolicy, iso
 
-decision = Layer(policy=VerificationPolicy()).decide(
+decision = DecisionClient(policy=VerificationPolicy()).decide(
     DecisionRequest(
         subject="payment sent",
         at=iso(),

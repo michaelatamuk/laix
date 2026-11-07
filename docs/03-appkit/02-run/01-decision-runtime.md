@@ -1,6 +1,6 @@
 # Decision runtime
 
-`DecisionRuntime` is the app-kit loop behind `Layer`:
+`DecisionRuntime` is the app-kit loop behind `DecisionClient`:
 
 ```text
 observe -> state -> policy -> execution -> outcome
@@ -15,7 +15,7 @@ same records in its own database.
 | Piece | Default | Role |
 |---|---|---|
 | State | `ExperienceState` | Goals, phase, beliefs, observations and history. |
-| Policy | `ActionPolicy` | The chooser used by `decide`. |
+| DecisionPolicy | `ActionPolicy` | The chooser used by `decide`. |
 | Bridge | `ExecutionBridge` | Approval, idempotency, actions and receipts. |
 | Outcomes | `OutcomeLedger` | Measured results and labels. |
 | Resources | `ResourceScheduler` | Budgeted sensing and deep calls. |
@@ -48,7 +48,7 @@ decision = runtime.decide(
 print(decision.verb, decision.reason_code, decision.action_id)
 ```
 
-`decide` returns one `Decision`, not a list. Use `Layer` when you want the dispatch rule and the
+`decide` returns one `Decision`, not a list. Use `DecisionClient` when you want the dispatch rule and the
 convenience surface; use `DecisionRuntime` when you want the loop directly.
 
 ## Observe
@@ -148,11 +148,11 @@ and `stats` surface.
 - The runtime is in-process. The host owns durable storage, process lifetime and scaling.
 - The runtime does not deliver messages or open a network connection.
 - A cloud service can persist the same records; the contracts do not change.
-- `Layer` adds dispatch, policy registration and delivery around the same runtime.
+- `DecisionClient` adds dispatch, policy registration and delivery around the same runtime.
 
 ## Related
 
-- [Single decision](../01-build/02-single-decision.md) - the `Layer` surface.
+- [Single decision](../01-build/02-single-decision.md) - the `DecisionClient` surface.
 - [Streaming](02-streaming.md) - the event-time loop above the runtime.
 - [Execution and recovery](../03-execute/01-execution-and-recovery.md) - the write boundary.
 - [Stores](../04-connect/01-stores.md) - state and outcome persistence.

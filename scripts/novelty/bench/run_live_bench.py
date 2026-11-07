@@ -79,9 +79,9 @@ def main() -> int:
     cases = load_cases(paths)
     planners = {"glue": GlueBaseline(), **default_planners()}
     rows = []
-    for planner_name, engine in planners.items():
+    for planner_name, planner in planners.items():
         for case in cases:
-            plan, latency = run_planner(engine, case.problem)
+            plan, latency = run_planner(planner, case.problem)
             rows.append(
                 evaluate_case(
                     case,
@@ -108,9 +108,9 @@ def main() -> int:
         return 2
     failed = live["conflict_accuracy"] < 1.0
     if failed:
-        print("\nFAIL: LiveDecisionEngine did not win every conflict case.", file=sys.stderr)
+        print("\nFAIL: LiveCompositePlanner did not win every conflict case.", file=sys.stderr)
         return 1
-    print("\nOK: LiveDecisionEngine won every conflict case.")
+    print("\nOK: LiveCompositePlanner won every conflict case.")
     return 0
 
 

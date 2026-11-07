@@ -544,7 +544,7 @@
             "requires_approval": false
           }
         ],
-        "attention_budget": {
+        "human_attention_budget": {
           "total": 1.0,
           "spent": 0.0
         }
@@ -589,7 +589,7 @@
             "requires_approval": false
           }
         ],
-        "attention_budget": {
+        "human_attention_budget": {
           "total": 1.0,
           "spent": 1.0
         }
@@ -678,7 +678,7 @@
             "requires_approval": false
           }
         ],
-        "attention_budget": {
+        "human_attention_budget": {
           "total": 1.0,
           "spent": 0.7
         }
@@ -723,7 +723,7 @@
             "requires_approval": false
           }
         ],
-        "attention_budget": {
+        "human_attention_budget": {
           "total": 1.0,
           "spent": 0.0
         }
@@ -1014,7 +1014,7 @@
             "due": "2026-11-01T09:00:00+00:00"
           }
         ],
-        "attention_budget": {
+        "human_attention_budget": {
           "total": 0.5,
           "spent": 0.1
         }
@@ -1079,7 +1079,7 @@
             "due": "2026-11-01T09:00:00+00:00"
           }
         ],
-        "attention_budget": {
+        "human_attention_budget": {
           "total": 0.5,
           "spent": 0.1
         }
@@ -1126,7 +1126,7 @@
             "requires_approval": false
           }
         ],
-        "attention_budget": {
+        "human_attention_budget": {
           "total": 0.5,
           "spent": 0.1
         }
@@ -1192,7 +1192,7 @@
             "due": "2026-11-01T09:00:00+00:00"
           }
         ],
-        "attention_budget": {
+        "human_attention_budget": {
           "total": 0.5,
           "spent": 0.1
         }
@@ -1257,7 +1257,7 @@
             "due": "2026-11-01T09:00:00+00:00"
           }
         ],
-        "attention_budget": {
+        "human_attention_budget": {
           "total": 0.5,
           "spent": 0.1
         }
@@ -1322,7 +1322,7 @@
             "due": "2026-11-01T09:00:00+00:00"
           }
         ],
-        "attention_budget": {
+        "human_attention_budget": {
           "total": 0.5,
           "spent": 0.1
         }

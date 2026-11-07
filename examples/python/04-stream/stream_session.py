@@ -5,11 +5,11 @@ from __future__ import annotations
 import asyncio
 from datetime import datetime, timezone
 
-from laix import Context, DecisionRequest, Layer, Signal
+from laix import SignalContext, DecisionRequest, DecisionClient, Signal
 
 
 async def main() -> None:
-    layer = Layer()
+    layer = DecisionClient()
     stream = layer.stream(stream_id="STR-DEMO", capacity=4, cooldown_ms=500)
 
     stream.observe(
@@ -17,7 +17,7 @@ async def main() -> None:
             subject="a bill is due",
             at="2026-11-01T10:00:00+00:00",
             signals=(Signal(id="s-1", kind="bill", severity="high", confidence=0.9),),
-            context=Context(now=datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc), quiet_hours=None),
+            context=SignalContext(now=datetime(2026, 11, 1, 10, 0, tzinfo=timezone.utc), quiet_hours=None),
         )
     )
     stream.close()

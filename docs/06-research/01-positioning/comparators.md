@@ -164,7 +164,7 @@ training-free decision object.
 ## Measured operational comparison (LangGraph)
 
 The LangGraph adapter is runnable when `langgraph` is installed. It puts the same
-`LiveDecisionEngine` inside a state graph with a decision node and an approval interrupt. That
+`LiveCompositePlanner` inside a state graph with a decision node and an approval interrupt. That
 isolates orchestration overhead; the comparison is operational.
 
 | Metric | Result |
@@ -189,7 +189,7 @@ Temporal, PagerDuty and Camunda remain documented-only because they need a serve
 
 ## What remains unmeasured
 
-- LangGraph decision accuracy against LAIX is not meaningful: the adapter runs the same LAIX engine
+- LangGraph decision accuracy against LAIX is not meaningful: the adapter runs the same LAIX composite planner
   inside the graph. The measured result is orchestration overhead, not planner quality.
 - Temporal requires a Temporal server and a worker for latency, retries and signal measurements.
 - PagerDuty and Camunda require accounts or servers.

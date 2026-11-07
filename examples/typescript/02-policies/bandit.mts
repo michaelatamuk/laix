@@ -1,8 +1,8 @@
 /** Outcome learning: feedback changes the next choice. */
-import { BanditPolicy, Layer, UCBBandit } from "../../../packages/typescript/laix/src/index.ts";
+import { BanditPolicy, DecisionClient, UCBBandit } from "../../../packages/typescript/laix/src/index.ts";
 
 const policy = new BanditPolicy(new UCBBandit([{ id: "manual" }, { id: "automatic" }]));
-const layer = new Layer({ policy });
+const layer = new DecisionClient({ policy });
 const request = { subject: "pick a mode", at: "2026-11-01T10:00:00Z" };
 
 const first = layer.decide(request)[0];

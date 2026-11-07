@@ -224,7 +224,7 @@ def render_banner() -> None:
 
 
 PLANNERS = [
-    ("live", "LiveDecisionEngine"),
+    ("live", "LiveCompositePlanner"),
     ("glue", "Glue baseline"),
     ("commitment", "CommitmentPlanner"),
     ("first", "First-option baseline"),
@@ -387,7 +387,7 @@ def render_benchmark_chart() -> None:
         0.055,
         0.052,
         "Conflict cases are a 6-case subset; compare within each panel · "
-        "LiveDecisionEngine vs glue baseline: +6.7 pp, p = 0.48 (not significant)",
+        "LiveCompositePlanner vs glue baseline: +6.7 pp, p = 0.48 (not significant)",
         fontsize=8.5,
         color=INK_MUTED,
     )

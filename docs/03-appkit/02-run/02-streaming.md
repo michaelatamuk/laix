@@ -28,10 +28,10 @@ that loop. It lives in the app kit, calls the same core, and keeps
 ```python
 import asyncio
 
-from laix import DecisionRequest, Layer
+from laix import DecisionRequest, DecisionClient
 
 async def main() -> None:
-    layer = Layer()
+    layer = DecisionClient()
     stream = layer.stream(stream_id="desk", capacity=8, cooldown_ms=500)
 
     stream.observe(
@@ -88,7 +88,7 @@ then emits its revision.
 | `trace` | `True` | Attach a trace to each decision. |
 | `recorder` | `None` | Callback that receives every emitted decision. |
 | `timeline` | `None` | `DecisionTimeline` that receives decisions automatically. |
-| `attention_budget` | `None` | Human-attention budget shared by the stream. |
+| `human_attention_budget` | `None` | Human-attention budget shared by the stream. |
 | `clock` | `utcnow` | Clock used for event-time decisions; `ManualClock` for replay. |
 | `id_factory` | `new_id` | Id factory for the generated stream id. |
 
@@ -252,10 +252,10 @@ copies the deadline and validity onto the decisions it produces.
 decision still goes through one policy and one contract. The session adds the live-loop concerns
 around it: time, cadence, buffering and revision.
 
-Use `decide` or `Layer.decide` for a one-shot answer. Use `Layer.stream` when the host has a stream of
+Use `decide` or `DecisionClient.decide` for a one-shot answer. Use `DecisionClient.stream` when the host has a stream of
 events and needs decisions over time.
 
-Python and TypeScript expose `StreamSession`; `Layer.stream` returns one. TypeScript also exports
+Python and TypeScript expose `StreamSession`; `DecisionClient.stream` returns one. TypeScript also exports
 `Refiner`, `Decider`, `StreamSessionOptions`, `SourceOptions`, `FullPolicy`, `LatePolicy`,
 `DECISION_STATUSES` and `DecisionStatus`.
 

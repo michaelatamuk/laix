@@ -120,7 +120,7 @@ DecisionRequest(
 )
 ```
 
-The planner reads the same value from `DecisionProblem.attributes`. It accepts the `commitments`
+The planner reads the same value from `PlannerInput.attributes`. It accepts the `commitments`
 key or the `commitment_ledger` alias. The accepted forms are:
 
 - a `CommitmentLedger`;

@@ -8,10 +8,10 @@ from laix import (
     Case,
     DecisionRequest,
     DeliveryReceipt,
-    Layer,
+    DecisionClient,
     Decision,
     NullDelivery,
-    PolicyError,
+    DecisionPolicyError,
     Proposal,
     apply_proposal,
     approve_proposal,
@@ -42,7 +42,7 @@ def request() -> DecisionRequest:
 
 
 def test_a_policy_plugin_drives_the_layer() -> None:
-    layer = Layer(policy=FixedPolicy())
+    layer = DecisionClient(policy=FixedPolicy())
     decisions = layer.decide(request())
     assert decisions[0].verb == "guide"
     assert decisions[0].reason_code == "worth_surfacing"
@@ -52,17 +52,17 @@ def test_a_policy_plugin_drives_the_layer() -> None:
 
 
 def test_a_policy_can_be_registered_and_selected() -> None:
-    layer = Layer()
+    layer = DecisionClient()
     layer.register_policy("fixed", FixedPolicy())
     assert layer.policies() == ("fixed",)
     layer.use_policy("fixed")
     assert layer.decide(request())[0].verb == "guide"
-    with pytest.raises(PolicyError):
+    with pytest.raises(DecisionPolicyError):
         layer.use_policy("missing")
 
 
 def test_explain_returns_the_decision_record_fields() -> None:
-    layer = Layer(policy=FixedPolicy())
+    layer = DecisionClient(policy=FixedPolicy())
     decision = layer.decide(request())[0]
     explained = layer.explain(decision)
     assert explained["verb"] == "guide"

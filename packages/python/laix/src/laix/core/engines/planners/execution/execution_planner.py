@@ -13,7 +13,7 @@ from typing import Any
 from ....decisions import ActionOption
 from ....support.values import clamp
 from ._execution_row import _Row
-from ...contract.engine import DecisionProblem, Plan
+from ...contract.planner_policy import PlannerInput, PlannerResult
 from .execution_effect import ExecutionEffect
 from .execution_score import ExecutionScore
 from .execution_weights import ExecutionWeights
@@ -53,7 +53,7 @@ def execution_effect(option: ActionOption) -> ExecutionEffect:
     )
 
 
-def _receipt_status(problem: DecisionProblem, option: ActionOption) -> str | None:
+def _receipt_status(problem: PlannerInput, option: ActionOption) -> str | None:
     attributes = problem.attributes or {}
     raw = attributes.get("execution_state")
     if isinstance(raw, dict):
@@ -127,7 +127,7 @@ class ExecutionRiskPlanner:
         self.weights = weights or ExecutionWeights()
         self._utility = UtilityPlanner(model)
 
-    def solve(self, problem: DecisionProblem) -> Plan:
+    def solve(self, problem: PlannerInput) -> PlannerResult:
         options = list(problem.options)
         if not options:
             return self._wait("no_options", "there are no options to score")
@@ -163,7 +163,7 @@ class ExecutionRiskPlanner:
         feasible.sort(key=lambda row: (-row.score.total, row.option.id))
         best = feasible[0]
         second = feasible[1].score.total if len(feasible) > 1 else None
-        return Plan(
+        return PlannerResult(
             verb=best.option.verb,
             confidence=self._confidence(best.score.total, second),
             reason_code="execution_aware",
@@ -228,8 +228,8 @@ class ExecutionRiskPlanner:
         return clamp(0.5 + 0.5 * (gap / max(abs(best), 1e-9)))
 
     @staticmethod
-    def _wait(reason_code: str, rationale: str) -> Plan:
-        return Plan(
+    def _wait(reason_code: str, rationale: str) -> PlannerResult:
+        return PlannerResult(
             verb="wait",
             confidence=1.0,
             reason_code=reason_code,

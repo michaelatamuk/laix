@@ -1,18 +1,18 @@
-import type { PlannerScore } from "./simulator.ts";
+import type { PlannerBenchmarkRow } from "./simulator.ts";
 
 function round(value: number): number {
   return Math.round(value * 1e6) / 1e6;
 }
 
 export class SimulationReport {
-  readonly rows: PlannerScore[];
+  readonly rows: PlannerBenchmarkRow[];
 
-  constructor(rows: PlannerScore[]) {
+  constructor(rows: PlannerBenchmarkRow[]) {
     this.rows = rows;
   }
 
   summary(): Record<string, { runs: number; meanReward: number; meanGap: number }> {
-    const buckets = new Map<string, PlannerScore[]>();
+    const buckets = new Map<string, PlannerBenchmarkRow[]>();
     for (const row of this.rows) {
       const items = buckets.get(row.planner) ?? [];
       items.push(row);
