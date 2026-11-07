@@ -187,6 +187,9 @@ LAIX sits inside the host. It does not replace the agent framework or the workfl
 the decision inside one task explicit and auditable. For a fair comparison with JEV, classifiers and
 judges, see [LAIX and decision models](docs/04-concepts/02-positioning/01-decision-models.md).
 
+Robotics: task-level decisions above the safety and motion layer. See
+[LAIX for robotics](docs/04-concepts/02-positioning/03-robotics.md).
+
 ## When to use LAIX
 
 | Situation | Use |
