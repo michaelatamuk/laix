@@ -192,10 +192,10 @@ streaming, delivery and bench.
 The core stays stateless: the host supplies commitments, budget, approvals and execution state with
 each request.
 
-`LiveCompositePlanner` is a planner, not a second entry point. **Composite** means it combines four
-scores: utility, promises, execution risk and human attention. It returns a `PlannerResult`;
-`PlannerPolicy` adapts that result to the public `Decision`. The host still calls `decide`, and still
-gets a `Decision`.
+`LiveCompositePlanner` is a planner behind `decide`. **Composite** means it combines four scores:
+utility, promises, execution risk and human attention. It returns a `PlannerResult`; `PlannerPolicy`
+adapts that result to the public `Decision`, so the app still calls `decide` and still gets a
+`Decision`.
 
 The same payment request from [One decision](#one-decision), with a different policy:
 
@@ -236,8 +236,7 @@ human-attention budget. The decision carries the four scores, so the trade-off i
 | `decide(request)` | `ActionPolicy` (default) | `pay`; approval required |
 | `decide(request, policy=...)` | `PlannerPolicy(LiveCompositePlanner())` | `ask`; commitment `c1` fulfilled |
 
-`decide` is the public entry point. `LiveCompositePlanner` is one chooser behind it. `PlannerPolicy`
-is the adapter that makes a planner return the public `Decision`. They are layers, not alternatives.
+Same entry point, different policy.
 
 A separate conflict scenario is in [`examples/python/03-plan/conflict_scenario.py`](examples/python/03-plan/conflict_scenario.py).
 
