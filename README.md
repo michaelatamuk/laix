@@ -33,41 +33,93 @@ external validation is pending.
 
 ## One decision
 
-A request carries a situation, the options the host can offer and the limits it must respect.
-LAIX returns one decision with a verb, a reason code and the chosen option.
+A payment above the approval limit is still a confident decision. The policy can choose to pay; the
+decision also says that a person must approve it and that the action is not reversible.
 
 ```python
-from laix import ActionOption, Constraint, DecisionRequest, Situation, decide
+import json
+
+from laix import ActionOption, Belief, Constraint, DecisionRequest, Situation, decide
 
 decision = decide(
     DecisionRequest(
-        subject="leaking sink",
+        subject="invoice 4832",
         at="2026-11-01T10:00:00+00:00",
         situation=Situation(
             id="s-1",
             at="2026-11-01T10:00:00+00:00",
-            subject="leaking sink",
-            constraints=(Constraint(id="risk", kind="risk", value=0.3, hard=True),),
+            subject="invoice 4832",
+            beliefs=(
+                Belief(
+                    id="b-1",
+                    proposition="the invoice matches the work order",
+                    confidence=0.95,
+                ),
+            ),
+            constraints=(
+                Constraint(id="approval", kind="approval", value=1.0, hard=True),
+            ),
+            attributes={"urgency": 0.8},
         ),
         options=(
-            ActionOption(id="valve", verb="act", name="close the valve", expected_benefit=0.9, risk=0.1),
-            ActionOption(id="hit", verb="act", name="hit the pipe", expected_benefit=1.0, risk=0.9),
+            ActionOption(
+                id="pay",
+                verb="act",
+                name="pay the invoice",
+                expected_benefit=0.95,
+                risk=0.05,
+                requires_approval=True,
+                reversible=False,
+            ),
+            ActionOption(
+                id="ask",
+                verb="ask",
+                name="ask the owner",
+                expected_benefit=0.6,
+            ),
+            ActionOption(
+                id="wait",
+                verb="wait",
+                name="wait for the next review",
+                expected_benefit=0.2,
+            ),
         ),
     )
 )[0]
 
-print(decision.verb, decision.reason_code, decision.action_id)
+print(json.dumps({
+    "verb": decision.verb.value,
+    "reason_code": decision.reason_code,
+    "action_id": decision.action_id,
+    "confidence": decision.confidence,
+    "score": decision.score,
+    "requires_approval": decision.requires_approval,
+    "reversible": decision.reversible,
+    "decision_id": decision.decision_id,
+    "trace_id": decision.trace_id,
+}, indent=2))
 ```
 
 ```text
-act policy_rule valve
+{
+  "verb": "act",
+  "reason_code": "policy_rule",
+  "action_id": "pay",
+  "confidence": 0.95,
+  "score": 0.9375,
+  "requires_approval": true,
+  "reversible": false,
+  "decision_id": "DEC-...",
+  "trace_id": "TRC-..."
+}
 ```
 
-The hard risk limit removes the unsafe option before the choice. The result is one `Decision` with
-a verb, a stable reason code and the chosen action.
+The policy selects `pay`, but the decision is not executable yet: `requires_approval` is true and
+`reversible` is false. The app asks the owner before it pays. The approval is part of the decision,
+not a note beside it.
 
-The same shape works for signal attention, policies, planners and the live composite planner. See
-[the decision contract](docs/02-core/01-contract/01-decision-contract.md).
+The full record is in [the decision contract](docs/02-core/01-contract/01-decision-contract.md).
+The same shape works for signal attention, policies, planners and the live composite planner.
 
 ## Install
 
@@ -96,7 +148,7 @@ See the [quickstart](docs/01-start/02-first-steps/01-quickstart.md) for the full
 
 - **The decision is explicit.** Every decision carries a verb, a reason code, confidence, a score
   and a trace. The app branches on the reason code, not on prose.
-- **The next decision starts from the current state.** Commitments, attention budget, approvals,
+- **The next decision starts from the current state.** Commitments, human-attention budget, approvals,
   revisions, receipts and outcomes carry forward. A decision is a step, not a snapshot.
 - **The host keeps control.** The core is stateless. The host owns execution, data, storage and
   delivery; the optional app kit adds the lifecycle around the decision.
@@ -122,41 +174,86 @@ each request.
 then returns one `PlannerResult` with the full breakdown.
 
 ```python
-from laix import ActionOption, Commitment, LiveCompositePlanner, PlannerInput
+import json
+
+from laix import (
+    ActionOption,
+    Commitment,
+    HumanAttentionBudget,
+    LiveCompositePlanner,
+    PlannerInput,
+)
 
 planner_result = LiveCompositePlanner().solve(
     PlannerInput(
-        subject="send the report",
+        subject="checkout latency",
         at="2026-11-01T10:00:00+00:00",
         options=(
             ActionOption(
-                id="now", verb="act", name="send now",
-                expected_benefit=1.0, reversible=False,
+                id="restart",
+                verb="act",
+                name="restart now",
+                expected_benefit=1.0,
+                reversible=False,
+                interrupt_cost=0.6,
                 params={"commitments": {"violates": ["c1"]}},
             ),
             ActionOption(
-                id="ask", verb="ask", name="ask first",
+                id="drain",
+                verb="act",
+                name="drain the queue",
+                expected_benefit=0.8,
+                reversible=True,
+                interrupt_cost=0.2,
+                params={
+                    "commitments": {"fulfills": ["c1"]},
+                    "recovery_cost": 0.1,
+                },
+            ),
+            ActionOption(
+                id="page",
+                verb="ask",
+                name="page on-call",
                 expected_benefit=0.6,
-                params={"commitments": {"fulfills": ["c1"]}},
+                interrupt_cost=0.4,
             ),
         ),
         attributes={
             "commitments": (
-                Commitment(id="c1", subject="send the report", due="2026-11-01T09:00:00+00:00"),
-            )
+                Commitment(
+                    id="c1",
+                    subject="finish the batch",
+                    due="2026-11-01T09:00:00+00:00",
+                ),
+            ),
+            "human_attention_budget": HumanAttentionBudget(total=1.0, spent=0.4),
         },
     )
 )
 
-print(planner_result.action_id, planner_result.reason_code)
+print(planner_result.action_id, planner_result.reason_code, planner_result.score)
+print(json.dumps({
+    "utility": planner_result.attributes["utility"],
+    "commitment": planner_result.attributes["commitment_score"],
+    "execution": planner_result.attributes["execution_score"],
+    "human_attention": planner_result.attributes["human_attention_score"],
+}, indent=2))
 ```
 
 ```text
-ask live_decision
+drain live_decision 1.265
+{
+  "utility": 0.77,
+  "commitment": 0.6,
+  "execution": -0.025,
+  "human_attention": -0.08
+}
 ```
 
-The composite planner prefers the promise-keeping option over the irreversible one. The full conflict
-scenario is in [`examples/python/03-plan/conflict_scenario.py`](examples/python/03-plan/conflict_scenario.py).
+The planner chooses `drain` over `restart`: `restart` has the higher utility, but it breaks the
+commitment and is irreversible. The score shows the trade-off instead of hiding it.
+
+The full conflict scenario is in [`examples/python/03-plan/conflict_scenario.py`](examples/python/03-plan/conflict_scenario.py).
 
 ## Decision continuity
 
