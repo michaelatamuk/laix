@@ -383,6 +383,17 @@ confidence interval includes zero and the result is not significant on 30 cases.
 advantage over single-concern planners is large and significant; the advantage over competent glue
 code needs a larger and harder corpus, and that is exactly what the real validation must test.
 
+### What would make the glue comparison significant?
+
+The current split is 2 discordant cases in LAIX's favour and 0 in glue's. The exact McNemar p is
+0.50. At the same effect size, a new held-out set of roughly 90-120 cases would be needed to reach
+p < 0.05: 6 discordant wins with no losses gives p = 0.031, and 8 gives p = 0.008. If glue wins some
+discordant cases, the sample must grow: 8 versus 1 still gives p = 0.039. A smaller true effect needs
+several hundred cases.
+
+The 30-case test split is frozen. Do not add cases to it until the result changes. Pre-register a new
+held-out set, ideally from real incidents, and run the analysis once.
+
 ### Failure analysis
 
 `LiveDecisionEngine` made zero mistakes on the 30 test cases and zero on the 18 adversarial cases. That is a
