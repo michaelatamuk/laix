@@ -10,8 +10,10 @@
 | `ablation.png` | 2200 x 1040 | ablation accuracy |
 | `source/laix-cover.png` | 1254 x 1254 | original brand cover, source for the generated assets |
 
-The banner keeps the existing LAIX mark and wordmark. The headline is **the live decision runtime for
-AI agents and automations**; the feature strip names **decision continuity**.
+The banner keeps the existing LAIX mark and wordmark. The green label is **Between plan and
+execution**; the headline is **Live Decision for AI agents**. The sub-slogan lists act, ask, wait,
+verify and escalate; the feature strip names training-free operation, decision continuity and
+auditability.
 
 ## Brand
 
