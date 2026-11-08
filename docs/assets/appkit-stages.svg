@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="710" viewBox="0 0 1200 710" role="img" aria-labelledby="appkit-title appkit-desc">
+  <title id="appkit-title">Five stages around one decision</title>
+  <desc id="appkit-desc">The five app-kit stages: build, run, execute, connect and operate. Each stage wraps the core decision with production surfaces.</desc>
+  <rect x="0.5" y="0.5" width="1199" height="709" rx="18" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="64" y="58" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="2.5">APP KIT</text>
+  <text x="64" y="102" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="30" font-weight="700">Five stages around one decision</text>
+  <text x="64" y="132" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="14" font-weight="400">Build, run, execute, connect and operate the decision in production.</text>
+  <rect x="1016" y="40" width="120" height="30" rx="15" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="1076" y="59" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="1.5">OPTIONAL</text>
+<line x1="64" y1="150" x2="1136" y2="150" stroke="#F1F5F9" stroke-width="1"/>
+  <rect x="64" y="170" width="170" height="82" rx="10" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="84" y="198" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" opacity="0.75">01</text>
+  <text x="84" y="224" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="18" font-weight="700">Build</text>
+  <rect x="248" y="170" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="270" y="203" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">Adapter</text>
+  <text x="270" y="226" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">event → request</text>
+  <rect x="548" y="170" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="570" y="203" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">DecisionClient</text>
+  <text x="570" y="226" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">one decision</text>
+  <rect x="848" y="170" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="870" y="203" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">Policies</text>
+  <text x="870" y="226" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">select · version · shadow</text>
+  <rect x="64" y="264" width="170" height="82" rx="10" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="84" y="292" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" opacity="0.75">02</text>
+  <text x="84" y="318" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="18" font-weight="700">Run</text>
+  <rect x="248" y="264" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="270" y="297" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">DecisionRuntime</text>
+  <text x="270" y="320" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">observe · decide · measure</text>
+  <rect x="548" y="264" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="570" y="297" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">StreamSession</text>
+  <text x="570" y="320" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">event time · revisions</text>
+  <rect x="848" y="264" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="870" y="297" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">LiveContext</text>
+  <text x="870" y="320" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">detectors · frames</text>
+  <rect x="64" y="358" width="170" height="82" rx="10" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="84" y="386" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" opacity="0.75">03</text>
+  <text x="84" y="412" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="18" font-weight="700">Execute</text>
+  <rect x="248" y="358" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="270" y="391" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">ExecutionBridge</text>
+  <text x="270" y="414" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">approve · act · recover</text>
+  <rect x="548" y="358" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="570" y="391" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">Saga</text>
+  <text x="570" y="414" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">compensate · recover</text>
+  <rect x="848" y="358" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="870" y="391" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">Proposal · DecisionRecord</text>
+  <text x="870" y="414" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">approve · apply · audit</text>
+  <rect x="64" y="452" width="170" height="82" rx="10" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="84" y="480" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" opacity="0.75">04</text>
+  <text x="84" y="506" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="18" font-weight="700">Connect</text>
+  <rect x="248" y="452" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="270" y="485" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">Stores</text>
+  <text x="270" y="508" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">state · checkpoints · commitments · outcomes</text>
+  <rect x="548" y="452" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="570" y="485" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">Platform</text>
+  <text x="570" y="508" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">skills · events · approvals</text>
+  <rect x="848" y="452" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="870" y="485" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">Delivery</text>
+  <text x="870" y="508" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">channel · receipt</text>
+  <rect x="64" y="546" width="170" height="82" rx="10" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="84" y="574" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" opacity="0.75">05</text>
+  <text x="84" y="600" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="18" font-weight="700">Operate</text>
+  <rect x="248" y="546" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="270" y="579" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">Bench</text>
+  <text x="270" y="602" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">cases · suites</text>
+  <rect x="548" y="546" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="570" y="579" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">Metrics</text>
+  <text x="570" y="602" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">counters · latency</text>
+  <rect x="848" y="546" width="288" height="82" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="870" y="579" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15" font-weight="600">Deployment</text>
+  <text x="870" y="602" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11" font-weight="400">topology · rollout · retention</text>
+  <line x1="64" y1="660" x2="1136" y2="660" stroke="#F1F5F9" stroke-width="1"/>
+  <text x="64" y="684" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">The app kit defines the ports. The host owns execution, data, credentials and transport.</text>
+</svg>
