@@ -5,7 +5,7 @@ import { UtilityPlanner, constraintBlocker } from "../planners/utility/utility-p
 import { CommitmentPlanner } from "../planners/commitment/commitment-planner.ts";
 import { ExecutionRiskPlanner } from "../planners/execution/execution-planner.ts";
 import { HumanAttentionPlanner } from "../planners/human-attention/human-attention-planner.ts";
-import { LiveCompositePlanner } from "../live/live-composite-planner.ts";
+import { LiveCompositePlanner } from "../planners/composite/live-composite-planner.ts";
 import { FirstOptionPlanner } from "./first-option-planner.ts";
 import { HighestBenefitPlanner } from "./highest-benefit-planner.ts";
 

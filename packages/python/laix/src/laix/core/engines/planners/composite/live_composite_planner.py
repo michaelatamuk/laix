@@ -11,28 +11,28 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
-from ...support.time import parse_iso
-from ...support.values import clamp
-from ..planners.human_attention.human_attention_planner import (
+from ....support.time import parse_iso
+from ....support.values import clamp
+from ..human_attention.human_attention_planner import (
     HumanAttentionWeights,
     _remaining,
     _score_option as human_attention_score,
     approval_state,
 )
-from ..planners.commitment.commitment_planner import (
+from ..commitment.commitment_planner import (
     CommitmentWeights,
     _commitments,
     _score_option as commitment_score,
 )
 from ._live_row import _Row
-from ..contract.planner_policy import PlannerInput, PlannerResult
+from ...contract.planner_policy import PlannerInput, PlannerResult
 from .composite_score import CompositeScore
-from ..planners.execution.execution_planner import (
+from ..execution.execution_planner import (
     ExecutionWeights,
     _receipt_status,
     _score_option as execution_score,
 )
-from ..planners.utility.utility_planner import (
+from ..utility.utility_planner import (
     UtilityPlanner,
     UtilityModel,
     _approval_required,

@@ -19,40 +19,29 @@ import {
 import type { ExecutionWeights } from "../execution/execution-planner.ts";
 import {
   approvalState,
+  humanAttentionCost,
   humanAttentionScoreOption,
   remainingBudget,
 } from "../human-attention/human-attention-planner.ts";
 import type { HumanAttentionWeights } from "../human-attention/human-attention-planner.ts";
-import { PomdpModel } from "../pomdp/pomdp-model.ts";
-import {
-  actionFutureValue,
-  beliefEntropy,
-  beliefFromState,
-  normalizeBelief,
-} from "../pomdp/pomdp-planner.ts";
-import type { BeliefState } from "../pomdp/pomdp-planner.ts";
 
-export interface CAVODWeights {
-  information?: number;
-  waiting?: number;
-  uncertainty?: number;
-  future?: number;
-}
-
-export interface CAVODScore {
+export interface CompositeScore {
   utility: number;
   commitment: number;
   execution: number;
   human_attention: number;
-  information: number;
-  option: number;
-  future: number;
   total: number;
+}
+
+interface LiveOptions {
+  commitmentWeights?: CommitmentWeights;
+  executionWeights?: ExecutionWeights;
+  humanAttentionWeights?: HumanAttentionWeights;
 }
 
 interface Row {
   option: ActionOption;
-  score: CAVODScore;
+  score: CompositeScore;
   feasible: boolean;
   blocker: string | null;
   commitment: ReturnType<typeof commitmentScoreOption>;
@@ -60,96 +49,20 @@ interface Row {
   humanAttention: ReturnType<typeof humanAttentionScoreOption>;
 }
 
-const INFORMATION_GAIN: Record<string, number> = {
-  ask: 0.7,
-  verify: 0.5,
-  observe: 0.4,
-};
-
 function round(value: number): number {
   return Math.round(value * 1e6) / 1e6;
 }
 
-function decisionValue(option: ActionOption): Record<string, unknown> {
-  const params = (option.params ?? {}) as Record<string, unknown>;
-  const payload = params.decision_value ?? params.value ?? {};
-  return payload && typeof payload === "object"
-    ? (payload as Record<string, unknown>)
-    : {};
-}
-
-function uncertainty(problem: PlannerInput, weights: Required<CAVODWeights>): number {
-  const raw = (problem.attributes ?? {}).uncertainty;
-  if (raw !== undefined) {
-    const value = Number(raw);
-    if (!Number.isNaN(value)) return Math.min(1, Math.max(0, value));
-  }
-  return Math.min(1, Math.max(0, weights.uncertainty));
-}
-
-function informationValue(
-  option: ActionOption,
-  value: number,
-  weights: Required<CAVODWeights>,
-): number {
-  const payload = decisionValue(option);
-  const explicit = payload.information_value;
-  if (explicit !== undefined) {
-    const parsed = Number(explicit);
-    if (!Number.isNaN(parsed)) return round(Math.max(0, parsed));
-  }
-  const gain = Number(payload.information_gain ?? INFORMATION_GAIN[option.verb] ?? 0);
-  return round(weights.information * value * Math.max(0, Number.isNaN(gain) ? 0 : gain));
-}
-
-function optionValue(
-  option: ActionOption,
-  value: number,
-  weights: Required<CAVODWeights>,
-): number {
-  if (option.verb !== "wait") return 0;
-  const payload = decisionValue(option);
-  const explicit = payload.option_value;
-  if (explicit !== undefined) {
-    const parsed = Number(explicit);
-    if (!Number.isNaN(parsed)) return round(Math.max(0, parsed));
-  }
-  return round(weights.waiting * value);
-}
-
-export class CAVODPlanner {
-  readonly name = "ca_vod.v1";
+export class LiveCompositePlanner {
+  readonly name = "live.v1";
   readonly model: UtilityModel;
-  readonly weights: Required<CAVODWeights>;
   readonly commitmentWeights: Required<CommitmentWeights>;
   readonly executionWeights: Required<ExecutionWeights>;
   readonly humanAttentionWeights: Required<HumanAttentionWeights>;
-  readonly pomdpModel: PomdpModel | null;
-  readonly belief: BeliefState;
   private readonly utility: UtilityPlanner;
-  private readonly enforceFeasibility: boolean;
 
-  constructor(
-    model: UtilityModel = new UtilityModel(),
-    options: {
-      pomdpModel?: PomdpModel;
-      belief?: BeliefState;
-      weights?: CAVODWeights;
-      commitmentWeights?: CommitmentWeights;
-      executionWeights?: ExecutionWeights;
-      humanAttentionWeights?: HumanAttentionWeights;
-      enforceFeasibility?: boolean;
-    } = {},
-  ) {
+  constructor(model: UtilityModel = new UtilityModel(), options: LiveOptions = {}) {
     this.model = model;
-    this.pomdpModel = options.pomdpModel ?? null;
-    this.belief = { ...(options.belief ?? {}) };
-    this.weights = {
-      information: options.weights?.information ?? 0.5,
-      waiting: options.weights?.waiting ?? 0.25,
-      uncertainty: options.weights?.uncertainty ?? 0.5,
-      future: options.weights?.future ?? 1.0,
-    };
     this.commitmentWeights = {
       keep: options.commitmentWeights?.keep ?? 0.35,
       violate: options.commitmentWeights?.violate ?? 1.0,
@@ -169,7 +82,6 @@ export class CAVODPlanner {
       escalation: options.humanAttentionWeights?.escalation ?? 0.3,
       exhausted: options.humanAttentionWeights?.exhausted ?? 1.0,
     };
-    this.enforceFeasibility = options.enforceFeasibility ?? true;
     this.utility = new UtilityPlanner(model);
   }
 
@@ -183,11 +95,6 @@ export class CAVODPlanner {
     const now = new Date(problem.at);
     const approval = approvalRequired(problem);
     const remaining = remainingBudget(problem);
-    const uncertaintyValue = uncertainty(problem, this.weights);
-    const belief = this.pomdpModel ? this.resolveBelief(problem) : {};
-    const horizon = this.pomdpModel
-      ? Number((problem.attributes ?? {}).horizon ?? this.pomdpModel.horizon)
-      : 0;
     const rows: Row[] = options.map((option) => {
       const commitment = commitmentScoreOption(
         option,
@@ -211,35 +118,24 @@ export class CAVODPlanner {
         approval,
         approvalState(problem, option),
       );
-      const information = informationValue(option, uncertaintyValue, this.weights);
-      const optionTerm = optionValue(option, uncertaintyValue, this.weights);
-      const future = this.futureValue(option, belief, horizon);
       const blocker = constraintBlocker(problem, option);
-      const score: CAVODScore = {
+      const score: CompositeScore = {
         utility: commitment.utility,
         commitment: commitment.commitment,
         execution: execution.execution,
         human_attention: attention.human_attention,
-        information,
-        option: optionTerm,
-        future,
         total: round(
           commitment.utility +
             commitment.commitment +
             execution.execution +
-            attention.human_attention +
-            information +
-            optionTerm +
-            future,
+            attention.human_attention,
         ),
       };
       const blocked = commitment.blocked ?? attention.blocked ?? blocker;
       return {
         option,
         score,
-        feasible: this.enforceFeasibility
-          ? model.feasible(option) && blocked === null
-          : true,
+        feasible: model.feasible(option) && blocked === null,
         blocker: blocked,
         commitment,
         execution,
@@ -265,8 +161,8 @@ export class CAVODPlanner {
     return {
       verb: best.option.verb,
       confidence: this.confidence(best.score.total, second),
-      reasonCode: "value_of_decision",
-      rationale: `${best.option.id} balances utility ${best.score.utility.toFixed(3)}, commitment ${best.score.commitment >= 0 ? "+" : ""}${best.score.commitment.toFixed(3)}, execution ${best.score.execution >= 0 ? "+" : ""}${best.score.execution.toFixed(3)}, attention ${best.score.human_attention >= 0 ? "+" : ""}${best.score.human_attention.toFixed(3)}, information ${best.score.information >= 0 ? "+" : ""}${best.score.information.toFixed(3)}, option value ${best.score.option >= 0 ? "+" : ""}${best.score.option.toFixed(3)} and future value ${best.score.future >= 0 ? "+" : ""}${best.score.future.toFixed(3)}`,
+      reasonCode: "live_decision",
+      rationale: `${best.option.id} balances utility ${best.score.utility.toFixed(3)}, commitments ${best.score.commitment >= 0 ? "+" : ""}${best.score.commitment.toFixed(3)}, execution ${best.score.execution >= 0 ? "+" : ""}${best.score.execution.toFixed(3)} and attention ${best.score.human_attention >= 0 ? "+" : ""}${best.score.human_attention.toFixed(3)}`,
       actionId: best.option.id,
       requiresApproval: Boolean(
         best.humanAttention.effect.requiresApproval ||
@@ -276,18 +172,11 @@ export class CAVODPlanner {
       score: best.score.total,
       alternatives: this.alternatives(rows, best.option.id),
       attributes: {
-        algorithm: this.name,
         utility: best.score.utility,
         commitment_score: best.score.commitment,
         execution_score: best.score.execution,
         human_attention_score: best.score.human_attention,
-        information_value: best.score.information,
-        option_value: best.score.option,
-        future_value: best.score.future,
-        uncertainty: uncertaintyValue,
-        belief: Object.keys(belief).length ? belief : null,
-        belief_entropy: Object.keys(belief).length ? beliefEntropy(belief) : null,
-        horizon: this.pomdpModel ? horizon : null,
+        human_attention_cost: humanAttentionCost(best.humanAttention.effect),
         commitments_fulfilled: [...best.commitment.fulfilled],
         commitments_violated: [...best.commitment.violated],
         commitments_created: [...best.commitment.created],
@@ -295,53 +184,6 @@ export class CAVODPlanner {
         approval_state: best.humanAttention.effect.approvalState,
       },
     };
-  }
-
-  private resolveBelief(problem: PlannerInput): BeliefState {
-    if (!this.pomdpModel) return {};
-    const raw = (problem.attributes ?? {}).belief;
-    if (raw && typeof raw === "object" && !Array.isArray(raw)) {
-      return normalizeBelief(raw as BeliefState, this.pomdpModel.states);
-    }
-    if (Object.keys(this.belief).length) {
-      return normalizeBelief(this.belief, this.pomdpModel.states);
-    }
-    const state = (problem.attributes ?? {}).state;
-    if (typeof state === "string" && state) {
-      return beliefFromState(state, this.pomdpModel.states);
-    }
-    const size = this.pomdpModel.states.length;
-    return Object.fromEntries(
-      this.pomdpModel.states.map((item) => [item, 1 / size]),
-    );
-  }
-
-  private actionFor(option: ActionOption): string | null {
-    if (!this.pomdpModel) return null;
-    if (this.pomdpModel.actions.includes(option.id)) return option.id;
-    if (this.pomdpModel.actions.includes(option.verb)) return option.verb;
-    return null;
-  }
-
-  private futureValue(
-    option: ActionOption,
-    belief: BeliefState,
-    horizon: number,
-  ): number {
-    if (!this.pomdpModel || !Object.keys(belief).length) return 0;
-    const action = this.actionFor(option);
-    if (!action) return 0;
-    if (
-      !Object.keys(belief).some((state) =>
-        this.pomdpModel!.actionAvailable(state, action),
-      )
-    ) {
-      return 0;
-    }
-    return round(
-      this.weights.future *
-        actionFutureValue(this.pomdpModel, belief, action, { horizon }),
-    );
   }
 
   private modelFor(attributes: Record<string, unknown>): UtilityModel {
@@ -356,16 +198,11 @@ export class CAVODPlanner {
     return new UtilityModel({
       weights: this.model.weights,
       riskAttitude:
-        (attributes.risk_attitude as RiskAttitude | undefined) ??
-        this.model.riskAttitude,
+        (attributes.risk_attitude as RiskAttitude | undefined) ?? this.model.riskAttitude,
       maxRisk:
-        attributes.max_risk === undefined
-          ? this.model.maxRisk
-          : Number(attributes.max_risk),
+        attributes.max_risk === undefined ? this.model.maxRisk : Number(attributes.max_risk),
       maxCost:
-        attributes.max_cost === undefined
-          ? this.model.maxCost
-          : Number(attributes.max_cost),
+        attributes.max_cost === undefined ? this.model.maxCost : Number(attributes.max_cost),
       maxLatencyMs:
         attributes.max_latency_ms === undefined
           ? this.model.maxLatencyMs
@@ -384,15 +221,12 @@ export class CAVODPlanner {
         commitment: row.score.commitment,
         execution: row.score.execution,
         human_attention: row.score.human_attention,
-        information: row.score.information,
-        option: row.score.option,
-        future: row.score.future,
         total: row.score.total,
         rejected_because: row.blocker
           ? `blocked by ${row.blocker}`
-          : row.feasible
-            ? "lower value of decision"
-            : "outside the hard limits",
+          : !row.feasible
+            ? "outside the hard limits"
+            : "lower integrated score",
       }))
       .sort((left, right) =>
         Number(right.total) !== Number(left.total)
@@ -404,18 +238,12 @@ export class CAVODPlanner {
   }
 
   private confidence(best: number, second: number | undefined): number {
-    if (second === undefined) return 1;
+    if (second === undefined) return 1.0;
     const gap = Math.max(0, best - second);
     return Math.min(1, Math.max(0, 0.5 + 0.5 * (gap / Math.max(Math.abs(best), 1e-9))));
   }
 
   private wait(reasonCode: string, rationale: string): PlannerResult {
-    return {
-      verb: "wait",
-      confidence: 1,
-      reasonCode,
-      rationale,
-      score: 0,
-    };
+    return { verb: "wait", confidence: 1.0, reasonCode, rationale, score: 0.0 };
   }
 }

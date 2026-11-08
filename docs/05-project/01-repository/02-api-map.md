@@ -48,6 +48,7 @@ integration, **Learner** is learning. The protocol is `Planner`.
 | `HumanAttentionPlanner` | interruption, approval, escalation and a shared budget |
 | `LiveCompositePlanner` | the composite planner: utility, commitments, execution risk and attention in one planner result |
 | `CAVODPlanner` | one-step value of decision: information and wait-option value on top of the live terms |
+| `CABBPlanner`, `RolloutPlanner`, `ReplanPlanner` | finite-horizon sequence planning: exact, approximate and recovery |
 | `AttentionScheduler`, `WhittleScheduler`, `whittle_index` | fleet-level attention allocation; exact single-arm Whittle index |
 | `repair_continuity` | greedy or exact minimum-weight repair of a conflicting decision history |
 | `counterfactual_attribution`, `counterfactual_search` | linear attribution or bounded search for the change that flips a decision |

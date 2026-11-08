@@ -264,8 +264,9 @@ evaluation and foundation.
 | `core/engines/signals/` | signal attention, gates, score and timing. |
 | `core/engines/policies/` | decision-policy protocol, registry and packaged policies. |
 | `core/engines/contract/` | `PlannerInput`, `PlannerResult`, `Planner` and `PlannerPolicy`. |
-| `core/engines/planners/` | utility, commitment, execution, human-attention, MDP and POMDP planners. |
-| `core/engines/live/` | `LiveCompositePlanner` and `CompositeScore`. |
+| `core/engines/planners/` | utility, commitment, execution, human-attention, decision-value, composite, MDP and POMDP planners. |
+| `core/engines/planners/composite/` | `LiveCompositePlanner` and `CompositeScore`. |
+| `core/engines/sequence/` | finite-horizon sequence contract, `CABBPlanner`, `RolloutPlanner` and `ReplanPlanner`. |
 | `core/engines/simulation/` | simulator, scenarios and planner comparison. |
 | `core/engines/bench/` | the live decision benchmark. |
 | `core/engines/resources/` | budget, resource plan, scheduler and sensing options. |

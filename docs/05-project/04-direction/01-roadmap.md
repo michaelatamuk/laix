@@ -64,7 +64,7 @@ A candidate counts as differentiated when it has:
 
 A patent-level claim would also need a prior-art search.
 
-The four algorithm prototypes are in
+The algorithm prototypes and the sequence family are in
 [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md), with smoke results in
 [Algorithm prototype results](../../06-research/02-evaluation/algorithm-prototypes.md).
 

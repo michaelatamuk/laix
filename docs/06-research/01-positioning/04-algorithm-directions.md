@@ -1,11 +1,11 @@
 # Algorithm directions
 
-**Status:** research memo. All four directions now have a deterministic prototype; none is a novelty
-claim yet. Each one still needs a prior-art check, a formal statement and a benchmark before it can
-be described as a new algorithm.
+**Status:** research memo. The four original directions and the new sequence family now have a
+deterministic prototype; none is a novelty claim yet. Each one still needs a prior-art check, a
+formal statement and a benchmark before it can be described as a new algorithm.
 
 The current LAIX contribution is a decision contract and a composition of standard scoring rules.
-This page records four directions that could give LAIX an algorithm of its own.
+This page records five directions that could give LAIX an algorithm of its own.
 
 ## Implementation status
 
@@ -15,6 +15,7 @@ This page records four directions that could give LAIX an algorithm of its own.
 | AADS | index policy plus exact single-arm Whittle index | `AttentionScheduler`, `WhittleScheduler` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
 | CDR | greedy and exact minimum-weight vertex cover | `repair_continuity` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
 | CDA | linear attribution plus bounded counterfactual search | `counterfactual_attribution`, `counterfactual_search` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
+| CABB | exact finite-horizon branch and bound over commitments and attention | `CABBPlanner`, `RolloutPlanner`, `ReplanPlanner` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
 
 The prototypes are deterministic and training-free. They are first implementations, not the full
 research methods described below.
@@ -30,7 +31,7 @@ a new learning rule.
 | Commitment | weighted sum of fulfil, violate, due, blocked and create | `core/engines/planners/commitment/commitment_planner.py` |
 | Execution risk | linear penalties for irreversibility, unknown risk, approval and recovery | `core/engines/planners/execution/execution_planner.py` |
 | Human attention | linear penalties plus a budget check | `core/engines/planners/human_attention/human_attention_planner.py` |
-| Composite | additive total of the four terms with fixed weights | `core/engines/live/live_composite_planner.py` |
+| Composite | additive total of the four terms with fixed weights | `core/engines/planners/composite/live_composite_planner.py` |
 | Confidence | gap heuristic: `0.5 + 0.5 * (gap / best)` | the planner classes |
 | Calibration | reliability bins over confidence | `core/engines/learning/decision_calibration.py` |
 | Learning | UCB bandit | `core/engines/policies/implementations/bandit.py` |
@@ -194,10 +195,53 @@ study with auditors or operators.
 
 **Effort:** medium. **Fit:** audit and explainability. **Priority:** fourth.
 
-## 7. Priority
+## 7. Candidate 5: Commitment-Attention Branch and Bound (CABB)
+
+**Problem.** Choose a whole chain of decisions over a known horizon, not one decision at a time.
+Every step consumes a shared human-attention budget and may fulfil or violate an open commitment. A
+choice that looks best now can block a better choice later.
+
+**Model.** A finite deterministic sequence:
+
+```text
+steps = (S_1, ..., S_T),  S_t = {options at time t}
+state = (commitment statuses, remaining attention)
+score(chain) = sum_t immediate(t) - terminal_open_penalty
+```
+
+**Algorithm.** Branch and bound with two admissible bounds:
+
+- a relaxed per-step score bound;
+- a terminal promise bound for commitments still open at the end.
+
+The search returns the exact best chain for the supplied finite scenario.
+
+**Guarantee.** For the supplied deterministic scenario, the returned chain is optimal. This is not a
+guarantee for an uncertain or infinite-horizon environment.
+
+**Novelty hypothesis.** Branch and bound is old. The candidate is the problem formulation:
+**exact finite-horizon commitment- and attention-constrained sequence planning over the five agent
+decision verbs**. The prior-art check must decide whether the formulation is new, not whether branch
+and bound is new.
+
+**Experiment.**
+
+- Baselines: greedy one-step, greedy rollout, brute force on small cases.
+- Metrics: optimality, decision quality, nodes and wall time.
+- Cases: small deterministic scenarios plus the attention tradeoff case where greedy fails.
+
+**Prototype result.** On 12 synthetic 4-step/3-option scenarios, CABB matches brute force on 12/12
+and rollout on 10/12. In the attention tradeoff case, CABB scores `1.105` against rollout `0.605`
+because it saves attention for a later high-value option. This shows decision quality, not speed:
+the bound is still loose on tiny cases.
+
+**Effort:** high. **Fit:** core. **Priority:** first for algorithmic novelty.
+
+## 8. Priority
 
 | Direction | Layer | Novelty | Effort | First evidence |
 |---|---|---|---|---|
+| **CABB** | core | high (candidate) | high | exact optimality on small scenarios plus the greedy tradeoff case |
 | **CA-VOD** | core | high | high | weighted-sum baseline plus new benchmark cases |
 | **AADS** | app kit | high | medium-high | queue simulation plus traces |
 | **CDR** | core/app kit | medium | medium | synthetic continuity sequences |
@@ -205,12 +249,14 @@ study with auditors or operators.
 
 Recommended order:
 
-1. **CA-VOD** first: it replaces the weighted sum and gives the core a real decision algorithm.
-2. **AADS** second: it creates a new fleet-level capability and a clear algorithmic contribution.
-3. **CDR** third: it makes continuity a real consistency problem rather than state passing.
-4. **CDA** fourth: it turns the decision record into causal, audit-ready explanations.
+1. **CABB** first for algorithmic novelty: it is the clearest new problem formulation and it has an
+   exactness guarantee. The prior-art check decides whether the formulation is new.
+2. **CA-VOD** second: it replaces the weighted sum and gives the core a real decision algorithm.
+3. **AADS** third: it creates a new fleet-level capability and a clear algorithmic contribution.
+4. **CDR** fourth: it makes continuity a real consistency problem rather than state passing.
+5. **CDA** fifth: it turns the decision record into causal, audit-ready explanations.
 
-## 8. Prior art to check
+## 9. Prior art to check
 
 Before claiming novelty, check these areas:
 
@@ -225,19 +271,20 @@ Before claiming novelty, check these areas:
 
 The claim must survive a direct comparison with these lines of work. A new name is not a new method.
 
-## 9. Next step
+## 10. Next step
 
 The deterministic prototypes are in
 [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md), and the smoke results
 are in [Algorithm prototype results](../02-evaluation/algorithm-prototypes.md).
 
-The one-step and belief-state future-value versions are in place. The next step is the constrained
-research version:
+The one-step, belief-state future-value and exact sequence prototypes are in place. The next step is
+the research version:
 
+- check prior art for commitment- and attention-constrained sequence planning;
 - encode hard commitments and the attention budget in the transition model;
 - keep the deterministic fallback for low latency;
 - add baselines and ablations;
 - expand the cases beyond the smoke tests;
 - run the prior-art check again.
 
-Only after that should this page describe CA-VOD as an invented algorithm.
+Only after that should this page describe CA-VOD or CABB as an invented algorithm.

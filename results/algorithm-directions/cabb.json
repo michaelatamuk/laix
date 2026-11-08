@@ -1,0 +1,414 @@
+{
+  "generated_by": "scripts/novelty/bench/run_cabb_bench.py",
+  "status": "prototype",
+  "scenarios": 12,
+  "optimal_matches": 12,
+  "rollout_matches": 10,
+  "total_cabb_nodes": 564,
+  "total_brute_force_evaluations": 395,
+  "greedy_trap": {
+    "cabb": {
+      "actions": [
+        "start",
+        "small",
+        "bonus"
+      ],
+      "score": 1.105
+    },
+    "rollout": {
+      "actions": [
+        "start",
+        "big",
+        "nothing"
+      ],
+      "score": 0.605
+    },
+    "score_gap": 0.5
+  },
+  "rows": [
+    {
+      "seed": 0,
+      "cabb": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o1",
+          "s3o0"
+        ],
+        "score": 3.75,
+        "nodes": 44
+      },
+      "rollout": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o1",
+          "s3o0"
+        ],
+        "score": 3.75
+      },
+      "brute_force": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o1",
+          "s3o0"
+        ],
+        "score": 3.75,
+        "evaluations": 33
+      }
+    },
+    {
+      "seed": 1,
+      "cabb": {
+        "actions": [
+          "s0o0",
+          "s1o0",
+          "s2o0",
+          "s3o1"
+        ],
+        "score": 3.285,
+        "nodes": 55
+      },
+      "rollout": {
+        "actions": [
+          "s0o0",
+          "s1o0",
+          "s2o0",
+          "s3o1"
+        ],
+        "score": 3.285
+      },
+      "brute_force": {
+        "actions": [
+          "s0o0",
+          "s1o0",
+          "s2o0",
+          "s3o1"
+        ],
+        "score": 3.285,
+        "evaluations": 37
+      }
+    },
+    {
+      "seed": 2,
+      "cabb": {
+        "actions": [
+          "s0o0",
+          "s1o0",
+          "s2o2",
+          "s3o2"
+        ],
+        "score": 3.39,
+        "nodes": 42
+      },
+      "rollout": {
+        "actions": [
+          "s0o0",
+          "s1o0",
+          "s2o2",
+          "s3o2"
+        ],
+        "score": 3.39
+      },
+      "brute_force": {
+        "actions": [
+          "s0o0",
+          "s1o0",
+          "s2o2",
+          "s3o2"
+        ],
+        "score": 3.39,
+        "evaluations": 22
+      }
+    },
+    {
+      "seed": 3,
+      "cabb": {
+        "actions": [
+          "s0o0",
+          "s1o0",
+          "s2o0",
+          "s3o1"
+        ],
+        "score": 2.145,
+        "nodes": 31
+      },
+      "rollout": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o0",
+          "s3o0"
+        ],
+        "score": 1.785
+      },
+      "brute_force": {
+        "actions": [
+          "s0o0",
+          "s1o0",
+          "s2o0",
+          "s3o1"
+        ],
+        "score": 2.145,
+        "evaluations": 13
+      }
+    },
+    {
+      "seed": 4,
+      "cabb": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o0",
+          "s3o2"
+        ],
+        "score": 3.01,
+        "nodes": 59
+      },
+      "rollout": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o2",
+          "s3o0"
+        ],
+        "score": 2.86
+      },
+      "brute_force": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o0",
+          "s3o2"
+        ],
+        "score": 3.01,
+        "evaluations": 41
+      }
+    },
+    {
+      "seed": 5,
+      "cabb": {
+        "actions": [
+          "s0o0",
+          "s1o2",
+          "s2o1",
+          "s3o0"
+        ],
+        "score": 3.55,
+        "nodes": 56
+      },
+      "rollout": {
+        "actions": [
+          "s0o0",
+          "s1o2",
+          "s2o1",
+          "s3o0"
+        ],
+        "score": 3.55
+      },
+      "brute_force": {
+        "actions": [
+          "s0o0",
+          "s1o2",
+          "s2o1",
+          "s3o0"
+        ],
+        "score": 3.55,
+        "evaluations": 46
+      }
+    },
+    {
+      "seed": 6,
+      "cabb": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o1",
+          "s3o1"
+        ],
+        "score": 3.835,
+        "nodes": 39
+      },
+      "rollout": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o1",
+          "s3o1"
+        ],
+        "score": 3.835
+      },
+      "brute_force": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o1",
+          "s3o1"
+        ],
+        "score": 3.835,
+        "evaluations": 31
+      }
+    },
+    {
+      "seed": 7,
+      "cabb": {
+        "actions": [
+          "s0o0",
+          "s1o0",
+          "s2o1",
+          "s3o0"
+        ],
+        "score": 3.305,
+        "nodes": 43
+      },
+      "rollout": {
+        "actions": [
+          "s0o0",
+          "s1o0",
+          "s2o1",
+          "s3o0"
+        ],
+        "score": 3.305
+      },
+      "brute_force": {
+        "actions": [
+          "s0o0",
+          "s1o0",
+          "s2o1",
+          "s3o0"
+        ],
+        "score": 3.305,
+        "evaluations": 34
+      }
+    },
+    {
+      "seed": 8,
+      "cabb": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o2",
+          "s3o0"
+        ],
+        "score": 2.925,
+        "nodes": 58
+      },
+      "rollout": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o2",
+          "s3o0"
+        ],
+        "score": 2.925
+      },
+      "brute_force": {
+        "actions": [
+          "s0o0",
+          "s1o1",
+          "s2o2",
+          "s3o0"
+        ],
+        "score": 2.925,
+        "evaluations": 37
+      }
+    },
+    {
+      "seed": 9,
+      "cabb": {
+        "actions": [
+          "s0o0",
+          "s1o2",
+          "s2o0",
+          "s3o0"
+        ],
+        "score": 3.27,
+        "nodes": 52
+      },
+      "rollout": {
+        "actions": [
+          "s0o0",
+          "s1o2",
+          "s2o0",
+          "s3o0"
+        ],
+        "score": 3.27
+      },
+      "brute_force": {
+        "actions": [
+          "s0o0",
+          "s1o2",
+          "s2o0",
+          "s3o0"
+        ],
+        "score": 3.27,
+        "evaluations": 38
+      }
+    },
+    {
+      "seed": 10,
+      "cabb": {
+        "actions": [
+          "s0o0",
+          "s1o2",
+          "s2o0",
+          "s3o1"
+        ],
+        "score": 3.6,
+        "nodes": 43
+      },
+      "rollout": {
+        "actions": [
+          "s0o0",
+          "s1o2",
+          "s2o0",
+          "s3o1"
+        ],
+        "score": 3.6
+      },
+      "brute_force": {
+        "actions": [
+          "s0o0",
+          "s1o2",
+          "s2o0",
+          "s3o1"
+        ],
+        "score": 3.6,
+        "evaluations": 39
+      }
+    },
+    {
+      "seed": 11,
+      "cabb": {
+        "actions": [
+          "s0o0",
+          "s1o2",
+          "s2o0",
+          "s3o0"
+        ],
+        "score": 3.275,
+        "nodes": 42
+      },
+      "rollout": {
+        "actions": [
+          "s0o0",
+          "s1o2",
+          "s2o0",
+          "s3o0"
+        ],
+        "score": 3.275
+      },
+      "brute_force": {
+        "actions": [
+          "s0o0",
+          "s1o2",
+          "s2o0",
+          "s3o0"
+        ],
+        "score": 3.275,
+        "evaluations": 24
+      }
+    }
+  ]
+}
