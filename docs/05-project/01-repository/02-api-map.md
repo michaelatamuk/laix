@@ -49,7 +49,7 @@ integration, **Learner** is learning. The protocol is `Planner`.
 | `LiveCompositePlanner` | the composite planner: utility, commitments, execution risk and attention in one planner result |
 | `CAVODPlanner` | one-step value of decision: information and wait-option value on top of the live terms |
 | `AttentionScheduler`, `WhittleScheduler`, `whittle_index` | fleet-level attention allocation; exact single-arm Whittle index |
-| `repair_continuity` | minimum-cost repair of a conflicting decision history |
+| `repair_continuity` | greedy or exact minimum-weight repair of a conflicting decision history |
 | `counterfactual_attribution` | the smallest single-component change that flips a decision |
 | `MDPPlanner`, `POMDPPlanner` | model-based planning over a host-supplied model |
 | `action_future_value` | discounted future value of one action under a belief |

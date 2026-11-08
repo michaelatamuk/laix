@@ -612,11 +612,13 @@
     actions: RepairAction[];
     totalCost: number;
     consistent: boolean;
+    method: "greedy" | "exact";
   }
   export const DEFAULT_CONFLICT_RULES: ConflictRule[];
   export function repairContinuity(
     records: ContinuityRecord[],
     rules?: ConflictRule[],
+    options?: { exact?: boolean },
   ): RepairPlan;
 
   export type CounterfactualComponent =

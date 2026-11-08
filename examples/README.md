@@ -104,6 +104,7 @@ py examples/python/01-decide/signal_attention_bill_due.py
 | AADS attention schedule | `attention_scheduler.py` | `attention_scheduler.mts` | `refund-approval,check-evidence` / `1.5 1.5` |
 | AADS exact Whittle index | `whittle_scheduler.py` | `whittle_scheduler.mts` | `0.9 0.09` / `high low` |
 | CDR continuity repair | `continuity_repair.py` | `continuity_repair.mts` | `approval-1 supersede 1.0` |
+| CDR exact minimum-cost repair | `continuity_repair_exact.py` | `continuity_repair_exact.mts` | `3.0 2.0 ['b']` / `3 2 [ 'b' ]` |
 | CDA counterfactual attribution | `counterfactual_attribution.py` | `counterfactual_attribution.mts` | `ask wait commitment 0.970001` |
 
 ## 04 Stream

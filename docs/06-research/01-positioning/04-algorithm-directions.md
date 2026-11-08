@@ -13,7 +13,7 @@ This page records four directions that could give LAIX an algorithm of its own.
 |---|---|---|---|
 | CA-VOD | one-step value of decision plus optional belief-state future value | `CAVODPlanner` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
 | AADS | index policy plus exact single-arm Whittle index | `AttentionScheduler`, `WhittleScheduler` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
-| CDR | greedy minimum-cost repair | `repair_continuity` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
+| CDR | greedy and exact minimum-weight vertex cover | `repair_continuity` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
 | CDA | linear counterfactual attribution | `counterfactual_attribution` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
 
 The prototypes are deterministic and training-free. They are first implementations, not the full
