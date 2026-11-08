@@ -189,7 +189,7 @@ interruption cost. An app that needs money, delay, disruption and information va
 terms in its own policy.
 
 Runnable example:
-[`examples/python/02-policies/time_critical.py`](../../../examples/python/02-policies/time_critical.py).
+[`examples/python/core/decision/single/policies/time_critical.py`](../../../examples/python/core/decision/single/policies/time_critical.py).
 
 ## What the host owns
 

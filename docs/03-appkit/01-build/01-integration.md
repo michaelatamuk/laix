@@ -125,7 +125,7 @@ The returned decision carries the same source and calibration flag. A rule score
 6. Move traffic to LAIX.
 7. Remove the old path after a quiet period.
 
-The production adapter stays in the app. `examples/python/05-execute/host_adapter.py` shows a
+The production adapter stays in the app. `examples/python/appkit/build/host_adapter.py` shows a
 generic adapter.
 
 ## Manager boundary

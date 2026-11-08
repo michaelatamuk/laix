@@ -14,7 +14,7 @@ class DecisionPolicy:
 ```
 
 The core policy page covers the built-in policies, the decision classes and the wrappers:
-[Policies](../../02-core/02-decide/03-policies.md).
+[Policies](../../02-core/03-decision/01-single/04-policies.md).
 
 ## The default path
 
@@ -119,12 +119,12 @@ console.log(layer.policies());
 
 - The core owns the policy contract, the built-in policies and the reason codes.
 - The app owns which policy runs, when it changes and how it is rolled out.
-- A learned policy is still a policy; see [Outcome learning](../../02-core/05-learning/01-outcome-learning.md).
+- A learned policy is still a policy; see [Outcome learning](../../02-core/02-domain/03-outcomes.md).
 - Do not hide a policy switch inside the adapter. Make it explicit and versioned.
 
 ## Related
 
 - [Integration](01-integration.md) - the adapter around the call.
 - [Single decision](02-single-decision.md) - `DecisionClient` and the one-shot surface.
-- [Policies](../../02-core/02-decide/03-policies.md) - the contract, the decision classes and the wrappers.
+- [Policies](../../02-core/03-decision/01-single/04-policies.md) - the contract, the decision classes and the wrappers.
 - [Deployment](../05-operate/03-deployment.md) - rollout and rollback.

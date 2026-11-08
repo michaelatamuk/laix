@@ -1,7 +1,7 @@
 # Repository structure
 
 This page maps files. Concepts are defined in [architecture](../../04-concepts/01-architecture/01-system-architecture.md),
-[the Decision response](../../02-core/01-contract/01-decision-contract.md) and [records](../../02-core/01-contract/02-records-and-schema.md).
+[the Decision response](../../02-core/01-contract/01-decision-contract.md) and [records](../../02-core/01-contract/03-records.md).
 
 ```text
 laix/
@@ -54,8 +54,8 @@ laix/
 │   │   └── 05-governance/   EU liability
 │   └── assets/           logo, banner, architecture and demo placeholder
 ├── examples/
-│   ├── python/            numbered lifecycle stages
-│   └── typescript/        the same numbered stages
+│   ├── python/            core/ and appkit/, then decision shape
+│   └── typescript/        the same core and app-kit split
 ├── scripts/
 │   ├── ci/                repository checks (relative links)
 │   ├── novelty/

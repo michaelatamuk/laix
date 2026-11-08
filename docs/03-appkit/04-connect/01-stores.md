@@ -81,7 +81,7 @@ restored = store.load("task-1")
 ```
 
 `InMemoryCommitmentStore` is included for tests. The host can implement `CommitmentStore` with its own
-storage. The commitment model is in [Commitments](../../02-core/02-decide/02-commitments.md).
+storage. The commitment model is in [Commitments](../../02-core/02-domain/02-commitments.md).
 
 ## Outcome store
 
@@ -106,7 +106,7 @@ class MyOutcomeStore:
 - evidence reference.
 
 Keep transcripts, images, customer data and secrets in the app. Learning uses outcome labels:
-[outcome learning](../../02-core/05-learning/01-outcome-learning.md).
+[outcome learning](../../02-core/02-domain/03-outcomes.md).
 
 ## TypeScript
 
@@ -124,7 +124,7 @@ TypeScript exports `StateStore`, `InMemoryStateStore`, `StreamCheckpointStore`,
 ## Related
 
 - [Streaming](../02-run/02-streaming.md) - checkpoints and resume.
-- [Decision continuity](../../02-core/04-continuity/01-decision-continuity.md) - what survives a decision.
-- [Commitments](../../02-core/02-decide/02-commitments.md) - the ledger shape.
-- [Outcome learning](../../02-core/05-learning/01-outcome-learning.md) - what labels are used for.
+- [Decision continuity](../../02-core/03-decision/04-history.md) - what survives a decision.
+- [Commitments](../../02-core/02-domain/02-commitments.md) - the ledger shape.
+- [Outcome learning](../../02-core/02-domain/03-outcomes.md) - what labels are used for.
 - [Deployment](../05-operate/03-deployment.md) - retention and deletion.

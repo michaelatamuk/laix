@@ -44,9 +44,9 @@ confidence intervals.
 
 ### Done
 
-- [x] Implement baselines and ablations — `examples/python/03-plan/ablation_study.py`
+- [x] Implement baselines and ablations — `examples/python/core/evaluation/bench/ablation_study.py`
   runs all 7 planners on all 7 demo cases; LiveCompositePlanner 7/7, single-concern planners partial
-- [x] Write the conflict scenario — `examples/python/03-plan/conflict_scenario.py`
+- [x] Write the conflict scenario — `examples/python/core/decision/history/conflict_scenario.py`
   shows all three concerns firing; `UtilityPlanner` and `HumanAttentionPlanner` fail; full score breakdown
 - [x] Create the case schema — `benchmarks/live/v1/schema.json` (JSON Schema Draft
   2020-12); `benchmarks/live/README.md` with field reference, split targets and Python loader

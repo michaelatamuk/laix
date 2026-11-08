@@ -130,12 +130,12 @@ proposal lifecycles are on [Proposals and records](02-proposals-and-records.md).
 
 ## Examples
 
-- Python: `examples/python/05-execute/execution.py`
-- Python: `examples/python/05-execute/execution_saga.py`
-- Python: `examples/python/05-execute/saga.py`
-- Python: `examples/python/05-execute/record.py`
-- TypeScript: `examples/typescript/05-execute/execution.mts`
-- TypeScript: `examples/typescript/05-execute/execution_saga.mts`
+- Python: `examples/python/appkit/execute/execution.py`
+- Python: `examples/python/appkit/execute/execution_saga.py`
+- Python: `examples/python/appkit/execute/saga.py`
+- Python: `examples/python/appkit/execute/record.py`
+- TypeScript: `examples/typescript/appkit/execute/execution.mts`
+- TypeScript: `examples/typescript/appkit/execute/execution_saga.mts`
 
 ## TypeScript
 

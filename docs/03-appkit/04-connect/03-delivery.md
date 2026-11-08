@@ -61,8 +61,8 @@ receipt store, retries and fallback.
 
 ## Examples
 
-- Python: `examples/python/05-execute/delivery.py`
-- TypeScript: `examples/typescript/05-execute/delivery.mts`
+- Python: `examples/python/appkit/connect/delivery.py`
+- TypeScript: `examples/typescript/appkit/connect/delivery.mts`
 
 ## TypeScript
 

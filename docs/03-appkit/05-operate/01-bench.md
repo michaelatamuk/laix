@@ -112,13 +112,13 @@ fixtures.
 and prints reward, steps and optimality gap. `--json` returns the same rows as JSON.
 `run_planner_bench()` is the Python entry point. The `Simulator`, `Scenario`, `SimulationReport`,
 `SimulationResult`, `SimulationStep`, `compare_planners` and `seeded_scenarios` mechanisms are on the
-[planner contract](../../02-core/03-planning/01-planner-contract.md#simulator).
+[planner contract](../../02-core/01-contract/02-planner-contract.md#simulator).
 
 ## Live decision benchmark
 
 `python -m laix.appkit.bench --live` runs the seven-case live decision benchmark. The cases, planner
 keys, corpus and measured results are on the
-[evaluation page](../../02-core/06-reference/01-evaluation.md#live-decision-benchmark).
+[evaluation page](../../02-core/06-evaluation/01-cases.md#live-decision-benchmark).
 
 ```powershell
 python -m laix.appkit.bench --live
@@ -149,5 +149,5 @@ The external evidence and its limits are in the
 
 - [Metrics](02-metrics.md) - the counters and latency.
 - [Streaming](../02-run/02-streaming.md) - the stream bench.
-- [Evaluation](../../02-core/06-reference/01-evaluation.md) - cases, reports and parity.
+- [Evaluation](../../02-core/06-evaluation/01-cases.md) - cases, reports and parity.
 - [Deployment](03-deployment.md) - the production checklist.

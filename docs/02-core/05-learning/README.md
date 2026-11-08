@@ -1,6 +1,16 @@
 # Learning
 
-What happens after the outcome: rewards, learners, causal attribution and calibration.
+Learning changes the next decision. The core distinguishes two things:
 
-1. [Outcome learning](01-outcome-learning.md) — outcomes, rewards, `UCBBandit`, `BanditPolicy` and causal attribution.
-2. [Calibration and model learning](02-calibration-and-model-learning.md) — prediction calibration, decision calibration, `CalibratedPolicy` and `ModelLearner`.
+- **Outcomes** are records of what happened. They live in [Domain / outcomes](../02-domain/03-outcomes.md).
+- **Learners** turn outcomes and confidence into better future choices. They live here.
+
+| Page | Contents |
+|---|---|
+| [Calibration](01-calibration.md) | prediction and decision calibration |
+| [Model learning](02-model.md) | learned transitions and model rollback |
+| [Bandit](03-bandit.md) | arms, rewards and the UCB learner |
+| [Causal](04-causal.md) | treatment and control effects over observed outcomes |
+
+The full research results are in
+[Algorithm prototype results](../../06-research/02-evaluation/algorithm-prototypes.md).

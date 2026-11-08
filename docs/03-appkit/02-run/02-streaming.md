@@ -3,7 +3,7 @@
 The core is stateless: `decide(request)` returns one answer. A live app needs a loop around that
 call: event time, a cooldown, a bounded buffer and decisions that can be revised. `StreamSession` is
 that loop. It lives in the app kit, calls the same core, and keeps
-[decision continuity](../../02-core/04-continuity/01-decision-continuity.md) across events.
+[decision continuity](../../02-core/03-decision/04-history.md) across events.
 
 ## Words used here
 
@@ -266,4 +266,4 @@ Python and TypeScript expose `StreamSession`; `DecisionClient.stream` returns on
 - [Stores](../04-connect/01-stores.md) - checkpoints and state.
 - [Metrics](../05-operate/02-metrics.md) - counters, latency and alerts.
 - [Bench](../05-operate/01-bench.md) - stream bench.
-- [Decision continuity](../../02-core/04-continuity/01-decision-continuity.md) - the state carried across decisions.
+- [Decision continuity](../../02-core/03-decision/04-history.md) - the state carried across decisions.

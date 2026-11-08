@@ -35,7 +35,7 @@ what is done, what is next and what would count as a real step forward.
 - Execution retries, backoff and timeouts around `ExecutionBridge`.
 - Async execution handlers alongside the current synchronous handlers.
 - Bootstrap intervals and covariate adjustment for causal effects.
-- [MDP policy iteration](../../02-core/03-planning/04-model-based-planners.md#mdp) as an alternative
+- [MDP policy iteration](../../02-core/03-decision/01-single/03-model-based.md#mdp) as an alternative
   to value iteration.
 - File-backed state and outcome stores for hosts that want an adapter out of the box.
 - A generated API reference once the public surface is stable.
@@ -65,7 +65,7 @@ A candidate counts as differentiated when it has:
 A patent-level claim would also need a prior-art search.
 
 The algorithm prototypes and the sequence family are in
-[Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md), with smoke results in
+[Algorithm prototypes](../../02-core/03-decision/README.md), with smoke results in
 [Algorithm prototype results](../../06-research/02-evaluation/algorithm-prototypes.md).
 
 ## Research

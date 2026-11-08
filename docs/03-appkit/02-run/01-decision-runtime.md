@@ -107,7 +107,7 @@ print(outcome.delta, outcome.label)
 ```
 
 `measure` writes to the outcome ledger and appends `outcome.measured` to the trace. The outcome is
-what learning uses; see [Outcome learning](../../02-core/05-learning/01-outcome-learning.md).
+what learning uses; see [Outcome learning](../../02-core/02-domain/03-outcomes.md).
 
 ## Schedule
 
@@ -119,7 +119,7 @@ plan = runtime.schedule(sensing_options, budget=budget, uncertainty=0.7)
 print(plan.allowed, plan.deep_calls, plan.cost)
 ```
 
-The resource model is in [Resources](../../02-core/02-decide/04-resources.md). `LiveContext` uses the
+The resource model is in [Resources](../../02-core/04-sensing/02-resources.md). `LiveContext` uses the
 same scheduler for detectors; see [Live Context](03-live-context.md).
 
 ## Inspect

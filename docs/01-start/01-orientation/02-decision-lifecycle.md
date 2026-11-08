@@ -42,7 +42,7 @@ The decision is not the end of the story. It is the input to the next one.
 | Receipts and recovery | An unknown outcome must be reconciled, not retried blindly. | Execution bridge and saga. |
 | Outcomes and calibration | The next choice can learn from the last one. | Outcome store and calibration report. |
 
-That hand-off is [decision continuity](../../02-core/04-continuity/01-decision-continuity.md).
+That hand-off is [decision continuity](../../02-core/03-decision/04-history.md).
 
 ## One-shot or loop
 
@@ -70,8 +70,8 @@ The boundary is described in [Scope and boundaries](../../04-concepts/01-archite
 
 ## Runnable example
 
-[`examples/python/09-live-loop/live_loop.py`](../../../examples/python/09-live-loop/live_loop.py) and
-[`examples/typescript/09-live-loop/live_loop.mts`](../../../examples/typescript/09-live-loop/live_loop.mts)
+[`examples/python/appkit/run/live_loop.py`](../../../examples/python/appkit/run/live_loop.py) and
+[`examples/typescript/appkit/run/live_loop.mts`](../../../examples/typescript/appkit/run/live_loop.mts)
 run one full loop: stream, decision, execution, outcome, calibration and timeline.
 
 ## Read next

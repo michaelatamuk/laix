@@ -204,7 +204,7 @@ If no feasible option exists, the planner returns `verb = "wait"` with
 
 ### 2.6 Ablation results (seven-case demo)
 
-Reproducible by running `examples/python/03-plan/ablation_study.py`.
+Reproducible by running `examples/python/core/evaluation/bench/ablation_study.py`.
 
 | Component | Correct / 7 | Accuracy |
 |---|---:|---:|
@@ -218,7 +218,7 @@ Reproducible by running `examples/python/03-plan/ablation_study.py`.
 
 The composition adds real value: each single-concern planner wins its own
 cases but fails on cases where two or more concerns fire simultaneously.
-See `examples/python/03-plan/conflict_scenario.py` for a worked example.
+See `examples/python/core/decision/history/conflict_scenario.py` for a worked example.
 
 ### 2.7 Ablation results (test split, 30 cases)
 
@@ -296,4 +296,4 @@ The following must hold at all times. Tests live in
   fails if the code regresses.
 - The score formulas in §2 match the source in `core/engines/decision/single/planners/`.
 - The ablation table in §2.6 is reproducible by running
-  `examples/python/03-plan/ablation_study.py` with one command.
+  `examples/python/core/evaluation/bench/ablation_study.py` with one command.
