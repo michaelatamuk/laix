@@ -56,6 +56,13 @@ research work.
 CA-VOD is a one-step value of decision with an optional finite-horizon belief lookahead. It is not a
 constrained POMDP solver and it does not prove that information or waiting is always worth more.
 
+## Examples
+
+- Python: `examples/python/core/decision/single/planners/ca_vod_planner.py`
+- Python: `examples/python/core/decision/single/planners/ca_vod_belief.py`
+- TypeScript: `examples/typescript/core/decision/single/planners/ca_vod_planner.mts`
+- TypeScript: `examples/typescript/core/decision/single/planners/ca_vod_belief.mts`
+
 ## Related
 
 - [Composite planner](02-composite.md)

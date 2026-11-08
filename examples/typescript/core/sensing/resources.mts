@@ -1,5 +1,5 @@
 /** Cheap detectors always run. Admit a deep call only when it pays off. */
-import { ResourceScheduler } from "../../../../../packages/typescript/laix/src/index.ts";
+import { ResourceScheduler } from "../../../../packages/typescript/laix/src/index.ts";
 
 const plan = new ResourceScheduler().schedule(
   [

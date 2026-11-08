@@ -44,6 +44,13 @@ global optimizer for arbitrary rule systems.
 
 The additive path assumes component scores. The search path is a bounded grid, not a global optimizer.
 
+## Examples
+
+- Python: `examples/python/core/decision/explain/counterfactual_attribution.py`
+- Python: `examples/python/core/decision/explain/counterfactual_search.py`
+- TypeScript: `examples/typescript/core/decision/explain/counterfactual_attribution.mts`
+- TypeScript: `examples/typescript/core/decision/explain/counterfactual_search.mts`
+
 ## Related
 
 - [Single decision](01-single/README.md)

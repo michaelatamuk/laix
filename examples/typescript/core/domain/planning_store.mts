@@ -1,7 +1,7 @@
 import {
   CommitmentLedger,
   InMemoryCommitmentStore,
-} from "../../../../../packages/typescript/laix/src/index.ts";
+} from "../../../../packages/typescript/laix/src/index.ts";
 
 const ledger = new CommitmentLedger([
   { id: "a", subject: "send the draft", due: "2026-11-01T09:00:00Z" },

@@ -151,7 +151,7 @@ a wrapper. The scoring rules, weights and returned attributes are on the
 
 `PlanningPolicy` consumes a ledger and turns the next actionable commitment into a decision. The
 constructor, the exact reason codes and the policy contract are on the
-[policies page](../03-decision/01-single/04-policies.md#planning-policy).
+[policies page](../03-decision/01-single/05-policies.md#planning-policy).
 
 ## What the host owns
 
@@ -167,6 +167,6 @@ a promise was kept and records the outcome.
 ## Related
 
 - [Decision contract](../01-contract/01-decision-contract.md)
-- [Policies](../03-decision/01-single/04-policies.md) — `PlanningPolicy`
-- [Live planners](../03-decision/01-single/01-planners.md#commitment-planner) — `CommitmentPlanner`
+- [Policies](../03-decision/01-single/05-policies.md) — `PlanningPolicy`
+- [Single-decision planners](../03-decision/01-single/01-planners.md#commitment-planner) — `CommitmentPlanner`
 - [Stores](../../03-appkit/04-connect/01-stores.md) — `CommitmentStore`

@@ -175,6 +175,7 @@ the selection rule and the identity fields.
 | Options and one concern: utility, promises, execution risk or human attention | The matching planner through `PlannerPolicy` |
 | Options and several live concerns | `LiveCompositePlanner` through `PlannerPolicy` |
 | Options, uncertainty, information value or a wait option | `CAVODPlanner` through `PlannerPolicy` |
+| Options and a known horizon | `CABBPlanner`, `RolloutPlanner` or `ReplanPlanner` |
 | Several pending decisions competing for human attention | `AttentionScheduler` |
 | A decision history that may conflict | `repair_continuity` |
 | A decision that needs a counterfactual explanation | `counterfactual_attribution` |
@@ -196,7 +197,7 @@ The words are not interchangeable.
 | **CompositePlanner** | A composition of planners that returns one `PlannerResult`. The built-in composite planner is `LiveCompositePlanner`. |
 | **DecisionPolicy** | An integration layer with `decide(request)`. `PlannerPolicy` adapts a planner or composite planner to that interface. |
 | **Learner** | Code that updates a choice from measured outcomes: `UCBBandit`, `ModelLearner`. |
-| **Protocol** | `Planner`: the `solve(problem) -> PlannerResult` interface. |
+| **Protocol** | `Planner`: the `solve(problem) -> PlannerResult` interface. `SequencePlanner`: the `plan(scenario) -> DecisionPlan` interface. |
 | **Decision** | The public answer. One verb, one reason, confidence, action, approval and trail identifiers. |
 | **PlannerResult** | The planner's internal answer. `PlannerPolicy` converts it into a `Decision`. |
 | **`DecisionRequest`** | The public input. It carries signals and context, or a situation and options. |

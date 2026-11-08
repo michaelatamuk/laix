@@ -22,6 +22,33 @@ document = dumps_schema(schema)
 `schema/check.py` validates a record document against the schema. The generated schema is committed so a
 host can validate records without importing the package.
 
+## Generate and validate
+
+From `packages/python/laix`:
+
+```powershell
+py -c "from laix.core.schema import write_schema; write_schema()"
+```
+
+Check that the committed file is current:
+
+```powershell
+py -m pytest tests -k schema
+```
+
+| Helper | Purpose |
+|---|---|
+| `RECORDS` | the ten schema record classes |
+| `RECORD_NAMES` | their names in declaration order |
+| `record_fields(record)` | the field names of one record |
+| `build_schema()` | the schema as a dictionary |
+| `dumps_schema()` | the schema as indented JSON |
+| `write_schema(path=None)` | write the committed schema file |
+| `check(record_name, payload)` | validate required keys, primitive types and enums |
+
+`check()` keeps the package standard-library only. Use a full JSON Schema validator when the host needs
+one.
+
 ## Version axes
 
 `SCHEMA_VERSION` is the record-shape version. It is separate from the package version, the policy version

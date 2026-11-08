@@ -95,7 +95,7 @@ Runnable examples are organized by language and lifecycle in
 |---|---|
 | make one decision | [Quickstart](01-start/02-first-steps/01-quickstart.md) |
 | plug LAIX into an app | [Host integration](01-start/02-first-steps/02-host-integration.md), then [Integration](03-appkit/01-build/01-integration.md) |
-| write my own policy | [Policies](02-core/03-decision/01-single/04-policies.md), [Policies in the app](03-appkit/01-build/03-policies-in-the-app.md) |
+| write my own policy | [Policies](02-core/03-decision/01-single/05-policies.md), [Policies in the app](03-appkit/01-build/03-policies-in-the-app.md) |
 | stream events | [Streaming](03-appkit/02-run/02-streaming.md) |
 | execute and recover | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md) |
 | learn from outcomes | [Outcome learning](02-core/02-domain/03-outcomes.md) |
@@ -116,7 +116,7 @@ Runnable examples are organized by language and lifecycle in
 | I am… | Start with |
 |---|---|
 | Product | [What is LAIX?](01-start/01-orientation/01-what-is-laix.md), [Decision lifecycle](01-start/01-orientation/02-decision-lifecycle.md), [Scope and boundaries](04-concepts/01-architecture/02-scope-and-boundaries.md) |
-| Engineer | [Quickstart](01-start/02-first-steps/01-quickstart.md), [Decision contract](02-core/01-contract/01-decision-contract.md), [Policies](02-core/03-decision/01-single/04-policies.md), [Planner contract](02-core/01-contract/02-planner-contract.md), [Live composite planner](02-core/03-decision/01-single/02-composite.md), [App kit](03-appkit/README.md) |
+| Engineer | [Quickstart](01-start/02-first-steps/01-quickstart.md), [Decision contract](02-core/01-contract/01-decision-contract.md), [Policies](02-core/03-decision/01-single/05-policies.md), [Planner contract](02-core/01-contract/02-planner-contract.md), [Live composite planner](02-core/03-decision/01-single/02-composite.md), [App kit](03-appkit/README.md) |
 | Operator | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md), [Stores](03-appkit/04-connect/01-stores.md), [Platform](03-appkit/04-connect/02-platform.md), [Delivery](03-appkit/04-connect/03-delivery.md), [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md) |
 | Contributor | [Contributing](../CONTRIBUTING.md), [Testing](05-project/02-quality/01-testing.md), [Repository structure](05-project/01-repository/01-repository-structure.md) |
 | Researcher or reviewer | [Research and evidence](06-research/README.md), then [Prior art](06-research/01-positioning/prior-art.md), [Benchmark](06-research/02-evaluation/benchmark.md) |

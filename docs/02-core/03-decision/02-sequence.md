@@ -93,6 +93,11 @@ print(approximate.actions, recovery.actions)
 CABB is exact only for a finite deterministic scenario. Rollout is approximate. Replan is a recovery
 layer, not a new guarantee. An uncertain or infinite-horizon version remains research work.
 
+## Examples
+
+- Python: `examples/python/core/decision/sequence/sequence_planning.py`
+- TypeScript: `examples/typescript/core/decision/sequence/sequence_planning.mts`
+
 ## Related
 
 - [Single decision](01-single/README.md)

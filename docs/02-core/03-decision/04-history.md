@@ -116,6 +116,14 @@ episodes, 60 decisions, a stateless planner and a stateful composite planner.
 The exact repair is a minimum-weight vertex cover over small histories. Large histories use the greedy
 path. The full method remains incremental truth maintenance with a weighted MaxSAT repair.
 
+## Examples
+
+- Python: `examples/python/core/decision/history/continuity_repair.py`
+- Python: `examples/python/core/decision/history/continuity_repair_exact.py`
+- Python: `examples/python/core/decision/history/conflict_scenario.py`
+- TypeScript: `examples/typescript/core/decision/history/continuity_repair.mts`
+- TypeScript: `examples/typescript/core/decision/history/continuity_repair_exact.mts`
+
 ## Related
 
 - [Continuity benchmark](../06-evaluation/04-continuity-benchmark.md)

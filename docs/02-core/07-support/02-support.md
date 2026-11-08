@@ -3,7 +3,7 @@
 This page covers the small core types the rest of the documentation builds on: the helpers below the
 decision mechanisms.
 
-## Support
+## What is here
 
 `core/support/` holds the shared helpers. They are small and dependency-free.
 
