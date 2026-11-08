@@ -89,7 +89,35 @@ schedule = AttentionScheduler().schedule(
 print([row.candidate_id for row in schedule.selected])
 ```
 
-The full method is a restless multi-armed bandit. This prototype is a deterministic index policy.
+The static `AttentionScheduler` is a deterministic index policy. For a model-based version, use
+`WhittleScheduler`: each candidate is a two-action arm, and its index is the subsidy at which
+waiting becomes as good as reviewing. The index is found by binary search over the subsidy and value
+iteration for the single-arm MDP.
+
+```python
+from laix import WhittleCandidate, WhittleScheduler, WhittleTransition
+
+candidate = WhittleCandidate(
+    id="refund",
+    states=("bad", "good"),
+    start="bad",
+    active_transitions=(
+        WhittleTransition(state="bad", next_state="good"),
+        WhittleTransition(state="good", next_state="good"),
+    ),
+    passive_transitions=(
+        WhittleTransition(state="bad", next_state="bad"),
+        WhittleTransition(state="good", next_state="good"),
+    ),
+    active_reward={"bad": 1.0, "good": 0.2},
+    active_cost=0.1,
+    discount=0.9,
+)
+schedule = WhittleScheduler().schedule((candidate,), budget=1.0)
+```
+
+This is exact for the supplied finite single-arm model. The fleet policy is still an index
+approximation, not a global restless-bandit optimum.
 
 ## CDR: continuity decision repair
 
@@ -134,7 +162,7 @@ is exact for the additive composite score.
 
 - CA-VOD's future-value path is a finite-horizon belief lookahead; the constrained POMDP with hard
   commitment and attention constraints remains research.
-- AADS is an index heuristic; it does not compute the exact Whittle index.
+- AADS has an exact single-arm Whittle index; the fleet policy remains an index approximation.
 - CDR is greedy; it does not prove global minimum cost.
 - CDA assumes an additive decision with component scores.
 

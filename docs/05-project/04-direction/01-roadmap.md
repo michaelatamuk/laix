@@ -23,7 +23,7 @@ what is done, what is next and what would count as a real step forward.
 | `POMDPPlanner` | done |
 | `LiveCompositePlanner` (composite planner) | done |
 | `CAVODPlanner` (value of decision) | prototype |
-| `AttentionScheduler` (AADS) | prototype |
+| `AttentionScheduler` (AADS) | prototype; exact single-arm Whittle |
 | `repair_continuity` (CDR) | prototype |
 | `counterfactual_attribution` (CDA) | prototype |
 | TypeScript parity | done |

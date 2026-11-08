@@ -99,6 +99,14 @@ from .engines.scheduling.attention_scheduler import (
     AttentionScheduleRow,
     AttentionScheduler,
 )
+from .engines.scheduling.whittle_scheduler import (
+    WhittleCandidate,
+    WhittleRow,
+    WhittleSchedule,
+    WhittleScheduler,
+    WhittleTransition,
+    whittle_index,
+)
 from .engines.continuity.repair import (
     ContinuityRecord,
     DEFAULT_CONFLICT_RULES,
@@ -291,6 +299,12 @@ __all__ = [
     "AttentionSchedule",
     "AttentionScheduleRow",
     "AttentionScheduler",
+    "WhittleCandidate",
+    "WhittleRow",
+    "WhittleSchedule",
+    "WhittleScheduler",
+    "WhittleTransition",
+    "whittle_index",
     "ContinuityRecord",
     "DEFAULT_CONFLICT_RULES",
     "RepairAction",

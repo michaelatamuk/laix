@@ -102,6 +102,20 @@
     "spent": 1.5,
     "budget": 1.5
   },
+  "aads_whittle": {
+    "indices": {
+      "high": 0.9,
+      "low": 0.09
+    },
+    "selected": [
+      "high"
+    ],
+    "deferred": [
+      "low"
+    ],
+    "spent": 1.0,
+    "budget": 1.0
+  },
   "cdr": {
     "conflicts": [
       [

@@ -14,6 +14,7 @@ export * from "./core/planners/execution/execution-planner.ts";
 export * from "./core/planners/human-attention/human-attention-planner.ts";
 export * from "./core/planners/value/ca-vod-planner.ts";
 export * from "./core/scheduling/attention-scheduler.ts";
+export * from "./core/scheduling/whittle-scheduler.ts";
 export * from "./core/continuity/repair.ts";
 export * from "./core/explain/counterfactual.ts";
 export * from "./core/bench/live-bench.ts";

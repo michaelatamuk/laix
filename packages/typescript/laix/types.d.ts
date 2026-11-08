@@ -544,6 +544,50 @@
     ): AttentionSchedule;
   }
 
+  export interface WhittleTransition {
+    state: string;
+    nextState: string;
+    probability?: number;
+  }
+  export interface WhittleCandidate {
+    id: string;
+    states: string[];
+    start: string;
+    activeTransitions: WhittleTransition[];
+    passiveTransitions: WhittleTransition[];
+    activeReward?: Record<string, number>;
+    passiveReward?: Record<string, number>;
+    activeCost?: number;
+    reviewCost?: number;
+    discount?: number;
+  }
+  export interface WhittleRow {
+    candidateId: string;
+    index: number;
+    selected: boolean;
+    reviewCost: number;
+    reason: string;
+  }
+  export interface WhittleSchedule {
+    budget: number;
+    spent: number;
+    rows: WhittleRow[];
+    selected: WhittleRow[];
+    deferred: WhittleRow[];
+  }
+  export function whittleIndex(
+    candidate: WhittleCandidate,
+    options?: { lower?: number; upper?: number; iterations?: number },
+  ): number;
+  export class WhittleScheduler {
+    readonly name: string;
+    constructor(options?: { lower?: number; upper?: number; iterations?: number });
+    schedule(
+      candidates: WhittleCandidate[],
+      options?: { budget?: number },
+    ): WhittleSchedule;
+  }
+
   export type ConflictRule = [string, string, string, string];
   export interface ContinuityRecord {
     id: string;

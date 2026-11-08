@@ -102,6 +102,7 @@ py examples/python/01-decide/signal_attention_bill_due.py
 | CA-VOD information and option value | `ca_vod_planner.py` | `ca_vod_planner.mts` | `ask value_of_decision 0.28 0.0` / `ask value_of_decision 0.28 0` |
 | CA-VOD belief-state future value | `ca_vod_belief.py` | `ca_vod_belief.mts` | `ask 0.45 2` |
 | AADS attention schedule | `attention_scheduler.py` | `attention_scheduler.mts` | `refund-approval,check-evidence` / `1.5 1.5` |
+| AADS exact Whittle index | `whittle_scheduler.py` | `whittle_scheduler.mts` | `0.9 0.09` / `high low` |
 | CDR continuity repair | `continuity_repair.py` | `continuity_repair.mts` | `approval-1 supersede 1.0` |
 | CDA counterfactual attribution | `counterfactual_attribution.py` | `counterfactual_attribution.mts` | `ask wait commitment 0.970001` |
 
