@@ -86,8 +86,8 @@ Read in order.
 
 ## Examples
 
-Runnable examples are organized by language and lifecycle in
-[`../examples/README.md`](../examples/README.md). Every Python and TypeScript example is run by CI.
+Runnable examples are organized by language, then by core or app kit, and by decision shape inside
+core in [`../examples/README.md`](../examples/README.md). Every Python and TypeScript example is run by CI.
 
 ## Which page do I need?
 

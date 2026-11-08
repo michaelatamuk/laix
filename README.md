@@ -110,7 +110,7 @@ request = DecisionRequest(
 decision = decide(request)[0]
 
 print(json.dumps({
-    "verb": decision.verb.value,
+    "verb": decision.verb,
     "reason_code": decision.reason_code,
     "action_id": decision.action_id,
     "confidence": decision.confidence,
@@ -319,11 +319,12 @@ ablation, the test matrix and the evidence caveats are in
 |---|---|
 | [Documentation index](docs/README.md) | every guide and reference page |
 | [Quickstart](docs/01-start/02-first-steps/01-quickstart.md) | install and first decision |
-| [Core overview](docs/02-core/README.md) | contract, policies, planners, continuity, learning |
+| [Core overview](docs/02-core/README.md) | contract, domain, decision, sensing, learning, evaluation |
+| [Decision shapes](docs/02-core/03-decision/README.md) | single, sequence, fleet, history and explain |
 | [App-kit overview](docs/03-appkit/README.md) | execution, streams, stores, platform, delivery, bench |
 | [Decision lifecycle](docs/01-start/01-orientation/02-decision-lifecycle.md) | moment to outcome in one loop |
 | [Deployment](docs/03-appkit/05-operate/03-deployment.md) | production topology, reliability, rollout and retention |
-| [Examples](examples/README.md) | Python and TypeScript, grouped by lifecycle |
+| [Examples](examples/README.md) | Python and TypeScript, grouped by core and app kit |
 
 ## Contributing
 
@@ -334,7 +335,7 @@ cd packages/python/laix
 py -m pytest -q
 py -m ruff check .
 
-cd ../../packages/typescript/laix
+cd ../../typescript/laix
 npm test
 npm run typecheck
 npm run conformance
