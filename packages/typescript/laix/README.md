@@ -51,6 +51,16 @@ registered with `registerPolicy` and selected with `usePolicy`.
 The signal-attention policy passes the same 24 decisions as Python. The bench runs the same 10 suites and
 25 cases as Python.
 
+## Build
+
+```powershell
+npm.cmd run build
+npm.cmd pack
+```
+
+The build writes ESM JavaScript to `dist/`. The package keeps the curated public declarations in
+`types.d.ts`, and `prepare` rebuilds `dist/` before a local install or package tarball.
+
 ## Test
 
 ```powershell

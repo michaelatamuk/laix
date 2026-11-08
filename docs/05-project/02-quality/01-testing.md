@@ -54,6 +54,7 @@ cd packages/typescript/laix
 npm ci
 npm run typecheck
 npm run typecheck:declarations
+npm run build
 npm test
 npm run bench
 npm run conformance
@@ -74,7 +75,7 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 |---|---|
 | Python tests | passed |
 | Invariant tests | 17/17 |
-| TypeScript tests | 172 passed |
+| TypeScript tests | 196 passed |
 | Signal-attention conformance | 24/24 |
 | LAIX-Bench | 25/25 |
 | 7-case live demo | `LiveCompositePlanner` 7/7 |

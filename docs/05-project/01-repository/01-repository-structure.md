@@ -134,7 +134,8 @@ packages/python/laix/src/laix/
     └── bench/               case, suite, row, report, runner, planner bench
 ```
 
-Import from `laix` in app code, or `laix.core` / `laix.appkit` when the boundary matters.
+Import from `laix` in app code, or `laix.core` / `laix.appkit` when the boundary matters. The package
+ships `py.typed`, so type checkers use the inline annotations.
 
 ## TypeScript package
 
@@ -199,7 +200,9 @@ packages/typescript/laix/src/
 ```
 
 The TypeScript package mirrors the same folders under `src/core` and `src/appkit`. It exports one
-entry point, `laix`.
+entry point, `laix`. `tsconfig.build.json` emits ESM JavaScript to `dist/`, while `types.d.ts` keeps
+the curated public declaration surface. `prepare` rebuilds `dist/` before a local install or package
+tarball.
 
 ## Shared spec
 

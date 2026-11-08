@@ -243,7 +243,7 @@ def test_latency_percentiles_are_recorded() -> None:
 def test_feed_coalesces_a_busy_source() -> None:
     async def events():
         yield DecisionRequest(subject="a", at=at(0))
-        await asyncio.sleep(0.001)
+        await asyncio.sleep(0)
         yield DecisionRequest(subject="b", at=at(1))
         await asyncio.sleep(0.05)
         yield DecisionRequest(subject="c", at=at(2))

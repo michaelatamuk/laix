@@ -204,6 +204,6 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.10.0`. The next release includes the vocabulary migration above. The 0.10.0
-planner naming change was the first migration entry that required host changes. Add a new entry here
-when a release requires host changes; keep it short and concrete.
+The current release is `0.10.0`. The vocabulary migration above is part of 0.10.0. The planner naming
+change was the first migration entry that required host changes. Add a new entry here when a release
+requires host changes; keep it short and concrete.

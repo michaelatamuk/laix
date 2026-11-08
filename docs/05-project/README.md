@@ -9,7 +9,7 @@ how it is released, and where it is going.
 |---|---|---|
 | [Repository](01-repository/README.md) | Where does each file and public name live? | [Repository structure](01-repository/01-repository-structure.md), [API map](01-repository/02-api-map.md) |
 | [Quality](02-quality/README.md) | How is a change checked and debugged? | [Testing](02-quality/01-testing.md), [Troubleshooting](02-quality/02-troubleshooting.md) |
-| [Release](03-release/README.md) | How are versions, schemas and upgrades handled? | [Versioning](03-release/01-versioning.md), [Migration](03-release/02-migration.md) |
+| [Release](03-release/README.md) | How are versions, schemas and upgrades handled? | [Versioning](03-release/01-versioning.md), [Migration](03-release/02-migration.md), [Publishing](03-release/03-publishing.md) |
 | [Direction](04-direction/README.md) | What is done, what is next and how does adoption work? | [Roadmap](04-direction/01-roadmap.md), [Adoption plan](04-direction/02-adoption-plan.md) |
 
 ## Reading map

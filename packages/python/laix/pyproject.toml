@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,14 +8,29 @@ version = "0.10.0"
 description = "LAIX: Live AI Experience. The decision layer for live AI experiences: decisions, timing, approval, audit and outcomes."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "Apache-2.0" }
+license = "Apache-2.0"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/michaelatamuk/laix"
+Documentation = "https://github.com/michaelatamuk/laix/blob/main/docs/README.md"
+Repository = "https://github.com/michaelatamuk/laix"
+Issues = "https://github.com/michaelatamuk/laix/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["laix*"]
 
 [tool.setuptools.package-data]
+"laix" = ["py.typed"]
 "laix.core.schema" = ["*.json"]
 "laix.core.engines.sensing.signals" = ["*.json"]
 "laix.core.engines.evaluation.cases" = ["*.json"]

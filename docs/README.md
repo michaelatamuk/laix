@@ -105,6 +105,7 @@ core in [`../examples/README.md`](../examples/README.md). Every Python and TypeS
 | operate in production | [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md), [Troubleshooting](05-project/02-quality/02-troubleshooting.md) |
 | troubleshoot a decision | [Troubleshooting](05-project/02-quality/02-troubleshooting.md) |
 | upgrade a deployment | [Migration](05-project/03-release/02-migration.md) |
+| publish a release | [Publishing](05-project/03-release/03-publishing.md) |
 | report a vulnerability | [Security](../SECURITY.md) |
 | contribute | [Contributing](../CONTRIBUTING.md), then [Testing](05-project/02-quality/01-testing.md) |
 | check model use or novelty | [FAQ](04-concepts/04-reference/02-faq.md), then [Research and evidence](06-research/README.md) |
