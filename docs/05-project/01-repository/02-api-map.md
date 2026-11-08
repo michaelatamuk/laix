@@ -52,6 +52,7 @@ integration, **Learner** is learning. The protocol is `Planner`.
 | `repair_continuity` | minimum-cost repair of a conflicting decision history |
 | `counterfactual_attribution` | the smallest single-component change that flips a decision |
 | `MDPPlanner`, `POMDPPlanner` | model-based planning over a host-supplied model |
+| `action_future_value` | discounted future value of one action under a belief |
 | `Simulator`, `compare_planners` | run and compare planners |
 
 ## Perception and resources

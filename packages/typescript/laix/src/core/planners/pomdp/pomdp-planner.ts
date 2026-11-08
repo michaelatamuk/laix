@@ -196,6 +196,29 @@ export function pomdpValue(
   return round(bestValue(model, resolved, steps - 1, new Map()));
 }
 
+export function actionFutureValue(
+  model: PomdpModel,
+  belief: BeliefState,
+  action: string,
+  options: { horizon?: number } = {},
+): number {
+  const resolved = normalizeBelief(belief, model.states);
+  const steps = options.horizon ?? model.horizon;
+  if (steps <= 1) return 0;
+  let future = 0;
+  for (const observation of model.observations) {
+    const chance = observationProbability(model, resolved, action, observation);
+    if (chance <= 0) continue;
+    future += chance * bestValue(
+      model,
+      beliefUpdate(model, resolved, action, observation),
+      steps - 2,
+      new Map(),
+    );
+  }
+  return round(model.discount * future);
+}
+
 export interface PlannerComparison {
   pomdp: number;
   mdp: number;

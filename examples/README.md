@@ -100,6 +100,7 @@ py examples/python/01-decide/signal_attention_bill_due.py
 | Planner bench baseline | `planner_bench.py` | `planner_bench.mts` | `mdp 4.0 1.0` |
 | Constraints, stochastic rollout, POMDP check | `planner_depth.py` | `planner_depth.mts` | `safe blocked by risk:risk-limit` / `s1 1.0` / `s0 0.0 go` |
 | CA-VOD information and option value | `ca_vod_planner.py` | `ca_vod_planner.mts` | `ask value_of_decision 0.28 0.0` / `ask value_of_decision 0.28 0` |
+| CA-VOD belief-state future value | `ca_vod_belief.py` | `ca_vod_belief.mts` | `ask 0.45 2` |
 | AADS attention schedule | `attention_scheduler.py` | `attention_scheduler.mts` | `refund-approval,check-evidence` / `1.5 1.5` |
 | CDR continuity repair | `continuity_repair.py` | `continuity_repair.mts` | `approval-1 supersede 1.0` |
 | CDA counterfactual attribution | `counterfactual_attribution.py` | `counterfactual_attribution.mts` | `ask wait commitment 0.970001` |
