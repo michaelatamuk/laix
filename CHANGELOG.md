@@ -15,6 +15,8 @@
   because the effect may have happened.
 - **Developer CLI.** `laix explain` and `laix lint` inspect a decision or decision-record JSON file
   without importing the host app.
+- **LangGraph guide.** A production-shaped decision node, approval interrupt, checkpointer resume
+  and execution receipt, with the boundary between LangGraph and LAIX.
 - **Validation template.** A pre-registration page for external runs, with the metrics, analysis
   plan, threats and replication rules.
 - **Community templates.** Bug and feature issue forms, a pull request template and a documentation
