@@ -30,9 +30,10 @@
 ### Added
 
 - **Algorithm prototypes.** `CAVODPlanner` for one-step value of decision and optional
-  belief-state future value, `AttentionScheduler` for attention-aware decision scheduling,
-  `repair_continuity` for continuity repair and `counterfactual_attribution` for counterfactual
-  decision attribution, with Python/TypeScript tests, examples and a research smoke benchmark.
+  belief-state future value, `AttentionScheduler` and `WhittleScheduler` for attention-aware
+  decision scheduling, `repair_continuity` for continuity repair and `counterfactual_attribution`
+  for counterfactual decision attribution, with Python/TypeScript tests, examples and a research
+  smoke benchmark.
 - **Live decision benchmark.** A 120-case corpus across promise, execution, attention, timing,
   conflict and plain categories, with dev/test/adversarial splits, JSON Schema validation,
   bootstrap confidence intervals, paired significance tests and a hand-built glue baseline.

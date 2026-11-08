@@ -44,6 +44,10 @@ Candidates: refund approval, routine review and evidence check. Budget: `1.5`.
 The urgent, commitment-bearing review and the cheap information check win the budget. The routine
 review waits.
 
+The exact Whittle path uses a two-action arm. With `active_reward(bad)=1.0` the index is `0.9`; with
+`active_reward(bad)=0.1` it is `0.09`. The higher-index arm is selected first. This is exact for the
+single-arm model, not for the whole fleet.
+
 ## CDR
 
 Records: an `approval` rejected for `order-1` and a `receipt` executed for `order-1`.
