@@ -55,7 +55,7 @@ from .core.evaluation import Case, Report, Row
 from .core.evaluation import compare as compare_decisions
 from .core.evaluation import load_cases
 from .core.outcome_learning import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
-from .core.engines.policies import (
+from .core.engines.decision.single.policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
     BanditPolicy,
@@ -84,14 +84,14 @@ from .core.engines.policies import (
 )
 from .core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
-from .core.engines.planners.commitment.commitment_planner import (
+from .core.engines.decision.single.planners.commitment.commitment_planner import (
     CommitmentPlanner,
     CommitmentEffect,
     CommitmentScore,
     CommitmentWeights,
     commitment_effect,
 )
-from .core.engines.planners.human_attention.human_attention_planner import (
+from .core.engines.decision.single.planners.human_attention.human_attention_planner import (
     HumanAttentionPlanner,
     HumanAttentionBudget,
     HumanAttentionEffect,
@@ -100,14 +100,14 @@ from .core.engines.planners.human_attention.human_attention_planner import (
     approval_state,
     human_attention_effect,
 )
-from .core.engines.planners.execution.execution_planner import (
+from .core.engines.decision.single.planners.execution.execution_planner import (
     ExecutionRiskPlanner,
     ExecutionEffect,
     ExecutionScore,
     ExecutionWeights,
     execution_effect,
 )
-from .core.engines.bench.live_bench import (
+from .core.engines.evaluation.bench.live_bench import (
     LiveBenchReport,
     LiveBenchRow,
     LiveCase,
@@ -116,7 +116,7 @@ from .core.engines.bench.live_bench import (
     default_planners,
     run_live_bench,
 )
-from .core.engines.planners.composite.live_composite_planner import LiveCompositePlanner, CompositeScore
+from .core.engines.decision.single.planners.composite.live_composite_planner import LiveCompositePlanner, CompositeScore
 from .core.engines.learning.decision_calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
@@ -134,7 +134,7 @@ from .core.engines.learning.calibration import (
     calibration_report,
     samples_from_outcomes,
 )
-from .core.engines.planners.mdp.mdp_planner import (
+from .core.engines.decision.single.planners.mdp.mdp_planner import (
     MDPPlanner,
     MdpModel,
     MdpTransition,
@@ -143,7 +143,7 @@ from .core.engines.planners.mdp.mdp_planner import (
     value_iteration,
 )
 from .core.engines.learning.model_learning import LearnedTransition, ModelLearner
-from .core.engines.planners.pomdp.pomdp_planner import (
+from .core.engines.decision.single.planners.pomdp.pomdp_planner import (
     ObservationProbability,
     POMDPPlanner,
     PlannerComparison,
@@ -158,18 +158,18 @@ from .core.engines.planners.pomdp.pomdp_planner import (
     observation_probability,
     pomdp_value,
 )
-from .core.engines.planners.decision_value.ca_vod_planner import (
+from .core.engines.decision.single.planners.decision_value.ca_vod_planner import (
     CAVODPlanner,
     CAVODScore,
     CAVODWeights,
 )
-from .core.engines.scheduling.attention_scheduler import (
+from .core.engines.decision.fleet.attention_scheduler import (
     AttentionCandidate,
     AttentionSchedule,
     AttentionScheduleRow,
     AttentionScheduler,
 )
-from .core.engines.scheduling.whittle_scheduler import (
+from .core.engines.decision.fleet.whittle_scheduler import (
     WhittleCandidate,
     WhittleRow,
     WhittleSchedule,
@@ -177,25 +177,25 @@ from .core.engines.scheduling.whittle_scheduler import (
     WhittleTransition,
     whittle_index,
 )
-from .core.engines.continuity.repair import (
+from .core.engines.decision.history.repair import (
     ContinuityRecord,
     DEFAULT_CONFLICT_RULES,
     RepairAction,
     RepairPlan,
     repair_continuity,
 )
-from .core.engines.explain.counterfactual import (
+from .core.engines.decision.explain.counterfactual import (
     Counterfactual,
     CounterfactualReport,
     counterfactual_attribution,
 )
-from .core.engines.explain.counterfactual_search import (
+from .core.engines.decision.explain.counterfactual_search import (
     CounterfactualChange,
     CounterfactualSearchResult,
     CounterfactualVariable,
     counterfactual_search,
 )
-from .core.engines.simulation.simulator import (
+from .core.engines.evaluation.simulation.simulator import (
     PlannerBenchmarkRow,
     Scenario,
     SimulationReport,
@@ -205,7 +205,7 @@ from .core.engines.simulation.simulator import (
     compare_planners,
     seeded_scenarios,
 )
-from .core.engines.sequence import (
+from .core.engines.decision.sequence import (
     CABBPlanner,
     DecisionPlan,
     DecisionScenario,
@@ -218,7 +218,7 @@ from .core.engines.sequence import (
     replan_decisions,
     rollout_decisions,
 )
-from .core.engines.planners.utility.utility_planner import RISK_ATTITUDES, UtilityPlanner, UtilityModel, UtilityWeights
+from .core.engines.decision.single.planners.utility.utility_planner import RISK_ATTITUDES, UtilityPlanner, UtilityModel, UtilityWeights
 from .core.dispatch import decide, select
 
 # The app kit is optional and is imported on first use.  A host that only needs

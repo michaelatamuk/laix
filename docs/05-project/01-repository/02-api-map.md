@@ -31,8 +31,9 @@ app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` 
 
 ## Decision mechanisms
 
-The layer rule is: **Planner** is a strategy, **CompositePlanner** is a composition, **DecisionPolicy** is an
-integration, **Learner** is learning. The protocol is `Planner`.
+The layer rule is: **Planner** is one live decision, **SequencePlanner** is a finite chain,
+**CompositePlanner** is a composition, **DecisionPolicy** is an integration, **Learner** is learning.
+The protocol for one decision is `Planner`; the protocol for a chain is `SequencePlanner`.
 
 | Name | Purpose |
 |---|---|

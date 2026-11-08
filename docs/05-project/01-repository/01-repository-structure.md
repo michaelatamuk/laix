@@ -91,21 +91,27 @@ packages/python/laix/src/laix/
 │   │   └── normalise.py     coerce and from_signal_attention
 │   ├── engines/
 │   │   ├── contract/       planner.py, planner_input.py, planner_result.py, planner_policy.py
-│   │   ├── planners/
-│   │   │   ├── utility/     utility planner, model and weights
-│   │   │   ├── mdp/         MDP model, transitions, value iteration and planner
-│   │   │   ├── pomdp/       POMDP model, observations, belief state and planner
-│   │   │   ├── commitment/  commitment-aware planner, effects and weights
-│   │   │   ├── execution/   execution-aware planner, effects and weights
-│   │   │   ├── human_attention/   human-attention planner, budget and effects
-│   │   │   ├── decision_value/    CA-VOD planner, weights and score
-│   │   │   └── composite/         LiveCompositePlanner and composite score
-│   │   ├── sequence/        sequence contract, CABB, rollout and replan
-│   │   ├── simulation/     simulator, scenario, step, result, report and planner score
+│   │   ├── decision/
+│   │   │   ├── single/
+│   │   │   │   ├── planners/
+│   │   │   │   │   ├── utility/     utility planner, model and weights
+│   │   │   │   │   ├── mdp/         MDP model, transitions, value iteration and planner
+│   │   │   │   │   ├── pomdp/       POMDP model, observations, belief state and planner
+│   │   │   │   │   ├── commitment/  commitment-aware planner, effects and weights
+│   │   │   │   │   ├── execution/   execution-aware planner, effects and weights
+│   │   │   │   │   ├── human_attention/   human-attention planner, budget and effects
+│   │   │   │   │   ├── decision_value/    CA-VOD planner, weights and score
+│   │   │   │   │   └── composite/         LiveCompositePlanner and composite score
+│   │   │   │   └── policies/       decision_policy.py, registry, simulation and implementations/ (packs, rules, target, planning, group)
+│   │   │   ├── sequence/           sequence contract, CABB, rollout and replan
+│   │   │   ├── fleet/              attention scheduling and the exact Whittle index
+│   │   │   ├── history/            continuity repair
+│   │   │   └── explain/            attribution and counterfactual search
+│   │   ├── evaluation/
+│   │   │   ├── bench/              live benchmark, cases, rows, metrics and baselines
+│   │   │   └── simulation/         simulator, scenario, step, result, report and planner score
 │   │   ├── learning/       calibration, decision calibration and model learning
-│   │   ├── bench/          live benchmark, cases, rows, metrics and baselines
 │   │   ├── signals/        input, output, gates/, signal-attention.v1.json, decide, score
-│   │   ├── policies/       decision_policy.py, decision_policy_registry.py, simulation.py, implementations/ (packs, rules, target, planning, group)
 │   │   └── resources/      budget, sensing option, plan, scheduler
 │   ├── outcome_learning/    record, ledger, store, bandit, rewards, causal/, signal_attention/
 │   ├── commitments/         commitment ledger, stores and planning state
@@ -138,24 +144,30 @@ packages/typescript/laix/src/
 │   ├── contract/planner.ts Planner, PlannerInput, PlannerResult, PlannerPolicy and toDecision
 │   ├── commitments/   commitment ledger and stores
 │   ├── causal.ts      causal ledger
-│   ├── planners/
-│   │   ├── utility/   utility planner and model
-│   │   ├── mdp/       MDP model, value iteration and planner
-│   │   ├── pomdp/     POMDP model, belief update and planner
-│   │   ├── commitment/ commitment-aware planner
-│   │   ├── execution/ execution-aware planner
-│   │   ├── human-attention/ human-attention planner and budget
-│   │   ├── decision-value/ CA-VOD planner, weights and score
-│   │   └── composite/ LiveCompositePlanner
-│   ├── sequence/      contract, CABB, rollout and replan
+│   ├── decision/
+│   │   ├── single/
+│   │   │   ├── planners/
+│   │   │   │   ├── utility/   utility planner and model
+│   │   │   │   ├── mdp/       MDP model, value iteration and planner
+│   │   │   │   ├── pomdp/     POMDP model, belief update and planner
+│   │   │   │   ├── commitment/ commitment-aware planner
+│   │   │   │   ├── execution/ execution-aware planner
+│   │   │   │   ├── human-attention/ human-attention planner and budget
+│   │   │   │   ├── decision-value/ CA-VOD planner, weights and score
+│   │   │   │   └── composite/ LiveCompositePlanner
+│   │   │   └── policies/      eight packs, bandit, rules, target, planning, group, shadow, decision-policy-registry
+│   │   ├── sequence/          contract, CABB, rollout and replan
+│   │   ├── fleet/             attention scheduling and the exact Whittle index
+│   │   ├── history/           continuity repair
+│   │   └── explain/           attribution and counterfactual search
+│   ├── evaluation/
+│   │   └── bench/             live benchmark and baselines
 │   ├── learning/      calibration, decision calibration and model learning
-│   ├── bench/         live benchmark and baselines
 │   ├── outcome.ts     outcome ledger and UCB learner
 │   ├── evaluation.ts  parity harness
 │   ├── perception/perception.ts detector and frame contracts
 │   ├── resources.ts   budget and resource admission
-│   ├── signals/signal-attention.ts signal-attention policy
-│   └── policies/      eight packs, bandit, rules, target, planning, group, shadow, decision-policy-registry
+│   └── signals/signal-attention.ts signal-attention policy
 └── appkit/
     ├── index.ts       optional app surface
     ├── decision-client.ts public DecisionClient and action policy
@@ -194,7 +206,7 @@ and the canonical file differ.
 ## Rules
 
 - One class per file; functions may share a small module with their owner.
-- Group folders by role: `contract`, `planners`, `sequence`, `simulation`, `learning`, `bench`, `commitments`, `perception`, `policies`, `signals`.
-- Mirror source folders in tests: `contract/`, `planners/`, `sequence/`, `simulation/`, `learning/`, `bench/`, `commitments/`, `perception/`, `policies/`, `signals/`.
+- Group engine folders by decision shape: `decision/single`, `decision/sequence`, `decision/fleet`, `decision/history`, `decision/explain`; keep shared `contract`, `signals`, `resources`, `learning` and `evaluation`.
+- Mirror source folders in tests: `contract/`, `decision/`, `signals/`, `resources/`, `learning/`, `evaluation/`.
 - Keep the public API in `__init__.py` and `index.ts`.
 - Use generic words and leave app, domain and vendor names out.

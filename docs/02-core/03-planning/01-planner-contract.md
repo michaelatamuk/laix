@@ -198,10 +198,10 @@ It is reported only when the scenario declares an optimum. Without an optimum, `
 | `core/engines/contract/planner_result.py` | `PlannerResult` |
 | `core/engines/contract/planner.py` | `Planner` |
 | `core/engines/contract/planner_policy.py` | `PlannerPolicy`, `to_planner_input`, `to_decision` |
-| `core/engines/simulation/` | simulator, scenarios and report |
-| `core/engines/planners/` | the built-in planners |
-| `core/engines/planners/composite/` | the composite planner |
-| `core/engines/sequence/` | CABB, rollout and replan for finite-horizon sequences |
+| `core/engines/evaluation/simulation/` | simulator, scenarios and report |
+| `core/engines/decision/single/planners/` | the built-in planners |
+| `core/engines/decision/single/planners/composite/` | the composite planner |
+| `core/engines/decision/sequence/` | CABB, rollout and replan for finite-horizon sequences |
 
 ## Related
 

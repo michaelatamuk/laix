@@ -1,7 +1,7 @@
 # Formal model and invariants
 
 This page defines the contribution precisely and states the properties the
-paper will claim. All formulas match the implementation in `core/engines/planners/`.
+paper will claim. All formulas match the implementation in `core/engines/decision/single/planners/`.
 
 ## 1. Types
 
@@ -294,6 +294,6 @@ The following must hold at all times. Tests live in
 
 - Every invariant in §4 has a test in `tests/core/test_invariants.py` that
   fails if the code regresses.
-- The score formulas in §2 match the source in `core/engines/planners/`.
+- The score formulas in §2 match the source in `core/engines/decision/single/planners/`.
 - The ablation table in §2.6 is reproducible by running
   `examples/python/03-plan/ablation_study.py` with one command.

@@ -14,7 +14,7 @@ import type {
   Situation,
   Verb,
 } from "../core/contracts.ts";
-import { DecisionPolicyRegistry, type DecisionPolicy } from "../core/policies/decision-policy-registry.ts";
+import { DecisionPolicyRegistry, type DecisionPolicy } from "../core/decision/single/policies/decision-policy-registry.ts";
 import { StreamSession, type StreamSessionOptions } from "./streaming.ts";
 
 

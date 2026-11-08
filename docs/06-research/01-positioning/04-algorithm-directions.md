@@ -27,14 +27,14 @@ a new learning rule.
 
 | Component | Current method | Location |
 |---|---|---|
-| Utility | linear weighted sum with simple risk transforms | `core/engines/planners/utility/utility_model.py` |
-| Commitment | weighted sum of fulfil, violate, due, blocked and create | `core/engines/planners/commitment/commitment_planner.py` |
-| Execution risk | linear penalties for irreversibility, unknown risk, approval and recovery | `core/engines/planners/execution/execution_planner.py` |
-| Human attention | linear penalties plus a budget check | `core/engines/planners/human_attention/human_attention_planner.py` |
-| Composite | additive total of the four terms with fixed weights | `core/engines/planners/composite/live_composite_planner.py` |
+| Utility | linear weighted sum with simple risk transforms | `core/engines/decision/single/planners/utility/utility_model.py` |
+| Commitment | weighted sum of fulfil, violate, due, blocked and create | `core/engines/decision/single/planners/commitment/commitment_planner.py` |
+| Execution risk | linear penalties for irreversibility, unknown risk, approval and recovery | `core/engines/decision/single/planners/execution/execution_planner.py` |
+| Human attention | linear penalties plus a budget check | `core/engines/decision/single/planners/human_attention/human_attention_planner.py` |
+| Composite | additive total of the four terms with fixed weights | `core/engines/decision/single/planners/composite/live_composite_planner.py` |
 | Confidence | gap heuristic: `0.5 + 0.5 * (gap / best)` | the planner classes |
 | Calibration | reliability bins over confidence | `core/engines/learning/decision_calibration.py` |
-| Learning | UCB bandit | `core/engines/policies/implementations/bandit.py` |
+| Learning | UCB bandit | `core/engines/decision/single/policies/implementations/bandit.py` |
 
 The real novelty is in the representation and the contract:
 

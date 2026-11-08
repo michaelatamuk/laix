@@ -5,7 +5,7 @@ LAIX has three evaluation layers. They answer different questions.
 | DecisionClient | Question | Location |
 |---|---|---|
 | **Core evaluation** | Did a policy or planner return the expected decision? | `core/evaluation/` |
-| **Live decision benchmark** | Which planner is accurate and safe on the fixed live cases? | `core/engines/bench/` |
+| **Live decision benchmark** | Which planner is accurate and safe on the fixed live cases? | `core/engines/evaluation/bench/` |
 | **LAIX-Bench** | Does every decision class agree with its expected cases? | `appkit/bench/` |
 
 The first two live in the core and have no CLI dependency. The third is an app-kit CLI and a

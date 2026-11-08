@@ -24,8 +24,8 @@ from ..core.dispatch import (
     select,
 )
 from .delivery import DeliveryPort, DeliveryReceipt
-from ..core.engines.policies import DecisionPolicy, DecisionPolicyRegistry
-from ..core.engines.policies.implementations.action import ACTION_POLICY_VERSION
+from ..core.engines.decision.single.policies import DecisionPolicy, DecisionPolicyRegistry
+from ..core.engines.decision.single.policies.implementations.action import ACTION_POLICY_VERSION
 from .runtime import DecisionRuntime
 from .runtime.execution import ExecutionBridge
 from .streaming import StreamSession

@@ -1,7 +1,7 @@
 import type { Decision, DecisionRequest } from "../contracts.ts";
 import { calibrateDecision } from "./calibrate-decision.ts";
 import type { DecisionCalibrationReport } from "./decision-calibration-report.ts";
-import type { DecisionPolicy } from "../policies/decision-policy-registry.ts";
+import type { DecisionPolicy } from "../decision/single/policies/decision-policy-registry.ts";
 
 export class CalibratedPolicy implements DecisionPolicy {
   readonly name: string;
