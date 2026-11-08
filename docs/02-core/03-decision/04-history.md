@@ -30,9 +30,9 @@ sequenceDiagram
     participant Store
     Host->>Core: DecisionRequest with current state
     Core-->>Host: Decision
-    Host->>Store: save commitments, budget, approval and receipt
+    Host->>Store: save commitments, budget and approval
     Host->>Host: execute the chosen action
-    Host->>Store: record the outcome
+    Host->>Store: save receipt and outcome
     Store-->>Host: state for the next request
     Host->>Core: next DecisionRequest with updated state
 ```

@@ -38,10 +38,10 @@
   <text x="170" y="352" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="17" font-weight="600">Agent plans</text>
   <text x="470" y="352" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="17" font-weight="600">LAIX decides</text>
   <text x="770" y="352" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="17" font-weight="600">Host executes</text>
-  <text x="1070" y="352" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="17" font-weight="600">Outcome closes</text>
+  <text x="1070" y="352" text-anchor="middle" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="17" font-weight="600">Outcome returns</text>
 
   <text x="170" y="376" text-anchor="middle" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5">signals · options · constraints</text>
-  <text x="470" y="376" text-anchor="middle" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5">act · ask · wait · verify · escalate</text>
+  <text x="470" y="376" text-anchor="middle" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="11.5">wait · observe · guide · ask · act · verify · escalate</text>
   <text x="770" y="376" text-anchor="middle" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5">approval · receipts · idempotency</text>
   <text x="1070" y="376" text-anchor="middle" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5">result · calibration · audit</text>
 

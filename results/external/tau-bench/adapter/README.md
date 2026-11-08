@@ -1,6 +1,6 @@
 # τ-bench LAIX guardrail adapter
 
-This adapter gates mutating retail tool calls through `LiveDecisionEngine` and asks the user to
+This adapter gates mutating retail tool calls through `LiveCompositePlanner` and asks the user to
 confirm before execution. It is a **generic approval guardrail**, not a full retail policy engine.
 
 ## Install into a τ-bench clone
@@ -59,7 +59,7 @@ python run.py --agent-strategy laix --env retail \
 The guard:
 
 - passes read-only tools through;
-- for mutating tools, asks `LiveDecisionEngine` whether to act or ask;
+- for mutating tools, asks `LiveCompositePlanner` whether to act or ask;
 - if the user has confirmed in the latest user message, executes;
 - otherwise returns an "Approval required" tool result and lets the model ask the user.
 

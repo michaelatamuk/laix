@@ -64,12 +64,12 @@ V(s) = max over actions of
 
 ```mermaid
 flowchart LR
-    start[V = 0 for every state] --> loop[For each state and action]
-    loop --> q[Q = sum p × reward + discount × V next]
-    q --> update[Set V to the best Q]
-    update --> done{Horizon reached or converged?}
+    start["V(s) = 0 for every state"] --> loop["For each state and action"]
+    loop --> q["Q(s, a) = Σ p × (reward + discount × V(next))"]
+    q --> update["V(s) = max over a of Q(s, a)"]
+    update --> done{"Converged or horizon reached?"}
     done -->|no| loop
-    done -->|yes| result[Return the best action and value]
+    done -->|yes| result["Return V(s) for every state"]
 ```
 
 | Function | Result |

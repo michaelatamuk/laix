@@ -37,9 +37,10 @@ block-beta
     end
 
     block:execute
-        columns 3
+        columns 4
         execute_label["Execute"]
-        execution["ExecutionBridge · Saga<br/>approve · act · recover"]
+        execution["ExecutionBridge<br/>approve · act · recover"]
+        saga["Saga<br/>compensate · recover"]
         records["Proposal · DecisionRecord<br/>approve · apply · audit"]
     end
 
@@ -59,7 +60,7 @@ block-beta
         deploy["Deployment<br/>topology · rollout · retention"]
     end
 
-    style build_label fill:transparent,stroke:transparent,font-size:22px,font-weight:bold
+    style build_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
     style run_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
     style execute_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
     style connect_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
@@ -93,7 +94,7 @@ block-beta
 | Connect | `DeliveryPort` | Delivers a decision and returns a receipt. |
 | Operate | `BenchReport` | Runs deterministic cases and suites. |
 | Operate | `StreamStats` | Exports stream counters and latency. |
-| Operate | `Simulator` | Runs planners in a model and reports the optimality gap. |
+| Operate | `run_planner_bench` | Runs the bench CLI over a simulator and reports reward, steps and optimality gap. |
 
 The records that cross those stages:
 

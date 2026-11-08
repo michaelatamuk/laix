@@ -30,7 +30,7 @@ identifier; it does not have to match a class name.
 
 | Key | Component | Type |
 |---|---|---|
-| `live` | `LiveDecisionEngine` | engine |
+| `live` | `LiveCompositePlanner` | engine |
 | `glue` | hand-built glue baseline | external baseline |
 | `commitment` | `CommitmentPlanner` | planner |
 | `execution` | `ExecutionRiskPlanner` | planner |

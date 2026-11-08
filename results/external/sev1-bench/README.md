@@ -20,7 +20,7 @@ Three variants were scored from the same model output:
 | Variant | What it does |
 |---|---|
 | **Baseline** | Uses the model's top remediation. |
-| **LAIX chooser** | `LiveDecisionEngine` always chooses among the four candidates. |
+| **LAIX chooser** | `LiveCompositePlanner` always chooses among the four candidates. |
 | **LAIX guardrail** | Keeps the model's top remediation when it is already safe; overrides only destructive, approval-required or high-risk choices. |
 
 ## Results

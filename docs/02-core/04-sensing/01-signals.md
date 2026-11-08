@@ -99,9 +99,11 @@ flowchart TD
     quiet -->|yes| wait_q[wait · quiet_hours]
     quiet -->|no| budget{budget used?}
     budget -->|yes| wait_b[wait · budget]
-    budget -->|no| overdue{critical and overdue beyond window?}
+    budget -->|no| esc_window{critical and escalation window set?}
+    esc_window -->|yes| overdue{overdue beyond window?}
     overdue -->|yes| esc[escalate · overdue_escalation]
-    overdue -->|no| act{allow_act and reversible intent?}
+    overdue -->|no| guide_crit[guide · worth_surfacing]
+    esc_window -->|no| act{allow_act, intent set and reversible?}
     act -->|yes| do_act[act · act]
     act -->|no| guide[guide · worth_surfacing]
 ```

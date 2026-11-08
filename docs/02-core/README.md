@@ -100,56 +100,47 @@ block-beta
     block:contract
         columns 3
         contract_label["Contract"]
-        request["DecisionRequest"]
-        response["Decision"]
-        trail["ExecutionReceipt · Trace"]
+        request_decision["DecisionRequest · Decision"]
+        receipt_trace["ExecutionReceipt · Trace"]
     end
 
     block:domain
-        columns 4
+        columns 3
         domain_label["Domain"]
-        decisions["Decisions"]
-        commitments["Commitments"]
-        outcomes["Outcomes"]
-        perception["Perception"]
+        decisions_commitments["Decisions · Commitments"]
+        outcomes_perception["Outcomes · Perception"]
     end
 
     block:decision
-        columns 5
+        columns 3
         decision_label["Decision"]
-        single["Single"]
-        sequence["Sequence"]
-        fleet["Fleet"]
-        history["History"]
-        explain["Explain"]
+        single_sequence_fleet["Single · Sequence · Fleet"]
+        history_explain["History · Explain"]
     end
 
     block:sensing
-        columns 2
+        columns 3
         sensing_label["Sensing"]
         signals["Signals"]
         resources["Resources"]
     end
 
     block:learning
-        columns 4
+        columns 3
         learning_label["Learning"]
-        calibration["Calibration"]
-        model["Model"]
-        bandit["Bandit"]
-        causal["Causal"]
+        calibration_model["Calibration · Model"]
+        bandit_causal["Bandit · Causal"]
     end
 
     block:evaluation
         columns 3
         evaluation_label["Evaluation"]
-        cases["Cases"]
-        bench["Bench"]
+        cases_bench["Cases · Benchmarks"]
         simulation["Simulation"]
     end
 
     block:foundation
-        columns 2
+        columns 3
         foundation_label["Foundation"]
         schema["Schema"]
         support["Support"]
