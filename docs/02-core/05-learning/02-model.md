@@ -12,7 +12,9 @@ learner.observe(state="idle", action="act", next_state="done", reward=1.0)
 model = learner.to_mdp_model()
 ```
 
-`ModelLearner.rollback()` restores the best snapshot. `LearnedTransition` is the transition record.
+`ModelLearner.commit(validation)` keeps the current model only if it beats the best score; otherwise it
+restores the best snapshot. `ModelLearner.restore(snapshot)` loads an explicit snapshot.
+`LearnedTransition` is the transition record.
 
 ## Where it fits
 

@@ -1,5 +1,5 @@
 /** Record what a decision changed, not a click. */
-import { OutcomeLedger } from "../../../../../packages/typescript/laix/src/index.ts";
+import { OutcomeLedger } from "../../../../packages/typescript/laix/src/index.ts";
 
 const ledger = new OutcomeLedger();
 ledger.add({

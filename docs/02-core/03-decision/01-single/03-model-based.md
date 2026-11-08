@@ -198,7 +198,7 @@ the MDP value of the most likely state; a POMDP can be worth less because uncert
 ## Simulator
 
 `Simulator` and `compare_planners` run planners over a model and report reward and optimality gap.
-See the [planner contract](../../01-contract/02-planner-contract.md#simulator).
+See [Simulation](../../06-evaluation/03-simulation.md).
 
 ## Limits
 
@@ -216,10 +216,16 @@ The MDP literature calls the best action per state a **policy**. LAIX uses the w
 the integration layer. In LAIX, `MDPPlanner` is a planner and `PlannerPolicy` adapts it to the policy
 interface.
 
+## Examples
+
+- Python: `examples/python/core/decision/single/planners/mdp_planner.py`
+- Python: `examples/python/core/decision/single/planners/pomdp_planner.py`
+- TypeScript: `examples/typescript/core/decision/single/planners/planners.mts`
+
 ## Related
 
 - [Planner contract](../../01-contract/02-planner-contract.md)
-- [Live planners](01-planners.md)
-- [Calibration and model learning](../../05-learning/01-calibration.md) — `ModelLearner` builds an
-  `MdpModel` from observed transitions.
-- [Simulation and evaluation](../../06-evaluation/01-cases.md)
+- [Single-decision planners](01-planners.md)
+- [Model learning](../../05-learning/02-model.md) — `ModelLearner` builds an `MdpModel` from observed
+  transitions.
+- [Simulation](../../06-evaluation/03-simulation.md)

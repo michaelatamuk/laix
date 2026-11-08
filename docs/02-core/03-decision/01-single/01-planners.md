@@ -356,10 +356,18 @@ All four share the same `PlannerResult` shape, the same utility model and the sa
 [live composite planner](02-composite.md) runs their scoring functions together and returns
 one composite plan.
 
+## Examples
+
+- Python: `examples/python/core/decision/single/planners/utility_planner.py`
+- Python: `examples/python/core/decision/single/planners/commitment_planner.py`
+- Python: `examples/python/core/decision/single/planners/execution_planner.py`
+- Python: `examples/python/core/decision/single/planners/human_attention_planner.py`
+- TypeScript: `examples/typescript/core/decision/single/planners/planners.mts`
+
 ## Related
 
 - [Commitments](../../02-domain/02-commitments.md)
 - [Planner contract](../../01-contract/02-planner-contract.md)
-- [Live composite planner](02-composite.md)
+- [Composite planner](02-composite.md)
 - [Signal attention](../../04-sensing/01-signals.md)
 - [Evaluation](../../06-evaluation/01-cases.md)

@@ -322,7 +322,7 @@ when the `(verb, action_id, reason_code)` signature differs. It does not change 
 - `act` with `bandit_choice` for the chosen arm.
 
 `record(arm_id, reward)` updates one arm. `learn(outcomes, arm_of)` learns from labelled outcomes.
-See [Outcome learning](../../02-domain/03-outcomes.md).
+See [Outcomes](../../02-domain/03-outcomes.md).
 
 ## The planner bridge
 
@@ -346,10 +346,15 @@ policy can replace any packaged policy without changing the request or the respo
 | `core/engines/decision/single/policies/simulation.py` | `ShadowPolicy` and `simulate` |
 | `core/contract/planner_policy.py` | `PlannerPolicy` |
 
+## Examples
+
+- Python: `examples/python/core/decision/single/policies/`
+- TypeScript: `examples/typescript/core/decision/single/policies/`
+
 ## Related
 
 - [Dispatch](../../01-contract/04-dispatch.md)
 - [Commitments](../../02-domain/02-commitments.md)
 - [Planner contract](../../01-contract/02-planner-contract.md)
-- [Outcome learning](../../02-domain/03-outcomes.md)
+- [Outcomes](../../02-domain/03-outcomes.md)
 - [Evaluation](../../06-evaluation/01-cases.md)

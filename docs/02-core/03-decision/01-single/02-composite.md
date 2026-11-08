@@ -50,7 +50,7 @@ human_attention = human_attention_score(option, ...)
 total = utility + commitment + execution + human_attention
 ```
 
-Each term is computed exactly as on the [live planners](01-planners.md) page.
+Each term is computed exactly as on the [single-decision planners](01-planners.md) page.
 
 ```mermaid
 flowchart LR
@@ -192,9 +192,14 @@ hand-built glue baseline scores 28/30; the +6.7 pp difference is not significant
 The composite planner is the composition object. The benchmark design and the measured evidence are in
 [the benchmark page](../../../06-research/02-evaluation/benchmark.md).
 
+## Examples
+
+- Python: `examples/python/core/decision/single/planners/live_composite_planner.py`
+- TypeScript: `examples/typescript/core/decision/single/planners/live_composite_planner.mts`
+
 ## Related
 
-- [Live planners](01-planners.md)
+- [Single-decision planners](01-planners.md)
 - [Planner contract](../../01-contract/02-planner-contract.md)
 - [Commitments](../../02-domain/02-commitments.md)
 - [Decision continuity](../04-history.md)

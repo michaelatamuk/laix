@@ -8,8 +8,8 @@ examples/
 ├── python/
 │   ├── core/
 │   │   ├── domain/
-│   │   │   ├── commitments/      promise and ledger persistence
-│   │   │   └── outcomes/         measured outcomes and stores
+│   │   │   ├── planning_store      promise and ledger persistence
+│   │   │   └── outcome_store       measured outcomes and stores
 │   │   ├── decision/
 │   │   │   ├── single/
 │   │   │   │   ├── decide/       signals, situations, actions and the core call
@@ -21,7 +21,7 @@ examples/
 │   │   │   └── explain/          counterfactual attribution and search
 │   │   ├── sensing/
 │   │   │   ├── signals/          signal attention and quiet hours
-│   │   │   └── resources/        resource admission and sensing
+│   │   │   └── resources.py      resource admission and sensing
 │   │   ├── learning/
 │   │   │   ├── calibration/      prediction and decision calibration
 │   │   │   ├── model/            learned transitions
@@ -31,11 +31,11 @@ examples/
 │   │       ├── bench/            live benchmark, planner bench and ablation
 │   │       └── simulation/       simulator and planner depth
 │   └── appkit/
-│       ├── build/                host adapter
+│       ├── build/                host adapter and policy registry
 │       ├── run/                  stream, windows, checkpoints, live context and live loop
 │       ├── execute/              execution, saga, record, proposal and host execution
 │       ├── connect/              platform, delivery and stores
-│       └── operate/              LAIX-Bench
+│       └── operate/              LAIX-Bench and metrics
 └── typescript/
     └── (the same core and app-kit split)
 ```
@@ -74,7 +74,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Commitments
 
-`examples/python/core/domain/commitments/` · `examples/typescript/core/domain/commitments/`
+`examples/python/core/domain/` · `examples/typescript/core/domain/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -82,7 +82,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Outcomes
 
-`examples/python/core/domain/outcomes/` · `examples/typescript/core/domain/outcomes/`
+`examples/python/core/domain/` · `examples/typescript/core/domain/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -149,6 +149,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
 | Exact sequence planning, rollout and replan | `sequence_planning.py` | `sequence_planning.mts` | `ask,verify 1.49 True ask,verify verify` / `ask,verify 1.49 true ask,verify verify` |
+| Exact planning beats greedy rollout | `sequence_tradeoff.py` | `sequence_tradeoff.mts` | `cabb start,small,bonus 1.105` / `rollout start,big,nothing 0.605` |
 
 ### Fleet
 
@@ -193,7 +194,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Resources
 
-`examples/python/core/sensing/resources/` · `examples/typescript/core/sensing/resources/`
+`examples/python/core/sensing/` · `examples/typescript/core/sensing/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -217,6 +218,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
 | Learn transitions and rewards | `model_learning.py` | `model_learning.mts` | `{'s1': 1.0} 2.0` / `{"s1":1} 2` |
+| Restore the best model snapshot | `model_rollback.py` | `model_rollback.mts` | `{'done': 1.0}` / `{ done: 1 }` |
 
 ### Causal
 
@@ -267,7 +269,8 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
-| Host adapter | `host_adapter.py` | — | `act valve host-calibrated True reason` |
+| Host adapter | `host_adapter.py` | - | `act valve host-calibrated True reason` |
+| Register and switch a policy | `policy_registry.py` | `policy_registry.mts` | `safety act valve` |
 
 ## Run
 
@@ -317,6 +320,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
 | Run LAIX-Bench | `bench.py` | `bench.mts` | `25 25 1.0` / `25 25 1` |
+| Export Prometheus counters | `metrics.py` | `metrics.mts` | `1 True` / `1 true` |
 
 ## Parity notes
 
@@ -359,4 +363,4 @@ suite is the source of truth for behavioural parity.
 - `True` — the record fingerprint still matches its content.
 
 The full field list is in [`../docs/02-core/01-contract/01-decision-contract.md`](../docs/02-core/01-contract/01-decision-contract.md).
-The policy contracts are in [`../docs/02-core/03-decision/01-single/04-policies.md`](../docs/02-core/03-decision/01-single/04-policies.md).
+The policy contracts are in [`../docs/02-core/03-decision/01-single/05-policies.md`](../docs/02-core/03-decision/01-single/05-policies.md).

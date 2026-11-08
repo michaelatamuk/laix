@@ -42,7 +42,7 @@ laix/
 ├── docs/
 │   ├── README.md          audience-first index
 │   ├── 01-start/          overview; orientation/, first-steps/
-│   ├── 02-core/           overview; contract/, decide/, planning/, continuity/, learning/, reference/
+│   ├── 02-core/           overview; contract/, domain/, decision/, sensing/, learning/, evaluation/, support/
 │   ├── 03-appkit/         overview; build/, run/, execute/, connect/, operate/
 │   ├── 04-concepts/       overview; architecture/, positioning/, trust/, reference/
 │   ├── 05-project/        overview; repository/, quality/, release/, direction/

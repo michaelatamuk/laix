@@ -189,7 +189,7 @@ request shapes LAIX understands. The other eight are ordinary policy objects tha
 from `DecisionRequest.attributes`.
 
 The split is about selection. All ten return the same decision shape. See
-[packaged policies](../../02-core/03-decision/01-single/04-policies.md).
+[packaged policies](../../02-core/03-decision/01-single/05-policies.md).
 
 ## Other parts
 
@@ -197,7 +197,7 @@ The split is about selection. All ten return the same decision shape. See
   deep detectors run under a budget. See
   [live context](../../03-appkit/02-run/03-live-context.md).
 - **Outcome learning** uses measured outcomes to improve the next choice. See
-  [outcome learning](../../02-core/02-domain/03-outcomes.md).
+  [outcomes](../../02-core/02-domain/03-outcomes.md).
 - **LAIX-Bench** runs the same test cases for every class. See
   [bench](../../03-appkit/05-operate/01-bench.md).
 

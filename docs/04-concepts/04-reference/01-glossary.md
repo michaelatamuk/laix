@@ -32,8 +32,11 @@ contracts in detail.
 |---|---|
 | **DecisionPolicy** | A chooser with `name` and `decide(request)`. It returns one or more decisions. |
 | **Planner** | A strategy that scores the options and returns a `PlannerResult`. |
+| **SequencePlanner** | A strategy that returns one `DecisionPlan` for a finite chain of decisions. |
+| **DecisionScenario** | A finite chain: steps, commitments, attention budget and an open-commitment penalty. |
+| **DecisionPlan** | The chosen action per step, score, attention spent, violations, node count and optimality. |
 | **CompositePlanner** | A composition of planners that returns one `PlannerResult`; `LiveCompositePlanner` is the built-in composite planner. |
-| **Protocol** | `Planner`: the `solve(problem) -> PlannerResult` interface. It names the contract, not a component. |
+| **Protocol** | `Planner`: `solve(problem) -> PlannerResult`; `SequencePlanner`: `plan(scenario) -> DecisionPlan`. The protocol names the contract, not a component. |
 | **PlannerResult** | A planner's internal answer: verb, confidence, reason, action, score and alternatives. |
 | **PlannerInput** | The planner input: subject, moment, situation, options, signals, context and attributes. |
 | **Composite score** | The four terms `LiveCompositePlanner` combines for one option: utility, commitment, execution and human attention. |
@@ -95,7 +98,9 @@ contracts in detail.
 
 | Term | Meaning |
 |---|---|
-| **Core** | The stateless decision package: contract, policies, planners, signal attention, commitments, learning and evaluation primitives. |
+| **Core** | The stateless decision package: contract, domain records, decision engines, sensing, learning, evaluation and support. |
+| **Domain** | The records and state layer: decisions, commitments, outcomes and perception. |
+| **Engine** | The processing layer: decision, sensing, learning and evaluation. |
 | **App kit** | The optional LAIX layer around the core: runtime, streaming, execution, stores, platform and bench. |
 | **DecisionClient** | The app-kit one-decision surface. |
 | **Decision runtime** | `DecisionRuntime`: the app-kit loop that links observation, state, policy, execution and outcome. |

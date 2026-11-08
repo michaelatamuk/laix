@@ -12,7 +12,7 @@ Signal attention and `HumanAttentionPlanner` work at different levels:
 - **Signal attention** ranks the signals the host sends and returns `guide`, `wait`, `act` or
   `escalate`.
 - **Human-attention planning** prices interruption, approval and escalation when a planner chooses
-  an action option. See [live planners](../03-decision/01-single/01-planners.md#human-attention-planner).
+  an action option. See [single-decision planners](../03-decision/01-single/01-planners.md#human-attention-planner).
 
 ## Scope
 
@@ -242,6 +242,6 @@ behaviour through the app kit. See [Evaluation](../06-evaluation/01-cases.md).
 
 - [Decision contract](../01-contract/01-decision-contract.md)
 - [Dispatch](../01-contract/04-dispatch.md)
-- [Policies](../03-decision/01-single/04-policies.md)
+- [Policies](../03-decision/01-single/05-policies.md)
 - [Human-attention planning](../03-decision/01-single/01-planners.md#human-attention-planner)
 - [Evaluation](../06-evaluation/01-cases.md)

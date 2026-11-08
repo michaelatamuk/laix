@@ -64,6 +64,13 @@ approximation, not a global restless-bandit optimum.
 The static scheduler is a deterministic index policy. The Whittle path is exact per arm, not for the
 whole fleet.
 
+## Examples
+
+- Python: `examples/python/core/decision/fleet/attention_scheduler.py`
+- Python: `examples/python/core/decision/fleet/whittle_scheduler.py`
+- TypeScript: `examples/typescript/core/decision/fleet/attention_scheduler.mts`
+- TypeScript: `examples/typescript/core/decision/fleet/whittle_scheduler.mts`
+
 ## Related
 
 - [Single decision](01-single/README.md)

@@ -18,16 +18,16 @@ The schema is generated from ten records. The set is declared in
 
 | Record | Module | Carries |
 |---|---|---|
-| `Observation` | `decisions/request/payload/observation.py` | source, kind, confidence, payload, cost and latency |
-| `Belief` | `decisions/request/payload/belief.py` | proposition, confidence, evidence, update time and expiry |
-| `Goal` | `decisions/request/payload/goal.py` | statement, priority, metric, target and deadline |
-| `Constraint` | `decisions/request/payload/constraint.py` | kind, value, hard flag and statement |
-| `ActionOption` | `decisions/request/payload/action_option.py` | id, verb, name, expected benefit, cost, risk, latency, interruption, reversibility and approval |
-| `Situation` | `decisions/request/payload/situation.py` | observations, beliefs, goals, constraints, phase, horizon and attributes |
-| `Outcome` | `outcome_learning/record.py` | decision id, metric, before/after, delta, label, attribution and evidence |
-| `ExecutionReceipt` | `decisions/trail/execution_receipt.py` | action name, status, actor, result, idempotency key and error |
-| `Trace` | `decisions/trail/trace.py` | ordered events for one decision |
-| `Decision` | `decisions/response/decision.py` | verb, reason, confidence, action, approval, target and all audit fields |
+| `Observation` | `domain/decisions/request/payload/observation.py` | source, kind, confidence, payload, cost and latency |
+| `Belief` | `domain/decisions/request/payload/belief.py` | proposition, confidence, evidence, update time and expiry |
+| `Goal` | `domain/decisions/request/payload/goal.py` | statement, priority, metric, target and deadline |
+| `Constraint` | `domain/decisions/request/payload/constraint.py` | kind, value, hard flag and statement |
+| `ActionOption` | `domain/decisions/request/payload/action_option.py` | id, verb, name, expected benefit, cost, risk, latency, interruption, reversibility and approval |
+| `Situation` | `domain/decisions/request/payload/situation.py` | observations, beliefs, goals, constraints, phase, horizon and attributes |
+| `Outcome` | `domain/outcomes/record.py` | decision id, metric, before/after, delta, label, attribution and evidence |
+| `ExecutionReceipt` | `domain/decisions/trail/execution_receipt.py` | action name, status, actor, result, idempotency key and error |
+| `Trace` | `domain/decisions/trail/trace.py` | ordered events for one decision |
+| `Decision` | `domain/decisions/response/decision.py` | verb, reason, confidence, action, approval, target and all audit fields |
 
 `build_schema()` derives the JSON Schema from these dataclasses. The committed artefact is
 `core/schema/laix-v1.schema.json`. A test regenerates the schema and fails when the committed file is
@@ -124,16 +124,16 @@ decision:
 
 | Shape | Module | Role |
 |---|---|---|
-| `DecisionRequest` | `decisions/request/decision_request.py` | the public request |
-| `Signal` | `engines/signals/input/signal.py` | one item that may need attention |
-| `SignalContext` | `engines/signals/input/signal_context.py` | time, quiet hours, thresholds, budget and feedback |
-| `SignalFeedback` | `engines/signals/input/signal_feedback.py` | the last response to a signal |
-| `EvidenceRef` | `decisions/response/payload/evidence_ref.py` | a reference that supports a decision |
-| `Intent` | `decisions/response/payload/intent.py` | capability and arguments the host can execute |
-| `ScoreBreakdown` | `decisions/response/payload/score_breakdown.py` | the parts of a signal-attention score |
-| `Commitment` | `commitments/commitment_record.py` | one promise with a due time and dependencies |
-| `CommitmentLedger` | `commitments/commitment.py` | the open promises for one task |
-| `Detection`, `PerceptionEvent`, `PerceptionFrame` | `perception/` | host-driven perception records |
+| `DecisionRequest` | `domain/decisions/request/decision_request.py` | the public request |
+| `Signal` | `engines/sensing/signals/input/signal.py` | one item that may need attention |
+| `SignalContext` | `engines/sensing/signals/input/signal_context.py` | time, quiet hours, thresholds, budget and feedback |
+| `SignalFeedback` | `engines/sensing/signals/input/signal_feedback.py` | the last response to a signal |
+| `EvidenceRef` | `domain/decisions/response/payload/evidence_ref.py` | a reference that supports a decision |
+| `Intent` | `domain/decisions/response/payload/intent.py` | capability and arguments the host can execute |
+| `ScoreBreakdown` | `domain/decisions/response/payload/score_breakdown.py` | the parts of a signal-attention score |
+| `Commitment` | `domain/commitments/commitment_record.py` | one promise with a due time and dependencies |
+| `CommitmentLedger` | `domain/commitments/commitment.py` | the open promises for one task |
+| `Detection`, `PerceptionEvent`, `PerceptionFrame` | `domain/perception/` | host-driven perception records |
 
 These shapes have `to_dict()` where persistence matters. They sit outside the generated decision
 schema, and the host owns their durable representation.
@@ -170,32 +170,8 @@ intent or score breakdown.
 
 ## Schema generation and validation
 
-From `packages/python/laix`:
-
-```powershell
-py -c "from laix.core.schema import write_schema; write_schema()"
-```
-
-Check that the committed file is current:
-
-```powershell
-py -m pytest tests -k schema
-```
-
-The public helpers:
-
-| Helper | Purpose |
-|---|---|
-| `RECORDS` | the ten schema record classes |
-| `RECORD_NAMES` | their names in declaration order |
-| `record_fields(record)` | the field names of one record |
-| `build_schema()` | the schema as a dictionary |
-| `dumps_schema()` | the schema as indented JSON |
-| `write_schema(path=None)` | write the committed schema file |
-| `check(record_name, payload)` | validate required keys, primitive types and enums |
-
-`check()` validates required keys, primitive types and enums for the committed records. It keeps the
-package standard-library only. Use a full JSON Schema validator when the host needs one.
+The schema is generated and validated with the helpers in
+[Schema](../07-support/01-schema.md).
 
 The schema enums come from the code:
 
@@ -247,5 +223,6 @@ requires a new schema version and a migration note.
 ## Related
 
 - [Decision contract](01-decision-contract.md) — the request and response in prose.
-- [Foundation](../07-support/02-support.md) — perception and support types.
+- [Support helpers](../07-support/02-support.md) — ids, time, values and version.
+- [Perception](../02-domain/04-perception.md) — detection, detector and frame.
 - [Versioning](../../05-project/03-release/01-versioning.md) — the release and version policy.

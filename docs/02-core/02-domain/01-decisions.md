@@ -16,12 +16,12 @@ The full field lists are in [Decision contract](../01-contract/01-decision-contr
 
 ## Status and revisions
 
-`DECISION_STATUSES` describes where a decision is in its lifecycle: proposed, provisional, final,
-superseded or rejected.
+`DECISION_STATUSES` describes where a decision is in a stream: `final`, `provisional` or
+`superseded`.
 
-A revision is a new decision with a reference to the one it replaces. The app-kit streaming layer keeps
-the ordered timeline; the core keeps the decision record and the trace. The host owns the durable
-history.
+A revision is a new decision with `supersedes` pointing at the decision it replaces and `revision`
+incremented. The app-kit streaming layer keeps the ordered timeline; the core keeps the decision
+record and the trace. The host owns the durable history.
 
 ## What the core owns
 
