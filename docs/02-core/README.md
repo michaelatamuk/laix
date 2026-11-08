@@ -97,61 +97,82 @@ This diagram is a conceptual view of the core, not the folder map. The folder ma
 block-beta
     columns 1
 
-    block:capabilities
-        columns 4
-        capabilities_label["Capabilities"]
-        decide["Decide<br/>choose the next move"]
-        learn["Learn<br/>outcome → reward → better choice"]
-        evaluate["Evaluate<br/>cases · reports · benchmarks"]
-    end
-
     block:contract
-        columns 4
+        columns 3
         contract_label["Contract"]
-        request["DecisionRequest<br/>what is happening + what can be done"]
-        response["Decision<br/>verb · reason · confidence · action"]
-        trail["ExecutionReceipt · Trace<br/>what happened"]
+        request["DecisionRequest"]
+        response["Decision"]
+        trail["ExecutionReceipt · Trace"]
     end
 
-    block:decide_layer
-        columns 5
-        decide_label["Decide"]
-        attention["Signal attention<br/>what matters now?"]
-        policies["Policies<br/>what should I do?"]
-        planners["Planners<br/>score the options"]
-        composite["LiveCompositePlanner<br/>compose the scores"]
-    end
-
-    block:constrain_layer
+    block:domain
         columns 4
-        constrain_label["Constrain"]
-        limits["Limits<br/>risk · approval · safety"]
-        commitments["Commitments<br/>what was promised?"]
-        resources["Resources<br/>budget · latency · sensing"]
+        domain_label["Domain"]
+        decisions["Decisions"]
+        commitments["Commitments"]
+        outcomes["Outcomes"]
+        perception["Perception"]
+    end
+
+    block:decision
+        columns 5
+        decision_label["Decision"]
+        single["Single"]
+        sequence["Sequence"]
+        fleet["Fleet"]
+        history["History"]
+        explain["Explain"]
+    end
+
+    block:sensing
+        columns 2
+        sensing_label["Sensing"]
+        signals["Signals"]
+        resources["Resources"]
+    end
+
+    block:learning
+        columns 4
+        learning_label["Learning"]
+        calibration["Calibration"]
+        model["Model"]
+        bandit["Bandit"]
+        causal["Causal"]
+    end
+
+    block:evaluation
+        columns 3
+        evaluation_label["Evaluation"]
+        cases["Cases"]
+        bench["Bench"]
+        simulation["Simulation"]
     end
 
     block:foundation
-        columns 4
+        columns 2
         foundation_label["Foundation"]
-        schema["Schema<br/>records · validation"]
-        perception["Perception<br/>detector · event · frame"]
-        support["Support<br/>ids · time · values · verbs"]
+        schema["Schema"]
+        support["Support"]
     end
 
-    style capabilities_label fill:transparent,stroke:transparent,font-size:22px,font-weight:bold
     style contract_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-    style decide_label fill:transparent,stroke:transparent,font-weight:bold
-    style constrain_label fill:transparent,stroke:transparent,font-weight:bold
-    style foundation_label fill:transparent,stroke:transparent,font-weight:bold
+    style domain_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
+    style decision_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
+    style sensing_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
+    style learning_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
+    style evaluation_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
+    style foundation_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
 ```
 
-| DecisionClient | Contains | Answers |
+| Layer | Contains | Answers |
 |---|---|---|
-| **Capabilities** | Decide, Learn, Evaluate | What the core can do. |
 | **Contract** | `DecisionRequest`, `Decision`, `ExecutionReceipt`, `Trace` | What crosses the boundary. |
-| **Decide** | Signal attention, policies, planners, `LiveCompositePlanner` | What to do next. |
-| **Constrain** | Limits, commitments, resources | What is allowed, promised and affordable. |
-| **Foundation** | Schema, perception, support | What the records and helpers rest on. |
+| **Domain** | Decisions, commitments, outcomes, perception | What exists and what carries forward. |
+| **Decision** | Single, sequence, fleet, history, explain | How a decision is made. |
+| **Sensing** | Signals, resources | What feeds a decision. |
+| **Learning** | Calibration, model, bandit, causal | How it improves. |
+| **Evaluation** | Cases, benchmarks, simulation | How it is proved. |
+| **Foundation** | Schema, support | What it rests on. |
 
 ## Ways to get a decision
 

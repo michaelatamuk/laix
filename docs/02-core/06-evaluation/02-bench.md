@@ -80,38 +80,15 @@ The result files use short keys. They are stable data identifiers; they are not 
 
 ## LAIX-Bench
 
-LAIX-Bench is the app-kit CLI. It runs one suite per decision class and reports agreement.
-
-```powershell
-python -m laix.appkit.bench
-python -m laix.appkit.bench --list
-python -m laix.appkit.bench --suite safety
-python -m laix.appkit.bench --planners
-python -m laix.appkit.bench --live
-python -m laix.appkit.bench --json
-```
-
-The suites are `attention`, `action`, `active-perception`, `safety`, `replanning`, `allocation`,
-`negotiation`, `preference`, `verification` and `escalation`. The current run covers 25 cases and
-agrees on all 25.
-
-The TypeScript mirror uses `npm run bench`, `npm run bench -- --suite safety`, `npm run bench --
---planners` and `npm run live-bench`.
-
-The CLI, the case format and the stream bench are documented in
+LAIX-Bench is the app-kit regression suite that runs one suite per decision class. The CLI, the case
+format, the suites and the stream bench are documented in
 [LAIX-Bench](../../03-appkit/05-operate/01-bench.md).
 
-## What each check proves
+## What the core benchmarks prove
 
-| Check | Proves |
-|---|---|
-| Unit tests | the contract holds and a known regression stays fixed |
-| LAIX-Bench | each decision class returns the expected verb, reason and action on its fixed cases |
-| Live decision benchmark | the planners differ on the cases that isolate one concern |
-| Frozen corpus | the reported accuracy, safety and latency on the documented split |
-| Continuity benchmark | the mechanism uses state across decisions |
-
-The evidence page describes the scope of each result.
+- The live benchmark separates planners on the cases that isolate one concern.
+- The frozen corpus reports accuracy, safety and latency on the documented split.
+- The continuity benchmark shows that state carries across decisions.
 
 ## Related
 
