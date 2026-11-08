@@ -10,6 +10,8 @@
   stable `laix.*` span attributes without adding an SDK dependency.
 - **Execution retries.** `RetryPolicy` and TypeScript `RetryOptions` retry a failed handler with
   capped exponential backoff and record the attempt count in the receipt detail.
+- **Developer CLI.** `laix explain` and `laix lint` inspect a decision or decision-record JSON file
+  without importing the host app.
 - **Validation template.** A pre-registration page for external runs, with the metrics, analysis
   plan, threats and replication rules.
 - **Community templates.** Bug and feature issue forms, a pull request template and a documentation

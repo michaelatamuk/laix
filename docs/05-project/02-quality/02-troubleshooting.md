@@ -16,6 +16,23 @@ policy or code.
 8. Is the model or planner returning the action you expect? Wrap it in `PlannerPolicy` and
    inspect its output before blaming the contract.
 
+## Explain a decision JSON
+
+The Python package ships a small CLI for a decision or decision-record JSON file:
+
+```powershell
+laix explain decision.json
+laix explain decision.json --json
+laix lint decision.json
+```
+
+`explain` prints the verb, reason code, confidence, action, policy, approval, trace, score and
+rationale. `--json` prints the OpenTelemetry attributes. `lint` reports missing `decision_id`,
+`trace_id` or `policy_version` and exits non-zero when it finds a problem.
+
+If the package is installed from a source checkout, `python -m laix.appkit.cli` runs the same
+commands.
+
 ## Symptoms
 
 | Symptom | Likely cause | Check |
