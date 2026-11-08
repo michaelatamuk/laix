@@ -137,8 +137,20 @@ print(plan.actions)
 ```
 
 `consistent` reports whether the input history was already consistent; a plan with conflicts still
-contains the actions that repair them. The full method is incremental truth maintenance with a
-weighted MaxSAT repair. This prototype is a greedy minimum-cost repair.
+contains the actions that repair them.
+
+The default repair is greedy. Pass `exact=True` to solve the minimum-weight vertex cover over the
+conflict graph by branch and bound:
+
+```python
+from laix import repair_continuity
+
+plan = repair_continuity(records, exact=True)
+print(plan.total_cost, [action.record_id for action in plan.actions])
+```
+
+The exact path is exponential in the worst case but fast on small decision histories. The full
+method remains incremental truth maintenance with a weighted MaxSAT repair.
 
 ## CDA: counterfactual decision attribution
 
@@ -163,7 +175,7 @@ is exact for the additive composite score.
 - CA-VOD's future-value path is a finite-horizon belief lookahead; the constrained POMDP with hard
   commitment and attention constraints remains research.
 - AADS has an exact single-arm Whittle index; the fleet policy remains an index approximation.
-- CDR is greedy; it does not prove global minimum cost.
+- CDR has an exact minimum-weight vertex cover for small histories; large histories use greedy.
 - CDA assumes an additive decision with component scores.
 
 The next step for each is the research version described in

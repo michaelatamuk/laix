@@ -271,6 +271,28 @@ def cdr_result() -> dict:
     }
 
 
+def cdr_exact_result() -> dict:
+    records = (
+        ContinuityRecord(id="a", kind="decision", status="final", conflicts=("b",), cost=1.0),
+        ContinuityRecord(id="b", kind="decision", status="final", conflicts=("c", "d"), cost=2.0),
+        ContinuityRecord(id="c", kind="decision", status="final", cost=1.0),
+        ContinuityRecord(id="d", kind="decision", status="final", cost=1.0),
+    )
+    greedy = repair_continuity(records)
+    exact = repair_continuity(records, exact=True)
+    return {
+        "greedy": {
+            "total_cost": greedy.total_cost,
+            "actions": [action.record_id for action in greedy.actions],
+        },
+        "exact": {
+            "total_cost": exact.total_cost,
+            "actions": [action.record_id for action in exact.actions],
+            "method": exact.method,
+        },
+    }
+
+
 def cda_result() -> dict:
     request = DecisionRequest(
         subject="invoice 4832",
@@ -338,6 +360,7 @@ def main() -> int:
         "aads": aads_result(),
         "aads_whittle": aads_whittle_result(),
         "cdr": cdr_result(),
+        "cdr_exact": cdr_exact_result(),
         "cda": cda_result(),
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)

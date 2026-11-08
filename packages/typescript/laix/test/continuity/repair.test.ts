@@ -39,6 +39,23 @@ test("CDR returns an empty plan for a consistent history", () => {
   assert.equal(plan.consistent, true);
 });
 
+test("CDR exact repair beats greedy on a star", () => {
+  const records = [
+    { id: "a", kind: "decision", status: "final", conflicts: ["b"], cost: 1 },
+    { id: "b", kind: "decision", status: "final", conflicts: ["c", "d"], cost: 2 },
+    { id: "c", kind: "decision", status: "final", cost: 1 },
+    { id: "d", kind: "decision", status: "final", cost: 1 },
+  ];
+
+  const greedy = repairContinuity(records);
+  const exact = repairContinuity(records, undefined, { exact: true });
+
+  assert.equal(greedy.totalCost, 3);
+  assert.equal(exact.totalCost, 2);
+  assert.deepEqual(exact.actions.map((action) => action.recordId), ["b"]);
+  assert.equal(exact.method, "exact");
+});
+
 test("CDR honours explicit conflicts", () => {
   const plan = repairContinuity([
     {

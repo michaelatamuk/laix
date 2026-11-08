@@ -58,6 +58,10 @@ Records: an `approval` rejected for `order-1` and a `receipt` executed for `orde
 
 The cheaper side is revised. This is a greedy minimum-cost repair, not a proof of global optimality.
 
+A star-shaped conflict graph shows the difference. Greedy chooses the cheap leaves `a`, `c` and `d`
+for a total cost of `3.0`; the exact minimum-weight vertex cover chooses `b` for a total cost of
+`2.0`. Pass `exact=True` to use the branch-and-bound path.
+
 ## CDA
 
 Decision: CA-VOD chooses `ask` on the payment case. The smallest single-component counterfactual is:

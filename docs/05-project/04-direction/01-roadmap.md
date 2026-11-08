@@ -24,7 +24,7 @@ what is done, what is next and what would count as a real step forward.
 | `LiveCompositePlanner` (composite planner) | done |
 | `CAVODPlanner` (value of decision) | prototype |
 | `AttentionScheduler` (AADS) | prototype; exact single-arm Whittle |
-| `repair_continuity` (CDR) | prototype |
+| `repair_continuity` (CDR) | prototype; exact small-graph repair |
 | `counterfactual_attribution` (CDA) | prototype |
 | TypeScript parity | done |
 | Continuity benchmark | done |

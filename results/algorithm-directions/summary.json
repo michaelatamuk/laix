@@ -134,6 +134,23 @@
     "total_cost": 1.0,
     "consistent": false
   },
+  "cdr_exact": {
+    "greedy": {
+      "total_cost": 3.0,
+      "actions": [
+        "a",
+        "c",
+        "d"
+      ]
+    },
+    "exact": {
+      "total_cost": 2.0,
+      "actions": [
+        "b"
+      ],
+      "method": "exact"
+    }
+  },
   "cda": {
     "chosen_id": "ask",
     "minimal": {

@@ -36,6 +36,7 @@ export interface RepairPlan {
   actions: RepairAction[];
   totalCost: number;
   consistent: boolean;
+  method: "greedy" | "exact";
 }
 
 function sharedRefs(left: ContinuityRecord, right: ContinuityRecord): boolean {
@@ -89,39 +90,112 @@ function conflictPairs(
   return [...pairs.values()];
 }
 
+function minimumVertexCover(
+  pairs: Array<[ContinuityRecord, ContinuityRecord]>,
+): Set<string> {
+  if (!pairs.length) return new Set();
+  const records = new Map(
+    pairs.flatMap(([left, right]) => [left, right]).map((record) => [record.id, record]),
+  );
+  const edges = pairs.map(
+    ([left, right]) => new Set([left.id, right.id]),
+  );
+  let bestCost = Number.POSITIVE_INFINITY;
+  let best: Set<string> = new Set();
+
+  const search = (
+    remaining: Array<Set<string>>,
+    chosen: Set<string>,
+    cost: number,
+  ): void => {
+    if (!remaining.length) {
+      if (cost < bestCost) {
+        bestCost = cost;
+        best = new Set(chosen);
+      }
+      return;
+    }
+    if (cost >= bestCost) return;
+    const edge = remaining.reduce((selected, item) => {
+      const selectedMin = Math.min(
+        ...[...selected].map((node) => records.get(node)?.cost ?? 1),
+      );
+      const itemMin = Math.min(
+        ...[...item].map((node) => records.get(node)?.cost ?? 1),
+      );
+      return itemMin > selectedMin ? item : selected;
+    });
+    const order = [...edge].sort((left, right) => {
+      const leftCost = records.get(left)?.cost ?? 1;
+      const rightCost = records.get(right)?.cost ?? 1;
+      return leftCost !== rightCost ? leftCost - rightCost : left < right ? -1 : 1;
+    });
+    for (const node of order) {
+      search(
+        remaining.filter((item) => !item.has(node)),
+        new Set([...chosen, node]),
+        cost + Math.max(0, records.get(node)?.cost ?? 1),
+      );
+    }
+  };
+
+  search(edges, new Set(), 0);
+  return best;
+}
+
 export function repairContinuity(
   records: ContinuityRecord[],
   rules: ConflictRule[] = DEFAULT_CONFLICT_RULES,
+  options: { exact?: boolean } = {},
 ): RepairPlan {
   const pairs = conflictPairs(records, rules);
+  const active = pairs.filter(
+    ([left, right]) => left.status !== "superseded" && right.status !== "superseded",
+  );
+  const exact = options.exact ?? false;
   const actions: RepairAction[] = [];
-  for (const [left, right] of pairs) {
-    if (left.status === "superseded" || right.status === "superseded") continue;
-    let target: ContinuityRecord;
-    let other: ContinuityRecord;
-    const leftCost = left.cost ?? 1;
-    const rightCost = right.cost ?? 1;
-    if (leftCost < rightCost) {
-      target = left;
-      other = right;
-    } else if (rightCost < leftCost) {
-      target = right;
-      other = left;
-    } else if (left.id > right.id) {
-      target = left;
-      other = right;
-    } else {
-      target = right;
-      other = left;
+  if (exact) {
+    const selected = minimumVertexCover(active);
+    for (const recordId of [...selected].sort()) {
+      const record = records.find((item) => item.id === recordId);
+      if (!record) continue;
+      actions.push({
+        recordId: record.id,
+        action: "supersede",
+        fromStatus: record.status,
+        toStatus: "superseded",
+        cost: Math.round(Math.max(0, record.cost ?? 1) * 1e6) / 1e6,
+        reason: "minimum-weight vertex cover",
+      });
     }
-    actions.push({
-      recordId: target.id,
-      action: "supersede",
-      fromStatus: target.status,
-      toStatus: "superseded",
-      cost: Math.round(Math.max(0, target.cost ?? 1) * 1e6) / 1e6,
-      reason: `conflicts with ${other.id}`,
-    });
+  } else {
+    for (const [left, right] of active) {
+      let target: ContinuityRecord;
+      let other: ContinuityRecord;
+      const leftCost = left.cost ?? 1;
+      const rightCost = right.cost ?? 1;
+      if (leftCost < rightCost) {
+        target = left;
+        other = right;
+      } else if (rightCost < leftCost) {
+        target = right;
+        other = left;
+      } else if (left.id > right.id) {
+        target = left;
+        other = right;
+      } else {
+        target = right;
+        other = left;
+      }
+      actions.push({
+        recordId: target.id,
+        action: "supersede",
+        fromStatus: target.status,
+        toStatus: "superseded",
+        cost: Math.round(Math.max(0, target.cost ?? 1) * 1e6) / 1e6,
+        reason: `conflicts with ${other.id}`,
+      });
+    }
   }
   return {
     conflicts: pairs.map(([left, right]) => [left.id, right.id].sort() as [string, string]),
@@ -129,6 +203,7 @@ export function repairContinuity(
     totalCost:
       Math.round(actions.reduce((total, action) => total + action.cost, 0) * 1e6) /
       1e6,
-    consistent: pairs.length === 0,
+    consistent: active.length === 0,
+    method: exact ? "exact" : "greedy",
   };
 }
