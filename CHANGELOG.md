@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.10.0 - 2026-11-08
 
 ### Breaking
 
@@ -71,10 +71,14 @@
   `Saga`.
 - **TypeScript planner surface.** `UtilityPlanner`, `MDPPlanner`, `Simulator` and
   `comparePlanners`.
+- **Distribution.** The TypeScript package builds ESM JavaScript to `dist/` and keeps the curated
+  `types.d.ts`; `prepare` rebuilds it. The Python package ships `py.typed` and PEP 639 metadata.
+  A manual publish workflow targets PyPI and npm.
 - **Examples** for checkpoints, sources, causal attribution, planning, group/shadow, sagas,
   calibration, model learning, utility, MDP and POMDP.
-- **Brand and visuals.** Logo, banner, avatar, a vector how-it-works loop, benchmark and ablation
-  charts, and a reproducible asset renderer in `scripts/docs/`.
+- **Brand and visuals.** Logo, banner, avatar, a vector how-it-works loop, generated core-layer and
+  app-kit-stage SVGs, benchmark and ablation charts, and a reproducible asset renderer in
+  `scripts/docs/`.
 - **Project docs.** Contributing, security policy, code of conduct, support, deployment,
   troubleshooting, migration, commitments, decision continuity and an expanded API map.
 - **Decision continuity.** A README section, a dedicated core page and a sequence-benchmark
@@ -94,6 +98,8 @@
 - Standardised docs on full engine class names (`LiveCompositePlanner`, `UtilityPlanner`,
   `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`). Short keys stay in JSON
   and CLI output and are documented in `results/live-decision-benchmark/README.md`.
+- Replaced the two block-beta overview diagrams with generated SVG assets, and corrected the
+  signal-gate, value-iteration, continuity-sequence, planner-sequence and composite diagrams.
 - Added a README comparison table, a "Can they be compared?" protocol, and comparison links that
   distinguish decision models such as JEV from the LAIX decision runtime.
 - Trimmed the README verification matrix and documentation index; the full check matrix stays in

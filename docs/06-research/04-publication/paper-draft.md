@@ -107,7 +107,7 @@ Evaluation on real outcomes is the next step for the calibration and causal path
 - Live-bench action parity: 210/210 Python/TypeScript decisions agree on the test split
 - LangGraph operational adapter: 120 decisions, 0 interrupts, 6-7 ms mean, 110 glue lines
 - Python invariant tests: 17/17
-- TypeScript tests: 172
+- TypeScript tests: 196
 - CI: Python 3.11/3.13, Node 22/24, docs links and the live-bench reproduction
 
 ## 8. Evaluation

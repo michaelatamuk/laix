@@ -1,0 +1,70 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Package to publish"
+        required: true
+        default: both
+        type: choice
+        options:
+          - both
+          - python
+          - npm
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  python:
+    if: ${{ inputs.target == 'both' || inputs.target == 'python' }}
+    runs-on: ubuntu-latest
+    environment: pypi
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build Python package
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --outdir dist/python ./packages/python/laix
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/python
+
+  npm:
+    if: ${{ inputs.target == 'both' || inputs.target == 'npm' }}
+    runs-on: ubuntu-latest
+    environment: npm
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install and verify
+        working-directory: packages/typescript/laix
+        run: |
+          npm ci
+          npm run build
+          npm test
+          npm run conformance
+
+      - name: Publish to npm
+        working-directory: packages/typescript/laix
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

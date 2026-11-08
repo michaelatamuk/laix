@@ -66,6 +66,9 @@ jobs:
         run: |
           npm run typecheck
           npm run typecheck:declarations
+      - name: Build
+        working-directory: packages/typescript/laix
+        run: npm run build
       - name: Test
         working-directory: packages/typescript/laix
         run: npm test
