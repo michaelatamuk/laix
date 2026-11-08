@@ -102,6 +102,7 @@ The check resolves relative links across `docs/`, root Markdown files and every 
 |---|---|
 | `pytest` | contracts, policies, planners, calibration, timeline, app kit, schema, examples |
 | `tests/core/test_invariants.py` | determinism, hard gates, budget, approval, revision, receipts, trace, confidence, contract and parity infrastructure |
+| `tests/core/contract/test_reason_codes.py` | reason-code registry, decision schema and source coverage |
 | `ruff check` | Python syntax, undefined names and unused imports |
 | `tsc` | TypeScript source and public declaration syntax/types |
 | `npm test` | TS contracts, conformance, parity, streaming, timeline, execution, planners |

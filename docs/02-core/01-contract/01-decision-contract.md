@@ -203,6 +203,10 @@ A **reason code** is a stable, short label for the rule that fired. It is part o
 logic branches on `reason_code`, not on `rationale`. A change to a reason code is a behaviour change
 and belongs in the changelog.
 
+The machine-readable registry is
+[`packages/contracts/reason-codes.v1.json`](../../../packages/contracts/reason-codes.v1.json). See
+[Reason codes](05-reason-codes.md) for the groups, the generated source and the change rules.
+
 Reason codes are grouped by producer:
 
 | Producer | Examples |

@@ -64,6 +64,11 @@ from .engines.learning.calibration import (
     decision_samples_from_outcomes,
 )
 from .contract.planner_policy import Planner, PlannerInput, PlannerPolicy, PlannerResult, to_decision, to_planner_input
+from .contract.reason_codes import (
+    REASON_CODE_GROUPS,
+    REASON_CODES_VERSION,
+    reason_code_registry,
+)
 from .engines.decision.single.planners.mdp.mdp_planner import (
     MDPPlanner,
     MdpModel,
@@ -415,6 +420,9 @@ __all__ = [
     "SCHEMA_VERSION",
     "SafetyConstrainedPolicy",
     "decision_attributes",
+    "REASON_CODE_GROUPS",
+    "REASON_CODES_VERSION",
+    "reason_code_registry",
     "SensingOption",
     "Signal",
     "Situation",

@@ -214,6 +214,8 @@ requires a new schema version and a migration note.
 |---|---|
 | `packages/python/laix/src/laix/core/schema/laix-v1.schema.json` | generated schema for the ten records |
 | `packages/contracts/decision-record.v1.schema.json` | the `DecisionRecord` shape from the app kit |
+| `packages/contracts/decision.v1.schema.json` | the standalone `Decision` shape |
+| `packages/contracts/reason-codes.v1.json` | the stable reason-code registry |
 | `packages/contracts/signal-attention.v1.json` | signal-attention test cases |
 | `packages/contracts/signal-attention-bench.v1.json` | signal-attention outcome cases |
 

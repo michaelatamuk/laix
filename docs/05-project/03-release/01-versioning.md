@@ -10,6 +10,7 @@ rule change does not always change the package version.
 | Record schema | `0.8.0` | `core/support/version.py`, `contracts.ts` |
 | Rule sets | `0.8.0` | policy versions and vectors |
 | Signal-attention vectors | `0.8.0` | `signal-attention.v1.json` and conformance fixtures |
+| Reason-code registry | `1.0.0` | `packages/contracts/reason-codes.v1.json` |
 
 ## The axes
 
@@ -19,6 +20,7 @@ rule change does not always change the package version.
 | Record schema | Field names, JSON keys, types and allowed values. | A record shape changes. |
 | Rule set | DecisionPolicy names, thresholds and reason codes. | A rule changes behaviour. |
 | Signal-attention vectors | The shared attention conformance cases. | A labelled vector or expected decision changes. |
+| Reason-code registry | The stable reason codes an app branches on. | A code is added, removed or renamed. |
 
 A code change that leaves a record shape unchanged leaves the schema unchanged. A new optional field
 is additive; a removed or renamed field is a schema change.
@@ -35,7 +37,9 @@ package and policy versions available for rollback.
 - **Record schema** - a record shape changes. Regenerate `laix-v1.schema.json` and update
   [Records and schema](../../02-core/01-contract/03-records.md).
 - **Rule sets or signal-attention vectors** - a rule, threshold or labelled vector changes behaviour.
-- **Reason code** - treat it as a behaviour change and call it out in the changelog.
+- **Reason code** - treat it as a behaviour change, update
+  [`reason-codes.v1.json`](../../../packages/contracts/reason-codes.v1.json) and call it out in the
+  changelog.
 
 ## Releases
 
