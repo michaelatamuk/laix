@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from ...decisions import ActionOption
+from ....decisions import ActionOption
 from .composite_score import CompositeScore
 
 

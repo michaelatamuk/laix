@@ -5,8 +5,8 @@ import {
   LiveCompositePlanner,
   defaultCases,
   runLiveBench,
-} from "../../src/index.ts";
-import type { ActionOption, Commitment, PlannerInput } from "../../src/index.ts";
+} from "../../../src/index.ts";
+import type { ActionOption, Commitment, PlannerInput } from "../../../src/index.ts";
 
 function problem(
   options: ActionOption[],

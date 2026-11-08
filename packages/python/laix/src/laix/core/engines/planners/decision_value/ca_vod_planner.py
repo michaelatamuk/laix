@@ -13,7 +13,6 @@ belief-state future value without double-counting the immediate reward.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
@@ -50,6 +49,9 @@ from ..utility.utility_planner import (
     _approval_required,
     _constraint_blocker,
 )
+from ._ca_vod_row import _Row
+from .ca_vod_score import CAVODScore
+from .ca_vod_weights import CAVODWeights
 
 
 _INFORMATION_GAIN = {
@@ -57,41 +59,6 @@ _INFORMATION_GAIN = {
     "verify": 0.5,
     "observe": 0.4,
 }
-
-
-@dataclass(frozen=True, slots=True)
-class CAVODWeights:
-    """Weights for the one-step value-of-decision terms."""
-
-    information: float = 0.5
-    waiting: float = 0.25
-    uncertainty: float = 0.5
-    future: float = 1.0
-
-
-@dataclass(frozen=True, slots=True)
-class CAVODScore:
-    """The four live terms plus the information, option and future values."""
-
-    utility: float
-    commitment: float
-    execution: float
-    human_attention: float
-    information: float
-    option: float
-    future: float
-    total: float
-
-
-@dataclass(frozen=True, slots=True)
-class _Row:
-    option: ActionOption
-    score: CAVODScore
-    feasible: bool
-    blocker: str | None
-    commitment: Any = field(repr=False)
-    execution: Any = field(repr=False)
-    human_attention: Any = field(repr=False)
 
 
 def _decision_value(option: ActionOption) -> Mapping[str, Any]:

@@ -64,7 +64,8 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `appkit/decision_client.py` | the app-kit `DecisionClient`: core selection plus runtime, execution and traces |
 | `core/engines/contract/planner.py`, `planner_input.py`, `planner_result.py`, `planner_policy.py` | `Planner`, `PlannerInput`, `PlannerResult` and `PlannerPolicy` |
 | `core/engines/planners/` | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `CAVODPlanner`, `MDPPlanner` and `POMDPPlanner` |
-| `core/engines/live/` | `LiveCompositePlanner` and `CompositeScore` |
+| `core/engines/planners/composite/` | `LiveCompositePlanner` and `CompositeScore` |
+| `core/engines/sequence/` | `CABBPlanner`, `RolloutPlanner` and `ReplanPlanner` for finite-horizon sequences |
 | `core/engines/scheduling/` | `AttentionScheduler` for fleet-level attention allocation and `WhittleScheduler` for the exact single-arm index |
 | `core/engines/continuity/` | `repair_continuity` for conflicting decision histories |
 | `core/engines/explain/` | `counterfactual_attribution` and `counterfactual_search` for decision explanations |

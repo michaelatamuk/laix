@@ -29,6 +29,10 @@
 
 ### Added
 
+- **Sequence planning.** `CABBPlanner` for exact finite-horizon commitment- and attention-constrained
+  branch and bound, `RolloutPlanner` for a bounded greedy rollout and `ReplanPlanner` for rebuilding
+  the remaining chain after an executed prefix, with Python/TypeScript tests, examples and a smoke
+  benchmark.
 - **Algorithm prototypes.** `CAVODPlanner` for one-step value of decision and optional
   belief-state future value, `AttentionScheduler` and `WhittleScheduler` for attention-aware
   decision scheduling, `repair_continuity` for greedy or exact continuity repair and
@@ -78,6 +82,10 @@
 
 ### Changed
 
+- Grouped the engine folders by decision family: `planners/value/` is now
+  `planners/decision_value/`, `live/` is now `planners/composite/`, and `planning/` is now
+  `sequence/`. CA-VOD is split into planner, weights and score files. Public class names are
+  unchanged; only the import paths moved.
 - Repositioned the README around the live decision-runtime category, restored the training-free property to the opening, and aligned the docs and package one-liners. No API changes.
 - Tightened the README hero, contents and Why section, replaced the slide-style benchmark and ablation images with matplotlib charts generated from the committed result JSON, and replaced the architecture slide with a light vector loop. Removed the generated demo animation; the code examples carry the demo until a real recording exists.
 - Restructured the claim–evidence map into headline, safety, contract, open-claims and evidence-index tables.

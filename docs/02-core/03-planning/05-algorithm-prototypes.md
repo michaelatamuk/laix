@@ -1,6 +1,6 @@
 # Algorithm prototypes
 
-These four prototypes turn the research directions in
+These prototypes turn the research directions in
 [Algorithm directions](../../06-research/01-positioning/04-algorithm-directions.md) into runnable code.
 They are deterministic, training-free and deliberately small. Each one is a first implementation, not
 the full research method described in the memo.
@@ -8,6 +8,7 @@ the full research method described in the memo.
 | Prototype | API | Question |
 |---|---|---|
 | CA-VOD | `CAVODPlanner` | What is the value of acting, asking, waiting, verifying or escalating now? |
+| CABB | `CABBPlanner` | Which chain of actions is best over a known horizon? |
 | AADS | `AttentionScheduler` | Which pending decision should receive scarce human attention? |
 | CDR | `repair_continuity` | Which record should be revised when the decision history conflicts? |
 | CDA | `counterfactual_attribution` | What is the smallest change that would flip the decision? |
@@ -63,6 +64,79 @@ planner = CAVODPlanner(
 The future-value path uses the `action_future_value` helper from the POMDP planner. The full
 constrained POMDP with hard commitment and attention constraints in the transition model remains
 research work.
+
+## CABB: commitment-attention branch and bound
+
+A `Planner` answers one live decision. `CABBPlanner` answers a chain: one option at each step of a
+known horizon, under open commitments and a shared human-attention budget. The search is exact for
+the supplied deterministic scenario.
+
+```python
+from laix import (
+    ActionOption,
+    CABBPlanner,
+    Commitment,
+    DecisionScenario,
+    DecisionStep,
+    HumanAttentionBudget,
+)
+
+scenario = DecisionScenario(
+    steps=(
+        DecisionStep(
+            at="2026-11-01T10:00:00+00:00",
+            options=(
+                ActionOption(
+                    id="pay",
+                    verb="act",
+                    name="pay",
+                    expected_benefit=0.95,
+                    requires_approval=True,
+                    reversible=False,
+                    params={"commitments": {"violates": ["c1"]}},
+                ),
+                ActionOption(
+                    id="ask",
+                    verb="ask",
+                    name="ask",
+                    expected_benefit=0.6,
+                    params={"commitments": {"fulfills": ["c1"]}},
+                ),
+            ),
+        ),
+        DecisionStep(
+            at="2026-11-01T11:00:00+00:00",
+            options=(
+                ActionOption(id="wait", verb="wait", name="wait", expected_benefit=0.2),
+                ActionOption(id="verify", verb="verify", name="verify", expected_benefit=0.4),
+            ),
+        ),
+    ),
+    commitments=(
+        Commitment(
+            id="c1",
+            subject="ask before paying",
+            due="2026-11-01T09:00:00+00:00",
+        ),
+    ),
+    human_attention_budget=HumanAttentionBudget(total=2.0, spent=0.5),
+)
+
+plan = CABBPlanner().plan(scenario)
+print(plan.actions, plan.score, plan.optimal)
+```
+
+The family has three members:
+
+| Class | Use |
+|---|---|
+| `CABBPlanner` | exact best chain for a small deterministic scenario |
+| `RolloutPlanner` | good-enough chain for a larger horizon; greedy completion of each first option |
+| `ReplanPlanner` | rebuild the remaining chain after an executed prefix |
+
+`CABBPlanner` also exposes `evaluate` for a fixed chain and `advance` for a state update after a
+prefix. The exact guarantee applies only to the finite deterministic scenario. An uncertain or
+infinite-horizon version remains research work.
 
 ## AADS: attention-aware decision scheduling
 
@@ -189,6 +263,8 @@ global optimizer for arbitrary rule systems.
 
 - CA-VOD's future-value path is a finite-horizon belief lookahead; the constrained POMDP with hard
   commitment and attention constraints remains research.
+- CABB is exact only for a finite deterministic scenario; rollout is approximate and replan is a
+  recovery layer, not a new guarantee.
 - AADS has an exact single-arm Whittle index; the fleet policy remains an index approximation.
 - CDR has an exact minimum-weight vertex cover for small histories; large histories use greedy.
 - CDA's additive path assumes component scores; the search path is a bounded grid, not a global

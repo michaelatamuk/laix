@@ -116,7 +116,7 @@ from .core.engines.bench.live_bench import (
     default_planners,
     run_live_bench,
 )
-from .core.engines.live.live_composite_planner import LiveCompositePlanner, CompositeScore
+from .core.engines.planners.composite.live_composite_planner import LiveCompositePlanner, CompositeScore
 from .core.engines.learning.decision_calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
@@ -158,7 +158,7 @@ from .core.engines.planners.pomdp.pomdp_planner import (
     observation_probability,
     pomdp_value,
 )
-from .core.engines.planners.value.ca_vod_planner import (
+from .core.engines.planners.decision_value.ca_vod_planner import (
     CAVODPlanner,
     CAVODScore,
     CAVODWeights,
@@ -204,6 +204,19 @@ from .core.engines.simulation.simulator import (
     Simulator,
     compare_planners,
     seeded_scenarios,
+)
+from .core.engines.sequence import (
+    CABBPlanner,
+    DecisionPlan,
+    DecisionScenario,
+    DecisionStep,
+    ReplanPlanner,
+    ReplanResult,
+    RolloutPlanner,
+    SequencePlanner,
+    plan_decisions,
+    replan_decisions,
+    rollout_decisions,
 )
 from .core.engines.planners.utility.utility_planner import RISK_ATTITUDES, UtilityPlanner, UtilityModel, UtilityWeights
 from .core.dispatch import decide, select
@@ -444,6 +457,17 @@ __all__ = [
     "samples_from_outcomes",
     "seeded_scenarios",
     "value_iteration",
+    "CABBPlanner",
+    "DecisionPlan",
+    "DecisionScenario",
+    "DecisionStep",
+    "ReplanPlanner",
+    "ReplanResult",
+    "RolloutPlanner",
+    "SequencePlanner",
+    "plan_decisions",
+    "replan_decisions",
+    "rollout_decisions",
     "apply_proposal",
     "approve_proposal",
     "approve_record",

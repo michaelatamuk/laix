@@ -93,7 +93,7 @@ Paths changed with the names:
 | `core/engines/contract/decision_problem.py` | `core/engines/contract/planner_input.py` |
 | `core/engines/contract/plan.py` | `core/engines/contract/planner_result.py` |
 | `core/engines/contract/engine.py` | `core/engines/contract/planner_policy.py` |
-| `core/engines/live/live_engine.py` | `core/engines/live/live_composite_planner.py` |
+| `core/engines/live/live_engine.py` | `core/engines/planners/composite/live_composite_planner.py` |
 | `core/engines/policies/policy.py` | `core/engines/policies/decision_policy.py` |
 | `core/engines/policies/registry.py` | `core/engines/policies/decision_policy_registry.py` |
 | `appkit/layer.py` | `appkit/decision_client.py` |
@@ -108,7 +108,7 @@ Paths changed with the names:
 | `packages/contracts/attention.v1.json` | `packages/contracts/signal-attention.v1.json` |
 | `packages/contracts/attention-bench.v1.json` | `packages/contracts/signal-attention-bench.v1.json` |
 | `core/contract/engine.ts` | `core/contract/planner.ts` |
-| `core/live/live-engine.ts` | `core/live/live-composite-planner.ts` |
+| `core/live/live-engine.ts` | `core/planners/composite/live-composite-planner.ts` |
 | `core/planners/attention/` | `core/planners/human-attention/` |
 | `core/policies/registry.ts` | `core/policies/decision-policy-registry.ts` |
 | `appkit/layer.ts` | `appkit/decision-client.ts` |
@@ -156,7 +156,7 @@ Paths also changed:
 
 | Before | After |
 |---|---|
-| `core/engines/planners/live/` | `core/engines/live/` |
+| `core/engines/planners/live/` | `core/engines/planners/composite/` |
 | `utility/utility.py` | `utility/utility_planner.py` |
 | `mdp/mdp.py` | `mdp/mdp_planner.py` |
 | `pomdp/pomdp.py` | `pomdp/pomdp_planner.py` |

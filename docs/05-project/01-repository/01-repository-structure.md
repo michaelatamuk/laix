@@ -97,8 +97,10 @@ packages/python/laix/src/laix/
 │   │   │   ├── pomdp/       POMDP model, observations, belief state and planner
 │   │   │   ├── commitment/  commitment-aware planner, effects and weights
 │   │   │   ├── execution/   execution-aware planner, effects and weights
-│   │   │   └── human_attention/   human-attention planner, budget and effects
-│   │   ├── live/            LiveCompositePlanner and composite score
+│   │   │   ├── human_attention/   human-attention planner, budget and effects
+│   │   │   ├── decision_value/    CA-VOD planner, weights and score
+│   │   │   └── composite/         LiveCompositePlanner and composite score
+│   │   ├── sequence/        sequence contract, CABB, rollout and replan
 │   │   ├── simulation/     simulator, scenario, step, result, report and planner score
 │   │   ├── learning/       calibration, decision calibration and model learning
 │   │   ├── bench/          live benchmark, cases, rows, metrics and baselines
@@ -142,8 +144,10 @@ packages/typescript/laix/src/
 │   │   ├── pomdp/     POMDP model, belief update and planner
 │   │   ├── commitment/ commitment-aware planner
 │   │   ├── execution/ execution-aware planner
-│   │   └── human-attention/ human-attention planner and budget
-│   ├── live/          LiveCompositePlanner
+│   │   ├── human-attention/ human-attention planner and budget
+│   │   ├── decision-value/ CA-VOD planner, weights and score
+│   │   └── composite/ LiveCompositePlanner
+│   ├── sequence/      contract, CABB, rollout and replan
 │   ├── learning/      calibration, decision calibration and model learning
 │   ├── bench/         live benchmark and baselines
 │   ├── outcome.ts     outcome ledger and UCB learner
@@ -190,7 +194,7 @@ and the canonical file differ.
 ## Rules
 
 - One class per file; functions may share a small module with their owner.
-- Group folders by role: `contract`, `planners`, `simulation`, `learning`, `bench`, `commitments`, `perception`, `policies`, `signals`.
-- Mirror source folders in tests: `contract/`, `planners/`, `simulation/`, `learning/`, `bench/`, `commitments/`, `perception/`, `policies/`, `signals/`.
+- Group folders by role: `contract`, `planners`, `sequence`, `simulation`, `learning`, `bench`, `commitments`, `perception`, `policies`, `signals`.
+- Mirror source folders in tests: `contract/`, `planners/`, `sequence/`, `simulation/`, `learning/`, `bench/`, `commitments/`, `perception/`, `policies/`, `signals/`.
 - Keep the public API in `__init__.py` and `index.ts`.
 - Use generic words and leave app, domain and vendor names out.

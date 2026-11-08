@@ -23,7 +23,7 @@ from .highest_benefit_planner import HighestBenefitPlanner
 from .live_bench_report import LiveBenchReport
 from .live_bench_row import LiveBenchRow
 from .live_case import LiveCase
-from ..live.live_composite_planner import LiveCompositePlanner
+from ..planners.composite.live_composite_planner import LiveCompositePlanner
 from .planner_metrics import PlannerMetrics
 from ..planners.utility.utility_planner import UtilityPlanner, _constraint_blocker
 

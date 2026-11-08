@@ -101,6 +101,7 @@ py examples/python/01-decide/signal_attention_bill_due.py
 | Constraints, stochastic rollout, POMDP check | `planner_depth.py` | `planner_depth.mts` | `safe blocked by risk:risk-limit` / `s1 1.0` / `s0 0.0 go` |
 | CA-VOD information and option value | `ca_vod_planner.py` | `ca_vod_planner.mts` | `ask value_of_decision 0.28 0.0` / `ask value_of_decision 0.28 0` |
 | CA-VOD belief-state future value | `ca_vod_belief.py` | `ca_vod_belief.mts` | `ask 0.45 2` |
+| Exact sequence planning, rollout and replan | `sequence_planning.py` | `sequence_planning.mts` | `ask,verify 1.49 True ask,verify verify` / `ask,verify 1.49 true ask,verify verify` |
 | AADS attention schedule | `attention_scheduler.py` | `attention_scheduler.mts` | `refund-approval,check-evidence` / `1.5 1.5` |
 | AADS exact Whittle index | `whittle_scheduler.py` | `whittle_scheduler.mts` | `0.9 0.09` / `high low` |
 | CDR continuity repair | `continuity_repair.py` | `continuity_repair.mts` | `approval-1 supersede 1.0` |

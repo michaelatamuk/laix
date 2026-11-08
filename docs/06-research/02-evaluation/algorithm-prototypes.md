@@ -1,16 +1,18 @@
 # Algorithm prototype results
 
-**Status:** prototype. These are deterministic smoke tests for the four algorithm directions, not
+**Status:** prototype. These are deterministic smoke tests for the algorithm directions, not
 evidence of superiority. The cases are synthetic and few.
 
 Reproduce:
 
 ```powershell
 python scripts/novelty/bench/run_algorithm_bench.py
+python scripts/novelty/bench/run_cabb_bench.py
 ```
 
-The raw output is in
-[`results/algorithm-directions/summary.json`](../../../results/algorithm-directions/summary.json).
+The raw outputs are in
+[`results/algorithm-directions/summary.json`](../../../results/algorithm-directions/summary.json) and
+[`results/algorithm-directions/cabb.json`](../../../results/algorithm-directions/cabb.json).
 
 ## CA-VOD against the live composite planner
 
@@ -76,6 +78,31 @@ four components. The report ranks them by the required change.
 The search path handles a rule-based decision. With `risk >= 0.5 -> escalate`, the base `risk=0.4`
 chooses `act`; the smallest counterfactual is `risk=0.5`, distance `0.1`, result `escalate`.
 
+## CABB: commitment-attention branch and bound
+
+CABB plans a whole chain over a known horizon. It is exact for the supplied deterministic scenario.
+
+On 12 synthetic 4-step/3-option scenarios:
+
+- CABB matches brute force on `12/12` optimal action sequences;
+- greedy rollout matches brute force on `10/12`;
+- CABB visits `564` partial nodes; brute force evaluates `395` complete sequences.
+
+The node count is not a speed result. It shows that the current bound is loose on tiny cases. The
+decision-quality result is clearer. In the attention tradeoff case, a large early action consumes the
+budget and blocks a larger later action:
+
+| Planner | Chain | Score |
+|---|---|---|
+| CABB | `start`, `small`, `bonus` | `1.105` |
+| greedy rollout | `start`, `big`, `nothing` | `0.605` |
+
+CABB saves attention for the later option; greedy rollout takes the best immediate action and loses
+`0.5` of score. This is the behaviour the exact sequence formulation is meant to produce.
+
+`RolloutPlanner` is the approximate baseline for larger horizons. `ReplanPlanner` recomputes the
+remaining chain after an executed prefix, so a failure or refusal does not discard the whole plan.
+
 ## What the results do and do not show
 
 They show:
@@ -84,13 +111,15 @@ They show:
 - CA-VOD can change the verb when information or option value is material;
 - AADS allocates a budget in index order;
 - CDR finds a conflict and repairs the cheaper side;
-- CDA produces a ranked, minimal counterfactual.
+- CDA produces a ranked, minimal counterfactual;
+- CABB matches brute force on small scenarios and beats greedy rollout on an attention tradeoff.
 
 They do not show:
 
 - accuracy against a real baseline;
 - superiority over `LiveCompositePlanner`, Rippletide or HazelJS;
 - external validity;
+- that CABB is faster than brute force on small cases;
 - that the prototypes match the full research methods.
 
 The next step is a larger benchmark with real cases, baselines and ablations, as described in

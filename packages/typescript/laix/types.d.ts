@@ -501,6 +501,92 @@
     solve(problem: PlannerInput): PlannerResult;
   }
 
+  export interface DecisionStep {
+    at: string;
+    options: ActionOption[];
+  }
+  export interface DecisionScenario {
+    steps: DecisionStep[];
+    commitments?: Commitment[];
+    humanAttentionBudget?: { remaining(): number } | null;
+    openPenalty?: number;
+  }
+  export interface DecisionPlan {
+    actions: string[];
+    score: number;
+    attentionSpent: number;
+    violations: string[];
+    nodes: number;
+    optimal: boolean;
+  }
+  export interface SequencePlanner {
+    readonly name: string;
+    plan(scenario: DecisionScenario): DecisionPlan;
+  }
+  export class CABBPlanner {
+    readonly name: string;
+    readonly model: UtilityModel;
+    constructor(
+      model?: UtilityModel,
+      options?: {
+        commitmentWeights?: Record<string, number>;
+        executionWeights?: Record<string, number>;
+        humanAttentionWeights?: Record<string, number>;
+      },
+    );
+    plan(scenario: DecisionScenario): DecisionPlan;
+    evaluate(scenario: DecisionScenario, actions: string[]): DecisionPlan;
+    greedyActions(scenario: DecisionScenario, prefix?: readonly string[]): string[];
+    advance(
+      scenario: DecisionScenario,
+      actions: readonly string[],
+    ): { commitments: Commitment[]; remaining: number };
+  }
+  export function planDecisions(
+    scenario: DecisionScenario,
+    options?: {
+      model?: UtilityModel;
+      commitmentWeights?: Record<string, number>;
+      executionWeights?: Record<string, number>;
+      humanAttentionWeights?: Record<string, number>;
+    },
+  ): DecisionPlan;
+  export class RolloutPlanner {
+    readonly name: string;
+    readonly planner: CABBPlanner;
+    constructor(planner?: CABBPlanner);
+    plan(scenario: DecisionScenario): DecisionPlan;
+  }
+  export function rolloutDecisions(
+    scenario: DecisionScenario,
+    options?: { planner?: CABBPlanner },
+  ): DecisionPlan;
+  export interface ReplanResult {
+    executed: string[];
+    actions: string[];
+    score: number;
+    attentionSpent: number;
+    violations: string[];
+    nodes: number;
+    optimal: boolean;
+    reason: string;
+  }
+  export class ReplanPlanner {
+    readonly name: string;
+    readonly planner: CABBPlanner;
+    constructor(planner?: CABBPlanner);
+    replan(
+      scenario: DecisionScenario,
+      executed: readonly string[],
+      options?: { replacementStep?: DecisionStep },
+    ): ReplanResult;
+  }
+  export function replanDecisions(
+    scenario: DecisionScenario,
+    executed: readonly string[],
+    options?: { planner?: CABBPlanner; replacementStep?: DecisionStep },
+  ): ReplanResult;
+
   export interface AttentionCandidate {
     id: string;
     risk?: number;
