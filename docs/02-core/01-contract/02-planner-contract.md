@@ -110,21 +110,21 @@ The conversion is `to_decision(planner_result, request, ...)`:
 `to_planner_input` and `to_decision` are public. An adapter that calls a composite planner directly can use them, so
 every planner path returns the same `Decision`.
 
-## Sequence
+## Call sequence
 
 ```mermaid
 sequenceDiagram
     participant Host
-    participant DecisionPolicy as PlannerPolicy
-    participant CompositePlanner as Planner
+    participant Policy as PlannerPolicy
+    participant Planner
     participant Convert as to_decision
-    Host->>DecisionPolicy: decide(DecisionRequest)
-    DecisionPolicy->>DecisionPolicy: to_planner_input(request)
-    DecisionPolicy->>CompositePlanner: solve(PlannerInput)
-    CompositePlanner-->>DecisionPolicy: PlannerResult
-    DecisionPolicy->>Convert: to_decision(planner_result, request)
-    Convert-->>DecisionPolicy: Decision
-    DecisionPolicy-->>Host: [Decision]
+    Host->>Policy: decide(DecisionRequest)
+    Policy->>Policy: to_planner_input(request)
+    Policy->>Planner: solve(PlannerInput)
+    Planner-->>Policy: PlannerResult
+    Policy->>Convert: to_decision(planner_result, request)
+    Convert-->>Policy: Decision
+    Policy-->>Host: [Decision]
 ```
 
 ## External planners

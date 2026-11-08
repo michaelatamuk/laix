@@ -62,7 +62,7 @@ flowchart LR
     commitment --> sum
     execution --> sum
     human_attention --> sum
-    sum --> choose["Choose the highest total"]
+    sum --> choose["Choose the highest feasible total"]
 ```
 
 ## Blocking and feasibility

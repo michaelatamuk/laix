@@ -35,7 +35,7 @@ This is a single trial on 10 tasks. It is a positive signal, not a significance 
 ## What the guardrail tests
 
 The adapter in [`adapter/`](adapter/) passes read-only tools through and sends mutating tools through
-`LiveDecisionEngine`:
+`LiveCompositePlanner`:
 
 - act when the user has confirmed;
 - otherwise ask for confirmation;

@@ -30,8 +30,8 @@ auditability.
 | UI font | Segoe UI / Inter |
 | Mono font | Consolas / JetBrains Mono |
 
-The logo and source cover are the supplied LAIX brand assets. The banner and architecture
-diagram are generated from them.
+The logo and source cover are the supplied LAIX brand assets. The banner, logo and charts are
+generated from them.
 
 ## Regenerate
 

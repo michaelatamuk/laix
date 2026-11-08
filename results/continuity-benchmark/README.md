@@ -6,7 +6,7 @@
 |---|---:|---:|---:|---:|---:|
 | Reference | 100% | 100% | 100% | 100% | 0 |
 | Stateless `UtilityPlanner` | 0% | 100% | 0% | 100% | 36 |
-| Stateful `LiveDecisionEngine` | 100% | 100% | 100% | 100% | 0 |
+| Stateful `LiveCompositePlanner` | 100% | 100% | 100% | 100% | 0 |
 
 The stateless planner keeps choosing the action because it cannot see that the commitment was
 already fulfilled, the attention budget was spent and the receipt was pending. The stateful runtime
