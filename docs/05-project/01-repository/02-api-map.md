@@ -50,7 +50,7 @@ integration, **Learner** is learning. The protocol is `Planner`.
 | `CAVODPlanner` | one-step value of decision: information and wait-option value on top of the live terms |
 | `AttentionScheduler`, `WhittleScheduler`, `whittle_index` | fleet-level attention allocation; exact single-arm Whittle index |
 | `repair_continuity` | greedy or exact minimum-weight repair of a conflicting decision history |
-| `counterfactual_attribution` | the smallest single-component change that flips a decision |
+| `counterfactual_attribution`, `counterfactual_search` | linear attribution or bounded search for the change that flips a decision |
 | `MDPPlanner`, `POMDPPlanner` | model-based planning over a host-supplied model |
 | `action_future_value` | discounted future value of one action under a belief |
 | `Simulator`, `compare_planners` | run and compare planners |

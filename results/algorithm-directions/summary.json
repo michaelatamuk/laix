@@ -160,5 +160,19 @@
       "explanation": "wait overtakes ask if commitment increases by 0.970001"
     },
     "counterfactual_count": 8
+  },
+  "cda_search": {
+    "chosen_id": "act",
+    "counterfactual_id": "escalate",
+    "changes": [
+      {
+        "name": "risk",
+        "old": 0.4,
+        "new": 0.5,
+        "delta": 0.1
+      }
+    ],
+    "distance": 0.1,
+    "evaluations": 4
   }
 }

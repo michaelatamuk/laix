@@ -119,6 +119,12 @@ from .engines.explain.counterfactual import (
     CounterfactualReport,
     counterfactual_attribution,
 )
+from .engines.explain.counterfactual_search import (
+    CounterfactualChange,
+    CounterfactualSearchResult,
+    CounterfactualVariable,
+    counterfactual_search,
+)
 from .engines.simulation.simulator import (
     PlannerBenchmarkRow,
     Scenario,
@@ -311,8 +317,12 @@ __all__ = [
     "RepairPlan",
     "repair_continuity",
     "Counterfactual",
+    "CounterfactualChange",
     "CounterfactualReport",
+    "CounterfactualSearchResult",
+    "CounterfactualVariable",
     "counterfactual_attribution",
+    "counterfactual_search",
     "samples_from_outcomes",
     "seeded_scenarios",
     "value_iteration",

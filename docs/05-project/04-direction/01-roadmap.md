@@ -25,7 +25,7 @@ what is done, what is next and what would count as a real step forward.
 | `CAVODPlanner` (value of decision) | prototype |
 | `AttentionScheduler` (AADS) | prototype; exact single-arm Whittle |
 | `repair_continuity` (CDR) | prototype; exact small-graph repair |
-| `counterfactual_attribution` (CDA) | prototype |
+| `counterfactual_attribution` (CDA) | prototype; linear and bounded search |
 | TypeScript parity | done |
 | Continuity benchmark | done |
 | External validation | open |

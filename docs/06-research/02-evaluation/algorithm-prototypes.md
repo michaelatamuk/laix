@@ -73,6 +73,9 @@ wait overtakes ask if commitment increases by 0.970001
 There are eight component-level counterfactuals because each alternative can flip through any of its
 four components. The report ranks them by the required change.
 
+The search path handles a rule-based decision. With `risk >= 0.5 -> escalate`, the base `risk=0.4`
+chooses `act`; the smallest counterfactual is `risk=0.5`, distance `0.1`, result `escalate`.
+
 ## What the results do and do not show
 
 They show:
