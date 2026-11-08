@@ -16,9 +16,9 @@ from datetime import datetime, timezone
 from typing import Any, Mapping, Sequence
 
 from ...core.engines.signals import SignalContext, SignalFeedback, Signal
-from ...core.engines.bench.live_bench import run_live_bench
+from ...core.engines.evaluation.bench.live_bench import run_live_bench
 from ...core.decisions import ActionOption, Belief, DecisionRequest, Situation
-from ...core.engines.policies import (
+from ...core.engines.decision.single.policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
     EscalationPolicy,

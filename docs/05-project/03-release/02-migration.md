@@ -93,24 +93,24 @@ Paths changed with the names:
 | `core/engines/contract/decision_problem.py` | `core/engines/contract/planner_input.py` |
 | `core/engines/contract/plan.py` | `core/engines/contract/planner_result.py` |
 | `core/engines/contract/engine.py` | `core/engines/contract/planner_policy.py` |
-| `core/engines/live/live_engine.py` | `core/engines/planners/composite/live_composite_planner.py` |
-| `core/engines/policies/policy.py` | `core/engines/policies/decision_policy.py` |
-| `core/engines/policies/registry.py` | `core/engines/policies/decision_policy_registry.py` |
+| `core/engines/live/live_engine.py` | `core/engines/decision/single/planners/composite/live_composite_planner.py` |
+| `core/engines/policies/policy.py` | `core/engines/decision/single/policies/decision_policy.py` |
+| `core/engines/policies/registry.py` | `core/engines/decision/single/policies/decision_policy_registry.py` |
 | `appkit/layer.py` | `appkit/decision_client.py` |
-| `core/engines/planners/attention/` | `core/engines/planners/human_attention/` |
+| `core/engines/planners/attention/` | `core/engines/decision/single/planners/human_attention/` |
 | `core/engines/signals/input/context.py` | `core/engines/signals/input/signal_context.py` |
 | `core/engines/signals/input/feedback.py` | `core/engines/signals/input/signal_feedback.py` |
 | `core/engines/signals/output/decision.py` | `core/engines/signals/output/signal_attention_decision.py` |
 | `core/outcome_learning/attention/` | `core/outcome_learning/signal_attention/` |
 | `core/evaluation/attention.py` | `core/evaluation/signal_attention.py` |
-| `core/engines/simulation/planner_score.py` | `core/engines/simulation/planner_benchmark_row.py` |
+| `core/engines/simulation/planner_score.py` | `core/engines/evaluation/simulation/planner_benchmark_row.py` |
 | `core/engines/signals/attention.v1.json` | `core/engines/signals/signal-attention.v1.json` |
 | `packages/contracts/attention.v1.json` | `packages/contracts/signal-attention.v1.json` |
 | `packages/contracts/attention-bench.v1.json` | `packages/contracts/signal-attention-bench.v1.json` |
 | `core/contract/engine.ts` | `core/contract/planner.ts` |
-| `core/live/live-engine.ts` | `core/planners/composite/live-composite-planner.ts` |
-| `core/planners/attention/` | `core/planners/human-attention/` |
-| `core/policies/registry.ts` | `core/policies/decision-policy-registry.ts` |
+| `core/live/live-engine.ts` | `core/decision/single/planners/composite/live-composite-planner.ts` |
+| `core/planners/attention/` | `core/decision/single/planners/human-attention/` |
+| `core/policies/registry.ts` | `core/decision/single/policies/decision-policy-registry.ts` |
 | `appkit/layer.ts` | `appkit/decision-client.ts` |
 | `core/signals/attention.ts` | `core/signals/signal-attention.ts` |
 
@@ -156,7 +156,7 @@ Paths also changed:
 
 | Before | After |
 |---|---|
-| `core/engines/planners/live/` | `core/engines/planners/composite/` |
+| `core/engines/planners/live/` | `core/engines/decision/single/planners/composite/` |
 | `utility/utility.py` | `utility/utility_planner.py` |
 | `mdp/mdp.py` | `mdp/mdp_planner.py` |
 | `pomdp/pomdp.py` | `pomdp/pomdp_planner.py` |

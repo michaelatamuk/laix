@@ -63,25 +63,25 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/support/` | time, ids, values, serialization, errors, verb and version helpers |
 | `appkit/decision_client.py` | the app-kit `DecisionClient`: core selection plus runtime, execution and traces |
 | `core/engines/contract/planner.py`, `planner_input.py`, `planner_result.py`, `planner_policy.py` | `Planner`, `PlannerInput`, `PlannerResult` and `PlannerPolicy` |
-| `core/engines/planners/` | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `CAVODPlanner`, `MDPPlanner` and `POMDPPlanner` |
-| `core/engines/planners/composite/` | `LiveCompositePlanner` and `CompositeScore` |
-| `core/engines/sequence/` | `CABBPlanner`, `RolloutPlanner` and `ReplanPlanner` for finite-horizon sequences |
-| `core/engines/scheduling/` | `AttentionScheduler` for fleet-level attention allocation and `WhittleScheduler` for the exact single-arm index |
-| `core/engines/continuity/` | `repair_continuity` for conflicting decision histories |
-| `core/engines/explain/` | `counterfactual_attribution` and `counterfactual_search` for decision explanations |
-| `core/engines/policies/implementations/action.py` | built-in action-selection policy |
-| `core/engines/policies/implementations/active_perception.py` | packaged `observe` policy |
-| `core/engines/policies/implementations/safety_constrained.py` | risk-limited action policy |
-| `core/engines/policies/implementations/replanning.py` | feasible-plan selection policy |
-| `core/engines/policies/implementations/allocation.py` | budgeted allocation policy |
-| `core/engines/policies/implementations/negotiation.py` | accept, counter or escalate policy |
-| `core/engines/policies/implementations/preference_elicitation.py` | preference-question selection policy |
-| `core/engines/policies/implementations/verification.py` | outcome confirmation policy |
-| `core/engines/policies/implementations/escalation.py` | hand-over policy |
-| `core/engines/policies/implementations/bandit.py` | learned bandit policy |
-| `core/engines/policies/implementations/rules.py` | declarative `Rule` / `RulePolicy` |
-| `core/engines/policies/implementations/target.py` | `TargetedPolicy` for recipient modes |
-| `core/engines/policies/decision_policy.py`, `core/engines/policies/decision_policy_registry.py` | policy plugin protocol and registry |
+| `core/engines/decision/single/planners/` | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `CAVODPlanner`, `MDPPlanner` and `POMDPPlanner` |
+| `core/engines/decision/single/planners/composite/` | `LiveCompositePlanner` and `CompositeScore` |
+| `core/engines/decision/sequence/` | `CABBPlanner`, `RolloutPlanner` and `ReplanPlanner` for finite-horizon sequences |
+| `core/engines/decision/fleet/` | `AttentionScheduler` for fleet-level attention allocation and `WhittleScheduler` for the exact single-arm index |
+| `core/engines/decision/history/` | `repair_continuity` for conflicting decision histories |
+| `core/engines/decision/explain/` | `counterfactual_attribution` and `counterfactual_search` for decision explanations |
+| `core/engines/decision/single/policies/implementations/action.py` | built-in action-selection policy |
+| `core/engines/decision/single/policies/implementations/active_perception.py` | packaged `observe` policy |
+| `core/engines/decision/single/policies/implementations/safety_constrained.py` | risk-limited action policy |
+| `core/engines/decision/single/policies/implementations/replanning.py` | feasible-plan selection policy |
+| `core/engines/decision/single/policies/implementations/allocation.py` | budgeted allocation policy |
+| `core/engines/decision/single/policies/implementations/negotiation.py` | accept, counter or escalate policy |
+| `core/engines/decision/single/policies/implementations/preference_elicitation.py` | preference-question selection policy |
+| `core/engines/decision/single/policies/implementations/verification.py` | outcome confirmation policy |
+| `core/engines/decision/single/policies/implementations/escalation.py` | hand-over policy |
+| `core/engines/decision/single/policies/implementations/bandit.py` | learned bandit policy |
+| `core/engines/decision/single/policies/implementations/rules.py` | declarative `Rule` / `RulePolicy` |
+| `core/engines/decision/single/policies/implementations/target.py` | `TargetedPolicy` for recipient modes |
+| `core/engines/decision/single/policies/decision_policy.py`, `core/engines/decision/single/policies/decision_policy_registry.py` | policy plugin protocol and registry |
 | `core/engines/signals/input/`, `output/`, `signal-attention.v1.json` | signal-attention records and decision cases |
 | `core/engines/signals/gates/implementations/` | one file per gate, ordered by `rules.py` |
 | `core/engines/signals/decide.py`, `timing.py` | signal-attention loop and quiet hours |

@@ -262,13 +262,16 @@ evaluation and foundation.
 | `core/decisions/` | request, response and trail records. |
 | `core/dispatch.py` | `decide` and `select`. |
 | `core/engines/signals/` | signal attention, gates, score and timing. |
-| `core/engines/policies/` | decision-policy protocol, registry and packaged policies. |
+| `core/engines/decision/single/policies/` | decision-policy protocol, registry and packaged policies. |
 | `core/engines/contract/` | `PlannerInput`, `PlannerResult`, `Planner` and `PlannerPolicy`. |
-| `core/engines/planners/` | utility, commitment, execution, human-attention, decision-value, composite, MDP and POMDP planners. |
-| `core/engines/planners/composite/` | `LiveCompositePlanner` and `CompositeScore`. |
-| `core/engines/sequence/` | finite-horizon sequence contract, `CABBPlanner`, `RolloutPlanner` and `ReplanPlanner`. |
-| `core/engines/simulation/` | simulator, scenarios and planner comparison. |
-| `core/engines/bench/` | the live decision benchmark. |
+| `core/engines/decision/single/planners/` | utility, commitment, execution, human-attention, decision-value, composite, MDP and POMDP planners. |
+| `core/engines/decision/single/planners/composite/` | `LiveCompositePlanner` and `CompositeScore`. |
+| `core/engines/decision/sequence/` | finite-horizon sequence contract, `CABBPlanner`, `RolloutPlanner` and `ReplanPlanner`. |
+| `core/engines/decision/fleet/` | `AttentionScheduler` and the exact single-arm `WhittleScheduler`. |
+| `core/engines/decision/history/` | `repair_continuity` for conflicting decision histories. |
+| `core/engines/decision/explain/` | `counterfactual_attribution` and `counterfactual_search`. |
+| `core/engines/evaluation/simulation/` | simulator, scenarios and planner comparison. |
+| `core/engines/evaluation/bench/` | the live decision benchmark. |
 | `core/engines/resources/` | budget, resource plan, scheduler and sensing options. |
 | `core/commitments/` | commitment model, ledger and stores. |
 | `core/outcome_learning/` | outcomes, bandits and causal attribution. |

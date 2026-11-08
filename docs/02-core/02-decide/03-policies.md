@@ -339,11 +339,11 @@ policy can replace any packaged policy without changing the request or the respo
 
 | Path | Contents |
 |---|---|
-| `core/engines/policies/decision_policy.py` | the `DecisionPolicy` protocol |
-| `core/engines/policies/decision_policy_registry.py` | `DecisionPolicyRegistry` |
-| `core/engines/policies/implementations/action.py` | the built-in `ActionPolicy` |
-| `core/engines/policies/implementations/` | the eight decision-class policies, `RulePolicy`, `PlanningPolicy`, the wrappers and `BanditPolicy` |
-| `core/engines/policies/simulation.py` | `ShadowPolicy` and `simulate` |
+| `core/engines/decision/single/policies/decision_policy.py` | the `DecisionPolicy` protocol |
+| `core/engines/decision/single/policies/decision_policy_registry.py` | `DecisionPolicyRegistry` |
+| `core/engines/decision/single/policies/implementations/action.py` | the built-in `ActionPolicy` |
+| `core/engines/decision/single/policies/implementations/` | the eight decision-class policies, `RulePolicy`, `PlanningPolicy`, the wrappers and `BanditPolicy` |
+| `core/engines/decision/single/policies/simulation.py` | `ShadowPolicy` and `simulate` |
 | `core/engines/contract/planner_policy.py` | `PlannerPolicy` |
 
 ## Related

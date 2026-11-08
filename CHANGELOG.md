@@ -82,10 +82,11 @@
 
 ### Changed
 
-- Grouped the engine folders by decision family: `planners/value/` is now
-  `planners/decision_value/`, `live/` is now `planners/composite/`, and `planning/` is now
-  `sequence/`. CA-VOD is split into planner, weights and score files. Public class names are
-  unchanged; only the import paths moved.
+- Grouped the engine folders by decision shape: `planners/`, `policies/`, `sequence/`,
+  `scheduling/`, `continuity/` and `explain/` now live under `decision/` as `single/`, `sequence/`,
+  `fleet/`, `history/` and `explain/`; `bench/` and `simulation/` moved under `evaluation/`.
+  CA-VOD is split into planner, weights and score files. Public class names are unchanged; only the
+  import paths moved.
 - Repositioned the README around the live decision-runtime category, restored the training-free property to the opening, and aligned the docs and package one-liners. No API changes.
 - Tightened the README hero, contents and Why section, replaced the slide-style benchmark and ablation images with matplotlib charts generated from the committed result JSON, and replaced the architecture slide with a light vector loop. Removed the generated demo animation; the code examples carry the demo until a real recording exists.
 - Restructured the claim–evidence map into headline, safety, contract, open-claims and evidence-index tables.
