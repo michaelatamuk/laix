@@ -203,6 +203,32 @@ def pomdp_value(
     return round(_best_value(model, resolved, steps - 1, {}), 6)
 
 
+def action_future_value(
+    model: PomdpModel,
+    belief: Mapping[str, float],
+    action: str,
+    *,
+    horizon: int | None = None,
+) -> float:
+    """Discounted future value of one action under a belief.
+
+    The immediate reward is excluded. This is the no-double-count building
+    block for planners that already carry their own immediate score.
+    """
+    resolved = normalize_belief(belief, model.states)
+    steps = model.horizon if horizon is None else horizon
+    if steps <= 1:
+        return 0.0
+    future = 0.0
+    for observation in model.observations:
+        chance = observation_probability(model, resolved, action, observation)
+        if chance <= 0:
+            continue
+        updated = belief_update(model, resolved, action, observation)
+        future += chance * _best_value(model, updated, steps - 2, {})
+    return round(model.discount * future, 6)
+
+
 def compare_pomdp_to_mdp(
     pomdp: PomdpModel,
     mdp: MdpModel,
@@ -319,6 +345,7 @@ __all__ = [
     "PlannerComparison",
     "PomdpModel",
     "PomdpTransition",
+    "action_future_value",
     "belief_entropy",
     "belief_from_state",
     "belief_update",

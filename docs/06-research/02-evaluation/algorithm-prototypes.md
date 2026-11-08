@@ -26,8 +26,12 @@ The payment case chooses the same action but gives it a different score. The unc
 case flips from `act` to `verify`, and the wait case flips from `act` to `wait`. That is the intended
 behaviour: CA-VOD prices information and the option to wait explicitly.
 
-This is not a claim that CA-VOD is more accurate. It only shows that the new terms change the choice
-in the cases designed to exercise them.
+A separate belief-state case supplies a small `PomdpModel` and a 50/50 belief. The one-step path
+chooses `act`; the belief-state path chooses `ask` with a future value of `0.45` because asking
+reveals whether the state is safe or risky.
+
+This is not a claim that CA-VOD is more accurate. It only shows that the new terms and the
+belief-state future value change the choice in the cases designed to exercise them.
 
 ## AADS
 

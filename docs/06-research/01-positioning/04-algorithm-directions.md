@@ -11,7 +11,7 @@ This page records four directions that could give LAIX an algorithm of its own.
 
 | Direction | Prototype | API | Docs |
 |---|---|---|---|
-| CA-VOD | one-step value of decision | `CAVODPlanner` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
+| CA-VOD | one-step value of decision plus optional belief-state future value | `CAVODPlanner` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
 | AADS | index policy for human attention | `AttentionScheduler` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
 | CDR | greedy minimum-cost repair | `repair_continuity` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
 | CDA | linear counterfactual attribution | `counterfactual_attribution` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
@@ -231,12 +231,13 @@ The deterministic prototypes are in
 [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md), and the smoke results
 are in [Algorithm prototype results](../02-evaluation/algorithm-prototypes.md).
 
-The next step is the research version of CA-VOD:
+The one-step and belief-state future-value versions are in place. The next step is the constrained
+research version:
 
-- write the full belief-state, transition and constraint model;
+- encode hard commitments and the attention budget in the transition model;
 - keep the deterministic fallback for low latency;
 - add baselines and ablations;
-- expand the cases beyond the three smoke tests;
+- expand the cases beyond the smoke tests;
 - run the prior-art check again.
 
 Only after that should this page describe CA-VOD as an invented algorithm.

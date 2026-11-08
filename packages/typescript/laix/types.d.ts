@@ -468,6 +468,7 @@
     information?: number;
     waiting?: number;
     uncertainty?: number;
+    future?: number;
   }
   export interface CAVODScore {
     utility: number;
@@ -476,15 +477,20 @@
     human_attention: number;
     information: number;
     option: number;
+    future: number;
     total: number;
   }
   export class CAVODPlanner implements Planner {
     readonly name: string;
     readonly model: UtilityModel;
+    readonly pomdpModel: PomdpModel | null;
+    readonly belief: BeliefState;
     readonly weights: Required<CAVODWeights>;
     constructor(
       model?: UtilityModel,
       options?: {
+        pomdpModel?: PomdpModel;
+        belief?: BeliefState;
         weights?: CAVODWeights;
         commitmentWeights?: Record<string, number>;
         executionWeights?: Record<string, number>;
@@ -762,6 +768,12 @@
   export function pomdpValue(
     model: PomdpModel,
     belief: BeliefState,
+    options?: { horizon?: number },
+  ): number;
+  export function actionFutureValue(
+    model: PomdpModel,
+    belief: BeliefState,
+    action: string,
     options?: { horizon?: number },
   ): number;
   export interface PlannerComparison {

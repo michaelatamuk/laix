@@ -10,7 +10,8 @@
         "reason_code": "live_decision",
         "score": 1.09,
         "information_value": null,
-        "option_value": null
+        "option_value": null,
+        "future_value": null
       },
       "ca_vod": {
         "case": "payment-approval",
@@ -19,7 +20,8 @@
         "reason_code": "value_of_decision",
         "score": 1.405,
         "information_value": 0.315,
-        "option_value": 0.0
+        "option_value": 0.0,
+        "future_value": 0.0
       }
     },
     {
@@ -30,7 +32,8 @@
         "reason_code": "live_decision",
         "score": 0.5,
         "information_value": null,
-        "option_value": null
+        "option_value": null,
+        "future_value": null
       },
       "ca_vod": {
         "case": "uncertain-verification",
@@ -39,7 +42,8 @@
         "reason_code": "value_of_decision",
         "score": 0.6375,
         "information_value": 0.2375,
-        "option_value": 0.0
+        "option_value": 0.0,
+        "future_value": 0.0
       }
     },
     {
@@ -50,7 +54,8 @@
         "reason_code": "live_decision",
         "score": 0.275,
         "information_value": null,
-        "option_value": null
+        "option_value": null,
+        "future_value": null
       },
       "ca_vod": {
         "case": "wait-option",
@@ -59,10 +64,33 @@
         "reason_code": "value_of_decision",
         "score": 0.325,
         "information_value": 0.0,
-        "option_value": 0.225
+        "option_value": 0.225,
+        "future_value": 0.0
       }
     }
   ],
+  "ca_vod_belief": {
+    "one_step": {
+      "case": "belief",
+      "action_id": "act",
+      "verb": "act",
+      "reason_code": "value_of_decision",
+      "score": 0.55,
+      "information_value": 0.0,
+      "option_value": 0.0,
+      "future_value": 0.0
+    },
+    "belief": {
+      "case": "belief",
+      "action_id": "ask",
+      "verb": "ask",
+      "reason_code": "value_of_decision",
+      "score": 0.825,
+      "information_value": 0.175,
+      "option_value": 0.0,
+      "future_value": 0.45
+    }
+  },
   "aads": {
     "selected": [
       "refund-approval",

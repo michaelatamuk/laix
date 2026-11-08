@@ -48,8 +48,21 @@ from laix import CAVODPlanner, PlannerPolicy, decide
 decision = decide(request, policy=PlannerPolicy(CAVODPlanner(), name="ca_vod.v1"))[0]
 ```
 
-The full method is a constrained POMDP with belief-state lookahead. This prototype is the one-step
-deterministic approximation.
+The default path is one-step. Pass a `PomdpModel` and a belief to add a finite-horizon
+belief-state future value without double-counting the immediate reward:
+
+```python
+from laix import CAVODPlanner, PomdpModel
+
+planner = CAVODPlanner(
+    pomdp_model=model,
+    belief={"safe": 0.5, "risky": 0.5},
+)
+```
+
+The future-value path uses the `action_future_value` helper from the POMDP planner. The full
+constrained POMDP with hard commitment and attention constraints in the transition model remains
+research work.
 
 ## AADS: attention-aware decision scheduling
 
@@ -119,7 +132,8 @@ is exact for the additive composite score.
 
 ## Limits
 
-- CA-VOD is one-step; it does not solve a belief-state POMDP.
+- CA-VOD's future-value path is a finite-horizon belief lookahead; the constrained POMDP with hard
+  commitment and attention constraints remains research.
 - AADS is an index heuristic; it does not compute the exact Whittle index.
 - CDR is greedy; it does not prove global minimum cost.
 - CDA assumes an additive decision with component scores.

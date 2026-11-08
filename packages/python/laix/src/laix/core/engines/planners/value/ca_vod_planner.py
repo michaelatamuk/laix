@@ -4,9 +4,10 @@ This is a deterministic one-step lookahead over the five decision verbs. It
 starts from the live composite score and adds an explicit information value for
 ``ask``, ``verify`` and ``observe`` and an option value for ``wait``.
 
-The full CA-VOD formulation is a constrained POMDP. This module is the
-low-latency prototype: it uses the host's uncertainty and the option's declared
-information gain instead of solving a belief-state MDP.
+The full CA-VOD formulation is a constrained POMDP. This module uses the
+host's uncertainty and the option's declared information gain for the one-step
+terms. Pass ``pomdp_model=`` and ``belief=`` to add a finite-horizon
+belief-state future value without double-counting the immediate reward.
 """
 
 from __future__ import annotations
@@ -36,6 +37,13 @@ from ..human_attention.human_attention_planner import (
     _score_option as human_attention_score,
     approval_state,
 )
+from ..pomdp.pomdp_model import PomdpModel
+from ..pomdp.pomdp_planner import (
+    action_future_value,
+    belief_entropy,
+    belief_from_state,
+    normalize_belief,
+)
 from ..utility.utility_planner import (
     UtilityModel,
     UtilityPlanner,
@@ -58,11 +66,12 @@ class CAVODWeights:
     information: float = 0.5
     waiting: float = 0.25
     uncertainty: float = 0.5
+    future: float = 1.0
 
 
 @dataclass(frozen=True, slots=True)
 class CAVODScore:
-    """The four live terms plus the information and option values."""
+    """The four live terms plus the information, option and future values."""
 
     utility: float
     commitment: float
@@ -70,6 +79,7 @@ class CAVODScore:
     human_attention: float
     information: float
     option: float
+    future: float
     total: float
 
 
@@ -149,10 +159,11 @@ class CAVODPlanner:
     and adds:
 
     - ``information`` for verbs that reduce uncertainty;
-    - ``option`` for ``wait``.
+    - ``option`` for ``wait``;
+    - ``future`` when a ``PomdpModel`` and a belief are supplied.
 
-    It is deterministic and training-free. It does not need a model or a
-    transition table.
+    It is deterministic and training-free. The one-step path does not need a
+    model; the future-value path only needs a small, host-supplied model.
     """
 
     name = "ca_vod.v1"
@@ -161,6 +172,8 @@ class CAVODPlanner:
         self,
         model: UtilityModel | None = None,
         *,
+        pomdp_model: PomdpModel | None = None,
+        belief: Mapping[str, float] | None = None,
         weights: CAVODWeights | None = None,
         commitment_weights: CommitmentWeights | None = None,
         execution_weights: ExecutionWeights | None = None,
@@ -168,6 +181,8 @@ class CAVODPlanner:
         enforce_feasibility: bool = True,
     ) -> None:
         self.model = model
+        self.pomdp_model = pomdp_model
+        self.belief = dict(belief or {})
         self.weights = weights or CAVODWeights()
         self.commitment_weights = commitment_weights or CommitmentWeights()
         self.execution_weights = execution_weights or ExecutionWeights()
@@ -186,6 +201,12 @@ class CAVODPlanner:
         approval = _approval_required(problem)
         remaining = _remaining(problem)
         uncertainty = _uncertainty(problem, self.weights)
+        belief = self._resolve_belief(problem) if self.pomdp_model else {}
+        horizon = (
+            int((problem.attributes or {}).get("horizon", self.pomdp_model.horizon))
+            if self.pomdp_model
+            else 0
+        )
         rows: list[_Row] = []
 
         for option in options:
@@ -213,6 +234,7 @@ class CAVODPlanner:
             )
             information = _information_value(option, uncertainty, self.weights)
             option_value = _option_value(option, uncertainty, self.weights)
+            future = self._future_value(option, belief, horizon)
             blocker = _constraint_blocker(problem, option)
             total = round(
                 commitment.utility
@@ -220,7 +242,8 @@ class CAVODPlanner:
                 + execution.execution
                 + attention.human_attention
                 + information
-                + option_value,
+                + option_value
+                + future,
                 6,
             )
             score = CAVODScore(
@@ -230,6 +253,7 @@ class CAVODPlanner:
                 human_attention=attention.human_attention,
                 information=information,
                 option=option_value,
+                future=future,
                 total=total,
             )
             blocked = commitment.blocked or attention.blocked or blocker
@@ -268,8 +292,9 @@ class CAVODPlanner:
                 f"commitment {best.score.commitment:+.3f}, "
                 f"execution {best.score.execution:+.3f}, "
                 f"attention {best.score.human_attention:+.3f}, "
-                f"information {best.score.information:+.3f} and "
-                f"option value {best.score.option:+.3f}"
+                f"information {best.score.information:+.3f}, "
+                f"option value {best.score.option:+.3f} and "
+                f"future value {best.score.future:+.3f}"
             ),
             action_id=best.option.id,
             requires_approval=(
@@ -287,13 +312,64 @@ class CAVODPlanner:
                 "human_attention_score": best.score.human_attention,
                 "information_value": best.score.information,
                 "option_value": best.score.option,
+                "future_value": best.score.future,
                 "uncertainty": uncertainty,
+                "belief": belief or None,
+                "belief_entropy": belief_entropy(belief) if belief else None,
+                "horizon": horizon if self.pomdp_model else None,
                 "commitments_fulfilled": list(best.commitment.fulfilled),
                 "commitments_violated": list(best.commitment.violated),
                 "commitments_created": list(best.commitment.created),
                 "receipt_status": best.execution.receipt_status,
                 "approval_state": best.human_attention.effect.approval_state,
             },
+        )
+
+    def _resolve_belief(self, problem: PlannerInput) -> dict[str, float]:
+        if self.pomdp_model is None:
+            return {}
+        raw = (problem.attributes or {}).get("belief")
+        if isinstance(raw, Mapping):
+            return normalize_belief(raw, self.pomdp_model.states)
+        if self.belief:
+            return normalize_belief(self.belief, self.pomdp_model.states)
+        state = (problem.attributes or {}).get("state")
+        if isinstance(state, str) and state:
+            return belief_from_state(state, self.pomdp_model.states)
+        size = len(self.pomdp_model.states)
+        return {item: 1.0 / size for item in self.pomdp_model.states}
+
+    def _action_for(self, option: ActionOption) -> str | None:
+        if self.pomdp_model is None:
+            return None
+        if option.id in self.pomdp_model.actions:
+            return option.id
+        if option.verb in self.pomdp_model.actions:
+            return option.verb
+        return None
+
+    def _future_value(
+        self,
+        option: ActionOption,
+        belief: Mapping[str, float],
+        horizon: int,
+    ) -> float:
+        if self.pomdp_model is None or not belief:
+            return 0.0
+        action = self._action_for(option)
+        if action is None:
+            return 0.0
+        if not any(self.pomdp_model.action_available(state, action) for state in belief):
+            return 0.0
+        return round(
+            self.weights.future
+            * action_future_value(
+                self.pomdp_model,
+                belief,
+                action,
+                horizon=horizon,
+            ),
+            6,
         )
 
     @staticmethod
@@ -319,6 +395,7 @@ class CAVODPlanner:
                     "human_attention": row.score.human_attention,
                     "information": row.score.information,
                     "option": row.score.option,
+                    "future": row.score.future,
                     "total": row.score.total,
                     "rejected_because": reason,
                 }
