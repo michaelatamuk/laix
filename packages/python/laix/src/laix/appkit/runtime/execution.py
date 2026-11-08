@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from typing import Any, Callable, Iterable
 
-from ...core.decisions import ActionOption, Decision, ExecutionReceipt
+from ...core.domain.decisions import ActionOption, Decision, ExecutionReceipt
 from ...core.support.ids import new_execution_receipt_id
 from ...core.support.verbs import Verb
 from .approval_required import ApprovalRequired

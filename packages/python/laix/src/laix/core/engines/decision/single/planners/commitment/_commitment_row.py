@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ......decisions import ActionOption
+from ......domain.decisions import ActionOption
 from .commitment_score import CommitmentScore
 
 

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from ....decisions import ActionOption
-from ...contract.planner_result import PlannerResult
+from ....domain.decisions import ActionOption
+from ....contract.planner_result import PlannerResult
 
 
 def baseline_plan(option: ActionOption, reason_code: str, rationale: str) -> PlannerResult:

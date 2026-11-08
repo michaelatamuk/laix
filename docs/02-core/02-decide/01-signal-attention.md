@@ -106,7 +106,7 @@ flowchart TD
     act -->|no| guide[guide · worth_surfacing]
 ```
 
-The order is in `core/engines/signals/gates/rules.py`. The first gate that returns a result stops the
+The order is in `core/engines/sensing/signals/gates/rules.py`. The first gate that returns a result stops the
 scan. The default result is `guide` with `worth_surfacing`.
 
 | Order | Gate | Fires when | Verb | Reason | `record` | `deliver` |

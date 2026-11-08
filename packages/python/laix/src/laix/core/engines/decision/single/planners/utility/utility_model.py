@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from ......decisions import ActionOption
+from ......domain.decisions import ActionOption
 from .utility_weights import UtilityWeights
 
 RISK_ATTITUDES: tuple[str, ...] = ("neutral", "averse", "seeking")

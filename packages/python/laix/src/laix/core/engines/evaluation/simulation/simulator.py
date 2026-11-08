@@ -11,8 +11,8 @@ import random
 from typing import Callable, Iterable, Mapping, Sequence
 
 from ....support.time import iso
-from ...contract.planner import Planner
-from ...contract.planner_input import PlannerInput
+from ....contract.planner import Planner
+from ....contract.planner_input import PlannerInput
 from .planner_benchmark_row import PlannerBenchmarkRow
 from ...decision.single.planners.mdp.mdp_model import MdpModel
 from .scenario import Scenario

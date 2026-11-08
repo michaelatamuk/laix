@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from dataclasses import fields
 
-from ..decisions import (
+from ..domain.decisions import (
     ActionOption,
     Belief,
     Constraint,
@@ -18,7 +18,7 @@ from ..decisions import (
     Situation,
     Trace,
 )
-from ..outcome_learning import Outcome
+from ..domain.outcomes import Outcome
 
 RECORDS = (
     Observation,

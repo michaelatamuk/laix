@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from .....decisions import Decision
+from .....domain.decisions import Decision
 
 
 @dataclass(frozen=True, slots=True)

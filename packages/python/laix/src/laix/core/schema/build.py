@@ -13,10 +13,10 @@ from dataclasses import MISSING, fields
 from pathlib import Path
 from typing import Any, Union, get_args, get_origin, get_type_hints
 
-from ..decisions.request.payload.situation import HORIZONS, PHASES
-from ..decisions.trail.execution_receipt import EXECUTION_RECEIPT_STATUSES
-from ..decisions.response.decision import DECISION_STATUSES, TARGET_MODES
-from ..outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
+from ..domain.decisions.request.payload.situation import HORIZONS, PHASES
+from ..domain.decisions.trail.execution_receipt import EXECUTION_RECEIPT_STATUSES
+from ..domain.decisions.response.decision import DECISION_STATUSES, TARGET_MODES
+from ..domain.outcomes.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
 from ..support.verbs import VERBS
 from ..support.version import SCHEMA_VERSION
 from .records import RECORDS

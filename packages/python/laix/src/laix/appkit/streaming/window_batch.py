@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
-from ...core.decisions import DecisionRequest
+from ...core.domain.decisions import DecisionRequest
 
 
 @dataclass(frozen=True, slots=True)

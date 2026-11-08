@@ -27,7 +27,7 @@ from laix import (
     UtilityPlanner,
     decide,
 )
-from laix.core.decisions.trail.execution_receipt import EXECUTION_RECEIPT_STATUSES
+from laix.core.domain.decisions.trail.execution_receipt import EXECUTION_RECEIPT_STATUSES
 
 # ---------------------------------------------------------------------------
 # Helpers

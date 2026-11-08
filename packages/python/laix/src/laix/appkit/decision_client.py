@@ -10,7 +10,7 @@ from dataclasses import asdict
 from typing import Any
 
 from ..core.support.version import SCHEMA_VERSION
-from ..core.decisions import (
+from ..core.domain.decisions import (
     ScoreBreakdown,
     Decision,
     DecisionRequest,

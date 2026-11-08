@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ...contract.planner_input import PlannerInput
+from ....contract.planner_input import PlannerInput
 
 
 @dataclass(frozen=True, slots=True)

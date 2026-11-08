@@ -10,14 +10,14 @@ from __future__ import annotations
 
 from typing import Any
 
-from ......decisions import ActionOption
+from ......domain.decisions import ActionOption
 from ......support.values import clamp
 from ._human_attention_row import _Row
 from .human_attention_budget import HumanAttentionBudget
 from .human_attention_effect import HumanAttentionEffect
 from .human_attention_score import HumanAttentionScore
 from .human_attention_weights import HumanAttentionWeights
-from .....contract.planner_policy import PlannerInput, PlannerResult
+from ......contract.planner_policy import PlannerInput, PlannerResult
 from ..utility.utility_planner import (
     UtilityPlanner,
     UtilityModel,

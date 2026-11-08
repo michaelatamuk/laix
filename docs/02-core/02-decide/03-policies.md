@@ -344,7 +344,7 @@ policy can replace any packaged policy without changing the request or the respo
 | `core/engines/decision/single/policies/implementations/action.py` | the built-in `ActionPolicy` |
 | `core/engines/decision/single/policies/implementations/` | the eight decision-class policies, `RulePolicy`, `PlanningPolicy`, the wrappers and `BanditPolicy` |
 | `core/engines/decision/single/policies/simulation.py` | `ShadowPolicy` and `simulate` |
-| `core/engines/contract/planner_policy.py` | `PlannerPolicy` |
+| `core/contract/planner_policy.py` | `PlannerPolicy` |
 
 ## Related
 

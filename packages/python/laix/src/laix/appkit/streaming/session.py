@@ -17,7 +17,7 @@ from dataclasses import replace
 from datetime import datetime, timedelta
 from typing import AsyncIterable, AsyncIterator, Awaitable, Callable, Iterable, Sequence
 
-from ...core.decisions import DECISION_STATUSES, Decision, DecisionRequest, Trace
+from ...core.domain.decisions import DECISION_STATUSES, Decision, DecisionRequest, Trace
 from ...core.engines.decision.single.planners.human_attention.human_attention_planner import HumanAttentionBudget
 from ...core.support.ids import new_id
 from ...core.support.time import parse_iso, utcnow

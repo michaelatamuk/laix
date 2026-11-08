@@ -14,7 +14,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Iterable
 
-from ....decisions import Decision
+from ....domain.decisions import Decision
 
 
 _COMPONENT_KEYS = {

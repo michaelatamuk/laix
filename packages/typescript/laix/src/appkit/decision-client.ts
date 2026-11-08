@@ -6,7 +6,7 @@
  * the same Decision.
  */
 
-import { decideSignalAttention, type SignalContext, type Signal } from "../core/signals/signal-attention.ts";
+import { decideSignalAttention, type SignalContext, type Signal } from "../core/engines/sensing/signals/signal-attention.ts";
 import type {
   ActionOption,
   Decision,
@@ -14,7 +14,7 @@ import type {
   Situation,
   Verb,
 } from "../core/contracts.ts";
-import { DecisionPolicyRegistry, type DecisionPolicy } from "../core/decision/single/policies/decision-policy-registry.ts";
+import { DecisionPolicyRegistry, type DecisionPolicy } from "../core/engines/decision/single/policies/decision-policy-registry.ts";
 import { StreamSession, type StreamSessionOptions } from "./streaming.ts";
 
 

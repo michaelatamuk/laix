@@ -10,9 +10,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from ......decisions import ActionOption
+from ......domain.decisions import ActionOption
 from ......support.values import clamp
-from .....contract.planner_policy import PlannerInput, PlannerResult
+from ......contract.planner_policy import PlannerInput, PlannerResult
 from .utility_model import RISK_ATTITUDES, UtilityModel
 from .utility_weights import UtilityWeights
 

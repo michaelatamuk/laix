@@ -55,14 +55,14 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | Piece | Role |
 |---|---|
 | `core/dispatch.py` | `decide()` and `select()`: the core request-to-decision entry point |
-| `core/decisions/request/` | `decision_request.py` envelope and `payload/` records |
-| `core/decisions/response/` | `decision.py` and `payload/` (evidence ref, intent, score breakdown) |
-| `core/decisions/trail/` | execution receipt and trace |
-| `core/decisions/normalise.py` | `coerce` and `from_signal_attention` |
+| `core/domain/decisions/request/` | `decision_request.py` envelope and `payload/` records |
+| `core/domain/decisions/response/` | `decision.py` and `payload/` (evidence ref, intent, score breakdown) |
+| `core/domain/decisions/trail/` | execution receipt and trace |
+| `core/domain/decisions/normalise.py` | `coerce` and `from_signal_attention` |
 | `core/schema/` | `RECORDS`, `RECORD_NAMES`, schema generation, validation and `laix-v1.schema.json` |
 | `core/support/` | time, ids, values, serialization, errors, verb and version helpers |
 | `appkit/decision_client.py` | the app-kit `DecisionClient`: core selection plus runtime, execution and traces |
-| `core/engines/contract/planner.py`, `planner_input.py`, `planner_result.py`, `planner_policy.py` | `Planner`, `PlannerInput`, `PlannerResult` and `PlannerPolicy` |
+| `core/contract/planner.py`, `planner_input.py`, `planner_result.py`, `planner_policy.py` | `Planner`, `PlannerInput`, `PlannerResult` and `PlannerPolicy` |
 | `core/engines/decision/single/planners/` | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `CAVODPlanner`, `MDPPlanner` and `POMDPPlanner` |
 | `core/engines/decision/single/planners/composite/` | `LiveCompositePlanner` and `CompositeScore` |
 | `core/engines/decision/sequence/` | `CABBPlanner`, `RolloutPlanner` and `ReplanPlanner` for finite-horizon sequences |
@@ -82,23 +82,24 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/engines/decision/single/policies/implementations/rules.py` | declarative `Rule` / `RulePolicy` |
 | `core/engines/decision/single/policies/implementations/target.py` | `TargetedPolicy` for recipient modes |
 | `core/engines/decision/single/policies/decision_policy.py`, `core/engines/decision/single/policies/decision_policy_registry.py` | policy plugin protocol and registry |
-| `core/engines/signals/input/`, `output/`, `signal-attention.v1.json` | signal-attention records and decision cases |
-| `core/engines/signals/gates/implementations/` | one file per gate, ordered by `rules.py` |
-| `core/engines/signals/decide.py`, `timing.py` | signal-attention loop and quiet hours |
+| `core/engines/sensing/signals/input/`, `output/`, `signal-attention.v1.json` | signal-attention records and decision cases |
+| `core/engines/sensing/signals/gates/implementations/` | one file per gate, ordered by `rules.py` |
+| `core/engines/sensing/signals/decide.py`, `timing.py` | signal-attention loop and quiet hours |
 | `appkit/runtime/decision_runtime.py` | the action-decision runtime |
 | `appkit/runtime/execution.py` | approval, idempotency, execute, cancel, undo, unknown outcome, receipts |
-| `core/perception/` | detector, detection and frame records |
+| `core/domain/perception/` | detector, detection and frame records |
 | `appkit/live_context/` | host-driven detector loop and function-backed detector |
 | `appkit/streaming/` | stream session: event time, cadence, backpressure, revisions, windows |
 | `appkit/runtime/state.py` | experience state: goals, phase, beliefs, decay, expiry |
 | `appkit/runtime/state_store.py`, `in_memory_state_store.py` | state store contract and in-memory store |
-| `core/engines/resources/` | cheap/deep call admission under budget |
+| `core/engines/sensing/resources/` | cheap/deep call admission under budget |
 | `appkit/platform/` | south platform interface, records and in-memory platform |
-| `core/outcome_learning/` | directed metric ledger, store, UCB learner, and signal-attention feedback learning |
+| `core/domain/outcomes/` | directed metric ledger, outcome store and signal-attention feedback records |
+| `core/engines/learning/` | calibration, model learning, the UCB learner and causal attribution |
 | `appkit/audit/decision_record.py` | decision record lifecycle: draft, approve, reject, execute, undo, verify |
 | `appkit/audit/proposal.py` | storage-free proposal and approval lifecycle |
 | `appkit/delivery/` | delivery port, receipt and null delivery |
-| `core/evaluation/` | policy parity, signal attention replay, and `signal-attention-bench.v1.json` |
+| `core/engines/evaluation/cases/` | policy parity, signal attention replay, and `signal-attention-bench.v1.json` |
 | `appkit/bench/` | LAIX-Bench cases, suites, report and `python -m laix.appkit.bench` |
 
 ## Custom policies

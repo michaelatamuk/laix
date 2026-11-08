@@ -33,7 +33,7 @@ a new learning rule.
 | Human attention | linear penalties plus a budget check | `core/engines/decision/single/planners/human_attention/human_attention_planner.py` |
 | Composite | additive total of the four terms with fixed weights | `core/engines/decision/single/planners/composite/live_composite_planner.py` |
 | Confidence | gap heuristic: `0.5 + 0.5 * (gap / best)` | the planner classes |
-| Calibration | reliability bins over confidence | `core/engines/learning/decision_calibration.py` |
+| Calibration | reliability bins over confidence | `core/engines/learning/calibration/decision_calibration.py` |
 | Learning | UCB bandit | `core/engines/decision/single/policies/implementations/bandit.py` |
 
 The real novelty is in the representation and the contract:

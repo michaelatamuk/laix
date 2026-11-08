@@ -9,8 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
-from ....commitments import Commitment
-from ....decisions import ActionOption
+from ....domain.commitments import Commitment
+from ....domain.decisions import ActionOption
 from ..single.planners.human_attention.human_attention_budget import HumanAttentionBudget
 
 

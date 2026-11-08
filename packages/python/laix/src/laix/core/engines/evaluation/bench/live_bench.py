@@ -11,12 +11,12 @@ from __future__ import annotations
 import time
 from typing import Iterable, Mapping
 
-from ....decisions import ActionOption, Constraint, Situation
-from ....commitments import Commitment
+from ....domain.decisions import ActionOption, Constraint, Situation
+from ....domain.commitments import Commitment
 from ...decision.single.planners.human_attention.human_attention_planner import HumanAttentionPlanner
 from ...decision.single.planners.commitment.commitment_planner import CommitmentPlanner
-from ...contract.planner import Planner
-from ...contract.planner_input import PlannerInput
+from ....contract.planner import Planner
+from ....contract.planner_input import PlannerInput
 from ...decision.single.planners.execution.execution_planner import ExecutionRiskPlanner
 from .first_option_planner import FirstOptionPlanner
 from .highest_benefit_planner import HighestBenefitPlanner
