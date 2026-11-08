@@ -12,6 +12,7 @@ from laix import (
     CAVODPlanner,
     Commitment,
     ContinuityRecord,
+    CounterfactualVariable,
     DecisionRequest,
     HumanAttentionBudget,
     LiveCompositePlanner,
@@ -24,6 +25,7 @@ from laix import (
     WhittleScheduler,
     WhittleTransition,
     counterfactual_attribution,
+    counterfactual_search,
     decide,
     repair_continuity,
     whittle_index,
@@ -271,6 +273,29 @@ def cdr_result() -> dict:
     }
 
 
+def cda_search_result() -> dict:
+    report = counterfactual_search(
+        lambda values: "escalate" if values["risk"] >= 0.5 else "act",
+        (CounterfactualVariable("risk", 0.4, 0.2, 0.8, step=0.05),),
+        max_changes=1,
+    )
+    return {
+        "chosen_id": report.chosen_id,
+        "counterfactual_id": report.counterfactual_id,
+        "changes": [
+            {
+                "name": change.name,
+                "old": change.old,
+                "new": change.new,
+                "delta": change.delta,
+            }
+            for change in report.changes
+        ],
+        "distance": report.distance,
+        "evaluations": report.evaluations,
+    }
+
+
 def cdr_exact_result() -> dict:
     records = (
         ContinuityRecord(id="a", kind="decision", status="final", conflicts=("b",), cost=1.0),
@@ -362,6 +387,7 @@ def main() -> int:
         "cdr": cdr_result(),
         "cdr_exact": cdr_exact_result(),
         "cda": cda_result(),
+        "cda_search": cda_search_result(),
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")

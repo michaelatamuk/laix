@@ -67,7 +67,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `core/engines/live/` | `LiveCompositePlanner` and `CompositeScore` |
 | `core/engines/scheduling/` | `AttentionScheduler` for fleet-level attention allocation and `WhittleScheduler` for the exact single-arm index |
 | `core/engines/continuity/` | `repair_continuity` for conflicting decision histories |
-| `core/engines/explain/` | `counterfactual_attribution` for decision explanations |
+| `core/engines/explain/` | `counterfactual_attribution` and `counterfactual_search` for decision explanations |
 | `core/engines/policies/implementations/action.py` | built-in action-selection policy |
 | `core/engines/policies/implementations/active_perception.py` | packaged `observe` policy |
 | `core/engines/policies/implementations/safety_constrained.py` | risk-limited action policy |

@@ -32,7 +32,7 @@ registered with `registerPolicy` and selected with `usePolicy`.
 | Action | `DecisionClient`, `decideAction` |
 | Planners | `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `MDPPlanner`, `POMDPPlanner`, `MdpModel`, `PomdpModel` |
 | Composite planner and protocol | `LiveCompositePlanner`, `PlannerPolicy`, `Planner`, `PlannerInput`, `PlannerResult`, `toDecision` |
-| Algorithm prototypes | `CAVODPlanner`, `AttentionScheduler`, `WhittleScheduler`, `repairContinuity`, `counterfactualAttribution` |
+| Algorithm prototypes | `CAVODPlanner`, `AttentionScheduler`, `WhittleScheduler`, `repairContinuity`, `counterfactualAttribution`, `counterfactualSearch` |
 | Simulation and bench | `Simulator`, `comparePlanners`, `runPlannerBench` |
 | DecisionPolicy packs | `ActivePerceptionPolicy`, `SafetyConstrainedPolicy`, `ReplanningPolicy`, `AllocationPolicy`, `NegotiationPolicy`, `PreferenceElicitationPolicy`, `VerificationPolicy`, `EscalationPolicy` |
 | Authoring and target | `RulePolicy`, `Rule`, `TargetedPolicy`, `PlanningPolicy`, `GroupPolicy`, `ShadowPolicy`, `simulate` |

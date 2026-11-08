@@ -649,6 +649,33 @@
     },
   ): CounterfactualReport;
 
+  export interface CounterfactualVariable {
+    name: string;
+    value: number;
+    lower: number;
+    upper: number;
+    step?: number;
+    weight?: number;
+  }
+  export interface CounterfactualChange {
+    name: string;
+    old: number;
+    new: number;
+    delta: number;
+  }
+  export interface CounterfactualSearchResult {
+    chosenId: string;
+    counterfactualId: string | null;
+    changes: CounterfactualChange[];
+    distance: number;
+    evaluations: number;
+  }
+  export function counterfactualSearch(
+    decide: (values: Record<string, number>) => string,
+    variables: CounterfactualVariable[],
+    options?: { maxChanges?: number; maxEvaluations?: number },
+  ): CounterfactualSearchResult;
+
   export interface MdpTransition {
     state: string;
     action: string;

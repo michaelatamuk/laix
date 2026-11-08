@@ -17,6 +17,7 @@ export * from "./core/scheduling/attention-scheduler.ts";
 export * from "./core/scheduling/whittle-scheduler.ts";
 export * from "./core/continuity/repair.ts";
 export * from "./core/explain/counterfactual.ts";
+export * from "./core/explain/counterfactual-search.ts";
 export * from "./core/bench/live-bench.ts";
 export * from "./core/live/live-composite-planner.ts";
 export * from "./core/planners/mdp/mdp-planner.ts";

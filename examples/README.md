@@ -106,6 +106,7 @@ py examples/python/01-decide/signal_attention_bill_due.py
 | CDR continuity repair | `continuity_repair.py` | `continuity_repair.mts` | `approval-1 supersede 1.0` |
 | CDR exact minimum-cost repair | `continuity_repair_exact.py` | `continuity_repair_exact.mts` | `3.0 2.0 ['b']` / `3 2 [ 'b' ]` |
 | CDA counterfactual attribution | `counterfactual_attribution.py` | `counterfactual_attribution.mts` | `ask wait commitment 0.970001` |
+| CDA counterfactual search | `counterfactual_search.py` | `counterfactual_search.mts` | `act escalate 0.5 0.1` |
 
 ## 04 Stream
 

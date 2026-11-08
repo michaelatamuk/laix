@@ -167,8 +167,23 @@ report = counterfactual_attribution(decision)
 print(report.minimal.alternative_id, report.minimal.component, report.minimal.delta)
 ```
 
-The full method handles rule-based and planning-based decisions with a search or MILP. This prototype
-is exact for the additive composite score.
+The additive path is exact for the composite score. For rule-based or planner decisions, use
+`counterfactual_search`. It searches a caller-supplied decision function over bounded numeric inputs
+and returns the smallest weighted L1 change, up to a configurable number of changed variables:
+
+```python
+from laix import CounterfactualVariable, counterfactual_search
+
+report = counterfactual_search(
+    lambda values: "escalate" if values["risk"] >= 0.5 else "act",
+    (CounterfactualVariable("risk", 0.4, 0.2, 0.8, step=0.05),),
+    max_changes=1,
+)
+print(report.chosen_id, report.counterfactual_id, report.changes[0].new)
+```
+
+The search is exact over the generated grid when the evaluation budget is not reached. It is not a
+global optimizer for arbitrary rule systems.
 
 ## Limits
 
@@ -176,7 +191,8 @@ is exact for the additive composite score.
   commitment and attention constraints remains research.
 - AADS has an exact single-arm Whittle index; the fleet policy remains an index approximation.
 - CDR has an exact minimum-weight vertex cover for small histories; large histories use greedy.
-- CDA assumes an additive decision with component scores.
+- CDA's additive path assumes component scores; the search path is a bounded grid, not a global
+  optimizer.
 
 The next step for each is the research version described in
 [Algorithm directions](../../06-research/01-positioning/04-algorithm-directions.md).
