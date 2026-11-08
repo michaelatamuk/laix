@@ -7,11 +7,19 @@ import { UnknownAction } from "./unknown-action.ts";
 export { ApprovalRequired, UnknownAction };
 
 export type Handler = (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>;
+export type AsyncHandler = (action: ActionOption, context: Record<string, unknown>) => Promise<Record<string, unknown>>;
 
 export interface RetryOptions {
   attempts?: number;
   backoffMs?: number;
   maxBackoffMs?: number;
+}
+
+export class ExecutionTimeout extends Error {
+  constructor(timeoutMs: number) {
+    super(`action did not finish within ${timeoutMs}ms`);
+    this.name = "ExecutionTimeout";
+  }
 }
 
 function retryDelay(attempt: number, backoffMs: number, maxBackoffMs: number): number {
@@ -24,6 +32,24 @@ function sleepSync(ms: number): void {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 }
 
+function sleep(ms: number): Promise<void> {
+  return ms <= 0 ? Promise.resolve() : new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function withTimeout<T>(work: Promise<T>, timeoutMs?: number): Promise<T> {
+  if (timeoutMs === undefined) return work;
+  if (timeoutMs <= 0) throw new Error("timeoutMs must be positive");
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new ExecutionTimeout(timeoutMs)), timeoutMs);
+  });
+  try {
+    return await Promise.race([work, timeout]);
+  } finally {
+    if (timer !== undefined) clearTimeout(timer);
+  }
+}
+
 export interface ExecutionStep {
   action: ActionOption;
   decision?: Decision;
@@ -32,6 +58,7 @@ export interface ExecutionStep {
   context?: Record<string, unknown>;
   idempotencyKey?: string;
   compensate?: (receipt: Receipt) => Record<string, unknown>;
+  asyncCompensate?: (receipt: Receipt) => Promise<Record<string, unknown>>;
 }
 
 export interface ExecutionSagaResult {
@@ -50,12 +77,14 @@ interface DecisionLike {
 
 export class ExecutionBridge {
   handlers = new Map<string, Handler>();
+  asyncHandlers = new Map<string, AsyncHandler>();
   undoHandlers = new Map<string, Handler>();
   receipts = new Map<string, Receipt>();
   private byKey = new Map<string, string>();
 
-  constructor(options: { handlers?: Record<string, Handler>; undoHandlers?: Record<string, Handler> } = {}) {
+  constructor(options: { handlers?: Record<string, Handler>; asyncHandlers?: Record<string, AsyncHandler>; undoHandlers?: Record<string, Handler> } = {}) {
     for (const [name, handler] of Object.entries(options.handlers ?? {})) this.handlers.set(name, handler);
+    for (const [name, handler] of Object.entries(options.asyncHandlers ?? {})) this.asyncHandlers.set(name, handler);
     for (const [name, handler] of Object.entries(options.undoHandlers ?? {})) this.undoHandlers.set(name, handler);
   }
 
@@ -64,8 +93,13 @@ export class ExecutionBridge {
     if (undo) this.undoHandlers.set(name, undo);
   }
 
+  registerAsync(name: string, handler: AsyncHandler, undo?: Handler): void {
+    this.asyncHandlers.set(name, handler);
+    if (undo) this.undoHandlers.set(name, undo);
+  }
+
   canHandle(name: string): boolean {
-    return this.handlers.has(name);
+    return this.handlers.has(name) || this.asyncHandlers.has(name);
   }
 
   canUndo(name: string): boolean {
@@ -159,6 +193,19 @@ export class ExecutionBridge {
     }
     const handler = this.handlers.get(action.name);
     if (!handler) {
+      if (this.asyncHandlers.has(action.name)) {
+        return this.store({
+          id: newId("RCT"),
+          decisionId,
+          actionName: action.name,
+          status: "failed",
+          actor: options.actor,
+          error: `async handler registered for ${action.name}; use executeAsync`,
+          approvedBy: options.approver ?? null,
+          idempotencyKey: key ?? null,
+          at: new Date().toISOString(),
+        });
+      }
       return this.store({ id: newId("RCT"), decisionId, actionName: action.name, status: "failed", actor: options.actor, error: `no handler registered for ${action.name}`, approvedBy: options.approver ?? null, idempotencyKey: key ?? null, at: new Date().toISOString() });
     }
     const attempts = Math.max(1, Math.floor(options.retry?.attempts ?? 1));
@@ -191,6 +238,179 @@ export class ExecutionBridge {
       }
     }
     throw new Error("unreachable");
+  }
+
+  async executeAsync(
+    decision: DecisionLike,
+    options: {
+      action: ActionOption | null;
+      actor: string;
+      approver?: string | null;
+      context?: Record<string, unknown>;
+      idempotencyKey?: string;
+      retry?: RetryOptions;
+      timeoutMs?: number;
+    },
+  ): Promise<Receipt> {
+    const decisionId = decision.decisionId ?? decision.id ?? "";
+    const action = options.action;
+    const key = options.idempotencyKey;
+    if (options.timeoutMs !== undefined && options.timeoutMs <= 0) {
+      throw new Error("timeoutMs must be positive");
+    }
+    if (key && this.byKey.has(key)) {
+      const original = this.get(this.byKey.get(key)!);
+      return this.store({
+        id: newId("RCT"),
+        decisionId,
+        actionName: action?.name ?? "",
+        status: "duplicate",
+        actor: options.actor,
+        detail: { original: original.id },
+        approvedBy: options.approver ?? null,
+        idempotencyKey: key,
+        at: new Date().toISOString(),
+      });
+    }
+    if (!action) {
+      return this.store({ id: newId("RCT"), decisionId, actionName: "", status: "refused", actor: options.actor, error: "decision has no action to execute", idempotencyKey: key ?? null, at: new Date().toISOString() });
+    }
+    if (decision.requiresApproval && !options.approver) {
+      throw new ApprovalRequired(`${action.name} requires human approval`);
+    }
+    const asyncHandler = this.asyncHandlers.get(action.name);
+    const syncHandler = this.handlers.get(action.name);
+    if (!asyncHandler && !syncHandler) {
+      return this.store({ id: newId("RCT"), decisionId, actionName: action.name, status: "failed", actor: options.actor, error: `no handler registered for ${action.name}`, approvedBy: options.approver ?? null, idempotencyKey: key ?? null, at: new Date().toISOString() });
+    }
+    const attempts = Math.max(1, Math.floor(options.retry?.attempts ?? 1));
+    const backoffMs = Math.max(0, options.retry?.backoffMs ?? 0);
+    const maxBackoffMs = Math.max(0, options.retry?.maxBackoffMs ?? 30_000);
+    for (let attempt = 1; attempt <= attempts; attempt += 1) {
+      try {
+        const work = asyncHandler
+          ? asyncHandler(action, { ...(options.context ?? {}) })
+          : Promise.resolve().then(() => syncHandler!(action, { ...(options.context ?? {}) }));
+        const result = await withTimeout(work, options.timeoutMs);
+        const detail = attempt > 1 ? { ...result, attempts: attempt } : result;
+        const receipt = this.store({ id: newId("RCT"), decisionId, actionName: action.name, status: "executed", actor: options.actor, detail, approvedBy: options.approver ?? null, idempotencyKey: key ?? null, at: new Date().toISOString() });
+        if (key) this.byKey.set(key, receipt.id);
+        return receipt;
+      } catch (error) {
+        if (error instanceof ExecutionTimeout) {
+          return this.store({
+            id: newId("RCT"),
+            decisionId,
+            actionName: action.name,
+            status: "unknown",
+            actor: options.actor,
+            detail: { attempts: attempt, timeoutMs: options.timeoutMs },
+            error: `${error.name}: ${error.message}`,
+            approvedBy: options.approver ?? null,
+            idempotencyKey: key ?? null,
+            at: new Date().toISOString(),
+          });
+        }
+        if (attempt < attempts) {
+          await sleep(retryDelay(attempt, backoffMs, maxBackoffMs));
+          continue;
+        }
+        return this.store({
+          id: newId("RCT"),
+          decisionId,
+          actionName: action.name,
+          status: "failed",
+          actor: options.actor,
+          detail: { attempts: attempt },
+          error: error instanceof Error ? `${error.name}: ${error.message}` : String(error),
+          approvedBy: options.approver ?? null,
+          idempotencyKey: key ?? null,
+          at: new Date().toISOString(),
+        });
+      }
+    }
+    throw new Error("unreachable");
+  }
+
+  async runStepsAsync(
+    steps: ExecutionStep[],
+    options: { actor?: string; retry?: RetryOptions; timeoutMs?: number } = {},
+  ): Promise<ExecutionSagaResult> {
+    const actor = options.actor ?? "system";
+    const receipts: Receipt[] = [];
+    const completed: Array<{ step: ExecutionStep; receipt: Receipt }> = [];
+    const compensated: string[] = [];
+    const failure: string[] = [];
+
+    const compensateCompleted = async (): Promise<void> => {
+      for (const item of [...completed].reverse()) {
+        try {
+          const step = item.step;
+          let didCompensate = false;
+          if (step.asyncCompensate) {
+            await step.asyncCompensate(item.receipt);
+            didCompensate = true;
+          } else if (step.compensate) {
+            await step.compensate(item.receipt);
+            didCompensate = true;
+          } else if (this.canUndo(step.action.name)) {
+            this.undo(item.receipt.id, { actor: step.actor ?? actor });
+            didCompensate = true;
+          }
+          if (didCompensate) compensated.push(step.action.name);
+        } catch {
+          continue;
+        }
+      }
+    };
+
+    for (const step of steps) {
+      const decision: Decision = step.decision ?? {
+        verb: step.action.verb,
+        confidence: 1,
+        reasonCode: "execution_step",
+        rationale: step.action.name,
+      };
+      let receipt: Receipt;
+      try {
+        receipt = await this.executeAsync(decision, {
+          action: step.action,
+          actor: step.actor ?? actor,
+          approver: step.approver,
+          context: step.context,
+          idempotencyKey: step.idempotencyKey,
+          retry: options.retry,
+          timeoutMs: options.timeoutMs,
+        });
+      } catch (error) {
+        failure.push(error instanceof Error ? `${error.name}: ${error.message}` : String(error));
+        await compensateCompleted();
+        break;
+      }
+      receipts.push(receipt);
+      if (receipt.status === "executed" || receipt.status === "duplicate") {
+        completed.push({ step, receipt });
+        continue;
+      }
+      failure.push(receipt.error ?? `${step.action.name} did not execute`);
+      await compensateCompleted();
+      break;
+    }
+
+    return {
+      completed: completed.map((item) => item.step.action.name),
+      compensated,
+      receipts,
+      error: failure[0] ?? null,
+      toDict(): Record<string, unknown> {
+        return {
+          completed: completed.map((item) => item.step.action.name),
+          compensated: [...compensated],
+          receipts: receipts.map((item) => ({ ...item })),
+          error: failure[0] ?? null,
+        };
+      },
+    };
   }
 
   refuse(decision: DecisionLike, options: { action: ActionOption | null; actor: string; reason: string }): Receipt {

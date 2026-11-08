@@ -87,6 +87,35 @@ Retries do not make an effect safe by themselves. Use an idempotency key, and us
 host-owned for synchronous handlers; use an async handler or the host's timeout policy when the
 effect can hang.
 
+## Async handlers and timeouts
+
+Use an async handler when the effect can take time or when the host already runs an async runtime.
+
+```python
+async def close_case(action, context):
+    await provider.close(context["case_id"])
+    return {"closed": True}
+
+bridge = ExecutionBridge(async_handlers={"close": close_case})
+receipt = await bridge.execute_async(
+    decision,
+    action=action,
+    actor="operator",
+    timeout_seconds=5.0,
+)
+```
+
+- `register_async` adds an async handler; `register` keeps the sync path.
+- `execute_async` awaits an async handler or runs a sync handler off the event loop.
+- `timeout_seconds` is a hard timeout for the await. A timeout returns an `unknown` receipt, not
+  `failed`: the action may have happened. Use `mark_unknown`/`reconcile` with provider evidence.
+- Timeouts are not retried by default. Other handler errors follow `RetryPolicy`.
+- `run_steps_async` runs a saga with async handlers and compensates completed steps in reverse.
+- A sync handler cannot be cancelled by the timeout; use an async handler for effects that can hang.
+
+TypeScript has the same shape with `executeAsync`, `timeoutMs`, `asyncHandlers`, `registerAsync`,
+`runStepsAsync` and `asyncCompensate`.
+
 ## Multi-step execution
 
 A **saga** is a multi-step action where each step has a way to undo itself. Steps run in order. If a
@@ -167,10 +196,12 @@ proposal lifecycles are on [Proposals and records](02-proposals-and-records.md).
 
 ## TypeScript
 
-TypeScript exposes the same bridge and saga surface with `Handler`, `RetryOptions`, `SagaForward` and
-`SagaCompensate` function types. `retry: { attempts, backoffMs, maxBackoffMs }` maps to
-`RetryPolicy`. The synchronous bridge uses a blocking wait for backoff; use a host worker or an async
-handler when blocking is not acceptable.
+TypeScript exposes the same bridge and saga surface with `Handler`, `AsyncHandler`, `RetryOptions`,
+`SagaForward` and `SagaCompensate` function types. `retry: { attempts, backoffMs, maxBackoffMs }`
+maps to `RetryPolicy`. `executeAsync` supports `timeoutMs`; a timeout returns an `unknown` receipt.
+A sync handler still blocks the event loop, so use an async handler for a hard timeout. The
+synchronous bridge uses a blocking wait for backoff; use `executeAsync` when blocking is not
+acceptable.
 
 ## Boundary
 

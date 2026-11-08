@@ -90,7 +90,7 @@ The protocol for one decision is `Planner`; the protocol for a chain is `Sequenc
 | `DecisionRuntime` | the app-kit decision loop |
 | `StreamSession`, `DecisionTimeline` | event-time decisions, revisions and checkpoints |
 | `StreamStats`, `DeadLetterQueue`, `TumblingWindow` | stream counters, failures and windows |
-| `ExecutionBridge`, `Saga`, `RetryPolicy` | execution boundary, receipts, recovery, retries and compensation |
+| `ExecutionBridge`, `Saga`, `RetryPolicy`, `AsyncHandler` | execution boundary, receipts, recovery, retries, async handlers and compensation |
 | `ExperienceState`, `StateStore`, `FileStateStore` | live state and its port |
 | `DecisionRecord`, `create_record`, `approve_record`, `reject_record`, `mark_executed`, `verify_record` | the audit lifecycle |
 | `Proposal`, `approve_proposal`, `reject_proposal`, `apply_proposal`, `undo_proposal` | the proposal lifecycle |

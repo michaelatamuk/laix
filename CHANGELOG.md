@@ -10,6 +10,9 @@
   stable `laix.*` span attributes without adding an SDK dependency.
 - **Execution retries.** `RetryPolicy` and TypeScript `RetryOptions` retry a failed handler with
   capped exponential backoff and record the attempt count in the receipt detail.
+- **Async execution.** `register_async` / `registerAsync`, `execute_async` / `executeAsync`,
+  `run_steps_async` / `runStepsAsync` and hard timeouts. A timeout returns an `unknown` receipt
+  because the effect may have happened.
 - **Developer CLI.** `laix explain` and `laix lint` inspect a decision or decision-record JSON file
   without importing the host app.
 - **Validation template.** A pre-registration page for external runs, with the metrics, analysis

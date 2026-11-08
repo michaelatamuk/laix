@@ -39,10 +39,11 @@ registered with `registerPolicy` and selected with `usePolicy`.
 | Learned policy | `BanditPolicy`, `UCBBandit`, `Arm`, `rewardForLabel`, `CausalLedger`, `ModelLearner`, `CalibrationReport` |
 | Live Context | `LiveContext`, `CallableDetector`, `Detector`, `Detection`, `PerceptionEvent` |
 | Streaming | `StreamSession`, `StreamStats`, `ManualClock`, `TumblingWindow`, `WindowBatch`, `fromNdjson`, `fromSse`, `DeadLetterQueue` |
-| Runtime | `DecisionRuntime`, `ExecutionBridge`, `ExperienceState`, `ResourceScheduler`, `Saga` |
+| Runtime | `DecisionRuntime`, `ExecutionBridge` (sync, async, retries, timeouts), `ExperienceState`, `ResourceScheduler`, `Saga`, `RetryOptions`, `AsyncHandler` |
 | Execution | `ExecutionBridge` idempotency, unknown outcomes, reconciliation and `runSteps` |
 | Platform | `Platform`, `InMemoryPlatform`, `SkillCall` |
-| Stores | `StateStore`, `InMemoryStateStore`, `StreamCheckpointStore`, `InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`, `CommitmentStore`, `InMemoryCommitmentStore`, `FileCommitmentStore`, `OutcomeLedger`, `OutcomeStore` |
+| Stores | `StateStore`, `InMemoryStateStore`, `FileStateStore`, `StreamCheckpointStore`, `InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`, `CommitmentStore`, `InMemoryCommitmentStore`, `FileCommitmentStore`, `OutcomeLedger`, `OutcomeStore`, `FileOutcomeStore` |
+| Observability | `decisionAttributes`, `AttributeValue` |
 | Proposals | `createProposal`, `approveProposal`, `rejectProposal`, `applyProposal`, `undoProposal` |
 | Delivery | `DeliveryPort`, `NullDelivery`, `DeliveryReceipt` |
 | Evaluation | `compare`, `loadCases`, `Case`, `Report` |

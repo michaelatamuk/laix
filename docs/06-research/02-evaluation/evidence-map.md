@@ -59,7 +59,7 @@ claim.
 | Case schema | 120/120 valid; unique ids | [validator](../../../scripts/novelty/bench/validate_live_cases.py) | tested |
 | Determinism | 100% replay equality | [invariants](../../../packages/python/laix/tests/core/test_invariants.py) | tested |
 | Contract invariants | 17/17 | [invariants](../../../packages/python/laix/tests/core/test_invariants.py) | tested |
-| Python/TypeScript parity | 24/24 conformance; 210/210 live actions; 202 TS tests | CI | tested |
+| Python/TypeScript parity | 24/24 conformance; 210/210 live actions; 208 TS tests | CI | tested |
 | Audit trail | I6–I9 pass | [invariants](../../../packages/python/laix/tests/core/test_invariants.py) | tested |
 | LangGraph host | 120 decisions; 0 interrupts; 6–7 ms mean; 110 glue lines | [comparison](../../../results/live-decision-benchmark/comparison/external-systems.json) | measured (operational) |
 | EU PLD audit fields | see below | [EU PLD](../05-governance/eu-liability.md) | documented |
