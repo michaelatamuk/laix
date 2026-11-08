@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/michaelatamuk/laix/blob/main/docs/README.md
+    about: Start with the docs index before opening an issue.
+  - name: Security
+    url: https://github.com/michaelatamuk/laix/blob/main/SECURITY.md
+    about: Report vulnerabilities privately, not in a public issue.

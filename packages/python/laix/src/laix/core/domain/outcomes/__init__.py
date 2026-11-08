@@ -1,6 +1,7 @@
 """Measured outcomes and their ledger."""
 
 from .ledger import OutcomeLedger
+from .file_outcome_store import FileOutcomeStore
 from .record import OUTCOME_DIRECTIONS, OUTCOME_LABELS, Outcome, OutcomeLabel
 from .signal_attention import (
     HELPED,
@@ -26,6 +27,7 @@ __all__ = [
     "OutcomeLabel",
     "OutcomeLedger",
     "OutcomeStore",
+    "FileOutcomeStore",
     "REASON_CODES",
     "RESULTS",
     "SignalAttentionLog",

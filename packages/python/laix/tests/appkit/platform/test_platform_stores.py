@@ -5,8 +5,11 @@ from __future__ import annotations
 from laix import (
     ApprovalDecision,
     ApprovalRequest,
+    Belief,
     Capability,
     ExperienceState,
+    FileOutcomeStore,
+    FileStateStore,
     InMemoryPlatform,
     InMemoryStateStore,
     Outcome,
@@ -69,3 +72,41 @@ def test_outcome_store_add_and_summary() -> None:
     assert ledger.all() == [outcome]
     assert ledger.for_decision("d-1") == [outcome]
     assert ledger.summary()["helped"] == 1
+
+
+def test_file_state_store_round_trip(tmp_path) -> None:
+    store = FileStateStore(tmp_path)
+    state = ExperienceState(subject="one", phase="decide")
+    state.beliefs["goal"] = Belief(
+        id="goal",
+        proposition="the goal is reachable",
+        confidence=0.7,
+    )
+    store.save("show/1", state)
+
+    loaded = store.load("show/1")
+    assert loaded is not None
+    assert loaded.subject == "one"
+    assert loaded.phase == "decide"
+    assert loaded.beliefs["goal"].confidence == 0.7
+
+    store.delete("show/1")
+    assert store.load("show/1") is None
+
+
+def test_file_outcome_store_round_trip(tmp_path) -> None:
+    store = FileOutcomeStore(tmp_path)
+    outcome = store.record(
+        "d-1",
+        metric="time",
+        before=10.0,
+        after=8.0,
+        attributed=True,
+        direction="lower-better",
+    )
+    assert store.path.exists()
+
+    restored = FileOutcomeStore(tmp_path)
+    assert restored.all()[0].id == outcome.id
+    assert restored.for_decision("d-1")[0].label == "helped"
+    assert restored.summary()["helped"] == 1

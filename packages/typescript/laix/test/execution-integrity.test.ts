@@ -57,4 +57,50 @@ describe("execution integrity", () => {
 
     assert.deepEqual(bridge.executionState(), { pay: "unknown" });
   });
+
+  it("retries a transient handler failure", () => {
+    let calls = 0;
+    const bridge = new ExecutionBridge({
+      handlers: {
+        pay: () => {
+          calls += 1;
+          if (calls < 3) throw new Error("transient");
+          return { ok: true };
+        },
+      },
+    });
+
+    const receipt = bridge.execute(decision, {
+      action,
+      actor: "agent",
+      retry: { attempts: 3 },
+    });
+
+    assert.equal(receipt.status, "executed");
+    assert.deepEqual(receipt.detail, { ok: true, attempts: 3 });
+    assert.equal(calls, 3);
+  });
+
+  it("stops after the retry budget", () => {
+    let calls = 0;
+    const bridge = new ExecutionBridge({
+      handlers: {
+        pay: () => {
+          calls += 1;
+          throw new Error("still broken");
+        },
+      },
+    });
+
+    const receipt = bridge.execute(decision, {
+      action,
+      actor: "agent",
+      retry: { attempts: 2 },
+    });
+
+    assert.equal(receipt.status, "failed");
+    assert.equal((receipt.detail as Record<string, unknown>).attempts, 2);
+    assert.match(receipt.error ?? "", /still broken/);
+    assert.equal(calls, 2);
+  });
 });

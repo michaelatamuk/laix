@@ -8,6 +8,22 @@ export { ApprovalRequired, UnknownAction };
 
 export type Handler = (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>;
 
+export interface RetryOptions {
+  attempts?: number;
+  backoffMs?: number;
+  maxBackoffMs?: number;
+}
+
+function retryDelay(attempt: number, backoffMs: number, maxBackoffMs: number): number {
+  if (backoffMs <= 0) return 0;
+  return Math.min(backoffMs * 2 ** (attempt - 1), maxBackoffMs);
+}
+
+function sleepSync(ms: number): void {
+  if (ms <= 0) return;
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
 export interface ExecutionStep {
   action: ActionOption;
   decision?: Decision;
@@ -117,7 +133,7 @@ export class ExecutionBridge {
     };
   }
 
-  execute(decision: DecisionLike, options: { action: ActionOption | null; actor: string; approver?: string | null; context?: Record<string, unknown>; idempotencyKey?: string }): Receipt {
+  execute(decision: DecisionLike, options: { action: ActionOption | null; actor: string; approver?: string | null; context?: Record<string, unknown>; idempotencyKey?: string; retry?: RetryOptions }): Receipt {
     const decisionId = decision.decisionId ?? decision.id ?? "";
     const action = options.action;
     const key = options.idempotencyKey;
@@ -145,14 +161,36 @@ export class ExecutionBridge {
     if (!handler) {
       return this.store({ id: newId("RCT"), decisionId, actionName: action.name, status: "failed", actor: options.actor, error: `no handler registered for ${action.name}`, approvedBy: options.approver ?? null, idempotencyKey: key ?? null, at: new Date().toISOString() });
     }
-    try {
-      const detail = handler(action, { ...(options.context ?? {}) });
-      const receipt = this.store({ id: newId("RCT"), decisionId, actionName: action.name, status: "executed", actor: options.actor, detail, approvedBy: options.approver ?? null, idempotencyKey: key ?? null, at: new Date().toISOString() });
-      if (key) this.byKey.set(key, receipt.id);
-      return receipt;
-    } catch (error) {
-      return this.store({ id: newId("RCT"), decisionId, actionName: action.name, status: "failed", actor: options.actor, error: error instanceof Error ? `${error.name}: ${error.message}` : String(error), approvedBy: options.approver ?? null, idempotencyKey: key ?? null, at: new Date().toISOString() });
+    const attempts = Math.max(1, Math.floor(options.retry?.attempts ?? 1));
+    const backoffMs = Math.max(0, options.retry?.backoffMs ?? 0);
+    const maxBackoffMs = Math.max(0, options.retry?.maxBackoffMs ?? 30_000);
+    for (let attempt = 1; attempt <= attempts; attempt += 1) {
+      try {
+        const detail = handler(action, { ...(options.context ?? {}) });
+        const finalDetail = attempt > 1 ? { ...detail, attempts: attempt } : detail;
+        const receipt = this.store({ id: newId("RCT"), decisionId, actionName: action.name, status: "executed", actor: options.actor, detail: finalDetail, approvedBy: options.approver ?? null, idempotencyKey: key ?? null, at: new Date().toISOString() });
+        if (key) this.byKey.set(key, receipt.id);
+        return receipt;
+      } catch (error) {
+        if (attempt < attempts) {
+          sleepSync(retryDelay(attempt, backoffMs, maxBackoffMs));
+          continue;
+        }
+        return this.store({
+          id: newId("RCT"),
+          decisionId,
+          actionName: action.name,
+          status: "failed",
+          actor: options.actor,
+          detail: { attempts: attempt },
+          error: error instanceof Error ? `${error.name}: ${error.message}` : String(error),
+          approvedBy: options.approver ?? null,
+          idempotencyKey: key ?? null,
+          at: new Date().toISOString(),
+        });
+      }
     }
+    throw new Error("unreachable");
   }
 
   refuse(decision: DecisionLike, options: { action: ActionOption | null; actor: string; reason: string }): Receipt {

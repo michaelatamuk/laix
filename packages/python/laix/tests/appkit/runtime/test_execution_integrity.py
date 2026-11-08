@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from laix import ActionOption, Decision, ExecutionBridge
+from laix import ActionOption, Decision, ExecutionBridge, RetryPolicy
 
 
 def _decision() -> Decision:
@@ -49,6 +49,54 @@ def test_unknown_outcome_can_be_reconciled() -> None:
     assert reconciled.status == "executed"
     assert reconciled.detail["confirmed"] is True
     assert reconciled.idempotency_key == "K-2"
+
+
+def test_retry_policy_retries_until_the_handler_succeeds() -> None:
+    calls: list[int] = []
+
+    def handler(action, context):
+        calls.append(1)
+        if len(calls) < 3:
+            raise RuntimeError("transient")
+        return {"ok": True}
+
+    bridge = ExecutionBridge(handlers={"pay": handler})
+    receipt = bridge.execute(
+        _decision(),
+        action=_action(),
+        actor="agent",
+        retry=RetryPolicy(attempts=3),
+    )
+
+    assert receipt.status == "executed"
+    assert receipt.detail == {"ok": True, "attempts": 3}
+    assert len(calls) == 3
+
+
+def test_retry_policy_exhausts_attempts() -> None:
+    calls: list[int] = []
+
+    def handler(action, context):
+        calls.append(1)
+        raise RuntimeError("still broken")
+
+    bridge = ExecutionBridge(handlers={"pay": handler})
+    receipt = bridge.execute(
+        _decision(),
+        action=_action(),
+        actor="agent",
+        retry=RetryPolicy(attempts=2),
+    )
+
+    assert receipt.status == "failed"
+    assert receipt.detail["attempts"] == 2
+    assert "RuntimeError: still broken" in (receipt.error or "")
+    assert len(calls) == 2
+
+
+def test_retry_policy_backoff_is_capped() -> None:
+    policy = RetryPolicy(backoff_seconds=1.0, max_backoff_seconds=3.0)
+    assert [policy.delay(attempt) for attempt in (1, 2, 3)] == [1.0, 2.0, 3.0]
 
 
 def test_execution_state_maps_action_name_to_status() -> None:

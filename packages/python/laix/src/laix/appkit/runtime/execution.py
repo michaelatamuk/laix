@@ -10,6 +10,8 @@ action hangs, the situation changes, or a human rejects the request.
 
 from __future__ import annotations
 
+import time
+from dataclasses import dataclass
 from typing import Any, Callable, Iterable
 
 from ...core.domain.decisions import ActionOption, Decision, ExecutionReceipt
@@ -21,6 +23,30 @@ from .execution_step import ExecutionStep
 from .saga import Saga, SagaStep
 
 Handler = Callable[[ActionOption, dict[str, Any]], dict[str, Any]]
+
+
+@dataclass(frozen=True, slots=True)
+class RetryPolicy:
+    """How many times to retry a failed handler, and how long to wait."""
+
+    attempts: int = 1
+    backoff_seconds: float = 0.0
+    max_backoff_seconds: float = 30.0
+
+    def __post_init__(self) -> None:
+        if self.attempts < 1:
+            raise ValueError("attempts must be at least 1")
+        if self.backoff_seconds < 0 or self.max_backoff_seconds < 0:
+            raise ValueError("backoff must not be negative")
+
+    def delay(self, attempt: int) -> float:
+        """Exponential backoff after a failed attempt, capped."""
+        if self.backoff_seconds <= 0:
+            return 0.0
+        return min(
+            self.backoff_seconds * (2 ** (attempt - 1)),
+            self.max_backoff_seconds,
+        )
 
 
 class ExecutionBridge:
@@ -50,6 +76,7 @@ class ExecutionBridge:
         approver: str | None = None,
         context: dict[str, Any] | None = None,
         idempotency_key: str | None = None,
+        retry: RetryPolicy | None = None,
     ) -> ExecutionReceipt:
         if idempotency_key and idempotency_key in self._by_key:
             original = self.receipts[self._by_key[idempotency_key]]
@@ -92,21 +119,33 @@ class ExecutionBridge:
                     idempotency_key=idempotency_key,
                 )
             )
-        try:
-            detail = self.handlers[action.name](action, dict(context or {})) or {}
-        except Exception as exc:  # noqa: BLE001 - a failed action is data, not a crash
-            return self._store(
-                ExecutionReceipt(
-                    id=new_execution_receipt_id(),
-                    decision_id=decision.decision_id,
-                    action_name=action.name,
-                    status="failed",
-                    actor=actor,
-                    error=f"{type(exc).__name__}: {exc}",
-                    approved_by=approver,
-                    idempotency_key=idempotency_key,
+        policy = retry or RetryPolicy()
+        detail: dict[str, Any] = {}
+        for attempt in range(1, policy.attempts + 1):
+            try:
+                detail = self.handlers[action.name](action, dict(context or {})) or {}
+                if attempt > 1:
+                    detail = {**detail, "attempts": attempt}
+                break
+            except Exception as exc:  # noqa: BLE001 - a failed action is data, not a crash
+                if attempt < policy.attempts:
+                    delay = policy.delay(attempt)
+                    if delay:
+                        time.sleep(delay)
+                    continue
+                return self._store(
+                    ExecutionReceipt(
+                        id=new_execution_receipt_id(),
+                        decision_id=decision.decision_id,
+                        action_name=action.name,
+                        status="failed",
+                        actor=actor,
+                        detail={"attempts": attempt},
+                        error=f"{type(exc).__name__}: {exc}",
+                        approved_by=approver,
+                        idempotency_key=idempotency_key,
+                    )
                 )
-            )
         receipt = self._store(
             ExecutionReceipt(
                 id=new_execution_receipt_id(),
