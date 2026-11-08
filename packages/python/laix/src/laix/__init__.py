@@ -291,6 +291,7 @@ _APPKIT_NAMES: dict[str, dict[str, str]] = {
     },
     ".appkit.runtime": {
         "ApprovalRequired": "ApprovalRequired",
+        "AsyncHandler": "AsyncHandler",
         "DecisionRuntime": "DecisionRuntime",
         "ExecutionBridge": "ExecutionBridge",
         "ExecutionSagaResult": "ExecutionSagaResult",
@@ -511,6 +512,7 @@ __all__ = [
     "Detection",
     "Detector",
     "ExecutionBridge",
+    "AsyncHandler",
     "ExecutionSagaResult",
     "ExecutionStep",
     "ExperienceState",

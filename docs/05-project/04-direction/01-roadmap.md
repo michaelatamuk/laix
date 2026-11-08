@@ -1,7 +1,8 @@
 # Roadmap
 
-The planner roadmap is complete. Production depth and external validation remain. This page tracks
-what is done, what is next and what would count as a real step forward.
+The planner roadmap is complete. Production depth has advanced: file-backed stores, execution retries,
+async handlers, hard timeouts and OpenTelemetry attributes are done. External validation remains.
+This page tracks what is done, what is next and what would count as a real step forward.
 
 ## Planners and composite planners
 
@@ -30,14 +31,23 @@ what is done, what is next and what would count as a real step forward.
 | Continuity benchmark | done |
 | External validation | open |
 
+## Production depth
+
+| Piece | Status |
+|---|---|
+| Execution retries and capped backoff | done |
+| Async execution handlers | done |
+| Hard timeouts for async effects | done; a timeout returns `unknown` |
+| File-backed state and outcome stores | done |
+| OpenTelemetry decision attributes | done |
+| Execution receipts, idempotency and reconciliation | done |
+| Crash-recovery and retry semantics | tested for the bridge; host runtime still owns worker recovery |
+
 ## Next
 
-- Execution retries, backoff and timeouts around `ExecutionBridge`.
-- Async execution handlers alongside the current synchronous handlers.
 - Bootstrap intervals and covariate adjustment for causal effects.
 - [MDP policy iteration](../../02-core/03-decision/01-single/03-model-based.md#mdp) as an alternative
   to value iteration.
-- File-backed state and outcome stores for hosts that want an adapter out of the box.
 - A generated API reference once the public surface is stable.
 - An independent replication of the live and continuity results.
 - One design partner with a measured before/after result.

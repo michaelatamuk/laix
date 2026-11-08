@@ -138,6 +138,13 @@ print(layer.status())
 print(layer.explain(decision))
 ```
 
+## Operations
+
+- `FileStateStore` and `FileOutcomeStore` add file-backed stores.
+- `RetryPolicy`, `execute_async` and `run_steps_async` add retries, async handlers and timeouts.
+- `decision_attributes` maps a decision onto OpenTelemetry span attributes.
+- `laix explain` and `laix lint` inspect a decision JSON.
+
 ## Test
 
 ```powershell

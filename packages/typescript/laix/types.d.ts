@@ -72,6 +72,9 @@
     total: number;
   }
 
+  export type AttributeValue = string | number | boolean;
+  export function decisionAttributes(decision: Decision): Record<string, AttributeValue>;
+
   export interface SignalAttentionDecision {
     signalId: string;
     verb: Verb;
@@ -1187,7 +1190,7 @@
     all(): Outcome[];
     summary(): Record<string, unknown>;
   }
-  export class OutcomeLedger implements OutcomeStore {
+  export interface OutcomeLedger implements OutcomeStore {
     records: Outcome[];
     tolerance: number;
     add(outcome: Outcome): Outcome;
@@ -1196,6 +1199,18 @@
     summary(): Record<string, unknown>;
     byMetric(): Record<string, Record<string, number>>;
     toDict(): Record<string, unknown>;
+  }
+  export interface OutcomeFiles {
+    join(directory: string, name: string): string;
+    read(path: string): string | null;
+    write(path: string, text: string): void;
+    remove(path: string): void;
+  }
+  export class FileOutcomeStore extends OutcomeLedger {
+    readonly directory: string;
+    readonly path: string;
+    constructor(directory: string, files: OutcomeFiles, filename?: string);
+    add(outcome: Outcome): Outcome;
   }
   export function rewardForLabel(label: string): number | null;
 
@@ -1298,6 +1313,19 @@
     load(key: string): ExperienceState | null;
     delete(key: string): void;
   }
+  export interface StateFiles {
+    join(directory: string, name: string): string;
+    read(path: string): string | null;
+    write(path: string, text: string): void;
+    remove(path: string): void;
+  }
+  export class FileStateStore implements StateStore {
+    readonly directory: string;
+    constructor(directory: string, files: StateFiles);
+    save(key: string, state: ExperienceState): void;
+    load(key: string): ExperienceState | null;
+    delete(key: string): void;
+  }
   export interface StreamCheckpointStore {
     save(key: string, snapshot: Record<string, unknown>): void;
     load(key: string): Record<string, unknown> | null;
@@ -1331,6 +1359,7 @@
     context?: Record<string, unknown>;
     idempotencyKey?: string;
     compensate?: (receipt: Receipt) => Record<string, unknown>;
+    asyncCompensate?: (receipt: Receipt) => Promise<Record<string, unknown>>;
   }
   export interface ExecutionSagaResult {
     completed: string[];
@@ -1339,12 +1368,27 @@
     error?: string | null;
     toDict(): Record<string, unknown>;
   }
+  export interface RetryOptions {
+    attempts?: number;
+    backoffMs?: number;
+    maxBackoffMs?: number;
+  }
+  export type AsyncHandler = (action: ActionOption, context: Record<string, unknown>) => Promise<Record<string, unknown>>;
+  export class ExecutionTimeout extends Error {}
   export class ExecutionBridge {
-    constructor(options?: { handlers?: Record<string, (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>>; undoHandlers?: Record<string, (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>> });
+    constructor(options?: {
+      handlers?: Record<string, (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>>;
+      asyncHandlers?: Record<string, AsyncHandler>;
+      undoHandlers?: Record<string, (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>>;
+    });
     register(name: string, handler: (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>, undo?: (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>): void;
+    registerAsync(name: string, handler: AsyncHandler, undo?: (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>): void;
+    canHandle(name: string): boolean;
     canUndo(name: string): boolean;
     runSteps(steps: ExecutionStep[], options?: { actor?: string }): ExecutionSagaResult;
-    execute(decision: Decision, options: { action: ActionOption | null; actor: string; approver?: string | null; context?: Record<string, unknown>; idempotencyKey?: string }): Receipt;
+    runStepsAsync(steps: ExecutionStep[], options?: { actor?: string; retry?: RetryOptions; timeoutMs?: number }): Promise<ExecutionSagaResult>;
+    execute(decision: Decision, options: { action: ActionOption | null; actor: string; approver?: string | null; context?: Record<string, unknown>; idempotencyKey?: string; retry?: RetryOptions }): Receipt;
+    executeAsync(decision: Decision, options: { action: ActionOption | null; actor: string; approver?: string | null; context?: Record<string, unknown>; idempotencyKey?: string; retry?: RetryOptions; timeoutMs?: number }): Promise<Receipt>;
     cancel(receiptId: string, options: { actor: string; reason?: string }): Receipt;
     undo(receiptId: string, options: { actor: string }): Receipt;
     markUnknown(receiptId: string, options: { actor: string; reason?: string }): Receipt;
