@@ -73,7 +73,7 @@ The protocol for one decision is `Planner`; the protocol for a chain is `Sequenc
 
 | Name | Purpose |
 |---|---|
-| `Outcome`, `OutcomeLedger`, `OutcomeStore` | measured results and their store |
+| `Outcome`, `OutcomeLedger`, `OutcomeStore`, `FileOutcomeStore` | measured results and their store |
 | `SignalAttentionOutcome` | the attention-specific outcome shape |
 | `UCBBandit`, `BanditPolicy`, `Arm` | reward-driven choice |
 | `CalibrationReport`, `CalibrationBin` | confidence vs observed accuracy |
@@ -90,14 +90,14 @@ The protocol for one decision is `Planner`; the protocol for a chain is `Sequenc
 | `DecisionRuntime` | the app-kit decision loop |
 | `StreamSession`, `DecisionTimeline` | event-time decisions, revisions and checkpoints |
 | `StreamStats`, `DeadLetterQueue`, `TumblingWindow` | stream counters, failures and windows |
-| `ExecutionBridge`, `Saga` | execution boundary, receipts, recovery and compensation |
-| `ExperienceState`, `StateStore` | live state and its port |
+| `ExecutionBridge`, `Saga`, `RetryPolicy` | execution boundary, receipts, recovery, retries and compensation |
+| `ExperienceState`, `StateStore`, `FileStateStore` | live state and its port |
 | `DecisionRecord`, `create_record`, `approve_record`, `reject_record`, `mark_executed`, `verify_record` | the audit lifecycle |
 | `Proposal`, `approve_proposal`, `reject_proposal`, `apply_proposal`, `undo_proposal` | the proposal lifecycle |
 | `ApprovalRequest`, `ApprovalDecision` | approval hand-off |
 | `Platform`, `InMemoryPlatform`, `SkillCall` | host skills, events and approvals |
 | `DeliveryPort`, `DeliveryReceipt`, `NullDelivery` | delivery boundary and receipt |
-| `prometheus`, `run_stream_bench` | metrics and stream bench |
+| `prometheus`, `run_stream_bench`, `decision_attributes` | metrics, stream bench and OpenTelemetry attributes |
 
 ## Proof
 

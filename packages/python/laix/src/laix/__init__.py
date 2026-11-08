@@ -46,6 +46,7 @@ from .core.domain.commitments import (
     InMemoryCommitmentStore,
 )
 from .core.support.time import iso, parse_iso, utcnow
+from .core.support.otel import decision_attributes
 from .core.support.values import confidence_band
 from .core.support.verbs import VERBS, Verb
 from .core.support.version import SCHEMA_VERSION
@@ -55,7 +56,7 @@ from .core.engines.evaluation.cases import Case, Report, Row
 from .core.engines.evaluation.cases import compare as compare_decisions
 from .core.engines.evaluation.cases import load_cases
 from .core.engines.learning.bandit import Arm, UCBBandit, reward_for_label
-from .core.domain.outcomes import OutcomeLedger, OutcomeStore
+from .core.domain.outcomes import FileOutcomeStore, OutcomeLedger, OutcomeStore
 from .core.engines.decision.single.policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
@@ -295,7 +296,9 @@ _APPKIT_NAMES: dict[str, dict[str, str]] = {
         "ExecutionSagaResult": "ExecutionSagaResult",
         "ExecutionStep": "ExecutionStep",
         "ExperienceState": "ExperienceState",
+        "FileStateStore": "FileStateStore",
         "InMemoryStateStore": "InMemoryStateStore",
+        "RetryPolicy": "RetryPolicy",
         "Saga": "Saga",
         "SagaResult": "SagaResult",
         "SagaStep": "SagaStep",
@@ -377,6 +380,8 @@ __all__ = [
     "SignalFeedback",
     "InMemoryPlatform",
     "InMemoryStateStore",
+    "FileStateStore",
+    "RetryPolicy",
     "Intent",
     "DecisionClient",
     "LiveContext",
@@ -385,6 +390,8 @@ __all__ = [
     "EscalationPolicy",
     "NegotiationPolicy",
     "OutcomeStore",
+    "FileOutcomeStore",
+    "decision_attributes",
     "Platform",
     "DecisionPolicy",
     "DecisionPolicyError",

@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- **File-backed stores.** `FileStateStore` writes one JSON snapshot per key, and `FileOutcomeStore`
+  extends `OutcomeLedger` with a JSON file after every `add` or `record`. TypeScript mirrors both.
+- **OpenTelemetry attributes.** `decision_attributes` / `decisionAttributes` map a decision onto
+  stable `laix.*` span attributes without adding an SDK dependency.
+- **Execution retries.** `RetryPolicy` and TypeScript `RetryOptions` retry a failed handler with
+  capped exponential backoff and record the attempt count in the receipt detail.
+- **Validation template.** A pre-registration page for external runs, with the metrics, analysis
+  plan, threats and replication rules.
+- **Community templates.** Bug and feature issue forms, a pull request template and a documentation
+  contact link.
+
 ## 0.10.0 - 2026-11-08
 
 ### Breaking

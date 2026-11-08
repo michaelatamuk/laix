@@ -174,6 +174,7 @@ from .domain.decisions import (
 from .domain.outcomes import (
     OUTCOME_DIRECTIONS,
     OUTCOME_LABELS,
+    FileOutcomeStore,
     SignalAttentionOutcome,
     Outcome,
     OutcomeLedger,
@@ -198,6 +199,7 @@ from .domain.commitments import (
 )
 from .domain.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .support.time import iso, parse_iso, utcnow
+from .support.otel import decision_attributes
 from .support.values import confidence_band
 from .support.version import SCHEMA_VERSION
 from .support.verbs import VERBS, Verb
@@ -370,6 +372,7 @@ __all__ = [
     "OutcomeLedger",
     "SignalAttentionLog",
     "OutcomeStore",
+    "FileOutcomeStore",
     "PHASES",
     "PerceptionEvent",
     "PerceptionFrame",
@@ -411,6 +414,7 @@ __all__ = [
     "Row",
     "SCHEMA_VERSION",
     "SafetyConstrainedPolicy",
+    "decision_attributes",
     "SensingOption",
     "Signal",
     "Situation",

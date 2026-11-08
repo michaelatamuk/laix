@@ -1,0 +1,51 @@
+name: Feature request
+description: Propose a capability, integration or documentation improvement.
+title: "[feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        LAIX is a decision layer, not an agent framework or workflow engine. Explain the decision
+        problem before proposing a component.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What decision, integration or documentation problem are you trying to solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What should LAIX do? Include the contract or API shape if you have one.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: What did you try or consider?
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Core decision contract
+        - Planner or policy
+        - Sensing or attention
+        - Learning or outcomes
+        - App kit
+        - Integration
+        - Documentation
+        - Benchmarks or evidence
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This is a decision-layer concern, not orchestration, tools or model training.
+          required: true

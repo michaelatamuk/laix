@@ -59,6 +59,34 @@ receipt = bridge.reconcile(
 Retry at the host, not inside the decision. Retrying `decide` is safe; retrying an effect is safe
 only with an idempotency key.
 
+## Retries
+
+`ExecutionBridge.execute(..., retry=RetryPolicy(...))` retries a handler that raises. The default is
+one attempt. Backoff is exponential and capped.
+
+```python
+from laix import RetryPolicy
+
+receipt = bridge.execute(
+    decision,
+    action=action,
+    actor="operator",
+    idempotency_key="case-1",
+    retry=RetryPolicy(attempts=3, backoff_seconds=0.2, max_backoff_seconds=2.0),
+)
+```
+
+- `attempts` is the total number of tries, including the first.
+- `backoff_seconds` is the base delay; the delay doubles after each failure.
+- `max_backoff_seconds` caps the delay.
+- A success after a retry records `attempts` in `receipt.detail`.
+- A failure records `attempts` in `receipt.detail` and the last error in `receipt.error`.
+
+Retries do not make an effect safe by themselves. Use an idempotency key, and use
+`mark_unknown` plus `reconcile` when the provider may have applied the action. Timeouts are
+host-owned for synchronous handlers; use an async handler or the host's timeout policy when the
+effect can hang.
+
 ## Multi-step execution
 
 A **saga** is a multi-step action where each step has a way to undo itself. Steps run in order. If a
@@ -139,8 +167,10 @@ proposal lifecycles are on [Proposals and records](02-proposals-and-records.md).
 
 ## TypeScript
 
-TypeScript exposes the same bridge and saga surface with `Handler`, `SagaForward` and
-`SagaCompensate` function types.
+TypeScript exposes the same bridge and saga surface with `Handler`, `RetryOptions`, `SagaForward` and
+`SagaCompensate` function types. `retry: { attempts, backoffMs, maxBackoffMs }` maps to
+`RetryPolicy`. The synchronous bridge uses a blocking wait for backoff; use a host worker or an async
+handler when blocking is not acceptable.
 
 ## Boundary
 

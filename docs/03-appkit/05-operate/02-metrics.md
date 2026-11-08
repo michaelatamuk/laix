@@ -36,6 +36,32 @@ laix_stream_observed 120
 laix_stream_decided 96
 ```
 
+## OpenTelemetry
+
+`decision_attributes(decision)` returns stable span attributes for the host's own OpenTelemetry
+exporter. The package does not depend on an OpenTelemetry SDK.
+
+```python
+from laix import decision_attributes
+
+attributes = decision_attributes(decision)
+span.set_attributes(attributes)
+```
+
+| Attribute | Value |
+|---|---|
+| `laix.verb` | the chosen verb |
+| `laix.reason_code` | the stable reason code |
+| `laix.decision.id`, `laix.trace.id` | the decision and trace ids |
+| `laix.policy.version` | the policy or planner version |
+| `laix.action.id` | the chosen option |
+| `laix.confidence` | the stated confidence |
+| `laix.approval.required`, `laix.reversible` | the execution constraints |
+| `laix.score` | the composite score, when present |
+| `laix.stream.id`, `laix.revision`, `laix.supersedes` | stream continuity |
+
+TypeScript exports `decisionAttributes` with the same names.
+
 ## What to alert on
 
 | Signal | Likely cause | Response |

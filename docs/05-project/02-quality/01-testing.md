@@ -75,7 +75,7 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 |---|---|
 | Python tests | passed |
 | Invariant tests | 17/17 |
-| TypeScript tests | 196 passed |
+| TypeScript tests | 202 passed |
 | Signal-attention conformance | 24/24 |
 | LAIX-Bench | 25/25 |
 | 7-case live demo | `LiveCompositePlanner` 7/7 |

@@ -25,6 +25,7 @@ the order. `checklist.md` tracks work across all stages.
 | 02 | [Benchmark](02-evaluation/benchmark.md) | hypotheses, metrics, benchmark protocol, threats |
 | 02 | [Algorithm prototype results](02-evaluation/algorithm-prototypes.md) | smoke tests for CA-VOD, CABB, AADS, CDR and CDA |
 | 02 | [Evidence map](02-evaluation/evidence-map.md) | claims, numbers, sources and missing evidence |
+| 02 | [Pre-registration template](02-evaluation/pre-registration-template.md) | the analysis plan to fix before an external run |
 | 02 | [External benchmarks](02-evaluation/external-benchmarks.md) | world benchmarks, fit and run protocol |
 | 02 | [Sev1-Bench](02-evaluation/sev1-bench.md) | external SRE incident run: DeepSeek baseline vs LAIX |
 | 02 | [Continuity benchmark](02-evaluation/continuity-benchmark.md) | episode mechanism test: stateless vs stateful |

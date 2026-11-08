@@ -43,5 +43,23 @@ class Outcome:
     def to_dict(self) -> dict:
         return to_primitive(self)
 
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "Outcome":
+        return cls(
+            id=str(payload["id"]),
+            decision_id=str(payload["decision_id"]),
+            metric=str(payload["metric"]),
+            before=float(payload["before"]),
+            after=float(payload["after"]),
+            delta=float(payload["delta"]),
+            label=str(payload["label"]),
+            attributed=bool(payload.get("attributed", False)),
+            direction=str(payload.get("direction", "higher-better")),
+            evidence=dict(payload.get("evidence", {})),
+            measured_at=str(payload.get("measured_at", iso())),
+            note=str(payload.get("note", "")),
+            schema_version=str(payload.get("schema_version", SCHEMA_VERSION)),
+        )
+
 
 __all__ = ["OUTCOME_DIRECTIONS", "OUTCOME_LABELS", "Outcome", "OutcomeLabel"]

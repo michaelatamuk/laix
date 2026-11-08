@@ -44,9 +44,20 @@ class MyStore:
 | `history` | Append-only events: observed, belief, phase, decision, resource plan. |
 | `observations` | The observations behind the beliefs. |
 
-`InMemoryStateStore` is an in-memory implementation. `ExperienceState.snapshot()` and
-`from_snapshot()` let the app persist the state in its own format. Long-lived project or user memory
-belongs in the app or a manager service.
+`InMemoryStateStore` is an in-memory implementation. `FileStateStore` writes one JSON file per key
+under a host-owned directory, using `ExperienceState.snapshot()` and `from_snapshot()`.
+`ExperienceState.snapshot()` and `from_snapshot()` also let the app persist the state in its own
+format. Long-lived project or user memory belongs in the app or a manager service.
+
+```python
+from laix import FileStateStore
+
+store = FileStateStore("./state")
+store.save("case-1", state)
+restored = store.load("case-1")
+```
+
+The file is plain JSON. The host can inspect, back up or migrate it without importing LAIX.
 
 ## Stream checkpoint store
 
@@ -97,7 +108,19 @@ class MyOutcomeStore:
     def summary(self) -> dict: ...
 ```
 
-`OutcomeLedger` is an in-memory implementation. Store:
+`OutcomeLedger` is an in-memory implementation. `FileOutcomeStore` extends the same ledger and writes
+one JSON file after every `add` or `record`, so a host gets a file-backed adapter out of the box.
+
+```python
+from laix import FileOutcomeStore
+
+store = FileOutcomeStore("./outcomes")
+store.record("DEC-1", metric="time_to_resolve", before=30, after=22, attributed=True,
+             direction="lower-better")
+restored = FileOutcomeStore("./outcomes")
+```
+
+Store:
 
 - decision id;
 - metric and before/after values;
@@ -110,9 +133,11 @@ Keep transcripts, images, customer data and secrets in the app. Learning uses ou
 
 ## TypeScript
 
-TypeScript exports `StateStore`, `InMemoryStateStore`, `StreamCheckpointStore`,
-`InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`, `CommitmentStore`,
-`InMemoryCommitmentStore`, `FileCommitmentStore`, `OutcomeStore` and `OutcomeLedger`.
+TypeScript exports `StateStore`, `InMemoryStateStore`, `FileStateStore`,
+`StreamCheckpointStore`, `InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`,
+`CommitmentStore`, `InMemoryCommitmentStore`, `FileCommitmentStore`, `OutcomeStore`,
+`OutcomeLedger` and `FileOutcomeStore`. The file stores take a small adapter with `join`, `read`,
+`write` and `remove`, so the package stays runtime-neutral.
 
 ## Boundary
 

@@ -1,5 +1,6 @@
 export * from "./appkit/index.ts";
 export * from "./core/engines/sensing/signals/signal-attention.ts";
+export * from "./core/otel.ts";
 export * from "./core/domain/perception/perception.ts";
 export * from "./core/engines/sensing/resources.ts";
 
@@ -30,6 +31,7 @@ export * from "./core/engines/learning/calibration/decision-calibration.ts";
 export * from "./core/engines/learning/model/model-learning.ts";
 export * from "./core/engines/decision/single/planners/pomdp/pomdp-planner.ts";
 export * from "./core/domain/outcomes/outcome-ledger.ts";
+export * from "./core/domain/outcomes/file-outcome-store.ts";
 export * from "./core/engines/learning/bandit/ucb-bandit.ts";
 export * from "./core/engines/learning/bandit/outcome-reward.ts";
 export * from "./core/engines/decision/single/policies/active-perception.ts";
