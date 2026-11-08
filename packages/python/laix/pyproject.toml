@@ -19,6 +19,9 @@ classifiers = [
 ]
 dependencies = []
 
+[project.scripts]
+laix = "laix.appkit.cli:main"
+
 [project.urls]
 Homepage = "https://github.com/michaelatamuk/laix"
 Documentation = "https://github.com/michaelatamuk/laix/blob/main/docs/README.md"

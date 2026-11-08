@@ -98,6 +98,7 @@ The protocol for one decision is `Planner`; the protocol for a chain is `Sequenc
 | `Platform`, `InMemoryPlatform`, `SkillCall` | host skills, events and approvals |
 | `DeliveryPort`, `DeliveryReceipt`, `NullDelivery` | delivery boundary and receipt |
 | `prometheus`, `run_stream_bench`, `decision_attributes` | metrics, stream bench and OpenTelemetry attributes |
+| `laix` CLI | explain or lint a decision JSON file |
 
 ## Proof
 
