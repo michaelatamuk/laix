@@ -51,7 +51,7 @@ One concern is often not enough. When the choice depends on value, promises, ris
 Each planner contributes a score. The composite planner applies the weights, the hard limits and the approval
 state, and returns one `PlannerResult` with a `CompositeScore`. `PlannerPolicy` converts that planner result into the same
 `Decision` the minimal request produced. The
-[live composite planner](03-planning/03-live-composite-planner.md) page describes the composition.
+[live composite planner](03-decision/01-single/02-composite.md) page describes the composition.
 
 ## The next decision
 
@@ -85,10 +85,13 @@ DecisionRequest
              next DecisionRequest with current state
 ```
 
-That hand-off is [decision continuity](04-continuity/01-decision-continuity.md). It is what makes the
+That hand-off is [decision continuity](03-decision/04-history.md). It is what makes the
 core a runtime: the same chooser sees a different, current state on every step.
 
-## The five layers
+## A conceptual view
+
+This diagram is a conceptual view of the core, not the folder map. The folder map is in
+[Reading map](#reading-map) and [Where the code lives](#where-the-code-lives).
 
 ```mermaid
 block-beta
@@ -159,7 +162,7 @@ block-beta
 | `decide(request, policy=PlannerPolicy(planner))` | Runs a planner or the live composite planner behind the policy interface. | You want utility, commitments, execution risk or attention scoring. |
 | `DecisionClient` | Uses the same core selection and adds runtime, traces, execution and records. | You want the full app kit. |
 
-`decide` lives in `core/dispatch.py` and imports no app-kit code. [Dispatch](01-contract/03-dispatch.md) explains
+`decide` lives in `core/dispatch.py` and imports no app-kit code. [Dispatch](01-contract/04-dispatch.md) explains
 the selection rule and the identity fields.
 
 ## Choose a mechanism
@@ -241,19 +244,19 @@ a label and a decision to an arm.
 Read the sections in order. Each section opens with a short index that lists its pages in reading
 order.
 
-The sequence follows the dependency order: the contract defines the shapes; the decide section covers
-the signal path, commitments, policies and capacity; planning covers the optional formal choice;
-continuity explains what the next decision inherits; learning changes the chooser; reference covers
-evaluation and foundation.
+The sequence follows the dependency order: the contract defines the shapes; the domain describes the
+records and state; the decision layer covers every decision shape; sensing covers the input side;
+learning changes the chooser; evaluation proves it; support holds the infrastructure.
 
 | Section | Covers |
 |---|---|
-| [Contract](01-contract/README.md) | The request and response shapes, records, schema and dispatch. |
-| [Decide](02-decide/README.md) | Signal attention, commitments, policies and capacity. |
-| [Planning](03-planning/README.md) | The planner contract, live planners, the live composite planner and model-based planners. |
-| [Continuity](04-continuity/README.md) | A decision is a step in a sequence; the next one sees what the previous one left behind. |
-| [Learning](05-learning/README.md) | Outcomes, rewards, calibration and model learning. |
-| [Reference](06-reference/README.md) | Evaluation and foundation. |
+| [Contract](01-contract/README.md) | The request and response shapes, the planner contract, records and dispatch. |
+| [Domain](02-domain/README.md) | Decisions, commitments, outcomes and perception. |
+| [Decision](03-decision/README.md) | Single, sequence, fleet, history and explain. |
+| [Sensing](04-sensing/README.md) | Signal attention and resource admission. |
+| [Learning](05-learning/README.md) | Calibration, model learning, bandit and causal attribution. |
+| [Evaluation](06-evaluation/README.md) | Cases, benchmarks, simulation and the continuity benchmark. |
+| [Support](07-support/README.md) | Schema and support helpers. |
 
 ## Where the code lives
 

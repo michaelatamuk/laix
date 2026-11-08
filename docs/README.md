@@ -27,13 +27,14 @@ Read in order.
 
 | Page | Covers |
 |---|---|
-| [Core overview](02-core/README.md) | the five layers, the decision loop and the reading map |
-| [Contract](02-core/01-contract/README.md) | request, response, records, schema and dispatch |
-| [Decide](02-core/02-decide/README.md) | signal attention, commitments, policies and resources |
-| [Planning](02-core/03-planning/README.md) | planner contract, live planners, live composite planner and model-based planners |
-| [Continuity](02-core/04-continuity/README.md) | decision continuity and the continuity benchmark |
-| [Learning](02-core/05-learning/README.md) | outcomes, rewards, calibration and model learning |
-| [Reference](02-core/06-reference/README.md) | evaluation and foundation |
+| [Core overview](02-core/README.md) | the layers, the decision loop and the reading map |
+| [Contract](02-core/01-contract/README.md) | request, response, planner contract, records and dispatch |
+| [Domain](02-core/02-domain/README.md) | decisions, commitments, outcomes and perception |
+| [Decision](02-core/03-decision/README.md) | single, sequence, fleet, history and explain |
+| [Sensing](02-core/04-sensing/README.md) | signal attention and resource admission |
+| [Learning](02-core/05-learning/README.md) | calibration, model learning, bandit and causal attribution |
+| [Evaluation](02-core/06-evaluation/README.md) | cases, benchmarks, simulation and continuity |
+| [Support](02-core/07-support/README.md) | schema and support helpers |
 
 ## App kit
 
@@ -94,11 +95,11 @@ Runnable examples are organized by language and lifecycle in
 |---|---|
 | make one decision | [Quickstart](01-start/02-first-steps/01-quickstart.md) |
 | plug LAIX into an app | [Host integration](01-start/02-first-steps/02-host-integration.md), then [Integration](03-appkit/01-build/01-integration.md) |
-| write my own policy | [Policies](02-core/02-decide/03-policies.md), [Policies in the app](03-appkit/01-build/03-policies-in-the-app.md) |
+| write my own policy | [Policies](02-core/03-decision/01-single/04-policies.md), [Policies in the app](03-appkit/01-build/03-policies-in-the-app.md) |
 | stream events | [Streaming](03-appkit/02-run/02-streaming.md) |
 | execute and recover | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md) |
-| learn from outcomes | [Outcome learning](02-core/05-learning/01-outcome-learning.md) |
-| understand the planner contract | [Planner contract](02-core/03-planning/01-planner-contract.md) |
+| learn from outcomes | [Outcome learning](02-core/02-domain/03-outcomes.md) |
+| understand the planner contract | [Planner contract](02-core/01-contract/02-planner-contract.md) |
 | see the end-to-end loop | [Decision lifecycle](01-start/01-orientation/02-decision-lifecycle.md) |
 | see the public API | [API map](05-project/01-repository/02-api-map.md) |
 | operate in production | [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md), [Troubleshooting](05-project/02-quality/02-troubleshooting.md) |
@@ -115,7 +116,7 @@ Runnable examples are organized by language and lifecycle in
 | I am… | Start with |
 |---|---|
 | Product | [What is LAIX?](01-start/01-orientation/01-what-is-laix.md), [Decision lifecycle](01-start/01-orientation/02-decision-lifecycle.md), [Scope and boundaries](04-concepts/01-architecture/02-scope-and-boundaries.md) |
-| Engineer | [Quickstart](01-start/02-first-steps/01-quickstart.md), [Decision contract](02-core/01-contract/01-decision-contract.md), [Policies](02-core/02-decide/03-policies.md), [Planner contract](02-core/03-planning/01-planner-contract.md), [Live composite planner](02-core/03-planning/03-live-composite-planner.md), [App kit](03-appkit/README.md) |
+| Engineer | [Quickstart](01-start/02-first-steps/01-quickstart.md), [Decision contract](02-core/01-contract/01-decision-contract.md), [Policies](02-core/03-decision/01-single/04-policies.md), [Planner contract](02-core/01-contract/02-planner-contract.md), [Live composite planner](02-core/03-decision/01-single/02-composite.md), [App kit](03-appkit/README.md) |
 | Operator | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md), [Stores](03-appkit/04-connect/01-stores.md), [Platform](03-appkit/04-connect/02-platform.md), [Delivery](03-appkit/04-connect/03-delivery.md), [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md) |
 | Contributor | [Contributing](../CONTRIBUTING.md), [Testing](05-project/02-quality/01-testing.md), [Repository structure](05-project/01-repository/01-repository-structure.md) |
 | Researcher or reviewer | [Research and evidence](06-research/README.md), then [Prior art](06-research/01-positioning/prior-art.md), [Benchmark](06-research/02-evaluation/benchmark.md) |

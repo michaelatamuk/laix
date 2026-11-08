@@ -32,7 +32,7 @@ If the host also wants the runtime, execution and records, use `DecisionClient` 
 examples below use the app kit because they show execution and audit. See
 [Integration](../../03-appkit/01-build/01-integration.md).
 
-Runnable example: [`examples/python/05-execute/host_adapter.py`](../../../examples/python/05-execute/host_adapter.py).
+Runnable example: [`examples/python/appkit/build/host_adapter.py`](../../../examples/python/appkit/build/host_adapter.py).
 
 It shows:
 
@@ -88,7 +88,7 @@ of the optional app kit. The bridge also accepts an idempotency key and can mark
 unknown outcome and reconcile it with provider evidence. See
 [Execution and recovery](../../03-appkit/03-execute/01-execution-and-recovery.md).
 
-Runnable example: [`examples/python/05-execute/host_execution.py`](../../../examples/python/05-execute/host_execution.py).
+Runnable example: [`examples/python/appkit/execute/host_execution.py`](../../../examples/python/appkit/execute/host_execution.py).
 
 It shows a decision that needs approval, an owner approval, and a receipt.
 
@@ -147,8 +147,8 @@ Run the two examples from the repository root:
 
 ```powershell
 $env:PYTHONPATH = "packages/python/laix/src"
-py examples/python/05-execute/host_adapter.py
-py examples/python/05-execute/host_execution.py
+py examples/python/appkit/build/host_adapter.py
+py examples/python/appkit/execute/host_execution.py
 ```
 
 ## Read next

@@ -1,7 +1,11 @@
 # Contract
 
-The shapes that cross the boundary, the records that describe them, and the dispatch entry point.
+The shapes that cross the boundary, the planner interfaces, the records that describe them, and the dispatch
+entry point.
 
 1. [The decision contract](01-decision-contract.md) — `DecisionRequest`, `Decision`, the seven verbs and reason codes.
-2. [Records and schema](02-records-and-schema.md) — every record shape, JSON, versions and change rules.
-3. [Dispatch](03-dispatch.md) — `decide`, automatic selection, ids and confidence provenance.
+2. [Planner contract](02-planner-contract.md) — `Planner`, `PlannerInput`, `PlannerResult`, `PlannerPolicy` and `SequencePlanner`.
+3. [Records](03-records.md) — every record shape, JSON and change rules.
+4. [Dispatch](04-dispatch.md) — `decide`, automatic selection, ids and confidence provenance.
+
+The record schema lives in [Support / schema](../07-support/01-schema.md).

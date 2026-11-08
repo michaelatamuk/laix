@@ -57,8 +57,8 @@ counters. See [Bench](01-bench.md) and [Streaming](../02-run/02-streaming.md).
 
 ## Examples
 
-- Python: `examples/python/04-stream/metrics.py`
-- TypeScript: `examples/typescript/04-stream/metrics.mts`
+- Python: `examples/python/appkit/run/metrics.py`
+- TypeScript: `examples/typescript/appkit/run/metrics.mts`
 
 ## TypeScript
 

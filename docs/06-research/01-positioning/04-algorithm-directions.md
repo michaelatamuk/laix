@@ -11,11 +11,11 @@ This page records five directions that could give LAIX an algorithm of its own.
 
 | Direction | Prototype | API | Docs |
 |---|---|---|---|
-| CA-VOD | one-step value of decision plus optional belief-state future value | `CAVODPlanner` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
-| AADS | index policy plus exact single-arm Whittle index | `AttentionScheduler`, `WhittleScheduler` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
-| CDR | greedy and exact minimum-weight vertex cover | `repair_continuity` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
-| CDA | linear attribution plus bounded counterfactual search | `counterfactual_attribution`, `counterfactual_search` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
-| CABB | exact finite-horizon branch and bound over commitments and attention | `CABBPlanner`, `RolloutPlanner`, `ReplanPlanner` | [Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md) |
+| CA-VOD | one-step value of decision plus optional belief-state future value | `CAVODPlanner` | [Algorithm prototypes](../../02-core/03-decision/README.md) |
+| AADS | index policy plus exact single-arm Whittle index | `AttentionScheduler`, `WhittleScheduler` | [Algorithm prototypes](../../02-core/03-decision/README.md) |
+| CDR | greedy and exact minimum-weight vertex cover | `repair_continuity` | [Algorithm prototypes](../../02-core/03-decision/README.md) |
+| CDA | linear attribution plus bounded counterfactual search | `counterfactual_attribution`, `counterfactual_search` | [Algorithm prototypes](../../02-core/03-decision/README.md) |
+| CABB | exact finite-horizon branch and bound over commitments and attention | `CABBPlanner`, `RolloutPlanner`, `ReplanPlanner` | [Algorithm prototypes](../../02-core/03-decision/README.md) |
 
 The prototypes are deterministic and training-free. They are first implementations, not the full
 research methods described below.
@@ -274,7 +274,7 @@ The claim must survive a direct comparison with these lines of work. A new name 
 ## 10. Next step
 
 The deterministic prototypes are in
-[Algorithm prototypes](../../02-core/03-planning/05-algorithm-prototypes.md), and the smoke results
+[Algorithm prototypes](../../02-core/03-decision/README.md), and the smoke results
 are in [Algorithm prototype results](../02-evaluation/algorithm-prototypes.md).
 
 The one-step, belief-state future-value and exact sequence prototypes are in place. The next step is

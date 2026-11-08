@@ -64,7 +64,7 @@ flowchart LR
 ```
 
 A request that carries both payloads is valid. `dispatch` chooses the action path when `situation`
-or `options` is present; otherwise it chooses signal attention. [Dispatch](03-dispatch.md) defines the
+or `options` is present; otherwise it chooses signal attention. [Dispatch](04-dispatch.md) defines the
 exact rule.
 
 ## The response
@@ -216,7 +216,7 @@ Reason codes are grouped by producer:
 | CA-VOD planner | `value_of_decision` |
 | Model-based planners | `mdp_plan`, `pomdp_plan`, `terminal_state`, `no_action` |
 | Authored rules | `policy_rule`, `no_rule` |
-| Packaged policies | `safe_action`, `safety_blocked`, `no_safe_option`, `ask_preference`, `verify_outcome`, `escalate_to_target`, `replan`, and the codes listed on the [policies page](../02-decide/03-policies.md) |
+| Packaged policies | `safe_action`, `safety_blocked`, `no_safe_option`, `ask_preference`, `verify_outcome`, `escalate_to_target`, `replan`, and the codes listed on the [policies page](../03-decision/01-single/04-policies.md) |
 
 The gate set emits the codes in the table above. `ask_approval` is a reserved enum value; approval is
 carried by `requires_approval` on the decision.
@@ -249,11 +249,11 @@ These are stable identifiers:
 - the `schema_version` and `policy_version` fields.
 
 The task shape, the option fields and the planner scores can grow additively. A removed or renamed
-field is a schema change. [Records and schema](02-records-and-schema.md) describes the version rules.
+field is a schema change. [Records and schema](03-records.md) describes the version rules.
 
 ## Related
 
-- [Records and schema](02-records-and-schema.md) — every record shape and the schema workflow.
-- [Dispatch](03-dispatch.md) — how the request selects a mechanism.
-- [Policies](../02-decide/03-policies.md) — the policy contract.
-- [Planner contract](../03-planning/01-planner-contract.md) — the `PlannerResult` shape and its conversion.
+- [Records and schema](03-records.md) — every record shape and the schema workflow.
+- [Dispatch](04-dispatch.md) — how the request selects a mechanism.
+- [Policies](../03-decision/01-single/04-policies.md) — the policy contract.
+- [Planner contract](02-planner-contract.md) — the `PlannerResult` shape and its conversion.

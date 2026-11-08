@@ -33,7 +33,7 @@ package and policy versions available for rollback.
 
 - **Package** - any user-visible change, feature or fix. Both packages move together for a release.
 - **Record schema** - a record shape changes. Regenerate `laix-v1.schema.json` and update
-  [Records and schema](../../02-core/01-contract/02-records-and-schema.md).
+  [Records and schema](../../02-core/01-contract/03-records.md).
 - **Rule sets or signal-attention vectors** - a rule, threshold or labelled vector changes behaviour.
 - **Reason code** - treat it as a behaviour change and call it out in the changelog.
 
@@ -71,5 +71,5 @@ vectors in `packages/contracts/` are the reference for both packages.
 
 - [Migration](02-migration.md) - the upgrade path and data migration.
 - [Testing](../02-quality/01-testing.md) - the checks before a release.
-- [Records and schema](../../02-core/01-contract/02-records-and-schema.md) - the schema workflow.
+- [Records and schema](../../02-core/01-contract/03-records.md) - the schema workflow.
 - [Changelog](../../../CHANGELOG.md) - the release history.

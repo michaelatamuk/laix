@@ -239,7 +239,7 @@ human-attention budget. The decision carries the four scores, so the trade-off i
 
 Same entry point, different policy.
 
-A separate conflict scenario is in [`examples/python/03-plan/conflict_scenario.py`](examples/python/03-plan/conflict_scenario.py).
+A separate conflict scenario is in [`examples/python/core/decision/history/conflict_scenario.py`](examples/python/core/decision/history/conflict_scenario.py).
 
 ## Decision continuity
 
@@ -252,7 +252,7 @@ A decision is one step in a sequence. It leaves state for the next decision.
 | 3 | verifies after execution | `c1` fulfilled; receipt and outcome recorded |
 
 The next decision sees the commitments, human-attention budget, approvals, revisions and outcomes the
-previous one left. See [Decision continuity](docs/02-core/04-continuity/01-decision-continuity.md).
+previous one left. See [Decision continuity](docs/02-core/03-decision/04-history.md).
 
 In a 12-episode synthetic mechanism test, the stateful runtime completed **100%** of episodes; a
 stateless utility planner completed **0%** with 36 continuity errors. See the

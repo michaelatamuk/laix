@@ -73,7 +73,7 @@ context = LiveContext(
 ```
 
 The scheduler is the same `ResourceScheduler` used by `DecisionRuntime.schedule`. The resource model
-is in [Resources](../../02-core/02-decide/04-resources.md).
+is in [Resources](../../02-core/04-sensing/02-resources.md).
 
 ## Frames
 
@@ -100,7 +100,7 @@ The host drives time. A live loop calls `perceive` on each event. A batch job ca
 
 ## Example
 
-`examples/python/05-execute/live_context.py`:
+`examples/python/appkit/run/live_context.py`:
 
 ```text
 ('motion', 'read-label') ('transcribe',) 2 0.097
@@ -126,5 +126,5 @@ call the detector directly.
 - [Decision runtime](01-decision-runtime.md) - the decision loop after perception.
 - [Streaming](02-streaming.md) - event time and the live loop.
 - [Integration](../01-build/01-integration.md) - turning a frame into a request.
-- [Resources](../../02-core/02-decide/04-resources.md) - the budget and scheduler.
-- [Foundation](../../02-core/06-reference/02-foundation.md) - perception records.
+- [Resources](../../02-core/04-sensing/02-resources.md) - the budget and scheduler.
+- [Foundation](../../02-core/07-support/02-support.md) - perception records.

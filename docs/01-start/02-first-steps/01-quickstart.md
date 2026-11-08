@@ -138,6 +138,6 @@ If the answer is not the one you expected, start with
 - Build a production adapter: [integration](../../03-appkit/01-build/01-integration.md).
 - Stream events: [streaming](../../03-appkit/02-run/02-streaming.md).
 - Execute and recover: [execution and recovery](../../03-appkit/03-execute/01-execution-and-recovery.md).
-- Learn from outcomes: [outcome learning](../../02-core/05-learning/01-outcome-learning.md).
+- Learn from outcomes: [outcome learning](../../02-core/02-domain/03-outcomes.md).
 - Read the full loop: [decision lifecycle](../01-orientation/02-decision-lifecycle.md).
 - Runnable examples: [`../../../examples/README.md`](../../../examples/README.md).
