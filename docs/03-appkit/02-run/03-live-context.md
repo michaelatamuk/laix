@@ -12,7 +12,7 @@ which detectors run and returns a frame. The frame becomes input to a decision r
 | **Uncertainty** | How unsure the app is, from `0` to `1`. |
 | **Budget** | The deep-call, cost and latency allowance for one event. |
 
-The contracts live in `core/perception`; the host-driven loop lives in
+The contracts live in `core/domain/perception`; the host-driven loop lives in
 `appkit/live_context/loop.py`.
 
 ## Detector

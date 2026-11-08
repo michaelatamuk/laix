@@ -1,14 +1,14 @@
 import type { ActionOption } from "../core/contracts.ts";
 import { DecisionClient } from "./decision-client.ts";
 import type { Decision, DecisionRequest } from "../core/contracts.ts";
-import { ActivePerceptionPolicy } from "../core/decision/single/policies/active-perception.ts";
-import { AllocationPolicy } from "../core/decision/single/policies/allocation.ts";
-import { EscalationPolicy } from "../core/decision/single/policies/escalation.ts";
-import { NegotiationPolicy } from "../core/decision/single/policies/negotiation.ts";
-import { PreferenceElicitationPolicy } from "../core/decision/single/policies/preference.ts";
-import { ReplanningPolicy } from "../core/decision/single/policies/replanning.ts";
-import { SafetyConstrainedPolicy } from "../core/decision/single/policies/safety.ts";
-import { VerificationPolicy } from "../core/decision/single/policies/verification.ts";
+import { ActivePerceptionPolicy } from "../core/engines/decision/single/policies/active-perception.ts";
+import { AllocationPolicy } from "../core/engines/decision/single/policies/allocation.ts";
+import { EscalationPolicy } from "../core/engines/decision/single/policies/escalation.ts";
+import { NegotiationPolicy } from "../core/engines/decision/single/policies/negotiation.ts";
+import { PreferenceElicitationPolicy } from "../core/engines/decision/single/policies/preference.ts";
+import { ReplanningPolicy } from "../core/engines/decision/single/policies/replanning.ts";
+import { SafetyConstrainedPolicy } from "../core/engines/decision/single/policies/safety.ts";
+import { VerificationPolicy } from "../core/engines/decision/single/policies/verification.ts";
 
 export const AT = "2026-11-01T10:00:00Z";
 export const FIELDS = ["verb", "reasonCode", "actionId", "requiresApproval"];

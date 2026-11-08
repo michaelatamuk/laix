@@ -8,7 +8,7 @@ alternatives, so the result is explainable.
 from __future__ import annotations
 
 from ......support.values import clamp
-from .....contract.planner_policy import PlannerInput, PlannerResult
+from ......contract.planner_policy import PlannerInput, PlannerResult
 from .mdp_model import MdpModel
 from .mdp_transition import MdpTransition
 

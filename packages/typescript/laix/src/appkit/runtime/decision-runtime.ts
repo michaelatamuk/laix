@@ -1,9 +1,9 @@
 import type { ActionOption, Decision, Outcome, Receipt, Situation, Trace } from "../../core/contracts.ts";
 import { clamp, iso, newId } from "../../core/contracts.ts";
 import { decideAction } from "../decision-client.ts";
-import { OutcomeLedger } from "../../core/outcome.ts";
+import { OutcomeLedger } from "../../core/domain/outcomes/outcome-ledger.ts";
 import { ApprovalRequired, ExecutionBridge } from "./execution.ts";
-import { ResourceScheduler, type Budget, type ResourcePlan, type SensingOption } from "../../core/resources.ts";
+import { ResourceScheduler, type Budget, type ResourcePlan, type SensingOption } from "../../core/engines/sensing/resources.ts";
 import { ExperienceState } from "./state.ts";
 
 export interface RuntimeDecision extends Decision {

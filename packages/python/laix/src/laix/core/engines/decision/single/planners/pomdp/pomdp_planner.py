@@ -11,7 +11,7 @@ import math
 from typing import Any, Iterable, Mapping
 
 from ......support.values import clamp
-from .....contract.planner_policy import PlannerInput, PlannerResult
+from ......contract.planner_policy import PlannerInput, PlannerResult
 from ..mdp.mdp_model import MdpModel
 from ..mdp.mdp_planner import value_iteration
 from .observation_probability import ObservationProbability

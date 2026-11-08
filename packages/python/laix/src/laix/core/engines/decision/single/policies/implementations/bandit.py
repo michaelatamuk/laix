@@ -10,9 +10,10 @@ from __future__ import annotations
 
 from typing import Any, Callable, Iterable
 
-from ......decisions import Decision, Intent
+from ......domain.decisions import Decision, Intent
 from ......support.verbs import Verb
-from ......outcome_learning import Arm, Outcome, UCBBandit
+from ......domain.outcomes import Outcome
+from ......engines.learning.bandit import Arm, UCBBandit
 from ._helpers import decision, number, value
 
 

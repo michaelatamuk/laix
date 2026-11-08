@@ -31,6 +31,9 @@ app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` 
 
 ## Decision mechanisms
 
+The folder rule is: `contract/` defines the interfaces, `domain/` holds records and state,
+`engines/` holds processing, and `support/` plus `schema/` are infrastructure.
+
 The layer rule is: **Planner** is one live decision, **SequencePlanner** is a finite chain,
 **CompositePlanner** is a composition, **DecisionPolicy** is an integration, **Learner** is learning.
 The protocol for one decision is `Planner`; the protocol for a chain is `SequencePlanner`.

@@ -5,7 +5,7 @@ mission, agent or another application that only needs the decision layer.
 """
 
 from .schema.records import RECORDS, RECORD_NAMES
-from .engines.signals import (
+from .engines.sensing.signals import (
     SignalContext,
     SignalFeedback,
     Signal,
@@ -13,7 +13,7 @@ from .engines.signals import (
     is_quiet,
     score,
 )
-from .engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from .engines.sensing.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .engines.learning.calibration import (
     CalibrationBin,
     CalibrationReport,
@@ -55,7 +55,7 @@ from .engines.evaluation.bench.live_bench import (
     run_live_bench,
 )
 from .engines.decision.single.planners.composite.live_composite_planner import LiveCompositePlanner, CompositeScore
-from .engines.learning.decision_calibration import (
+from .engines.learning.calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
     DecisionCalibrationSample,
@@ -63,7 +63,7 @@ from .engines.learning.decision_calibration import (
     decision_calibration_report,
     decision_samples_from_outcomes,
 )
-from .engines.contract.planner_policy import Planner, PlannerInput, PlannerPolicy, PlannerResult, to_decision, to_planner_input
+from .contract.planner_policy import Planner, PlannerInput, PlannerPolicy, PlannerResult, to_decision, to_planner_input
 from .engines.decision.single.planners.mdp.mdp_planner import (
     MDPPlanner,
     MdpModel,
@@ -72,7 +72,7 @@ from .engines.decision.single.planners.mdp.mdp_planner import (
     plan_actions,
     value_iteration,
 )
-from .engines.learning.model_learning import LearnedTransition, ModelLearner
+from .engines.learning.model import LearnedTransition, ModelLearner
 from .engines.decision.single.planners.pomdp.pomdp_planner import (
     ObservationProbability,
     POMDPPlanner,
@@ -149,7 +149,7 @@ from .engines.decision.sequence import (
     rollout_decisions,
 )
 from .engines.decision.single.planners.utility.utility_planner import RISK_ATTITUDES, UtilityPlanner, UtilityModel, UtilityWeights
-from .decisions import (
+from .domain.decisions import (
     ActionOption,
     Belief,
     ScoreBreakdown,
@@ -171,22 +171,24 @@ from .decisions import (
     Trace,
     from_signal_attention,
 )
-from .outcome_learning import (
-    CausalEffect,
-    CausalLedger,
-    CausalObservation,
+from .domain.outcomes import (
     OUTCOME_DIRECTIONS,
     OUTCOME_LABELS,
-    Arm,
     SignalAttentionOutcome,
     Outcome,
     OutcomeLedger,
     SignalAttentionLog,
     OutcomeStore,
+)
+from .engines.learning import (
+    Arm,
+    CausalEffect,
+    CausalLedger,
+    CausalObservation,
     UCBBandit,
     reward_for_label,
 )
-from .commitments import (
+from .domain.commitments import (
     COMMITMENT_STATUSES,
     Commitment,
     CommitmentLedger,
@@ -194,12 +196,12 @@ from .commitments import (
     FileCommitmentStore,
     InMemoryCommitmentStore,
 )
-from .perception import Detection, Detector, PerceptionEvent, PerceptionFrame
+from .domain.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .support.time import iso, parse_iso, utcnow
 from .support.values import confidence_band
 from .support.version import SCHEMA_VERSION
 from .support.verbs import VERBS, Verb
-from .evaluation import Case, Report, Row, compare, load_cases
+from .engines.evaluation.cases import Case, Report, Row, compare, load_cases
 from .engines.decision.single.policies import (
     ACTION_POLICY_VERSION,
     ActivePerceptionPolicy,

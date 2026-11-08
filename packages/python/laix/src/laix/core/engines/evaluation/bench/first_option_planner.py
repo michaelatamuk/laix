@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 from .baseline_plans import baseline_plan, baseline_wait
-from ...contract.planner_input import PlannerInput
-from ...contract.planner_result import PlannerResult
+from ....contract.planner_input import PlannerInput
+from ....contract.planner_result import PlannerResult
 
 
 class FirstOptionPlanner:

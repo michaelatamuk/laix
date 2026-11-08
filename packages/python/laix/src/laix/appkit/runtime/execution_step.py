@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
-from ...core.decisions import ActionOption, Decision, ExecutionReceipt
+from ...core.domain.decisions import ActionOption, Decision, ExecutionReceipt
 
 
 @dataclass(frozen=True, slots=True)

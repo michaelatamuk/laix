@@ -1,5 +1,5 @@
 import type { Planner, PlannerInput, PlannerResult } from "../core/contract/planner.ts";
-import { MDPPlanner, MdpModel } from "../core/decision/single/planners/mdp/mdp-planner.ts";
+import { MDPPlanner, MdpModel } from "../core/engines/decision/single/planners/mdp/mdp-planner.ts";
 import { Simulator, comparePlanners, type SimulationReport } from "./simulator.ts";
 
 export class FixedActionPlanner implements Planner {

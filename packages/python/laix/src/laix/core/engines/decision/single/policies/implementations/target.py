@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import replace
 from typing import Any, Iterable
 
-from ......decisions import Decision, TARGET_MODES
+from ......domain.decisions import Decision, TARGET_MODES
 
 
 class TargetedPolicy:

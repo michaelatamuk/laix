@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from ......decisions import ActionOption
+from ......domain.decisions import ActionOption
 from .ca_vod_score import CAVODScore
 
 

@@ -194,10 +194,10 @@ It is reported only when the scenario declares an optimum. Without an optimum, `
 
 | Path | Contents |
 |---|---|
-| `core/engines/contract/planner_input.py` | `PlannerInput` |
-| `core/engines/contract/planner_result.py` | `PlannerResult` |
-| `core/engines/contract/planner.py` | `Planner` |
-| `core/engines/contract/planner_policy.py` | `PlannerPolicy`, `to_planner_input`, `to_decision` |
+| `core/contract/planner_input.py` | `PlannerInput` |
+| `core/contract/planner_result.py` | `PlannerResult` |
+| `core/contract/planner.py` | `Planner` |
+| `core/contract/planner_policy.py` | `PlannerPolicy`, `to_planner_input`, `to_decision` |
 | `core/engines/evaluation/simulation/` | simulator, scenarios and report |
 | `core/engines/decision/single/planners/` | the built-in planners |
 | `core/engines/decision/single/planners/composite/` | the composite planner |

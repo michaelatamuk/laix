@@ -4,7 +4,7 @@ LAIX has three evaluation layers. They answer different questions.
 
 | DecisionClient | Question | Location |
 |---|---|---|
-| **Core evaluation** | Did a policy or planner return the expected decision? | `core/evaluation/` |
+| **Core evaluation** | Did a policy or planner return the expected decision? | `core/engines/evaluation/cases/` |
 | **Live decision benchmark** | Which planner is accurate and safe on the fixed live cases? | `core/engines/evaluation/bench/` |
 | **LAIX-Bench** | Does every decision class agree with its expected cases? | `appkit/bench/` |
 
@@ -52,7 +52,7 @@ JSON document. `compare_decisions` is the package-level alias for `compare`.
 
 ### Attention evaluation
 
-The attention fixture has its own helpers in `core/evaluation/signal_attention.py`:
+The attention fixture has its own helpers in `core/engines/evaluation/cases/signal_attention.py`:
 
 | Helper | Purpose |
 |---|---|

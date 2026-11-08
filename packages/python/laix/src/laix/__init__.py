@@ -12,7 +12,7 @@ records, delivery and the rest of the app kit are optional and load lazily.
 """
 
 from .core import RECORD_NAMES
-from .core.decisions import (
+from .core.domain.decisions import (
     ActionOption,
     Belief,
     CONSTRAINT_KINDS,
@@ -34,10 +34,10 @@ from .core.decisions import (
     Trace,
     from_signal_attention,
 )
-from .core.outcome_learning.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
-from .core.outcome_learning import SignalAttentionLog, SignalAttentionOutcome, Outcome
-from .core.outcome_learning import CausalEffect, CausalLedger, CausalObservation
-from .core.commitments import (
+from .core.domain.outcomes.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
+from .core.domain.outcomes import SignalAttentionLog, SignalAttentionOutcome, Outcome
+from .core.engines.learning import CausalEffect, CausalLedger, CausalObservation
+from .core.domain.commitments import (
     COMMITMENT_STATUSES,
     Commitment,
     CommitmentLedger,
@@ -49,12 +49,13 @@ from .core.support.time import iso, parse_iso, utcnow
 from .core.support.values import confidence_band
 from .core.support.verbs import VERBS, Verb
 from .core.support.version import SCHEMA_VERSION
-from .core import evaluation
-from .core.engines.signals import SignalAttentionDecision, SignalContext, SignalFeedback, Signal, decide_signal_attention
-from .core.evaluation import Case, Report, Row
-from .core.evaluation import compare as compare_decisions
-from .core.evaluation import load_cases
-from .core.outcome_learning import Arm, OutcomeLedger, OutcomeStore, UCBBandit, reward_for_label
+from .core.engines.evaluation import cases as evaluation
+from .core.engines.sensing.signals import SignalAttentionDecision, SignalContext, SignalFeedback, Signal, decide_signal_attention
+from .core.engines.evaluation.cases import Case, Report, Row
+from .core.engines.evaluation.cases import compare as compare_decisions
+from .core.engines.evaluation.cases import load_cases
+from .core.engines.learning.bandit import Arm, UCBBandit, reward_for_label
+from .core.domain.outcomes import OutcomeLedger, OutcomeStore
 from .core.engines.decision.single.policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
@@ -82,8 +83,8 @@ from .core.engines.decision.single.policies import (
     simulate,
     decide_action,
 )
-from .core.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
-from .core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from .core.domain.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
+from .core.engines.sensing.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .core.engines.decision.single.planners.commitment.commitment_planner import (
     CommitmentPlanner,
     CommitmentEffect,
@@ -117,7 +118,7 @@ from .core.engines.evaluation.bench.live_bench import (
     run_live_bench,
 )
 from .core.engines.decision.single.planners.composite.live_composite_planner import LiveCompositePlanner, CompositeScore
-from .core.engines.learning.decision_calibration import (
+from .core.engines.learning.calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
     DecisionCalibrationSample,
@@ -125,7 +126,7 @@ from .core.engines.learning.decision_calibration import (
     decision_calibration_report,
     decision_samples_from_outcomes,
 )
-from .core.engines.contract.planner_policy import Planner, PlannerInput, PlannerPolicy, PlannerResult, to_decision, to_planner_input
+from .core.contract.planner_policy import Planner, PlannerInput, PlannerPolicy, PlannerResult, to_decision, to_planner_input
 from .core.engines.learning.calibration import (
     CalibrationBin,
     CalibrationReport,
@@ -142,7 +143,7 @@ from .core.engines.decision.single.planners.mdp.mdp_planner import (
     plan_actions,
     value_iteration,
 )
-from .core.engines.learning.model_learning import LearnedTransition, ModelLearner
+from .core.engines.learning.model import LearnedTransition, ModelLearner
 from .core.engines.decision.single.planners.pomdp.pomdp_planner import (
     ObservationProbability,
     POMDPPlanner,

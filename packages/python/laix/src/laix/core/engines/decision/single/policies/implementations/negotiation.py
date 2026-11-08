@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ......decisions import Decision, Intent
+from ......domain.decisions import Decision, Intent
 from ......support.verbs import Verb
 from ._helpers import decision, number
 

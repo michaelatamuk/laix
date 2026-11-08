@@ -14,7 +14,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any, Callable, Iterable
 
-from ...core.decisions import (
+from ...core.domain.decisions import (
     ActionOption,
     Decision,
     Observation,
@@ -23,12 +23,12 @@ from ...core.decisions import (
     Trace,
 )
 from ...core.support.ids import new_id
-from ...core.outcome_learning import Outcome
+from ...core.domain.outcomes import Outcome
 from ...core.support.time import iso
 from .execution import ApprovalRequired, ExecutionBridge
-from ...core.outcome_learning import OutcomeLedger
+from ...core.domain.outcomes import OutcomeLedger
 from ...core.engines.decision.single.policies.implementations.action import ActionPolicy, ActionPolicyInput
-from ...core.engines.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from ...core.engines.sensing.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .state import ExperienceState
 
 IdFactory = Callable[[str], str]

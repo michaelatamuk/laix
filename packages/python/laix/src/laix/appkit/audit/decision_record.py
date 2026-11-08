@@ -8,7 +8,7 @@ from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from typing import Any
 
-from ...core.decisions import EvidenceRef
+from ...core.domain.decisions import EvidenceRef
 from .approval import Approval
 from .audit_event import AuditEvent
 from .undo import Undo

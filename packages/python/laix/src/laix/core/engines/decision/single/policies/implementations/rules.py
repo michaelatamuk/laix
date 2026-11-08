@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Iterable
 
-from ......decisions import Decision
+from ......domain.decisions import Decision
 from .rule import Rule
 
 

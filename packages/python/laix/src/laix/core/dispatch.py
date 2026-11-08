@@ -10,8 +10,8 @@ from collections.abc import Callable
 from dataclasses import replace
 from typing import Any
 
-from .decisions import Decision, DecisionRequest, coerce, from_signal_attention
-from .engines.signals import decide_signal_attention
+from .domain.decisions import Decision, DecisionRequest, coerce, from_signal_attention
+from .engines.sensing.signals import decide_signal_attention
 from .engines.decision.single.policies import ActionPolicy, ActionPolicyInput
 from .support.ids import new_id
 

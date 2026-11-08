@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from ...contract.planner import Planner
+from ....contract.planner import Planner
 from .simulation_result import SimulationResult
 
 if TYPE_CHECKING:

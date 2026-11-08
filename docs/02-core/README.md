@@ -259,11 +259,11 @@ evaluation and foundation.
 
 | Path | Contents |
 |---|---|
-| `core/decisions/` | request, response and trail records. |
+| `core/domain/decisions/` | request, response and trail records. |
 | `core/dispatch.py` | `decide` and `select`. |
-| `core/engines/signals/` | signal attention, gates, score and timing. |
+| `core/engines/sensing/signals/` | signal attention, gates, score and timing. |
 | `core/engines/decision/single/policies/` | decision-policy protocol, registry and packaged policies. |
-| `core/engines/contract/` | `PlannerInput`, `PlannerResult`, `Planner` and `PlannerPolicy`. |
+| `core/contract/` | `PlannerInput`, `PlannerResult`, `Planner` and `PlannerPolicy`. |
 | `core/engines/decision/single/planners/` | utility, commitment, execution, human-attention, decision-value, composite, MDP and POMDP planners. |
 | `core/engines/decision/single/planners/composite/` | `LiveCompositePlanner` and `CompositeScore`. |
 | `core/engines/decision/sequence/` | finite-horizon sequence contract, `CABBPlanner`, `RolloutPlanner` and `ReplanPlanner`. |
@@ -272,12 +272,12 @@ evaluation and foundation.
 | `core/engines/decision/explain/` | `counterfactual_attribution` and `counterfactual_search`. |
 | `core/engines/evaluation/simulation/` | simulator, scenarios and planner comparison. |
 | `core/engines/evaluation/bench/` | the live decision benchmark. |
-| `core/engines/resources/` | budget, resource plan, scheduler and sensing options. |
-| `core/commitments/` | commitment model, ledger and stores. |
-| `core/outcome_learning/` | outcomes, bandits and causal attribution. |
-| `core/engines/learning/` | calibration, decision calibration and model learning. |
-| `core/evaluation/` | cases, rows, reports and decision comparison. |
-| `core/perception/` | detector, detection, event and frame. |
+| `core/engines/sensing/resources/` | budget, resource plan, scheduler and sensing options. |
+| `core/domain/commitments/` | commitment model, ledger and stores. |
+| `core/domain/outcomes/` | outcome records, ledger, stores and signal-attention feedback records. |
+| `core/engines/learning/` | calibration, model learning, bandit and causal attribution. |
+| `core/engines/evaluation/cases/` | cases, rows, reports and decision comparison. |
+| `core/domain/perception/` | detector, detection, event and frame. |
 | `core/schema/` | record registry, schema generation and validation. |
 | `core/support/` | ids, time, values, serialization, errors, verbs and version. |
 
