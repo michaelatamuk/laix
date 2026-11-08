@@ -93,67 +93,7 @@ core a runtime: the same chooser sees a different, current state on every step.
 This diagram is a conceptual view of the core, not the folder map. The folder map is in
 [Reading map](#reading-map) and [Where the code lives](#where-the-code-lives).
 
-```mermaid
-block-beta
-    columns 1
-
-    block:contract
-        columns 3
-        contract_label["Contract"]
-        request_decision["DecisionRequest · Decision"]
-        receipt_trace["ExecutionReceipt · Trace"]
-    end
-
-    block:domain
-        columns 3
-        domain_label["Domain"]
-        decisions_commitments["Decisions · Commitments"]
-        outcomes_perception["Outcomes · Perception"]
-    end
-
-    block:decision
-        columns 3
-        decision_label["Decision"]
-        single_sequence_fleet["Single · Sequence · Fleet"]
-        history_explain["History · Explain"]
-    end
-
-    block:sensing
-        columns 3
-        sensing_label["Sensing"]
-        signals["Signals"]
-        resources["Resources"]
-    end
-
-    block:learning
-        columns 3
-        learning_label["Learning"]
-        calibration_model["Calibration · Model"]
-        bandit_causal["Bandit · Causal"]
-    end
-
-    block:evaluation
-        columns 3
-        evaluation_label["Evaluation"]
-        cases_bench["Cases · Benchmarks"]
-        simulation["Simulation"]
-    end
-
-    block:foundation
-        columns 3
-        foundation_label["Foundation"]
-        schema["Schema"]
-        support["Support"]
-    end
-
-    style contract_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-    style domain_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-    style decision_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-    style sensing_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-    style learning_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-    style evaluation_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-    style foundation_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-```
+![The seven core layers: contract, domain, decision, sensing, learning, evaluation and foundation](../assets/core-layers.svg)
 
 | Layer | Contains | Answers |
 |---|---|---|

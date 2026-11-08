@@ -16,56 +16,7 @@ The core stays stateless. The app kit adds the surfaces, execution, ports and pr
 
 ## The five stages
 
-```mermaid
-block-beta
-    columns 1
-
-    block:build
-        columns 4
-        build_label["Build"]
-        adapter["Adapter<br/>event → request"]
-        layer["DecisionClient<br/>one decision"]
-        policies["Policies<br/>select · version · shadow"]
-    end
-
-    block:run
-        columns 4
-        run_label["Run"]
-        runtime["DecisionRuntime<br/>observe · decide · measure"]
-        stream["StreamSession<br/>event time · revisions"]
-        live["LiveContext<br/>detectors · frames"]
-    end
-
-    block:execute
-        columns 4
-        execute_label["Execute"]
-        execution["ExecutionBridge<br/>approve · act · recover"]
-        saga["Saga<br/>compensate · recover"]
-        records["Proposal · DecisionRecord<br/>approve · apply · audit"]
-    end
-
-    block:connect
-        columns 4
-        connect_label["Connect"]
-        stores["Stores<br/>state · checkpoints · commitments · outcomes"]
-        platform["Platform<br/>skills · events · approvals"]
-        delivery["Delivery<br/>channel · receipt"]
-    end
-
-    block:operate
-        columns 4
-        operate_label["Operate"]
-        bench["Bench<br/>cases · suites"]
-        metrics["Metrics<br/>counters · latency"]
-        deploy["Deployment<br/>topology · rollout · retention"]
-    end
-
-    style build_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-    style run_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-    style execute_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-    style connect_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-    style operate_label fill:transparent,stroke:transparent,font-size:14px,font-weight:bold
-```
+![The five app-kit stages: build, run, execute, connect and operate](../assets/appkit-stages.svg)
 
 | Stage | Question | Pages |
 |---|---|---|
