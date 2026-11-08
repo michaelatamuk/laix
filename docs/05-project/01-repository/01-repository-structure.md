@@ -66,13 +66,14 @@ laix/
 │   │   ├── vignette-study/   vignette generation, analysis and server
 │   │   ├── shared/        shared benchmark and glue modules
 │   │   └── reproduce.sh   full evidence pipeline
+│   ├── contracts/         decision schema and reason-code exporter
 │   └── docs/             brand asset renderer
 └── .github/               CI and release workflows
 ```
 
-`packages/contracts/` is the shared source of truth for the decision record shape and the test
-vectors. The core record schema is generated from the Python dataclasses and ships inside the
-package.
+`packages/contracts/` is the shared source of truth for the decision record shape, the standalone
+decision schema, the reason-code registry and the test vectors. The core record schema is generated
+from the Python dataclasses and ships inside the package.
 
 `scripts/ci/check_docs_links.py` checks every relative link in the docs, examples and README files;
 the `docs` CI job runs it.
@@ -209,11 +210,14 @@ tarball.
 | File | Contents |
 |---|---|
 | `packages/contracts/decision-record.v1.schema.json` | decision record shape |
+| `packages/contracts/decision.v1.schema.json` | standalone public decision shape |
+| `packages/contracts/reason-codes.v1.json` | stable reason-code registry |
 | `packages/contracts/signal-attention.v1.json` | signal-attention test cases |
 | `packages/contracts/signal-attention-bench.v1.json` | signal-attention outcome cases |
 
 The Python package keeps a copy of the signal-attention vectors for installation. A test fails if the copy
-and the canonical file differ.
+and the canonical file differ. The decision schema and reason-code registry are generated with
+`python scripts/contracts/export_contracts.py`; a test fails if either committed file is stale.
 
 ## Rules
 

@@ -7,5 +7,6 @@ entry point.
 2. [Planner contract](02-planner-contract.md) — `Planner`, `PlannerInput`, `PlannerResult`, `PlannerPolicy` and `SequencePlanner`.
 3. [Records](03-records.md) — every record shape, JSON and change rules.
 4. [Dispatch](04-dispatch.md) — `decide`, automatic selection, ids and confidence provenance.
+5. [Reason codes](05-reason-codes.md) — the stable registry, groups and change rules.
 
 The record schema lives in [Support / schema](../07-support/01-schema.md).

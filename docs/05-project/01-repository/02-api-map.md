@@ -18,6 +18,7 @@ app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` 
 | `ScoreBreakdown`, `Trace`, `ExecutionReceipt` | the score, the trail and the execution state |
 | `Verb` | `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` |
 | `decide` | answer one request with the core |
+| `REASON_CODE_GROUPS`, `REASON_CODES_VERSION`, `reason_code_registry` | the stable reason-code registry |
 
 ## Commitments
 

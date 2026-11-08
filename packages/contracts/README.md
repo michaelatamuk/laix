@@ -5,6 +5,8 @@ The contract is the source of truth. Code follows it.
 | File | Contents |
 |---|---|
 | `decision-record.v1.schema.json` | the shape of an approval and audit record |
+| `decision.v1.schema.json` | the standalone public `Decision` shape |
+| `reason-codes.v1.json` | the stable reason-code registry |
 | `signal-attention.v1.json` | 23 behavioural cases for the signal-attention policy |
 | `signal-attention-bench.v1.json` | 12 labelled cases for precision, hazard and recall |
 
@@ -17,4 +19,11 @@ signal-attention cases; a weight change creates a new major version.
 
 The Python and TypeScript packages both read `signal-attention.v1.json`. The Python package keeps a copy
 inside the package for installation; this folder is the canonical copy.
+
+`decision.v1.schema.json` and `reason-codes.v1.json` are generated from the Python code. Regenerate
+them from the repository root:
+
+```powershell
+python scripts/contracts/export_contracts.py
+```
 

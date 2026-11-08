@@ -48,6 +48,11 @@ from .core.domain.commitments import (
 from .core.support.time import iso, parse_iso, utcnow
 from .core.support.otel import decision_attributes
 from .core.support.values import confidence_band
+from .core.contract.reason_codes import (
+    REASON_CODE_GROUPS,
+    REASON_CODES_VERSION,
+    reason_code_registry,
+)
 from .core.support.verbs import VERBS, Verb
 from .core.support.version import SCHEMA_VERSION
 from .core.engines.evaluation import cases as evaluation
@@ -393,6 +398,9 @@ __all__ = [
     "OutcomeStore",
     "FileOutcomeStore",
     "decision_attributes",
+    "REASON_CODE_GROUPS",
+    "REASON_CODES_VERSION",
+    "reason_code_registry",
     "Platform",
     "DecisionPolicy",
     "DecisionPolicyError",
