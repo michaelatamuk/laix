@@ -22,6 +22,8 @@
   `scripts/contracts/export_contracts.py` and checked by the test suite.
 - **MCP server.** Optional `laix-mcp` stdio server exposing `decide` through the public request
   JSON, with `auto` and `live` policies.
+- **A2A and OpenAPI profiles.** An A2A 1.0 agent card template and an OpenAPI 3.1 action profile,
+  with tests for field placement and receipt statuses.
 - **Validation template.** A pre-registration page for external runs, with the metrics, analysis
   plan, threats and replication rules.
 - **Community templates.** Bug and feature issue forms, a pull request template and a documentation

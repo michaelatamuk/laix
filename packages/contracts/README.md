@@ -7,6 +7,8 @@ The contract is the source of truth. Code follows it.
 | `decision-record.v1.schema.json` | the shape of an approval and audit record |
 | `decision.v1.schema.json` | the standalone public `Decision` shape |
 | `reason-codes.v1.json` | the stable reason-code registry |
+| `a2a-agent-card.v1.json` | the A2A 1.0 agent card template |
+| `action.openapi.v1.json` | the OpenAPI 3.1 host action profile |
 | `signal-attention.v1.json` | 23 behavioural cases for the signal-attention policy |
 | `signal-attention-bench.v1.json` | 12 labelled cases for precision, hazard and recall |
 
@@ -26,4 +28,7 @@ them from the repository root:
 ```powershell
 python scripts/contracts/export_contracts.py
 ```
+
+`a2a-agent-card.v1.json` and `action.openapi.v1.json` are host templates. Replace the placeholder URL
+and security scheme before publishing; the checks only validate their structure.
 

@@ -1,0 +1,54 @@
+{
+  "name": "LAIX Decision Agent",
+  "description": "A decision layer for AI agents that must act, ask, wait, verify or escalate. The agent returns the decision and its reason; the host executes it.",
+  "version": "0.10.0",
+  "provider": {
+    "organization": "LAIX",
+    "url": "https://github.com/michaelatamuk/laix"
+  },
+  "documentationUrl": "https://github.com/michaelatamuk/laix/blob/main/docs/03-appkit/01-build/06-a2a.md",
+  "supportedInterfaces": [
+    {
+      "url": "https://example.com/a2a",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "extendedAgentCard": false,
+    "extensions": []
+  },
+  "defaultInputModes": [
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "application/json"
+  ],
+  "skills": [
+    {
+      "id": "decide",
+      "name": "Decide",
+      "description": "Answer one LAIX decision request with the public Decision shape: verb, reason code, confidence, action, approval requirement, score and trace.",
+      "tags": [
+        "decision",
+        "approval",
+        "audit",
+        "commitments",
+        "human-attention"
+      ],
+      "examples": [
+        "Should the agent act, ask, wait, verify or escalate?",
+        "Given a situation, options and constraints, return the next decision.",
+        "Given signals and a signal context, decide what deserves attention."
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    }
+  ]
+}

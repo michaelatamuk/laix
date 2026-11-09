@@ -163,6 +163,7 @@ Unknown top-level fields are ignored. Invalid required fields raise a tool error
 ## Related
 
 - [LangGraph](04-langgraph.md) - a graph that pauses for approval.
+- [A2A and OpenAPI](06-a2a.md) - the agent card and host action profile.
 - [Execution and recovery](../03-execute/01-execution-and-recovery.md) - execute the returned action.
 - [Reason codes](../../02-core/01-contract/05-reason-codes.md) - the stable branch keys.
 - [Deployment](../05-operate/03-deployment.md) - production deployment.
