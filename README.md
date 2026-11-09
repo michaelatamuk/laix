@@ -83,8 +83,9 @@ full setup.
 
 ## One decision
 
-A payment needs owner approval. The default action policy chooses to pay and flags the approval; the
-host must obtain that approval before it executes.
+A `DecisionRequest` carries what the app knows and the options it can take. `decide` returns one
+`Decision`. In this example a payment needs owner approval: the built-in action rule chooses to pay
+and flags the approval, and the host must obtain that approval before it executes.
 
 ```python
 from laix import ActionOption, Belief, DecisionRequest, Situation, decide
@@ -92,28 +93,28 @@ from laix import ActionOption, Belief, DecisionRequest, Situation, decide
 request = DecisionRequest(
     subject="invoice 4832",
     at="2026-11-01T10:00:00+00:00",
-    situation=Situation(
+    situation=Situation(          # what the app knows
         id="s-1",
         at="2026-11-01T10:00:00+00:00",
         subject="invoice 4832",
         beliefs=(
-            Belief(
+            Belief(                # one claim and its confidence
                 id="b-1",
                 proposition="the invoice matches the work order",
                 confidence=0.95,
             ),
         ),
-        attributes={"urgency": 0.8},
+        attributes={"urgency": 0.8},  # app-provided context
     ),
     options=(
         ActionOption(
             id="pay",
             verb="act",
             name="pay the invoice",
-            expected_benefit=0.95,
-            risk=0.05,
-            requires_approval=True,
-            reversible=False,
+            expected_benefit=0.95,   # expected gain
+            risk=0.05,               # estimated downside
+            requires_approval=True,  # a person must approve
+            reversible=False,        # cannot be undone
         ),
         ActionOption(
             id="wait",
@@ -124,7 +125,7 @@ request = DecisionRequest(
     ),
 )
 
-decision = decide(request)[0]
+decision = decide(request)[0]  # decide returns a list
 print(decision.verb, decision.reason_code, decision.action_id, decision.requires_approval)
 ```
 
@@ -132,26 +133,13 @@ print(decision.verb, decision.reason_code, decision.action_id, decision.requires
 act policy_rule pay True
 ```
 
-The decision is `act`, the reason is `policy_rule`, and the host must ask a person before paying. The
-same shape follows every path: signal attention, policies, planners and the composite planner.
+`act` is the chosen verb, `pay` is the chosen option, and `True` means a person must approve before the
+host executes. `policy_rule` is the reason code: a built-in policy rule made the choice.
 
 The full request, with a promise and a human-attention budget, is in the
 [quickstart](docs/01-start/02-first-steps/01-quickstart.md#full-request-approval-commitment-and-attention).
-
-TypeScript uses the same contract. This is the signal-attention path:
-
-```ts
-import { DecisionClient } from "laix";
-
-const [decision] = new DecisionClient().decide({
-  subject: "one signal",
-  at: "2026-11-01T10:00:00Z",
-  signals: [{ id: "s-1", kind: "deadline", severity: "high", confidence: 0.9 }],
-  context: { now: "2026-11-01T10:00:00Z", quietHours: ["22:00", "06:00"] },
-});
-
-console.log(decision.verb, decision.reasonCode);
-```
+TypeScript has the same `Decision` shape through `DecisionClient`; the quickstart has the TypeScript
+version.
 
 ## How it works
 
