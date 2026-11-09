@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Iterable
 
-from ...core.domain.perception import Detection, PerceptionEvent
+from ...decision.domain.perception import Detection, PerceptionEvent
 
 
 @dataclass(frozen=True, slots=True)

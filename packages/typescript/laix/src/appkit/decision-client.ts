@@ -6,15 +6,15 @@
  * the same Decision.
  */
 
-import { decideSignalAttention, type SignalContext, type Signal } from "../core/engines/sensing/signals/signal-attention.ts";
+import { decideSignalAttention, type SignalContext, type Signal } from "../decision/engines/sensing/signals/signal-attention.ts";
 import type {
   ActionOption,
   Decision,
   DecisionRequest,
   Situation,
   Verb,
-} from "../core/contracts.ts";
-import { DecisionPolicyRegistry, type DecisionPolicy } from "../core/engines/decision/single/policies/decision-policy-registry.ts";
+} from "../decision/contracts.ts";
+import { DecisionPolicyRegistry, type DecisionPolicy } from "../decision/engines/decision/single/policies/decision-policy-registry.ts";
 import { StreamSession, type StreamSessionOptions } from "./streaming.ts";
 
 

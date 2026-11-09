@@ -122,7 +122,7 @@ The integration calls LAIX as a tool or task policy inside the Commander or a mi
 Deployment:
 
 - a separate `ppma-laix` package or service;
-- imports `laix` core and `ppma-contracts`;
+- imports the `laix.decision` package and `ppma-contracts`;
 - exposes `laix.decide` as an `effect: none` query tool or a mission tool;
 - one `DecisionRequest` in, one `Decision` out.
 

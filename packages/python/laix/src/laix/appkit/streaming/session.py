@@ -1,6 +1,6 @@
 """Streaming decisions: a session, event time, cadence, backpressure and revisions.
 
-The core ``decide`` is stateless.  A stream session owns the state a live loop
+The decision layer's ``decide`` is stateless.  A stream session owns the state a live loop
 needs: an event-time watermark, a cooldown between decisions, a bounded buffer
 with an explicit overflow policy, and revisions that supersede an earlier
 decision.  It returns decisions synchronously and exposes the same decisions as
@@ -16,10 +16,10 @@ from dataclasses import replace
 from datetime import datetime, timedelta
 from typing import Callable, Iterable, Sequence
 
-from ...core.domain.decisions import DECISION_STATUSES, Decision, DecisionRequest, Trace
-from ...core.engines.decision.single.planners.human_attention.human_attention_planner import HumanAttentionBudget
-from ...core.support.ids import new_id
-from ...core.support.time import parse_iso, utcnow
+from ...decision.domain.decisions import DECISION_STATUSES, Decision, DecisionRequest, Trace
+from ...decision.engines.decision.single.planners.human_attention.human_attention_planner import HumanAttentionBudget
+from ...decision.support.ids import new_id
+from ...decision.support.time import parse_iso, utcnow
 from .checkpoint import StreamCheckpointStore
 from .feed import FeedMixin, Refiner
 from .manual_clock import ManualClock
@@ -40,7 +40,7 @@ LATE_POLICIES = ("drop", "accept")
 class StreamSession(FeedMixin):
     """One live decision stream.
 
-    ``decide`` is any callable with the core contract: one ``DecisionRequest``
+    ``decide`` is any callable with the decision contract: one ``DecisionRequest``
     in, a sequence of ``Decision`` objects out.  ``observe`` admits an event,
     applies event-time and cooldown rules, stamps the stream fields and buffers
     the result.  ``decisions`` drains that buffer from an async loop.  Call

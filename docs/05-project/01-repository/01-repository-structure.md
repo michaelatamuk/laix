@@ -1,7 +1,7 @@
 # Repository structure
 
 This page maps files. Concepts are defined in [architecture](../../04-concepts/01-architecture/01-system-architecture.md),
-[the Decision response](../../02-core/01-contract/01-decision-contract.md) and [records](../../02-core/01-contract/03-records.md).
+[the Decision response](../../02-decision/01-contract/01-decision-contract.md) and [records](../../02-decision/01-contract/03-records.md).
 
 ```text
 laix/
@@ -42,7 +42,7 @@ laix/
 ├── docs/
 │   ├── README.md          audience-first index
 │   ├── 01-start/          overview; orientation/, first-steps/
-│   ├── 02-core/           overview; contract/, domain/, decision/, sensing/, learning/, evaluation/, support/
+│   ├── 02-decision/           overview; contract/, domain/, decision/, sensing/, learning/, evaluation/, support/
 │   ├── 03-appkit/         overview; build/, run/, execute/, connect/, operate/
 │   ├── 04-concepts/       overview; architecture/, positioning/, trust/, reference/
 │   ├── 05-project/        overview; repository/, quality/, release/, direction/
@@ -56,8 +56,8 @@ laix/
 ├── examples/
 │   ├── data/              decision JSON for the CLI
 │   ├── mcp/               MCP client config
-│   ├── python/            core/ and appkit/, then decision shape
-│   └── typescript/        the same core and app-kit split
+│   ├── python/            decision/ and appkit/, then decision shape
+│   └── typescript/        the same decision and app-kit split
 ├── scripts/
 │   ├── ci/                repository checks (relative links and versions)
 │   ├── novelty/
@@ -74,7 +74,7 @@ laix/
 ```
 
 `packages/contracts/` is the shared source of truth for the decision record shape, the standalone
-decision schema, the reason-code registry and the test vectors. The core record schema is generated
+decision schema, the reason-code registry and the test vectors. The decision layer record schema is generated
 from the Python dataclasses and ships inside the package.
 
 `scripts/ci/check_docs_links.py` checks every relative link in the docs, examples and README files;
@@ -85,8 +85,8 @@ the `docs` CI job runs it.
 ```text
 packages/python/laix/src/laix/
 ├── __init__.py              public API
-├── core/
-│   ├── __init__.py          core surface
+├── decision/
+│   ├── __init__.py          decision surface
 │   ├── dispatch.py          decide and select
 │   ├── contract/             planner.py, planner_input.py, planner_result.py, planner_policy.py
 │   ├── domain/
@@ -139,7 +139,7 @@ packages/python/laix/src/laix/
     └── bench/               case, suite, row, report, runner, planner bench
 ```
 
-Import from `laix` in app code, or `laix.core` / `laix.appkit` when the boundary matters. The package
+Import from `laix` in app code, or `laix.decision` / `laix.appkit` when the boundary matters. The package
 ships `py.typed`, so type checkers use the inline annotations.
 
 ## TypeScript package
@@ -147,9 +147,9 @@ ships `py.typed`, so type checkers use the inline annotations.
 ```text
 packages/typescript/laix/src/
 ├── index.ts           public exports
-├── core/
-│   ├── index.ts       core surface
-│   ├── contracts.ts   core records
+├── decision/
+│   ├── index.ts       decision surface
+│   ├── contracts.ts   decision records
 │   ├── contract/planner.ts Planner, PlannerInput, PlannerResult, PlannerPolicy and toDecision
 │   ├── domain/
 │   │   ├── commitments/   commitment ledger and stores
@@ -204,7 +204,7 @@ packages/typescript/laix/src/
     └── runtime/       execution, async, retry, saga, state and stores
 ```
 
-The TypeScript package mirrors the same folders under `src/core` and `src/appkit`. It exports one
+The TypeScript package mirrors the same folders under `src/decision` and `src/appkit`. It exports one
 entry point, `laix`. `tsconfig.build.json` emits ESM JavaScript to `dist/`, while `types.d.ts` keeps
 the curated public declaration surface. `prepare` rebuilds `dist/` before a local install or package
 tarball.
@@ -228,7 +228,7 @@ and the canonical file differ. The decision schema and reason-code registry are 
 ## Rules
 
 - One class per file; functions may share a small module with their owner.
-- Layer `core` by role: `contract` (interfaces), `domain` (records and state), `engines` (processing) and `support`/`schema` (infrastructure).
+- Layer the decision package by role: `contract` (interfaces), `domain` (records and state), `engines` (processing) and `support`/`schema` (infrastructure).
 - Group engine folders by decision shape: `decision/single`, `decision/sequence`, `decision/fleet`, `decision/history`, `decision/explain`; keep `sensing`, `learning` and `evaluation` as separate processing families.
 - Mirror source folders in tests: `contract/`, `domain/`, `engines/`, `support/`, `schema/`.
 - Keep the public API in `__init__.py` and `index.ts`.

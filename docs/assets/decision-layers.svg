@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="decision-title decision-desc">
+  <title id="decision-title">Seven layers, one decision contract</title>
+  <desc id="decision-desc">The seven decision layers: contract, domain, decision, sensing, learning, evaluation and foundation. The contract is at the top and the foundation at the bottom.</desc>
+  <rect x="0.5" y="0.5" width="1199" height="799" rx="18" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="64" y="58" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="2.5">DECISION LAYERS</text>
+  <text x="64" y="102" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="30" font-weight="700">Seven layers, one decision contract</text>
+  <text x="64" y="132" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="14" font-weight="400">From what crosses the boundary to what proves the choice.</text>
+  <rect x="1016" y="40" width="120" height="30" rx="15" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1"/>
+  <text x="1076" y="59" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="1.5">STATELESS</text>
+<line x1="64" y1="150" x2="1136" y2="150" stroke="#F1F5F9" stroke-width="1"/>
+  <rect x="64" y="170" width="190" height="70" rx="10" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1"/>
+  <text x="84" y="194" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" opacity="0.75">01</text>
+  <text x="84" y="218" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="18" font-weight="700">Contract</text>
+  <rect x="268" y="170" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="290" y="200" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">DecisionRequest · Decision</text>
+  <text x="290" y="221" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">what crosses the boundary</text>
+  <rect x="709" y="170" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="731" y="200" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">ExecutionReceipt · Trace</text>
+  <text x="731" y="221" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">what happened</text>
+  <rect x="64" y="250" width="190" height="70" rx="10" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1"/>
+  <text x="84" y="274" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" opacity="0.75">02</text>
+  <text x="84" y="298" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="18" font-weight="700">Domain</text>
+  <rect x="268" y="250" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="290" y="280" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">Decisions · Commitments</text>
+  <text x="290" y="301" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">what exists and is promised</text>
+  <rect x="709" y="250" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="731" y="280" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">Outcomes · Perception</text>
+  <text x="731" y="301" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">what carries forward</text>
+  <rect x="64" y="330" width="190" height="70" rx="10" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1"/>
+  <text x="84" y="354" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" opacity="0.75">03</text>
+  <text x="84" y="378" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="18" font-weight="700">Decision</text>
+  <rect x="268" y="330" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="290" y="360" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">Single · Sequence · Fleet</text>
+  <text x="290" y="381" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">choose one move or a chain</text>
+  <rect x="709" y="330" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="731" y="360" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">History · Explain</text>
+  <text x="731" y="381" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">repair and attribute</text>
+  <rect x="64" y="410" width="190" height="70" rx="10" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1"/>
+  <text x="84" y="434" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" opacity="0.75">04</text>
+  <text x="84" y="458" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="18" font-weight="700">Sensing</text>
+  <rect x="268" y="410" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="290" y="440" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">Signals</text>
+  <text x="290" y="461" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">what deserves attention</text>
+  <rect x="709" y="410" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="731" y="440" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">Resources</text>
+  <text x="731" y="461" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">what is affordable</text>
+  <rect x="64" y="490" width="190" height="70" rx="10" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1"/>
+  <text x="84" y="514" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" opacity="0.75">05</text>
+  <text x="84" y="538" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="18" font-weight="700">Learning</text>
+  <rect x="268" y="490" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="290" y="520" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">Calibration · Model</text>
+  <text x="290" y="541" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">improve confidence and transitions</text>
+  <rect x="709" y="490" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="731" y="520" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">Bandit · Causal</text>
+  <text x="731" y="541" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">learn from outcomes</text>
+  <rect x="64" y="570" width="190" height="70" rx="10" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1"/>
+  <text x="84" y="594" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" opacity="0.75">06</text>
+  <text x="84" y="618" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="18" font-weight="700">Evaluation</text>
+  <rect x="268" y="570" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="290" y="600" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">Cases · Benchmarks</text>
+  <text x="290" y="621" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">fixed evidence</text>
+  <rect x="709" y="570" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="731" y="600" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">Simulation</text>
+  <text x="731" y="621" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">counterfactual evidence</text>
+  <rect x="64" y="650" width="190" height="70" rx="10" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1"/>
+  <text x="84" y="674" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" opacity="0.75">07</text>
+  <text x="84" y="698" fill="#0F766E" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="18" font-weight="700">Foundation</text>
+  <rect x="268" y="650" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="290" y="680" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">Schema</text>
+  <text x="290" y="701" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">records and validation</text>
+  <rect x="709" y="650" width="427" height="70" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="731" y="680" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="15.5" font-weight="600">Support</text>
+  <text x="731" y="701" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">ids · time · values</text>
+  <line x1="64" y1="752" x2="1136" y2="752" stroke="#F1F5F9" stroke-width="1"/>
+  <text x="64" y="776" fill="#64748B" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12.5" font-weight="400">The decision layer is stateless. The host supplies the current state on every request.</text>
+</svg>

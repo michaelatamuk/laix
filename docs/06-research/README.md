@@ -56,7 +56,7 @@ the order. `checklist.md` tracks work across all stages.
 - Added: `01-positioning/04-algorithm-directions.md` (CA-VOD, CABB, AADS, CDR, CDA),
   `02-evaluation/algorithm-prototypes.md` and the algorithm benchmark scripts.
 - Added: `01-positioning/formal-model.md` with exact score formulas and weights, `01-positioning/prior-art.md` matrix
-  (10 capabilities × 7 columns), `tests/core/test_invariants.py` (17 property tests, I1–I10),
+  (10 capabilities × 7 columns), `tests/decision/test_invariants.py` (17 property tests, I1–I10),
   `benchmarks/live/v1/` (120 cases with dev/test/adversarial splits),
   `scripts/novelty/bench/run_live_bench.py` (metrics and bootstrap intervals),
   `scripts/novelty/analysis/analyze_results.py` (McNemar, paired bootstrap and effect sizes),

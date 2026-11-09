@@ -19,7 +19,7 @@ LAIX in one path: understand the loop, then make the first decision.
 ## What you need
 
 - Python 3.11 or newer, or Node 22 or newer.
-- The core package for a decision; the optional app kit for execution, records, stores and streaming.
+- The decision package; the optional app kit for execution, records, stores and streaming.
 - No model is required. The default policies are deterministic rules; a model can sit behind
   `PlannerPolicy`.
 
@@ -33,5 +33,5 @@ order.
 | [Orientation](01-orientation/README.md) | The problem, the decision shape and the loop. |
 | [First steps](02-first-steps/README.md) | Install, one decision and the host adapter. |
 
-When you need the contracts, continue with [Core](../02-core/README.md). When you need execution,
+When you need the contracts, continue with [Decision](../02-decision/README.md). When you need execution,
 records or stores, continue with [App kit](../03-appkit/README.md).

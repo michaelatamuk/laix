@@ -1,18 +1,18 @@
 # App-kit overview
 
-The core turns one request into one decision. The app kit is the optional layer that turns that
+The decision layer turns one request into one decision. The app kit is the optional layer that turns that
 decision into an app: it builds the request, runs the decision loop, executes the action, connects the
 host's storage and platform, and proves the result.
 
 Four things define the app kit:
 
-- **One decision.** `DecisionClient` runs the core, and can execute, record and deliver the result.
+- **One decision.** `DecisionClient` runs the decision layer, and can execute, record and deliver the result.
 - **A decision loop.** `DecisionRuntime` links observation, state, policy, execution and outcome.
 - **A stream.** `StreamSession` keeps event time, cadence, buffers, revisions and checkpoints.
 - **A host boundary.** Stores, platform and delivery are ports. The host owns the database, the
   credentials and the transport.
 
-The core stays stateless. The app kit adds the surfaces, execution, ports and proof around it.
+The decision layer stays stateless. The app kit adds the surfaces, execution, ports and proof around it.
 
 ## The five stages
 
@@ -101,5 +101,5 @@ Read in order. Each section opens with a short index that lists its pages in rea
 | `appkit/platform/` | platform, in-memory platform, skill call, approvals and events. |
 | `appkit/bench/` | case, suite, row, report, runner and planner bench. |
 
-The core map is [Core overview](../02-core/README.md). The vocabulary is in the
+The decision map is [Decision overview](../02-decision/README.md). The vocabulary is in the
 [glossary](../04-concepts/04-reference/01-glossary.md).

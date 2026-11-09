@@ -1,4 +1,4 @@
-import type { ActionOption, Decision, Receipt } from "../../core/contracts.ts";
+import type { ActionOption, Decision, Receipt } from "../../decision/contracts.ts";
 
 export type Handler = (action: ActionOption, context: Record<string, unknown>) => Record<string, unknown>;
 export type AsyncHandler = (action: ActionOption, context: Record<string, unknown>) => Promise<Record<string, unknown>>;

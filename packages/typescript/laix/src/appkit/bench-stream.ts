@@ -1,4 +1,4 @@
-import type { Decision, DecisionRequest } from "../core/contracts.ts";
+import type { Decision, DecisionRequest } from "../decision/contracts.ts";
 import type { StreamSession } from "./streaming.ts";
 
 export interface StreamBenchResult {

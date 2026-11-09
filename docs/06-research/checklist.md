@@ -30,7 +30,7 @@ actually shows. **DONE.**
   `HumanAttentionPlanner`
 - [x] Define revision and receipt state machines — documented in `01-positioning/formal-model.md` §3
 - [x] Write invariants I1–I10 as statements in `01-positioning/formal-model.md` — §4 invariant table complete
-- [x] Add property tests: `tests/core/test_invariants.py` — 17 tests, all pass
+- [x] Add property tests: `tests/decision/test_invariants.py` — 17 tests, all pass
 
 **Deliverable:** `01-positioning/formal-model.md` filled + tests. Every invariant has a failing test when broken.
 **DONE.**
@@ -44,9 +44,9 @@ confidence intervals.
 
 ### Done
 
-- [x] Implement baselines and ablations — `examples/python/core/evaluation/bench/ablation_study.py`
+- [x] Implement baselines and ablations — `examples/python/decision/evaluation/bench/ablation_study.py`
   runs all 7 planners on all 7 demo cases; LiveCompositePlanner 7/7, single-concern planners partial
-- [x] Write the conflict scenario — `examples/python/core/decision/history/conflict_scenario.py`
+- [x] Write the conflict scenario — `examples/python/decision/decision/history/conflict_scenario.py`
   shows all three concerns firing; `UtilityPlanner` and `HumanAttentionPlanner` fail; full score breakdown
 - [x] Create the case schema — `benchmarks/live/v1/schema.json` (JSON Schema Draft
   2020-12); `benchmarks/live/README.md` with field reference, split targets and Python loader

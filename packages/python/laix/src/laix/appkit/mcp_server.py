@@ -16,9 +16,9 @@ import json
 import sys
 from typing import Any, Sequence
 
-from ..core.contract.planner_policy import PlannerPolicy
-from ..core.dispatch import decide
-from ..core.domain.decisions import (
+from ..decision.contract.planner_policy import PlannerPolicy
+from ..decision.dispatch import decide
+from ..decision.domain.decisions import (
     ActionOption,
     Belief,
     Constraint,
@@ -28,13 +28,13 @@ from ..core.domain.decisions import (
     Observation,
     Situation,
 )
-from ..core.engines.decision.single.planners.composite.live_composite_planner import (
+from ..decision.engines.decision.single.planners.composite.live_composite_planner import (
     LiveCompositePlanner,
 )
-from ..core.engines.sensing.signals.input import Signal, SignalContext, SignalFeedback
-from ..core.support.serialize import to_primitive
-from ..core.support.time import parse_iso
-from ..core.support.version import SCHEMA_VERSION
+from ..decision.engines.sensing.signals.input import Signal, SignalContext, SignalFeedback
+from ..decision.support.serialize import to_primitive
+from ..decision.support.time import parse_iso
+from ..decision.support.version import SCHEMA_VERSION
 
 try:
     from mcp.server.mcpserver import MCPServer as _MCPServer
@@ -193,7 +193,7 @@ def build_server() -> Any:
         title="Decide",
         description=(
             "Answer one LAIX decision request. Pass the public DecisionRequest JSON in "
-            "`request`. Use `policy: auto` for core selection or `policy: live` for the "
+            "`request`. Use `policy: auto` for decision dispatch or `policy: live` for the "
             "live composite planner. The result is a JSON array of Decision objects."
         ),
         structured_output=False,

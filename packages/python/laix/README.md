@@ -10,7 +10,7 @@ returns generic decisions.
 
 ## The two entry points
 
-For a decision only, use the core:
+For a decision only, use the decision layer:
 
 ```python
 from laix import DecisionRequest, decide
@@ -54,7 +54,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 
 | Piece | Role |
 |---|---|
-| `core/` | contract, domain, decision engines, sensing, learning, evaluation, schema and support |
+| `decision/` | contract, domain, decision engines, sensing, learning, evaluation, schema and support |
 | `appkit/` | `DecisionClient`, decision loop, streaming, execution, stores, platform, delivery, bench, CLI and MCP |
 
 The full module map is in
@@ -63,7 +63,7 @@ public names are in the [API map](../../../docs/05-project/01-repository/02-api-
 
 ## Custom policies
 
-A policy is any object with a name and a `decide` method. Pass it to the core:
+A policy is any object with a name and a `decide` method. Pass it to the decision layer:
 
 ```python
 from laix import DecisionRequest, Decision, decide

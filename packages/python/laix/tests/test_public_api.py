@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import laix
-import laix.core
+import laix.decision
 
 
 def test_top_level_exports_resolve() -> None:
@@ -12,5 +12,5 @@ def test_top_level_exports_resolve() -> None:
 
 
 def test_core_exports_resolve() -> None:
-    for name in laix.core.__all__:
-        assert hasattr(laix.core, name), f"laix.core.__all__ contains missing name: {name}"
+    for name in laix.decision.__all__:
+        assert hasattr(laix.decision, name), f"laix.decision.__all__ contains missing name: {name}"

@@ -49,7 +49,7 @@ This page tracks what is done, what is next and what would count as a real step 
 ## Next
 
 - Bootstrap intervals and covariate adjustment for causal effects.
-- [MDP policy iteration](../../02-core/03-decision/01-single/03-model-based.md#mdp) as an alternative
+- [MDP policy iteration](../../02-decision/03-decision-shapes/01-single/03-model-based.md#mdp) as an alternative
   to value iteration.
 - A generated API reference once the public surface is stable.
 - An independent replication of the live and continuity results.
@@ -78,7 +78,7 @@ A candidate counts as differentiated when it has:
 A patent-level claim would also need a prior-art search.
 
 The algorithm prototypes and the sequence family are in
-[Algorithm prototypes](../../02-core/03-decision/README.md), with smoke results in
+[Algorithm prototypes](../../02-decision/03-decision-shapes/README.md), with smoke results in
 [Algorithm prototype results](../../06-research/02-evaluation/algorithm-prototypes.md).
 
 ## Research

@@ -6,7 +6,7 @@ import asyncio
 import contextlib
 from typing import AsyncIterable, AsyncIterator, Awaitable, Callable, Sequence
 
-from ...core.domain.decisions import Decision, DecisionRequest
+from ...decision.domain.decisions import Decision, DecisionRequest
 from .window import TumblingWindow, WindowBatch
 
 Refiner = Callable[[DecisionRequest], Awaitable[Sequence[Decision]]]

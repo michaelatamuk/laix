@@ -8,7 +8,7 @@ the real world.** Install it, send one request and read one decision. Then choos
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.11.0#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.12.0#subdirectory=packages/python/laix"
 ```
 
 Local checkout, from the repository root:
@@ -27,13 +27,13 @@ TypeScript:
 }
 ```
 
-The release page also has a packed `laix-0.11.0.tgz`. See
+The release page also has a packed `laix-0.12.0.tgz`. See
 [versioning](../../05-project/03-release/01-versioning.md) for tags and schema versions.
 
 ## One decision
 
 The snippets assume the app has already built `signal`, `situation` and `options`; see
-[the decision contract](../../02-core/01-contract/01-decision-contract.md) for their types.
+[the decision contract](../../02-decision/01-contract/01-decision-contract.md) for their types.
 
 Attention request:
 
@@ -109,7 +109,7 @@ const [decision] = new DecisionClient().decide({
 | `confidence` | How sure the decision is, with its source. |
 | `deliver` / `record` | Show now / keep it. |
 
-Full fields: [the decision contract](../../02-core/01-contract/01-decision-contract.md).
+Full fields: [the decision contract](../../02-decision/01-contract/01-decision-contract.md).
 
 ## What just happened
 
@@ -138,6 +138,6 @@ If the answer is not the one you expected, start with
 - Build a production adapter: [integration](../../03-appkit/01-build/01-integration.md).
 - Stream events: [streaming](../../03-appkit/02-run/02-streaming.md).
 - Execute and recover: [execution and recovery](../../03-appkit/03-execute/01-execution-and-recovery.md).
-- Learn from outcomes: [outcome learning](../../02-core/02-domain/03-outcomes.md).
+- Learn from outcomes: [outcome learning](../../02-decision/02-domain/03-outcomes.md).
 - Read the full loop: [decision lifecycle](../01-orientation/02-decision-lifecycle.md).
 - Runnable examples: [`../../../examples/README.md`](../../../examples/README.md).

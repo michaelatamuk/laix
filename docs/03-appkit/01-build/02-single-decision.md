@@ -1,6 +1,6 @@
 # DecisionClient
 
-`DecisionClient` is the one-decision surface of the app kit. It wraps the core, keeps the loop, and can
+`DecisionClient` is the one-decision surface of the app kit. It wraps the decision layer, keeps the loop, and can
 execute, measure and deliver the result.
 
 ```python
@@ -34,7 +34,7 @@ removes any unsafe option before the choice.
 
 | Method | Returns | Use |
 |---|---|---|
-| `decide(request)` | `list[Decision]` | One decision through the core. |
+| `decide(request)` | `list[Decision]` | One decision through the decision layer. |
 | `stream(**options)` | `StreamSession` | A live loop over many events. |
 | `execute(decision, ...)` | `ExecutionReceipt` | Run the chosen action through the execution bridge. |
 | `measure(decision, ...)` | `Outcome` | Record what changed after the action. |
@@ -46,7 +46,7 @@ removes any unsafe option before the choice.
 | `policies()` | `tuple[str, ...]` | List the registered policies. |
 | `bridge()` | `ExecutionBridge` | The execution bridge behind the layer. |
 
-`DecisionClient` is a convenience surface, not a second core. The decision contract, the verbs and the reason
+`DecisionClient` is a convenience surface, not a second decision layer. The decision contract, the verbs and the reason
 codes are the same.
 
 ## `DecisionClient` or `decide`
@@ -56,7 +56,7 @@ codes are the same.
 | `decide(request)` | The answer only. | You already have execution and records. |
 | `DecisionClient().decide(request)` | The answer plus the loop, policy registry, execution bridge, records and delivery. | You want one object for a complete app step. |
 
-The core entry point is described in [Dispatch](../../02-core/01-contract/04-dispatch.md).
+The decision layer entry point is described in [Dispatch](../../02-decision/01-contract/04-dispatch.md).
 
 ## The response
 
@@ -70,7 +70,7 @@ A `Decision` carries:
 - a `trace_id`, and optional `deliver` and `record` flags;
 - the score and its breakdown when a planner produced it.
 
-The full shape is in [the decision contract](../../02-core/01-contract/01-decision-contract.md).
+The full shape is in [the decision contract](../../02-decision/01-contract/01-decision-contract.md).
 
 ## Explain and status
 

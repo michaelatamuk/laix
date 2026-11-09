@@ -133,4 +133,4 @@ and `verifyRecord` for the record lifecycle. It uses `createProposal`, `approveP
 - [Execution and recovery](01-execution-and-recovery.md) - the write boundary and receipts.
 - [Platform](../04-connect/02-platform.md) - approvals and events.
 - [Stores](../04-connect/01-stores.md) - persistence.
-- [Decision contract](../../02-core/01-contract/01-decision-contract.md) - the decision shape.
+- [Decision contract](../../02-decision/01-contract/01-decision-contract.md) - the decision shape.

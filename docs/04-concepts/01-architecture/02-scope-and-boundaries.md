@@ -10,11 +10,11 @@ same boundary applies to any host.
 
 | DecisionClient | Owns | Does not own |
 |---|---|---|
-| **LAIX core** | The request and decision contract, policies, planners, signal attention, commitments, learning primitives and evaluation primitives. | Storage, UI, execution, delivery, credentials. |
+| **LAIX decision layer** | The request and decision contract, policies, planners, signal attention, commitments, learning primitives and evaluation primitives. | Storage, UI, execution, delivery, credentials. |
 | **LAIX app kit** | The optional app kit: `DecisionClient`, decision layer, streaming, execution bridge, records, stores, platform and delivery ports. | The database, transport, credentials and the host's domain rules. |
 | **Host** | The product, data, UI, execution, storage, delivery, permissions, retention and the domain nouns. | The decision contract and the decision semantics. |
 
-The core is stateless. The app kit adds state and execution surfaces. The host decides which of the
+The decision layer is stateless. The app kit adds state and execution surfaces. The host decides which of the
 two it uses.
 
 ## The seam
@@ -44,13 +44,13 @@ The decision carries:
 
 The host keeps the domain nouns in how it builds the request and reads the decision. LAIX sees the
 generic fields above. The full shape is in
-[the decision contract](../../02-core/01-contract/01-decision-contract.md).
+[the decision contract](../../02-decision/01-contract/01-decision-contract.md).
 
 ## The two integration shapes
 
 Both shapes are first-class. The choice belongs to the host.
 
-### Core only
+### Decision only
 
 The host already has execution, records and commit. It calls `decide` and acts on the answer.
 
@@ -71,7 +71,7 @@ host state
 `decide` is stateless between calls. The outcome belongs to the host: the host records it, and its
 next request can carry what it learned.
 
-### Core plus app kit
+### Decision plus app kit
 
 The host wants the app kit around the decision: a single `DecisionClient`, execution, records, stores,
 streaming and delivery.
@@ -92,7 +92,7 @@ PPMA owns the activation decision. LAIX owns the task decision.
 
 | | PPMA activation decision | LAIX task decision |
 |---|---|---|
-| Owner | PPMA's Epistemic Core | LAIX core |
+| Owner | PPMA's Epistemic Core | LAIX decision layer |
 | Input | A host input: event, timer, answer, outcome or surface change | A bounded task: subject, situation, options and constraints |
 | Question | What is the system's next move? | What is the task's next move? |
 | Output | `NOOP`, `UPDATE_STATE`, `ISSUE_COMMAND` or `DISPATCH` | `wait`, `observe`, `guide`, `ask`, `act`, `verify` or `escalate` |
@@ -133,9 +133,9 @@ PPMA commits its own state. The LAIX decision is recorded and applied within tha
 6. Each owner keeps its own decision ids. The host records a LAIX decision id as a reference.
 7. Execution and records follow task ownership: the host, or the app kit when the host chooses it.
 8. Memory, connectors, permissions, proactivity, missions and app policy stay in the host.
-9. Core imports the standard library and its own modules. App kit imports the standard library, core
-   and its own modules. The host imports LAIX.
-10. A host that already has execution, records and commit uses the core.
+9. The decision layer imports the standard library and its own modules. App kit imports the standard
+   library, the decision layer and its own modules. The host imports LAIX.
+10. A host that already has execution, records and commit uses the decision layer.
 
 ## Related
 

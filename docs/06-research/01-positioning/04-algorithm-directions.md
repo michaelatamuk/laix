@@ -11,11 +11,11 @@ This page records five directions that could give LAIX an algorithm of its own.
 
 | Direction | Prototype | API | Docs |
 |---|---|---|---|
-| CA-VOD | one-step value of decision plus optional belief-state future value | `CAVODPlanner` | [Decision value](../../02-core/03-decision/01-single/04-decision-value.md) |
-| AADS | index policy plus exact single-arm Whittle index | `AttentionScheduler`, `WhittleScheduler` | [Fleet attention](../../02-core/03-decision/03-fleet.md) |
-| CDR | greedy and exact minimum-weight vertex cover | `repair_continuity` | [Decision history](../../02-core/03-decision/04-history.md) |
-| CDA | linear attribution plus bounded counterfactual search | `counterfactual_attribution`, `counterfactual_search` | [Explain a decision](../../02-core/03-decision/05-explain.md) |
-| CABB | exact finite-horizon branch and bound over commitments and attention | `CABBPlanner`, `RolloutPlanner`, `ReplanPlanner` | [Sequence planning](../../02-core/03-decision/02-sequence.md) |
+| CA-VOD | one-step value of decision plus optional belief-state future value | `CAVODPlanner` | [Decision value](../../02-decision/03-decision-shapes/01-single/04-decision-value.md) |
+| AADS | index policy plus exact single-arm Whittle index | `AttentionScheduler`, `WhittleScheduler` | [Fleet attention](../../02-decision/03-decision-shapes/03-fleet.md) |
+| CDR | greedy and exact minimum-weight vertex cover | `repair_continuity` | [Decision history](../../02-decision/03-decision-shapes/04-history.md) |
+| CDA | linear attribution plus bounded counterfactual search | `counterfactual_attribution`, `counterfactual_search` | [Explain a decision](../../02-decision/03-decision-shapes/05-explain.md) |
+| CABB | exact finite-horizon branch and bound over commitments and attention | `CABBPlanner`, `RolloutPlanner`, `ReplanPlanner` | [Sequence planning](../../02-decision/03-decision-shapes/02-sequence.md) |
 
 The prototypes are deterministic and training-free. They are first implementations, not the full
 research methods described below.
@@ -27,14 +27,14 @@ a new learning rule.
 
 | Component | Current method | Location |
 |---|---|---|
-| Utility | linear weighted sum with simple risk transforms | `core/engines/decision/single/planners/utility/utility_model.py` |
-| Commitment | weighted sum of fulfil, violate, due, blocked and create | `core/engines/decision/single/planners/commitment/commitment_planner.py` |
-| Execution risk | linear penalties for irreversibility, unknown risk, approval and recovery | `core/engines/decision/single/planners/execution/execution_planner.py` |
-| Human attention | linear penalties plus a budget check | `core/engines/decision/single/planners/human_attention/human_attention_planner.py` |
-| Composite | additive total of the four terms with fixed weights | `core/engines/decision/single/planners/composite/live_composite_planner.py` |
+| Utility | linear weighted sum with simple risk transforms | `decision/engines/decision/single/planners/utility/utility_model.py` |
+| Commitment | weighted sum of fulfil, violate, due, blocked and create | `decision/engines/decision/single/planners/commitment/commitment_planner.py` |
+| Execution risk | linear penalties for irreversibility, unknown risk, approval and recovery | `decision/engines/decision/single/planners/execution/execution_planner.py` |
+| Human attention | linear penalties plus a budget check | `decision/engines/decision/single/planners/human_attention/human_attention_planner.py` |
+| Composite | additive total of the four terms with fixed weights | `decision/engines/decision/single/planners/composite/live_composite_planner.py` |
 | Confidence | gap heuristic: `0.5 + 0.5 * (gap / best)` | the planner classes |
-| Calibration | reliability bins over confidence | `core/engines/learning/calibration/decision_calibration.py` |
-| Learning | UCB bandit | `core/engines/decision/single/policies/implementations/bandit.py` |
+| Calibration | reliability bins over confidence | `decision/engines/learning/calibration/decision_calibration.py` |
+| Learning | UCB bandit | `decision/engines/decision/single/policies/implementations/bandit.py` |
 
 The real novelty is in the representation and the contract:
 
@@ -117,7 +117,7 @@ continuity**. That is the claim to test.
   and latency.
 - Cases: the existing LAIX benchmark plus new commitment, attention and continuity cases.
 
-**Effort:** high. **Fit:** core. **Priority:** first.
+**Effort:** high. **Fit:** decision. **Priority:** first.
 
 ## 4. Candidate 2: Attention-Aware Decision Scheduling (AADS)
 
@@ -174,7 +174,7 @@ When new evidence arrives, find the minimal-cost revision set that restores cons
 **Experiment.** Synthetic sequences with contradictions, late receipts, rejected approvals and
 expired commitments. Metrics: repair cost, stability, consistency and explanation length.
 
-**Effort:** medium. **Fit:** core and app kit. **Priority:** third.
+**Effort:** medium. **Fit:** decision and app kit. **Priority:** third.
 
 ## 6. Candidate 4: Counterfactual Decision Attribution (CDA)
 
@@ -235,23 +235,23 @@ and rollout on 10/12. In the attention tradeoff case, CABB scores `1.105` agains
 because it saves attention for a later high-value option. This shows decision quality, not speed:
 the bound is still loose on tiny cases.
 
-**Effort:** high. **Fit:** core. **Priority:** first for algorithmic novelty.
+**Effort:** high. **Fit:** decision. **Priority:** first for algorithmic novelty.
 
 ## 8. Priority
 
 | Direction | Layer | Novelty | Effort | First evidence |
 |---|---|---|---|---|
-| **CABB** | core | high (candidate) | high | exact optimality on small scenarios plus the greedy tradeoff case |
-| **CA-VOD** | core | high | high | weighted-sum baseline plus new benchmark cases |
+| **CABB** | decision | high (candidate) | high | exact optimality on small scenarios plus the greedy tradeoff case |
+| **CA-VOD** | decision | high | high | weighted-sum baseline plus new benchmark cases |
 | **AADS** | app kit | high | medium-high | queue simulation plus traces |
-| **CDR** | core/app kit | medium | medium | synthetic continuity sequences |
+| **CDR** | decision/app kit | medium | medium | synthetic continuity sequences |
 | **CDA** | audit | medium | medium | counterfactual validity plus a small user study |
 
 Recommended order:
 
 1. **CABB** first for algorithmic novelty: it is the clearest new problem formulation and it has an
    exactness guarantee. The prior-art check decides whether the formulation is new.
-2. **CA-VOD** second: it replaces the weighted sum and gives the core a real decision algorithm.
+2. **CA-VOD** second: it replaces the weighted sum and gives the decision layer a real decision algorithm.
 3. **AADS** third: it creates a new fleet-level capability and a clear algorithmic contribution.
 4. **CDR** fourth: it makes continuity a real consistency problem rather than state passing.
 5. **CDA** fifth: it turns the decision record into causal, audit-ready explanations.
@@ -274,7 +274,7 @@ The claim must survive a direct comparison with these lines of work. A new name 
 ## 10. Next step
 
 The deterministic prototypes are in
-[Decision pages](../../02-core/03-decision/README.md), and the smoke results
+[Decision pages](../../02-decision/03-decision-shapes/README.md), and the smoke results
 are in [Algorithm prototype results](../02-evaluation/algorithm-prototypes.md).
 
 The one-step, belief-state future-value and exact sequence prototypes are in place. The next step is

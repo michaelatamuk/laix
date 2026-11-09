@@ -1,7 +1,7 @@
 # API map
 
 One page for the public surface. Python and TypeScript export the same concepts. This is a
-map by role, not a generated signature reference. The package `__all__` lists the core exports; the
+map by role, not a generated signature reference. The package `__all__` lists the decision layer exports; the
 app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` surface.
 
 ## Contract
@@ -17,7 +17,7 @@ app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` 
 | `Intent`, `EvidenceRef` | what the action would do and what supports it |
 | `ScoreBreakdown`, `Trace`, `ExecutionReceipt` | the score, the trail and the execution state |
 | `Verb` | `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` |
-| `decide` | answer one request with the core |
+| `decide` | answer one request with the decision layer |
 | `REASON_CODE_GROUPS`, `REASON_CODES_VERSION`, `reason_code_registry` | the stable reason-code registry |
 
 ## Commitments
@@ -118,7 +118,7 @@ The bench runner classes are exported from `laix.appkit.bench`. The rest are in 
 ## Reading the API
 
 - Start with `DecisionRequest` and `Decision`; they are the contract.
-- Use `decide` for the core, or `DecisionClient` when you want the app kit.
+- Use `decide` for the decision layer, or `DecisionClient` when you want the app kit.
 - Use `PlannerPolicy` to put a planner or a composite planner behind the policy contract.
 - Use `ExecutionBridge` and `DecisionRecord` when the decision changes the world.
 - The app kit is optional; importing `laix` does not load it until first use.

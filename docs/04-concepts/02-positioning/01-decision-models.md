@@ -42,7 +42,7 @@ the host executes, approves and records
 LAIX works with any model. Its built-in policies are deterministic rules. Its bandit policy is a
 small learner. A JEV call can sit behind a LAIX policy.
 
-The decision is the core product. Execution, approval, receipts and records belong to the host, or
+The decision is the decision layer product. Execution, approval, receipts and records belong to the host, or
 to the optional app kit when the host chooses it.
 
 ## Side by side
@@ -260,7 +260,7 @@ The host applies the rest:
 - verification when the outcome matters.
 
 The optional app kit records the decision, execution and outcome. The adapter stays in the app.
-LAIX core stays model-neutral.
+LAIX decision layer stays model-neutral.
 
 ## Which one to choose
 
@@ -268,7 +268,7 @@ LAIX core stays model-neutral.
 |---|---|
 | Classify text into one of a fixed set of labels | JEV or another classifier |
 | Score an item on a rubric | JEV or another scorer |
-| Decide whether to act, ask, wait or escalate, with approval and records | LAIX core, with the app kit for approval and records |
+| Decide whether to act, ask, wait or escalate, with approval and records | LAIX decision layer, with the app kit for approval and records |
 | Both judgment and decision lifecycle | JEV inside a LAIX policy; app kit for the lifecycle |
 
 ## Why pair them
@@ -285,7 +285,7 @@ The useful comparison is:
 
 ```text
 JEV / classifier / LLM  -> judgment
-LAIX core               -> task decision
+LAIX decision layer               -> task decision
 host / app kit          -> approval, execution, outcome
 ```
 

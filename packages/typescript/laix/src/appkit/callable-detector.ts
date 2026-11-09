@@ -1,4 +1,4 @@
-import type { Detection, Detector, PerceptionEvent } from "../core/domain/perception/perception.ts";
+import type { Detection, Detector, PerceptionEvent } from "../decision/domain/perception/perception.ts";
 
 export class CallableDetector implements Detector {
   name: string;

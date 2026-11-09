@@ -24,9 +24,9 @@ INK = "#0F172A"
 MUTED = "#64748B"
 RULE = "#F1F5F9"
 
-CORE_ACCENT = "#0F766E"
-CORE_TINT = "#F0FDFA"
-CORE_STROKE = "#99F6E4"
+DECISION_ACCENT = "#0F766E"
+DECISION_TINT = "#F0FDFA"
+DECISION_STROKE = "#99F6E4"
 
 APPKIT_ACCENT = "#1D4ED8"
 APPKIT_TINT = "#EFF6FF"
@@ -159,7 +159,7 @@ def _footer(y: float, value: str) -> list[str]:
     ]
 
 
-def render_core() -> str:
+def render_decision() -> str:
     rows = (
         (
             "Contract",
@@ -213,17 +213,17 @@ def render_core() -> str:
     )
 
     lines = _header(
-        title_id="core",
+        title_id="decision",
         title="Seven layers, one decision contract",
         desc=(
-            "The seven core layers: contract, domain, decision, sensing, learning, "
+            "The seven decision layers: contract, domain, decision, sensing, learning, "
             "evaluation and foundation. The contract is at the top and the foundation at the bottom."
         ),
-        eyebrow="CORE LAYERS",
+        eyebrow="DECISION LAYERS",
         subtitle="From what crosses the boundary to what proves the choice.",
-        accent=CORE_ACCENT,
-        tint=CORE_TINT,
-        stroke=CORE_STROKE,
+        accent=DECISION_ACCENT,
+        tint=DECISION_TINT,
+        stroke=DECISION_STROKE,
         pill="STATELESS",
         height=800,
     )
@@ -241,9 +241,9 @@ def render_core() -> str:
                 card_xs=(268, 709),
                 card_width=427,
                 height=70,
-                accent=CORE_ACCENT,
-                tint=CORE_TINT,
-                stroke=CORE_STROKE,
+                accent=DECISION_ACCENT,
+                tint=DECISION_TINT,
+                stroke=DECISION_STROKE,
                 label_dy=48,
                 index_dy=24,
                 title_dy=30,
@@ -257,7 +257,7 @@ def render_core() -> str:
     lines.extend(
         _footer(
             752,
-            "The core is stateless. The host supplies the current state on every request.",
+            "The decision layer is stateless. The host supplies the current state on every request.",
         )
     )
     lines.append("</svg>")
@@ -313,7 +313,7 @@ def render_appkit() -> str:
         title="Five stages around one decision",
         desc=(
             "The five app-kit stages: build, run, execute, connect and operate. "
-            "Each stage wraps the core decision with production surfaces."
+            "Each stage wraps the decision with production surfaces."
         ),
         eyebrow="APP KIT",
         subtitle="Build, run, execute, connect and operate the decision in production.",
@@ -362,9 +362,9 @@ def render_appkit() -> str:
 
 def main() -> int:
     ASSETS.mkdir(parents=True, exist_ok=True)
-    (ASSETS / "core-layers.svg").write_text(render_core(), encoding="utf-8", newline="\n")
+    (ASSETS / "decision-layers.svg").write_text(render_decision(), encoding="utf-8", newline="\n")
     (ASSETS / "appkit-stages.svg").write_text(render_appkit(), encoding="utf-8", newline="\n")
-    print("wrote docs/assets/core-layers.svg and docs/assets/appkit-stages.svg")
+    print("wrote docs/assets/decision-layers.svg and docs/assets/appkit-stages.svg")
     return 0
 
 

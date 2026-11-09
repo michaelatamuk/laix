@@ -12,7 +12,7 @@ ROOT = Path(laix.__file__).resolve().parent
 LOCAL_PACKAGES = {"laix"}
 
 # Optional integrations are allowed to import their extra only when the user
-# installs it. The core stays dependency-free.
+# installs it. The decision layer stays dependency-free.
 OPTIONAL_IMPORTS = {
     "appkit/mcp_server.py": {"mcp"},
 }

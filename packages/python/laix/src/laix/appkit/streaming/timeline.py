@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import Iterable
 
-from ...core.domain.decisions import Decision
+from ...decision.domain.decisions import Decision
 from .timeline_error import TimelineError
 from .timeline_report import TimelineReport
 

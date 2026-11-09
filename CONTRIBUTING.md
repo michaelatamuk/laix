@@ -57,7 +57,7 @@ dependencies.
   composite planner an engine.
 - **Keep the public API in `__init__.py` and `index.ts`.**
 - **Mirror the Python surface in TypeScript.** Parity is tested, not assumed.
-- **Use generic vocabulary.** No app, domain or vendor names in the core.
+- **Use generic vocabulary.** No app, domain or vendor names in the decision layer.
 - **Training-free by default.** A planner may use a model the host supplies; the contract
   does not change.
 - **Keep the host in control of execution, storage, delivery and data.**

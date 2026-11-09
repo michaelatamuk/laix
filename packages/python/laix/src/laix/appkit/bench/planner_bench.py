@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from ...core.contract.planner_policy import PlannerInput, PlannerResult
-from ...core.engines.decision.single.planners.mdp.mdp_planner import MDPPlanner, MdpModel, MdpTransition
-from ...core.engines.evaluation.simulation.simulator import Scenario, SimulationReport, Simulator, compare_planners
+from ...decision.contract.planner_policy import PlannerInput, PlannerResult
+from ...decision.engines.decision.single.planners.mdp.mdp_planner import MDPPlanner, MdpModel, MdpTransition
+from ...decision.engines.evaluation.simulation.simulator import Scenario, SimulationReport, Simulator, compare_planners
 
 
 class FixedActionPlanner:

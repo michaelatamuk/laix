@@ -50,10 +50,10 @@ def main() -> int:
             f"| Python package | `{version}` |",
             f"| TypeScript package | `{version}` |",
         ],
-        "docs/02-core/01-contract/03-records.md": [
+        "docs/02-decision/01-contract/03-records.md": [
             f"| Package | `{version}` |",
         ],
-        "docs/02-core/07-support/02-support.md": [
+        "docs/02-decision/07-support/02-support.md": [
             f"(`{version}`)",
         ],
         "CHANGELOG.md": [

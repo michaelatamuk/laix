@@ -8,13 +8,13 @@ examples/
 ├── data/                  decision JSON for the CLI
 ├── mcp/                   MCP client config and tool example
 ├── python/
-│   ├── core/
+│   ├── decision/
 │   │   ├── domain/
 │   │   │   ├── planning_store      promise and ledger persistence
 │   │   │   └── outcome_store       measured outcomes and stores
 │   │   ├── decision/
 │   │   │   ├── single/
-│   │   │   │   ├── decide/       signals, situations, actions and the core call
+│   │   │   │   ├── decide/       signals, situations, actions and the decision layer call
 │   │   │   │   ├── policies/     packaged, authored and learned policies
 │   │   │   │   └── planners/     utility, commitment, execution, attention, CA-VOD, MDP, POMDP
 │   │   │   ├── sequence/         CABB, rollout and replan
@@ -39,7 +39,7 @@ examples/
 │       ├── connect/              platform, delivery, state/outcome files and stores
 │       └── operate/              LAIX-Bench, metrics and OpenTelemetry
 └── typescript/
-    └── (the same core and app-kit split)
+    └── (the same decision and app-kit split)
 ```
 
 Every Python and TypeScript example is executed by CI. The output shown is the actual output.
@@ -67,16 +67,16 @@ A single example:
 
 ```powershell
 $env:PYTHONPATH = "packages/python/laix/src"
-py examples/python/core/sensing/signals/signal_attention_bill_due.py
+py examples/python/decision/sensing/signals/signal_attention_bill_due.py
 ```
 
-# Core
+# Decision
 
 ## Domain
 
 ### Commitments
 
-`examples/python/core/domain/` · `examples/typescript/core/domain/`
+`examples/python/decision/domain/` · `examples/typescript/decision/domain/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -84,7 +84,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Outcomes
 
-`examples/python/core/domain/` · `examples/typescript/core/domain/`
+`examples/python/decision/domain/` · `examples/typescript/decision/domain/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -94,12 +94,12 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Single decision: decide
 
-`examples/python/core/decision/single/decide/` · `examples/typescript/core/decision/single/decide/`
+`examples/python/decision/decision/single/decide/` · `examples/typescript/decision/decision/single/decide/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
 | A sink is about to overflow. | `action_leaking_sink.py` | `action.mts` | `act policy_rule option-close-valve` |
-| The same sink, through core `decide`. | `action_core_decide.py` | — | `act policy_rule option-close-valve DEC-...` |
+| The same sink, through `decide`. | `action_decide.py` | — | `act policy_rule option-close-valve DEC-...` |
 | A bill needs payment and approval. | `action_pay_bill.py` | `action_pay_bill.mts` | `act policy_rule option-pay True` / `true` |
 | A parcel is late; a tracking page can settle it. | `action_check_again.py` | — | `observe policy_rule option-check-tracking` |
 | No safe valve: the safety boundary escalates. | `action_no_valve.py` | `action_no_valve.mts` | `escalate manager 0.7` |
@@ -108,7 +108,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Single decision: policies
 
-`examples/python/core/decision/single/policies/` · `examples/typescript/core/decision/single/policies/`
+`examples/python/decision/decision/single/policies/` · `examples/typescript/decision/decision/single/policies/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -130,7 +130,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Single decision: planners
 
-`examples/python/core/decision/single/planners/` · `examples/typescript/core/decision/single/planners/`
+`examples/python/decision/decision/single/planners/` · `examples/typescript/decision/decision/single/planners/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -146,7 +146,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Sequence
 
-`examples/python/core/decision/sequence/` · `examples/typescript/core/decision/sequence/`
+`examples/python/decision/decision/sequence/` · `examples/typescript/decision/decision/sequence/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -155,7 +155,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Fleet
 
-`examples/python/core/decision/fleet/` · `examples/typescript/core/decision/fleet/`
+`examples/python/decision/decision/fleet/` · `examples/typescript/decision/decision/fleet/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -164,7 +164,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### History
 
-`examples/python/core/decision/history/` · `examples/typescript/core/decision/history/`
+`examples/python/decision/decision/history/` · `examples/typescript/decision/decision/history/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -174,7 +174,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Explain
 
-`examples/python/core/decision/explain/` · `examples/typescript/core/decision/explain/`
+`examples/python/decision/decision/explain/` · `examples/typescript/decision/decision/explain/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -185,7 +185,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Signals
 
-`examples/python/core/sensing/signals/` · `examples/typescript/core/sensing/signals/`
+`examples/python/decision/sensing/signals/` · `examples/typescript/decision/sensing/signals/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -196,7 +196,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Resources
 
-`examples/python/core/sensing/` · `examples/typescript/core/sensing/`
+`examples/python/decision/sensing/` · `examples/typescript/decision/sensing/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -206,7 +206,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Calibration
 
-`examples/python/core/learning/calibration/` · `examples/typescript/core/learning/calibration/`
+`examples/python/decision/learning/calibration/` · `examples/typescript/decision/learning/calibration/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -215,7 +215,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Model
 
-`examples/python/core/learning/model/` · `examples/typescript/core/learning/model/`
+`examples/python/decision/learning/model/` · `examples/typescript/decision/learning/model/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -224,7 +224,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Causal
 
-`examples/python/core/learning/causal/` · `examples/typescript/core/learning/causal/`
+`examples/python/decision/learning/causal/` · `examples/typescript/decision/learning/causal/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -237,7 +237,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Cases
 
-`examples/python/core/evaluation/cases/` · `examples/typescript/core/evaluation/cases/`
+`examples/python/decision/evaluation/cases/` · `examples/typescript/decision/evaluation/cases/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -246,7 +246,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Bench
 
-`examples/python/core/evaluation/bench/` · `examples/typescript/core/evaluation/bench/`
+`examples/python/decision/evaluation/bench/` · `examples/typescript/decision/evaluation/bench/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -256,7 +256,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 
 ### Simulation
 
-`examples/python/core/evaluation/simulation/` · `examples/typescript/core/evaluation/simulation/`
+`examples/python/decision/evaluation/simulation/` · `examples/typescript/decision/evaluation/simulation/`
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
@@ -412,5 +412,5 @@ suite is the source of truth for behavioural parity.
 - `3` — total attempts.
 - `unknown` — the slow async handler timed out; reconcile before retrying.
 
-The full field list is in [`../docs/02-core/01-contract/01-decision-contract.md`](../docs/02-core/01-contract/01-decision-contract.md).
-The policy contracts are in [`../docs/02-core/03-decision/01-single/05-policies.md`](../docs/02-core/03-decision/01-single/05-policies.md).
+The full field list is in [`../docs/02-decision/01-contract/01-decision-contract.md`](../docs/02-decision/01-contract/01-decision-contract.md).
+The policy contracts are in [`../docs/02-decision/03-decision-shapes/01-single/05-policies.md`](../docs/02-decision/03-decision-shapes/01-single/05-policies.md).

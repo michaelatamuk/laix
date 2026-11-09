@@ -25,11 +25,11 @@ receipt / outcome  ──►  record and calibration
 
 | Mode | Use it when | What the host owns |
 |---|---|---|
-| Core only | You need one decision and already have execution. | Request data, execution, records. |
+| Decision only | You need one decision and already have execution. | Request data, execution, records. |
 | App kit | You want execution, receipts, records and recovery in one place. | Stores, credentials, transport. |
 | Streaming | Decisions arrive from an event stream. | Source, sink, checkpoints, capacity. |
 
-The core is stateless. The app kit adds optional state: experience state, stream checkpoints,
+The decision layer is stateless. The app kit adds optional state: experience state, stream checkpoints,
 commitment ledgers, outcome stores and decision records. The host still owns the database and the
 retention policy.
 

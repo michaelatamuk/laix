@@ -1,5 +1,5 @@
-import type { ActionOption, Decision, Receipt } from "../../core/contracts.ts";
-import { newId } from "../../core/contracts.ts";
+import type { ActionOption, Decision, Receipt } from "../../decision/contracts.ts";
+import { newId } from "../../decision/contracts.ts";
 import { ApprovalRequired } from "./approval-required.ts";
 import { retryDelay, sleep, sleepSync, withTimeout } from "./execution-helpers.ts";
 import {

@@ -31,7 +31,7 @@ records. LAIX does not open a database, call a provider or deliver a message on 
 
 A verb, reason code, confidence, rationale, optional action and intent, approval, evidence, target,
 decision id and trace id. The full shape is in
-[the decision contract](../../02-core/01-contract/01-decision-contract.md).
+[the decision contract](../../02-decision/01-contract/01-decision-contract.md).
 
 ## What is the novelty?
 
@@ -82,7 +82,7 @@ vectors.
 ## How do I start?
 
 1. [Quickstart](../../01-start/02-first-steps/01-quickstart.md) for the first decision.
-2. [Core overview](../../02-core/README.md) for the contract and the mechanisms.
+2. [Decision overview](../../02-decision/README.md) for the contract and the mechanisms.
 3. [App-kit overview](../../03-appkit/README.md) for execution, records and stores.
 4. [Decision models](../02-positioning/01-decision-models.md) if you already use JEV or another model.
 

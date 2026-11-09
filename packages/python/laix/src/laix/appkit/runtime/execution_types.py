@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Awaitable, Callable
 
-from ...core.domain.decisions import ActionOption
+from ...decision.domain.decisions import ActionOption
 
 Handler = Callable[[ActionOption, dict[str, Any]], dict[str, Any]]
 AsyncHandler = Callable[[ActionOption, dict[str, Any]], Awaitable[dict[str, Any]]]

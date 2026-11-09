@@ -6,7 +6,7 @@ import time
 from dataclasses import dataclass
 from typing import Iterable
 
-from ...core.domain.decisions import Decision, DecisionRequest
+from ...decision.domain.decisions import Decision, DecisionRequest
 from .session import StreamSession, StreamStats
 
 

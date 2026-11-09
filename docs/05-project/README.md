@@ -24,5 +24,5 @@ order.
 | [Release](03-release/README.md) | Version axes, compatibility, deprecation and data migration. |
 | [Direction](04-direction/README.md) | Completed work, open work, research tracks and adoption. |
 
-The product docs are in [Start](../01-start/01-orientation/01-what-is-laix.md), [Core](../02-core/README.md) and
+The product docs are in [Start](../01-start/01-orientation/01-what-is-laix.md), [Decision](../02-decision/README.md) and
 [App kit](../03-appkit/README.md).

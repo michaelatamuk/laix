@@ -1,5 +1,5 @@
-import type { Belief, Decision, Observation, Phase } from "../../core/contracts.ts";
-import { PHASES, clamp, confidenceBand, iso } from "../../core/contracts.ts";
+import type { Belief, Decision, Observation, Phase } from "../../decision/contracts.ts";
+import { PHASES, clamp, confidenceBand, iso } from "../../decision/contracts.ts";
 
 export class ExperienceState {
   subject: string;

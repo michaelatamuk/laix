@@ -1,4 +1,4 @@
-import type { Decision } from "../core/contracts.ts";
+import type { Decision } from "../decision/contracts.ts";
 import { TimelineError } from "./timeline-error.ts";
 
 export { TimelineError };

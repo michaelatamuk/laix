@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { defaultPlanners } from "../src/core/engines/evaluation/bench/live-bench.ts";
+import { defaultPlanners } from "../src/decision/engines/evaluation/bench/live-bench.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "../../../..");
