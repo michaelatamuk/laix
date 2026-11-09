@@ -58,6 +58,7 @@ contracts in detail.
 | **Commitment** | A promised step with an owner, a trust source, a due time, status and dependencies. |
 | **CommitmentRef** | An owner-qualified reference `(owner, ledger, id)` to one commitment. |
 | **CommitmentGraph** | The local ledger plus external commitments, with blockers, cycles, impact and critical path. |
+| **Commitment resolver** | The app-kit port that resolves another owner's commitments for a graph. |
 | **Owner** | The party that made a commitment. `local` means this host. |
 | **Trust source** | How a commitment is known: `local`, `reported` or `verified`. `verified` is a host assertion, not a signature. |
 | **External dependency** | Another owner's commitment that must be done before a local one. |
