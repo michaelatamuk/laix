@@ -125,7 +125,7 @@ If the answer is not the one you expected, start with
 
 ## Full request: approval, commitment and attention
 
-This request carries a payment, a promise and a human-attention budget. The default action policy
+This request carries a payment, a commitment and a human-attention budget. The default action policy
 selects `pay` and flags the approval.
 
 ```python
@@ -226,7 +226,7 @@ print(json.dumps({
 }
 ```
 
-The default action policy uses one utility score and the approval flag; it does not weigh the promise
+The default action policy uses one utility score and the approval flag; it does not weigh the commitment
 or the attention budget separately.
 
 The same request with the composite planner:
