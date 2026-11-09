@@ -130,12 +130,12 @@ packages/python/laix/src/laix/
     ├── decision_client.py   public DecisionClient
     ├── cli.py               laix explain and lint
     ├── mcp_server.py        optional laix-mcp stdio server
-    ├── runtime/             decision loop, execution, saga, state, stores
+    ├── runtime/             decision loop, execution, async, retry, saga, state, stores
     ├── audit/               decision record, proposal, approval, undo, audit event
     ├── delivery/            port, receipt, null
     ├── platform/            platform, in-memory, skill call, approvals, event, capability
     ├── live_context/        loop and callable detector
-    ├── streaming/           session, window, sources, checkpoint, timeline, bench
+    ├── streaming/           feed, session, window, sources, checkpoint, timeline, bench
     └── bench/               case, suite, row, report, runner, planner bench
 ```
 
@@ -187,7 +187,7 @@ packages/typescript/laix/src/
     ├── index.ts       optional app surface
     ├── decision-client.ts public DecisionClient and action policy
     ├── live-context.ts host-driven detector loop
-    ├── streaming.ts   stream session and checkpoints
+    ├── streaming.ts   stream session, feed and checkpoints
     ├── decision-timeline.ts decision timeline semantics
     ├── checkpoint.ts  in-memory and file checkpoint stores
     ├── simulator.ts   planner simulator and comparison
@@ -201,7 +201,7 @@ packages/typescript/laix/src/
     ├── proposal.ts    proposal lifecycle
     ├── delivery.ts    delivery port
     ├── bench.ts       LAIX-Bench
-    └── runtime/       execution, saga, state and stores
+    └── runtime/       execution, async, retry, saga, state and stores
 ```
 
 The TypeScript package mirrors the same folders under `src/core` and `src/appkit`. It exports one
