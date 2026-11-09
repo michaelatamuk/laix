@@ -210,4 +210,4 @@ LAIX keeps the decision and its record.
 - [Architecture](../../04-concepts/01-architecture/01-system-architecture.md) — the full picture.
 - [Host integration](../02-first-steps/02-host-integration.md) — the six things a host team checks first.
 - [The Decision response](../../02-decision/01-contract/01-decision-contract.md) — every field in plain language.
-- [FAQ](../../04-concepts/04-reference/02-faq.md) — models, execution and novelty.
+- [FAQ](../../05-reference/02-faq.md) — models, execution and novelty.

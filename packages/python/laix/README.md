@@ -58,8 +58,8 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 | `appkit/` | `DecisionClient`, decision loop, streaming, execution, stores, platform, delivery, bench, CLI and MCP |
 
 The full module map is in
-[repository structure](../../../docs/05-project/01-repository/01-repository-structure.md); the
-public names are in the [API map](../../../docs/05-project/01-repository/02-api-map.md).
+[repository structure](../../../docs/06-project/01-repository/01-repository-structure.md); the
+public names are in the [API map](../../../docs/06-project/01-repository/02-api-map.md).
 
 ## Custom policies
 

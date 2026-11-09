@@ -87,7 +87,7 @@ def main() -> int:
     args = parse_args()
     if not args.input.exists():
         print(f"missing study data: {args.input}")
-        print("The protocol is in docs/06-research/03-validation/vignette-study.md")
+        print("The protocol is in docs/07-research/03-validation/vignette-study.md")
         return 2
 
     rows = load_rows(args.input)

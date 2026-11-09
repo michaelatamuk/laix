@@ -110,5 +110,5 @@ contracts in detail.
 | **LLM** | Large language model: a model that generates or judges text. |
 | **PPMA** | The layer above LAIX that owns activation, commit and the system-level loop; LAIX decides inside one task. |
 
-The full contracts are in [Decision overview](../../02-decision/README.md) and
-[App-kit overview](../../03-appkit/README.md).
+The full contracts are in [Decision overview](../02-decision/README.md) and
+[App-kit overview](../03-appkit/README.md).

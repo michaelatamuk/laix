@@ -104,4 +104,4 @@ Read in order. Each section opens with a short index that lists its pages in rea
 | `appkit/bench/` | case, suite, row, report, runner and planner bench. |
 
 The decision map is [Decision overview](../02-decision/README.md). The vocabulary is in the
-[glossary](../04-concepts/04-reference/01-glossary.md).
+[glossary](../05-reference/01-glossary.md).

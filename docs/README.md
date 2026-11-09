@@ -10,8 +10,9 @@ owns the experience; LAIX owns the decision.
 LAIX turns what is happening, the options the host can offer and the limits the host sets into one
 decision.
 
-The top-level numbers give the reading order. Concepts and Project are reference sections, so their
-pages are not a sequence. Research is a staged evidence plan.
+The top-level numbers give the reading order. Concepts and Project are explanation and project
+reference sections, so their pages are not a sequence. Reference is a lookup section. Research is a
+staged evidence plan.
 
 ## Start here
 
@@ -55,24 +56,31 @@ Read in order.
 | [Architecture](04-concepts/01-architecture/README.md) | what LAIX is, how it decides and where its boundary sits |
 | [Positioning](04-concepts/02-positioning/README.md) | how LAIX relates to decision models and PPMA |
 | [Trust](04-concepts/03-trust/README.md) | security, privacy and the host boundary |
-| [Reference](04-concepts/04-reference/README.md) | vocabulary and common questions |
+
+## Reference
+
+| Page | Answers |
+|---|---|
+| [Reference overview](05-reference/README.md) | vocabulary and common questions |
+| [Glossary](05-reference/01-glossary.md) | the terms used across the decision layer, the app kit and the host |
+| [FAQ](05-reference/02-faq.md) | models, execution, evidence, limits and when to use LAIX |
 
 ## Project
 
 | Page | Covers |
 |---|---|
-| [Project overview](05-project/README.md) | the working, release and direction pages |
-| [Repository](05-project/01-repository/README.md) | structure and the public API map |
-| [Quality](05-project/02-quality/README.md) | testing, CI and troubleshooting |
-| [Release](05-project/03-release/README.md) | versioning, migration and deprecation |
-| [Direction](05-project/04-direction/README.md) | roadmap and adoption |
+| [Project overview](06-project/README.md) | the working, release and direction pages |
+| [Repository](06-project/01-repository/README.md) | structure and the public API map |
+| [Quality](06-project/02-quality/README.md) | testing, CI and troubleshooting |
+| [Release](06-project/03-release/README.md) | versioning, migration and deprecation |
+| [Direction](06-project/04-direction/README.md) | roadmap and adoption |
 | [Brand assets](assets/README.md) | logo, banner, architecture and demo placeholder |
 
 ## Research and evidence
 
 | Page | Covers |
 |---|---|
-| [Research and evidence](06-research/README.md) | claim, prior-art gap, experiments, validation and paper plan |
+| [Research and evidence](07-research/README.md) | claim, prior-art gap, experiments, validation and paper plan |
 
 ## Community
 
@@ -105,16 +113,16 @@ TypeScript example is run by CI.
 | learn from outcomes | [Outcome learning](02-decision/02-domain/03-outcomes.md) |
 | understand the planner contract | [Planner contract](02-decision/01-contract/02-planner-contract.md) |
 | see the end-to-end loop | [Decision lifecycle](01-start/01-orientation/02-decision-lifecycle.md) |
-| see the public API | [API map](05-project/01-repository/02-api-map.md) |
-| operate in production | [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md), [Troubleshooting](05-project/02-quality/02-troubleshooting.md) |
-| troubleshoot a decision | [Troubleshooting](05-project/02-quality/02-troubleshooting.md) |
-| upgrade a deployment | [Migration](05-project/03-release/02-migration.md) |
-| publish a release | [Publishing](05-project/03-release/03-publishing.md) |
+| see the public API | [API map](06-project/01-repository/02-api-map.md) |
+| operate in production | [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md), [Troubleshooting](06-project/02-quality/02-troubleshooting.md) |
+| troubleshoot a decision | [Troubleshooting](06-project/02-quality/02-troubleshooting.md) |
+| upgrade a deployment | [Migration](06-project/03-release/02-migration.md) |
+| publish a release | [Publishing](06-project/03-release/03-publishing.md) |
 | report a vulnerability | [Security](../SECURITY.md) |
-| contribute | [Contributing](../CONTRIBUTING.md), then [Testing](05-project/02-quality/01-testing.md) |
-| check model use or novelty | [FAQ](04-concepts/04-reference/02-faq.md), then [Research and evidence](06-research/README.md) |
-| look up a term | [Glossary](04-concepts/04-reference/01-glossary.md) |
-| work on the repository | [Testing](05-project/02-quality/01-testing.md), then [Repository structure](05-project/01-repository/01-repository-structure.md) |
+| contribute | [Contributing](../CONTRIBUTING.md), then [Testing](06-project/02-quality/01-testing.md) |
+| check model use or novelty | [FAQ](05-reference/02-faq.md), then [Research and evidence](07-research/README.md) |
+| look up a term | [Glossary](05-reference/01-glossary.md) |
+| work on the repository | [Testing](06-project/02-quality/01-testing.md), then [Repository structure](06-project/01-repository/01-repository-structure.md) |
 
 ## Reading paths
 
@@ -123,5 +131,5 @@ TypeScript example is run by CI.
 | Product | [What is LAIX?](01-start/01-orientation/01-what-is-laix.md), [Decision lifecycle](01-start/01-orientation/02-decision-lifecycle.md), [Scope and boundaries](04-concepts/01-architecture/02-scope-and-boundaries.md) |
 | Engineer | [Quickstart](01-start/02-first-steps/01-quickstart.md), [Decision contract](02-decision/01-contract/01-decision-contract.md), [Policies](02-decision/03-decision-shapes/01-single/05-policies.md), [Planner contract](02-decision/01-contract/02-planner-contract.md), [Live composite planner](02-decision/03-decision-shapes/01-single/02-composite.md), [App kit](03-appkit/README.md) |
 | Operator | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md), [Stores](03-appkit/04-connect/01-stores.md), [Platform](03-appkit/04-connect/02-platform.md), [Delivery](03-appkit/04-connect/03-delivery.md), [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md) |
-| Contributor | [Contributing](../CONTRIBUTING.md), [Testing](05-project/02-quality/01-testing.md), [Repository structure](05-project/01-repository/01-repository-structure.md) |
-| Researcher or reviewer | [Research and evidence](06-research/README.md), then [Prior art](06-research/01-positioning/prior-art.md), [Benchmark](06-research/02-evaluation/benchmark.md) |
+| Contributor | [Contributing](../CONTRIBUTING.md), [Testing](06-project/02-quality/01-testing.md), [Repository structure](06-project/01-repository/01-repository-structure.md) |
+| Researcher or reviewer | [Research and evidence](07-research/README.md), then [Prior art](07-research/01-positioning/prior-art.md), [Benchmark](07-research/02-evaluation/benchmark.md) |

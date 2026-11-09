@@ -16,7 +16,7 @@ It returns a **decision**. The app runs the chosen option.
 | DecisionPolicy | The chooser. It receives the request and returns one or more decisions. |
 | `PlannerResult` | A planner's internal answer; `PlannerPolicy` converts it into a `Decision`. |
 
-The full vocabulary is in the [glossary](../04-reference/01-glossary.md).
+The full vocabulary is in the [glossary](../../05-reference/01-glossary.md).
 
 ## Flow
 
@@ -235,11 +235,11 @@ gates 93.3%, no execution 83.3%, no commitment 70%, utility-only 30%. Reproduce 
 
 **Prior art:** No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI,
 scikit-learn calibration) carries all ten capabilities in one decision object. See
-[comparators.md](../../06-research/01-positioning/comparators.md) for the full matrix.
+[comparators.md](../../07-research/01-positioning/comparators.md) for the full matrix.
 
 **Audit and liability:** Because every decision carries a `verb`, `reason_code`, score breakdown and
 `decision_id` at the moment it is made, LAIX produces a complete audit trail without log mining. See
-[eu-liability.md](../../06-research/05-governance.md) for the mapping to EU Product
+[eu-liability.md](../../07-research/05-governance.md) for the mapping to EU Product
 Liability Directive 2024/2853.
 
 ## Rules

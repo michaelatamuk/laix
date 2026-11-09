@@ -84,4 +84,4 @@ See [Records](../01-contract/03-records.md) for the version axes.
 - [Perception](../02-domain/04-perception.md)
 - [Signal attention](../04-sensing/01-signals.md)
 - [Live Context](../../03-appkit/02-run/03-live-context.md)
-- [Versioning](../../05-project/03-release/01-versioning.md)
+- [Versioning](../../06-project/03-release/01-versioning.md)

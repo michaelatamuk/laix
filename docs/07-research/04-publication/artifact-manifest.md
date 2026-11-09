@@ -40,23 +40,23 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 
 ## Research docs
 
-- `docs/06-research/README.md`
-- `docs/06-research/01-positioning/prior-art.md`
-- `docs/06-research/01-positioning/comparators.md`
-- `docs/06-research/01-positioning/formal-model.md`
-- `docs/06-research/02-evaluation/benchmark.md`
-- `docs/06-research/02-evaluation/evidence-map.md`
-- `docs/06-research/03-validation/plan.md`
-- `docs/06-research/03-validation/incident-replay.md`
-- `docs/06-research/03-validation/vignette-study.md`
-- `docs/06-research/03-validation/consent.md`
-- `docs/06-research/03-validation/recruitment.md`
-- `docs/06-research/04-publication/publication-plan.md`
-- `docs/06-research/04-publication/paper-draft.md`
-- `docs/06-research/04-publication/references.md`
-- `docs/06-research/04-publication/review-log.md`
-- `docs/06-research/05-governance.md`
-- `docs/06-research/checklist.md`
+- `docs/07-research/README.md`
+- `docs/07-research/01-positioning/prior-art.md`
+- `docs/07-research/01-positioning/comparators.md`
+- `docs/07-research/01-positioning/formal-model.md`
+- `docs/07-research/02-evaluation/benchmark.md`
+- `docs/07-research/02-evaluation/evidence-map.md`
+- `docs/07-research/03-validation/plan.md`
+- `docs/07-research/03-validation/incident-replay.md`
+- `docs/07-research/03-validation/vignette-study.md`
+- `docs/07-research/03-validation/consent.md`
+- `docs/07-research/03-validation/recruitment.md`
+- `docs/07-research/04-publication/publication-plan.md`
+- `docs/07-research/04-publication/paper-draft.md`
+- `docs/07-research/04-publication/references.md`
+- `docs/07-research/04-publication/review-log.md`
+- `docs/07-research/05-governance.md`
+- `docs/07-research/checklist.md`
 
 ## Validation harness
 

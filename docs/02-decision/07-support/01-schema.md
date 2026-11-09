@@ -59,4 +59,4 @@ preferred.
 
 - [Decision contract](../01-contract/01-decision-contract.md)
 - [Records](../01-contract/03-records.md)
-- [Versioning](../../05-project/03-release/01-versioning.md)
+- [Versioning](../../06-project/03-release/01-versioning.md)

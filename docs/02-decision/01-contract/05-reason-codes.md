@@ -61,5 +61,5 @@ The test suite fails if either committed file is stale.
 - [Decision contract](01-decision-contract.md) - the request, response and reason-code contract.
 - [Planner contract](02-planner-contract.md) - planner results.
 - [Records](03-records.md) - the record schema and change rules.
-- [Troubleshooting](../../05-project/02-quality/02-troubleshooting.md) - reason-code symptoms.
-- [Versioning](../../05-project/03-release/01-versioning.md) - when a code change is a release change.
+- [Troubleshooting](../../06-project/02-quality/02-troubleshooting.md) - reason-code symptoms.
+- [Versioning](../../06-project/03-release/01-versioning.md) - when a code change is a release change.

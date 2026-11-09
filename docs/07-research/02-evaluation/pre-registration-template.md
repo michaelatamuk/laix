@@ -105,4 +105,4 @@ pairs, not only the p-value.
 
 - [Benchmark](benchmark.md) - the internal protocol and threats.
 - [Evidence map](evidence-map.md) - what is measured and what is missing.
-- [Adoption plan](../../05-project/04-direction/02-adoption-plan.md) - the external acceptance criteria.
+- [Adoption plan](../../06-project/04-direction/02-adoption-plan.md) - the external acceptance criteria.

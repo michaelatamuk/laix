@@ -33,4 +33,4 @@ siblings, not as one folder inside the other.
 5. [Explain](05-explain.md) — counterfactual attribution and bounded search.
 
 The research results and the prior-art caveats are in
-[Algorithm prototype results](../../06-research/02-evaluation/algorithm-prototypes.md).
+[Algorithm prototype results](../../07-research/02-evaluation/algorithm-prototypes.md).

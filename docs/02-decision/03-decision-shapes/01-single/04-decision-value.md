@@ -67,5 +67,5 @@ constrained POMDP solver and it does not prove that information or waiting is al
 
 - [Composite planner](02-composite.md)
 - [Model-based planners](03-model-based.md)
-- [Algorithm directions](../../../06-research/01-positioning/algorithm-directions.md)
-- [Algorithm prototype results](../../../06-research/02-evaluation/algorithm-prototypes.md)
+- [Algorithm directions](../../../07-research/01-positioning/algorithm-directions.md)
+- [Algorithm prototype results](../../../07-research/02-evaluation/algorithm-prototypes.md)

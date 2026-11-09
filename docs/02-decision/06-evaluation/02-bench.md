@@ -61,7 +61,7 @@ The corpus is in `benchmarks/live/v1/`; the frozen result is in
 
 The +6.7 pp difference over glue is not significant on 30 cases (p = 0.48). The benchmark is a
 fixed synthetic corpus. The design and the measured evidence are in
-[the benchmark page](../../06-research/02-evaluation/benchmark.md).
+[the benchmark page](../../07-research/02-evaluation/benchmark.md).
 
 ## JSON keys
 
@@ -95,5 +95,5 @@ format, the suites and the stream bench are documented in
 - [Cases and parity](01-cases.md)
 - [Simulation](03-simulation.md)
 - [Continuity benchmark](04-continuity-benchmark.md)
-- [Benchmark design](../../06-research/02-evaluation/benchmark.md)
+- [Benchmark design](../../07-research/02-evaluation/benchmark.md)
 - [LAIX-Bench](../../03-appkit/05-operate/01-bench.md)

@@ -13,4 +13,4 @@ Learning changes the next decision. The decision layer distinguishes two things:
 | [Causal](04-causal.md) | treatment and control effects over observed outcomes |
 
 The full research results are in
-[Algorithm prototype results](../../06-research/02-evaluation/algorithm-prototypes.md).
+[Algorithm prototype results](../../07-research/02-evaluation/algorithm-prototypes.md).

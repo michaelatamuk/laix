@@ -99,7 +99,7 @@ The current evidence is not robotics-specific:
 
 Before claiming robotics readiness, run a robot-specific benchmark and a real deployment. The scope of
 the current evidence is in the
-[evidence map](../../06-research/02-evaluation/evidence-map.md).
+[evidence map](../../07-research/02-evaluation/evidence-map.md).
 
 ## Related
 

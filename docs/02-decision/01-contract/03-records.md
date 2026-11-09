@@ -227,4 +227,4 @@ requires a new schema version and a migration note.
 - [Decision contract](01-decision-contract.md) — the request and response in prose.
 - [Support helpers](../07-support/02-support.md) — ids, time, values and version.
 - [Perception](../02-domain/04-perception.md) — detection, detector and frame.
-- [Versioning](../../05-project/03-release/01-versioning.md) — the release and version policy.
+- [Versioning](../../06-project/03-release/01-versioning.md) — the release and version policy.

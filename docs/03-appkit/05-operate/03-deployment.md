@@ -86,7 +86,7 @@ retention policy.
 - Bound input size, option count, model calls and planner depth.
 - Load-test the stream buffer and the execution adapter, not just `decide`.
 - Use the [bench](01-bench.md) and the
-  [evaluation](../../06-research/02-evaluation/benchmark.md) for repeatable numbers.
+  [evaluation](../../07-research/02-evaluation/benchmark.md) for repeatable numbers.
 
 ## Rollout
 
@@ -110,7 +110,7 @@ The host owns retention. At minimum, decide:
 - how deletion requests are applied to every store;
 - which records are needed for audit or EU PLD documentation.
 
-See [EU liability](../../06-research/05-governance.md) for the audit mapping and
+See [EU liability](../../07-research/05-governance.md) for the audit mapping and
 [Stores](../04-connect/01-stores.md) for the port contracts.
 
 ## Production checklist

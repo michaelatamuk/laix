@@ -143,7 +143,7 @@ TypeScript exports the same benchmark as `runBench`, `runStreamBench`, `runPlann
 - That a benchmark win is adoption.
 
 The external evidence and its limits are in the
-[claim-evidence map](../../06-research/02-evaluation/evidence-map.md).
+[claim-evidence map](../../07-research/02-evaluation/evidence-map.md).
 
 ## Related
 

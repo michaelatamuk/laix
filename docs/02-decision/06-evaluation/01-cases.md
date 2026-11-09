@@ -96,4 +96,4 @@ The conformance run agrees on 24/24 signal-attention decisions. The live-bench p
 - [Benchmarks](02-bench.md)
 - [Simulation](03-simulation.md)
 - [Continuity benchmark](04-continuity-benchmark.md)
-- [Benchmark design](../../06-research/02-evaluation/benchmark.md)
+- [Benchmark design](../../07-research/02-evaluation/benchmark.md)

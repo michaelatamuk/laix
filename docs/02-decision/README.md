@@ -160,7 +160,7 @@ The words are not interchangeable.
 | **Signal interruption budget** | A per-cycle cap on delivered signal decisions, set by `SignalContext.signal_interruption_budget`. |
 | **Resource budget** | Compute, latency and sensing capacity. `ResourceScheduler` admits or rejects work. |
 
-The full vocabulary is in the [glossary](../04-concepts/04-reference/01-glossary.md).
+The full vocabulary is in the [glossary](../05-reference/01-glossary.md).
 
 ## What the decision layer owns
 

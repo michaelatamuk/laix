@@ -91,4 +91,4 @@ are host responsibilities; see [Security](01-security.md).
 - [Stores](../../03-appkit/04-connect/01-stores.md) - persistence contracts.
 - [Execution and recovery](../../03-appkit/03-execute/01-execution-and-recovery.md) - the write boundary.
 - [Metrics](../../03-appkit/05-operate/02-metrics.md) - counters and alerts.
-- [Glossary](../04-reference/01-glossary.md) - the vocabulary.
+- [Glossary](../../05-reference/01-glossary.md) - the vocabulary.

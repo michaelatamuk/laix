@@ -44,4 +44,4 @@ consumer should trust the confidence.
 - [Outcomes](../02-domain/03-outcomes.md)
 - [Model learning](02-model.md)
 - [Decision calibration example](../../../examples/python/decision/learning/calibration/calibration.py)
-- [Calibration report API](../../05-project/01-repository/02-api-map.md)
+- [Calibration report API](../../06-project/01-repository/02-api-map.md)

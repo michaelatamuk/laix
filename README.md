@@ -184,7 +184,7 @@ previous one left. See [Decision continuity](docs/02-decision/03-decision-shapes
 
 In a 12-episode synthetic mechanism test, the stateful decision loop completed **100%** of episodes; a
 stateless utility planner completed **0%** with 36 continuity errors. See the
-[continuity benchmark](docs/06-research/02-evaluation/continuity-benchmark.md).
+[continuity benchmark](docs/07-research/02-evaluation/continuity-benchmark.md).
 
 ## Results
 
@@ -207,10 +207,10 @@ The glue baseline matches `LiveCompositePlanner` on conflict, promises, reversib
 remaining difference is accuracy on the other 24 cases, and it is not significant on 30 cases.
 
 On a 10-task τ-bench retail slice, the LAIX guardrail passed **10/10** vs **9/10** for the baseline
-(single trial). See [τ-bench](docs/06-research/02-evaluation/tau-bench.md). External validation — real
+(single trial). See [τ-bench](docs/07-research/02-evaluation/tau-bench.md). External validation — real
 incident replay or a participant study — is still pending. The full ablation, the test matrix and the
-evidence caveats are in [the benchmark](docs/06-research/02-evaluation/benchmark.md) and
-[the evidence map](docs/06-research/02-evaluation/evidence-map.md).
+evidence caveats are in [the benchmark](docs/07-research/02-evaluation/benchmark.md) and
+[the evidence map](docs/07-research/02-evaluation/evidence-map.md).
 
 ## When to use LAIX
 
@@ -250,7 +250,7 @@ Robotics: task-level decisions above the safety and motion layer. See
 Run the full checks before opening a change; the commands, design rules and pull-request checklist
 are in [CONTRIBUTING.md](CONTRIBUTING.md). CI runs the same checks on every push, plus the live
 benchmark, TypeScript parity, examples and docs links. See
-[Testing](docs/05-project/02-quality/01-testing.md) for every check.
+[Testing](docs/06-project/02-quality/01-testing.md) for every check.
 
 Questions go to [SUPPORT.md](SUPPORT.md); participation is covered by
 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
