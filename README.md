@@ -34,9 +34,9 @@ validation pending.
 
 - **The decision is explicit.** Every decision carries a verb, a reason code, confidence, a score
   and a trace. The app branches on the reason code, not on prose.
-- **The next decision starts from the current state.** Commitments, human-attention budget (how much
-  you can interrupt a person), approvals, revisions, execution receipts and measured outcomes carry
-  forward. A decision is a step, not a snapshot.
+- **The next decision starts from the current state.** Commitments (promises), human-attention budget
+  (how much you can interrupt a person), approvals, revisions, execution receipts and measured outcomes
+  carry forward. A decision is a step, not a snapshot.
 - **The host keeps control.** The decision layer is stateless. The host owns execution, data, storage
   and delivery; the optional app kit adds the lifecycle around the decision.
 - **It is portable and testable.** Python uses the standard library only. TypeScript mirrors the same
@@ -48,7 +48,7 @@ validation pending.
 |---|---|
 | Planning, tools and memory | An agent framework, with LAIX inside it. |
 | Long-running execution, retries and process state | A workflow engine, with LAIX deciding. |
-| One explicit decision with reason, approval, audit and continuity | LAIX. |
+| One explicit decision with reason, approval, audit trail and continuity | LAIX. |
 | One app with one simple rule | Plain app code, or one small decision rule. |
 | A classifier or a judge | A model; LAIX can wrap it behind the same contract. |
 
@@ -134,10 +134,11 @@ print(decision.verb, decision.reason_code, decision.action_id, decision.requires
 act policy_rule pay True
 ```
 
-`act` is the chosen verb, `pay` is the chosen option, and `True` means a person must approve before the
-host executes. `policy_rule` is the reason code: a built-in policy rule made the choice.
+`act` is the chosen verb (do it now), `pay` is the chosen option, and `True` means a person must
+approve before the host executes. `policy_rule` is the reason code: a built-in policy rule made the
+choice.
 
-The full request, with a promise and a human-attention budget, is in the
+The full request, with a commitment and a human-attention budget, is in the
 [quickstart](docs/01-start/02-first-steps/01-quickstart.md#full-request-approval-commitment-and-attention).
 TypeScript has the same `Decision` shape; the quickstart has the TypeScript version.
 
@@ -157,7 +158,7 @@ The same contract covers attention, action, several decision shapes and your own
 
 | What you get | In one line |
 |---|---|
-| [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` |
+| [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe` (gather evidence), `guide` (surface attention), `ask`, `act`, `verify`, `escalate` |
 | [Two decision families](docs/02-decision/README.md) | signal attention — what matters now — and action — what to do |
 | [Five decision shapes](docs/02-decision/03-decision-shapes/README.md) | single (one choice), sequence (a chain), fleet (many pending), history (repair), explain (why and what would flip it) |
 | [Bring your own policy](docs/02-decision/03-decision-shapes/01-single/05-policies.md) | any `name` + `decide` object; a planner or model behind the same contract |
@@ -170,22 +171,23 @@ planner, so a learned policy or model can sit behind the same contract.
 ## The live composite planner
 
 **Live** means the decision is made inside the running loop, at event time, with the current state.
-The decision layer stays stateless: the host supplies commitments, budget, approvals and execution
-state with each request.
+The decision layer stays stateless: the host supplies commitments, attention budget, approvals and
+execution state with each request.
 
-`LiveCompositePlanner` combines four scores: utility, promises, execution risk and human attention. It
-returns a `PlannerResult`; `PlannerPolicy` adapts that result to the public `Decision`, so the app
-still calls `decide` and still gets a `Decision`.
+`LiveCompositePlanner` combines four scores: utility (benefit versus cost), commitments, execution risk
+and human attention. `PlannerPolicy` adapts its result to the public `Decision`, so the app still
+calls `decide` and still gets a `Decision`.
 
-Using the full invoice request from the quickstart (the one with a promise and an attention budget):
+Using the full invoice request from the quickstart (the one with a commitment and a human-attention
+budget):
 
 | Same request | Policy | Result |
 |---|---|---|
-| `decide(request)` | `ActionPolicy` (default) | `pay`; approval required |
-| `decide(request, policy=...)` | `PlannerPolicy(LiveCompositePlanner())` | `ask`; promise to ask fulfilled |
+| `decide(request)` | The built-in action policy | `pay`; approval required |
+| `decide(request, policy=...)` | `PlannerPolicy(LiveCompositePlanner())` | `ask`; commitment to ask fulfilled |
 
 The composite planner chooses `ask` over `pay`. `pay` has the higher utility, but it breaks the
-promise to ask the owner before paying; `ask` fulfills that promise and stays within the
+commitment to ask the owner before paying; `ask` fulfills that commitment and stays within the
 human-attention budget. The decision carries the four scores, so the trade-off is visible.
 
 A separate conflict scenario is in
@@ -211,7 +213,7 @@ stateless utility planner completed **0%** with 36 continuity errors. See the
 ## Results
 
 `LiveCompositePlanner` scores **30/30** on the frozen 30-case test split of the 120-case corpus and
-**6/6** on the conflict cases. The hand-built glue baseline scores 28/30; the **+6.7 pp** difference
+**6/6** on the conflict cases. The hand-built integration baseline (the “glue baseline”) scores 28/30; the **+6.7 pp** difference
 is **not yet significant** (p = 0.48). Every single-concern planner has significantly lower accuracy
 (McNemar p ≤ 0.008).
 
@@ -253,7 +255,7 @@ On a 10-task τ-bench retail slice, the guardrail passed **10/10** vs **9/10** f
 
 Run the full checks before opening a change; the commands, design rules and pull-request checklist
 are in [CONTRIBUTING.md](CONTRIBUTING.md). CI runs the same checks on every push, plus the live
-benchmark, TypeScript parity, examples and docs links. See
+benchmark, TypeScript parity, examples, and docs link and anchor checks. See
 [Testing](docs/06-project/02-quality/01-testing.md) for every check.
 
 Questions go to [SUPPORT.md](SUPPORT.md); participation is covered by
