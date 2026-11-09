@@ -43,6 +43,7 @@ jobs:
           npm run typecheck:declarations
           npm run build
           npm test
+          npm run check:consumer
           npm run bench
           npm run conformance
 

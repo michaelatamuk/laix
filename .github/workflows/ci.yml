@@ -74,6 +74,9 @@ jobs:
       - name: Test
         working-directory: packages/typescript/laix
         run: npm test
+      - name: Consumer types
+        working-directory: packages/typescript/laix
+        run: npm run check:consumer
       - name: Bench
         working-directory: packages/typescript/laix
         run: npm run bench

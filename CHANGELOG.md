@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.13.1 - 2026-11-09
+
+### Fixed
+
+- **TypeScript declarations are generated from the source.** `dist/index.d.ts` is now the public type
+  entry, and the old hand-maintained `types.d.ts` is gone. This restores public names that were
+  missing, including `Situation`, `LiveCompositePlanner`, `HumanAttentionBudget`, `ExecutionRiskPlanner`,
+  `DecisionTimeline` and `RuntimeDecision`.
+- **Declaration checks are strict.** `typecheck:declarations` no longer uses `--skipLibCheck`, and a
+  packaged-consumer smoke test installs the tarball and type-checks the public imports.
+
+### Changed
+
+- **Docs link check covers anchors.** Relative Markdown anchors now fail the docs job when the heading
+  does not exist.
+
 ## 0.13.0 - 2026-11-09
 
 ### Changed

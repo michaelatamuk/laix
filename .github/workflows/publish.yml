@@ -61,6 +61,8 @@ jobs:
           npm ci
           npm run build
           npm test
+          npm run typecheck:declarations
+          npm run check:consumer
           npm run conformance
 
       - name: Publish to npm

@@ -83,6 +83,12 @@ The decision package no longer nests algorithms under `engines/`, and the app ki
 
 The top-level `from laix import ...` surface is unchanged. Only deep imports move.
 
+## 0.13.1: generated TypeScript declarations
+
+The package now ships declarations at `dist/index.d.ts`, generated from the source. The old
+hand-maintained `types.d.ts` is removed. Public import names are unchanged; the difference is that
+every public name is now visible to TypeScript.
+
 ## Vocabulary migration (0.10.0)
 
 0.10.0 renamed the planning and attention vocabulary. There are no compatibility aliases.
@@ -246,5 +252,5 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.13.0`. Add a new entry here when a release requires host changes; keep it
+The current release is `0.13.1`. Add a new entry here when a release requires host changes; keep it
 short and concrete.

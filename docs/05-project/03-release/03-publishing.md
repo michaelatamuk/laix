@@ -24,8 +24,8 @@ The workflow builds the wheel and source distribution, then publishes with
 ## npm
 
 The TypeScript package name is `laix`. Confirm the name is available, or scope it before the first
-publish. The package builds ESM output to `dist/` and keeps the curated public declarations in
-`types.d.ts`.
+publish. The package builds ESM output and declarations to `dist/` and points its types at
+`dist/index.d.ts`.
 
 Use one of these:
 
@@ -49,9 +49,9 @@ Use `target=python` or `target=npm` to publish only one package.
 ## Verify
 
 ```powershell
-python -m pip install "laix==0.13.0"
+python -m pip install "laix==0.13.1"
 npm view laix version
-npm install laix@0.13.0
+npm install laix@0.13.1
 ```
 
 Then run one of the examples against the installed package, not the source tree.

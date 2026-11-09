@@ -6,7 +6,7 @@ What changed, and why?
 
 - [ ] `python -m pytest -q`
 - [ ] `python -m ruff check .`
-- [ ] `npm run typecheck && npm run typecheck:declarations && npm run build`
+- [ ] `npm run build && npm run typecheck && npm run typecheck:declarations && npm run check:consumer`
 - [ ] `npm test`
 - [ ] `python scripts/ci/check_docs_links.py`
 
