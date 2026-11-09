@@ -174,7 +174,7 @@ The same contract covers attention, action, several decision shapes and your own
 | [Five decision shapes](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history and explain |
 | [Bring your own policy](docs/02-decision/03-decision-shapes/01-single/05-policies.md) | any `name` + `decide` object; a planner or model behind the same contract |
 | [Portable and tested](docs/06-project/02-quality/01-testing.md) | Python standard library only; TypeScript parity checked in CI |
-| [Integrations](docs/03-appkit/01-build/04-langgraph.md) | [LangGraph](docs/03-appkit/01-build/04-langgraph.md), [MCP](docs/03-appkit/01-build/05-mcp.md), [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) |
+| [Integrations](docs/03-appkit/01-build/README.md) | [LangGraph](docs/03-appkit/01-build/04-langgraph.md), [MCP](docs/03-appkit/01-build/05-mcp.md), [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) |
 
 A policy is any object with a `name` and a `decide(request)` method. `PlannerPolicy` adapts a
 planner, so a learned policy or model can sit behind the same contract.
