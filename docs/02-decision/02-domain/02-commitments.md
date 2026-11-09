@@ -167,7 +167,8 @@ print(graph.blocked(local.get("c1"), require_verified=True))   # True
 ```
 
 The graph never fetches remote state. The host resolves external commitments and passes them in;
-the graph only reasons about the result.
+the graph only reasons about the result. The app kit exposes a small `CommitmentResolver` port and a
+`resolve_commitment_graph` helper for hosts that want the same shape.
 
 | Method | Result |
 |---|---|
@@ -375,4 +376,4 @@ a promise was kept and records the outcome. It also decides which external promi
 - [Decision contract](../01-contract/01-decision-contract.md)
 - [Policies](../03-decision-shapes/01-single/05-policies.md) — `PlanningPolicy`
 - [Single-decision planners](../03-decision-shapes/01-single/01-planners.md#commitment-planner) — `CommitmentPlanner`
-- [Stores](../../03-appkit/04-connect/01-stores.md) — `CommitmentStore`
+- [Stores](../../03-appkit/04-connect/01-stores.md) — `CommitmentStore` and `CommitmentResolver`

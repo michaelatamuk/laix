@@ -1,0 +1,192 @@
+{
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "reported-external-dependency",
+      "target": "deliver",
+      "local": [
+        {
+          "id": "deliver",
+          "subject": "deliver to the customer",
+          "external_depends_on": [
+            {
+              "owner": "supplier",
+              "ledger": "supplier",
+              "id": "ship"
+            }
+          ]
+        }
+      ],
+      "external": [
+        {
+          "id": "ship",
+          "subject": "ship the part",
+          "owner": "supplier",
+          "ledger": "supplier",
+          "status": "done",
+          "source": "reported"
+        }
+      ],
+      "expected": {
+        "blocked": false,
+        "blocked_verified": true,
+        "blockers": [
+          {
+            "owner": "supplier",
+            "ledger": "supplier",
+            "id": "ship",
+            "reason": "unverified"
+          }
+        ],
+        "missing_refs": [],
+        "unverified_refs": [
+          {
+            "owner": "supplier",
+            "ledger": "supplier",
+            "id": "ship"
+          }
+        ]
+      }
+    },
+    {
+      "id": "verified-external-dependency",
+      "target": "deliver",
+      "local": [
+        {
+          "id": "deliver",
+          "subject": "deliver to the customer",
+          "external_depends_on": [
+            {
+              "owner": "supplier",
+              "ledger": "supplier",
+              "id": "ship"
+            }
+          ]
+        }
+      ],
+      "external": [
+        {
+          "id": "ship",
+          "subject": "ship the part",
+          "owner": "supplier",
+          "ledger": "supplier",
+          "status": "done",
+          "source": "verified",
+          "verified_at": "2026-11-01T09:30:00+00:00"
+        }
+      ],
+      "expected": {
+        "blocked": false,
+        "blocked_verified": false,
+        "blockers": [],
+        "missing_refs": [],
+        "unverified_refs": []
+      }
+    },
+    {
+      "id": "missing-external-reference",
+      "target": "a",
+      "local": [
+        {
+          "id": "a",
+          "subject": "a",
+          "external_depends_on": [
+            {
+              "owner": "other",
+              "ledger": "other",
+              "id": "x"
+            }
+          ]
+        }
+      ],
+      "external": [],
+      "expected": {
+        "blocked": true,
+        "blocked_verified": true,
+        "blockers": [
+          {
+            "owner": "other",
+            "ledger": "other",
+            "id": "x",
+            "reason": "missing"
+          }
+        ],
+        "missing_refs": [
+          {
+            "owner": "other",
+            "ledger": "other",
+            "id": "x"
+          }
+        ],
+        "unverified_refs": []
+      }
+    },
+    {
+      "id": "chain-impact-and-critical-path",
+      "target": "c",
+      "chain_from": "c",
+      "impact_from": "a",
+      "local": [
+        {
+          "id": "a",
+          "subject": "a",
+          "status": "done"
+        },
+        {
+          "id": "b",
+          "subject": "b",
+          "status": "done",
+          "depends_on": ["a"]
+        },
+        {
+          "id": "c",
+          "subject": "c",
+          "depends_on": ["b"]
+        }
+      ],
+      "external": [],
+      "expected": {
+        "blocked": false,
+        "blocked_verified": false,
+        "blockers": [],
+        "missing_refs": [],
+        "unverified_refs": [],
+        "chain": ["c", "b", "a"],
+        "impact": ["b", "c"],
+        "critical_path": ["c", "b", "a"]
+      }
+    },
+    {
+      "id": "dependency-cycle",
+      "target": "b",
+      "local": [
+        {
+          "id": "b",
+          "subject": "b",
+          "depends_on": ["c"]
+        },
+        {
+          "id": "c",
+          "subject": "c",
+          "depends_on": ["b"]
+        }
+      ],
+      "external": [],
+      "expected": {
+        "blocked": true,
+        "blocked_verified": true,
+        "blockers": [
+          {
+            "owner": "local",
+            "ledger": null,
+            "id": "c",
+            "reason": "open"
+          }
+        ],
+        "missing_refs": [],
+        "unverified_refs": [],
+        "cycles": [["b", "c"]]
+      }
+    }
+  ]
+}
