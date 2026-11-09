@@ -1,6 +1,6 @@
 # System architecture
 
-**LAIX - Live AI Experience - is the live decision runtime for AI agents and automations that act in
+**LAIX - Live AI Experience - is the live decision layer for AI agents that act in
 the real world.** It answers one question:
 
 > Given this situation, what should the experience do next?
@@ -63,7 +63,7 @@ from laix import decide
 decision = decide(request)[0]
 ```
 
-For the answer plus the runtime, traces, execution and records, use the app kit:
+For the answer plus the loop, traces, execution and records, use the app kit:
 
 ```python
 from laix import DecisionClient
@@ -105,7 +105,7 @@ decision = decide(request, policy=SafetyConstrainedPolicy())[0]
 In the app kit, a `DecisionClient` holds **one active policy** at a time. Every `decide()` call uses that
 policy until you change it.
 
-### One policy for the life of the runtime
+### One policy for the life of the client
 
 ```python
 from laix import DecisionRequest, DecisionClient, SafetyConstrainedPolicy
@@ -201,7 +201,7 @@ The split is about selection. All ten return the same decision shape. See
 - **LAIX-Bench** runs the same test cases for every class. See
   [bench](../../03-appkit/05-operate/01-bench.md).
 
-LAIX is a live decision runtime. It can host a decision model such as JEV inside a policy. See
+LAIX is a live decision layer. It can host a decision model such as JEV inside a policy. See
 [LAIX and decision models](../02-positioning/01-decision-models.md).
 
 ## Integration evidence
@@ -239,7 +239,7 @@ scikit-learn calibration) carries all ten capabilities in one decision object. S
 
 **Audit and liability:** Because every decision carries a `verb`, `reason_code`, score breakdown and
 `decision_id` at the moment it is made, LAIX produces a complete audit trail without log mining. See
-[eu-liability.md](../../06-research/05-governance/eu-liability.md) for the mapping to EU Product
+[eu-liability.md](../../06-research/05-governance.md) for the mapping to EU Product
 Liability Directive 2024/2853.
 
 ## Rules

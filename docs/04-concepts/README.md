@@ -29,9 +29,9 @@ order.
 | Section | Covers |
 |---|---|
 | [Architecture](01-architecture/README.md) | The system, the decision, the verbs, the policy path and the boundary. |
-| [Positioning](02-positioning/README.md) | Judgment models, decision runtimes and the PPMA split. |
+| [Positioning](02-positioning/README.md) | Judgment models, decision layers and the PPMA split. |
 | [Trust](03-trust/README.md) | Threat model, personal data, sharing and storage. |
 | [Reference](04-reference/README.md) | Vocabulary and common questions. |
 
-The contracts live in [Core overview](../02-core/README.md). The optional runtime lives in
+The contracts live in [Core overview](../02-core/README.md). The optional app kit lives in
 [App-kit overview](../03-appkit/README.md).

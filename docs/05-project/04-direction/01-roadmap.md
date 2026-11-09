@@ -44,7 +44,7 @@ This page tracks what is done, what is next and what would count as a real step 
 | MCP stdio server for `decide` | done |
 | A2A 1.0 agent card and OpenAPI 3.1 action profile | done |
 | Execution receipts, idempotency and reconciliation | done |
-| Crash-recovery and retry semantics | tested for the bridge; host runtime still owns worker recovery |
+| Crash-recovery and retry semantics | tested for the bridge; host still owns worker recovery |
 
 ## Next
 

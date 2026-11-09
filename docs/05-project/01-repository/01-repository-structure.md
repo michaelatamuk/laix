@@ -51,13 +51,15 @@ laix/
 │   │   ├── 02-evaluation/   evaluation and evidence map
 │   │   ├── 03-validation/   plan, incident replay and vignette study
 │   │   ├── 04-publication/  paper, artifact, references and review
-│   │   └── 05-governance/   EU liability
+│   │   └── 05-governance.md  EU liability
 │   └── assets/           logo, banner, architecture and demo placeholder
 ├── examples/
+│   ├── data/              decision JSON for the CLI
+│   ├── mcp/               MCP client config
 │   ├── python/            core/ and appkit/, then decision shape
 │   └── typescript/        the same core and app-kit split
 ├── scripts/
-│   ├── ci/                repository checks (relative links)
+│   ├── ci/                repository checks (relative links and versions)
 │   ├── novelty/
 │   │   ├── bench/         corpus, live bench, ablations and baseline
 │   │   ├── analysis/      significance tests and category breakdown
@@ -128,7 +130,7 @@ packages/python/laix/src/laix/
     ├── decision_client.py   public DecisionClient
     ├── cli.py               laix explain and lint
     ├── mcp_server.py        optional laix-mcp stdio server
-    ├── runtime/             decision runtime, execution, saga, state, stores
+    ├── runtime/             decision loop, execution, saga, state, stores
     ├── audit/               decision record, proposal, approval, undo, audit event
     ├── delivery/            port, receipt, null
     ├── platform/            platform, in-memory, skill call, approvals, event, capability

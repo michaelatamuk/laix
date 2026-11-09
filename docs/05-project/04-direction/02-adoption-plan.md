@@ -210,7 +210,7 @@ Metric: legal review passed; a customer can answer an audit question in under an
 
 ### 6. Developer-first wedge
 
-Build a free tool that solves a developer pain before asking for a runtime commitment.
+Build a free tool that solves a developer pain before asking for a decision-layer commitment.
 
 Candidate scope:
 
@@ -228,7 +228,7 @@ Distribution:
 - an OpenTelemetry collector;
 - ready integrations with LangGraph, Temporal and n8n.
 
-Model: open core. The developer tool is free; runtime, cloud and enterprise audit are paid.
+Model: open core. The developer tool is free; the decision layer, cloud and enterprise audit are paid.
 
 First step: a two-week MVP on existing records, demonstrated on a real LangGraph trace.
 
@@ -302,7 +302,7 @@ Model:
 - co-author with a lab;
 - publish an artifact and pre-registration;
 - invite independent replication;
-- run a workshop on decision runtimes and evaluation;
+- run a workshop on decision layers and evaluation;
 - apply for grants: NSF SBIR/STTR, EU EIC, Horizon Europe.
 
 First step: a four-page workshop paper and an artifact, submitted to NeurIPS Datasets and Benchmarks

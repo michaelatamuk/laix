@@ -1,6 +1,6 @@
 # What is LAIX?
 
-**LAIX — Live AI Experience — is the live decision runtime for AI agents and automations that act in the real world.**
+**LAIX — Live AI Experience — is the live decision layer for AI agents that act in the real world.**
 
 An agent or automation that acts in the real world is always in the loop: it notices what is
 changing, decides what matters and acts before the moment passes. LAIX gives that loop a single
@@ -20,7 +20,7 @@ Then the product does the work.
 LAIX provides one decision shape, explicit reasons, confidence, approval and a trail. The host
 provides the experience, data, UI, execution and delivery.
 
-## Why a live experience needs a decision runtime
+## Why a live experience needs a decision layer
 
 A live experience needs timing, restraint, safety, coherence and a record:
 
@@ -30,21 +30,21 @@ A live experience needs timing, restraint, safety, coherence and a record:
 - **coherent** — one decision shape across attention, action and follow-up;
 - **auditable** — record why it intervened and what happened.
 
-LAIX supplies that runtime. The host keeps the experience, memory, UI, execution and delivery.
+LAIX supplies that layer. The host keeps the experience, memory, UI, execution and delivery.
 
 ## What LAIX adds
 
-LAIX turns those properties into one runtime:
+LAIX turns those properties into one decision layer:
 
 - **One contract** — attention, action, follow-up, execution and outcomes return the same decision
   shape with a reason, confidence and trail.
-- **Training-free** — the current runtime is policy/rules based; planners use a model the host supplies.
+- **Training-free** — the default path is policy/rules based; planners use a model the host supplies.
 - **Live decision** - promises, execution risk and human attention are part of the decision;
   calibration and decision time complete the loop.
 - **Host control** — LAIX decides; the host owns data, execution, storage and delivery.
 - **Evidence** — conformance vectors, bench, examples and Python/TypeScript parity.
 
-The contribution is the combination: a coherent decision runtime for live experiences.
+The contribution is the combination: a coherent decision layer for live experiences.
 `LiveCompositePlanner` makes that concrete: one planner result can keep a promise, avoid an irreversible action
 and respect an attention budget at the same time. Calibration and the decision timeline complete the
 loop around that planner result.
@@ -93,7 +93,7 @@ When the task has promises, execution risk or a limited human-attention budget, 
 the decision too: what it promises, what could go wrong after the button is pressed, and how much
 attention it spends. Later outcomes can calibrate the next decision.
 
-LAIX is training-free: the current runtime is policy/rules based, and planners use a model the host
+LAIX is training-free: the default path is policy/rules based, and planners use a model the host
 supplies.
 
 ## A harder example: water and electricity

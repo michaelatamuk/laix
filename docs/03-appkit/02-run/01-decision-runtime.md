@@ -1,4 +1,4 @@
-# Decision runtime
+# Decision loop
 
 `DecisionRuntime` is the app-kit loop behind `DecisionClient`:
 
@@ -145,14 +145,14 @@ and `stats` surface.
 
 ## Boundary
 
-- The runtime is in-process. The host owns durable storage, process lifetime and scaling.
-- The runtime does not deliver messages or open a network connection.
+- The loop is in-process. The host owns durable storage, process lifetime and scaling.
+- The loop does not deliver messages or open a network connection.
 - A cloud service can persist the same records; the contracts do not change.
-- `DecisionClient` adds dispatch, policy registration and delivery around the same runtime.
+- `DecisionClient` adds dispatch, policy registration and delivery around the same loop.
 
 ## Related
 
-- [Single decision](../01-build/02-single-decision.md) - the `DecisionClient` surface.
-- [Streaming](02-streaming.md) - the event-time loop above the runtime.
+- [DecisionClient](../01-build/02-single-decision.md) - the `DecisionClient` surface.
+- [Streaming](02-streaming.md) - the event-time loop above the loop.
 - [Execution and recovery](../03-execute/01-execution-and-recovery.md) - the write boundary.
 - [Stores](../04-connect/01-stores.md) - state and outcome persistence.

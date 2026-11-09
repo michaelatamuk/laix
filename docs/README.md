@@ -1,6 +1,6 @@
 # LAIX documentation
 
-LAIX — **Live AI Experience** — is the live decision runtime for AI agents and automations that act in
+LAIX — **Live AI Experience** — is the live decision layer for AI agents that act in
 the real world. An agent or automation is always in the loop: it notices what is changing, decides what
 matters and acts before the moment passes. LAIX gives that loop a single decision contract. The host
 owns the experience; LAIX owns the decision.
@@ -40,9 +40,9 @@ Read in order.
 
 | Page | Covers |
 |---|---|
-| [App-kit overview](03-appkit/README.md) | surface, runtime, execution, ports and proof |
+| [App-kit overview](03-appkit/README.md) | surface, decision loop, execution, ports and proof |
 | [Build](03-appkit/01-build/README.md) | adapter, one decision and policy selection |
-| [Run](03-appkit/02-run/README.md) | decision runtime, streaming and live context |
+| [Run](03-appkit/02-run/README.md) | decision loop, streaming and live context |
 | [Execute](03-appkit/03-execute/README.md) | execution, recovery, proposals and records |
 | [Connect](03-appkit/04-connect/README.md) | stores, platform and delivery |
 | [Operate](03-appkit/05-operate/README.md) | bench, metrics and deployment |

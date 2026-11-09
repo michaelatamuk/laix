@@ -34,7 +34,7 @@ attention budget was spent and the receipt was pending.
 
 ## Scope
 
-The benchmark is a synthetic mechanism test with a designed action space. It shows that the runtime
+The benchmark is a synthetic mechanism test with a designed action space. It shows that the stateful loop
 uses the supplied state. The corpus and result are in
 [`benchmarks/continuity/v1/`](../../../benchmarks/continuity/v1/README.md) and
 [`results/continuity-benchmark/`](../../../results/continuity-benchmark/README.md). The design note is

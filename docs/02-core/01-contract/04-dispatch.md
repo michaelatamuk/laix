@@ -1,7 +1,7 @@
 # Dispatch: from request to decision
 
 `decide` is the core entry point. It chooses one mechanism, runs it, normalizes the result and returns
-a list of `Decision` objects. It imports no app-kit code, so a host can use it without runtime,
+a list of `Decision` objects. It imports no app-kit code, so a host can use it without the app kit,
 storage or records.
 
 ```python
@@ -127,7 +127,7 @@ policies use different internal result types.
 | Entry point | Adds |
 |---|---|
 | `decide` | Selection, normalization, ids and confidence provenance. |
-| `DecisionClient` | The same core selection plus the runtime, streaming, execution, records, stores and platform. |
+| `DecisionClient` | The same core selection plus the loop, streaming, execution, records, stores and platform. |
 
 `DecisionClient` is optional. The core `decide` never imports it. See
 [App-kit overview](../../03-appkit/README.md).

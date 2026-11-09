@@ -1,6 +1,6 @@
-# Single decision
+# DecisionClient
 
-`DecisionClient` is the one-decision surface of the app kit. It wraps the core, keeps the runtime, and can
+`DecisionClient` is the one-decision surface of the app kit. It wraps the core, keeps the loop, and can
 execute, measure and deliver the result.
 
 ```python
@@ -36,7 +36,7 @@ removes any unsafe option before the choice.
 |---|---|---|
 | `decide(request)` | `list[Decision]` | One decision through the core. |
 | `stream(**options)` | `StreamSession` | A live loop over many events. |
-| `execute(decision, ...)` | `ExecutionReceipt` | Run the chosen action through the runtime bridge. |
+| `execute(decision, ...)` | `ExecutionReceipt` | Run the chosen action through the execution bridge. |
 | `measure(decision, ...)` | `Outcome` | Record what changed after the action. |
 | `deliver(decision, port, message, ...)` | `DeliveryReceipt` | Send the decision through a delivery port. |
 | `explain(decision)` | `dict` | The reason, evidence, score, approval and trace in one view. |
@@ -54,7 +54,7 @@ codes are the same.
 | Surface | What you get | Use it when |
 |---|---|---|
 | `decide(request)` | The answer only. | You already have execution and records. |
-| `DecisionClient().decide(request)` | The answer plus the runtime, policy registry, execution bridge, records and delivery. | You want one object for a complete app step. |
+| `DecisionClient().decide(request)` | The answer plus the loop, policy registry, execution bridge, records and delivery. | You want one object for a complete app step. |
 
 The core entry point is described in [Dispatch](../../02-core/01-contract/04-dispatch.md).
 
@@ -85,7 +85,7 @@ selected policy, the policy version, the number of decisions and the registered 
 
 ## Execute, measure and deliver
 
-The layer can run the action through the runtime bridge:
+The layer can run the action through the execution bridge:
 
 ```python
 layer.bridge().register("pay", lambda action, context: {"paid": True})
@@ -138,5 +138,5 @@ built-in dispatch rule; use [Policies in the app](03-policies-in-the-app.md) for
 
 - [Integration](01-integration.md) - the adapter around the call.
 - [Policies in the app](03-policies-in-the-app.md) - the policy registry and rollout.
-- [Decision runtime](../02-run/01-decision-runtime.md) - the loop behind `DecisionClient`.
+- [Decision loop](../02-run/01-decision-runtime.md) - the loop behind `DecisionClient`.
 - [Execution and recovery](../03-execute/01-execution-and-recovery.md) - the write boundary.

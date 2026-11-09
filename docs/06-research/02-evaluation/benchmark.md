@@ -454,10 +454,10 @@ Status: design only. The implementation is the next benchmark extension.
 
 ## 7. Decision-model comparison (next)
 
-JEV is a decision model, not a runtime. A fair comparison is a chooser swap: the same state, the
+JEV is a decision model, not a decision layer. A fair comparison is a chooser swap: the same state, the
 same options and the same expected actions. Measure chosen-action accuracy, calibration (Brier or
 ECE) and latency or cost. Then compare JEV inside a `LiveCompositePlanner` policy to isolate the model
-from the runtime. A full JEV plus app-code baseline would be the runtime comparison, but the glue
+from the decision layer. A full JEV plus app-code baseline would be the decision-layer comparison, but the glue
 code is substantial.
 
 Status: protocol only. The implementation needs TypeSafe API access and a frozen model version.

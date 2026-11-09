@@ -73,9 +73,9 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 
 | Check | Result |
 |---|---|
-| Python tests | passed |
+| Python tests | 470 passed |
 | Invariant tests | 17/17 |
-| TypeScript tests | 208 passed |
+| TypeScript tests | 209 passed |
 | Signal-attention conformance | 24/24 |
 | LAIX-Bench | 25/25 |
 | 7-case live demo | `LiveCompositePlanner` 7/7 |
@@ -92,9 +92,11 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 
 ```powershell
 python scripts/ci/check_docs_links.py
+python scripts/ci/check_versions.py
 ```
 
-The check resolves relative links across `docs/`, root Markdown files and every `README.md`.
+The link check resolves relative links across `docs/`, root Markdown files and every `README.md`.
+The version check keeps the package, A2A card, README, quickstart, versioning page and changelog aligned.
 
 ## What covers what
 
@@ -119,6 +121,7 @@ The check resolves relative links across `docs/`, root Markdown files and every 
 | `scripts/novelty/incident-replay/` | incident preflight, ingest and analysis |
 | `scripts/novelty/vignette-study/` | vignette generation, study analysis and server |
 | `scripts/ci/check_docs_links.py` | relative links in docs, examples and README files |
+| `scripts/ci/check_versions.py` | package, A2A card and public version references |
 | `benchmarks/live/v1/` | versioned corpus and schema |
 | `benchmarks/compare/adapters/` | optional external adapters and capability matrix |
 | examples | every runnable Python and TypeScript example |

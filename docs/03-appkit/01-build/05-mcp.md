@@ -14,14 +14,16 @@ The server returns decisions only. It does not execute, deliver or store them.
 
 ## Install
 
-```powershell
-python -m pip install "laix[mcp]"
-```
-
 From a source checkout:
 
 ```powershell
 python -m pip install -e "packages/python/laix[mcp]"
+```
+
+When the package is published to PyPI, the shorter form is:
+
+```powershell
+python -m pip install "laix[mcp]"
 ```
 
 The core package stays dependency-free; `mcp>=2,<3` is an optional extra.

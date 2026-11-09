@@ -7,7 +7,7 @@ host's storage and platform, and proves the result.
 Four things define the app kit:
 
 - **One decision.** `DecisionClient` runs the core, and can execute, record and deliver the result.
-- **A runtime loop.** `DecisionRuntime` links observation, state, policy, execution and outcome.
+- **A decision loop.** `DecisionRuntime` links observation, state, policy, execution and outcome.
 - **A stream.** `StreamSession` keeps event time, cadence, buffers, revisions and checkpoints.
 - **A host boundary.** Stores, platform and delivery are ports. The host owns the database, the
   credentials and the transport.
@@ -20,8 +20,8 @@ The core stays stateless. The app kit adds the surfaces, execution, ports and pr
 
 | Stage | Question | Pages |
 |---|---|---|
-| **Build** | How does the host call LAIX, get one decision and choose a policy? | [Integration](01-build/01-integration.md), [Single decision](01-build/02-single-decision.md), [Policies in the app](01-build/03-policies-in-the-app.md), [LangGraph](01-build/04-langgraph.md), [MCP server](01-build/05-mcp.md), [A2A and OpenAPI](01-build/06-a2a.md) |
-| **Run** | What runs over time and before the choice? | [Decision runtime](02-run/01-decision-runtime.md), [Streaming](02-run/02-streaming.md), [Live Context](02-run/03-live-context.md) |
+| **Build** | How does the host call LAIX, get one decision and choose a policy? | [Integration](01-build/01-integration.md), [DecisionClient](01-build/02-single-decision.md), [Policies in the app](01-build/03-policies-in-the-app.md), [LangGraph](01-build/04-langgraph.md), [MCP server](01-build/05-mcp.md), [A2A and OpenAPI](01-build/06-a2a.md) |
+| **Run** | What runs over time and before the choice? | [Decision loop](02-run/01-decision-runtime.md), [Streaming](02-run/02-streaming.md), [Live Context](02-run/03-live-context.md) |
 | **Execute** | What happens after the choice? | [Execution and recovery](03-execute/01-execution-and-recovery.md), [Proposals and records](03-execute/02-proposals-and-records.md) |
 | **Connect** | What does the host supply? | [Stores](04-connect/01-stores.md), [Platform](04-connect/02-platform.md), [Delivery](04-connect/03-delivery.md) |
 | **Operate** | How is it proved and run in production? | [Bench](05-operate/01-bench.md), [Metrics](05-operate/02-metrics.md), [Deployment](05-operate/03-deployment.md) |
@@ -81,7 +81,7 @@ Read in order. Each section opens with a short index that lists its pages in rea
 | Section | Covers |
 |---|---|
 | [Build](01-build/README.md) | The adapter, one decision and policy selection. |
-| [Run](02-run/README.md) | The runtime loop, streams and perception. |
+| [Run](02-run/README.md) | The decision loop, streams and perception. |
 | [Execute](03-execute/README.md) | Execution, recovery, proposals and records. |
 | [Connect](04-connect/README.md) | Stores, platform and delivery. |
 | [Operate](05-operate/README.md) | Bench, metrics and deployment. |
@@ -93,7 +93,7 @@ Read in order. Each section opens with a short index that lists its pages in rea
 | `appkit/decision_client.py` | `DecisionClient`, the one-decision surface. |
 | `appkit/cli.py` | `laix explain` and `laix lint`. |
 | `appkit/mcp_server.py` | optional `laix-mcp` stdio server. |
-| `appkit/runtime/` | decision runtime, execution, saga, state and stores. |
+| `appkit/runtime/` | decision loop, execution, saga, state and stores. |
 | `appkit/streaming/` | session, window, sources, checkpoint and timeline. |
 | `appkit/live_context/` | the host-driven detector loop. |
 | `appkit/audit/` | decision record, proposal, approval, undo and audit events. |

@@ -7,7 +7,7 @@
 
 # LAIX — Live AI Experience
 
-**LAIX makes the live decision for AI agents and automations that act in the real world.**
+**LAIX makes the live decision for AI agents that act in the real world.**
 
 Agent frameworks plan. Workflow engines orchestrate. LAIX sits between the plan and its execution:
 it decides whether to act, ask, wait, verify or escalate — and makes the choice explicit, scored and
@@ -24,7 +24,7 @@ a model the host supplies.
 **Who it is for:** teams building AI agents or automations that take real actions — especially when
 approvals, promises, human attention or auditability matter.
 
-**Status:** pre-1.0 (`0.10.0`). Evidence: internal benchmarks and a synthetic continuity test;
+**Status:** pre-1.0 (`0.11.0`). Evidence: internal benchmarks and a synthetic continuity test;
 external validation is pending.
 
 [Quickstart](docs/01-start/02-first-steps/01-quickstart.md) ·
@@ -149,7 +149,7 @@ The same shape works for signal attention, policies, planners and the live compo
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.10.0#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.11.0#subdirectory=packages/python/laix"
 ```
 
 From a local checkout, at the repository root:
@@ -254,7 +254,7 @@ A decision is one step in a sequence. It leaves state for the next decision.
 The next decision sees the commitments, human-attention budget, approvals, revisions and outcomes the
 previous one left. See [Decision continuity](docs/02-core/03-decision/04-history.md).
 
-In a 12-episode synthetic mechanism test, the stateful runtime completed **100%** of episodes; a
+In a 12-episode synthetic mechanism test, the stateful decision loop completed **100%** of episodes; a
 stateless utility planner completed **0%** with 36 continuity errors. See the
 [continuity benchmark](docs/06-research/02-evaluation/continuity-benchmark.md).
 
@@ -363,4 +363,4 @@ If you use LAIX in research, cite it via [CITATION.cff](CITATION.cff).
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE). Current release: `0.10.0`.
+Apache-2.0. See [LICENSE](LICENSE). Current release: `0.11.0`.

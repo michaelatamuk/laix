@@ -1,0 +1,15 @@
+{
+  "verb": "act",
+  "confidence": 0.92,
+  "reason_code": "safe_action",
+  "rationale": "the valve is inside the risk limit",
+  "decision_id": "DEC-1",
+  "trace_id": "TRC-1",
+  "policy_version": "live.v1",
+  "action_id": "valve",
+  "requires_approval": true,
+  "reversible": true,
+  "status": "final",
+  "target": "one",
+  "schema_version": "0.8.0"
+}

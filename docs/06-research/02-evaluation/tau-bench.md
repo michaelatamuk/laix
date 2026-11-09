@@ -4,7 +4,7 @@ Status: baseline and LAIX guardrail on a 10-task retail slice. Not the full suit
 
 [τ-bench](https://github.com/sierra-research/tau-bench) evaluates a full tool-using agent against a
 simulated user and a domain policy. It is the closest public benchmark to policy adherence and
-multi-turn reliability, but it scores the whole agent, not a decision runtime.
+multi-turn reliability, but it scores the whole agent, not a decision layer.
 
 ## Result
 
@@ -37,7 +37,7 @@ It is a **generic approval gate**. It does not encode the retail policy rules
 
 τ-bench rewards the final database state and policy-compliant actions. It does not score approval
 state, commitments, continuity or audit. The generic guardrail helped one user-drift case, but a
-full runtime claim needs a domain policy adapter:
+full decision-layer claim needs a domain policy adapter:
 
 - authenticate the user before account actions;
 - block changes to pending orders;

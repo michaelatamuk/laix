@@ -65,7 +65,7 @@ from laix import Decision, DecisionClient
 
 class QualityPolicy:
     name = "quality"
-    version = "0.10.0"
+    version = "0.11.0"
 
     def decide(self, request):
         return [
@@ -125,6 +125,6 @@ console.log(layer.policies());
 ## Related
 
 - [Integration](01-integration.md) - the adapter around the call.
-- [Single decision](02-single-decision.md) - `DecisionClient` and the one-shot surface.
+- [DecisionClient](02-single-decision.md) - `DecisionClient` and the one-shot surface.
 - [Policies](../../02-core/03-decision/01-single/05-policies.md) - the contract, the decision classes and the wrappers.
 - [Deployment](../05-operate/03-deployment.md) - rollout and rollback.

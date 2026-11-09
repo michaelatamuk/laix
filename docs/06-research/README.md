@@ -13,7 +13,7 @@ the order. `checklist.md` tracks work across all stages.
 3. Build the experiments in [Evaluation](02-evaluation/benchmark.md).
 4. Run one study outside the test suite in [Validation](03-validation/plan.md).
 5. Write and release from [Publication](04-publication/publication-plan.md).
-6. Check the legal framing in [Governance](05-governance/eu-liability.md).
+6. Check the legal framing in [Governance](05-governance.md).
 7. Track the work in [Checklist](checklist.md).
 
 | Stage | Page | Contents |
@@ -40,7 +40,7 @@ the order. `checklist.md` tracks work across all stages.
 | 04 | [Artifact manifest](04-publication/artifact-manifest.md) | files to release |
 | 04 | [References](04-publication/references.md) | sources to verify before citing |
 | 04 | [Review log](04-publication/review-log.md) | reviewer comments and changes |
-| 05 | [EU liability](05-governance/eu-liability.md) | PLD 2024/2853 mapping |
+| 05 | [EU liability](05-governance.md) | PLD 2024/2853 mapping |
 | — | [Checklist](checklist.md) | phased tasks from claim to external review |
 
 ## Snapshot
@@ -49,7 +49,7 @@ the order. `checklist.md` tracks work across all stages.
 - Status at time of writing: Python and TypeScript tests, parity, conformance, bench and examples pass.
 - Existing proof points: `LiveCompositePlanner`, the live decision benchmark, Python/TypeScript parity,
   conformance vectors, deterministic replay and the audit trail.
-- Added: `01-positioning/comparators.md` (documented capability comparison, 7 systems), `05-governance/eu-liability.md`
+- Added: `01-positioning/comparators.md` (documented capability comparison, 7 systems), `05-governance.md`
   (PLD 2024/2853 mapping), `ablation_study.py` (all 7 planners on 7 demo cases, `LiveCompositePlanner` wins
   every case), `conflict_scenario.py` (triple-concern demo), `shadow_rollout.py` (rollout
   pattern).
@@ -87,7 +87,7 @@ Frame the contribution as a **systems and integration contribution**.
 
 ### The claim (after the prior-art matrix)
 
-> LAIX is a training-free live decision runtime that places commitments, execution risk and human
+> LAIX is a training-free live decision layer that places commitments, execution risk and human
 > attention budget into one decision contract — the same object that carries the verb, the score,
 > the reason code and the audit trail — while the host retains execution and delivery.
 > No compared system (LangGraph, Temporal, PagerDuty, AutoGen, Camunda, FIPA/BDI, scikit-learn)
@@ -115,7 +115,7 @@ What is **not** found in any single compared system:
 - calibration piped back into the next decision without retraining.
 
 The contribution is the contract and the composition. The individual ingredients are known. The
-claim is that no existing system combines them into one live decision runtime with the same contract
+claim is that no existing system combines them into one live decision layer with the same contract
 and the same evidence.
 
 `LiveCompositePlanner` is the proof object: one plan can keep a promise, avoid an irreversible action
@@ -169,7 +169,7 @@ Out of scope:
 | External adapter | LangGraph adapter, 120 decisions, 6.9 ms, 110 glue lines | **done** | Temporal/Camunda need servers |
 | Significance | McNemar, paired bootstrap and effect sizes | **done** | +6.7 pp vs glue is not significant on 30 cases |
 | Prior art | `01-positioning/comparators.md` (7 systems, documented capability comparison) | **done** | runnable adapter still missing |
-| EU liability case | `05-governance/eu-liability.md` (PLD 2024/2853 field-by-field mapping) | **done** | — |
+| EU liability case | `05-governance.md` (PLD 2024/2853 field-by-field mapping) | **done** | — |
 | Real validation | incident harness + 20 user-study vignettes ready; no data collected | missing | one deployment, replay or user study |
 | Paper | draft in `04-publication/paper-draft.md`; validation pending | partial | final draft after real data |
 

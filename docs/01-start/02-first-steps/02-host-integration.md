@@ -28,7 +28,7 @@ from laix import decide
 decision = decide(request)[0]
 ```
 
-If the host also wants the runtime, execution and records, use `DecisionClient` from the app kit. The
+If the host also wants the loop, execution and records, use `DecisionClient` from the app kit. The
 examples below use the app kit because they show execution and audit. See
 [Integration](../../03-appkit/01-build/01-integration.md).
 
@@ -154,6 +154,6 @@ py examples/python/appkit/execute/host_execution.py
 ## Read next
 
 - [Core overview](../../02-core/README.md) - the contract and the mechanisms.
-- [App-kit overview](../../03-appkit/README.md) - the optional runtime.
+- [App-kit overview](../../03-appkit/README.md) - the optional app kit.
 - [Decision lifecycle](../01-orientation/02-decision-lifecycle.md) - what survives between decisions.
 - [Scope and boundaries](../../04-concepts/01-architecture/02-scope-and-boundaries.md) - the host boundary.

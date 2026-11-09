@@ -56,7 +56,7 @@ The **chooser** variant regressed on multi-incident triage and on large-tool-res
 introduced one forbidden action and lost the remediation score. The **guardrail** variant kept the
 model's answer when it was already safe and avoided both regressions.
 
-This is a useful negative result. A runtime that always replaces the model's choice can make a
+This is a useful negative result. A decision layer that always replaces the model's choice can make a
 single-turn benchmark worse. The safe integration is to use LAIX as a guardrail and decision
 contract, not as a second diagnostician.
 

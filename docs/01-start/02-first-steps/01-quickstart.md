@@ -1,6 +1,6 @@
 # Quickstart
 
-**LAIX - Live AI Experience - is the live decision runtime for AI agents and automations that act in
+**LAIX - Live AI Experience - is the live decision layer for AI agents that act in
 the real world.** Install it, send one request and read one decision. Then choose the surface you need.
 
 ## Install
@@ -8,7 +8,7 @@ the real world.** Install it, send one request and read one decision. Then choos
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.10.0#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.11.0#subdirectory=packages/python/laix"
 ```
 
 Local checkout, from the repository root:
@@ -27,7 +27,7 @@ TypeScript:
 }
 ```
 
-The release page also has a packed `laix-0.10.0.tgz`. See
+The release page also has a packed `laix-0.11.0.tgz`. See
 [versioning](../../05-project/03-release/01-versioning.md) for tags and schema versions.
 
 ## One decision
@@ -127,7 +127,7 @@ If the answer is not the one you expected, start with
 
 | You need | Use |
 |---|---|
-| One answer, no runtime | `decide` |
+| One answer, no loop | `decide` |
 | One decision plus execution, records and delivery | `DecisionClient` |
 | Decisions over time | `DecisionClient().stream` |
 | A write boundary with approval and receipts | `ExecutionBridge` |

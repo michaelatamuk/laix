@@ -5,6 +5,8 @@ split as the package:
 
 ```text
 examples/
+├── data/                  decision JSON for the CLI
+├── mcp/                   MCP client config and tool example
 ├── python/
 │   ├── core/
 │   │   ├── domain/
@@ -33,9 +35,9 @@ examples/
 │   └── appkit/
 │       ├── build/                host adapter and policy registry
 │       ├── run/                  stream, windows, checkpoints, live context and live loop
-│       ├── execute/              execution, saga, record, proposal and host execution
-│       ├── connect/              platform, delivery and stores
-│       └── operate/              LAIX-Bench and metrics
+│       ├── execute/              execution, reliability, action profile, saga, record and proposal
+│       ├── connect/              platform, delivery, state/outcome files and stores
+│       └── operate/              LAIX-Bench, metrics and OpenTelemetry
 └── typescript/
     └── (the same core and app-kit split)
 ```
@@ -298,6 +300,8 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 | Run steps and compensate | `saga.py` | `saga.mts` | `('first',) ('first',) RuntimeError: boom` |
 | Bridge execution with receipts | `execution_saga.py` | `execution_saga.mts` | `('reserve',) ('reserve',) RuntimeError: declined` |
 | Host execution | `host_execution.py` | — | `executed approve the repair True` |
+| Retry and time out an execution | `reliable_execution.py` | `reliable_execution.mts` | `executed 3 unknown` |
+| Map an OpenAPI action profile | `action_profile.py` | `action_profile.mts` | `executed close case` |
 | Proposal lifecycle | `proposal.py` | `proposal.mts` | `pending approved applied undone` |
 | Decision record lifecycle | `record.py` | `record.mts` | `executed True` |
 | Surface a promise and approve a record | `record_promise.py` | — | `guide worth_surfacing approved` |
@@ -312,6 +316,7 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 | Delivery port | `delivery.py` | `delivery.mts` | `skipped email` |
 | Save and load experience state | `state_store.py` | `state_store.mts` | `decide True` / `decide true` |
 | Persist checkpoint and commitment files | `file_stores.py` | `file_stores.mts` | `1 send the draft` |
+| Persist state and outcomes as JSON | `file_state_outcome.py` | `file_state_outcome.mts` | `decide 1` |
 
 ## Operate
 
@@ -321,6 +326,33 @@ py examples/python/core/sensing/signals/signal_attention_bill_due.py
 |---|---|---|---|
 | Run LAIX-Bench | `bench.py` | `bench.mts` | `25 25 1.0` / `25 25 1` |
 | Export Prometheus counters | `metrics.py` | `metrics.mts` | `1 True` / `1 true` |
+| Map a decision to OTel attributes | `otel.py` | `otel.mts` | `act safe_action valve True` / `act safe_action valve true` |
+
+## Tools
+
+### CLI
+
+```powershell
+laix explain examples/data/decision.json
+laix lint examples/data/decision.json
+```
+
+`laix explain` prints the decision fields. `laix lint` exits non-zero when an audit field is
+missing. The test suite covers both.
+
+### MCP
+
+`examples/mcp/client-config.json` is a ready MCP client entry. It launches `laix-mcp` over stdio.
+See [the MCP guide](../docs/03-appkit/01-build/05-mcp.md) for the tool request and install.
+
+### A2A and OpenAPI
+
+The A2A card and OpenAPI action profile are contracts, not runnable examples:
+
+- `packages/contracts/a2a-agent-card.v1.json`
+- `packages/contracts/action.openapi.v1.json`
+
+See [A2A and OpenAPI](../docs/03-appkit/01-build/06-a2a.md).
 
 ## Parity notes
 
@@ -361,6 +393,24 @@ suite is the source of truth for behavioural parity.
 
 - `executed` — the record moved from approved to executed.
 - `True` — the record fingerprint still matches its content.
+
+### `decide 1`
+
+- `decide` — the phase restored from the JSON state file.
+- `1` — one attributed outcome labelled `helped` was reloaded.
+
+### `act safe_action valve True`
+
+- `act` — the chosen verb.
+- `safe_action` — the reason code.
+- `valve` — the chosen action.
+- `True` — approval is required.
+
+### `executed 3 unknown`
+
+- `executed` — the transient handler succeeded after retries.
+- `3` — total attempts.
+- `unknown` — the slow async handler timed out; reconcile before retrying.
 
 The full field list is in [`../docs/02-core/01-contract/01-decision-contract.md`](../docs/02-core/01-contract/01-decision-contract.md).
 The policy contracts are in [`../docs/02-core/03-decision/01-single/05-policies.md`](../docs/02-core/03-decision/01-single/05-policies.md).
