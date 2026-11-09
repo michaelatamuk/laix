@@ -59,7 +59,7 @@ wait, observe, guide, ask, act, verify, escalate
 ### Version
 
 `SCHEMA_VERSION = "0.8.0"` is the record-shape version. It is separate from the package version
-(`0.15.0`) and the rule-set and attention-vector versions (`0.8.0`).
+(`0.16.0`) and the rule-set and attention-vector versions (`0.8.0`).
 
 See [Records](../01-contract/03-records.md) for the version axes.
 

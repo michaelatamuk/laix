@@ -111,6 +111,10 @@ The port is synchronous on purpose: LAIX never performs network I/O while planni
 remote source refreshes its cache first and then answers `resolve`. Pass the graph to
 `CommitmentPlanner` as `attributes["commitment_graph"]`.
 
+For a host that fetches before planning, `AsyncCommitmentResolver` and
+`resolve_commitment_graph_async` mirror the same contract with `await`. The planner itself stays
+synchronous.
+
 `InMemoryCommitmentResolver` is for tests. `resolve_commitment_graph` deduplicates the external
 references in the local ledger and reports anything the resolver does not return through
 `missing_refs()`.
@@ -157,9 +161,10 @@ Keep transcripts, images, customer data and secrets in the app. Learning uses ou
 TypeScript exports `StateStore`, `InMemoryStateStore`, `FileStateStore`,
 `StreamCheckpointStore`, `InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`,
 `CommitmentStore`, `InMemoryCommitmentStore`, `FileCommitmentStore`, `OutcomeStore`,
-`OutcomeLedger`, `FileOutcomeStore`, `CommitmentResolver`, `InMemoryCommitmentResolver` and
-`resolveCommitmentGraph`. The file stores take a small adapter with `join`, `read`,
-`write` and `remove`, so the package stays runtime-neutral.
+`OutcomeLedger`, `FileOutcomeStore`, `CommitmentResolver`, `InMemoryCommitmentResolver`,
+`AsyncCommitmentResolver`, `resolveCommitmentGraph` and `resolveCommitmentGraphAsync`. The file
+stores take a small adapter with `join`, `read`, `write` and `remove`, so the package stays
+runtime-neutral.
 
 ## Boundary
 

@@ -122,7 +122,8 @@ Controls:
 - authenticate and authorize the source that supplies external commitments;
 - resolve them just in time and record `source` and `verified_at`;
 - use `require_verified=True` for decisions that depend on another owner;
-- re-resolve before acting when `verified_at` is old enough to matter;
+- re-resolve before acting when `verified_at` is old enough to matter, and use
+  `max_verification_age` in the planner when the host needs that rule enforced;
 - never treat a commitment as a signature, an attestation or a settlement;
 - keep the resolver, its credentials and any cross-organization protocol in the host or product
   layer.

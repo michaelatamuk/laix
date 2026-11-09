@@ -2,13 +2,18 @@
 
 from __future__ import annotations
 
+import asyncio
+from collections.abc import Iterable
+
 from laix import (
+    AsyncCommitmentResolver,
     Commitment,
     CommitmentLedger,
     CommitmentRef,
     CommitmentResolver,
     InMemoryCommitmentResolver,
     resolve_commitment_graph,
+    resolve_commitment_graph_async,
 )
 
 
@@ -71,3 +76,17 @@ def test_resolver_keeps_a_reported_commitment_unverified() -> None:
 
     assert graph.blocked(local.get("deliver"), require_verified=True) is True
     assert [ref.id for ref in graph.unverified_refs()] == ["ship"]
+
+
+class _AsyncResolver:
+    async def resolve(self, _refs: Iterable[CommitmentRef]) -> tuple[Commitment, ...]:
+        return (_ship(),)
+
+
+def test_async_resolver_builds_a_graph() -> None:
+    local = _local()
+    resolver = _AsyncResolver()
+
+    assert isinstance(resolver, AsyncCommitmentResolver)
+    graph = asyncio.run(resolve_commitment_graph_async(local, resolver))
+    assert graph.blocked(local.get("deliver"), require_verified=True) is False

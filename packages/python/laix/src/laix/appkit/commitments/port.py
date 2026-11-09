@@ -21,4 +21,12 @@ class CommitmentResolver(Protocol):
         ...
 
 
-__all__ = ["CommitmentResolver"]
+@runtime_checkable
+class AsyncCommitmentResolver(Protocol):
+    """An async variant for hosts that fetch before planning."""
+
+    async def resolve(self, refs: Iterable[CommitmentRef]) -> tuple[Commitment, ...]:
+        ...
+
+
+__all__ = ["AsyncCommitmentResolver", "CommitmentResolver"]

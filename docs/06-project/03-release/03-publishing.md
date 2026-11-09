@@ -49,9 +49,9 @@ Use `target=python` or `target=npm` to publish only one package.
 ## Verify
 
 ```powershell
-python -m pip install "laix==0.15.0"
+python -m pip install "laix==0.16.0"
 npm view laix version
-npm install laix@0.15.0
+npm install laix@0.16.0
 ```
 
 Then run one of the examples against the installed package, not the source tree.

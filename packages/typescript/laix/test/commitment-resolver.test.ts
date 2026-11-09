@@ -4,6 +4,8 @@ import {
   CommitmentLedger,
   InMemoryCommitmentResolver,
   resolveCommitmentGraph,
+  resolveCommitmentGraphAsync,
+  type AsyncCommitmentResolver,
   type Commitment,
   type CommitmentResolver,
 } from "../src/index.ts";
@@ -80,6 +82,19 @@ describe("commitment resolver port", () => {
     assert.deepEqual(
       graph.unverifiedRefs().map((ref) => ref.id),
       ["ship"],
+    );
+  });
+
+  it("builds a graph from an async resolver", async () => {
+    const resolver: AsyncCommitmentResolver = {
+      resolve: async () => [ship()],
+    };
+    const ledger = local();
+    const graph = await resolveCommitmentGraphAsync(ledger, resolver);
+
+    assert.equal(
+      graph.blocked(ledger.get("deliver"), { requireVerified: true }),
+      false,
     );
   });
 });

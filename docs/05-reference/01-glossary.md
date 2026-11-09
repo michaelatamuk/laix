@@ -63,6 +63,8 @@ contracts in detail.
 | **Trust source** | How a commitment is known: `local`, `reported` or `verified`. `verified` is a host assertion, not a signature. |
 | **External dependency** | Another owner's commitment that must be done before a local one. |
 | **Blocker** | A dependency that is missing, open or unverified, so it still blocks a commitment. |
+| **Stale verification** | A `verified` commitment whose `verified_at` is older than the host's maximum age. |
+| **Graph neighborhood** | A commitment plus its ancestors and descendants. |
 | **Critical path** | The longest dependency chain in a commitment graph. |
 | **Ledger** | A store of measured outcomes or commitments. |
 | **Stream** | A `StreamSession` that applies event time, cadence, backpressure and revisions to many requests. |
