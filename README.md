@@ -10,8 +10,8 @@
 **LAIX makes the live decision for AI agents that act in the real world.**
 
 Agent frameworks plan. Workflow engines orchestrate. LAIX sits between the plan and its execution:
-it decides whether to act, ask, wait, verify or escalate — explicitly, with a reason code, a score and
-an audit trail. It is not an agent framework, a workflow engine or a model.
+it decides whether to wait, observe, guide, ask, act, verify or escalate — explicitly, with a reason
+code, a score and an audit trail. It is not an agent framework, a workflow engine or a model.
 
 One contract for utility, commitments, execution risk and human attention, with **decision
 continuity**: each decision carries its commitments, attention budget, approvals and revisions into
@@ -29,6 +29,15 @@ validation pending.
 [Documentation](docs/README.md) ·
 [Examples](examples/README.md) ·
 [Issues](https://github.com/michaelatamuk/laix/issues)
+
+| What you get | In one line |
+|---|---|
+| [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` |
+| [Two decision families](docs/02-decision/README.md) | signal attention — what matters now — and action — what to do |
+| [Five decision shapes](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history and explain |
+| [Bring your own policy](docs/02-decision/03-decision-shapes/01-single/05-policies.md) | any `name` + `decide` object; `PlannerPolicy` adapts a planner or model |
+| [Portable and tested](docs/06-project/02-quality/01-testing.md) | Python standard library only; TypeScript parity checked in CI |
+| [Integrations](docs/03-appkit/01-build/04-langgraph.md) | [LangGraph](docs/03-appkit/01-build/04-langgraph.md), [MCP](docs/03-appkit/01-build/05-mcp.md), [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) |
 
 ## Install
 
@@ -133,6 +142,8 @@ console.log(decision.verb, decision.reasonCode);
   revisions, receipts and outcomes carry forward. A decision is a step, not a snapshot.
 - **The host keeps control.** The decision layer is stateless. The host owns execution, data, storage
   and delivery; the optional app kit adds the lifecycle around the decision.
+- **It is portable and testable.** Python uses the standard library only. TypeScript mirrors the same
+  contract, and CI checks parity, conformance, examples and the benchmark.
 
 ## How it works
 
@@ -141,9 +152,8 @@ console.log(decision.verb, decision.reasonCode);
 An agent or automation plans the task. LAIX decides the next move. The host executes it. The receipt
 and outcome close the loop and calibrate the next decision.
 
-The decision layer is `DecisionRequest` in, `Decision` out. A policy can be a rule set, a learned
-policy or a planner behind `PlannerPolicy`. The app kit is optional; it adds execution, records,
-stores, streaming, delivery and bench.
+The decision layer is `DecisionRequest` in, `Decision` out. The app kit is optional; it adds
+execution, records, stores, streaming, delivery and bench.
 
 ## The live composite planner
 
@@ -154,6 +164,9 @@ state with each request.
 `LiveCompositePlanner` combines four scores: utility, promises, execution risk and human attention. It
 returns a `PlannerResult`; `PlannerPolicy` adapts that result to the public `Decision`, so the app
 still calls `decide` and still gets a `Decision`.
+
+A policy is any object with a `name` and a `decide(request)` method. `PlannerPolicy` adapts a
+planner, so a learned policy or model can sit behind the same contract.
 
 Using the invoice request from the quickstart:
 
@@ -203,13 +216,12 @@ is **not yet significant** (p = 0.48). Every single-concern planner has signific
 | Irreversible actions | **0%** | 0% (glue baseline) |
 | p95 decision latency | **0.22 ms** | — |
 
-The glue baseline matches `LiveCompositePlanner` on conflict, promises, reversibility and budget. The
-remaining difference is accuracy on the other 24 cases, and it is not significant on 30 cases.
+The glue baseline matches on conflict, promises, reversibility and budget; the remaining gap is
+accuracy on the other 24 cases.
 
-On a 10-task τ-bench retail slice, the LAIX guardrail passed **10/10** vs **9/10** for the baseline
-(single trial). See [τ-bench](docs/07-research/02-evaluation/tau-bench.md). External validation — real
-incident replay or a participant study — is still pending. The full ablation, the test matrix and the
-evidence caveats are in [the benchmark](docs/07-research/02-evaluation/benchmark.md) and
+On a 10-task τ-bench retail slice, the guardrail passed **10/10** vs **9/10** for the baseline
+(single trial). External validation is still pending; full evidence and caveats are in
+[the benchmark](docs/07-research/02-evaluation/benchmark.md) and
 [the evidence map](docs/07-research/02-evaluation/evidence-map.md).
 
 ## When to use LAIX
@@ -222,9 +234,9 @@ evidence caveats are in [the benchmark](docs/07-research/02-evaluation/benchmark
 | One app with one simple rule | Plain app code, or a small policy. |
 | A classifier or a judge | A model; LAIX can wrap it behind `PlannerPolicy`. |
 
-LAIX sits inside the host. It does not replace the agent framework or the workflow engine; it makes
-the decision inside one task explicit and auditable. For a fair comparison with JEV, classifiers and
-judges, see [LAIX and decision models](docs/04-concepts/02-positioning/01-decision-models.md).
+LAIX sits inside the host; it does not replace the agent framework or workflow engine. For a fair
+comparison with JEV, classifiers and judges, see
+[LAIX and decision models](docs/04-concepts/02-positioning/01-decision-models.md).
 
 Robotics: task-level decisions above the safety and motion layer. See
 [LAIX for robotics](docs/04-concepts/02-positioning/03-robotics.md).
