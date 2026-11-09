@@ -7,11 +7,40 @@ from pathlib import Path
 
 import pytest
 
-from laix import Commitment, CommitmentGraph, CommitmentLedger, CommitmentRef
+from laix import (
+    ActionOption,
+    Commitment,
+    CommitmentGraph,
+    CommitmentLedger,
+    CommitmentPlanner,
+    CommitmentRef,
+    PlannerInput,
+)
 
 ROOT = Path(__file__).resolve().parents[7]
 FIXTURE = ROOT / "packages" / "contracts" / "commitment-graph.v1.json"
-CASES = json.loads(FIXTURE.read_text(encoding="utf-8"))["cases"]
+PAYLOAD = json.loads(FIXTURE.read_text(encoding="utf-8"))
+CASES = PAYLOAD["cases"]
+PLANNER_CASES = PAYLOAD["planner_cases"]
+
+
+def _ledger(items: object) -> CommitmentLedger:
+    return CommitmentLedger(
+        tuple(
+            Commitment.from_dict(item)
+            for item in items  # type: ignore[union-attr]
+        )
+    )
+
+
+def _option(raw: dict[str, object]) -> ActionOption:
+    return ActionOption(
+        id=str(raw["id"]),
+        verb=str(raw["verb"]),
+        name=str(raw["name"]),
+        expected_benefit=float(raw.get("expected_benefit", 0.5)),
+        params=dict(raw.get("params", {})),  # type: ignore[arg-type]
+    )
 
 
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
@@ -53,3 +82,57 @@ def test_commitment_graph_fixture(case: dict[str, object]) -> None:
         actual = {frozenset(ref.id for ref in cycle) for cycle in graph.cycles()}
         wanted = {frozenset(cycle) for cycle in expected["cycles"]}
         assert actual == wanted
+
+
+@pytest.mark.parametrize("case", PLANNER_CASES, ids=lambda case: case["id"])
+def test_commitment_planner_fixture(case: dict[str, object]) -> None:
+    graph = CommitmentGraph(
+        _ledger(case["local"]),
+        tuple(
+            Commitment.from_dict(item)
+            for item in case["external"]  # type: ignore[union-attr]
+        ),
+    )
+    problem = PlannerInput(
+        subject="deliver",
+        at="2026-11-01T10:00:00+00:00",
+        options=tuple(
+            _option(item)
+            for item in case["options"]  # type: ignore[union-attr]
+        ),
+        attributes={"commitment_graph": graph},
+    )
+    result = CommitmentPlanner(
+        require_verified=bool(case["require_verified"])
+    ).solve(problem)
+
+    assert result.action_id == case["expected_action_id"]
+    if result.action_id == "finish":
+        assert (
+            result.attributes["commitments_blocked_by"]
+            == case["expected_blocked_by"]
+        )
+    else:
+        finish = next(
+            row for row in result.alternatives if row["action_id"] == "finish"
+        )
+        assert finish["blocked_by"] == case["expected_blocked_by"]
+
+
+def test_graph_round_trips_through_dict() -> None:
+    graph = CommitmentGraph(
+        CommitmentLedger((Commitment(id="a", subject="a"),)),
+        (
+            Commitment(
+                id="b",
+                subject="b",
+                owner="other",
+                ledger="other",
+                source="reported",
+            ),
+        ),
+    )
+    restored = CommitmentGraph.from_dict(graph.to_dict())
+
+    assert restored.to_dict() == graph.to_dict()
+    assert [item.id for item in restored.commitments] == ["a", "b"]

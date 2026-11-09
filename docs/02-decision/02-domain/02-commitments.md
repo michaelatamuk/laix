@@ -185,7 +185,7 @@ the graph only reasons about the result. The app kit exposes a small `Commitment
 | `chain(ref)` | The longest dependency chain that starts at this commitment. |
 | `critical_path()` | The longest dependency chain in the graph. |
 | `cycles()` | Dependency cycles, each as an ordered list of references. |
-| `to_dict()` | The local ledger and external commitments. |
+| `to_dict()` / `from_dict(payload)` | Round-trip the local ledger and external commitments. |
 
 Each blocker carries a `ref`, the resolved `commitment` (or `None`) and a `reason` of `missing`,
 `open` or `unverified`.
@@ -248,10 +248,12 @@ PlannerInput(
 )
 ```
 
-The planner asks the graph with `require_verified=True`, so a `reported` external dependency does
-not count as done. Fulfilling a hard commitment while it is blocked makes the option infeasible,
-just like breaking it. The alternative records `blocked hard commitment: ...`, and the result
-attributes include `commitments_blocked_fulfilled`.
+The planner asks the graph with `require_verified=True` by default, so a `reported` external
+dependency does not count as done. Pass `require_verified=False` to `CommitmentPlanner` when the host
+accepts reported dependencies. Fulfilling a hard commitment while it is blocked makes the option
+infeasible, just like breaking it. The alternative records `blocked hard commitment: ...`, and the
+result attributes include `commitments_blocked_fulfilled` and `commitments_blocked_by` with
+`{owner, ledger, id, reason}` entries.
 
 The commitment planner then scores an option's declared effect:
 

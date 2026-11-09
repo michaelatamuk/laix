@@ -235,6 +235,16 @@ export class CommitmentGraph {
       })),
     };
   }
+
+  static fromDict(payload: {
+    local?: { commitments?: Commitment[] };
+    external?: Commitment[];
+  }): CommitmentGraph {
+    return new CommitmentGraph(
+      CommitmentLedger.fromDict(payload.local ?? {}),
+      payload.external ?? [],
+    );
+  }
 }
 
 function sorted(items: Map<string, NormalizedCommitment>): NormalizedCommitment[] {

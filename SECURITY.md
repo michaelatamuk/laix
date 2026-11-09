@@ -9,7 +9,7 @@ model output blindly.
 
 | Version | Supported |
 |---|---|
-| `0.14.x` | yes |
+| `0.15.x` | yes |
 | older | no |
 
 This is a pre-1.0 project. Security fixes are applied to the current minor line.

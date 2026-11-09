@@ -83,6 +83,17 @@ The decision package no longer nests algorithms under `engines/`, and the app ki
 
 The top-level `from laix import ...` surface is unchanged. Only deep imports move.
 
+## 0.15.0: configurable commitment verification
+
+`CommitmentPlanner` now takes `require_verified` — a Python keyword argument or the third TypeScript
+constructor option. The default stays `True`, so existing behavior is unchanged. Set it to `False`
+only when the host accepts reported external commitments.
+
+The result attributes add `commitments_blocked_by`, and alternatives add `blocked_by`. Both are
+additive and use `{owner, ledger, id, reason}`.
+
+`CommitmentGraph.from_dict` / `fromDict` round-trips the payload from `to_dict()`.
+
 ## 0.14.0: commitment graphs
 
 Commitments can now cross owners. The public names are additive: `CommitmentRef`,
@@ -275,5 +286,5 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.14.0`. Add a new entry here when a release requires host changes; keep it
+The current release is `0.15.0`. Add a new entry here when a release requires host changes; keep it
 short and concrete.

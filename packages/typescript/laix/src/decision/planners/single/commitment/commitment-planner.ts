@@ -1,7 +1,7 @@
 import type { ActionOption } from "../../../contracts.ts";
 import type { PlannerInput, PlannerResult } from "../../../contract/planner.ts";
 import type { Commitment } from "../../../domain/commitments/commitment.ts";
-import { CommitmentGraph, CommitmentLedger, commitmentDue } from "../../../domain/commitments/commitments.ts";
+import { CommitmentGraph, CommitmentLedger, commitmentDue, commitmentKey } from "../../../domain/commitments/commitments.ts";
 import {
   UtilityPlanner,
   UtilityModel,
@@ -36,6 +36,13 @@ export interface CommitmentScore {
   dueViolated: string[];
   blockedFulfilled: string[];
   blocked: string | null;
+}
+
+export interface CommitmentBlock {
+  owner: string;
+  ledger: string | null;
+  id: string;
+  reason: "missing" | "open" | "unverified";
 }
 
 function round(value: number): number {
@@ -178,20 +185,50 @@ export function commitmentScoreOption(
   };
 }
 
+function optionBlockers(
+  option: ActionOption,
+  active: Map<string, Commitment>,
+  graph: CommitmentGraph,
+  requireVerified: boolean,
+): CommitmentBlock[] {
+  const found = new Map<string, CommitmentBlock>();
+  for (const commitmentId of commitmentEffect(option).fulfills) {
+    const commitment = active.get(commitmentId);
+    if (!commitment) continue;
+    for (const blocker of graph.blockers(commitment, { requireVerified })) {
+      found.set(commitmentKey(blocker.ref), {
+        owner: blocker.ref.owner,
+        ledger: blocker.ref.ledger ?? null,
+        id: blocker.ref.id,
+        reason: blocker.reason,
+      });
+    }
+  }
+  return [...found.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([, value]) => value);
+}
+
 interface Row {
   option: ActionOption;
   score: CommitmentScore;
   feasible: boolean;
   blocker: string | null;
+  blockedBy: CommitmentBlock[];
 }
 
 export class CommitmentPlanner {
   readonly name = "commitment.v1";
   readonly model: UtilityModel;
   readonly weights: Required<CommitmentWeights>;
+  readonly requireVerified: boolean;
   private readonly utility: UtilityPlanner;
 
-  constructor(model: UtilityModel = new UtilityModel(), weights: CommitmentWeights = {}) {
+  constructor(
+    model: UtilityModel = new UtilityModel(),
+    weights: CommitmentWeights = {},
+    options: { requireVerified?: boolean } = {},
+  ) {
     this.model = model;
     this.weights = {
       keep: weights.keep ?? 0.35,
@@ -200,6 +237,7 @@ export class CommitmentPlanner {
       due: weights.due ?? 0.25,
       blocked: weights.blocked ?? 0.5,
     };
+    this.requireVerified = options.requireVerified ?? true;
     for (const [key, value] of Object.entries(this.weights)) {
       if (value < 0) throw new Error(`commitment weight ${key} must not be negative`);
     }
@@ -215,7 +253,7 @@ export class CommitmentPlanner {
     const { active, graph } = activeAndGraph(problem);
     const blocked = (commitmentId: string): boolean => {
       const commitment = active.get(commitmentId);
-      return !commitment || graph.blocked(commitment, { requireVerified: true });
+      return !commitment || graph.blocked(commitment, { requireVerified: this.requireVerified });
     };
     const now = new Date(problem.at);
     const rows: Row[] = options.map((option) => {
@@ -233,6 +271,7 @@ export class CommitmentPlanner {
         score,
         feasible: model.feasible(option) && blocker === null && score.blocked === null,
         blocker: score.blocked ?? blocker,
+        blockedBy: optionBlockers(option, active, graph, this.requireVerified),
       };
     });
     const feasible = rows.filter((row) => row.feasible);
@@ -273,6 +312,7 @@ export class CommitmentPlanner {
         commitments_created: [...best.score.created],
         commitments_due_fulfilled: [...best.score.dueFulfilled],
         commitments_blocked_fulfilled: [...best.score.blockedFulfilled],
+        commitments_blocked_by: best.blockedBy.map((item) => ({ ...item })),
       },
     };
   }
@@ -316,6 +356,7 @@ export class CommitmentPlanner {
             ? `blocked by ${row.blocker}`
             : "outside the hard limits"
           : "lower commitment-adjusted score",
+        blocked_by: row.blockedBy.map((item) => ({ ...item })),
       }))
       .sort((left, right) =>
         Number(right.total) !== Number(left.total)
