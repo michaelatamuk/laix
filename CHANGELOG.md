@@ -9,6 +9,11 @@
   `external_depends_on`. `CommitmentGraph` combines the local ledger with external commitments and
   reports blockers, missing and unverified references, cycles, ancestors, descendants, impact,
   dependency chains and the critical path. Python and TypeScript mirror the same model.
+- **Commitment resolver port.** `laix.appkit` exposes `CommitmentResolver`,
+  `InMemoryCommitmentResolver` and `resolve_commitment_graph`, so a host can supply external
+  commitments from its own cache without LAIX performing network I/O.
+- **Shared graph parity cases.** `packages/contracts/commitment-graph.v1.json` holds the cases both
+  the Python and TypeScript graph tests read.
 - **Trust-aware commitment planning.** `CommitmentPlanner` accepts `attributes["commitment_graph"]`,
   or builds a graph from `commitments` and `external_commitments`, and checks external dependencies
   with `require_verified=True`. A hard commitment blocked by a `reported` dependency is infeasible,

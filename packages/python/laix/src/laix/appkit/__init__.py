@@ -70,6 +70,11 @@ from .execution import (
 )
 from .loop import DecisionRuntime
 from .state import ExperienceState, InMemoryStateStore, StateStore
+from .commitments import (
+    CommitmentResolver,
+    InMemoryCommitmentResolver,
+    resolve_commitment_graph,
+)
 
 __all__ = [
     "ApprovalDecision",
@@ -79,6 +84,7 @@ __all__ = [
     "CAPABILITY_LEVELS",
     "CallableDetector",
     "Capability",
+    "CommitmentResolver",
     "Decision",
     "DecisionRequest",
     "DecisionRecord",
@@ -95,6 +101,7 @@ __all__ = [
     "ExperienceState",
     "InMemoryPlatform",
     "InMemoryStateStore",
+    "InMemoryCommitmentResolver",
     "DecisionClient",
     "LiveContext",
     "ManualClock",
@@ -131,6 +138,7 @@ __all__ = [
     "from_sync",
     "prometheus",
     "run_stream_bench",
+    "resolve_commitment_graph",
     "apply_proposal",
     "approve_proposal",
     "approve_record",

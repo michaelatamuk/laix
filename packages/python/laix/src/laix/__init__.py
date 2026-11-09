@@ -262,6 +262,11 @@ _APPKIT_NAMES: dict[str, dict[str, str]] = {
         "NullDelivery": "NullDelivery",
     },
     ".appkit.decision_client": {"DecisionClient": "DecisionClient"},
+    ".appkit.commitments": {
+        "CommitmentResolver": "CommitmentResolver",
+        "InMemoryCommitmentResolver": "InMemoryCommitmentResolver",
+        "resolve_commitment_graph": "resolve_commitment_graph",
+    },
     ".appkit.live_context": {
         "CallableDetector": "CallableDetector",
         "LiveContext": "LiveContext",
@@ -383,6 +388,9 @@ __all__ = [
     "CommitmentPlanner",
     "CommitmentEffect",
     "CommitmentLedger",
+    "CommitmentResolver",
+    "InMemoryCommitmentResolver",
+    "resolve_commitment_graph",
     "CommitmentScore",
     "CommitmentWeights",
     "commitment_effect",

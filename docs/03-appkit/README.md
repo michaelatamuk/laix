@@ -43,6 +43,7 @@ The decision layer stays stateless. The app kit adds the surfaces, execution, po
 | Connect | `StreamCheckpointStore` | Saves and resumes a stream. |
 | Connect | `Platform` | Runs skills, approvals, state and events. |
 | Connect | `DeliveryPort` | Delivers a decision and returns a receipt. |
+| Connect | `CommitmentResolver` | Resolves another owner's commitments for a graph. |
 | Operate | `BenchReport` | Runs deterministic cases and suites. |
 | Operate | `StreamStats` | Exports stream counters and latency. |
 | Operate | `run_planner_bench` | Runs the bench CLI over a simulator and reports reward, steps and optimality gap. |
@@ -100,6 +101,7 @@ Read in order. Each section opens with a short index that lists its pages in rea
 | `appkit/live_context/` | the host-driven detector loop. |
 | `appkit/audit/` | decision record, proposal, approval, undo and audit events. |
 | `appkit/delivery/` | delivery port, receipt and the null implementation. |
+| `appkit/commitments/` | resolver port, in-memory resolver and graph helper. |
 | `appkit/platform/` | platform, in-memory platform, skill call, approvals and events. |
 | `appkit/bench/` | case, suite, row, report, runner and planner bench. |
 

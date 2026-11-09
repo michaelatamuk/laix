@@ -30,6 +30,8 @@ app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` 
 | `CommitmentGraph` | local and external commitments with blockers, cycles, impact and critical path |
 | `CommitmentStore` | the persistence port for a ledger |
 | `InMemoryCommitmentStore`, `FileCommitmentStore` | the built-in stores |
+| `CommitmentResolver` | the app-kit port for another owner's commitments |
+| `InMemoryCommitmentResolver`, `resolve_commitment_graph` | the built-in test resolver and graph helper |
 | `CommitmentPlanner` | the planner that scores fulfill, violate and create effects |
 
 ## Decision mechanisms

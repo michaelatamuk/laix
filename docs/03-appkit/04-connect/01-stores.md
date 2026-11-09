@@ -94,6 +94,27 @@ restored = store.load("task-1")
 `InMemoryCommitmentStore` is included for tests. The host can implement `CommitmentStore` with its own
 storage. The commitment model is in [Commitments](../../02-decision/02-domain/02-commitments.md).
 
+## Commitment resolver
+
+Stores keep the local ledger. To plan across owners, the host also supplies another party's
+commitments. `CommitmentResolver` is the port; it resolves `CommitmentRef` values from host-managed
+state, usually a local cache filled by the host's own integration.
+
+```python
+from laix import InMemoryCommitmentResolver, resolve_commitment_graph
+
+resolver = InMemoryCommitmentResolver((supplier_shipment,))
+graph = resolve_commitment_graph(local_ledger, resolver)
+```
+
+The port is synchronous on purpose: LAIX never performs network I/O while planning. A host with a
+remote source refreshes its cache first and then answers `resolve`. Pass the graph to
+`CommitmentPlanner` as `attributes["commitment_graph"]`.
+
+`InMemoryCommitmentResolver` is for tests. `resolve_commitment_graph` deduplicates the external
+references in the local ledger and reports anything the resolver does not return through
+`missing_refs()`.
+
 ## Outcome store
 
 Use it for decision consequences.
@@ -136,12 +157,15 @@ Keep transcripts, images, customer data and secrets in the app. Learning uses ou
 TypeScript exports `StateStore`, `InMemoryStateStore`, `FileStateStore`,
 `StreamCheckpointStore`, `InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`,
 `CommitmentStore`, `InMemoryCommitmentStore`, `FileCommitmentStore`, `OutcomeStore`,
-`OutcomeLedger` and `FileOutcomeStore`. The file stores take a small adapter with `join`, `read`,
+`OutcomeLedger`, `FileOutcomeStore`, `CommitmentResolver`, `InMemoryCommitmentResolver` and
+`resolveCommitmentGraph`. The file stores take a small adapter with `join`, `read`,
 `write` and `remove`, so the package stays runtime-neutral.
 
 ## Boundary
 
 - The store contracts are ports. LAIX calls them; the host implements them.
+- The commitment resolver is a port, not a hosted resolver. The host owns the source, credentials and
+  freshness of external commitments.
 - The host owns the database, transactions, backups and retention.
 - A store key is app-defined; keep it stable across restarts.
 - Do not store credentials or raw customer content in a checkpoint or a decision record.

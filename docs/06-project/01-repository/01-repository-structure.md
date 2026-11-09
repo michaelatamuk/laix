@@ -124,6 +124,7 @@ packages/python/laix/src/laix/
     ├── loop/                DecisionRuntime
     ├── execution/           ExecutionBridge, saga, retry and async
     ├── state/               ExperienceState and stores
+    ├── commitments/         resolver port, in-memory resolver and graph helper
     ├── audit/               decision record, proposal, approval, undo, audit event
     ├── delivery/            port, receipt, null
     ├── platform/            platform, in-memory, skill call, approvals, event, capability
@@ -183,6 +184,7 @@ packages/typescript/laix/src/
     ├── platform.ts    platform contract
     ├── proposal.ts    proposal lifecycle
     ├── delivery.ts    delivery port
+    ├── commitments.ts commitment resolver port and graph helper
     ├── bench.ts       LAIX-Bench
     ├── loop/          decision loop
     ├── execution/     execution, retry and saga

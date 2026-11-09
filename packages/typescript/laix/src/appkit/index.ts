@@ -1,5 +1,6 @@
 export * from "./bench.ts";
 export * from "./checkpoint.ts";
+export * from "./commitments.ts";
 export * from "./delivery.ts";
 export * from "./planner-bench.ts";
 export * from "./decision-client.ts";

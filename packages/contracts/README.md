@@ -12,6 +12,7 @@ reason-code registry are generated from the code and committed as stable artefac
 | `action.openapi.v1.json` | the OpenAPI 3.1 host action profile |
 | `signal-attention.v1.json` | 23 behavioural cases for the signal-attention policy |
 | `signal-attention-bench.v1.json` | 12 labelled cases for precision, hazard and recall |
+| `commitment-graph.v1.json` | 5 shared cases for cross-owner commitment graphs |
 
 The decision shape is generated from the Python dataclasses in `laix.decision.domain.decisions` and committed
 as `packages/python/laix/src/laix/decision/schema/laix-v1.schema.json`. It ships inside the installed
@@ -22,6 +23,10 @@ signal-attention cases; a weight change creates a new major version.
 
 The Python and TypeScript packages both read `signal-attention.v1.json`. The Python package keeps a copy
 inside the package for installation; this folder is the canonical copy.
+
+`commitment-graph.v1.json` is the shared case set for cross-owner commitment graphs. The Python and
+TypeScript test suites both read it from this folder, so a change in graph behavior has to update one
+fixture rather than two independent tests.
 
 `decision.v1.schema.json` and `reason-codes.v1.json` are generated from the Python code. Regenerate
 them from the repository root:
