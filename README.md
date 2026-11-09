@@ -45,14 +45,14 @@ validation pending.
 
 | You need | Use |
 |---|---|
-| Orchestration, tools and memory | An agent framework, with LAIX inside it. |
-| Durable execution, retries and process state | A workflow engine, with LAIX deciding. |
+| Planning, tools and memory | An agent framework, with LAIX inside it. |
+| Long-running execution, retries and process state | A workflow engine, with LAIX deciding. |
 | One explicit decision with reason, approval, audit and continuity | LAIX. |
-| One app with one simple rule | Plain app code, or a small policy. |
-| A classifier or a judge | A model; LAIX can wrap it behind the same decision contract. |
+| One app with one simple rule | Plain app code, or one small decision rule. |
+| A classifier or a judge | A model; LAIX can wrap it behind the same contract. |
 
 LAIX sits inside the host; it does not replace the agent framework or workflow engine. For a fair
-comparison with JEV, classifiers and judges, see
+comparison with judgment models, classifiers and judges, see
 [LAIX and decision models](docs/04-concepts/02-positioning/01-decision-models.md).
 
 Robotics: task-level decisions above the safety and motion layer. See
