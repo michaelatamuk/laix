@@ -1,4 +1,4 @@
-# Contributing to LAIX
+﻿# Contributing to LAIX
 
 Thanks for helping. LAIX is a small, opinionated codebase: the decision contract, the
 planner surface and the Python/TypeScript parity are the product. Changes that keep those
@@ -82,6 +82,7 @@ cd packages/typescript/laix
 npm run typecheck
 npm run typecheck:declarations
 npm test
+npm run check:consumer
 npm run bench
 npm run conformance
 npm run live-bench

@@ -189,9 +189,8 @@ packages/typescript/laix/src/
 ```
 
 The TypeScript package mirrors the same folders under `src/decision` and `src/appkit`. It exports one
-entry point, `laix`. `tsconfig.build.json` emits ESM JavaScript to `dist/`, while `types.d.ts` keeps
-the curated public declaration surface. `prepare` rebuilds `dist/` before a local install or package
-tarball.
+entry point, `laix`. `tsconfig.build.json` emits ESM JavaScript and declarations to `dist/`. The public type entry is
+`dist/index.d.ts`. `prepare` rebuilds `dist/` before a local install or package tarball.
 
 ## Shared spec
 

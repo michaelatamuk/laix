@@ -59,8 +59,8 @@ npm.cmd run build
 npm.cmd pack
 ```
 
-The build writes ESM JavaScript to `dist/`. The package keeps the curated public declarations in
-`types.d.ts`, and `prepare` rebuilds `dist/` before a local install or package tarball.
+The build writes ESM JavaScript and generated declarations to `dist/`. The public type entry is
+`dist/index.d.ts`, and `prepare` rebuilds `dist/` before a local install or package tarball.
 
 ## Test
 
