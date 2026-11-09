@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from .commitment import CommitmentLedger
-from .file_commitment_store import FileCommitmentStore
-from .in_memory_commitment_store import InMemoryCommitmentStore
+from .ledger import CommitmentLedger
+from .file_store import FileCommitmentStore
+from .in_memory_store import InMemoryCommitmentStore
 
 
 @runtime_checkable

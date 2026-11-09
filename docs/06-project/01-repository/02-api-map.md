@@ -24,8 +24,10 @@ app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` 
 
 | Name | Purpose |
 |---|---|
-| `Commitment` | one promised step with a due time, status, dependencies and priority |
+| `Commitment` | one promised step with an owner, due time, trust source, dependencies and priority |
+| `CommitmentRef` | an owner-qualified reference to another party's commitment |
 | `CommitmentLedger` | the open promises for one task, with due and blocked queries |
+| `CommitmentGraph` | local and external commitments with blockers, cycles, impact and critical path |
 | `CommitmentStore` | the persistence port for a ledger |
 | `InMemoryCommitmentStore`, `FileCommitmentStore` | the built-in stores |
 | `CommitmentPlanner` | the planner that scores fulfill, violate and create effects |

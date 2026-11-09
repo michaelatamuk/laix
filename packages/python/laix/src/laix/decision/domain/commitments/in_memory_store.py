@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 
-from .commitment import CommitmentLedger
+from .ledger import CommitmentLedger
 
 
 class InMemoryCommitmentStore:

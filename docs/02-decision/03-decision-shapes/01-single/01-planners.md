@@ -159,12 +159,17 @@ Weights:
 | `due` | 0.25 |
 | `blocked` | 0.50 |
 
-A commitment is blocked when it is missing or any `depends_on` item is missing or not `done`. A hard
-violation sets `blocked` to `hard commitment: <ids>` and removes the option.
+A commitment is blocked when it is missing, any `depends_on` item is missing or not `done`, or any
+external dependency has not resolved with enough trust. The planner checks the graph with
+`require_verified=True`, so a `reported` external commitment does not count as done. A hard
+violation sets `blocked` to `hard commitment: <ids>` and removes the option; fulfilling a hard
+commitment while it is blocked sets `blocked hard commitment: <ids>` and removes it too.
 
 Commitments enter the problem through `PlannerInput.attributes["commitments"]` or the alias
 `attributes["commitment_ledger"]`. The value may be a `CommitmentLedger`, a mapping with a
-`commitments` key, or an iterable of `Commitment` objects or mappings.
+`commitments` key, or an iterable of `Commitment` objects or mappings. To include another owner,
+pass a `CommitmentGraph` as `attributes["commitment_graph"]`, or pass
+`attributes["external_commitments"]` for the planner to build one.
 
 | Item | Value |
 |---|---|

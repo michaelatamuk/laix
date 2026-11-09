@@ -38,9 +38,13 @@ from .decision.domain.outcomes.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
 from .decision.domain.outcomes import SignalAttentionLog, SignalAttentionOutcome, Outcome
 from .decision.learning import CausalEffect, CausalLedger, CausalObservation
 from .decision.domain.commitments import (
+    COMMITMENT_SOURCES,
     COMMITMENT_STATUSES,
     Commitment,
+    CommitmentBlocker,
+    CommitmentGraph,
     CommitmentLedger,
+    CommitmentRef,
     CommitmentStore,
     FileCommitmentStore,
     InMemoryCommitmentStore,
@@ -369,8 +373,13 @@ __all__ = [
     "CausalEffect",
     "CausalLedger",
     "CausalObservation",
+    "COMMITMENT_SOURCES",
     "COMMITMENT_STATUSES",
     "Commitment",
+    "CommitmentBlocker",
+    "CommitmentGraph",
+    "CommitmentLedger",
+    "CommitmentRef",
     "CommitmentPlanner",
     "CommitmentEffect",
     "CommitmentLedger",

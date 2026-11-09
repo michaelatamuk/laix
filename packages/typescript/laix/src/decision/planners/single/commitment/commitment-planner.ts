@@ -1,7 +1,7 @@
 import type { ActionOption } from "../../../contracts.ts";
 import type { PlannerInput, PlannerResult } from "../../../contract/planner.ts";
-import type { Commitment } from "../../../domain/commitments/commitments.ts";
-import { CommitmentLedger, commitmentDue } from "../../../domain/commitments/commitments.ts";
+import type { Commitment } from "../../../domain/commitments/commitment.ts";
+import { CommitmentGraph, CommitmentLedger, commitmentDue } from "../../../domain/commitments/commitments.ts";
 import {
   UtilityPlanner,
   UtilityModel,
@@ -94,17 +94,29 @@ export function activeCommitments(problem: PlannerInput): Map<string, Commitment
   return result;
 }
 
-function isBlocked(
-  commitmentId: string,
-  commitments: Map<string, Commitment>,
-): boolean {
-  const commitment = commitments.get(commitmentId);
-  if (!commitment) return true;
-  for (const dependency of commitment.dependsOn ?? []) {
-    const item = commitments.get(dependency);
-    if (!item || (item.status ?? "open") !== "done") return true;
+function activeAndGraph(problem: PlannerInput): {
+  active: Map<string, Commitment>;
+  graph: CommitmentGraph;
+} {
+  const attributes = (problem.attributes ?? {}) as Record<string, unknown>;
+  const rawGraph = attributes.commitment_graph;
+  if (rawGraph instanceof CommitmentGraph) {
+    const active = new Map<string, Commitment>();
+    for (const item of rawGraph.local.all()) active.set(item.id, item);
+    return { active, graph: rawGraph };
   }
-  return false;
+  const active = activeCommitments(problem);
+  const rawExternal = attributes.external_commitments;
+  const external =
+    rawExternal instanceof CommitmentLedger
+      ? rawExternal.all()
+      : Array.isArray(rawExternal)
+        ? (rawExternal as Commitment[])
+        : [];
+  return {
+    active,
+    graph: new CommitmentGraph([...active.values()], external),
+  };
 }
 
 export function commitmentScoreOption(
@@ -113,6 +125,14 @@ export function commitmentScoreOption(
   active: Map<string, Commitment>,
   weights: Required<CommitmentWeights>,
   now: Date,
+  blocked: (commitmentId: string) => boolean = (commitmentId) => {
+    const commitment = active.get(commitmentId);
+    if (!commitment) return true;
+    if ((commitment.externalDependsOn ?? []).length) return true;
+    return (commitment.dependsOn ?? []).some(
+      (dependency) => (active.get(dependency)?.status ?? "open") !== "done",
+    );
+  },
 ): CommitmentScore {
   const effect = commitmentEffect(option);
   const openIds = new Set(
@@ -121,10 +141,10 @@ export function commitmentScoreOption(
       .map(([id]) => id),
   );
   const fulfilled = effect.fulfills.filter(
-    (id) => openIds.has(id) && !isBlocked(id, active),
+    (id) => openIds.has(id) && !blocked(id),
   );
   const blockedFulfilled = effect.fulfills.filter(
-    (id) => openIds.has(id) && isBlocked(id, active),
+    (id) => openIds.has(id) && blocked(id),
   );
   const violated = effect.violates.filter((id) => openIds.has(id));
   const created = effect.creates.filter((id) => !active.has(id));
@@ -152,7 +172,9 @@ export function commitmentScoreOption(
     blocked:
       effect.hard && violated.length
         ? `hard commitment: ${violated.join(", ")}`
-        : null,
+        : effect.hard && blockedFulfilled.length
+          ? `blocked hard commitment: ${blockedFulfilled.join(", ")}`
+          : null,
   };
 }
 
@@ -190,10 +212,21 @@ export class CommitmentPlanner {
       return this.wait("no_options", "there are no options to score");
     }
     const model = this.modelFor((problem.attributes ?? {}) as Record<string, unknown>);
-    const active = activeCommitments(problem);
+    const { active, graph } = activeAndGraph(problem);
+    const blocked = (commitmentId: string): boolean => {
+      const commitment = active.get(commitmentId);
+      return !commitment || graph.blocked(commitment, { requireVerified: true });
+    };
     const now = new Date(problem.at);
     const rows: Row[] = options.map((option) => {
-      const score = commitmentScoreOption(option, model, active, this.weights, now);
+      const score = commitmentScoreOption(
+        option,
+        model,
+        active,
+        this.weights,
+        now,
+        blocked,
+      );
       const blocker = constraintBlocker(problem, option);
       return {
         option,

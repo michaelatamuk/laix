@@ -4,6 +4,9 @@ A commitment is a promise the task has already made. LAIX treats it as decision 
 beside the decision. An action can fulfill a promise, break one or create a new one, and the
 commitment planner scores that effect with the rest of the decision.
 
+A promise can also belong to another owner. A `CommitmentGraph` adds those external promises to the
+local ledger, so the planner can see that an action depends on work somebody else must finish first.
+
 ## The shape
 
 | Field | Type | Meaning |
@@ -12,13 +15,19 @@ commitment planner scores that effect with the rest of the decision.
 | `subject` | `str` | The promised outcome. |
 | `due` | ISO-8601 `str \| None` | When the promise is due. |
 | `status` | `str` | `open`, `done` or `cancelled`. |
-| `depends_on` | `tuple[str, ...]` | Commitments that must be `done` first. |
+| `depends_on` | `tuple[str, ...]` | Local commitments that must be `done` first. |
+| `external_depends_on` | `tuple[CommitmentRef, ...]` | Another owner's commitments that must be `done` first. |
 | `priority` | `float` | Importance in `0..1`. The default is `0.5`. |
+| `owner` | `str` | Who made the promise. The default is `"local"`. |
+| `ledger` | `str \| None` | Optional namespace when one owner keeps several ledgers. |
+| `source` | `str` | How the promise is known: `local`, `reported` or `verified`. |
+| `verified_at` | ISO-8601 `str \| None` | When a verifier last confirmed a `verified` promise. |
 | `payload` | `dict` | Host-owned detail. Keep sensitive data in the host. |
 
-`COMMITMENT_STATUSES` is the tuple `("open", "done", "cancelled")`. `Commitment.__post_init__`
-rejects an unknown status. `is_due(now)` compares `due` with the supplied clock. `to_dict()` and
-`from_dict()` round-trip the shape.
+`COMMITMENT_STATUSES` is the tuple `("open", "done", "cancelled")` and `COMMITMENT_SOURCES` is
+`("local", "reported", "verified")`. `Commitment.__post_init__` rejects an unknown status or source.
+`is_due(now)` compares `due` with the supplied clock. `to_dict()` and `from_dict()` round-trip the
+shape.
 
 ```python
 from laix import Commitment
@@ -30,6 +39,30 @@ commitment = Commitment(
     priority=0.8,
 )
 ```
+
+## Trust
+
+`source` describes how much LAIX should trust a promise:
+
+| Source | Meaning | Treated as trusted |
+|---|---|---|
+| `local` | This host made and updates the promise. | yes |
+| `reported` | Another party reported it; the host has not checked it. | no |
+| `verified` | The host says a verifier confirmed it; `verified_at` records when. | yes |
+
+`verified` is a **host assertion, not a proof**. LAIX records that the host says it checked the
+promise; it does not sign, verify or fetch anything. `verified_at` is metadata, not a signature, and
+the graph does not expire it. Re-verify before acting when staleness matters.
+
+`reported` is the safe default for another party's commitment. It is enough for planning that can
+tolerate uncertainty, but it does not satisfy a dependency that requires verification. A local ledger
+cannot resolve another owner at all; that is why `CommitmentGraph` takes already-resolved external
+commitments from the host. The graph is a snapshot: if the supplier's status changes, the host must
+refresh the commitment.
+
+LAIX does not provide signatures, attestations, a shared commitment protocol, a hosted resolver,
+multi-party negotiation or settlement. Those belong to the host or to a product layer above LAIX.
+
 
 ## The ledger
 
@@ -95,6 +128,77 @@ A commitment is actionable when every id in `depends_on` resolves to a commitmen
 `done`. A missing dependency counts as unfinished. A blocked commitment stays open; the ledger
 reports it through `blocked_open()` and excludes it from `next_actionable()`.
 
+`CommitmentLedger.blocked()` only knows local ids. It treats every `external_depends_on` reference
+as unresolved, because one local ledger cannot see another owner. Use a `CommitmentGraph` to
+resolve those references.
+
+## The graph across owners
+
+`CommitmentGraph` combines the local ledger with commitments owned by other parties:
+
+```python
+from laix import Commitment, CommitmentGraph, CommitmentLedger, CommitmentRef
+
+local = CommitmentLedger(
+    (
+        Commitment(
+            id="c1",
+            subject="deliver to the customer",
+            external_depends_on=(
+                CommitmentRef(owner="supplier", ledger="supplier", id="c2"),
+            ),
+        ),
+    )
+)
+external = (
+    Commitment(
+        id="c2",
+        subject="ship the part",
+        owner="supplier",
+        ledger="supplier",
+        status="done",
+        source="reported",
+    ),
+)
+
+graph = CommitmentGraph(local, external)
+print(graph.blocked(local.get("c1")))                          # False
+print(graph.blocked(local.get("c1"), require_verified=True))   # True
+```
+
+The graph never fetches remote state. The host resolves external commitments and passes them in;
+the graph only reasons about the result.
+
+| Method | Result |
+|---|---|
+| `get(ref)` / `resolve(ref)` | The commitment behind an owner-qualified reference, or `None`. |
+| `dependencies(commitment)` | Local ids plus external references, as `CommitmentRef` values. |
+| `blockers(commitment, require_verified=False)` | Every dependency that is missing, open or unverified. |
+| `blocked(commitment, require_verified=False)` | Whether at least one blocker remains. |
+| `blocked_open(require_verified=False)` | Open local commitments with a blocker. |
+| `next_actionable(now=None, require_verified=False)` | The earliest open local commitment without a blocker. |
+| `missing_refs(commitment=None)` | References that resolve nowhere in the graph. |
+| `unverified_refs()` | Resolved dependencies marked `reported`. |
+| `ancestors(ref)` | Everything the commitment depends on, directly or transitively. |
+| `descendants(ref)` / `impact(ref)` | Everything that would be affected by a change to this commitment. |
+| `chain(ref)` | The longest dependency chain that starts at this commitment. |
+| `critical_path()` | The longest dependency chain in the graph. |
+| `cycles()` | Dependency cycles, each as an ordered list of references. |
+| `to_dict()` | The local ledger and external commitments. |
+
+Each blocker carries a `ref`, the resolved `commitment` (or `None`) and a `reason` of `missing`,
+`open` or `unverified`.
+
+```mermaid
+flowchart LR
+    c1["local · c1 · deliver · open"]
+    c2["supplier · c2 · ship the part · done · reported"]
+    c1 -->|external_depends_on| c2
+```
+
+A reference is the triple `(owner, ledger, id)`. Two owners may use the same commitment id; the
+owner and ledger keep them apart. Duplicate references in one graph are rejected.
+
 ## The store
 
 `CommitmentStore` is the persistence port:
@@ -127,6 +231,27 @@ key or the `commitment_ledger` alias. The accepted forms are:
 - a tuple of `Commitment` objects;
 - a mapping with a `commitments` key that `Commitment.from_dict` can read.
 
+To reason about another owner, pass a `CommitmentGraph` under `commitment_graph`. The planner then
+uses its local ledger and resolves external references. Without a graph, the planner builds one from
+`commitments` plus an optional `external_commitments` list:
+
+```python
+PlannerInput(
+    ...,
+    attributes={
+        "commitment_graph": graph,
+        # or:
+        "commitments": local_ledger,
+        "external_commitments": [supplier_commitment],
+    },
+)
+```
+
+The planner asks the graph with `require_verified=True`, so a `reported` external dependency does
+not count as done. Fulfilling a hard commitment while it is blocked makes the option infeasible,
+just like breaking it. The alternative records `blocked hard commitment: ...`, and the result
+attributes include `commitments_blocked_fulfilled`.
+
 The commitment planner then scores an option's declared effect:
 
 ```python
@@ -153,16 +278,97 @@ a wrapper. The scoring rules, weights and returned attributes are on the
 constructor, the exact reason codes and the policy contract are on the
 [policies page](../03-decision-shapes/01-single/05-policies.md#planning-policy).
 
+### A worked example across owners
+
+The same local promise, planned twice: once with a `reported` supplier commitment and once with a
+`verified` one.
+
+```python
+from laix import (
+    ActionOption,
+    Commitment,
+    CommitmentGraph,
+    CommitmentLedger,
+    CommitmentPlanner,
+    CommitmentRef,
+    PlannerInput,
+)
+
+supplier = CommitmentRef(owner="supplier", ledger="supplier", id="ship")
+local = CommitmentLedger(
+    (
+        Commitment(
+            id="deliver",
+            subject="deliver to the customer",
+            external_depends_on=(supplier,),
+        ),
+    )
+)
+
+
+def decide(external: Commitment):
+    problem = PlannerInput(
+        subject="deliver",
+        at="2026-11-01T10:00:00+00:00",
+        options=(
+            ActionOption(
+                id="finish",
+                verb="act",
+                name="finish the delivery",
+                expected_benefit=1.0,
+                params={"commitments": {"fulfills": ["deliver"], "hard": True}},
+            ),
+            ActionOption(
+                id="wait",
+                verb="wait",
+                name="wait for verification",
+                expected_benefit=0.1,
+            ),
+        ),
+        attributes={"commitment_graph": CommitmentGraph(local, (external,))},
+    )
+    return CommitmentPlanner().solve(problem)
+
+
+reported = Commitment(
+    id="ship",
+    subject="ship the part",
+    owner="supplier",
+    ledger="supplier",
+    status="done",
+    source="reported",
+)
+verified = Commitment(
+    id="ship",
+    subject="ship the part",
+    owner="supplier",
+    ledger="supplier",
+    status="done",
+    source="verified",
+    verified_at="2026-11-01T09:30:00+00:00",
+)
+
+print(decide(reported).action_id)  # wait
+print(decide(verified).action_id)  # finish
+```
+
+The supplier's status is the same in both calls. Only the trust source changes. In TypeScript the
+same example uses `externalDependsOn`, `verifiedAt` and `new CommitmentGraph(local, [external])`.
+
 ## What the host owns
 
 - the subject and the due time;
 - the priority and the dependency graph;
 - the durable store and retention;
 - whether a commitment is done or cancelled;
-- the mapping from an action to a fulfillment or a violation.
+- the mapping from an action to a fulfillment or a violation;
+- authenticating the source that supplies another owner's commitments;
+- resolving those commitments, setting `source` / `verified_at`, and deciding when a verification is
+  still fresh enough to use.
 
 LAIX owns the decision and the record. The host sends the report, publishes the summary, decides that
-a promise was kept and records the outcome.
+a promise was kept and records the outcome. It also decides which external promises are only
+`reported` and which have been `verified`.
 
 ## Related
 

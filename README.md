@@ -22,7 +22,7 @@ a model the host supplies.
 **Who it is for:** teams building AI agents or automations that take real actions — especially when
 approvals, promises, human attention or auditability matter.
 
-**Status:** pre-1.0 (`0.13.1`). Internal benchmarks and a synthetic continuity test; external
+**Status:** pre-1.0 (`0.14.0`). Internal benchmarks and a synthetic continuity test; external
 validation pending.
 
 [Quickstart](docs/01-start/02-first-steps/01-quickstart.md) ·
@@ -37,6 +37,9 @@ validation pending.
 - **The next decision starts from the current state.** Commitments (promises), human-attention budget
   (how much you can interrupt a person), approvals, revisions, execution receipts and measured outcomes
   carry forward. A decision is a step, not a snapshot.
+- **Promises can cross owners.** A `CommitmentGraph` combines the local ledger with other parties'
+  commitments, so the planner can require an external dependency to be verified before an action that
+  depends on it.
 - **The host keeps control.** The decision layer is stateless. The host owns execution, data, storage
   and delivery; the optional app kit adds the lifecycle around the decision.
 - **It is portable and testable.** Python uses the standard library only. TypeScript mirrors the same
@@ -64,7 +67,7 @@ Robotics: task-level decisions above the safety and motion layer. See
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.13.1#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.14.0#subdirectory=packages/python/laix"
 ```
 
 From a local checkout, at the repository root:
@@ -272,4 +275,4 @@ If you use LAIX in research, cite it via [CITATION.cff](CITATION.cff).
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE). Current release: `0.13.1`.
+Apache-2.0. See [LICENSE](LICENSE). Current release: `0.14.0`.
