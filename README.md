@@ -326,6 +326,7 @@ ablation, the test matrix and the evidence caveats are in
 | [Deployment](docs/03-appkit/05-operate/03-deployment.md) | production topology, reliability, rollout and retention |
 | [LangGraph](docs/03-appkit/01-build/04-langgraph.md) | a decision node, approval interrupt and checkpointer |
 | [MCP server](docs/03-appkit/01-build/05-mcp.md) | expose `decide` over stdio |
+| [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) | an agent card and a host action profile |
 | [Examples](examples/README.md) | Python and TypeScript, grouped by core and app kit |
 
 ## Contributing

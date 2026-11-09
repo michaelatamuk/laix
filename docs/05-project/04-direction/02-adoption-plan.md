@@ -163,6 +163,9 @@ Artifacts:
 - an A2A agent card;
 - an OpenAPI profile for actions.
 
+The decision schema, reason-code registry, MCP server, A2A card and OpenAPI profile are now in the
+repository. The OpenLineage facet, W3C PROV mapping and OpenTelemetry collector remain.
+
 Adoption path:
 
 - publish the specification, a reference implementation and three emitters: Python, TypeScript and an

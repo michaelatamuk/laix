@@ -1,0 +1,284 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LAIX Action Profile",
+    "version": "1.0.0",
+    "description": "The host-owned action endpoint that executes one approved LAIX decision. LAIX defines the decision and the receipt shape; the host owns this URL, authentication, idempotency and the real effect.",
+    "license": {
+      "name": "Apache-2.0",
+      "identifier": "Apache-2.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://example.com",
+      "description": "Replace with the host action endpoint."
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/actions/{action_id}": {
+      "post": {
+        "operationId": "executeAction",
+        "summary": "Execute one approved action",
+        "description": "The path action_id must match the decision.action_id. The host performs the effect and returns an ExecutionReceipt.",
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "Use decision_id, trace_id or the host event id. A repeated key returns the original receipt as duplicate.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionExecutionRequest"
+              },
+              "examples": {
+                "closeCase": {
+                  "summary": "Close an incident case after approval",
+                  "value": {
+                    "decision_id": "DEC-7F3A2C1B90",
+                    "trace_id": "TRC-4E2D8A1C77",
+                    "actor": "incident-bot",
+                    "approver": "alice",
+                    "context": {
+                      "case_id": "C-1042"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action executed or was already executed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionReceipt"
+                },
+                "examples": {
+                  "executed": {
+                    "value": {
+                      "id": "RCT-0A1B2C3D4E",
+                      "decision_id": "DEC-7F3A2C1B90",
+                      "action_name": "close case",
+                      "status": "executed",
+                      "actor": "incident-bot",
+                      "detail": {
+                        "closed": true
+                      },
+                      "approved_by": "alice",
+                      "idempotency_key": "DEC-7F3A2C1B90"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "The action may have happened; the receipt status is unknown and must be reconciled.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "409": {
+            "description": "The idempotency key was already used with a different action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "The request is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ActionExecutionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "decision_id",
+          "actor"
+        ],
+        "properties": {
+          "decision_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "trace_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "actor": {
+            "type": "string",
+            "minLength": 1
+          },
+          "approver": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "ExecutionReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "decision_id",
+          "action_name",
+          "status",
+          "actor"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "decision_id": {
+            "type": "string"
+          },
+          "action_name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "approved",
+              "executed",
+              "refused",
+              "cancelled",
+              "failed",
+              "undone",
+              "unknown",
+              "duplicate"
+            ]
+          },
+          "actor": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "approved_by": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "idempotency_key": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    }
+  },
+  "x-laix-decision-schema": "https://laix.dev/contracts/decision.v1.schema.json",
+  "x-laix-decision-verbs": [
+    "wait",
+    "observe",
+    "guide",
+    "ask",
+    "act",
+    "verify",
+    "escalate"
+  ],
+  "x-laix-receipt-statuses": [
+    "pending",
+    "approved",
+    "executed",
+    "refused",
+    "cancelled",
+    "failed",
+    "undone",
+    "unknown",
+    "duplicate"
+  ]
+}

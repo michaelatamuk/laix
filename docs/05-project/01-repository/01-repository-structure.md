@@ -214,6 +214,8 @@ tarball.
 | `packages/contracts/decision-record.v1.schema.json` | decision record shape |
 | `packages/contracts/decision.v1.schema.json` | standalone public decision shape |
 | `packages/contracts/reason-codes.v1.json` | stable reason-code registry |
+| `packages/contracts/a2a-agent-card.v1.json` | A2A 1.0 agent card template |
+| `packages/contracts/action.openapi.v1.json` | OpenAPI 3.1 host action profile |
 | `packages/contracts/signal-attention.v1.json` | signal-attention test cases |
 | `packages/contracts/signal-attention-bench.v1.json` | signal-attention outcome cases |
 
