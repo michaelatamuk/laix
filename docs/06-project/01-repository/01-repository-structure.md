@@ -92,7 +92,7 @@ packages/python/laix/src/laix/
 │   ├── contract/            planner.py, planner_input.py, planner_result.py, planner_policy.py
 │   ├── domain/
 │   │   ├── decisions/       request, response, trail and normalise
-│   │   ├── commitments/     commitment ledger, stores and planning state
+│   │   ├── commitments/     commitment, ref, ledger, graph and stores
 │   │   ├── outcomes/        outcome record, ledger, store and signal-attention feedback
 │   │   └── perception/      detection, detector, event and frame
 │   ├── planners/
@@ -145,7 +145,7 @@ packages/typescript/laix/src/
 │   ├── contracts.ts   decision records
 │   ├── contract/planner.ts Planner, PlannerInput, PlannerResult, PlannerPolicy and toDecision
 │   ├── domain/
-│   │   ├── commitments/   commitment ledger and stores
+│   │   ├── commitments/   commitment, ref, ledger, graph and stores
 │   │   ├── outcomes/      outcome ledger and stores
 │   │   └── perception/perception.ts detector and frame contracts
 │   ├── planners/

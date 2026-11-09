@@ -20,7 +20,7 @@ responsibilities. LAIX makes the resulting decision explicit, constrained and au
 ## Assets
 
 - decisions and their reasons, scores and confidence;
-- commitments and their due times, dependencies and status;
+- commitments and their owners, trust sources, due times, dependencies and status;
 - execution receipts and their lifecycle;
 - decision records, traces and audit events;
 - outcome and calibration data;
@@ -112,6 +112,21 @@ Controls:
 - do not load untrusted policy or model code;
 - treat `langgraph` and other comparison adapters as optional, isolated tooling.
 
+### 8. Reported or stale commitments
+
+An external commitment is data from another party. A `reported` promise may be wrong, stale or
+malicious, and `source="verified"` is only the host's assertion that it checked the promise.
+
+Controls:
+
+- authenticate and authorize the source that supplies external commitments;
+- resolve them just in time and record `source` and `verified_at`;
+- use `require_verified=True` for decisions that depend on another owner;
+- re-resolve before acting when `verified_at` is old enough to matter;
+- never treat a commitment as a signature, an attestation or a settlement;
+- keep the resolver, its credentials and any cross-organization protocol in the host or product
+  layer.
+
 ## Host checklist
 
 - [ ] Authenticate and authorize the caller before `decide`.
@@ -122,6 +137,7 @@ Controls:
 - [ ] Store records and receipts immutably.
 - [ ] Keep secrets and raw data out of decisions, traces and logs.
 - [ ] Set budgets, deadlines and rate limits.
+- [ ] Authenticate the source of external commitments and re-check staleness before acting.
 - [ ] Apply retention and deletion rules.
 - [ ] Report vulnerabilities through [SECURITY.md](../../../SECURITY.md).
 
@@ -134,6 +150,8 @@ LAIX does not provide:
 - transport security;
 - a model firewall or prompt-injection filter;
 - database encryption or key management;
+- a hosted commitment resolver or a shared commitment protocol;
+- signatures, attestations, negotiation or settlement;
 - network, host or cloud hardening.
 
 Those remain host responsibilities.

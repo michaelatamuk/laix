@@ -131,8 +131,10 @@ decision:
 | `EvidenceRef` | `domain/decisions/response/payload/evidence_ref.py` | a reference that supports a decision |
 | `Intent` | `domain/decisions/response/payload/intent.py` | capability and arguments the host can execute |
 | `ScoreBreakdown` | `domain/decisions/response/payload/score_breakdown.py` | the parts of a signal-attention score |
-| `Commitment` | `domain/commitments/commitment_record.py` | one promise with a due time and dependencies |
-| `CommitmentLedger` | `domain/commitments/commitment.py` | the open promises for one task |
+| `Commitment` | `domain/commitments/commitment.py` | one promise with an owner, due time, trust source and dependencies |
+| `CommitmentRef` | `domain/commitments/commitment_ref.py` | an owner-qualified reference to a commitment |
+| `CommitmentLedger` | `domain/commitments/ledger.py` | the open promises for one task |
+| `CommitmentGraph` | `domain/commitments/graph.py` | local and external commitments with blockers, cycles and impact |
 | `Detection`, `PerceptionEvent`, `PerceptionFrame` | `domain/perception/` | host-driven perception records |
 
 These shapes have `to_dict()` where persistence matters. They sit outside the generated decision
@@ -191,7 +193,7 @@ The schema enums come from the code:
 
 | Thing | Version | Source |
 |---|---|---|
-| Package | `0.13.1` | `packages/python/laix/pyproject.toml`, `packages/typescript/laix/package.json` |
+| Package | `0.14.0` | `packages/python/laix/pyproject.toml`, `packages/typescript/laix/package.json` |
 | Record schema | `0.8.0` | `decision/support/version.py`, `contracts.ts` |
 | Rule sets | `0.8.0` | policy versions and vectors |
 | Signal-attention vectors | `0.8.0` | `signal-attention.v1.json` and conformance fixtures |

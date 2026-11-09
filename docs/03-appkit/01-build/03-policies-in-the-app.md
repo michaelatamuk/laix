@@ -65,7 +65,7 @@ from laix import Decision, DecisionClient
 
 class QualityPolicy:
     name = "quality"
-    version = "0.13.1"
+    version = "0.14.0"
 
     def decide(self, request):
         return [

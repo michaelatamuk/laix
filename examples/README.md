@@ -81,6 +81,7 @@ py examples/python/decision/sensing/signals/signal_attention_bill_due.py
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
 | Persist a commitment ledger | `planning_store.py` | `planning_store.mts` | `send the draft` |
+| Reason across owners and trust | `commitment_graph.py` | `commitment_graph.mts` | `unverified supplier ship` |
 
 ### Outcomes
 

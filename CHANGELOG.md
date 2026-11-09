@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.14.0 - 2026-11-10
+
+### Added
+
+- **Commitment graphs across owners.** `CommitmentRef` names another party's commitment by
+  `(owner, ledger, id)`. `Commitment` gains `owner`, `ledger`, `source`, `verified_at` and
+  `external_depends_on`. `CommitmentGraph` combines the local ledger with external commitments and
+  reports blockers, missing and unverified references, cycles, ancestors, descendants, impact,
+  dependency chains and the critical path. Python and TypeScript mirror the same model.
+- **Trust-aware commitment planning.** `CommitmentPlanner` accepts `attributes["commitment_graph"]`,
+  or builds a graph from `commitments` and `external_commitments`, and checks external dependencies
+  with `require_verified=True`. A hard commitment blocked by a `reported` dependency is infeasible,
+  and the result adds `commitments_blocked_fulfilled`.
+
+### Changed
+
+- **Commitment modules are split.** Python now uses `commitment.py`, `commitment_ref.py`,
+  `ledger.py`, `graph.py`, `in_memory_store.py` and `file_store.py`. TypeScript uses
+  `commitment.ts`, `ledger.ts`, `graph.ts` and a `commitments.ts` barrel. The top-level `from laix
+  import ...` surface still works; the removed `commitment_record.py`,
+  `in_memory_commitment_store.py` and `file_commitment_store.py` paths do not.
+- **A local ledger treats external references as unresolved.** `CommitmentLedger.blocked()` now
+  returns `True` when a commitment has `external_depends_on`; use `CommitmentGraph` to resolve them.
+
 ## 0.13.1 - 2026-11-09
 
 ### Fixed

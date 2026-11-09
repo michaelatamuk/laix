@@ -8,7 +8,7 @@ the real world.** Install it, send one request and read one decision. Then choos
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.13.1#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.14.0#subdirectory=packages/python/laix"
 ```
 
 Local checkout, from the repository root:
@@ -27,7 +27,7 @@ TypeScript:
 }
 ```
 
-The release page also has a packed `laix-0.13.1.tgz`. See
+The release page also has a packed `laix-0.14.0.tgz`. See
 [versioning](../../06-project/03-release/01-versioning.md) for tags and schema versions.
 
 ## One decision

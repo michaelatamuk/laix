@@ -83,6 +83,29 @@ The decision package no longer nests algorithms under `engines/`, and the app ki
 
 The top-level `from laix import ...` surface is unchanged. Only deep imports move.
 
+## 0.14.0: commitment graphs
+
+Commitments can now cross owners. The public names are additive: `CommitmentRef`,
+`CommitmentGraph`, `CommitmentBlocker`, `COMMITMENT_SOURCES`, plus the new `Commitment` fields
+`owner`, `ledger`, `source`, `verified_at` and `external_depends_on`. Existing commitments still
+default to `owner="local"` and `source="local"`.
+
+The commitment modules were split while the feature landed:
+
+| Before | After |
+|---|---|
+| `domain/commitments/commitment_record.py` | `domain/commitments/commitment.py` |
+| `domain/commitments/commitment.py` (ledger) | `domain/commitments/ledger.py` |
+| `domain/commitments/in_memory_commitment_store.py` | `domain/commitments/in_memory_store.py` |
+| `domain/commitments/file_commitment_store.py` | `domain/commitments/file_store.py` |
+
+TypeScript users can keep importing from `commitments.ts`; it now re-exports `commitment.ts`,
+`ledger.ts` and `graph.ts`.
+
+`CommitmentLedger.blocked()` cannot resolve another owner, so it now treats every
+`external_depends_on` reference as unresolved. Pass a `CommitmentGraph` when external promises
+should count.
+
 ## 0.13.1: generated TypeScript declarations
 
 The package now ships declarations at `dist/index.d.ts`, generated from the source. The old
@@ -252,5 +275,5 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.13.1`. Add a new entry here when a release requires host changes; keep it
+The current release is `0.14.0`. Add a new entry here when a release requires host changes; keep it
 short and concrete.

@@ -17,6 +17,17 @@ same boundary applies to any host.
 The decision layer is stateless. The app kit adds state and execution surfaces. The host decides which of the
 two it uses.
 
+## Commitments across owners
+
+The commitment graph reasons over promises the host supplies. `CommitmentRef`, `CommitmentGraph` and
+the `local` / `reported` / `verified` trust sources are decision-layer semantics. Resolving a remote
+commitment, authenticating the party that reports it, verifying it, exchanging it across
+organizations and settling it are host or product-layer concerns.
+
+`laix.decision` does not run a resolver, define a cross-organization commitment protocol, sign
+attestations, negotiate commitments or move money. The app kit can hold the ports the host
+implements, but it does not ship a hosted resolver.
+
 ## The seam
 
 One request crosses the boundary. An action request returns one decision; an attention request

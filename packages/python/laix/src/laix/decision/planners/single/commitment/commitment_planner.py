@@ -8,12 +8,12 @@ due times come from the host.
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from datetime import datetime, timezone
 from typing import Any
 
 from ....domain.decisions import ActionOption
-from ....domain.commitments import Commitment, CommitmentLedger
+from ....domain.commitments import Commitment, CommitmentGraph, CommitmentLedger
 from ....support.time import parse_iso
 from ....support.values import clamp
 from ._commitment_row import _Row
@@ -76,19 +76,37 @@ def _commitments(problem: PlannerInput) -> dict[str, Commitment]:
     return {item.id: item for item in items}
 
 
-def _blocked(commitment_id: str, commitments: dict[str, Commitment]) -> bool:
-    commitment = commitments.get(commitment_id)
-    if commitment is None:
-        return True
-    for dependency in commitment.depends_on:
-        item = commitments.get(dependency)
-        if item is None or item.status != "done":
-            return True
-    return False
+def _active_and_graph(
+    problem: PlannerInput,
+) -> tuple[dict[str, Commitment], CommitmentGraph]:
+    """Return local commitments and the graph the planner should reason over."""
+    attributes = problem.attributes or {}
+    raw_graph = attributes.get("commitment_graph")
+    if isinstance(raw_graph, CommitmentGraph):
+        return {item.id: item for item in raw_graph.local.all()}, raw_graph
+    active = _commitments(problem)
+    external = attributes.get("external_commitments", ())
+    if isinstance(external, CommitmentLedger):
+        external = external.all()
+    return active, CommitmentGraph(active.values(), external)
 
 
 def _now(problem: PlannerInput) -> datetime:
     return parse_iso(problem.at) or datetime.now(timezone.utc)
+
+
+def _blocked_locally(commitment_id: str, active: dict[str, Commitment]) -> bool:
+    """Local-only blocking, used when no graph is supplied."""
+    commitment = active.get(commitment_id)
+    if commitment is None:
+        return True
+    if commitment.external_depends_on:
+        return True
+    for dependency in commitment.depends_on:
+        item = active.get(dependency)
+        if item is None or item.status != "done":
+            return True
+    return False
 
 
 def _score_option(
@@ -97,20 +115,22 @@ def _score_option(
     active: dict[str, Commitment],
     weights: CommitmentWeights,
     now: datetime,
+    blocked: Callable[[str], bool] | None = None,
 ) -> CommitmentScore:
     effect = commitment_effect(option)
+    is_blocked = blocked or (lambda item: _blocked_locally(item, active))
     open_ids = {
         item_id for item_id, item in active.items() if item.status == "open"
     }
     fulfilled = tuple(
         item
         for item in effect.fulfills
-        if item in open_ids and not _blocked(item, active)
+        if item in open_ids and not is_blocked(item)
     )
     blocked_fulfilled = tuple(
         item
         for item in effect.fulfills
-        if item in open_ids and _blocked(item, active)
+        if item in open_ids and is_blocked(item)
     )
     violated = tuple(item for item in effect.violates if item in open_ids)
     created = tuple(item for item in effect.creates if item not in active)
@@ -140,7 +160,11 @@ def _score_option(
     blocked = (
         f"hard commitment: {', '.join(violated)}"
         if effect.hard and violated
-        else None
+        else (
+            f"blocked hard commitment: {', '.join(blocked_fulfilled)}"
+            if effect.hard and blocked_fulfilled
+            else None
+        )
     )
     utility = model.score(option)
     return CommitmentScore(
@@ -177,11 +201,18 @@ class CommitmentPlanner:
             return self._wait("no_options", "there are no options to score")
 
         model = self._utility._model_for(problem)
-        active = _commitments(problem)
+        active, graph = _active_and_graph(problem)
         now = _now(problem)
+
+        def blocked(commitment_id: str) -> bool:
+            commitment = active.get(commitment_id)
+            return True if commitment is None else graph.blocked(
+                commitment, require_verified=True
+            )
+
         rows: list[_Row] = []
         for option in options:
-            score = _score_option(option, model, active, self.weights, now)
+            score = _score_option(option, model, active, self.weights, now, blocked)
             blocker = _constraint_blocker(problem, option)
             feasible = model.feasible(option) and blocker is None and score.blocked is None
             rows.append(

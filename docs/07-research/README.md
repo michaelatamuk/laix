@@ -156,7 +156,7 @@ Out of scope:
 |---|---|---|---|
 | Decision contract | `Decision`, `PlannerInput`, `PlannerResult`, `PlannerPolicy` | exists | formal definition and invariants |
 | Live composite planner | `LiveCompositePlanner` | exists | real validation still needed |
-| Commitments | `Commitment`, `CommitmentLedger`, commitment planner | exists | larger conflict cases |
+| Commitments | `Commitment`, `CommitmentRef`, `CommitmentGraph`, commitment planner | exists | larger cross-owner conflict and trust cases |
 | Execution risk | execution planner, receipts, recovery | exists | measured irreversible-action reduction |
 | Signal attention | signal attention, human-attention planner, budget | exists | measured budget adherence and interruption quality |
 | Timing and revision | stream session, timeline | exists | formal revision invariants |
