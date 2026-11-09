@@ -13,8 +13,8 @@ reason-code registry are generated from the code and committed as stable artefac
 | `signal-attention.v1.json` | 23 behavioural cases for the signal-attention policy |
 | `signal-attention-bench.v1.json` | 12 labelled cases for precision, hazard and recall |
 
-The decision shape is generated from the Python dataclasses in `laix.core.decisions` and committed
-as `packages/python/laix/src/laix/core/schema/laix-v1.schema.json`. It ships inside the installed
+The decision shape is generated from the Python dataclasses in `laix.decision.decisions` and committed
+as `packages/python/laix/src/laix/decision/schema/laix-v1.schema.json`. It ships inside the installed
 package as the single decision schema.
 
 A runtime is valid when it passes the cases for the policy it implements. Scores are part of the

@@ -51,11 +51,11 @@ A decision always contains:
 | Support | `evidence`, `target` |
 | Audit | `decision_id`, `policy_version`, `trace_id`, `deliver`, `record`, `created_at` |
 
-The `verb` is the core answer. The other fields explain it and help the app execute it.
+The `verb` is the decision layer answer. The other fields explain it and help the app execute it.
 
 ## Getting a decision
 
-For the answer alone, use the core:
+For the answer alone, use the decision layer:
 
 ```python
 from laix import decide
@@ -72,7 +72,7 @@ layer = DecisionClient()
 decision = layer.decide(request)[0]
 ```
 
-`decide` lives in core and loads without the app kit. `DecisionClient` uses the same core selection and adds
+`decide` lives in the decision layer and loads without the app kit. `DecisionClient` uses the same decision dispatch and adds
 the app-kit parts.
 
 ## The seven verbs
@@ -94,7 +94,7 @@ A notification is a `guide` decision plus an app delivery channel. Approval is t
 
 ## Selecting a policy
 
-Pass a policy explicitly to the core:
+Pass a policy explicitly to the decision layer:
 
 ```python
 from laix import DecisionRequest, SafetyConstrainedPolicy, decide
@@ -189,7 +189,7 @@ request shapes LAIX understands. The other eight are ordinary policy objects tha
 from `DecisionRequest.attributes`.
 
 The split is about selection. All ten return the same decision shape. See
-[packaged policies](../../02-core/03-decision/01-single/05-policies.md).
+[packaged policies](../../02-decision/03-decision-shapes/01-single/05-policies.md).
 
 ## Other parts
 
@@ -197,7 +197,7 @@ The split is about selection. All ten return the same decision shape. See
   deep detectors run under a budget. See
   [live context](../../03-appkit/02-run/03-live-context.md).
 - **Outcome learning** uses measured outcomes to improve the next choice. See
-  [outcomes](../../02-core/02-domain/03-outcomes.md).
+  [outcomes](../../02-decision/02-domain/03-outcomes.md).
 - **LAIX-Bench** runs the same test cases for every class. See
   [bench](../../03-appkit/05-operate/01-bench.md).
 
@@ -221,10 +221,10 @@ scores.
 | `ExecutionRiskPlanner` | 5 / 7 | ignores commitments and attention |
 | **`LiveCompositePlanner`** | **7 / 7** | composes all four scores |
 
-Reproduce with one command: `python examples/python/core/evaluation/bench/ablation_study.py`.
+Reproduce with one command: `python examples/python/decision/evaluation/bench/ablation_study.py`.
 
 A worked conflict scenario (all three concerns fire simultaneously) is in
-`examples/python/core/decision/history/conflict_scenario.py`.
+`examples/python/decision/decision/history/conflict_scenario.py`.
 
 **Expanded corpus:** 120 cases across six categories (72 dev, 30 test, 18 adversarial). On the frozen
 test split, `LiveCompositePlanner` is 30/30 and wins every conflict case (6/6). A hand-built glue
@@ -262,8 +262,8 @@ Liability Directive 2024/2853.
 | New channel | Implement `DeliveryPort` |
 
 The planner contract is in place: `PlannerPolicy` wraps JEV, an optimizer or a planner. The built-in
-`UtilityPlanner`, [MDPPlanner](../../02-core/03-decision/01-single/03-model-based.md#mdp) and
+`UtilityPlanner`, [MDPPlanner](../../02-decision/03-decision-shapes/01-single/03-model-based.md#mdp) and
 `POMDPPlanner` are available behind the same adapter; simulation, calibration and model learning
-support them. See [the planner contract](../../02-core/01-contract/02-planner-contract.md).
+support them. See [the planner contract](../../02-decision/01-contract/02-planner-contract.md).
 
-Core vs app kit vs host is defined in [scope and boundaries](02-scope-and-boundaries.md).
+The decision layer, the app kit and the host are defined in [scope and boundaries](02-scope-and-boundaries.md).

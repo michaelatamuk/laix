@@ -1,4 +1,4 @@
-import type { DecisionRequest } from "../core/contracts.ts";
+import type { DecisionRequest } from "../decision/contracts.ts";
 
 export interface DeadLetter {
   raw: string;

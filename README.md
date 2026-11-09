@@ -24,7 +24,7 @@ a model the host supplies.
 **Who it is for:** teams building AI agents or automations that take real actions — especially when
 approvals, promises, human attention or auditability matter.
 
-**Status:** pre-1.0 (`0.11.0`). Evidence: internal benchmarks and a synthetic continuity test;
+**Status:** pre-1.0 (`0.12.0`). Evidence: internal benchmarks and a synthetic continuity test;
 external validation is pending.
 
 [Quickstart](docs/01-start/02-first-steps/01-quickstart.md) ·
@@ -141,7 +141,7 @@ before it executes `pay`. The policy uses one utility score and the approval fla
 the promise or the attention budget separately. The [live composite
 planner](#the-live-composite-planner) below uses the same request with a planner that does.
 
-The full record is in [the decision contract](docs/02-core/01-contract/01-decision-contract.md).
+The full record is in [the decision contract](docs/02-decision/01-contract/01-decision-contract.md).
 The same shape works for signal attention, policies, planners and the live composite planner.
 
 ## Install
@@ -149,7 +149,7 @@ The same shape works for signal attention, policies, planners and the live compo
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.11.0#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.12.0#subdirectory=packages/python/laix"
 ```
 
 From a local checkout, at the repository root:
@@ -173,7 +173,7 @@ See the [quickstart](docs/01-start/02-first-steps/01-quickstart.md) for the full
   and a trace. The app branches on the reason code, not on prose.
 - **The next decision starts from the current state.** Commitments, human-attention budget, approvals,
   revisions, receipts and outcomes carry forward. A decision is a step, not a snapshot.
-- **The host keeps control.** The core is stateless. The host owns execution, data, storage and
+- **The host keeps control.** The decision layer is stateless. The host owns execution, data, storage and
   delivery; the optional app kit adds the lifecycle around the decision.
 
 ## How it works
@@ -183,14 +183,14 @@ See the [quickstart](docs/01-start/02-first-steps/01-quickstart.md) for the full
 An agent or automation plans the task. LAIX decides the next move. The host executes it. The
 receipt and outcome close the loop and calibrate the next decision.
 
-The core is `DecisionRequest` in, `Decision` out. A policy can be a rule set, a learned policy or a
+The decision layer is `DecisionRequest` in, `Decision` out. A policy can be a rule set, a learned policy or a
 planner behind `PlannerPolicy`. The app kit is optional; it adds execution, records, stores,
 streaming, delivery and bench.
 
 ## The live composite planner
 
 **Live** means the decision is made inside the running loop, at event time, with the current state.
-The core stays stateless: the host supplies commitments, budget, approvals and execution state with
+The decision layer stays stateless: the host supplies commitments, budget, approvals and execution state with
 each request.
 
 `LiveCompositePlanner` is a planner behind `decide`. **Composite** means it combines four scores:
@@ -239,7 +239,7 @@ human-attention budget. The decision carries the four scores, so the trade-off i
 
 Same entry point, different policy.
 
-A separate conflict scenario is in [`examples/python/core/decision/history/conflict_scenario.py`](examples/python/core/decision/history/conflict_scenario.py).
+A separate conflict scenario is in [`examples/python/decision/decision/history/conflict_scenario.py`](examples/python/decision/decision/history/conflict_scenario.py).
 
 ## Decision continuity
 
@@ -252,7 +252,7 @@ A decision is one step in a sequence. It leaves state for the next decision.
 | 3 | verifies after execution | `c1` fulfilled; receipt and outcome recorded |
 
 The next decision sees the commitments, human-attention budget, approvals, revisions and outcomes the
-previous one left. See [Decision continuity](docs/02-core/03-decision/04-history.md).
+previous one left. See [Decision continuity](docs/02-decision/03-decision-shapes/04-history.md).
 
 In a 12-episode synthetic mechanism test, the stateful decision loop completed **100%** of episodes; a
 stateless utility planner completed **0%** with 36 continuity errors. See the
@@ -278,8 +278,8 @@ Robotics: task-level decisions above the safety and motion layer. See
 | Situation | Use |
 |---|---|
 | One app with one simple rule | Plain app code, or a small policy. |
-| Several agents, tasks or decision classes need one contract | LAIX core. |
-| You need approval, audit, execution receipts or continuity | LAIX core plus the app kit. |
+| Several agents, tasks or decision classes need one contract | LAIX decision layer. |
+| You need approval, audit, execution receipts or continuity | LAIX decision layer plus the app kit. |
 | You need orchestration, tools and memory | An agent framework, with LAIX inside it. |
 | You need durable execution and retries | A workflow engine, with LAIX deciding. |
 | You only need a classifier or a judge | A model; LAIX can wrap it behind `PlannerPolicy`. |
@@ -319,15 +319,15 @@ ablation, the test matrix and the evidence caveats are in
 |---|---|
 | [Documentation index](docs/README.md) | every guide and reference page |
 | [Quickstart](docs/01-start/02-first-steps/01-quickstart.md) | install and first decision |
-| [Core overview](docs/02-core/README.md) | contract, domain, decision, sensing, learning, evaluation |
-| [Decision shapes](docs/02-core/03-decision/README.md) | single, sequence, fleet, history and explain |
+| [Decision overview](docs/02-decision/README.md) | contract, domain, decision, sensing, learning, evaluation |
+| [Decision shapes](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history and explain |
 | [App-kit overview](docs/03-appkit/README.md) | execution, streams, stores, platform, delivery, bench |
 | [Decision lifecycle](docs/01-start/01-orientation/02-decision-lifecycle.md) | moment to outcome in one loop |
 | [Deployment](docs/03-appkit/05-operate/03-deployment.md) | production topology, reliability, rollout and retention |
 | [LangGraph](docs/03-appkit/01-build/04-langgraph.md) | a decision node, approval interrupt and checkpointer |
 | [MCP server](docs/03-appkit/01-build/05-mcp.md) | expose `decide` over stdio |
 | [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) | an agent card and a host action profile |
-| [Examples](examples/README.md) | Python and TypeScript, grouped by core and app kit |
+| [Examples](examples/README.md) | Python and TypeScript, grouped by decision and app kit |
 
 ## Contributing
 
@@ -363,4 +363,4 @@ If you use LAIX in research, cite it via [CITATION.cff](CITATION.cff).
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE). Current release: `0.11.0`.
+Apache-2.0. See [LICENSE](LICENSE). Current release: `0.12.0`.

@@ -1,7 +1,7 @@
 """LAIX app kit: optional integration for apps.
 
 This surface contains execution, records, delivery, platform, live context and
-bench. It is useful for apps, but it is not the decision core. Persistent
+bench. It is useful for apps, but it is not the decision layer. Persistent
 memory, ingestion, proactivity, permissions and missions belong to the host.
 """
 
@@ -33,8 +33,8 @@ from .audit.proposal import (
     reject as reject_proposal,
     undo as undo_proposal,
 )
-from ..core.domain.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
-from ..core.engines.sensing.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from ..decision.domain.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
+from ..decision.engines.sensing.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .live_context import CallableDetector, LiveContext
 from .streaming import (
     DeadLetter,

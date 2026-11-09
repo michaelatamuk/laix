@@ -103,10 +103,10 @@ The version check keeps the package, A2A card, README, quickstart, versioning pa
 | Check | Covers |
 |---|---|
 | `pytest` | contracts, policies, planners, calibration, timeline, app kit, schema, examples |
-| `tests/core/test_invariants.py` | determinism, hard gates, budget, approval, revision, receipts, trace, confidence, contract and parity infrastructure |
-| `tests/core/contract/test_reason_codes.py` | reason-code registry, decision schema and source coverage |
+| `tests/decision/test_invariants.py` | determinism, hard gates, budget, approval, revision, receipts, trace, confidence, contract and parity infrastructure |
+| `tests/decision/contract/test_reason_codes.py` | reason-code registry, decision schema and source coverage |
 | `tests/appkit/test_mcp_server.py` | MCP request parsing, `decide` tool, tool listing and tool call |
-| `tests/core/contract/test_interop_contracts.py` | A2A card placement and OpenAPI action profile |
+| `tests/decision/contract/test_interop_contracts.py` | A2A card placement and OpenAPI action profile |
 | `ruff check` | Python syntax, undefined names and unused imports |
 | `tsc` | TypeScript source and public declaration syntax/types |
 | `npm test` | TS contracts, conformance, parity, streaming, timeline, execution, planners |

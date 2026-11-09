@@ -19,13 +19,13 @@ from laix import (
     LiveCase,
     Situation,
 )
-from laix.core.engines.decision.single.planners.human_attention.human_attention_planner import (
+from laix.decision.engines.decision.single.planners.human_attention.human_attention_planner import (
     _remaining,
     approval_state,
     human_attention_effect,
 )
-from laix.core.engines.decision.single.planners.commitment.commitment_planner import _commitments
-from laix.core.engines.decision.single.planners.utility.utility_planner import (
+from laix.decision.engines.decision.single.planners.commitment.commitment_planner import _commitments
+from laix.decision.engines.decision.single.planners.utility.utility_planner import (
     UtilityPlanner,
     _approval_required,
     _constraint_blocker,

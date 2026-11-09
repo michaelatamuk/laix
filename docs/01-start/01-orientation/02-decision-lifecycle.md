@@ -16,7 +16,7 @@ moment -> attention -> decision -> execution -> outcome -> learning -> next deci
 | **Learning** | Rewards, calibration and causal evidence improve the next choice. | `UCBBandit`, `CalibrationReport`, `CalibratedPolicy` | Host, with LAIX primitives |
 | **Next decision** | The loop continues with revisions and a timeline. | `StreamSession`, `DecisionTimeline` | Host, with the app kit if chosen |
 
-The core is stateless. The host passes the current state into each request.
+The decision layer is stateless. The host passes the current state into each request.
 
 ## One pass
 
@@ -35,14 +35,14 @@ The decision is not the end of the story. It is the input to the next one.
 
 | State | Why it matters | Where it lives |
 |---|---|---|
-| Open commitments | The next decision must not break a promise. | Core commitments and the host store. |
+| Open commitments | The next decision must not break a promise. | Decision commitments and the host store. |
 | Attention budget | Human interruption is finite. | Decision attributes. |
 | Approval state | A pending approval is not an approval. | Decision and record. |
 | Prior decisions and revisions | A later decision may supersede an earlier one. | Decision timeline. |
 | Receipts and recovery | An unknown outcome must be reconciled, not retried blindly. | Execution bridge and saga. |
 | Outcomes and calibration | The next choice can learn from the last one. | Outcome store and calibration report. |
 
-That hand-off is [decision continuity](../../02-core/03-decision/04-history.md).
+That hand-off is [decision continuity](../../02-decision/03-decision-shapes/04-history.md).
 
 ## One-shot or loop
 
@@ -76,9 +76,9 @@ run one full loop: stream, decision, execution, outcome, calibration and timelin
 
 ## Read next
 
-- [Core overview](../../02-core/README.md) - the contract and the mechanisms.
+- [Decision overview](../../02-decision/README.md) - the contract and the mechanisms.
 - [App-kit overview](../../03-appkit/README.md) - the optional app kit.
 - [Streaming](../../03-appkit/02-run/02-streaming.md) - decisions over event time.
 - [Execution and recovery](../../03-appkit/03-execute/01-execution-and-recovery.md) - the write boundary.
 - [Stores](../../03-appkit/04-connect/01-stores.md) - what the host persists.
-- [The decision contract](../../02-core/01-contract/01-decision-contract.md) - every field.
+- [The decision contract](../../02-decision/01-contract/01-decision-contract.md) - every field.

@@ -6,7 +6,7 @@ This package contains the contracts, signal attention, action, the ten decision 
 streaming, outcome learning, bench, platform, stores, proposals, delivery, execution and records.
 It mirrors the Python decision surface, including calibration, model learning and POMDP planning.
 
-The source is split into `src/core` and `src/appkit`. The package exports one entry point, `laix`.
+The source is split into `src/decision` and `src/appkit`. The package exports one entry point, `laix`.
 
 ```ts
 import { DecisionClient } from "laix";

@@ -57,10 +57,10 @@ claim.
 | Check | Result | Evidence | Status |
 |---|---|---|---|
 | Case schema | 120/120 valid; unique ids | [validator](../../../scripts/novelty/bench/validate_live_cases.py) | tested |
-| Determinism | 100% replay equality | [invariants](../../../packages/python/laix/tests/core/test_invariants.py) | tested |
-| Contract invariants | 17/17 | [invariants](../../../packages/python/laix/tests/core/test_invariants.py) | tested |
+| Determinism | 100% replay equality | [invariants](../../../packages/python/laix/tests/decision/test_invariants.py) | tested |
+| Contract invariants | 17/17 | [invariants](../../../packages/python/laix/tests/decision/test_invariants.py) | tested |
 | Python/TypeScript parity | 24/24 conformance; 210/210 live actions; 209 TS tests | CI | tested |
-| Audit trail | I6–I9 pass | [invariants](../../../packages/python/laix/tests/core/test_invariants.py) | tested |
+| Audit trail | I6–I9 pass | [invariants](../../../packages/python/laix/tests/decision/test_invariants.py) | tested |
 | LangGraph host | 120 decisions; 0 interrupts; 6–7 ms mean; 110 glue lines | [comparison](../../../results/live-decision-benchmark/comparison/external-systems.json) | measured (operational) |
 | EU PLD audit fields | see below | [EU PLD](../05-governance.md) | documented |
 
@@ -93,7 +93,7 @@ claim.
 | [Ablations](../../../results/live-decision-benchmark/ablations/results.json) | Full integration vs removing one concern. |
 | [External comparison](../../../results/live-decision-benchmark/comparison/external-systems.json) | LangGraph adapter results. |
 | [Case validator](../../../scripts/novelty/bench/validate_live_cases.py) | Schema and id checks. |
-| [Invariant tests](../../../packages/python/laix/tests/core/test_invariants.py) | Determinism, contract and audit invariants. |
+| [Invariant tests](../../../packages/python/laix/tests/decision/test_invariants.py) | Determinism, contract and audit invariants. |
 | [EU PLD mapping](../05-governance.md) | Audit fields for liability questions. |
 
 ## Rules

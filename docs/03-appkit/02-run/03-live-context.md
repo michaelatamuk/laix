@@ -12,7 +12,7 @@ which detectors run and returns a frame. The frame becomes input to a decision r
 | **Uncertainty** | How unsure the app is, from `0` to `1`. |
 | **Budget** | The deep-call, cost and latency allowance for one event. |
 
-The contracts live in `core/domain/perception`; the host-driven loop lives in
+The contracts live in `decision/domain/perception`; the host-driven loop lives in
 `appkit/live_context/loop.py`.
 
 ## Detector
@@ -73,7 +73,7 @@ context = LiveContext(
 ```
 
 The scheduler is the same `ResourceScheduler` used by `DecisionRuntime.schedule`. The resource model
-is in [Resources](../../02-core/04-sensing/02-resources.md).
+is in [Resources](../../02-decision/04-sensing/02-resources.md).
 
 ## Frames
 
@@ -115,7 +115,7 @@ TypeScript exports the same `LiveContext`, `CallableDetector` and `PerceptionFra
 ## Boundary
 
 Live Context is perception, not decision. It returns a frame; the app turns the frame into a
-`DecisionRequest` and calls the core or `DecisionClient`. It does not choose a verb, execute an action or
+`DecisionRequest` and calls the decision layer or `DecisionClient`. It does not choose a verb, execute an action or
 deliver a result.
 
 Use it when detectors are expensive or uncertain and the budget matters. For a single detector call,
@@ -126,5 +126,5 @@ call the detector directly.
 - [Decision loop](01-decision-runtime.md) - the decision loop after perception.
 - [Streaming](02-streaming.md) - event time and the live loop.
 - [Integration](../01-build/01-integration.md) - turning a frame into a request.
-- [Resources](../../02-core/04-sensing/02-resources.md) - the budget and scheduler.
-- [Foundation](../../02-core/07-support/02-support.md) - perception records.
+- [Resources](../../02-decision/04-sensing/02-resources.md) - the budget and scheduler.
+- [Foundation](../../02-decision/07-support/02-support.md) - perception records.

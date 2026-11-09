@@ -8,7 +8,7 @@ from pathlib import Path
 import laix
 
 ROOT = Path(__file__).resolve().parents[3]
-TS_CONTRACTS = ROOT / "typescript" / "laix" / "src" / "core" / "contracts.ts"
+TS_CONTRACTS = ROOT / "typescript" / "laix" / "src" / "decision" / "contracts.ts"
 
 
 def test_typescript_verb_list_matches_python() -> None:

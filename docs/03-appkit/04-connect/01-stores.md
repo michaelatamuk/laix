@@ -37,7 +37,7 @@ class MyStore:
 | Field | Meaning |
 |---|---|
 | `subject` | What the experience is about. |
-| `phase` | `observe`, `decide`, `act` or another phase from the core. |
+| `phase` | `observe`, `decide`, `act` or another phase from the decision layer. |
 | `goals` | Goals for the experience. |
 | `constraints` | Hard and soft limits. |
 | `beliefs` | Beliefs keyed by proposition, with confidence and evidence. |
@@ -92,7 +92,7 @@ restored = store.load("task-1")
 ```
 
 `InMemoryCommitmentStore` is included for tests. The host can implement `CommitmentStore` with its own
-storage. The commitment model is in [Commitments](../../02-core/02-domain/02-commitments.md).
+storage. The commitment model is in [Commitments](../../02-decision/02-domain/02-commitments.md).
 
 ## Outcome store
 
@@ -129,7 +129,7 @@ Store:
 - evidence reference.
 
 Keep transcripts, images, customer data and secrets in the app. Learning uses outcome labels:
-[outcome learning](../../02-core/02-domain/03-outcomes.md).
+[outcome learning](../../02-decision/02-domain/03-outcomes.md).
 
 ## TypeScript
 
@@ -149,7 +149,7 @@ TypeScript exports `StateStore`, `InMemoryStateStore`, `FileStateStore`,
 ## Related
 
 - [Streaming](../02-run/02-streaming.md) - checkpoints and resume.
-- [Decision continuity](../../02-core/03-decision/04-history.md) - what survives a decision.
-- [Commitments](../../02-core/02-domain/02-commitments.md) - the ledger shape.
-- [Outcome learning](../../02-core/02-domain/03-outcomes.md) - what labels are used for.
+- [Decision continuity](../../02-decision/03-decision-shapes/04-history.md) - what survives a decision.
+- [Commitments](../../02-decision/02-domain/02-commitments.md) - the ledger shape.
+- [Outcome learning](../../02-decision/02-domain/03-outcomes.md) - what labels are used for.
 - [Deployment](../05-operate/03-deployment.md) - retention and deletion.

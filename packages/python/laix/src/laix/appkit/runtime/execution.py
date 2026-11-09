@@ -13,9 +13,9 @@ from __future__ import annotations
 import time
 from typing import Any, Iterable
 
-from ...core.domain.decisions import ActionOption, Decision, ExecutionReceipt
-from ...core.support.ids import new_execution_receipt_id
-from ...core.support.verbs import Verb
+from ...decision.domain.decisions import ActionOption, Decision, ExecutionReceipt
+from ...decision.support.ids import new_execution_receipt_id
+from ...decision.support.verbs import Verb
 from .approval_required import ApprovalRequired
 from .execution_async import AsyncExecutionMixin
 from .execution_saga_result import ExecutionSagaResult

@@ -16,8 +16,8 @@ SRC = ROOT / "packages" / "python" / "laix" / "src"
 CONTRACTS = ROOT / "packages" / "contracts"
 sys.path.insert(0, str(SRC))
 
-from laix.core.contract.reason_codes import reason_code_registry  # noqa: E402
-from laix.core.schema import build_schema  # noqa: E402
+from laix.decision.contract.reason_codes import reason_code_registry  # noqa: E402
+from laix.decision.schema import build_schema  # noqa: E402
 
 
 def decision_schema() -> dict:

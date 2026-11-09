@@ -1,0 +1,128 @@
+"""JSON schema generation for the decision records.
+
+The schema is derived from the dataclasses, so it cannot drift from the code.
+``laix/decision/schema/laix-v1.schema.json`` is the committed, versioned artefact;
+the test suite regenerates it and fails if the committed file is stale.
+"""
+
+from __future__ import annotations
+
+import json
+import types
+from dataclasses import MISSING, fields
+from pathlib import Path
+from typing import Any, Union, get_args, get_origin, get_type_hints
+
+from ..domain.decisions.request.payload.situation import HORIZONS, PHASES
+from ..domain.decisions.trail.execution_receipt import EXECUTION_RECEIPT_STATUSES
+from ..domain.decisions.response.decision import DECISION_STATUSES, TARGET_MODES
+from ..domain.outcomes.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
+from ..support.verbs import VERBS
+from ..support.version import SCHEMA_VERSION
+from .records import RECORDS
+
+SCHEMA_ID = "https://laix.dev/records/laix-v1.schema.json"
+SCHEMA_PATH = Path(__file__).resolve().parent / "laix-v1.schema.json"
+
+_ENUMS: dict[str, list[str]] = {
+    "verb": list(VERBS),
+    "phase": list(PHASES),
+    "horizon": list(HORIZONS),
+    "status": list(EXECUTION_RECEIPT_STATUSES),
+    "Decision.status": list(DECISION_STATUSES),
+    "Decision.target": list(TARGET_MODES),
+    "label": list(OUTCOME_LABELS),
+    "direction": list(OUTCOME_DIRECTIONS),
+}
+
+
+def _schema_for(value: Any) -> dict[str, Any]:
+    if value is Any or value is None:
+        return {}
+    origin = get_origin(value)
+    if origin in (Union, types.UnionType):
+        args = [item for item in get_args(value) if item is not type(None)]
+        optional = any(item is type(None) for item in get_args(value))
+        if len(args) == 1:
+            inner = _schema_for(args[0])
+            return {"anyOf": [inner, {"type": "null"}]} if optional else inner
+        return {"anyOf": [_schema_for(item) for item in args]}
+    if origin in (list, tuple, set, frozenset):
+        args = get_args(value)
+        item = _schema_for(args[0]) if args else {}
+        return {"type": "array", "items": item}
+    if origin is dict:
+        return {"type": "object"}
+    if value is str:
+        return {"type": "string"}
+    if value is bool:
+        return {"type": "boolean"}
+    if value is int:
+        return {"type": "integer"}
+    if value is float:
+        return {"type": "number"}
+    if value is dict:
+        return {"type": "object"}
+    return {}
+
+
+def _field_schema(record: type, name: str, annotation: Any, required: bool) -> dict[str, Any]:
+    schema = _schema_for(annotation)
+    enum = _ENUMS.get(f"{record.__name__}.{name}", _ENUMS.get(name, []))
+    if enum:
+        schema = {**schema, "enum": enum}
+    if name in {"confidence", "expected_benefit", "risk", "interrupt_cost", "priority"}:
+        schema = {**schema, "minimum": 0, "maximum": 1}
+    if not required:
+        # A default of None is representable without making the field optional
+        # in the dataclass, so mirror the runtime behaviour in the schema.
+        schema = {"anyOf": [schema, {"type": "null"}]} if "anyOf" not in schema else schema
+    return schema
+
+
+def build_schema() -> dict[str, Any]:
+    definitions: dict[str, Any] = {}
+    for record in RECORDS:
+        hints = get_type_hints(record)
+        properties: dict[str, Any] = {}
+        required: list[str] = []
+        for item in fields(record):
+            has_default = item.default is not MISSING or item.default_factory is not MISSING  # type: ignore[misc]
+            if not has_default:
+                required.append(item.name)
+            properties[item.name] = _field_schema(record, item.name, hints.get(item.name, Any), not has_default)
+        definitions[record.__name__] = {
+            "type": "object",
+            "title": record.__name__,
+            "additionalProperties": False,
+            "properties": properties,
+            "required": required,
+        }
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": SCHEMA_ID,
+        "title": "LAIX records",
+        "description": "Domain-neutral decision-layer records. Generated from laix.decision.schema.records.",
+        "version": SCHEMA_VERSION,
+        "$defs": definitions,
+    }
+
+
+def dumps_schema() -> str:
+    return json.dumps(build_schema(), indent=2, ensure_ascii=False) + "\n"
+
+
+def write_schema(path: Path | None = None) -> Path:
+    target = path or SCHEMA_PATH
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(dumps_schema(), encoding="utf-8")
+    return target
+
+
+__all__ = [
+    "SCHEMA_ID",
+    "SCHEMA_PATH",
+    "build_schema",
+    "dumps_schema",
+    "write_schema",
+]

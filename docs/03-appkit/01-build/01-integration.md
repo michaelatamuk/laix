@@ -84,7 +84,7 @@ const [decision] = new DecisionClient().decide({
 });
 ```
 
-The request shape is defined in [the decision contract](../../02-core/01-contract/01-decision-contract.md).
+The request shape is defined in [the decision contract](../../02-decision/01-contract/01-decision-contract.md).
 
 ## Read the decision
 

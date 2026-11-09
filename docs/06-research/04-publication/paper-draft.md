@@ -61,7 +61,7 @@ total(o) = utility(o) + commitment(o) + execution(o) + attention(o)
 ```
 
 with hard feasibility gates applied before scoring. Invariants I1–I10 are in `../01-positioning/formal-model.md` and
-are covered by `tests/core/test_invariants.py`.
+are covered by `tests/decision/test_invariants.py`.
 
 ## 4. Integrated live planning
 

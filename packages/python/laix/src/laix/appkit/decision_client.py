@@ -9,23 +9,23 @@ from __future__ import annotations
 from dataclasses import asdict
 from typing import Any
 
-from ..core.support.version import SCHEMA_VERSION
-from ..core.domain.decisions import (
+from ..decision.support.version import SCHEMA_VERSION
+from ..decision.domain.decisions import (
     ScoreBreakdown,
     Decision,
     DecisionRequest,
     EvidenceRef,
     Intent,
 )
-from ..core.dispatch import (
+from ..decision.dispatch import (
     annotate_confidence,
     attributes_for,
-    decide as decide_core,
+    decide as decide_layer,
     select,
 )
 from .delivery import DeliveryPort, DeliveryReceipt
-from ..core.engines.decision.single.policies import DecisionPolicy, DecisionPolicyRegistry
-from ..core.engines.decision.single.policies.implementations.action import ACTION_POLICY_VERSION
+from ..decision.engines.decision.single.policies import DecisionPolicy, DecisionPolicyRegistry
+from ..decision.engines.decision.single.policies.implementations.action import ACTION_POLICY_VERSION
 from .runtime import DecisionRuntime
 from .runtime.execution import ExecutionBridge
 from .streaming import StreamSession
@@ -65,9 +65,9 @@ class DecisionClient:
             )
             result = [annotate_confidence(decision, request)]
         elif route == "policy":
-            result = decide_core(request, self._policy)
+            result = decide_layer(request, self._policy)
         else:
-            result = decide_core(request)
+            result = decide_layer(request)
         self._decisions.extend(result)
         return result
 

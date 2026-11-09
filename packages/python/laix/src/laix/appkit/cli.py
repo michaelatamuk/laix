@@ -8,8 +8,8 @@ import sys
 from pathlib import Path
 from typing import Sequence
 
-from ..core.domain.decisions import Decision
-from ..core.support.otel import decision_attributes
+from ..decision.domain.decisions import Decision
+from ..decision.support.otel import decision_attributes
 
 
 def _load_decision(path: str) -> Decision:

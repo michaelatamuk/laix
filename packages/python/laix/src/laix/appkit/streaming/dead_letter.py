@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from ...core.support.time import iso
+from ...decision.support.time import iso
 
 
 @dataclass(frozen=True, slots=True)

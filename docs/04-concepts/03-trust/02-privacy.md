@@ -36,7 +36,7 @@ Keep secrets, credentials and raw customer data in the host. Pass references in 
 - replace `rationale` and `undo_hint`.
 
 Apply `GroupPolicy` outermost when its target and recipients must win. Masking applies in either
-order. The policy contract is in [Policies](../../02-core/03-decision/01-single/05-policies.md).
+order. The policy contract is in [Policies](../../02-decision/03-decision-shapes/01-single/05-policies.md).
 
 ## Stored data
 
@@ -69,7 +69,7 @@ See [Metrics](../../03-appkit/05-operate/02-metrics.md).
 
 ## Trust boundary
 
-The core runs on standard-library data and an injected clock. The optional app kit adds execution,
+The decision layer runs on standard-library data and an injected clock. The optional app kit adds execution,
 streaming, stores, delivery and platform ports. Every external effect stays in host code.
 
 LAIX does not authenticate the caller, authorize an action, encrypt a store or filter a prompt. Those

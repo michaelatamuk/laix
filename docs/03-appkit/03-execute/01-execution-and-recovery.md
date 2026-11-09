@@ -205,7 +205,7 @@ acceptable.
 
 ## Boundary
 
-Approval, execution, verification and outcome recording stay outside the core. The app owns the
+Approval, execution, verification and outcome recording stay outside the decision layer. The app owns the
 handler, the receipt store and the retry decision. The bridge defines the lifecycle and the receipt
 shape; it does not open a network connection or hold credentials.
 

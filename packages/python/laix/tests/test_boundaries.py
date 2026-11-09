@@ -1,4 +1,4 @@
-"""The core surface stays independent from the app kit."""
+"""The decision surface stays independent from the app kit."""
 
 from __future__ import annotations
 
@@ -10,11 +10,11 @@ from pathlib import Path
 
 import laix
 import laix.appkit
-import laix.core
+import laix.decision
 
 PACKAGE = Path(laix.__file__).resolve().parent
-CORE = PACKAGE / "core"
-CORE_FILES = sorted((CORE).rglob("*.py"))
+DECISION = PACKAGE / "decision"
+DECISION_FILES = sorted((DECISION).rglob("*.py"))
 APP_KIT_MODULES = {
     "runtime",
     "records",
@@ -41,7 +41,7 @@ def imported_modules(path: Path) -> set[str]:
 
 def _reaches_app_kit(name: str, modules: set[str]) -> bool:
     if name.startswith(".") and not name.startswith(".."):
-        # A single dot only reaches another module inside ``core`` itself.
+        # A single dot only reaches another module inside ``decision`` itself.
         return False
     candidate = name.lstrip(".")
     return any(
@@ -52,19 +52,19 @@ def _reaches_app_kit(name: str, modules: set[str]) -> bool:
     )
 
 
-def test_core_files_do_not_import_the_app_kit() -> None:
-    for path in CORE_FILES:
+def test_decision_files_do_not_import_the_app_kit() -> None:
+    for path in DECISION_FILES:
         imports = imported_modules(path)
         offenders = {name for name in imports if _reaches_app_kit(name, APP_KIT_MODULES)}
         assert not offenders, f"{path.name} imports app kit modules: {sorted(offenders)}"
 
 
-def test_core_surface_has_no_app_kit_objects() -> None:
-    assert not hasattr(laix.core, "DecisionClient")
-    assert not hasattr(laix.core, "ExecutionBridge")
-    assert hasattr(laix.core, "Signal")
-    assert hasattr(laix.core, "DecisionRequest")
-    assert hasattr(laix.core, "Decision")
+def test_decision_surface_has_no_app_kit_objects() -> None:
+    assert not hasattr(laix.decision, "DecisionClient")
+    assert not hasattr(laix.decision, "ExecutionBridge")
+    assert hasattr(laix.decision, "Signal")
+    assert hasattr(laix.decision, "DecisionRequest")
+    assert hasattr(laix.decision, "Decision")
 
 
 def test_app_kit_exposes_the_integration_surface() -> None:
@@ -75,11 +75,11 @@ def test_app_kit_exposes_the_integration_surface() -> None:
 def test_versions_are_aligned() -> None:
     assert laix.SCHEMA_VERSION == "0.8.0"
     assert laix.ACTION_POLICY_VERSION == "0.8.0"
-    assert laix.core.SCHEMA_VERSION == "0.8.0"
-    assert laix.core.ACTION_POLICY_VERSION == "0.8.0"
+    assert laix.decision.SCHEMA_VERSION == "0.8.0"
+    assert laix.decision.ACTION_POLICY_VERSION == "0.8.0"
 
 
-def test_a_core_only_host_never_loads_the_app_kit() -> None:
+def test_a_decision_only_host_never_loads_the_app_kit() -> None:
     script = """
 import sys
 
@@ -87,7 +87,7 @@ import laix
 from laix import ActionOption, DecisionRequest, Situation, decide
 
 assert "laix.appkit" not in sys.modules, "importing laix loaded laix.appkit"
-assert laix.decide is laix.core.decide
+assert laix.decide is laix.decision.decide
 
 request = DecisionRequest(
     subject="room-1",
@@ -96,7 +96,7 @@ request = DecisionRequest(
     options=(ActionOption(id="a-1", verb="wait", name="wait"),),
 )
 assert decide(request)[0].verb == "wait"
-assert "laix.appkit" not in sys.modules, "deciding in core loaded laix.appkit"
+assert "laix.appkit" not in sys.modules, "deciding in the decision layer loaded laix.appkit"
 """
     env = dict(os.environ)
     env["PYTHONPATH"] = os.pathsep.join(

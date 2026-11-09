@@ -1,7 +1,7 @@
 # Formal model and invariants
 
 This page defines the contribution precisely and states the properties the
-paper will claim. All formulas match the implementation in `core/engines/decision/single/planners/`.
+paper will claim. All formulas match the implementation in `decision/engines/decision/single/planners/`.
 
 ## 1. Types
 
@@ -204,7 +204,7 @@ If no feasible option exists, the planner returns `verb = "wait"` with
 
 ### 2.6 Ablation results (seven-case demo)
 
-Reproducible by running `examples/python/core/evaluation/bench/ablation_study.py`.
+Reproducible by running `examples/python/decision/evaluation/bench/ablation_study.py`.
 
 | Component | Correct / 7 | Accuracy |
 |---|---:|---:|
@@ -218,7 +218,7 @@ Reproducible by running `examples/python/core/evaluation/bench/ablation_study.py
 
 The composition adds real value: each single-concern planner wins its own
 cases but fails on cases where two or more concerns fire simultaneously.
-See `examples/python/core/decision/history/conflict_scenario.py` for a worked example.
+See `examples/python/decision/decision/history/conflict_scenario.py` for a worked example.
 
 ### 2.7 Ablation results (test split, 30 cases)
 
@@ -275,7 +275,7 @@ A `Timeline` is append-only. `event_time` never decreases.
 ## 4. Invariants
 
 The following must hold at all times. Tests live in
-`tests/core/test_invariants.py`.
+`tests/decision/test_invariants.py`.
 
 | ID | Invariant |
 |---|---|
@@ -292,8 +292,8 @@ The following must hold at all times. Tests live in
 
 ## 5. Acceptance criteria
 
-- Every invariant in §4 has a test in `tests/core/test_invariants.py` that
+- Every invariant in §4 has a test in `tests/decision/test_invariants.py` that
   fails if the code regresses.
-- The score formulas in §2 match the source in `core/engines/decision/single/planners/`.
+- The score formulas in §2 match the source in `decision/engines/decision/single/planners/`.
 - The ablation table in §2.6 is reproducible by running
-  `examples/python/core/evaluation/bench/ablation_study.py` with one command.
+  `examples/python/decision/evaluation/bench/ablation_study.py` with one command.

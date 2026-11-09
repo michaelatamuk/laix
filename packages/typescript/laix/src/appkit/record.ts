@@ -4,7 +4,7 @@
  * The app decides where to store the returned JSON.
  */
 
-import type { EvidenceRef } from "../core/contracts.ts";
+import type { EvidenceRef } from "../decision/contracts.ts";
 
 export type RecordStatus = "draft" | "approved" | "rejected" | "executed" | "undone";
 export type ApprovalState = "pending" | "approved" | "rejected";

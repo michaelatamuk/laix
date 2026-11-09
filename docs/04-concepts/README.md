@@ -1,6 +1,6 @@
 # Concepts overview
 
-The core and app-kit pages describe the contracts. These pages explain the ideas behind them: what
+The decision layer and app-kit pages describe the contracts. These pages explain the ideas behind them: what
 LAIX is, where its boundary sits, how it relates to decision models and to PPMA, and how it is secured.
 
 The whole system is one loop:
@@ -33,5 +33,5 @@ order.
 | [Trust](03-trust/README.md) | Threat model, personal data, sharing and storage. |
 | [Reference](04-reference/README.md) | Vocabulary and common questions. |
 
-The contracts live in [Core overview](../02-core/README.md). The optional app kit lives in
+The contracts live in [Decision overview](../02-decision/README.md). The optional app kit lives in
 [App-kit overview](../03-appkit/README.md).

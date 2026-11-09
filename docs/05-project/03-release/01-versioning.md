@@ -5,9 +5,9 @@ rule change does not always change the package version.
 
 | Thing | Current | Source |
 |---|---|---|
-| Python package | `0.11.0` | `packages/python/laix/pyproject.toml` |
-| TypeScript package | `0.11.0` | `packages/typescript/laix/package.json` |
-| Record schema | `0.8.0` | `core/support/version.py`, `contracts.ts` |
+| Python package | `0.12.0` | `packages/python/laix/pyproject.toml` |
+| TypeScript package | `0.12.0` | `packages/typescript/laix/package.json` |
+| Record schema | `0.8.0` | `decision/support/version.py`, `contracts.ts` |
 | Rule sets | `0.8.0` | policy versions and vectors |
 | Signal-attention vectors | `0.8.0` | `signal-attention.v1.json` and conformance fixtures |
 | Reason-code registry | `1.0.0` | `packages/contracts/reason-codes.v1.json` |
@@ -35,7 +35,7 @@ package and policy versions available for rollback.
 
 - **Package** - any user-visible change, feature or fix. Both packages move together for a release.
 - **Record schema** - a record shape changes. Regenerate `laix-v1.schema.json` and update
-  [Records and schema](../../02-core/01-contract/03-records.md).
+  [Records and schema](../../02-decision/01-contract/03-records.md).
 - **Rule sets or signal-attention vectors** - a rule, threshold or labelled vector changes behaviour.
 - **Reason code** - treat it as a behaviour change, update
   [`reason-codes.v1.json`](../../../packages/contracts/reason-codes.v1.json) and call it out in the
@@ -76,5 +76,5 @@ vectors in `packages/contracts/` are the reference for both packages.
 
 - [Migration](02-migration.md) - the upgrade path and data migration.
 - [Testing](../02-quality/01-testing.md) - the checks before a release.
-- [Records and schema](../../02-core/01-contract/03-records.md) - the schema workflow.
+- [Records and schema](../../02-decision/01-contract/03-records.md) - the schema workflow.
 - [Changelog](../../../CHANGELOG.md) - the release history.

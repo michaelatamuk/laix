@@ -32,7 +32,7 @@ body:
     attributes:
       label: Area
       options:
-        - Core decision contract
+        - Decision contract
         - Planner or policy
         - Sensing or attention
         - Learning or outcomes

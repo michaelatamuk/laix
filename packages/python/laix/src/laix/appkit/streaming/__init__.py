@@ -1,4 +1,4 @@
-"""Streaming app-kit surface: the live decision loop above the stateless core."""
+"""Streaming app-kit surface: the live decision loop above the stateless decision layer."""
 
 from .session import (
     FULL_POLICIES,

@@ -3,7 +3,7 @@
 The vocabulary is grouped by where the term lives. The pages linked in each section define the
 contracts in detail.
 
-## Core records
+## Decision records
 
 | Term | Meaning |
 |---|---|
@@ -42,7 +42,7 @@ contracts in detail.
 | **Composite score** | The four terms `LiveCompositePlanner` combines for one option: utility, commitment, execution and human attention. |
 | **Live composite planner** | `LiveCompositePlanner`: the composite planner that turns the four planner scores into one `PlannerResult`. |
 | **Attention** | The shared idea: what deserves a person's limited time. Two mechanisms use it: signal attention and human-attention planning. |
-| **Signal attention** | The gate pipeline in `core/engines/sensing/signals/` that ranks signals and returns `guide`, `wait`, `act` or `escalate`. |
+| **Signal attention** | The gate pipeline in `decision/engines/sensing/signals/` that ranks signals and returns `guide`, `wait`, `act` or `escalate`. |
 | **Human-attention planning** | `HumanAttentionPlanner`: pricing interruption, approval and escalation when choosing an action. |
 | **Human-attention budget** | The interruption and approval capacity a task may spend; HumanAttentionBudget. |
 | **Signal interruption budget** | A per-cycle cap on delivered signal decisions, set by `SignalContext.signal_interruption_budget`. |
@@ -98,10 +98,10 @@ contracts in detail.
 
 | Term | Meaning |
 |---|---|
-| **Core** | The stateless decision package: contract, domain records, decision engines, sensing, learning, evaluation and support. |
+| **Decision layer** | The stateless decision package: contract, domain records, decision engines, sensing, learning, evaluation and support. |
 | **Domain** | The records and state layer: decisions, commitments, outcomes and perception. |
 | **Engine** | The processing layer: decision, sensing, learning and evaluation. |
-| **App kit** | The optional LAIX layer around the core: decision loop, streaming, execution, stores, platform and bench. |
+| **App kit** | The optional LAIX layer around the decision layer: decision loop, streaming, execution, stores, platform and bench. |
 | **DecisionClient** | The app-kit one-decision surface. |
 | **Decision loop** | `DecisionRuntime`: the app-kit loop that links observation, state, policy, execution and outcome. |
 | **Host** | The application that owns data, UI, execution, storage and delivery. |
@@ -110,5 +110,5 @@ contracts in detail.
 | **LLM** | Large language model: a model that generates or judges text. |
 | **PPMA** | The layer above LAIX that owns activation, commit and the system-level loop; LAIX decides inside one task. |
 
-The full contracts are in [Core overview](../../02-core/README.md) and
+The full contracts are in [Decision overview](../../02-decision/README.md) and
 [App-kit overview](../../03-appkit/README.md).

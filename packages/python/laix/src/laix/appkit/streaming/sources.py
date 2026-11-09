@@ -6,7 +6,7 @@ import asyncio
 import json
 from typing import AsyncIterable, AsyncIterator, Callable, Iterable
 
-from ...core.domain.decisions import DecisionRequest
+from ...decision.domain.decisions import DecisionRequest
 from .dead_letter import DeadLetter
 
 ErrorHandler = Callable[[str, Exception], None]

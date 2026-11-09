@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="710" viewBox="0 0 1200 710" role="img" aria-labelledby="appkit-title appkit-desc">
   <title id="appkit-title">Five stages around one decision</title>
-  <desc id="appkit-desc">The five app-kit stages: build, run, execute, connect and operate. Each stage wraps the core decision with production surfaces.</desc>
+  <desc id="appkit-desc">The five app-kit stages: build, run, execute, connect and operate. Each stage wraps the decision with production surfaces.</desc>
   <rect x="0.5" y="0.5" width="1199" height="709" rx="18" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
   <text x="64" y="58" fill="#1D4ED8" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="2.5">APP KIT</text>
   <text x="64" y="102" fill="#0F172A" font-family="'Segoe UI', 'Inter', system-ui, sans-serif" font-size="30" font-weight="700">Five stages around one decision</text>

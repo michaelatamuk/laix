@@ -81,7 +81,7 @@ bash scripts/novelty/reproduce.sh
 
 ## Release fields
 
-- Version: pending (current package version is `0.11.0`).
+- Version: pending (current package version is `0.12.0`).
 - Tag: pending.
 - DOI: pending Zenodo deposit.
 - License: Apache-2.0.

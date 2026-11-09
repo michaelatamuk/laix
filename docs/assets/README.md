@@ -6,7 +6,7 @@
 | `logo.png` | 512 x 512 | square logo, docs, release notes |
 | `avatar.png` | 512 x 512 | circular-safe mark for GitHub or chat |
 | `how-it-works.svg` | 1200 x 560 | README "How it works" |
-| `core-layers.svg` | 1200 x 800 | core overview |
+| `decision-layers.svg` | 1200 x 800 | decision overview |
 | `appkit-stages.svg` | 1200 x 710 | app-kit overview |
 | `benchmark.png` | 2400 x 1120 | accuracy and conflict accuracy |
 | `ablation.png` | 2200 x 1040 | ablation accuracy |

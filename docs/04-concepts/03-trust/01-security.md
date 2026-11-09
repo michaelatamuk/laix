@@ -9,7 +9,7 @@ and the host must not trust inputs or model output blindly.
 | Boundary | Owner | What crosses it |
 |---|---|---|
 | Host application | Host | signals, options, constraints, approvals, identity |
-| LAIX core | LAIX | decisions, reasons, scores, commitments |
+| LAIX decision layer | LAIX | decisions, reasons, scores, commitments |
 | App kit | Host + LAIX | execution, receipts, records, delivery, state |
 | Model or planner | Host | judgments, scores and proposed actions |
 | External systems | Host | tickets, incidents, channels, outcomes |
@@ -102,7 +102,7 @@ Controls:
 
 ### 7. Supply chain
 
-The core is standard-library only. Optional extras and the TypeScript package still need
+The decision layer is standard-library only. Optional extras and the TypeScript package still need
 normal dependency hygiene.
 
 Controls:

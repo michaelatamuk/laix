@@ -6,8 +6,8 @@ import asyncio
 import inspect
 from typing import Any, Iterable
 
-from ...core.domain.decisions import ActionOption, Decision, ExecutionReceipt
-from ...core.support.ids import new_execution_receipt_id
+from ...decision.domain.decisions import ActionOption, Decision, ExecutionReceipt
+from ...decision.support.ids import new_execution_receipt_id
 from .approval_required import ApprovalRequired
 from .execution_saga_result import ExecutionSagaResult
 from .execution_step import ExecutionStep

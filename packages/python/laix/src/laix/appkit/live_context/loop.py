@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Iterable
 
-from ...core.domain.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
-from ...core.engines.sensing.resources import Budget, ResourceScheduler, SensingOption
-from ...core.support.values import clamp
+from ...decision.domain.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
+from ...decision.engines.sensing.resources import Budget, ResourceScheduler, SensingOption
+from ...decision.support.values import clamp
 
 
 class LiveContext:

@@ -41,6 +41,26 @@ version only moves by a small amount. This page is the upgrade path; the version
 6. Update pins in the host, CI and deployment manifests.
 7. Keep the previous package version available for rollback until the new version is stable.
 
+## 0.12.0: `laix.core` is now `laix.decision`
+
+The decision package is now named `decision`, in code and in the docs. The optional app kit keeps the
+name `appkit`.
+
+| Before | After |
+|---|---|
+| `from laix.core import ...` | `from laix.decision import ...` |
+| `from laix.core.contract import ...` | `from laix.decision.contract import ...` |
+| `laix/core/` | `laix/decision/` |
+| `packages/typescript/laix/src/core/` | `packages/typescript/laix/src/decision/` |
+| `docs/02-core/` | `docs/02-decision/` |
+| `docs/02-core/03-decision/` | `docs/02-decision/03-decision-shapes/` |
+| `examples/python/core/` | `examples/python/decision/` |
+| `examples/typescript/core/` | `examples/typescript/decision/` |
+| `tests/core/` | `tests/decision/` |
+
+There is no compatibility alias. Update the import path; the record shape, reason codes and public
+names are unchanged.
+
 ## Vocabulary migration (next release)
 
 The next release renames the planning and attention vocabulary. There are no compatibility aliases.
@@ -89,30 +109,30 @@ Paths changed with the names:
 
 | Before | After |
 |---|---|
-| `core/engines/contract/decision_engine.py` | `core/contract/planner.py` |
-| `core/engines/contract/decision_problem.py` | `core/contract/planner_input.py` |
-| `core/engines/contract/plan.py` | `core/contract/planner_result.py` |
-| `core/engines/contract/engine.py` | `core/contract/planner_policy.py` |
-| `core/engines/live/live_engine.py` | `core/engines/decision/single/planners/composite/live_composite_planner.py` |
-| `core/engines/policies/policy.py` | `core/engines/decision/single/policies/decision_policy.py` |
-| `core/engines/policies/registry.py` | `core/engines/decision/single/policies/decision_policy_registry.py` |
+| `core/engines/contract/decision_engine.py` | `decision/contract/planner.py` |
+| `core/engines/contract/decision_problem.py` | `decision/contract/planner_input.py` |
+| `core/engines/contract/plan.py` | `decision/contract/planner_result.py` |
+| `core/engines/contract/engine.py` | `decision/contract/planner_policy.py` |
+| `core/engines/live/live_engine.py` | `decision/engines/decision/single/planners/composite/live_composite_planner.py` |
+| `core/engines/policies/policy.py` | `decision/engines/decision/single/policies/decision_policy.py` |
+| `core/engines/policies/registry.py` | `decision/engines/decision/single/policies/decision_policy_registry.py` |
 | `appkit/layer.py` | `appkit/decision_client.py` |
-| `core/engines/planners/attention/` | `core/engines/decision/single/planners/human_attention/` |
-| `core/engines/signals/input/context.py` | `core/engines/sensing/signals/input/signal_context.py` |
-| `core/engines/signals/input/feedback.py` | `core/engines/sensing/signals/input/signal_feedback.py` |
-| `core/engines/signals/output/decision.py` | `core/engines/sensing/signals/output/signal_attention_decision.py` |
-| `core/outcome_learning/attention/` | `core/domain/outcomes/signal_attention/` |
-| `core/evaluation/attention.py` | `core/engines/evaluation/cases/signal_attention.py` |
-| `core/engines/simulation/planner_score.py` | `core/engines/evaluation/simulation/planner_benchmark_row.py` |
-| `core/engines/signals/attention.v1.json` | `core/engines/sensing/signals/signal-attention.v1.json` |
+| `core/engines/planners/attention/` | `decision/engines/decision/single/planners/human_attention/` |
+| `core/engines/signals/input/context.py` | `decision/engines/sensing/signals/input/signal_context.py` |
+| `core/engines/signals/input/feedback.py` | `decision/engines/sensing/signals/input/signal_feedback.py` |
+| `core/engines/signals/output/decision.py` | `decision/engines/sensing/signals/output/signal_attention_decision.py` |
+| `core/outcome_learning/attention/` | `decision/domain/outcomes/signal_attention/` |
+| `core/evaluation/attention.py` | `decision/engines/evaluation/cases/signal_attention.py` |
+| `core/engines/simulation/planner_score.py` | `decision/engines/evaluation/simulation/planner_benchmark_row.py` |
+| `core/engines/signals/attention.v1.json` | `decision/engines/sensing/signals/signal-attention.v1.json` |
 | `packages/contracts/attention.v1.json` | `packages/contracts/signal-attention.v1.json` |
 | `packages/contracts/attention-bench.v1.json` | `packages/contracts/signal-attention-bench.v1.json` |
-| `core/contract/engine.ts` | `core/contract/planner.ts` |
-| `core/live/live-engine.ts` | `core/engines/decision/single/planners/composite/live-composite-planner.ts` |
-| `core/planners/attention/` | `core/engines/decision/single/planners/human-attention/` |
-| `core/policies/registry.ts` | `core/engines/decision/single/policies/decision-policy-registry.ts` |
+| `core/contract/engine.ts` | `decision/contract/planner.ts` |
+| `core/live/live-engine.ts` | `decision/engines/decision/single/planners/composite/live-composite-planner.ts` |
+| `core/planners/attention/` | `decision/engines/decision/single/planners/human-attention/` |
+| `core/policies/registry.ts` | `decision/engines/decision/single/policies/decision-policy-registry.ts` |
 | `appkit/layer.ts` | `appkit/decision-client.ts` |
-| `core/signals/attention.ts` | `core/engines/sensing/signals/signal-attention.ts` |
+| `core/signals/attention.ts` | `decision/engines/sensing/signals/signal-attention.ts` |
 
 ## Upgrading from a pre-0.10.0 release
 
@@ -156,7 +176,7 @@ Paths also changed:
 
 | Before | After |
 |---|---|
-| `core/engines/planners/live/` | `core/engines/decision/single/planners/composite/` |
+| `core/engines/planners/live/` | `decision/engines/decision/single/planners/composite/` |
 | `utility/utility.py` | `utility/utility_planner.py` |
 | `mdp/mdp.py` | `mdp/mdp_planner.py` |
 | `pomdp/pomdp.py` | `pomdp/pomdp_planner.py` |
@@ -204,6 +224,6 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.11.0`. The vocabulary migration above is part of 0.10.0. The planner naming
+The current release is `0.12.0`. The vocabulary migration above is part of 0.10.0. The planner naming
 change was the first migration entry that required host changes. Add a new entry here when a release
 requires host changes; keep it short and concrete.

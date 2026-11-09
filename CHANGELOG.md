@@ -1,9 +1,12 @@
 # Changelog
 
-## Unreleased
+## 0.12.0 - 2026-11-09
 
 ### Changed
 
+- **The decision package is now `laix.decision`.** The Python package moved from `laix.core` to
+  `laix.decision` and the TypeScript source from `src/core` to `src/decision`. Docs, examples and
+  tests follow the same names. There is no compatibility alias; update the import path.
 - Split the execution bridge into sync, async and retry modules in Python, and extracted shared
   TypeScript execution types and helpers.
 - Split the async feed and backpressure methods out of the Python stream session.

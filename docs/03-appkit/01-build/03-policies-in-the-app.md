@@ -1,6 +1,6 @@
 # Policies in the app
 
-A policy is the chooser. The core defines the policy contract; the app chooses which policy a
+A policy is the chooser. The decision layer defines the policy contract; the app chooses which policy a
 `DecisionClient` uses, when it changes and how it is rolled out.
 
 The contract is small:
@@ -13,12 +13,12 @@ class DecisionPolicy:
         ...
 ```
 
-The core policy page covers the built-in policies, the decision classes and the wrappers:
-[Policies](../../02-core/03-decision/01-single/05-policies.md).
+The policy page covers the built-in policies, the decision classes and the wrappers:
+[Policies](../../02-decision/03-decision-shapes/01-single/05-policies.md).
 
 ## The default path
 
-`DecisionClient()` uses the core dispatch rule:
+`DecisionClient()` uses the decision dispatch rule:
 
 - a request with signals and context goes to signal attention;
 - a request with a situation and options goes to the action policy;
@@ -65,7 +65,7 @@ from laix import Decision, DecisionClient
 
 class QualityPolicy:
     name = "quality"
-    version = "0.11.0"
+    version = "0.12.0"
 
     def decide(self, request):
         return [
@@ -117,14 +117,14 @@ console.log(layer.policies());
 
 ## Boundary
 
-- The core owns the policy contract, the built-in policies and the reason codes.
+- The decision layer owns the policy contract, the built-in policies and the reason codes.
 - The app owns which policy runs, when it changes and how it is rolled out.
-- A learned policy is still a policy; see [Outcome learning](../../02-core/02-domain/03-outcomes.md).
+- A learned policy is still a policy; see [Outcome learning](../../02-decision/02-domain/03-outcomes.md).
 - Do not hide a policy switch inside the adapter. Make it explicit and versioned.
 
 ## Related
 
 - [Integration](01-integration.md) - the adapter around the call.
 - [DecisionClient](02-single-decision.md) - `DecisionClient` and the one-shot surface.
-- [Policies](../../02-core/03-decision/01-single/05-policies.md) - the contract, the decision classes and the wrappers.
+- [Policies](../../02-decision/03-decision-shapes/01-single/05-policies.md) - the contract, the decision classes and the wrappers.
 - [Deployment](../05-operate/03-deployment.md) - rollout and rollback.

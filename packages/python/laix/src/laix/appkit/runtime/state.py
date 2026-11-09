@@ -11,7 +11,7 @@ from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from typing import Any, Iterable
 
-from ...core.domain.decisions import (
+from ...decision.domain.decisions import (
     PHASES,
     Belief,
     Constraint,
@@ -19,9 +19,9 @@ from ...core.domain.decisions import (
     Goal,
     Observation,
 )
-from ...core.support.time import iso, parse_iso, utcnow
-from ...core.support.verbs import Verb
-from ...core.support.values import clamp, confidence_band
+from ...decision.support.time import iso, parse_iso, utcnow
+from ...decision.support.verbs import Verb
+from ...decision.support.values import clamp, confidence_band
 
 
 @dataclass
@@ -150,7 +150,7 @@ class ExperienceState:
 
     @classmethod
     def from_snapshot(cls, payload: dict[str, Any]) -> "ExperienceState":
-        from ...core.domain.decisions import Observation as ObservationContract
+        from ...decision.domain.decisions import Observation as ObservationContract
 
         state = cls(subject=str(payload.get("subject", "")))
         state.phase = payload.get("phase", "observe")

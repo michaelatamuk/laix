@@ -20,7 +20,7 @@ decide() returns one Decision
 task acts, asks, waits or escalates
 ```
 
-The simplest call is core:
+The simplest call is `decide`:
 
 ```python
 from laix import decide
@@ -153,7 +153,7 @@ py examples/python/appkit/execute/host_execution.py
 
 ## Read next
 
-- [Core overview](../../02-core/README.md) - the contract and the mechanisms.
+- [Decision overview](../../02-decision/README.md) - the contract and the mechanisms.
 - [App-kit overview](../../03-appkit/README.md) - the optional app kit.
 - [Decision lifecycle](../01-orientation/02-decision-lifecycle.md) - what survives between decisions.
 - [Scope and boundaries](../../04-concepts/01-architecture/02-scope-and-boundaries.md) - the host boundary.

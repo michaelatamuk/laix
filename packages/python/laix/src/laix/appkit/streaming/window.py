@@ -10,8 +10,8 @@ from __future__ import annotations
 import math
 from datetime import datetime, timedelta, timezone
 
-from ...core.domain.decisions import DecisionRequest
-from ...core.support.time import parse_iso
+from ...decision.domain.decisions import DecisionRequest
+from ...decision.support.time import parse_iso
 from .window_batch import WindowBatch
 
 
