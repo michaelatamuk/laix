@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- Split the execution bridge into sync, async and retry modules in Python, and extracted shared
+  TypeScript execution types and helpers.
+- Split the async feed and backpressure methods out of the Python stream session.
+
 ## 0.11.0 - 2026-11-09
 
 ### Added
