@@ -34,8 +34,9 @@ validation pending.
 
 - **The decision is explicit.** Every decision carries a verb, a reason code, confidence, a score
   and a trace. The app branches on the reason code, not on prose.
-- **The next decision starts from the current state.** Commitments, human-attention budget, approvals,
-  revisions, receipts and outcomes carry forward. A decision is a step, not a snapshot.
+- **The next decision starts from the current state.** Commitments, human-attention budget (how much
+  you can interrupt a person), approvals, revisions, execution receipts and measured outcomes carry
+  forward. A decision is a step, not a snapshot.
 - **The host keeps control.** The decision layer is stateless. The host owns execution, data, storage
   and delivery; the optional app kit adds the lifecycle around the decision.
 - **It is portable and testable.** Python uses the standard library only. TypeScript mirrors the same
@@ -52,7 +53,7 @@ validation pending.
 | A classifier or a judge | A model; LAIX can wrap it behind the same contract. |
 
 LAIX sits inside the host; it does not replace the agent framework or workflow engine. For a fair
-comparison with judgment models, classifiers and judges, see
+comparison with decision models, classifiers and judges, see
 [LAIX and decision models](docs/04-concepts/02-positioning/01-decision-models.md).
 
 Robotics: task-level decisions above the safety and motion layer. See
@@ -84,8 +85,8 @@ full setup.
 ## One decision
 
 A `DecisionRequest` carries what the app knows and the options it can take. `decide` returns one
-`Decision`. In this example a payment needs owner approval: the built-in action rule chooses to pay
-and flags the approval, and the host must obtain that approval before it executes.
+`Decision`. In this example a payment needs owner approval: the built-in action policy chooses to
+pay and flags the approval, and the host must obtain that approval before it executes.
 
 ```python
 from laix import ActionOption, Belief, DecisionRequest, Situation, decide
@@ -138,8 +139,7 @@ host executes. `policy_rule` is the reason code: a built-in policy rule made the
 
 The full request, with a promise and a human-attention budget, is in the
 [quickstart](docs/01-start/02-first-steps/01-quickstart.md#full-request-approval-commitment-and-attention).
-TypeScript has the same `Decision` shape through `DecisionClient`; the quickstart has the TypeScript
-version.
+TypeScript has the same `Decision` shape; the quickstart has the TypeScript version.
 
 ## How it works
 
@@ -159,7 +159,7 @@ The same contract covers attention, action, several decision shapes and your own
 |---|---|
 | [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` |
 | [Two decision families](docs/02-decision/README.md) | signal attention — what matters now — and action — what to do |
-| [Five decision shapes](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history and explain |
+| [Five decision shapes](docs/02-decision/03-decision-shapes/README.md) | single (one choice), sequence (a chain), fleet (many pending), history (repair), explain (why and what would flip it) |
 | [Bring your own policy](docs/02-decision/03-decision-shapes/01-single/05-policies.md) | any `name` + `decide` object; a planner or model behind the same contract |
 | [Portable and tested](docs/06-project/02-quality/01-testing.md) | Python standard library only; TypeScript parity checked in CI |
 | [Integrations](docs/03-appkit/01-build/README.md) | [LangGraph](docs/03-appkit/01-build/04-langgraph.md), [MCP](docs/03-appkit/01-build/05-mcp.md), [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) |
@@ -177,12 +177,12 @@ state with each request.
 returns a `PlannerResult`; `PlannerPolicy` adapts that result to the public `Decision`, so the app
 still calls `decide` and still gets a `Decision`.
 
-Using the invoice request from the quickstart:
+Using the full invoice request from the quickstart (the one with a promise and an attention budget):
 
 | Same request | Policy | Result |
 |---|---|---|
 | `decide(request)` | `ActionPolicy` (default) | `pay`; approval required |
-| `decide(request, policy=...)` | `PlannerPolicy(LiveCompositePlanner())` | `ask`; commitment `c1` fulfilled |
+| `decide(request, policy=...)` | `PlannerPolicy(LiveCompositePlanner())` | `ask`; promise to ask fulfilled |
 
 The composite planner chooses `ask` over `pay`. `pay` has the higher utility, but it breaks the
 promise to ask the owner before paying; `ask` fulfills that promise and stays within the
@@ -239,7 +239,7 @@ On a 10-task τ-bench retail slice, the guardrail passed **10/10** vs **9/10** f
 |---|---|
 | [Documentation index](docs/README.md) | every guide and reference page |
 | [Quickstart](docs/01-start/02-first-steps/01-quickstart.md) | install and first decision |
-| [Decision overview](docs/02-decision/README.md) | contract, domain, decision, sensing, learning, evaluation |
+| [Decision overview](docs/02-decision/README.md) | contract, domain, decision shapes, sensing, learning, evaluation |
 | [Decision shapes](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history and explain |
 | [App-kit overview](docs/03-appkit/README.md) | execution, streams, stores, platform, delivery, bench |
 | [Decision lifecycle](docs/01-start/01-orientation/02-decision-lifecycle.md) | moment to outcome in one loop |
