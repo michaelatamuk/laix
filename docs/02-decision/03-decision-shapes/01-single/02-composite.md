@@ -190,7 +190,7 @@ hand-built glue baseline scores 28/30; the +6.7 pp difference is not significant
 (p = 0.48).
 
 The composite planner is the composition object. The benchmark design and the measured evidence are in
-[the benchmark page](../../../06-research/02-evaluation/benchmark.md).
+[the benchmark page](../../../07-research/02-evaluation/benchmark.md).
 
 ## Examples
 

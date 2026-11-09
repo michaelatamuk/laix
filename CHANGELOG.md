@@ -99,7 +99,7 @@
 - JSON keys and reason codes for the benchmark stay unchanged: `live`, `glue`, `commitment`,
   `execution`, `attention`, `utility`, `first`, `benefit` and `live_decision`.
 - No compatibility aliases are provided; see the
-  [migration guide](docs/05-project/03-release/02-migration.md).
+  [migration guide](docs/06-project/03-release/02-migration.md).
 
 ### Added
 

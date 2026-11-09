@@ -14,7 +14,7 @@ sees that state and moves from approval to action to verification.
 
 This is a synthetic mechanism result, not external validation. The reference policy is hand-written
 and the action space is designed. See
-[docs/06-research/02-evaluation/continuity-benchmark.md](../../docs/06-research/02-evaluation/continuity-benchmark.md).
+[docs/06-research/02-evaluation/continuity-benchmark.md](../../docs/07-research/02-evaluation/continuity-benchmark.md).
 
 Reproduce with:
 

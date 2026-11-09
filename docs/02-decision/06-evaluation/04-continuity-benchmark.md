@@ -38,7 +38,7 @@ The benchmark is a synthetic mechanism test with a designed action space. It sho
 uses the supplied state. The corpus and result are in
 [`benchmarks/continuity/v1/`](../../../benchmarks/continuity/v1/README.md) and
 [`results/continuity-benchmark/`](../../../results/continuity-benchmark/README.md). The design note is
-[the continuity benchmark page](../../06-research/02-evaluation/continuity-benchmark.md).
+[the continuity benchmark page](../../07-research/02-evaluation/continuity-benchmark.md).
 
 ## Related
 

@@ -143,4 +143,4 @@ PPMA commits its own state. The LAIX decision is recorded and applied within tha
 - [PPMA integration](../02-positioning/02-ppma-integration.md) - the activation layer in detail.
 - [App-kit overview](../../03-appkit/README.md) - the optional app kit.
 - [Execution and recovery](../../03-appkit/03-execute/01-execution-and-recovery.md) - the write boundary.
-- [Glossary](../04-reference/01-glossary.md) - the vocabulary.
+- [Glossary](../../05-reference/01-glossary.md) - the vocabulary.

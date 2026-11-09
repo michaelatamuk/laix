@@ -54,5 +54,5 @@ The additive path assumes component scores. The search path is a bounded grid, n
 ## Related
 
 - [Single decision](01-single/README.md)
-- [Algorithm directions](../../06-research/01-positioning/algorithm-directions.md)
-- [Algorithm prototype results](../../06-research/02-evaluation/algorithm-prototypes.md)
+- [Algorithm directions](../../07-research/01-positioning/algorithm-directions.md)
+- [Algorithm prototype results](../../07-research/02-evaluation/algorithm-prototypes.md)

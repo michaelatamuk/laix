@@ -108,7 +108,7 @@ and record it in `CHANGELOG.md`.
 - Remove model calls from the hot path when deterministic rules are enough.
 - Reduce option count, planner depth or stream capacity before adding infrastructure.
 - Use the [benchmark](../../03-appkit/05-operate/01-bench.md) and
-  [evaluation](../../06-research/02-evaluation/benchmark.md) for repeatable numbers.
+  [evaluation](../../07-research/02-evaluation/benchmark.md) for repeatable numbers.
 
 ## Getting help
 

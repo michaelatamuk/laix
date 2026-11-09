@@ -28,7 +28,7 @@ TypeScript:
 ```
 
 The release page also has a packed `laix-0.13.1.tgz`. See
-[versioning](../../05-project/03-release/01-versioning.md) for tags and schema versions.
+[versioning](../../06-project/03-release/01-versioning.md) for tags and schema versions.
 
 ## One decision
 
@@ -121,7 +121,7 @@ Full fields: [the decision contract](../../02-decision/01-contract/01-decision-c
 5. The app records the outcome if it wants the next decision to learn from it.
 
 If the answer is not the one you expected, start with
-[troubleshooting](../../05-project/02-quality/02-troubleshooting.md).
+[troubleshooting](../../06-project/02-quality/02-troubleshooting.md).
 
 ## Full request: approval, commitment and attention
 

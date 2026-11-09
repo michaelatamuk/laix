@@ -46,7 +46,7 @@ def main() -> int:
             f"@v{version}#subdirectory=packages/python/laix",
             f"laix-{version}.tgz",
         ],
-        "docs/05-project/03-release/01-versioning.md": [
+        "docs/06-project/03-release/01-versioning.md": [
             f"| Python package | `{version}` |",
             f"| TypeScript package | `{version}` |",
         ],

@@ -81,4 +81,4 @@ This is an orchestration comparison: the same LAIX composite planner is inside t
 ## Capability matrix
 
 `capabilities.v1.json` is the machine-readable version of the documented comparison in
-`docs/06-research/01-positioning/comparators.md`.
+`docs/07-research/01-positioning/comparators.md`.

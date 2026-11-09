@@ -9,7 +9,7 @@ into one decision with a reason, confidence and trail.
 
 No. An agent framework owns orchestration, memory, tools and the model loop. LAIX owns the decision
 inside one task. It can sit inside LangGraph, Temporal, CrewAI, an in-house runtime or a plain
-service. See [Decision models](../02-positioning/01-decision-models.md).
+service. See [Decision models](../04-concepts/02-positioning/01-decision-models.md).
 
 ## Does LAIX use a model?
 
@@ -31,7 +31,7 @@ records. LAIX does not open a database, call a provider or deliver a message on 
 
 A verb, reason code, confidence, rationale, optional action and intent, approval, evidence, target,
 decision id and trace id. The full shape is in
-[the decision contract](../../02-decision/01-contract/01-decision-contract.md).
+[the decision contract](../02-decision/01-contract/01-decision-contract.md).
 
 ## What is the novelty?
 
@@ -52,8 +52,8 @@ layer would otherwise be written again in several places.
 
 LAIX is a library with host-controlled execution and storage. Production use needs the host checklist:
 authentication, authorization, bounded inputs, idempotency, immutable records, budgets, retention and
-security review. See [Security](../03-trust/01-security.md) and
-[Deployment](../../03-appkit/05-operate/03-deployment.md).
+security review. See [Security](../04-concepts/03-trust/01-security.md) and
+[Deployment](../03-appkit/05-operate/03-deployment.md).
 
 The repository does not claim a `1.0` or production validation. External validation is still pending.
 
@@ -66,13 +66,13 @@ The repository does not claim a `1.0` or production validation. External validat
 - parity and invariants in CI.
 
 The claim-evidence map states the scope of each result:
-[evidence map](../../06-research/02-evaluation/evidence-map.md). The research plan is in
-[Research and evidence](../../06-research/README.md).
+[evidence map](../07-research/02-evaluation/evidence-map.md). The research plan is in
+[Research and evidence](../07-research/README.md).
 
 ## Does LAIX store data?
 
 No. LAIX defines the store contracts; the host owns the database, retention and deletion. See
-[Stores](../../03-appkit/04-connect/01-stores.md) and [Privacy](../03-trust/02-privacy.md).
+[Stores](../03-appkit/04-connect/01-stores.md) and [Privacy](../04-concepts/03-trust/02-privacy.md).
 
 ## Which languages are supported?
 
@@ -81,10 +81,10 @@ vectors.
 
 ## How do I start?
 
-1. [Quickstart](../../01-start/02-first-steps/01-quickstart.md) for the first decision.
-2. [Decision overview](../../02-decision/README.md) for the contract and the mechanisms.
-3. [App-kit overview](../../03-appkit/README.md) for execution, records and stores.
-4. [Decision models](../02-positioning/01-decision-models.md) if you already use JEV or another model.
+1. [Quickstart](../01-start/02-first-steps/01-quickstart.md) for the first decision.
+2. [Decision overview](../02-decision/README.md) for the contract and the mechanisms.
+3. [App-kit overview](../03-appkit/README.md) for execution, records and stores.
+4. [Decision models](../04-concepts/02-positioning/01-decision-models.md) if you already use JEV or another model.
 
 ## What are the limits?
 

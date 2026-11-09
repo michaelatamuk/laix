@@ -7,7 +7,7 @@ three coherent are welcome.
 ## Before you start
 
 - Read the [documentation index](docs/README.md) and the
-  [repository structure](docs/05-project/01-repository/01-repository-structure.md).
+  [repository structure](docs/06-project/01-repository/01-repository-structure.md).
 - Open an issue before a large change, a new public class or a new dependency.
 - Report security issues through [SECURITY.md](SECURITY.md), not a public issue.
 - By participating you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
@@ -96,7 +96,7 @@ bash scripts/novelty/reproduce.sh
 ```
 
 The live benchmark, analysis and ablations are also documented in
-[Testing](docs/05-project/02-quality/01-testing.md).
+[Testing](docs/06-project/02-quality/01-testing.md).
 
 ## Change workflow
 
@@ -144,7 +144,7 @@ The body should say why the change exists, not repeat the diff.
 ## Release
 
 The release process, compatibility rules and schema versions are in
-[Versioning](docs/05-project/03-release/01-versioning.md). Tag releases from `main`.
+[Versioning](docs/06-project/03-release/01-versioning.md). Tag releases from `main`.
 
 ## Security
 

@@ -79,7 +79,7 @@ A patent-level claim would also need a prior-art search.
 
 The algorithm prototypes and the sequence family are in
 [Algorithm prototypes](../../02-decision/03-decision-shapes/README.md), with smoke results in
-[Algorithm prototype results](../../06-research/02-evaluation/algorithm-prototypes.md).
+[Algorithm prototype results](../../07-research/02-evaluation/algorithm-prototypes.md).
 
 ## Research
 
@@ -121,5 +121,5 @@ labels, calibration sets and causal inference; model training and fine-tuning re
 
 - [Adoption plan](02-adoption-plan.md) - the market path.
 - [Testing](../02-quality/01-testing.md) - how the claims are checked.
-- [Evidence map](../../06-research/02-evaluation/evidence-map.md) - the scope of each result.
+- [Evidence map](../../07-research/02-evaluation/evidence-map.md) - the scope of each result.
 - [Versioning](../03-release/01-versioning.md) - release policy.

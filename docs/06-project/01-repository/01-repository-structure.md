@@ -44,9 +44,10 @@ laix/
 │   ├── 01-start/          overview; orientation/, first-steps/
 │   ├── 02-decision/           overview; contract/, domain/, decision-shapes/, sensing/, learning/, evaluation/, support/
 │   ├── 03-appkit/         overview; build/, run/, execute/, connect/, operate/
-│   ├── 04-concepts/       overview; architecture/, positioning/, trust/, reference/
-│   ├── 05-project/        overview; repository/, quality/, release/, direction/
-│   ├── 06-research/
+│   ├── 04-concepts/       overview; architecture/, positioning/, trust/
+│   ├── 05-reference/      overview; glossary and FAQ
+│   ├── 06-project/        overview; repository/, quality/, release/, direction/
+│   ├── 07-research/
 │   │   ├── 01-positioning/  prior art, comparators, formal model
 │   │   ├── 02-evaluation/   evaluation and evidence map
 │   │   ├── 03-validation/   plan, incident replay and vignette study

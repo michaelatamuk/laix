@@ -10,4 +10,4 @@ Evaluation is how a decision layer earns trust. LAIX uses four layers, each with
 | [Continuity benchmark](04-continuity-benchmark.md) | Does state carry across decisions? |
 
 The research evidence, external benchmarks and limitations are in
-[Research / evaluation](../../06-research/README.md).
+[Research / evaluation](../../07-research/README.md).
