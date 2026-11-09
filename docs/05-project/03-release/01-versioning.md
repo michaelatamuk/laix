@@ -43,7 +43,7 @@ package and policy versions available for rollback.
 
 ## Releases
 
-1. Update both package versions and `CHANGELOG.md`.
+1. Update both package versions, `CITATION.cff`, `SECURITY.md` and `CHANGELOG.md`.
 2. Run the full test, bench, conformance and example checks. See [Testing](../02-quality/01-testing.md).
 3. Commit the release.
 4. Tag `vX.Y.Z` and push the tag. The release workflow builds Python and TypeScript packages.

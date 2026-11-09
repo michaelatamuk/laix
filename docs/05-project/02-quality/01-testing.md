@@ -96,7 +96,8 @@ python scripts/ci/check_versions.py
 ```
 
 The link check resolves relative links across `docs/`, root Markdown files and every `README.md`.
-The version check keeps the package, A2A card, README, quickstart, versioning page and changelog aligned.
+The version check keeps the package, A2A card, README, quickstart, versioning page, records,
+support, changelog, citation metadata and security policy aligned.
 
 ## What covers what
 

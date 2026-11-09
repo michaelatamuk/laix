@@ -56,7 +56,7 @@ codes are the same.
 | `decide(request)` | The answer only. | You already have execution and records. |
 | `DecisionClient().decide(request)` | The answer plus the loop, policy registry, execution bridge, records and delivery. | You want one object for a complete app step. |
 
-The decision layer entry point is described in [Dispatch](../../02-decision/01-contract/04-dispatch.md).
+The `decide` entry point is described in [Dispatch](../../02-decision/01-contract/04-dispatch.md).
 
 ## The response
 

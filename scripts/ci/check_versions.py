@@ -59,6 +59,12 @@ def main() -> int:
         "CHANGELOG.md": [
             f"## {version} -",
         ],
+        "CITATION.cff": [
+            f"version: {version}",
+        ],
+        "SECURITY.md": [
+            f"| `{version.rsplit('.', 1)[0]}.x` | yes |",
+        ],
     }
     for path, fragments in checks.items():
         text = read(path)
