@@ -11,7 +11,7 @@ same boundary applies to any host.
 | DecisionClient | Owns | Does not own |
 |---|---|---|
 | **LAIX core** | The request and decision contract, policies, planners, signal attention, commitments, learning primitives and evaluation primitives. | Storage, UI, execution, delivery, credentials. |
-| **LAIX app kit** | The optional runtime: `DecisionClient`, decision runtime, streaming, execution bridge, records, stores, platform and delivery ports. | The database, transport, credentials and the host's domain rules. |
+| **LAIX app kit** | The optional app kit: `DecisionClient`, decision layer, streaming, execution bridge, records, stores, platform and delivery ports. | The database, transport, credentials and the host's domain rules. |
 | **Host** | The product, data, UI, execution, storage, delivery, permissions, retention and the domain nouns. | The decision contract and the decision semantics. |
 
 The core is stateless. The app kit adds state and execution surfaces. The host decides which of the
@@ -73,7 +73,7 @@ next request can carry what it learned.
 
 ### Core plus app kit
 
-The host wants the runtime around the decision: a single `DecisionClient`, execution, records, stores,
+The host wants the app kit around the decision: a single `DecisionClient`, execution, records, stores,
 streaming and delivery.
 
 ```python
@@ -141,6 +141,6 @@ PPMA commits its own state. The LAIX decision is recorded and applied within tha
 
 - [System architecture](01-system-architecture.md) - the decision and the parts.
 - [PPMA integration](../02-positioning/02-ppma-integration.md) - the activation layer in detail.
-- [App-kit overview](../../03-appkit/README.md) - the optional runtime.
+- [App-kit overview](../../03-appkit/README.md) - the optional app kit.
 - [Execution and recovery](../../03-appkit/03-execute/01-execution-and-recovery.md) - the write boundary.
 - [Glossary](../04-reference/01-glossary.md) - the vocabulary.

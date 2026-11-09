@@ -7,7 +7,7 @@ Numbers below come from the frozen synthetic test split and `results/live-decisi
 
 Live AI systems must decide whether to wait, observe, guide, ask, act, verify or escalate before
 the moment passes. Existing tools cover orchestration, durable workflows, alerting or planning
-separately. We present LAIX, a training-free live decision runtime that places commitments, execution risk
+separately. We present LAIX, a training-free live decision layer that places commitments, execution risk
 and human attention budget into one decision contract with the verb, score, reason code and audit
 trail. On a 120-case synthetic corpus, `LiveCompositePlanner` is 30/30 on the frozen test split and
 wins every conflict case. Against a hand-built glue baseline it is +6.7 percentage points
@@ -16,7 +16,7 @@ yet significant. We report the result honestly and define the validation needed 
 
 ## 1. Introduction
 
-A live experience is always in the loop. The host knows the domain; the live decision runtime must answer
+A live experience is always in the loop. The host knows the domain; the live decision layer must answer
 one question: what matters now, and what should the experience do about it?
 
 The contribution is a decision contract and a composition:
@@ -107,7 +107,7 @@ Evaluation on real outcomes is the next step for the calibration and causal path
 - Live-bench action parity: 210/210 Python/TypeScript decisions agree on the test split
 - LangGraph operational adapter: 120 decisions, 0 interrupts, 6-7 ms mean, 110 glue lines
 - Python invariant tests: 17/17
-- TypeScript tests: 208
+- TypeScript tests: 209
 - CI: Python 3.11/3.13, Node 22/24, docs links and the live-bench reproduction
 
 ## 8. Evaluation

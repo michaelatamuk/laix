@@ -3,7 +3,7 @@
 Resources are compute, latency and sensing capacity. They are different from the human-attention
 budget:
 
-- **Resource budget** limits how much work the runtime may do: deep calls, cost and latency.
+- **Resource budget** limits how much work the decision layer may do: deep calls, cost and latency.
 - **Human-attention budget** limits how often a decision may involve a person: interruption, approval and
   escalation.
 

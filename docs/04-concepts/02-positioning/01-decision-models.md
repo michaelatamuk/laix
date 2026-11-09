@@ -8,9 +8,9 @@ and they often work together.
 | Kind | Question it answers | Examples |
 |---|---|---|
 | **Decision model** | What is the answer to this question? | JEV, a classifier, an LLM judge, an expected-utility model |
-| **Decision runtime** | What should this task do next? | LAIX |
+| **Decision layer** | What should this task do next? | LAIX |
 
-A decision model produces a judgment. A decision runtime produces a task decision: what the task should do next, with a reason and evidence. The host owns execution, approval and records; the LAIX app kit supplies those surfaces when the host wants them.
+A decision model produces a judgment. A decision layer produces a task decision: what the task should do next, with a reason and evidence. The host owns execution, approval and records; the LAIX app kit supplies those surfaces when the host wants them.
 
 ## JEV
 
@@ -87,7 +87,7 @@ kind of decision model: a calibrated classifier over typed answers.
 The useful distinction:
 
 - **JEV can be the chooser** inside a policy.
-- **LAIX is the runtime** that filters unsafe options and returns the task decision. The host, or the
+- **LAIX is the layer** that filters unsafe options and returns the task decision. The host, or the
   optional app kit, handles approval, execution, verification and records.
 
 If JEV replaces the LAIX action policy, LAIX still supplies the decision contract; the host or app
@@ -110,9 +110,9 @@ Three fair experiments:
 1. **Chooser swap.** Run JEV as the chooser on the frozen 30-case test split, with the same state and
    options. Compare chosen-action accuracy and calibration with `LiveCompositePlanner`.
 2. **JEV inside LAIX.** Put JEV behind an `PlannerPolicy` and compare it with the built-in planner.
-   This isolates the model from the runtime.
+   This isolates the model from the decision layer.
 3. **Runtime baseline.** JEV plus hand-written app code for approval, execution and records vs
-   LAIX. This is the honest runtime comparison, but the glue code is the hard part.
+   LAIX. This is the honest decision-layer comparison, but the glue code is the hard part.
 
 Status: protocol only. A measured comparison needs TypeSafe API access and a frozen model version.
 
@@ -168,7 +168,7 @@ JEV and LAIX both depend on the app for domain meaning:
 
 For **one app with one decision**, app code with JEV is a good fit.
 
-JEV plus app code can implement every functional step. LAIX is a prebuilt **shared decision runtime**.
+JEV plus app code can implement every functional step. LAIX is a prebuilt **shared decision layer**.
 It matters when that layer would otherwise be written again in several apps:
 
 - several apps or agents;
@@ -177,7 +177,7 @@ It matters when that layer would otherwise be written again in several apps:
 - policies that must be compared or swapped;
 - one place to record outcomes and run a bench (the app kit).
 
-The question is: do you want every app to build and maintain the same decision runtime?
+The question is: do you want every app to build and maintain the same decision layer?
 
 ### Example: a home-repair dispatch company
 
@@ -198,14 +198,14 @@ system must decide:
 JEV can judge "is this a gas leak?" or "does this photo show mould?". The app can dispatch a
 technician, charge a card and send a message.
 
-Across eight decision needs, the team otherwise writes eight separate decision paths, or one ad-hoc runtime. Each path grows its own approval rule, audit format, verification step and tests. They drift apart.
+Across eight decision needs, the team otherwise writes eight separate decision paths, or one ad-hoc decision layer. Each path grows its own approval rule, audit format, verification step and tests. They drift apart.
 
 With LAIX, the app still keeps the jobs, technicians, photos and payments. LAIX supplies one
 decision contract for all eight decision needs. The optional app kit adds one approval rule, one
 execution receipt, one audit shape and one bench.
 
-At this point the team would otherwise be building a decision runtime themselves. LAIX is that
-runtime, already built.
+At this point the team would otherwise be building a decision layer themselves. LAIX is that
+layer, already built.
 
 ### The simple test
 
@@ -216,7 +216,7 @@ runtime, already built.
 | Shared approval, audit, verification and bench | LAIX app kit |
 | DecisionPolicy experiments or shadow comparisons | LAIX |
 
-LAIX replaces the bespoke decision runtime an app would otherwise write. JEV and the app's domain
+LAIX replaces the bespoke decision layer an app would otherwise write. JEV and the app's domain
 logic stay in place.
 
 ## Using them together
@@ -289,7 +289,7 @@ LAIX core               -> task decision
 host / app kit          -> approval, execution, outcome
 ```
 
-LAIX is the runtime that can use a decision model. It works alongside JEV and other models.
+LAIX is the layer that can use a decision model. It works alongside JEV and other models.
 
 ## In PPMA, the comparison is different
 

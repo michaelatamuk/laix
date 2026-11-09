@@ -261,7 +261,7 @@ Python and TypeScript expose `StreamSession`; `DecisionClient.stream` returns on
 
 ## Related
 
-- [Decision runtime](01-decision-runtime.md) - the loop behind the session.
+- [Decision loop](01-decision-runtime.md) - the loop behind the session.
 - [Live Context](03-live-context.md) - perception before the decision.
 - [Stores](../04-connect/01-stores.md) - checkpoints and state.
 - [Metrics](../05-operate/02-metrics.md) - counters, latency and alerts.

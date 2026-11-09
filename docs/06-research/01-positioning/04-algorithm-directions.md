@@ -141,7 +141,7 @@ index ranks pending decisions by the marginal value of reviewing them now.
 
 **Novelty hypothesis.** Per-action approvals exist. **Fleet-level attention scheduling for agent
 decisions with commitments, deadlines and risk** is a different problem. It creates a capability
-that per-action runtimes do not have: not just allow or block, but who gets the human now.
+that per-action decision layers do not have: not just allow or block, but who gets the human now.
 
 **Experiment.** Queue simulation plus real traces. Metrics: commitments kept, risk exposure,
 attention utilisation, time-to-decision and review throughput.

@@ -18,7 +18,7 @@ This guide uses the Python package and the `LiveCompositePlanner` behind `Planne
 
 ```powershell
 python -m pip install langgraph
-python -m pip install "git+https://github.com/michaelatamuk/laix.git@v0.10.0#subdirectory=packages/python/laix"
+python -m pip install "git+https://github.com/michaelatamuk/laix.git@v0.11.0#subdirectory=packages/python/laix"
 ```
 
 The comparison adapter in `benchmarks/compare/adapters/langgraph/` is optional and is not a
@@ -209,7 +209,7 @@ def test_graph_pauses_for_approval() -> None:
 ## Related
 
 - [Integration](01-integration.md) - the adapter boundary.
-- [Single decision](02-single-decision.md) - `DecisionClient` and the response.
+- [DecisionClient](02-single-decision.md) - `DecisionClient` and the response.
 - [Execution and recovery](../03-execute/01-execution-and-recovery.md) - receipts, retries and timeouts.
 - [Metrics](../05-operate/02-metrics.md) - OpenTelemetry attributes.
 - [External comparison](../../../benchmarks/compare/README.md) - the benchmark adapter.

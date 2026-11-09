@@ -9,7 +9,7 @@ the host owns the process, network, storage, credentials, model access and execu
 agent / automation
         │  signals, options, constraints, approvals
         ▼
-LAIX decision runtime  ──►  app kit (optional)
+LAIX decision layer  ──►  app kit (optional)
         │                       ├─ execution bridge / saga
         │                       ├─ state, checkpoints, commitments
         │                       ├─ decision records, delivery
@@ -26,7 +26,7 @@ receipt / outcome  ──►  record and calibration
 | Mode | Use it when | What the host owns |
 |---|---|---|
 | Core only | You need one decision and already have execution. | Request data, execution, records. |
-| App-kit runtime | You want execution, receipts, records and recovery in one place. | Stores, credentials, transport. |
+| App kit | You want execution, receipts, records and recovery in one place. | Stores, credentials, transport. |
 | Streaming | Decisions arrive from an event stream. | Source, sink, checkpoints, capacity. |
 
 The core is stateless. The app kit adds optional state: experience state, stream checkpoints,
@@ -110,7 +110,7 @@ The host owns retention. At minimum, decide:
 - how deletion requests are applied to every store;
 - which records are needed for audit or EU PLD documentation.
 
-See [EU liability](../../06-research/05-governance/eu-liability.md) for the audit mapping and
+See [EU liability](../../06-research/05-governance.md) for the audit mapping and
 [Stores](../04-connect/01-stores.md) for the port contracts.
 
 ## Production checklist

@@ -4,7 +4,7 @@ A LAIX decision is one step in a sequence. The next decision sees what the previ
 promises, human-attention budget, approvals, revisions, receipts and outcomes. Decision continuity is the
 property that each step starts from the current state instead of from zero.
 
-This is what makes LAIX a runtime rather than a one-shot classifier. The core stays stateless; the
+This is what makes LAIX stateful rather than a one-shot classifier. The core stays stateless; the
 host passes the current state into the next request.
 
 ## What carries forward
@@ -15,7 +15,7 @@ host passes the current state into the next request.
 | Human-attention budget | `HumanAttentionBudget` | decision attributes |
 | Approval state | `Decision.requires_approval`, `DecisionRecord` | the decision and the audit record |
 | Prior decisions and revisions | `DecisionTimeline` | app-kit streaming |
-| Receipts and recovery | `ExecutionBridge`, `Saga` | app-kit runtime |
+| Receipts and recovery | `ExecutionBridge`, `Saga` | app kit |
 | Outcomes and calibration | `Outcome`, `OutcomeStore`, `CalibrationReport` | core domain outcomes and host stores |
 
 Outcomes and calibration are described in [Outcomes](../02-domain/03-outcomes.md) and

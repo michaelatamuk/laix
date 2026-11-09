@@ -2,7 +2,7 @@
 
 ## What is LAIX?
 
-A live decision runtime for AI agents and automations that act in the real world. It turns a request
+A live decision layer for AI agents that act in the real world. It turns a request
 into one decision with a reason, confidence and trail.
 
 ## Is LAIX an agent framework?
@@ -13,7 +13,7 @@ service. See [Decision models](../02-positioning/01-decision-models.md).
 
 ## Does LAIX use a model?
 
-The built-in policies are deterministic rules and the runtime is training-free. A planner can use a
+The built-in policies are deterministic rules and the default path is training-free. A planner can use a
 world model the host supplies: states, transitions and rewards. A pretrained model can sit behind
 `PlannerPolicy` or inside a custom policy, and the decision contract stays the same.
 
@@ -46,7 +46,7 @@ When several agents, tasks or products need consistent, timely, safe and auditab
 want one contract instead of separate decision logic in each.
 
 For one app with one decision, app code with a model is simpler. LAIX pays off when the decision
-runtime would otherwise be written again in several places.
+layer would otherwise be written again in several places.
 
 ## Is it production-ready?
 

@@ -87,7 +87,7 @@ The protocol for one decision is `Planner`; the protocol for a chain is `Sequenc
 
 | Name | Purpose |
 |---|---|
-| `DecisionClient` | one decision with the optional runtime |
+| `DecisionClient` | one decision with the optional app kit |
 | `DecisionRuntime` | the app-kit decision loop |
 | `StreamSession`, `DecisionTimeline` | event-time decisions, revisions and checkpoints |
 | `StreamStats`, `DeadLetterQueue`, `TumblingWindow` | stream counters, failures and windows |

@@ -1,6 +1,7 @@
 # Contracts
 
-The contract is the source of truth. Code follows it.
+The public contract is versioned here. Some files are canonical inputs; the decision schema and
+reason-code registry are generated from the code and committed as stable artefacts.
 
 | File | Contents |
 |---|---|

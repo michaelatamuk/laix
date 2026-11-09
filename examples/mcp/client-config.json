@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "laix": {
+      "command": "laix-mcp",
+      "args": []
+    }
+  }
+}

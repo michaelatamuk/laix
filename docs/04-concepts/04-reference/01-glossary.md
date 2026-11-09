@@ -101,9 +101,9 @@ contracts in detail.
 | **Core** | The stateless decision package: contract, domain records, decision engines, sensing, learning, evaluation and support. |
 | **Domain** | The records and state layer: decisions, commitments, outcomes and perception. |
 | **Engine** | The processing layer: decision, sensing, learning and evaluation. |
-| **App kit** | The optional LAIX layer around the core: runtime, streaming, execution, stores, platform and bench. |
+| **App kit** | The optional LAIX layer around the core: decision loop, streaming, execution, stores, platform and bench. |
 | **DecisionClient** | The app-kit one-decision surface. |
-| **Decision runtime** | `DecisionRuntime`: the app-kit loop that links observation, state, policy, execution and outcome. |
+| **Decision loop** | `DecisionRuntime`: the app-kit loop that links observation, state, policy, execution and outcome. |
 | **Host** | The application that owns data, UI, execution, storage and delivery. |
 | **Live** | A decision made inside the running loop, at event time, with the current state. |
 | **JEV** | A typed decision model from TypeSafe; it returns a judgment and can sit behind a LAIX policy. |

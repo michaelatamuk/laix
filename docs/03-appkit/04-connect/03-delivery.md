@@ -78,7 +78,7 @@ TypeScript exports `DeliveryPort`, `DeliveryReceipt`, `DELIVERY_STATUSES` and `N
 
 ## Related
 
-- [Single decision](../01-build/02-single-decision.md) - `DecisionClient.deliver`.
+- [DecisionClient](../01-build/02-single-decision.md) - `DecisionClient.deliver`.
 - [Execution and recovery](../03-execute/01-execution-and-recovery.md) - the action receipt.
 - [Platform](02-platform.md) - the execution side.
 - [Deployment](../05-operate/03-deployment.md) - retention and security.

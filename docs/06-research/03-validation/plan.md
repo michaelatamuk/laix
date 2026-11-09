@@ -1,6 +1,6 @@
 # Real-world validation
 
-Synthetic cases need an external check. This page defines the study that shows the runtime works outside the
+Synthetic cases need an external check. This page defines the study that shows the decision layer works outside the
 repository tests.
 
 ## Validation options

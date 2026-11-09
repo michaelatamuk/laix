@@ -55,7 +55,7 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 - `docs/06-research/04-publication/paper-draft.md`
 - `docs/06-research/04-publication/references.md`
 - `docs/06-research/04-publication/review-log.md`
-- `docs/06-research/05-governance/eu-liability.md`
+- `docs/06-research/05-governance.md`
 - `docs/06-research/checklist.md`
 
 ## Validation harness
@@ -81,7 +81,7 @@ bash scripts/novelty/reproduce.sh
 
 ## Release fields
 
-- Version: pending (current package version is `0.10.0`).
+- Version: pending (current package version is `0.11.0`).
 - Tag: pending.
 - DOI: pending Zenodo deposit.
 - License: Apache-2.0.

@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from laix import EXECUTION_RECEIPT_STATUSES, VERBS
 
 ROOT = Path(__file__).resolve().parents[6]
@@ -32,11 +34,11 @@ def test_a2a_card_is_v1_and_exposes_the_decide_skill() -> None:
 
 
 def test_a2a_card_parses_with_the_optional_sdk() -> None:
-    try:
-        from a2a.types import AgentCard
-        from google.protobuf import json_format
-    except ImportError:
-        return
+    pytest.importorskip("a2a.types")
+    pytest.importorskip("google.protobuf")
+    from a2a.types import AgentCard
+    from google.protobuf import json_format
+
     card = _load("a2a-agent-card.v1.json")
     parsed = json_format.ParseDict(card, AgentCard())
     assert parsed.name == card["name"]
@@ -63,8 +65,5 @@ def test_openapi_action_profile_matches_the_receipt_contract() -> None:
 
 
 def test_openapi_action_profile_is_valid_when_the_validator_is_available() -> None:
-    try:
-        from openapi_spec_validator import validate
-    except ImportError:
-        return
+    validate = pytest.importorskip("openapi_spec_validator").validate
     validate(_load("action.openapi.v1.json"))

@@ -1,6 +1,6 @@
 # Perception
 
-Core defines the perception records and the detector contract. The runtime loop lives in the app kit.
+Core defines the perception records and the detector contract. The decision loop lives in the app kit.
 
 | Type | Fields |
 |---|---|
@@ -27,7 +27,7 @@ class Detector(Protocol):
 `PerceptionFrame.to_dict()` uses `subject`, `at`, `detections`, `allowed`, `skipped`, `uncertainty`,
 `deepCalls` and `cost`. It is the frame a detector loop returns after admission.
 
-The app-kit runtime that drives detectors is `LiveContext` with `CallableDetector`. See
+The app kit that drives detectors is `LiveContext` with `CallableDetector`. See
 [Live Context](../../03-appkit/02-run/03-live-context.md).
 
 ## Related

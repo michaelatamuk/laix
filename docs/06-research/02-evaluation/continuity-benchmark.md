@@ -37,7 +37,7 @@ The host asks for approval when a plan sets `requires_approval`.
 | Stateful `LiveCompositePlanner` | 100% | 100% | 100% | 100% | 0 |
 
 The stateless planner repeats the action because it cannot see that the commitment was fulfilled,
-the attention budget was spent and the receipt was pending. The stateful runtime moves from approval
+the attention budget was spent and the receipt was pending. The stateful loop moves from approval
 to action to verification.
 
 ## What it proves

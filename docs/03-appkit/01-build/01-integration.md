@@ -151,7 +151,7 @@ configured fields before sharing; see [privacy](../../04-concepts/03-trust/02-pr
 
 ## Related
 
-- [Single decision](02-single-decision.md) - `DecisionClient` and the one-shot surface.
+- [DecisionClient](02-single-decision.md) - `DecisionClient` and the one-shot surface.
 - [Policies in the app](03-policies-in-the-app.md) - selection, registration and rollout.
 - [Streaming](../02-run/02-streaming.md) - decisions over time.
 - [Execution and recovery](../03-execute/01-execution-and-recovery.md) - the write boundary.

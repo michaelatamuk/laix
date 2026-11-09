@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.11.0 - 2026-11-09
 
 ### Added
 
@@ -28,6 +28,14 @@
   plan, threats and replication rules.
 - **Community templates.** Bug and feature issue forms, a pull request template and a documentation
   contact link.
+- **Examples.** File state/outcome persistence, OpenTelemetry attributes, retries and async
+  timeouts, an OpenAPI action-profile mapping, an MCP client config and a CLI decision fixture.
+
+### Changed
+
+- **Docs and CI.** Aligned the public one-liner on “live decision layer”, renamed the app-kit
+  DecisionClient page, flattened the governance page, and added version, public-export and
+  declaration checks.
 
 ## 0.10.0 - 2026-11-08
 

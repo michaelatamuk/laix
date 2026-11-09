@@ -9,7 +9,7 @@ moment -> attention -> decision -> execution -> outcome -> learning -> next deci
 | Stage | What happens | LAIX piece | Owner |
 |---|---|---|---|
 | **Moment** | Signals, context, situation and options arrive. | `DecisionRequest` | Host |
-| **Attention** | The runtime decides what matters now. | `decide_signal_attention` | LAIX |
+| **Attention** | LAIX decides what matters now. | `decide_signal_attention` | LAIX |
 | **Decision** | One move is chosen with a reason, confidence and trail. | policies, planners, `Decision` | LAIX |
 | **Execution** | The host acts; approval, receipts and recovery stay explicit. | `ExecutionBridge`, `Saga` | Host, with the app kit if chosen |
 | **Outcome** | The host measures what happened. | `Outcome`, stores | Host |
@@ -53,7 +53,7 @@ That hand-off is [decision continuity](../../02-core/03-decision/04-history.md).
 | A decision that changes the world | `ExecutionBridge` |
 | State that must survive a restart | `StateStore` and `StreamCheckpointStore` |
 
-A one-shot call is a valid use of LAIX. The loop is what makes it a runtime: the same chooser sees a
+A one-shot call is a valid use of LAIX. The loop is what makes it stateful: the same chooser sees a
 different, current state on every step.
 
 ## Where the host stays
@@ -77,7 +77,7 @@ run one full loop: stream, decision, execution, outcome, calibration and timelin
 ## Read next
 
 - [Core overview](../../02-core/README.md) - the contract and the mechanisms.
-- [App-kit overview](../../03-appkit/README.md) - the optional runtime.
+- [App-kit overview](../../03-appkit/README.md) - the optional app kit.
 - [Streaming](../../03-appkit/02-run/02-streaming.md) - decisions over event time.
 - [Execution and recovery](../../03-appkit/03-execute/01-execution-and-recovery.md) - the write boundary.
 - [Stores](../../03-appkit/04-connect/01-stores.md) - what the host persists.

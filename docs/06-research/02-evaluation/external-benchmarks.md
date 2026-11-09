@@ -2,7 +2,7 @@
 
 Status: landscape reviewed; no external benchmark has been run.
 
-No public benchmark measures a decision runtime with commitments, attention, approvals, execution
+No public benchmark measures a decision layer with commitments, attention, approvals, execution
 risk and continuity. Several measure adjacent behaviour. LAIX must be evaluated as a component
 inside a host agent, not as an end-to-end agent.
 
@@ -17,7 +17,7 @@ inside a host agent, not as an end-to-end agent.
 | [DRIP-R](https://aclanthology.org/2026.findings-emnlp.522/) | Decision-making under ambiguous retail policy | good fit for ambiguity | not run; emerging |
 | [Agentick](https://arxiv.org/abs/2605.06869) | General sequential decision-making across RL, LLM and VLM agents | weak fit; game-like, not enterprise | not run |
 | [DecisionBench](https://arxiv.org/html/2605.19099v1) | Delegation between peer models in long-horizon workflows | not a fit; measures delegation | not run |
-| [JevBench](https://github.com/Leanmcp/jevbench) | Typed decision-model accuracy, calibration and coherence | fit for the JEV chooser comparison, not the runtime | not run; needs JEV API |
+| [JevBench](https://github.com/Leanmcp/jevbench) | Typed decision-model accuracy, calibration and coherence | fit for the JEV chooser comparison, not the decision layer | not run; needs JEV API |
 
 Broader enterprise suites such as WorkArena and TheAgentCompany measure task completion, not policy
 adherence; they are less diagnostic for the decision layer. Agent safety suites such as AgentHarm,

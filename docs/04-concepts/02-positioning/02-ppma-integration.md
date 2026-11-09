@@ -1,4 +1,4 @@
-# PPMA integration: the task-decision runtime
+# PPMA integration: the task-decision layer
 
 PPMA (the activation layer above LAIX; see the [glossary](../04-reference/01-glossary.md)) decides what
 the system does next. LAIX decides what one task does next.

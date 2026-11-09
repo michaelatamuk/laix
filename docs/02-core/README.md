@@ -1,6 +1,6 @@
 # Core overview
 
-LAIX turns one request into one decision or several decisions. It is a decision runtime, not a
+LAIX turns one request into one decision or several decisions. It is a decision layer, not a
 classifier: the core has no UI, no storage and no execution, and the host supplies the state that the
 next decision starts from. Every mechanism returns the same `Decision` shape.
 
@@ -86,7 +86,7 @@ DecisionRequest
 ```
 
 That hand-off is [decision continuity](03-decision/04-history.md). It is what makes the
-core a runtime: the same chooser sees a different, current state on every step.
+core stateful: the same chooser sees a different, current state on every step.
 
 ## A conceptual view
 
@@ -112,7 +112,7 @@ This diagram is a conceptual view of the core, not the folder map. The folder ma
 | `decide(request)` | Selects signal attention or the action policy from the request shape. | You want the answer only. |
 | `decide(request, policy=...)` | Runs the policy you pass. | You want a packaged, authored or learned policy. |
 | `decide(request, policy=PlannerPolicy(planner))` | Runs a planner or the live composite planner behind the policy interface. | You want utility, commitments, execution risk or attention scoring. |
-| `DecisionClient` | Uses the same core selection and adds runtime, traces, execution and records. | You want the full app kit. |
+| `DecisionClient` | Uses the same core selection and adds the loop, traces, execution and records. | You want the full app kit. |
 
 `decide` lives in `core/dispatch.py` and imports no app-kit code. [Dispatch](01-contract/04-dispatch.md) explains
 the selection rule and the identity fields.

@@ -31,12 +31,12 @@ integration regressed on multi-incident triage and large-tool-result; the guardr
 preserved the baseline. See [Sev1-Bench](sev1-bench.md). On a V4 Pro robustness run, the guardrail
 also matched the baseline mean and removed the one forbidden recommendation.
 
-The continuity result is a synthetic mechanism test. It shows that the stateful runtime uses the
+The continuity result is a synthetic mechanism test. It shows that the stateful loop uses the
 supplied state and the stateless planner does not. It is not external validation. See
 [Continuity benchmark](continuity-benchmark.md).
 
 The τ-bench result is a baseline of the host agent, not a LAIX result. τ-bench scores full-agent
-tool use and policy adherence; a LAIX policy adapter is required before the runtime can be compared.
+tool use and policy adherence; a LAIX policy adapter is required before the decision layer can be compared.
 See [τ-bench](tau-bench.md).
 
 The τ-bench guardrail result is a positive signal on a 10-task slice: 10/10 vs 9/10 baseline. It is
@@ -59,10 +59,10 @@ claim.
 | Case schema | 120/120 valid; unique ids | [validator](../../../scripts/novelty/bench/validate_live_cases.py) | tested |
 | Determinism | 100% replay equality | [invariants](../../../packages/python/laix/tests/core/test_invariants.py) | tested |
 | Contract invariants | 17/17 | [invariants](../../../packages/python/laix/tests/core/test_invariants.py) | tested |
-| Python/TypeScript parity | 24/24 conformance; 210/210 live actions; 208 TS tests | CI | tested |
+| Python/TypeScript parity | 24/24 conformance; 210/210 live actions; 209 TS tests | CI | tested |
 | Audit trail | I6–I9 pass | [invariants](../../../packages/python/laix/tests/core/test_invariants.py) | tested |
 | LangGraph host | 120 decisions; 0 interrupts; 6–7 ms mean; 110 glue lines | [comparison](../../../results/live-decision-benchmark/comparison/external-systems.json) | measured (operational) |
-| EU PLD audit fields | see below | [EU PLD](../05-governance/eu-liability.md) | documented |
+| EU PLD audit fields | see below | [EU PLD](../05-governance.md) | documented |
 
 ### EU PLD audit fields
 
@@ -94,7 +94,7 @@ claim.
 | [External comparison](../../../results/live-decision-benchmark/comparison/external-systems.json) | LangGraph adapter results. |
 | [Case validator](../../../scripts/novelty/bench/validate_live_cases.py) | Schema and id checks. |
 | [Invariant tests](../../../packages/python/laix/tests/core/test_invariants.py) | Determinism, contract and audit invariants. |
-| [EU PLD mapping](../05-governance/eu-liability.md) | Audit fields for liability questions. |
+| [EU PLD mapping](../05-governance.md) | Audit fields for liability questions. |
 
 ## Rules
 
