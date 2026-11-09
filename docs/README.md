@@ -96,6 +96,7 @@ core in [`../examples/README.md`](../examples/README.md). Every Python and TypeS
 | make one decision | [Quickstart](01-start/02-first-steps/01-quickstart.md) |
 | plug LAIX into an app | [Host integration](01-start/02-first-steps/02-host-integration.md), then [Integration](03-appkit/01-build/01-integration.md) |
 | integrate with LangGraph | [LangGraph](03-appkit/01-build/04-langgraph.md) |
+| expose decisions over MCP | [MCP server](03-appkit/01-build/05-mcp.md) |
 | write my own policy | [Policies](02-core/03-decision/01-single/05-policies.md), [Policies in the app](03-appkit/01-build/03-policies-in-the-app.md) |
 | stream events | [Streaming](03-appkit/02-run/02-streaming.md) |
 | execute and recover | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md) |

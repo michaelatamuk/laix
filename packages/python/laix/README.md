@@ -144,6 +144,7 @@ print(layer.explain(decision))
 - `RetryPolicy`, `execute_async` and `run_steps_async` add retries, async handlers and timeouts.
 - `decision_attributes` maps a decision onto OpenTelemetry span attributes.
 - `laix explain` and `laix lint` inspect a decision JSON.
+- `laix-mcp` exposes `decide` over stdio to an MCP client (`pip install "laix[mcp]"`).
 
 ## Test
 

@@ -19,8 +19,12 @@ classifiers = [
 ]
 dependencies = []
 
+[project.optional-dependencies]
+mcp = ["mcp>=2,<3"]
+
 [project.scripts]
 laix = "laix.appkit.cli:main"
+laix-mcp = "laix.appkit.mcp_server:main"
 
 [project.urls]
 Homepage = "https://github.com/michaelatamuk/laix"

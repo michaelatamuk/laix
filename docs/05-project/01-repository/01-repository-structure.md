@@ -126,6 +126,8 @@ packages/python/laix/src/laix/
 └── appkit/
     ├── __init__.py          optional app surface
     ├── decision_client.py   public DecisionClient
+    ├── cli.py               laix explain and lint
+    ├── mcp_server.py        optional laix-mcp stdio server
     ├── runtime/             decision runtime, execution, saga, state, stores
     ├── audit/               decision record, proposal, approval, undo, audit event
     ├── delivery/            port, receipt, null
