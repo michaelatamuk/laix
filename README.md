@@ -158,7 +158,7 @@ The same contract covers attention, action, several decision shapes and your own
 
 | What you get | In one line |
 |---|---|
-| [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe` (gather evidence), `guide` (surface attention), `ask`, `act`, `verify`, `escalate` |
+| [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe` (gather evidence), `guide` (surface attention), `ask`, `act` (do it now), `verify`, `escalate` |
 | [Two decision families](docs/02-decision/README.md) | signal attention — what matters now — and action — what to do |
 | [Five decision shapes](docs/02-decision/03-decision-shapes/README.md) | single (one choice), sequence (a chain), fleet (many pending), history (repair), explain (why and what would flip it) |
 | [Bring your own policy](docs/02-decision/03-decision-shapes/01-single/05-policies.md) | any `name` + `decide` object; a planner or model behind the same contract |
