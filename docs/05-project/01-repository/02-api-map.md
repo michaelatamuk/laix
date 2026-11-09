@@ -100,6 +100,7 @@ The protocol for one decision is `Planner`; the protocol for a chain is `Sequenc
 | `DeliveryPort`, `DeliveryReceipt`, `NullDelivery` | delivery boundary and receipt |
 | `prometheus`, `run_stream_bench`, `decision_attributes` | metrics, stream bench and OpenTelemetry attributes |
 | `laix` CLI | explain or lint a decision JSON file |
+| `laix-mcp` | optional MCP stdio server exposing `decide` |
 
 ## Proof
 

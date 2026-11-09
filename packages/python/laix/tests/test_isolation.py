@@ -11,6 +11,12 @@ import laix
 ROOT = Path(laix.__file__).resolve().parent
 LOCAL_PACKAGES = {"laix"}
 
+# Optional integrations are allowed to import their extra only when the user
+# installs it. The core stays dependency-free.
+OPTIONAL_IMPORTS = {
+    "appkit/mcp_server.py": {"mcp"},
+}
+
 
 def _python_files(root: Path):
     for path in sorted(root.rglob("*.py")):
@@ -23,6 +29,8 @@ def external_imports(root: Path) -> list[str]:
     hits: list[str] = []
     for path in _python_files(root):
         tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        relative = path.relative_to(root).as_posix()
+        allowed = OPTIONAL_IMPORTS.get(relative, set())
         for node in ast.walk(tree):
             modules: list[str] = []
             if isinstance(node, ast.Import):
@@ -30,7 +38,11 @@ def external_imports(root: Path) -> list[str]:
             elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
                 modules = [node.module.split(".")[0]]
             for module in modules:
-                if module not in sys.stdlib_module_names and module not in LOCAL_PACKAGES:
+                if (
+                    module not in sys.stdlib_module_names
+                    and module not in LOCAL_PACKAGES
+                    and module not in allowed
+                ):
                     hits.append(f"{path.name}: {module}")
     return hits
 

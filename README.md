@@ -324,6 +324,8 @@ ablation, the test matrix and the evidence caveats are in
 | [App-kit overview](docs/03-appkit/README.md) | execution, streams, stores, platform, delivery, bench |
 | [Decision lifecycle](docs/01-start/01-orientation/02-decision-lifecycle.md) | moment to outcome in one loop |
 | [Deployment](docs/03-appkit/05-operate/03-deployment.md) | production topology, reliability, rollout and retention |
+| [LangGraph](docs/03-appkit/01-build/04-langgraph.md) | a decision node, approval interrupt and checkpointer |
+| [MCP server](docs/03-appkit/01-build/05-mcp.md) | expose `decide` over stdio |
 | [Examples](examples/README.md) | Python and TypeScript, grouped by core and app kit |
 
 ## Contributing

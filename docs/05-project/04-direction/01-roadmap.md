@@ -41,6 +41,7 @@ This page tracks what is done, what is next and what would count as a real step 
 | File-backed state and outcome stores | done |
 | OpenTelemetry decision attributes | done |
 | LangGraph decision node, approval interrupt and checkpointer guide | done |
+| MCP stdio server for `decide` | done |
 | Execution receipts, idempotency and reconciliation | done |
 | Crash-recovery and retry semantics | tested for the bridge; host runtime still owns worker recovery |
 

@@ -20,7 +20,7 @@ The core stays stateless. The app kit adds the surfaces, execution, ports and pr
 
 | Stage | Question | Pages |
 |---|---|---|
-| **Build** | How does the host call LAIX, get one decision and choose a policy? | [Integration](01-build/01-integration.md), [Single decision](01-build/02-single-decision.md), [Policies in the app](01-build/03-policies-in-the-app.md), [LangGraph](01-build/04-langgraph.md) |
+| **Build** | How does the host call LAIX, get one decision and choose a policy? | [Integration](01-build/01-integration.md), [Single decision](01-build/02-single-decision.md), [Policies in the app](01-build/03-policies-in-the-app.md), [LangGraph](01-build/04-langgraph.md), [MCP server](01-build/05-mcp.md) |
 | **Run** | What runs over time and before the choice? | [Decision runtime](02-run/01-decision-runtime.md), [Streaming](02-run/02-streaming.md), [Live Context](02-run/03-live-context.md) |
 | **Execute** | What happens after the choice? | [Execution and recovery](03-execute/01-execution-and-recovery.md), [Proposals and records](03-execute/02-proposals-and-records.md) |
 | **Connect** | What does the host supply? | [Stores](04-connect/01-stores.md), [Platform](04-connect/02-platform.md), [Delivery](04-connect/03-delivery.md) |
@@ -91,6 +91,8 @@ Read in order. Each section opens with a short index that lists its pages in rea
 | Path | Contents |
 |---|---|
 | `appkit/decision_client.py` | `DecisionClient`, the one-decision surface. |
+| `appkit/cli.py` | `laix explain` and `laix lint`. |
+| `appkit/mcp_server.py` | optional `laix-mcp` stdio server. |
 | `appkit/runtime/` | decision runtime, execution, saga, state and stores. |
 | `appkit/streaming/` | session, window, sources, checkpoint and timeline. |
 | `appkit/live_context/` | the host-driven detector loop. |
