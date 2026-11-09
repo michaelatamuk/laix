@@ -28,10 +28,12 @@ app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` 
 | `CommitmentRef` | an owner-qualified reference to another party's commitment |
 | `CommitmentLedger` | the open promises for one task, with due and blocked queries |
 | `CommitmentGraph` | local and external commitments with blockers, cycles, impact and critical path |
+| `CommitmentGraphReport` | missing refs, cycles and stale refs from `validate()` |
 | `CommitmentStore` | the persistence port for a ledger |
 | `InMemoryCommitmentStore`, `FileCommitmentStore` | the built-in stores |
 | `CommitmentResolver` | the app-kit port for another owner's commitments |
-| `InMemoryCommitmentResolver`, `resolve_commitment_graph` | the built-in test resolver and graph helper |
+| `AsyncCommitmentResolver` | the async variant for hosts that fetch before planning |
+| `InMemoryCommitmentResolver`, `resolve_commitment_graph` / `resolve_commitment_graph_async` | the built-in test resolver and graph helpers |
 | `CommitmentPlanner` | the planner that scores fulfill, violate and create effects |
 
 ## Decision mechanisms

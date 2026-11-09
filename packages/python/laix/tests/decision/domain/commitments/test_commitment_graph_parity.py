@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from datetime import timedelta
 from pathlib import Path
 
 import pytest
@@ -103,7 +104,12 @@ def test_commitment_planner_fixture(case: dict[str, object]) -> None:
         attributes={"commitment_graph": graph},
     )
     result = CommitmentPlanner(
-        require_verified=bool(case["require_verified"])
+        require_verified=bool(case["require_verified"]),
+        max_verification_age=(
+            timedelta(seconds=float(case["max_verification_age_seconds"]))
+            if "max_verification_age_seconds" in case
+            else None
+        ),
     ).solve(problem)
 
     assert result.action_id == case["expected_action_id"]

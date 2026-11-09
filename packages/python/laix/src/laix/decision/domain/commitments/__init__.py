@@ -2,7 +2,7 @@
 
 from .commitment import COMMITMENT_SOURCES, COMMITMENT_STATUSES, Commitment
 from .commitment_ref import CommitmentRef
-from .graph import CommitmentBlocker, CommitmentGraph
+from .graph import CommitmentBlocker, CommitmentGraph, CommitmentGraphReport
 from .ledger import CommitmentLedger
 from .store import CommitmentStore, FileCommitmentStore, InMemoryCommitmentStore
 
@@ -12,6 +12,7 @@ __all__ = [
     "Commitment",
     "CommitmentBlocker",
     "CommitmentGraph",
+    "CommitmentGraphReport",
     "CommitmentLedger",
     "CommitmentRef",
     "CommitmentStore",

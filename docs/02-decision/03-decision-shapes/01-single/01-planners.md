@@ -162,9 +162,10 @@ Weights:
 A commitment is blocked when it is missing, any `depends_on` item is missing or not `done`, or any
 external dependency has not resolved with enough trust. By default the planner checks the graph with
 `require_verified=True`, so a `reported` external commitment does not count as done. Pass
-`require_verified=False` to `CommitmentPlanner` when reported dependencies are acceptable. A hard
-violation sets `blocked` to `hard commitment: <ids>` and removes the option; fulfilling a hard
-commitment while it is blocked sets `blocked hard commitment: <ids>` and removes it too.
+`require_verified=False` to `CommitmentPlanner` when reported dependencies are acceptable, and pass
+`max_verification_age` to reject stale `verified` ones. A hard violation sets `blocked` to
+`hard commitment: <ids>` and removes the option; fulfilling a hard commitment while it is blocked
+sets `blocked hard commitment: <ids>` and removes it too.
 
 Commitments enter the problem through `PlannerInput.attributes["commitments"]` or the alias
 `attributes["commitment_ledger"]`. The value may be a `CommitmentLedger`, a mapping with a
@@ -178,7 +179,7 @@ pass a `CommitmentGraph` as `attributes["commitment_graph"]`, or pass
 | Success reason | `commitment_aware` |
 | Empty options | `wait` with `no_options` |
 | No feasible option | `wait` with `no_feasible_option` |
-| Verification | `require_verified=True` by default |
+| Verification | `require_verified=True` by default; optional `max_verification_age` |
 | PlannerResult attributes | `utility`, `commitment_score`, `commitments_fulfilled`, `commitments_violated`, `commitments_created`, `commitments_due_fulfilled`, `commitments_blocked_fulfilled`, `commitments_blocked_by` |
 
 `commitments_blocked_by` is a list of owner-qualified blockers:
@@ -187,8 +188,8 @@ pass a `CommitmentGraph` as `attributes["commitment_graph"]`, or pass
 [{owner, ledger, id, reason}]
 ```
 
-`reason` is `missing`, `open` or `unverified`. Each alternative also carries `blocked_by` with the
-same shape, so a host can explain a rejected option without re-running the graph.
+`reason` is `missing`, `open`, `unverified` or `stale`. Each alternative also carries `blocked_by` with
+the same shape, so a host can explain a rejected option without re-running the graph.
 
 See [Commitments](../../02-domain/02-commitments.md) for the ledger and store.
 

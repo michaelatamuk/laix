@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.16.0 - 2026-11-10
+
+### Added
+
+- **Freshness and staleness.** `CommitmentGraph.is_fresh` and `stale_refs` use `verified_at` with a
+  host-supplied maximum age. Stale verification is a blocker with reason `stale`, and
+  `CommitmentPlanner` accepts `max_verification_age` (Python) / `maxVerificationAgeMs` (TypeScript).
+- **Scoped graphs and redaction.** `subgraph`, `neighborhood` and `redacted` build a smaller or
+  safer view without changing the trust model.
+- **Validation report.** `validate()` returns a `CommitmentGraphReport` with missing refs, cycles and
+  stale refs.
+- **Async resolver.** `AsyncCommitmentResolver` and `resolve_commitment_graph_async` /
+  `resolveCommitmentGraphAsync` for hosts that fetch before planning.
+- **Graph export.** `to_mermaid` and `to_dot` render the graph for docs and tooling.
+- **Freshness bench example.** A deterministic cross-owner scenario covers fresh, stale, reported
+  and missing dependencies.
+
+### Changed
+
+- **Graph performance.** Reverse adjacency, cycles and the critical path are cached per graph.
+- **Parity fixture.** `commitment-graph.v1.json` now covers freshness as well as reported, verified
+  and `require_verified=False` planner outcomes.
+
 ## 0.15.0 - 2026-11-10
 
 ### Added

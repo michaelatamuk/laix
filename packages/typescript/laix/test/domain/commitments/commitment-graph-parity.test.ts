@@ -25,6 +25,7 @@ interface RawCase {
 interface RawPlannerCase {
   id: string;
   require_verified: boolean;
+  max_verification_age_seconds?: number;
   local: Array<Record<string, unknown>>;
   external: Array<Record<string, unknown>>;
   options: Array<Record<string, unknown>>;
@@ -173,7 +174,13 @@ describe("commitment planner parity fixture", () => {
       const result = new CommitmentPlanner(
         new UtilityModel(),
         {},
-        { requireVerified: testCase.require_verified },
+        {
+          requireVerified: testCase.require_verified,
+          maxVerificationAgeMs:
+            testCase.max_verification_age_seconds === undefined
+              ? undefined
+              : testCase.max_verification_age_seconds * 1000,
+        },
       ).solve(problem);
 
       assert.equal(result.actionId, testCase.expected_action_id);

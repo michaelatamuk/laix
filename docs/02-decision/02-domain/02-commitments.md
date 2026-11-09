@@ -51,8 +51,8 @@ commitment = Commitment(
 | `verified` | The host says a verifier confirmed it; `verified_at` records when. | yes |
 
 `verified` is a **host assertion, not a proof**. LAIX records that the host says it checked the
-promise; it does not sign, verify or fetch anything. `verified_at` is metadata, not a signature, and
-the graph does not expire it. Re-verify before acting when staleness matters.
+promise; it does not sign, verify or fetch anything. `verified_at` is metadata, not a signature.
+The graph does not expire it unless you ask for a maximum age.
 
 `reported` is the safe default for another party's commitment. It is enough for planning that can
 tolerate uncertainty, but it does not satisfy a dependency that requires verification. A local ledger
@@ -62,6 +62,30 @@ refresh the commitment.
 
 LAIX does not provide signatures, attestations, a shared commitment protocol, a hosted resolver,
 multi-party negotiation or settlement. Those belong to the host or to a product layer above LAIX.
+
+## Freshness
+
+`verified_at` only matters when the host asks about freshness. The graph does not expire a
+verification by itself.
+
+```python
+from datetime import datetime, timedelta
+
+now = datetime.fromisoformat("2026-11-01T10:00:00+00:00")
+max_age = timedelta(hours=24)
+
+graph.stale_refs(now, max_age)
+graph.blocked(
+    commitment,
+    require_verified=True,
+    now=now,
+    max_verification_age=max_age,
+)
+```
+
+A stale verification is a blocker with reason `stale`. `CommitmentPlanner` accepts
+`max_verification_age` and treats a stale `verified` dependency like an unverified one. `local` and
+`reported` promises are not aged by this rule.
 
 
 ## The ledger
@@ -167,28 +191,36 @@ print(graph.blocked(local.get("c1"), require_verified=True))   # True
 ```
 
 The graph never fetches remote state. The host resolves external commitments and passes them in;
-the graph only reasons about the result. The app kit exposes a small `CommitmentResolver` port and a
-`resolve_commitment_graph` helper for hosts that want the same shape.
+the graph only reasons about the result. The app kit exposes a small `CommitmentResolver` port, an
+`AsyncCommitmentResolver` variant and the `resolve_commitment_graph` /
+`resolve_commitment_graph_async` helpers for hosts that want the same shape.
 
 | Method | Result |
 |---|---|
 | `get(ref)` / `resolve(ref)` | The commitment behind an owner-qualified reference, or `None`. |
 | `dependencies(commitment)` | Local ids plus external references, as `CommitmentRef` values. |
-| `blockers(commitment, require_verified=False)` | Every dependency that is missing, open or unverified. |
-| `blocked(commitment, require_verified=False)` | Whether at least one blocker remains. |
-| `blocked_open(require_verified=False)` | Open local commitments with a blocker. |
-| `next_actionable(now=None, require_verified=False)` | The earliest open local commitment without a blocker. |
+| `is_fresh(commitment, now, max_age)` | Whether a `verified` promise is inside its verification window. |
+| `stale_refs(now, max_age)` | Verified promises older than `max_age`. |
+| `blockers(commitment, require_verified=False, now=None, max_verification_age=None)` | Every dependency that is missing, open, unverified or stale. |
+| `blocked(...)` | Whether at least one blocker remains. |
+| `blocked_open(...)` | Open local commitments with a blocker. |
+| `next_actionable(now=None, ...)` | The earliest open local commitment without a blocker. |
 | `missing_refs(commitment=None)` | References that resolve nowhere in the graph. |
 | `unverified_refs()` | Resolved dependencies marked `reported`. |
+| `validate(now=None, max_verification_age=None)` | A `CommitmentGraphReport` with missing refs, cycles and stale refs. |
 | `ancestors(ref)` | Everything the commitment depends on, directly or transitively. |
 | `descendants(ref)` / `impact(ref)` | Everything that would be affected by a change to this commitment. |
 | `chain(ref)` | The longest dependency chain that starts at this commitment. |
 | `critical_path()` | The longest dependency chain in the graph. |
 | `cycles()` | Dependency cycles, each as an ordered list of references. |
+| `subgraph(refs)` | The induced subgraph for the supplied references. |
+| `neighborhood(ref)` | The commitment, its ancestors and its descendants. |
+| `redacted(keep_subject=False)` | A copy with payloads removed and subjects hidden by default. |
+| `to_mermaid()` / `to_dot()` | Export the graph as a Mermaid flowchart or Graphviz digraph. |
 | `to_dict()` / `from_dict(payload)` | Round-trip the local ledger and external commitments. |
 
 Each blocker carries a `ref`, the resolved `commitment` (or `None`) and a `reason` of `missing`,
-`open` or `unverified`.
+`open`, `unverified` or `stale`.
 
 ```mermaid
 flowchart LR
@@ -250,10 +282,11 @@ PlannerInput(
 
 The planner asks the graph with `require_verified=True` by default, so a `reported` external
 dependency does not count as done. Pass `require_verified=False` to `CommitmentPlanner` when the host
-accepts reported dependencies. Fulfilling a hard commitment while it is blocked makes the option
-infeasible, just like breaking it. The alternative records `blocked hard commitment: ...`, and the
-result attributes include `commitments_blocked_fulfilled` and `commitments_blocked_by` with
-`{owner, ledger, id, reason}` entries.
+accepts reported dependencies, and pass `max_verification_age` to reject stale `verified` ones.
+Fulfilling a hard commitment while it is blocked makes the option infeasible, just like breaking it.
+The alternative records `blocked hard commitment: ...`, and the result attributes include
+`commitments_blocked_fulfilled` and `commitments_blocked_by` with `{owner, ledger, id, reason}`
+entries.
 
 The commitment planner then scores an option's declared effect:
 

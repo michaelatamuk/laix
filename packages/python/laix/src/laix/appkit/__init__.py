@@ -71,15 +71,18 @@ from .execution import (
 from .loop import DecisionRuntime
 from .state import ExperienceState, InMemoryStateStore, StateStore
 from .commitments import (
+    AsyncCommitmentResolver,
     CommitmentResolver,
     InMemoryCommitmentResolver,
     resolve_commitment_graph,
+    resolve_commitment_graph_async,
 )
 
 __all__ = [
     "ApprovalDecision",
     "ApprovalRequest",
     "ApprovalRequired",
+    "AsyncCommitmentResolver",
     "Budget",
     "CAPABILITY_LEVELS",
     "CallableDetector",
@@ -139,6 +142,7 @@ __all__ = [
     "prometheus",
     "run_stream_bench",
     "resolve_commitment_graph",
+    "resolve_commitment_graph_async",
     "apply_proposal",
     "approve_proposal",
     "approve_record",

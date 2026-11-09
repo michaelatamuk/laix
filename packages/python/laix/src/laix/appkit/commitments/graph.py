@@ -7,7 +7,15 @@ from ...decision.domain.commitments import (
     CommitmentLedger,
     CommitmentRef,
 )
-from .port import CommitmentResolver
+from .port import AsyncCommitmentResolver, CommitmentResolver
+
+
+def _external_refs(local: CommitmentLedger) -> tuple[CommitmentRef, ...]:
+    return tuple(
+        dict.fromkeys(
+            ref for item in local.all() for ref in item.external_depends_on
+        )
+    )
 
 
 def resolve_commitment_graph(
@@ -19,12 +27,15 @@ def resolve_commitment_graph(
     The resolver may return fewer commitments than requested. The graph then
     reports the unresolved references through ``missing_refs``.
     """
-    refs: tuple[CommitmentRef, ...] = tuple(
-        dict.fromkeys(
-            ref for item in local.all() for ref in item.external_depends_on
-        )
-    )
-    return CommitmentGraph(local, resolver.resolve(refs))
+    return CommitmentGraph(local, resolver.resolve(_external_refs(local)))
 
 
-__all__ = ["resolve_commitment_graph"]
+async def resolve_commitment_graph_async(
+    local: CommitmentLedger,
+    resolver: AsyncCommitmentResolver,
+) -> CommitmentGraph:
+    """Async variant of :func:`resolve_commitment_graph`."""
+    return CommitmentGraph(local, await resolver.resolve(_external_refs(local)))
+
+
+__all__ = ["resolve_commitment_graph", "resolve_commitment_graph_async"]

@@ -344,6 +344,115 @@
       ],
       "expected_action_id": "finish",
       "expected_blocked_by": []
+    },
+    {
+      "id": "stale-verified-blocks-hard",
+      "require_verified": true,
+      "max_verification_age_seconds": 86400,
+      "local": [
+        {
+          "id": "deliver",
+          "subject": "deliver to the customer",
+          "external_depends_on": [
+            {
+              "owner": "supplier",
+              "ledger": "supplier",
+              "id": "ship"
+            }
+          ]
+        }
+      ],
+      "external": [
+        {
+          "id": "ship",
+          "subject": "ship the part",
+          "owner": "supplier",
+          "ledger": "supplier",
+          "status": "done",
+          "source": "verified",
+          "verified_at": "2026-10-30T09:00:00+00:00"
+        }
+      ],
+      "options": [
+        {
+          "id": "finish",
+          "verb": "act",
+          "name": "finish the delivery",
+          "expected_benefit": 1.0,
+          "params": {
+            "commitments": {
+              "fulfills": ["deliver"],
+              "hard": true
+            }
+          }
+        },
+        {
+          "id": "wait",
+          "verb": "wait",
+          "name": "wait for verification",
+          "expected_benefit": 0.1
+        }
+      ],
+      "expected_action_id": "wait",
+      "expected_blocked_by": [
+        {
+          "owner": "supplier",
+          "ledger": "supplier",
+          "id": "ship",
+          "reason": "stale"
+        }
+      ]
+    },
+    {
+      "id": "fresh-verified-allows-hard",
+      "require_verified": true,
+      "max_verification_age_seconds": 86400,
+      "local": [
+        {
+          "id": "deliver",
+          "subject": "deliver to the customer",
+          "external_depends_on": [
+            {
+              "owner": "supplier",
+              "ledger": "supplier",
+              "id": "ship"
+            }
+          ]
+        }
+      ],
+      "external": [
+        {
+          "id": "ship",
+          "subject": "ship the part",
+          "owner": "supplier",
+          "ledger": "supplier",
+          "status": "done",
+          "source": "verified",
+          "verified_at": "2026-11-01T09:30:00+00:00"
+        }
+      ],
+      "options": [
+        {
+          "id": "finish",
+          "verb": "act",
+          "name": "finish the delivery",
+          "expected_benefit": 1.0,
+          "params": {
+            "commitments": {
+              "fulfills": ["deliver"],
+              "hard": true
+            }
+          }
+        },
+        {
+          "id": "wait",
+          "verb": "wait",
+          "name": "wait for verification",
+          "expected_benefit": 0.1
+        }
+      ],
+      "expected_action_id": "finish",
+      "expected_blocked_by": []
     }
   ]
 }

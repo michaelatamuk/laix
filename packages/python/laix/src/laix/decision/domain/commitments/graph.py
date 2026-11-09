@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from dataclasses import dataclass
-from datetime import datetime, timezone
+from dataclasses import dataclass, replace
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from ...support.time import parse_iso
@@ -21,7 +21,16 @@ class CommitmentBlocker:
 
     ref: CommitmentRef
     commitment: Commitment | None
-    reason: str  # missing, open or unverified
+    reason: str  # missing, open, unverified or stale
+
+
+@dataclass(frozen=True, slots=True)
+class CommitmentGraphReport:
+    """The structural problems found in one graph."""
+
+    missing_refs: tuple[CommitmentRef, ...]
+    cycles: tuple[tuple[CommitmentRef, ...], ...]
+    stale_refs: tuple[CommitmentRef, ...] = ()
 
 
 def _ref_for(commitment: Commitment) -> CommitmentRef:
@@ -34,6 +43,10 @@ def _ref_for(commitment: Commitment) -> CommitmentRef:
 
 def _ref_for_key(key: tuple[str, str, str]) -> CommitmentRef:
     return CommitmentRef(owner=key[0], ledger=key[1] or None, id=key[2])
+
+
+def _freshness_clock(now: datetime | None) -> datetime:
+    return now or datetime.now(timezone.utc)
 
 
 class CommitmentGraph:
@@ -59,6 +72,9 @@ class CommitmentGraph:
                     f"{commitment.owner!r}"
                 )
             self._items[key] = commitment
+        self._reverse: dict[tuple[str, str, str], list[Commitment]] | None = None
+        self._critical_path: tuple[Commitment, ...] | None = None
+        self._cycles: tuple[tuple[CommitmentRef, ...], ...] | None = None
 
     @property
     def commitments(self) -> tuple[Commitment, ...]:
@@ -84,14 +100,44 @@ class CommitmentGraph:
         )
         return local + commitment.external_depends_on
 
+    def is_fresh(
+        self,
+        commitment: Commitment,
+        now: datetime,
+        max_age: timedelta,
+    ) -> bool:
+        """Whether a promise is still within its verification window."""
+        if commitment.source != "verified":
+            return True
+        verified = parse_iso(commitment.verified_at)
+        if verified is None:
+            return False
+        return now - verified <= max_age
+
+    def stale_refs(
+        self,
+        now: datetime,
+        max_age: timedelta,
+    ) -> tuple[CommitmentRef, ...]:
+        """Verified promises whose verification is older than ``max_age``."""
+        found = [
+            _ref_for(item)
+            for item in self.commitments
+            if not self.is_fresh(item, now, max_age)
+        ]
+        return tuple(dict.fromkeys(found))
+
     def blockers(
         self,
         commitment: Commitment,
         *,
         require_verified: bool = False,
+        now: datetime | None = None,
+        max_verification_age: timedelta | None = None,
     ) -> tuple[CommitmentBlocker, ...]:
         """Return every dependency that still blocks this commitment."""
         found: list[CommitmentBlocker] = []
+        clock = _freshness_clock(now) if max_verification_age is not None else None
         for ref in self.dependencies(commitment):
             item = self.get(ref)
             if item is None:
@@ -100,6 +146,13 @@ class CommitmentGraph:
                 found.append(CommitmentBlocker(ref, item, "open"))
             elif require_verified and not item.trusted:
                 found.append(CommitmentBlocker(ref, item, "unverified"))
+            elif (
+                require_verified
+                and max_verification_age is not None
+                and clock is not None
+                and not self.is_fresh(item, clock, max_verification_age)
+            ):
+                found.append(CommitmentBlocker(ref, item, "stale"))
         return tuple(found)
 
     def blocked(
@@ -107,18 +160,34 @@ class CommitmentGraph:
         commitment: Commitment,
         *,
         require_verified: bool = False,
+        now: datetime | None = None,
+        max_verification_age: timedelta | None = None,
     ) -> bool:
-        return bool(self.blockers(commitment, require_verified=require_verified))
+        return bool(
+            self.blockers(
+                commitment,
+                require_verified=require_verified,
+                now=now,
+                max_verification_age=max_verification_age,
+            )
+        )
 
     def blocked_open(
         self,
         *,
         require_verified: bool = False,
+        now: datetime | None = None,
+        max_verification_age: timedelta | None = None,
     ) -> tuple[Commitment, ...]:
         return tuple(
             item
             for item in self.local.open()
-            if self.blocked(item, require_verified=require_verified)
+            if self.blocked(
+                item,
+                require_verified=require_verified,
+                now=now,
+                max_verification_age=max_verification_age,
+            )
         )
 
     def next_actionable(
@@ -126,12 +195,18 @@ class CommitmentGraph:
         now: datetime | None = None,
         *,
         require_verified: bool = False,
+        max_verification_age: timedelta | None = None,
     ) -> Commitment | None:
         """Earliest open local commitment whose graph dependencies are done."""
         candidates = [
             item
             for item in self.local.open()
-            if not self.blocked(item, require_verified=require_verified)
+            if not self.blocked(
+                item,
+                require_verified=require_verified,
+                now=now,
+                max_verification_age=max_verification_age,
+            )
         ]
         if not candidates:
             return None
@@ -163,6 +238,25 @@ class CommitmentGraph:
                     found.append(ref)
         return tuple(dict.fromkeys(found))
 
+    def validate(
+        self,
+        *,
+        now: datetime | None = None,
+        max_verification_age: timedelta | None = None,
+    ) -> CommitmentGraphReport:
+        """Return missing references, cycles and stale verified promises."""
+        stale: tuple[CommitmentRef, ...] = ()
+        if max_verification_age is not None:
+            stale = self.stale_refs(
+                _freshness_clock(now),
+                max_verification_age,
+            )
+        return CommitmentGraphReport(
+            missing_refs=self.missing_refs(),
+            cycles=self.cycles(),
+            stale_refs=stale,
+        )
+
     def ancestors(self, ref: CommitmentRef) -> tuple[Commitment, ...]:
         """Commitments this one depends on, directly or transitively."""
         found: dict[tuple[str, str, str], Commitment] = {}
@@ -184,12 +278,18 @@ class CommitmentGraph:
                 stack.append(dependency)
         return tuple(found[key] for key in sorted(found))
 
+    def _reverse_index(self) -> dict[tuple[str, str, str], list[Commitment]]:
+        if self._reverse is None:
+            reverse: dict[tuple[str, str, str], list[Commitment]] = {}
+            for item in self.commitments:
+                for dependency in self.dependencies(item):
+                    reverse.setdefault(dependency.key, []).append(item)
+            self._reverse = reverse
+        return self._reverse
+
     def descendants(self, ref: CommitmentRef) -> tuple[Commitment, ...]:
         """Commitments that depend on this one, directly or transitively."""
-        reverse: dict[tuple[str, str, str], list[Commitment]] = {}
-        for item in self.commitments:
-            for dependency in self.dependencies(item):
-                reverse.setdefault(dependency.key, []).append(item)
+        reverse = self._reverse_index()
         found: dict[tuple[str, str, str], Commitment] = {}
 
         def walk(key: tuple[str, str, str], seen: set[tuple[str, str, str]]) -> None:
@@ -230,15 +330,19 @@ class CommitmentGraph:
 
     def critical_path(self) -> tuple[Commitment, ...]:
         """Longest dependency chain in the whole graph."""
-        best: tuple[Commitment, ...] = ()
-        for item in self.commitments:
-            path = self.chain(_ref_for(item))
-            if len(path) > len(best):
-                best = path
-        return best
+        if self._critical_path is None:
+            best: tuple[Commitment, ...] = ()
+            for item in self.commitments:
+                path = self.chain(_ref_for(item))
+                if len(path) > len(best):
+                    best = path
+            self._critical_path = best
+        return self._critical_path
 
     def cycles(self) -> tuple[tuple[CommitmentRef, ...], ...]:
         """Dependency cycles, each returned as its ordered references."""
+        if self._cycles is not None:
+            return self._cycles
         found: list[tuple[CommitmentRef, ...]] = []
         seen: set[tuple[tuple[str, str, str], ...]] = set()
         complete: set[tuple[str, str, str]] = set()
@@ -265,7 +369,93 @@ class CommitmentGraph:
 
         for key in self._items:
             walk(key, [])
-        return tuple(found)
+        self._cycles = tuple(found)
+        return self._cycles
+
+    def subgraph(self, refs: Iterable[CommitmentRef]) -> CommitmentGraph:
+        """The induced subgraph for the supplied references."""
+        keys = {ref.key for ref in refs}
+        local = CommitmentLedger(
+            tuple(item for item in self.local.all() if item.key in keys)
+        )
+        external = tuple(item for item in self.external if item.key in keys)
+        return CommitmentGraph(local, external)
+
+    def neighborhood(self, ref: CommitmentRef) -> CommitmentGraph:
+        """The commitment, its ancestors and its descendants."""
+        found: dict[tuple[str, str, str], Commitment] = {}
+        target = self.get(ref)
+        if target is not None:
+            found[target.key] = target
+        for item in (*self.ancestors(ref), *self.descendants(ref)):
+            found[item.key] = item
+        return self.subgraph(_ref_for(item) for item in found.values())
+
+    def redacted(self, *, keep_subject: bool = False) -> CommitmentGraph:
+        """A copy with every payload removed and, by default, every subject hidden."""
+
+        def clean(item: Commitment) -> Commitment:
+            return replace(
+                item,
+                subject=item.subject if keep_subject else "",
+                payload={},
+            )
+
+        return CommitmentGraph(
+            CommitmentLedger(tuple(clean(item) for item in self.local.all())),
+            tuple(clean(item) for item in self.external),
+        )
+
+    def to_mermaid(self) -> str:
+        """Render the graph as a Mermaid flowchart."""
+        ids = {item.key: f"n{index}" for index, item in enumerate(self.commitments)}
+        lines = ["flowchart LR"]
+        for item in self.commitments:
+            label = (
+                f"{item.owner} · {item.id} · {item.subject} · {item.status}"
+                .replace('"', "'")
+                .replace("\n", " ")
+            )
+            lines.append(f'    {ids[item.key]}["{label}"]')
+        for item in self.commitments:
+            for dependency in self.dependencies(item):
+                child = self.get(dependency)
+                if child is None:
+                    continue
+                kind = (
+                    "depends_on"
+                    if dependency in _local_refs(item)
+                    else "external_depends_on"
+                )
+                lines.append(f"    {ids[item.key]} -->|{kind}| {ids[child.key]}")
+        return "\n".join(lines)
+
+    def to_dot(self) -> str:
+        """Render the graph as a Graphviz digraph."""
+        ids = {item.key: f"n{index}" for index, item in enumerate(self.commitments)}
+        lines = ["digraph commitments {"]
+        for item in self.commitments:
+            label = (
+                f"{item.owner} · {item.id} · {item.subject} · {item.status}"
+                .replace('"', '\\"')
+                .replace("\n", " ")
+            )
+            lines.append(f'  {ids[item.key]} [label="{label}"];')
+        for item in self.commitments:
+            for dependency in self.dependencies(item):
+                child = self.get(dependency)
+                if child is None:
+                    continue
+                kind = (
+                    "depends_on"
+                    if dependency in _local_refs(item)
+                    else "external_depends_on"
+                )
+                lines.append(
+                    f'  {ids[item.key]} -> {ids[child.key]} [label="{kind}"];'
+                )
+        lines.append("}")
+        return "\n".join(lines)
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -285,4 +475,15 @@ class CommitmentGraph:
         )
 
 
-__all__ = ["CommitmentBlocker", "CommitmentGraph"]
+def _local_refs(commitment: Commitment) -> tuple[CommitmentRef, ...]:
+    return tuple(
+        CommitmentRef(
+            owner=commitment.owner,
+            ledger=commitment.ledger,
+            id=dependency,
+        )
+        for dependency in commitment.depends_on
+    )
+
+
+__all__ = ["CommitmentBlocker", "CommitmentGraph", "CommitmentGraphReport"]

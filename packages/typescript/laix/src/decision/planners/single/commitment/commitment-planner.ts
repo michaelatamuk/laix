@@ -42,7 +42,7 @@ export interface CommitmentBlock {
   owner: string;
   ledger: string | null;
   id: string;
-  reason: "missing" | "open" | "unverified";
+  reason: "missing" | "open" | "unverified" | "stale";
 }
 
 function round(value: number): number {
@@ -190,12 +190,18 @@ function optionBlockers(
   active: Map<string, Commitment>,
   graph: CommitmentGraph,
   requireVerified: boolean,
+  now: Date,
+  maxVerificationAgeMs?: number,
 ): CommitmentBlock[] {
   const found = new Map<string, CommitmentBlock>();
   for (const commitmentId of commitmentEffect(option).fulfills) {
     const commitment = active.get(commitmentId);
     if (!commitment) continue;
-    for (const blocker of graph.blockers(commitment, { requireVerified })) {
+    for (const blocker of graph.blockers(commitment, {
+      requireVerified,
+      now,
+      maxVerificationAgeMs,
+    })) {
       found.set(commitmentKey(blocker.ref), {
         owner: blocker.ref.owner,
         ledger: blocker.ref.ledger ?? null,
@@ -222,12 +228,13 @@ export class CommitmentPlanner {
   readonly model: UtilityModel;
   readonly weights: Required<CommitmentWeights>;
   readonly requireVerified: boolean;
+  readonly maxVerificationAgeMs?: number;
   private readonly utility: UtilityPlanner;
 
   constructor(
     model: UtilityModel = new UtilityModel(),
     weights: CommitmentWeights = {},
-    options: { requireVerified?: boolean } = {},
+    options: { requireVerified?: boolean; maxVerificationAgeMs?: number } = {},
   ) {
     this.model = model;
     this.weights = {
@@ -238,6 +245,7 @@ export class CommitmentPlanner {
       blocked: weights.blocked ?? 0.5,
     };
     this.requireVerified = options.requireVerified ?? true;
+    this.maxVerificationAgeMs = options.maxVerificationAgeMs;
     for (const [key, value] of Object.entries(this.weights)) {
       if (value < 0) throw new Error(`commitment weight ${key} must not be negative`);
     }
@@ -251,11 +259,18 @@ export class CommitmentPlanner {
     }
     const model = this.modelFor((problem.attributes ?? {}) as Record<string, unknown>);
     const { active, graph } = activeAndGraph(problem);
+    const now = new Date(problem.at);
     const blocked = (commitmentId: string): boolean => {
       const commitment = active.get(commitmentId);
-      return !commitment || graph.blocked(commitment, { requireVerified: this.requireVerified });
+      return (
+        !commitment ||
+        graph.blocked(commitment, {
+          requireVerified: this.requireVerified,
+          now,
+          maxVerificationAgeMs: this.maxVerificationAgeMs,
+        })
+      );
     };
-    const now = new Date(problem.at);
     const rows: Row[] = options.map((option) => {
       const score = commitmentScoreOption(
         option,
@@ -271,7 +286,14 @@ export class CommitmentPlanner {
         score,
         feasible: model.feasible(option) && blocker === null && score.blocked === null,
         blocker: score.blocked ?? blocker,
-        blockedBy: optionBlockers(option, active, graph, this.requireVerified),
+        blockedBy: optionBlockers(
+          option,
+          active,
+          graph,
+          this.requireVerified,
+          now,
+          this.maxVerificationAgeMs,
+        ),
       };
     });
     const feasible = rows.filter((row) => row.feasible);

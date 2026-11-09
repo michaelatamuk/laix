@@ -83,6 +83,18 @@ The decision package no longer nests algorithms under `engines/`, and the app ki
 
 The top-level `from laix import ...` surface is unchanged. Only deep imports move.
 
+## 0.16.0: freshness and graph tooling
+
+`CommitmentBlocker.reason` can now be `stale` in addition to `missing`, `open` and `unverified`.
+Code that branches on the reason should handle it.
+
+The planner accepts `max_verification_age` (Python) or `maxVerificationAgeMs` (TypeScript). The
+default is `None`, so existing decisions do not change until the host opts in.
+
+The graph adds `is_fresh`, `stale_refs`, `validate`, `subgraph`, `neighborhood`, `redacted`,
+`to_mermaid` and `to_dot`. The app kit adds `AsyncCommitmentResolver` and
+`resolve_commitment_graph_async` / `resolveCommitmentGraphAsync`.
+
 ## 0.15.0: configurable commitment verification
 
 `CommitmentPlanner` now takes `require_verified` — a Python keyword argument or the third TypeScript
@@ -286,5 +298,5 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.15.0`. Add a new entry here when a release requires host changes; keep it
+The current release is `0.16.0`. Add a new entry here when a release requires host changes; keep it
 short and concrete.

@@ -18,6 +18,11 @@ export interface CommitmentResolver {
   resolve(refs: CommitmentRef[]): Commitment[];
 }
 
+export interface AsyncCommitmentResolver {
+  /** An async variant for hosts that fetch before planning. */
+  resolve(refs: CommitmentRef[]): Promise<Commitment[]>;
+}
+
 export class InMemoryCommitmentResolver implements CommitmentResolver {
   private readonly items = new Map<string, Commitment>();
 
@@ -44,6 +49,20 @@ export function resolveCommitmentGraph(
   local: CommitmentLedger,
   resolver: CommitmentResolver,
 ): CommitmentGraph {
+  return new CommitmentGraph(local, resolver.resolve(externalCommitmentRefs(local)));
+}
+
+export async function resolveCommitmentGraphAsync(
+  local: CommitmentLedger,
+  resolver: AsyncCommitmentResolver,
+): Promise<CommitmentGraph> {
+  return new CommitmentGraph(
+    local,
+    await resolver.resolve(externalCommitmentRefs(local)),
+  );
+}
+
+function externalCommitmentRefs(local: CommitmentLedger): CommitmentRef[] {
   const seen = new Set<string>();
   const refs: CommitmentRef[] = [];
   for (const item of local.all()) {
@@ -54,5 +73,5 @@ export function resolveCommitmentGraph(
       refs.push(ref);
     }
   }
-  return new CommitmentGraph(local, resolver.resolve(refs));
+  return refs;
 }

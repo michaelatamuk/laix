@@ -9,7 +9,7 @@ due times come from the host.
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from ....domain.decisions import ActionOption
@@ -186,6 +186,8 @@ def _option_blockers(
     active: dict[str, Commitment],
     graph: CommitmentGraph,
     require_verified: bool,
+    now: datetime,
+    max_verification_age: timedelta | None,
 ) -> tuple[dict[str, Any], ...]:
     """Return the graph blockers for the commitments this option fulfills."""
     found: dict[tuple[str, str, str], dict[str, Any]] = {}
@@ -193,7 +195,12 @@ def _option_blockers(
         commitment = active.get(commitment_id)
         if commitment is None:
             continue
-        for blocker in graph.blockers(commitment, require_verified=require_verified):
+        for blocker in graph.blockers(
+            commitment,
+            require_verified=require_verified,
+            now=now,
+            max_verification_age=max_verification_age,
+        ):
             found[blocker.ref.key] = {
                 "owner": blocker.ref.owner,
                 "ledger": blocker.ref.ledger,
@@ -214,10 +221,12 @@ class CommitmentPlanner:
         weights: CommitmentWeights | None = None,
         *,
         require_verified: bool = True,
+        max_verification_age: timedelta | None = None,
     ) -> None:
         self.model = model
         self.weights = weights or CommitmentWeights()
         self.require_verified = require_verified
+        self.max_verification_age = max_verification_age
         self._utility = UtilityPlanner(model)
 
     def solve(self, problem: PlannerInput) -> PlannerResult:
@@ -232,7 +241,10 @@ class CommitmentPlanner:
         def blocked(commitment_id: str) -> bool:
             commitment = active.get(commitment_id)
             return True if commitment is None else graph.blocked(
-                commitment, require_verified=self.require_verified
+                commitment,
+                require_verified=self.require_verified,
+                now=now,
+                max_verification_age=self.max_verification_age,
             )
 
         rows: list[_Row] = []
@@ -247,7 +259,12 @@ class CommitmentPlanner:
                     feasible=feasible,
                     blocker=score.blocked or blocker,
                     blocked_by=_option_blockers(
-                        option, active, graph, self.require_verified
+                        option,
+                        active,
+                        graph,
+                        self.require_verified,
+                        now,
+                        self.max_verification_age,
                     ),
                 )
             )
