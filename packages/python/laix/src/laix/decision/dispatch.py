@@ -11,8 +11,8 @@ from dataclasses import replace
 from typing import Any
 
 from .domain.decisions import Decision, DecisionRequest, coerce, from_signal_attention
-from .engines.sensing.signals import decide_signal_attention
-from .engines.decision.single.policies import ActionPolicy, ActionPolicyInput
+from .sensing.signals import decide_signal_attention
+from .policies import ActionPolicy, ActionPolicyInput
 from .support.ids import new_id
 
 

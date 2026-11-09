@@ -10,16 +10,16 @@ from __future__ import annotations
 from typing import Any
 
 from laix import PlannerResult
-from laix.decision.engines.decision.single.planners.human_attention.human_attention_planner import (
+from laix.decision.planners.single.human_attention.human_attention_planner import (
     _remaining,
     approval_state,
     human_attention_effect,
 )
-from laix.decision.engines.decision.single.planners.commitment.commitment_planner import (
+from laix.decision.planners.single.commitment.commitment_planner import (
     _commitments,
     commitment_effect,
 )
-from laix.decision.engines.decision.single.planners.utility.utility_planner import (
+from laix.decision.planners.single.utility.utility_planner import (
     UtilityPlanner,
     _approval_required,
     _constraint_blocker,

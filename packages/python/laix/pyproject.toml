@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "laix"
-version = "0.12.0"
+version = "0.13.0"
 description = "LAIX: Live AI Experience. The decision layer for live AI experiences: decisions, timing, approval, audit and outcomes."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -39,8 +39,8 @@ include = ["laix*"]
 [tool.setuptools.package-data]
 "laix" = ["py.typed"]
 "laix.decision.schema" = ["*.json"]
-"laix.decision.engines.sensing.signals" = ["*.json"]
-"laix.decision.engines.evaluation.cases" = ["*.json"]
+"laix.decision.sensing.signals" = ["*.json"]
+"laix.decision.evaluation.cases" = ["*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

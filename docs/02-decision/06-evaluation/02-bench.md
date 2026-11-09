@@ -5,7 +5,7 @@ fixed corpus, and does the ranking hold across decision classes?
 
 | Benchmark | Question | Location |
 |---|---|---|
-| **Live decision benchmark** | Which training-free planner is accurate and safe on the fixed live cases? | `decision/engines/evaluation/bench/` |
+| **Live decision benchmark** | Which training-free planner is accurate and safe on the fixed live cases? | `decision/evaluation/bench/` |
 | **LAIX-Bench** | Does every decision class agree with its expected cases? | `appkit/bench/` |
 | **Parity** | Do Python and TypeScript agree on the same corpus? | `results/live-decision-benchmark/parity/` |
 

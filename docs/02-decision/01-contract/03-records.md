@@ -125,9 +125,9 @@ decision:
 | Shape | Module | Role |
 |---|---|---|
 | `DecisionRequest` | `domain/decisions/request/decision_request.py` | the public request |
-| `Signal` | `engines/sensing/signals/input/signal.py` | one item that may need attention |
-| `SignalContext` | `engines/sensing/signals/input/signal_context.py` | time, quiet hours, thresholds, budget and feedback |
-| `SignalFeedback` | `engines/sensing/signals/input/signal_feedback.py` | the last response to a signal |
+| `Signal` | `sensing/signals/input/signal.py` | one item that may need attention |
+| `SignalContext` | `sensing/signals/input/signal_context.py` | time, quiet hours, thresholds, budget and feedback |
+| `SignalFeedback` | `sensing/signals/input/signal_feedback.py` | the last response to a signal |
 | `EvidenceRef` | `domain/decisions/response/payload/evidence_ref.py` | a reference that supports a decision |
 | `Intent` | `domain/decisions/response/payload/intent.py` | capability and arguments the host can execute |
 | `ScoreBreakdown` | `domain/decisions/response/payload/score_breakdown.py` | the parts of a signal-attention score |
@@ -191,7 +191,7 @@ The schema enums come from the code:
 
 | Thing | Version | Source |
 |---|---|---|
-| Package | `0.12.0` | `packages/python/laix/pyproject.toml`, `packages/typescript/laix/package.json` |
+| Package | `0.13.0` | `packages/python/laix/pyproject.toml`, `packages/typescript/laix/package.json` |
 | Record schema | `0.8.0` | `decision/support/version.py`, `contracts.ts` |
 | Rule sets | `0.8.0` | policy versions and vectors |
 | Signal-attention vectors | `0.8.0` | `signal-attention.v1.json` and conformance fixtures |

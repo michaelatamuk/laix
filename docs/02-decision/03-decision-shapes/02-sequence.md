@@ -103,5 +103,5 @@ layer, not a new guarantee. An uncertain or infinite-horizon version remains res
 - [Single decision](01-single/README.md)
 - [Fleet](03-fleet.md)
 - [History](04-history.md)
-- [Algorithm directions](../../06-research/01-positioning/04-algorithm-directions.md)
+- [Algorithm directions](../../06-research/01-positioning/algorithm-directions.md)
 - [Algorithm prototype results](../../06-research/02-evaluation/algorithm-prototypes.md)

@@ -217,22 +217,22 @@ learning changes the chooser; evaluation proves it; support holds the infrastruc
 |---|---|
 | `decision/domain/decisions/` | request, response and trail records. |
 | `decision/dispatch.py` | `decide` and `select`. |
-| `decision/engines/sensing/signals/` | signal attention, gates, score and timing. |
-| `decision/engines/decision/single/policies/` | decision-policy protocol, registry and packaged policies. |
+| `decision/sensing/signals/` | signal attention, gates, score and timing. |
+| `decision/policies/` | decision-policy protocol, registry and packaged policies. |
 | `decision/contract/` | `PlannerInput`, `PlannerResult`, `Planner` and `PlannerPolicy`. |
-| `decision/engines/decision/single/planners/` | utility, commitment, execution, human-attention, decision-value, composite, MDP and POMDP planners. |
-| `decision/engines/decision/single/planners/composite/` | `LiveCompositePlanner` and `CompositeScore`. |
-| `decision/engines/decision/sequence/` | finite-horizon sequence contract, `CABBPlanner`, `RolloutPlanner` and `ReplanPlanner`. |
-| `decision/engines/decision/fleet/` | `AttentionScheduler` and the exact single-arm `WhittleScheduler`. |
-| `decision/engines/decision/history/` | `repair_continuity` for conflicting decision histories. |
-| `decision/engines/decision/explain/` | `counterfactual_attribution` and `counterfactual_search`. |
-| `decision/engines/evaluation/simulation/` | simulator, scenarios and planner comparison. |
-| `decision/engines/evaluation/bench/` | the live decision benchmark. |
-| `decision/engines/sensing/resources/` | budget, resource plan, scheduler and sensing options. |
+| `decision/planners/single/` | utility, commitment, execution, human-attention, decision-value, composite, MDP and POMDP planners. |
+| `decision/planners/single/composite/` | `LiveCompositePlanner` and `CompositeScore`. |
+| `decision/planners/sequence/` | finite-horizon sequence contract, `CABBPlanner`, `RolloutPlanner` and `ReplanPlanner`. |
+| `decision/planners/fleet/` | `AttentionScheduler` and the exact single-arm `WhittleScheduler`. |
+| `decision/planners/history/` | `repair_continuity` for conflicting decision histories. |
+| `decision/planners/explain/` | `counterfactual_attribution` and `counterfactual_search`. |
+| `decision/evaluation/simulation/` | simulator, scenarios and planner comparison. |
+| `decision/evaluation/bench/` | the live decision benchmark. |
+| `decision/sensing/resources/` | budget, resource plan, scheduler and sensing options. |
 | `decision/domain/commitments/` | commitment model, ledger and stores. |
 | `decision/domain/outcomes/` | outcome records, ledger, stores and signal-attention feedback records. |
-| `decision/engines/learning/` | calibration, model learning, bandit and causal attribution. |
-| `decision/engines/evaluation/cases/` | cases, rows, reports and decision comparison. |
+| `decision/learning/` | calibration, model learning, bandit and causal attribution. |
+| `decision/evaluation/cases/` | cases, rows, reports and decision comparison. |
 | `decision/domain/perception/` | detector, detection, event and frame. |
 | `decision/schema/` | record registry, schema generation and validation. |
 | `decision/support/` | ids, time, values, serialization, errors, verbs and version. |

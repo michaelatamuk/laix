@@ -138,5 +138,5 @@ built-in dispatch rule; use [Policies in the app](03-policies-in-the-app.md) for
 
 - [Integration](01-integration.md) - the adapter around the call.
 - [Policies in the app](03-policies-in-the-app.md) - the policy registry and rollout.
-- [Decision loop](../02-run/01-decision-runtime.md) - the loop behind `DecisionClient`.
+- [Decision loop](../02-run/01-decision-loop.md) - the loop behind `DecisionClient`.
 - [Execution and recovery](../03-execute/01-execution-and-recovery.md) - the write boundary.

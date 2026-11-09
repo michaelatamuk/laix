@@ -123,7 +123,7 @@ call the detector directly.
 
 ## Related
 
-- [Decision loop](01-decision-runtime.md) - the decision loop after perception.
+- [Decision loop](01-decision-loop.md) - the decision loop after perception.
 - [Streaming](02-streaming.md) - event time and the live loop.
 - [Integration](../01-build/01-integration.md) - turning a frame into a request.
 - [Resources](../../02-decision/04-sensing/02-resources.md) - the budget and scheduler.

@@ -5,9 +5,9 @@ case? It is the smallest proof layer and the base for the benchmarks.
 
 | Layer | Question | Location |
 |---|---|---|
-| **Cases** | Did the decision match the expected fields? | `decision/engines/evaluation/cases/` |
-| **Bench** | Which planner is accurate and safe on the fixed corpus? | `decision/engines/evaluation/bench/` |
-| **Simulation** | How do planners compare on the same trace? | `decision/engines/evaluation/simulation/` |
+| **Cases** | Did the decision match the expected fields? | `decision/evaluation/cases/` |
+| **Bench** | Which planner is accurate and safe on the fixed corpus? | `decision/evaluation/bench/` |
+| **Simulation** | How do planners compare on the same trace? | `decision/evaluation/simulation/` |
 
 ## Decision evaluation
 
@@ -50,7 +50,7 @@ JSON document. `compare_decisions` is the package-level alias for `compare`.
 
 ## Attention evaluation
 
-The attention fixture has its own helpers in `decision/engines/evaluation/cases/signal_attention.py`:
+The attention fixture has its own helpers in `decision/evaluation/cases/signal_attention.py`:
 
 | Helper | Purpose |
 |---|---|

@@ -1,5 +1,5 @@
 import type { Planner, PlannerInput } from "../decision/contract/planner.ts";
-import type { MdpModel } from "../decision/engines/decision/single/planners/mdp/mdp-planner.ts";
+import type { MdpModel } from "../decision/planners/single/mdp/mdp-planner.ts";
 import { SimulationReport } from "./simulation-report.ts";
 
 export { SimulationReport };

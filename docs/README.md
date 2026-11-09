@@ -10,8 +10,8 @@ owns the experience; LAIX owns the decision.
 LAIX turns what is happening, the options the host can offer and the limits the host sets into one
 decision.
 
-Numbered sections are read in order. Concepts and Project are reference sections and stay
-unnumbered.
+The top-level numbers give the reading order. Concepts and Project are reference sections, so their
+pages are not a sequence. Research is a staged evidence plan.
 
 ## Start here
 
@@ -30,7 +30,7 @@ Read in order.
 | [Decision overview](02-decision/README.md) | the layers, the decision loop and the reading map |
 | [Contract](02-decision/01-contract/README.md) | request, response, planner contract, records and dispatch |
 | [Domain](02-decision/02-domain/README.md) | decisions, commitments, outcomes and perception |
-| [Decision](02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history and explain |
+| [Decision shapes](02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history and explain |
 | [Sensing](02-decision/04-sensing/README.md) | signal attention and resource admission |
 | [Learning](02-decision/05-learning/README.md) | calibration, model learning, bandit and causal attribution |
 | [Evaluation](02-decision/06-evaluation/README.md) | cases, benchmarks, simulation and continuity |

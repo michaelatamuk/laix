@@ -42,7 +42,7 @@ contracts in detail.
 | **Composite score** | The four terms `LiveCompositePlanner` combines for one option: utility, commitment, execution and human attention. |
 | **Live composite planner** | `LiveCompositePlanner`: the composite planner that turns the four planner scores into one `PlannerResult`. |
 | **Attention** | The shared idea: what deserves a person's limited time. Two mechanisms use it: signal attention and human-attention planning. |
-| **Signal attention** | The gate pipeline in `decision/engines/sensing/signals/` that ranks signals and returns `guide`, `wait`, `act` or `escalate`. |
+| **Signal attention** | The gate pipeline in `decision/sensing/signals/` that ranks signals and returns `guide`, `wait`, `act` or `escalate`. |
 | **Human-attention planning** | `HumanAttentionPlanner`: pricing interruption, approval and escalation when choosing an action. |
 | **Human-attention budget** | The interruption and approval capacity a task may spend; HumanAttentionBudget. |
 | **Signal interruption budget** | A per-cycle cap on delivered signal decisions, set by `SignalContext.signal_interruption_budget`. |
@@ -98,7 +98,7 @@ contracts in detail.
 
 | Term | Meaning |
 |---|---|
-| **Decision layer** | The stateless decision package: contract, domain records, decision engines, sensing, learning, evaluation and support. |
+| **Decision layer** | The stateless decision package: contract, domain records, decision planners, policies, sensing, learning, evaluation and support. |
 | **Domain** | The records and state layer: decisions, commitments, outcomes and perception. |
 | **Engine** | The processing layer: decision, sensing, learning and evaluation. |
 | **App kit** | The optional LAIX layer around the decision layer: decision loop, streaming, execution, stores, platform and bench. |

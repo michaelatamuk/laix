@@ -72,7 +72,7 @@ REASON_CODE_GROUPS: dict[str, tuple[str, ...]] = {
 
 def reason_code_registry() -> dict[str, Any]:
     """Return the versioned registry, with signal attention read from its enum."""
-    from ..engines.sensing.signals.gates.reason import REASONS
+    from ..sensing.signals.gates.reason import REASONS
 
     groups = {
         "signal_attention": tuple(REASONS),

@@ -123,4 +123,4 @@ They do not show:
 - that the prototypes match the full research methods.
 
 The next step is a larger benchmark with real cases, baselines and ablations, as described in
-[Algorithm directions](../01-positioning/04-algorithm-directions.md).
+[Algorithm directions](../01-positioning/algorithm-directions.md).

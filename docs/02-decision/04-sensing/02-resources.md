@@ -105,10 +105,10 @@ the decision verb and uses the allowed looks.
 
 | Path | Contents |
 |---|---|
-| `decision/engines/sensing/resources/budget.py` | `Budget` |
-| `decision/engines/sensing/resources/sensing_option.py` | `SensingOption` |
-| `decision/engines/sensing/resources/plan.py` | `ResourcePlan` |
-| `decision/engines/sensing/resources/scheduler.py` | `ResourceScheduler` |
+| `decision/sensing/resources/budget.py` | `Budget` |
+| `decision/sensing/resources/sensing_option.py` | `SensingOption` |
+| `decision/sensing/resources/plan.py` | `ResourcePlan` |
+| `decision/sensing/resources/scheduler.py` | `ResourceScheduler` |
 
 ## Related
 

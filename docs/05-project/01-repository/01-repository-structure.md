@@ -88,41 +88,31 @@ packages/python/laix/src/laix/
 ├── decision/
 │   ├── __init__.py          decision surface
 │   ├── dispatch.py          decide and select
-│   ├── contract/             planner.py, planner_input.py, planner_result.py, planner_policy.py
+│   ├── contract/            planner.py, planner_input.py, planner_result.py, planner_policy.py
 │   ├── domain/
-│   │   ├── decisions/        request, response, trail and normalise
-│   │   ├── commitments/      commitment ledger, stores and planning state
-│   │   ├── outcomes/         outcome record, ledger, store and signal-attention feedback
-│   │   └── perception/       detection, detector, event and frame
-│   ├── engines/
-│   │   ├── decision/
-│   │   │   ├── single/
-│   │   │   │   ├── planners/
-│   │   │   │   │   ├── utility/     utility planner, model and weights
-│   │   │   │   │   ├── mdp/         MDP model, transitions, value iteration and planner
-│   │   │   │   │   ├── pomdp/       POMDP model, observations, belief state and planner
-│   │   │   │   │   ├── commitment/  commitment-aware planner, effects and weights
-│   │   │   │   │   ├── execution/   execution-aware planner, effects and weights
-│   │   │   │   │   ├── human_attention/   human-attention planner, budget and effects
-│   │   │   │   │   ├── decision_value/    CA-VOD planner, weights and score
-│   │   │   │   │   └── composite/         LiveCompositePlanner and composite score
-│   │   │   │   └── policies/       decision_policy.py, registry, simulation and implementations/ (packs, rules, target, planning, group)
-│   │   │   ├── sequence/           sequence contract, CABB, rollout and replan
-│   │   │   ├── fleet/              attention scheduling and the exact Whittle index
-│   │   │   ├── history/            continuity repair
-│   │   │   └── explain/            attribution and counterfactual search
-│   │   ├── sensing/
-│   │   │   ├── signals/            input, output, gates/, signal-attention.v1.json, decide, score
-│   │   │   └── resources/          budget, sensing option, plan, scheduler
-│   │   ├── learning/
-│   │   │   ├── calibration/        confidence and decision calibration
-│   │   │   ├── model/              learned transition and model learning
-│   │   │   ├── bandit/             arm, UCB learner and reward mapping
-│   │   │   └── causal/             causal attribution
-│   │   └── evaluation/
-│   │       ├── cases/              case, row, report, compare, signal attention replay and signal-attention-bench.v1.json
-│   │       ├── bench/              live benchmark, cases, rows, metrics and baselines
-│   │       └── simulation/         simulator, scenario, step, result, report and planner score
+│   │   ├── decisions/       request, response, trail and normalise
+│   │   ├── commitments/     commitment ledger, stores and planning state
+│   │   ├── outcomes/        outcome record, ledger, store and signal-attention feedback
+│   │   └── perception/      detection, detector, event and frame
+│   ├── planners/
+│   │   ├── single/          utility, mdp, pomdp, commitment, execution, human_attention, decision_value, composite
+│   │   ├── sequence/        sequence contract, CABB, rollout and replan
+│   │   ├── fleet/           attention scheduling and the exact Whittle index
+│   │   ├── history/         continuity repair
+│   │   └── explain/         attribution and counterfactual search
+│   ├── policies/            decision_policy.py, registry, simulation and implementations/
+│   ├── sensing/
+│   │   ├── signals/         input, output, gates/, signal-attention.v1.json, decide, score
+│   │   └── resources/       budget, sensing option, plan, scheduler
+│   ├── learning/
+│   │   ├── calibration/     confidence and decision calibration
+│   │   ├── model/           learned transition and model learning
+│   │   ├── bandit/          arm, UCB learner and reward mapping
+│   │   └── causal/          causal attribution
+│   ├── evaluation/
+│   │   ├── cases/           case, row, report, compare, signal attention replay
+│   │   ├── bench/           live benchmark, cases, rows, metrics and baselines
+│   │   └── simulation/      simulator, scenario, step, result, report and planner score
 │   ├── schema/              build, check, records and laix-v1.schema.json
 │   └── support/             time, ids, values, serialize, errors, verbs, version
 └── appkit/
@@ -130,7 +120,9 @@ packages/python/laix/src/laix/
     ├── decision_client.py   public DecisionClient
     ├── cli.py               laix explain and lint
     ├── mcp_server.py        optional laix-mcp stdio server
-    ├── runtime/             decision loop, execution, async, retry, saga, state, stores
+    ├── loop/                DecisionRuntime
+    ├── execution/           ExecutionBridge, saga, retry and async
+    ├── state/               ExperienceState and stores
     ├── audit/               decision record, proposal, approval, undo, audit event
     ├── delivery/            port, receipt, null
     ├── platform/            platform, in-memory, skill call, approvals, event, capability
@@ -155,34 +147,24 @@ packages/typescript/laix/src/
 │   │   ├── commitments/   commitment ledger and stores
 │   │   ├── outcomes/      outcome ledger and stores
 │   │   └── perception/perception.ts detector and frame contracts
-│   ├── engines/
-│   │   ├── decision/
-│   │   │   ├── single/
-│   │   │   │   ├── planners/
-│   │   │   │   │   ├── utility/   utility planner and model
-│   │   │   │   │   ├── mdp/       MDP model, value iteration and planner
-│   │   │   │   │   ├── pomdp/     POMDP model, belief update and planner
-│   │   │   │   │   ├── commitment/ commitment-aware planner
-│   │   │   │   │   ├── execution/ execution-aware planner
-│   │   │   │   │   ├── human-attention/ human-attention planner and budget
-│   │   │   │   │   ├── decision-value/ CA-VOD planner, weights and score
-│   │   │   │   │   └── composite/ LiveCompositePlanner
-│   │   │   │   └── policies/      eight packs, bandit, rules, target, planning, group, shadow, decision-policy-registry
-│   │   │   ├── sequence/          contract, CABB, rollout and replan
-│   │   │   ├── fleet/             attention scheduling and the exact Whittle index
-│   │   │   ├── history/           continuity repair
-│   │   │   └── explain/           attribution and counterfactual search
-│   │   ├── sensing/
-│   │   │   ├── signals/signal-attention.ts signal-attention policy
-│   │   │   └── resources.ts   budget and resource admission
-│   │   ├── learning/
-│   │   │   ├── calibration/   confidence and decision calibration
-│   │   │   ├── model/         learned transition and model learning
-│   │   │   ├── bandit/        UCB learner and reward mapping
-│   │   │   └── causal/        causal ledger
-│   │   └── evaluation/
-│   │       ├── cases/evaluation.ts parity harness
-│   │       └── bench/             live benchmark and baselines
+│   ├── planners/
+│   │   ├── single/        utility, mdp, pomdp, commitment, execution, human-attention, decision-value, composite
+│   │   ├── sequence/      contract, CABB, rollout and replan
+│   │   ├── fleet/         attention scheduling and the exact Whittle index
+│   │   ├── history/       continuity repair
+│   │   └── explain/       attribution and counterfactual search
+│   ├── policies/          eight packs, bandit, rules, target, planning, group, shadow
+│   ├── sensing/
+│   │   ├── signals/signal-attention.ts signal-attention policy
+│   │   └── resources.ts   budget and resource admission
+│   ├── learning/
+│   │   ├── calibration/   confidence and decision calibration
+│   │   ├── model/         learned transition and model learning
+│   │   ├── bandit/        UCB learner and reward mapping
+│   │   └── causal/        causal ledger
+│   └── evaluation/
+│       ├── cases/evaluation.ts parity harness
+│       └── bench/         live benchmark and baselines
 └── appkit/
     ├── index.ts       optional app surface
     ├── decision-client.ts public DecisionClient and action policy
@@ -201,7 +183,9 @@ packages/typescript/laix/src/
     ├── proposal.ts    proposal lifecycle
     ├── delivery.ts    delivery port
     ├── bench.ts       LAIX-Bench
-    └── runtime/       execution, async, retry, saga, state and stores
+    ├── loop/          decision loop
+    ├── execution/     execution, retry and saga
+    └── state/         experience state and stores
 ```
 
 The TypeScript package mirrors the same folders under `src/decision` and `src/appkit`. It exports one
@@ -228,8 +212,9 @@ and the canonical file differ. The decision schema and reason-code registry are 
 ## Rules
 
 - One class per file; functions may share a small module with their owner.
-- Layer the decision package by role: `contract` (interfaces), `domain` (records and state), `engines` (processing) and `support`/`schema` (infrastructure).
-- Group engine folders by decision shape: `decision/single`, `decision/sequence`, `decision/fleet`, `decision/history`, `decision/explain`; keep `sensing`, `learning` and `evaluation` as separate processing families.
-- Mirror source folders in tests: `contract/`, `domain/`, `engines/`, `support/`, `schema/`.
+- Layer the decision package by role: `contract` (interfaces), `domain` (records and state), `planners` (algorithms), `policies` (choosers), `sensing`/`learning`/`evaluation` (processing) and `support`/`schema` (infrastructure).
+- Group planners by decision shape: `planners/single`, `planners/sequence`, `planners/fleet`, `planners/history`, `planners/explain`; keep `sensing`, `learning` and `evaluation` as separate processing families.
+- Keep `policies/` separate from `planners/`: a policy is a chooser, a planner is an algorithm.
+- Mirror source folders in tests: `contract/`, `domain/`, `planners/`, `policies/`, `sensing/`, `learning/`, `evaluation/`, `support/`, `schema/`.
 - Keep the public API in `__init__.py` and `index.ts`.
 - Use generic words and leave app, domain and vendor names out.

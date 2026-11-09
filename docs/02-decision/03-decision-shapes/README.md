@@ -4,12 +4,14 @@ The decision layer contains every algorithm that turns options and state into a 
 that sentence:
 
 ```text
-engines/decision/
+decision/planners/
   single/      # one live decision
   sequence/    # a finite chain of decisions
   fleet/       # many pending decisions competing for attention
   history/     # a decision history that may need repair
   explain/     # why a decision happened, and what would flip it
+
+decision/policies/   # the chooser layer
 ```
 
 ## The two planner protocols
@@ -18,7 +20,7 @@ engines/decision/
 - `SequencePlanner` answers a chain: `plan(DecisionScenario) -> DecisionPlan`.
 
 They are both decision planners, but they do not share a signature. The single-decision planners live
-under `single/planners`; the sequence planners live under `sequence/`. That is why the docs keep them as
+under `planners/single`; the sequence planners live under `planners/sequence`. That is why the docs keep them as
 siblings, not as one folder inside the other.
 
 ## Read in order

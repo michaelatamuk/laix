@@ -24,7 +24,7 @@ a model the host supplies.
 **Who it is for:** teams building AI agents or automations that take real actions — especially when
 approvals, promises, human attention or auditability matter.
 
-**Status:** pre-1.0 (`0.12.0`). Evidence: internal benchmarks and a synthetic continuity test;
+**Status:** pre-1.0 (`0.13.0`). Evidence: internal benchmarks and a synthetic continuity test;
 external validation is pending.
 
 [Quickstart](docs/01-start/02-first-steps/01-quickstart.md) ·
@@ -149,7 +149,7 @@ The same shape works for signal attention, policies, planners and the live compo
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.12.0#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.13.0#subdirectory=packages/python/laix"
 ```
 
 From a local checkout, at the repository root:
@@ -363,4 +363,4 @@ If you use LAIX in research, cite it via [CITATION.cff](CITATION.cff).
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE). Current release: `0.12.0`.
+Apache-2.0. See [LICENSE](LICENSE). Current release: `0.13.0`.

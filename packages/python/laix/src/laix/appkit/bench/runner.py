@@ -15,10 +15,10 @@ import json
 from datetime import datetime, timezone
 from typing import Any, Mapping, Sequence
 
-from ...decision.engines.sensing.signals import SignalContext, SignalFeedback, Signal
-from ...decision.engines.evaluation.bench.live_bench import run_live_bench
+from ...decision.sensing.signals import SignalContext, SignalFeedback, Signal
+from ...decision.evaluation.bench.live_bench import run_live_bench
 from ...decision.domain.decisions import ActionOption, Belief, DecisionRequest, Situation
-from ...decision.engines.decision.single.policies import (
+from ...decision.policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
     EscalationPolicy,
