@@ -30,6 +30,34 @@ validation pending.
 [Examples](examples/README.md) ·
 [Issues](https://github.com/michaelatamuk/laix/issues)
 
+## Why LAIX
+
+- **The decision is explicit.** Every decision carries a verb, a reason code, confidence, a score
+  and a trace. The app branches on the reason code, not on prose.
+- **The next decision starts from the current state.** Commitments, human-attention budget, approvals,
+  revisions, receipts and outcomes carry forward. A decision is a step, not a snapshot.
+- **The host keeps control.** The decision layer is stateless. The host owns execution, data, storage
+  and delivery; the optional app kit adds the lifecycle around the decision.
+- **It is portable and testable.** Python uses the standard library only. TypeScript mirrors the same
+  contract, and CI checks parity, conformance, examples and the benchmark.
+
+## When to use LAIX
+
+| You need | Use |
+|---|---|
+| Orchestration, tools and memory | An agent framework, with LAIX inside it. |
+| Durable execution, retries and process state | A workflow engine, with LAIX deciding. |
+| One explicit decision with reason, approval, audit and continuity | LAIX. |
+| One app with one simple rule | Plain app code, or a small policy. |
+| A classifier or a judge | A model; LAIX can wrap it behind the same decision contract. |
+
+LAIX sits inside the host; it does not replace the agent framework or workflow engine. For a fair
+comparison with JEV, classifiers and judges, see
+[LAIX and decision models](docs/04-concepts/02-positioning/01-decision-models.md).
+
+Robotics: task-level decisions above the safety and motion layer. See
+[LAIX for robotics](docs/04-concepts/02-positioning/03-robotics.md).
+
 ## Install
 
 Python:
@@ -125,17 +153,6 @@ const [decision] = new DecisionClient().decide({
 console.log(decision.verb, decision.reasonCode);
 ```
 
-## Why LAIX
-
-- **The decision is explicit.** Every decision carries a verb, a reason code, confidence, a score
-  and a trace. The app branches on the reason code, not on prose.
-- **The next decision starts from the current state.** Commitments, human-attention budget, approvals,
-  revisions, receipts and outcomes carry forward. A decision is a step, not a snapshot.
-- **The host keeps control.** The decision layer is stateless. The host owns execution, data, storage
-  and delivery; the optional app kit adds the lifecycle around the decision.
-- **It is portable and testable.** Python uses the standard library only. TypeScript mirrors the same
-  contract, and CI checks parity, conformance, examples and the benchmark.
-
 ## How it works
 
 ![How LAIX works: an agent plans, LAIX decides, the host executes, and the outcome returns as the next decision](docs/assets/how-it-works.svg)
@@ -161,23 +178,6 @@ The same contract covers attention, action, several decision shapes and your own
 
 A policy is any object with a `name` and a `decide(request)` method. `PlannerPolicy` adapts a
 planner, so a learned policy or model can sit behind the same contract.
-
-## When to use LAIX
-
-| You need | Use |
-|---|---|
-| Orchestration, tools and memory | An agent framework, with LAIX inside it. |
-| Durable execution, retries and process state | A workflow engine, with LAIX deciding. |
-| One explicit decision with reason, approval, audit and continuity | LAIX. |
-| One app with one simple rule | Plain app code, or a small policy. |
-| A classifier or a judge | A model; LAIX can wrap it behind `PlannerPolicy`. |
-
-LAIX sits inside the host; it does not replace the agent framework or workflow engine. For a fair
-comparison with JEV, classifiers and judges, see
-[LAIX and decision models](docs/04-concepts/02-positioning/01-decision-models.md).
-
-Robotics: task-level decisions above the safety and motion layer. See
-[LAIX for robotics](docs/04-concepts/02-positioning/03-robotics.md).
 
 ## The live composite planner
 
