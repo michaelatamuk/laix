@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 
 from laix import REASON_CODES_VERSION, Decision, reason_code_registry
-from laix.decision.engines.sensing.signals.gates.reason import REASONS
+from laix.decision.sensing.signals.gates.reason import REASONS
 from laix.decision.schema import build_schema, check
 
 ROOT = Path(__file__).resolve().parents[6]

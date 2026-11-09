@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.13.0 - 2026-11-09
+
+### Changed
+
+- **Flatter module layout.** `laix.decision` now exposes `planners/`, `policies/`, `sensing/`,
+  `learning/` and `evaluation/` directly. `laix.appkit.runtime` is split into `loop/`, `execution/`
+  and `state/`. Deep imports change; the top-level `from laix import ...` surface is unchanged.
+- **Docs alignment.** Renamed the runtime page to "Decision loop", renamed the algorithm-directions
+  page, and added indexes for the research subfolders.
+
 ## 0.12.0 - 2026-11-09
 
 ### Changed

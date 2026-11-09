@@ -36,7 +36,7 @@ from .decision.domain.decisions import (
 )
 from .decision.domain.outcomes.record import OUTCOME_DIRECTIONS, OUTCOME_LABELS
 from .decision.domain.outcomes import SignalAttentionLog, SignalAttentionOutcome, Outcome
-from .decision.engines.learning import CausalEffect, CausalLedger, CausalObservation
+from .decision.learning import CausalEffect, CausalLedger, CausalObservation
 from .decision.domain.commitments import (
     COMMITMENT_STATUSES,
     Commitment,
@@ -55,14 +55,14 @@ from .decision.contract.reason_codes import (
 )
 from .decision.support.verbs import VERBS, Verb
 from .decision.support.version import SCHEMA_VERSION
-from .decision.engines.evaluation import cases as evaluation
-from .decision.engines.sensing.signals import SignalAttentionDecision, SignalContext, SignalFeedback, Signal, decide_signal_attention
-from .decision.engines.evaluation.cases import Case, Report, Row
-from .decision.engines.evaluation.cases import compare as compare_decisions
-from .decision.engines.evaluation.cases import load_cases
-from .decision.engines.learning.bandit import Arm, UCBBandit, reward_for_label
+from .decision.evaluation import cases as evaluation
+from .decision.sensing.signals import SignalAttentionDecision, SignalContext, SignalFeedback, Signal, decide_signal_attention
+from .decision.evaluation.cases import Case, Report, Row
+from .decision.evaluation.cases import compare as compare_decisions
+from .decision.evaluation.cases import load_cases
+from .decision.learning.bandit import Arm, UCBBandit, reward_for_label
 from .decision.domain.outcomes import FileOutcomeStore, OutcomeLedger, OutcomeStore
-from .decision.engines.decision.single.policies import (
+from .decision.policies import (
     ActivePerceptionPolicy,
     AllocationPolicy,
     BanditPolicy,
@@ -90,15 +90,15 @@ from .decision.engines.decision.single.policies import (
     decide_action,
 )
 from .decision.domain.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
-from .decision.engines.sensing.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
-from .decision.engines.decision.single.planners.commitment.commitment_planner import (
+from .decision.sensing.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from .decision.planners.single.commitment.commitment_planner import (
     CommitmentPlanner,
     CommitmentEffect,
     CommitmentScore,
     CommitmentWeights,
     commitment_effect,
 )
-from .decision.engines.decision.single.planners.human_attention.human_attention_planner import (
+from .decision.planners.single.human_attention.human_attention_planner import (
     HumanAttentionPlanner,
     HumanAttentionBudget,
     HumanAttentionEffect,
@@ -107,14 +107,14 @@ from .decision.engines.decision.single.planners.human_attention.human_attention_
     approval_state,
     human_attention_effect,
 )
-from .decision.engines.decision.single.planners.execution.execution_planner import (
+from .decision.planners.single.execution.execution_planner import (
     ExecutionRiskPlanner,
     ExecutionEffect,
     ExecutionScore,
     ExecutionWeights,
     execution_effect,
 )
-from .decision.engines.evaluation.bench.live_bench import (
+from .decision.evaluation.bench.live_bench import (
     LiveBenchReport,
     LiveBenchRow,
     LiveCase,
@@ -123,8 +123,8 @@ from .decision.engines.evaluation.bench.live_bench import (
     default_planners,
     run_live_bench,
 )
-from .decision.engines.decision.single.planners.composite.live_composite_planner import LiveCompositePlanner, CompositeScore
-from .decision.engines.learning.calibration import (
+from .decision.planners.single.composite.live_composite_planner import LiveCompositePlanner, CompositeScore
+from .decision.learning.calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
     DecisionCalibrationSample,
@@ -133,7 +133,7 @@ from .decision.engines.learning.calibration import (
     decision_samples_from_outcomes,
 )
 from .decision.contract.planner_policy import Planner, PlannerInput, PlannerPolicy, PlannerResult, to_decision, to_planner_input
-from .decision.engines.learning.calibration import (
+from .decision.learning.calibration import (
     CalibrationBin,
     CalibrationReport,
     CalibrationSample,
@@ -141,7 +141,7 @@ from .decision.engines.learning.calibration import (
     calibration_report,
     samples_from_outcomes,
 )
-from .decision.engines.decision.single.planners.mdp.mdp_planner import (
+from .decision.planners.single.mdp.mdp_planner import (
     MDPPlanner,
     MdpModel,
     MdpTransition,
@@ -149,8 +149,8 @@ from .decision.engines.decision.single.planners.mdp.mdp_planner import (
     plan_actions,
     value_iteration,
 )
-from .decision.engines.learning.model import LearnedTransition, ModelLearner
-from .decision.engines.decision.single.planners.pomdp.pomdp_planner import (
+from .decision.learning.model import LearnedTransition, ModelLearner
+from .decision.planners.single.pomdp.pomdp_planner import (
     ObservationProbability,
     POMDPPlanner,
     PlannerComparison,
@@ -165,18 +165,18 @@ from .decision.engines.decision.single.planners.pomdp.pomdp_planner import (
     observation_probability,
     pomdp_value,
 )
-from .decision.engines.decision.single.planners.decision_value.ca_vod_planner import (
+from .decision.planners.single.decision_value.ca_vod_planner import (
     CAVODPlanner,
     CAVODScore,
     CAVODWeights,
 )
-from .decision.engines.decision.fleet.attention_scheduler import (
+from .decision.planners.fleet.attention_scheduler import (
     AttentionCandidate,
     AttentionSchedule,
     AttentionScheduleRow,
     AttentionScheduler,
 )
-from .decision.engines.decision.fleet.whittle_scheduler import (
+from .decision.planners.fleet.whittle_scheduler import (
     WhittleCandidate,
     WhittleRow,
     WhittleSchedule,
@@ -184,25 +184,25 @@ from .decision.engines.decision.fleet.whittle_scheduler import (
     WhittleTransition,
     whittle_index,
 )
-from .decision.engines.decision.history.repair import (
+from .decision.planners.history.repair import (
     ContinuityRecord,
     DEFAULT_CONFLICT_RULES,
     RepairAction,
     RepairPlan,
     repair_continuity,
 )
-from .decision.engines.decision.explain.counterfactual import (
+from .decision.planners.explain.counterfactual import (
     Counterfactual,
     CounterfactualReport,
     counterfactual_attribution,
 )
-from .decision.engines.decision.explain.counterfactual_search import (
+from .decision.planners.explain.counterfactual_search import (
     CounterfactualChange,
     CounterfactualSearchResult,
     CounterfactualVariable,
     counterfactual_search,
 )
-from .decision.engines.evaluation.simulation.simulator import (
+from .decision.evaluation.simulation.simulator import (
     PlannerBenchmarkRow,
     Scenario,
     SimulationReport,
@@ -212,7 +212,7 @@ from .decision.engines.evaluation.simulation.simulator import (
     compare_planners,
     seeded_scenarios,
 )
-from .decision.engines.decision.sequence import (
+from .decision.planners.sequence import (
     CABBPlanner,
     DecisionPlan,
     DecisionScenario,
@@ -225,7 +225,7 @@ from .decision.engines.decision.sequence import (
     replan_decisions,
     rollout_decisions,
 )
-from .decision.engines.decision.single.planners.utility.utility_planner import RISK_ATTITUDES, UtilityPlanner, UtilityModel, UtilityWeights
+from .decision.planners.single.utility.utility_planner import RISK_ATTITUDES, UtilityPlanner, UtilityModel, UtilityWeights
 from .decision.dispatch import decide, select
 
 # The app kit is optional and is imported on first use.  A host that only needs
@@ -294,22 +294,27 @@ _APPKIT_NAMES: dict[str, dict[str, str]] = {
         "PlatformEvent": "PlatformEvent",
         "SkillCall": "SkillCall",
     },
-    ".appkit.runtime": {
+    ".appkit.loop": {
+        "DecisionRuntime": "DecisionRuntime",
+    },
+    ".appkit.execution": {
         "ApprovalRequired": "ApprovalRequired",
         "AsyncHandler": "AsyncHandler",
-        "DecisionRuntime": "DecisionRuntime",
         "ExecutionBridge": "ExecutionBridge",
         "ExecutionSagaResult": "ExecutionSagaResult",
         "ExecutionStep": "ExecutionStep",
-        "ExperienceState": "ExperienceState",
-        "FileStateStore": "FileStateStore",
-        "InMemoryStateStore": "InMemoryStateStore",
+        "Handler": "Handler",
         "RetryPolicy": "RetryPolicy",
         "Saga": "Saga",
         "SagaResult": "SagaResult",
         "SagaStep": "SagaStep",
-        "StateStore": "StateStore",
         "UnknownAction": "UnknownAction",
+    },
+    ".appkit.state": {
+        "ExperienceState": "ExperienceState",
+        "FileStateStore": "FileStateStore",
+        "InMemoryStateStore": "InMemoryStateStore",
+        "StateStore": "StateStore",
     },
 }
 _APPKIT_LOOKUP: dict[str, tuple[str, str]] = {

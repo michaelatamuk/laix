@@ -63,7 +63,7 @@ implement it too.
 ## Sequence planner
 
 A chain of decisions uses a different protocol. `SequencePlanner` lives in
-`decision/engines/decision/sequence/contract.py`:
+`decision/planners/sequence/contract.py`:
 
 ```python
 class SequencePlanner(Protocol):
@@ -177,11 +177,11 @@ conversion to `Decision`.
 | `decision/contract/planner_result.py` | `PlannerResult` |
 | `decision/contract/planner.py` | `Planner` |
 | `decision/contract/planner_policy.py` | `PlannerPolicy`, `to_planner_input`, `to_decision` |
-| `decision/engines/decision/sequence/contract.py` | `SequencePlanner`, `DecisionScenario`, `DecisionStep`, `DecisionPlan` |
-| `decision/engines/evaluation/simulation/` | simulator, scenarios and report |
-| `decision/engines/decision/single/planners/` | the built-in planners |
-| `decision/engines/decision/single/planners/composite/` | the composite planner |
-| `decision/engines/decision/sequence/` | CABB, rollout and replan for finite-horizon sequences |
+| `decision/planners/sequence/contract.py` | `SequencePlanner`, `DecisionScenario`, `DecisionStep`, `DecisionPlan` |
+| `decision/evaluation/simulation/` | simulator, scenarios and report |
+| `decision/planners/single/` | the built-in planners |
+| `decision/planners/single/composite/` | the composite planner |
+| `decision/planners/sequence/` | CABB, rollout and replan for finite-horizon sequences |
 
 ## Related
 

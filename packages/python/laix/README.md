@@ -54,7 +54,7 @@ Both return `laix.Decision`, one shape with `verb`, `confidence`, `reason_code`,
 
 | Piece | Role |
 |---|---|
-| `decision/` | contract, domain, decision engines, sensing, learning, evaluation, schema and support |
+| `decision/` | contract, domain, planners, policies, sensing, learning, evaluation, schema and support |
 | `appkit/` | `DecisionClient`, decision loop, streaming, execution, stores, platform, delivery, bench, CLI and MCP |
 
 The full module map is in

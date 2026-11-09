@@ -5,7 +5,7 @@ mission, agent or another application that only needs the decision layer.
 """
 
 from .schema.records import RECORDS, RECORD_NAMES
-from .engines.sensing.signals import (
+from .sensing.signals import (
     SignalContext,
     SignalFeedback,
     Signal,
@@ -13,8 +13,8 @@ from .engines.sensing.signals import (
     is_quiet,
     score,
 )
-from .engines.sensing.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
-from .engines.learning.calibration import (
+from .sensing.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
+from .learning.calibration import (
     CalibrationBin,
     CalibrationReport,
     CalibrationSample,
@@ -22,14 +22,14 @@ from .engines.learning.calibration import (
     calibration_report,
     samples_from_outcomes,
 )
-from .engines.decision.single.planners.commitment.commitment_planner import (
+from .planners.single.commitment.commitment_planner import (
     CommitmentPlanner,
     CommitmentEffect,
     CommitmentScore,
     CommitmentWeights,
     commitment_effect,
 )
-from .engines.decision.single.planners.human_attention.human_attention_planner import (
+from .planners.single.human_attention.human_attention_planner import (
     HumanAttentionPlanner,
     HumanAttentionBudget,
     HumanAttentionEffect,
@@ -38,14 +38,14 @@ from .engines.decision.single.planners.human_attention.human_attention_planner i
     approval_state,
     human_attention_effect,
 )
-from .engines.decision.single.planners.execution.execution_planner import (
+from .planners.single.execution.execution_planner import (
     ExecutionRiskPlanner,
     ExecutionEffect,
     ExecutionScore,
     ExecutionWeights,
     execution_effect,
 )
-from .engines.evaluation.bench.live_bench import (
+from .evaluation.bench.live_bench import (
     LiveBenchReport,
     LiveBenchRow,
     LiveCase,
@@ -54,8 +54,8 @@ from .engines.evaluation.bench.live_bench import (
     default_planners,
     run_live_bench,
 )
-from .engines.decision.single.planners.composite.live_composite_planner import LiveCompositePlanner, CompositeScore
-from .engines.learning.calibration import (
+from .planners.single.composite.live_composite_planner import LiveCompositePlanner, CompositeScore
+from .learning.calibration import (
     CalibratedPolicy,
     DecisionCalibrationReport,
     DecisionCalibrationSample,
@@ -69,7 +69,7 @@ from .contract.reason_codes import (
     REASON_CODES_VERSION,
     reason_code_registry,
 )
-from .engines.decision.single.planners.mdp.mdp_planner import (
+from .planners.single.mdp.mdp_planner import (
     MDPPlanner,
     MdpModel,
     MdpTransition,
@@ -77,8 +77,8 @@ from .engines.decision.single.planners.mdp.mdp_planner import (
     plan_actions,
     value_iteration,
 )
-from .engines.learning.model import LearnedTransition, ModelLearner
-from .engines.decision.single.planners.pomdp.pomdp_planner import (
+from .learning.model import LearnedTransition, ModelLearner
+from .planners.single.pomdp.pomdp_planner import (
     ObservationProbability,
     POMDPPlanner,
     PlannerComparison,
@@ -93,18 +93,18 @@ from .engines.decision.single.planners.pomdp.pomdp_planner import (
     observation_probability,
     pomdp_value,
 )
-from .engines.decision.single.planners.decision_value.ca_vod_planner import (
+from .planners.single.decision_value.ca_vod_planner import (
     CAVODPlanner,
     CAVODScore,
     CAVODWeights,
 )
-from .engines.decision.fleet.attention_scheduler import (
+from .planners.fleet.attention_scheduler import (
     AttentionCandidate,
     AttentionSchedule,
     AttentionScheduleRow,
     AttentionScheduler,
 )
-from .engines.decision.fleet.whittle_scheduler import (
+from .planners.fleet.whittle_scheduler import (
     WhittleCandidate,
     WhittleRow,
     WhittleSchedule,
@@ -112,25 +112,25 @@ from .engines.decision.fleet.whittle_scheduler import (
     WhittleTransition,
     whittle_index,
 )
-from .engines.decision.history.repair import (
+from .planners.history.repair import (
     ContinuityRecord,
     DEFAULT_CONFLICT_RULES,
     RepairAction,
     RepairPlan,
     repair_continuity,
 )
-from .engines.decision.explain.counterfactual import (
+from .planners.explain.counterfactual import (
     Counterfactual,
     CounterfactualReport,
     counterfactual_attribution,
 )
-from .engines.decision.explain.counterfactual_search import (
+from .planners.explain.counterfactual_search import (
     CounterfactualChange,
     CounterfactualSearchResult,
     CounterfactualVariable,
     counterfactual_search,
 )
-from .engines.evaluation.simulation.simulator import (
+from .evaluation.simulation.simulator import (
     PlannerBenchmarkRow,
     Scenario,
     SimulationReport,
@@ -140,7 +140,7 @@ from .engines.evaluation.simulation.simulator import (
     compare_planners,
     seeded_scenarios,
 )
-from .engines.decision.sequence import (
+from .planners.sequence import (
     CABBPlanner,
     DecisionPlan,
     DecisionScenario,
@@ -153,7 +153,7 @@ from .engines.decision.sequence import (
     replan_decisions,
     rollout_decisions,
 )
-from .engines.decision.single.planners.utility.utility_planner import RISK_ATTITUDES, UtilityPlanner, UtilityModel, UtilityWeights
+from .planners.single.utility.utility_planner import RISK_ATTITUDES, UtilityPlanner, UtilityModel, UtilityWeights
 from .domain.decisions import (
     ActionOption,
     Belief,
@@ -186,7 +186,7 @@ from .domain.outcomes import (
     SignalAttentionLog,
     OutcomeStore,
 )
-from .engines.learning import (
+from .learning import (
     Arm,
     CausalEffect,
     CausalLedger,
@@ -208,8 +208,8 @@ from .support.otel import decision_attributes
 from .support.values import confidence_band
 from .support.version import SCHEMA_VERSION
 from .support.verbs import VERBS, Verb
-from .engines.evaluation.cases import Case, Report, Row, compare, load_cases
-from .engines.decision.single.policies import (
+from .evaluation.cases import Case, Report, Row, compare, load_cases
+from .policies import (
     ACTION_POLICY_VERSION,
     ActivePerceptionPolicy,
     AllocationPolicy,

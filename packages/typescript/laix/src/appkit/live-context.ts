@@ -1,6 +1,6 @@
 import { clamp } from "../decision/contracts.ts";
 import type { Detection, Detector, PerceptionEvent, PerceptionFrame } from "../decision/domain/perception/perception.ts";
-import { ResourceScheduler, type Budget, type SensingOption } from "../decision/engines/sensing/resources.ts";
+import { ResourceScheduler, type Budget, type SensingOption } from "../decision/sensing/resources.ts";
 import { CallableDetector } from "./callable-detector.ts";
 import { Frame } from "./frame.ts";
 

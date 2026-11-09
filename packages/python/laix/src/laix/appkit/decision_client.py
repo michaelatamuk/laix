@@ -24,10 +24,10 @@ from ..decision.dispatch import (
     select,
 )
 from .delivery import DeliveryPort, DeliveryReceipt
-from ..decision.engines.decision.single.policies import DecisionPolicy, DecisionPolicyRegistry
-from ..decision.engines.decision.single.policies.implementations.action import ACTION_POLICY_VERSION
-from .runtime import DecisionRuntime
-from .runtime.execution import ExecutionBridge
+from ..decision.policies import DecisionPolicy, DecisionPolicyRegistry
+from ..decision.policies.implementations.action import ACTION_POLICY_VERSION
+from .loop import DecisionRuntime
+from .execution import ExecutionBridge
 from .streaming import StreamSession
 
 

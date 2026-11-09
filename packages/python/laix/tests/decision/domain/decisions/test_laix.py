@@ -20,12 +20,12 @@ from laix.decision.domain.decisions import (
     Situation,
 )
 from laix.decision.support.time import iso, utcnow
-from laix.appkit.runtime import ExecutionBridge
-from laix.decision.engines.decision.single.policies import ActionPolicy, ActionPolicyConfig, ActionPolicyInput
-from laix.decision.engines.sensing.resources import Budget, ResourceScheduler, SensingOption
-from laix.appkit.runtime import DecisionRuntime
+from laix.appkit.execution import ExecutionBridge
+from laix.decision.policies import ActionPolicy, ActionPolicyConfig, ActionPolicyInput
+from laix.decision.sensing.resources import Budget, ResourceScheduler, SensingOption
+from laix.appkit.loop import DecisionRuntime
 from laix.decision.schema import SCHEMA_PATH, build_schema, check, dumps_schema
-from laix.appkit.runtime import ExperienceState
+from laix.appkit.state import ExperienceState
 
 
 def situation(**attributes: object) -> Situation:

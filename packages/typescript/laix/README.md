@@ -39,7 +39,7 @@ registered with `registerPolicy` and selected with `usePolicy`.
 | Learned policy | `BanditPolicy`, `UCBBandit`, `Arm`, `rewardForLabel`, `CausalLedger`, `ModelLearner`, `CalibrationReport` |
 | Live Context | `LiveContext`, `CallableDetector`, `Detector`, `Detection`, `PerceptionEvent` |
 | Streaming | `StreamSession`, `StreamStats`, `ManualClock`, `TumblingWindow`, `WindowBatch`, `fromNdjson`, `fromSse`, `DeadLetterQueue` |
-| Runtime | `DecisionRuntime`, `ExecutionBridge` (sync, async, retries, timeouts), `ExperienceState`, `ResourceScheduler`, `Saga`, `RetryOptions`, `AsyncHandler` |
+| Loop and execution | `DecisionRuntime`, `ExecutionBridge` (sync, async, retries, timeouts), `ExperienceState`, `ResourceScheduler`, `Saga`, `RetryOptions`, `AsyncHandler` |
 | Execution | `ExecutionBridge` idempotency, unknown outcomes, reconciliation and `runSteps` |
 | Platform | `Platform`, `InMemoryPlatform`, `SkillCall` |
 | Stores | `StateStore`, `InMemoryStateStore`, `FileStateStore`, `StreamCheckpointStore`, `InMemoryStreamCheckpointStore`, `FileStreamCheckpointStore`, `CommitmentStore`, `InMemoryCommitmentStore`, `FileCommitmentStore`, `OutcomeLedger`, `OutcomeStore`, `FileOutcomeStore` |

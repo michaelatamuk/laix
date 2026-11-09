@@ -17,7 +17,7 @@ from datetime import datetime, timedelta
 from typing import Callable, Iterable, Sequence
 
 from ...decision.domain.decisions import DECISION_STATUSES, Decision, DecisionRequest, Trace
-from ...decision.engines.decision.single.planners.human_attention.human_attention_planner import HumanAttentionBudget
+from ...decision.planners.single.human_attention.human_attention_planner import HumanAttentionBudget
 from ...decision.support.ids import new_id
 from ...decision.support.time import parse_iso, utcnow
 from .checkpoint import StreamCheckpointStore

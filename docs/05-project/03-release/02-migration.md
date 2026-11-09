@@ -61,6 +61,28 @@ name `appkit`.
 There is no compatibility alias. Update the import path; the record shape, reason codes and public
 names are unchanged.
 
+## 0.13.0: planners, policies and app-kit modules are top-level
+
+The decision package no longer nests algorithms under `engines/`, and the app kit no longer has one
+`runtime` package.
+
+| Before | After |
+|---|---|
+| `laix.decision.engines.decision.single.planners` | `laix.decision.planners.single` |
+| `laix.decision.engines.decision.single.policies` | `laix.decision.policies` |
+| `laix.decision.engines.decision.sequence` | `laix.decision.planners.sequence` |
+| `laix.decision.engines.decision.fleet` | `laix.decision.planners.fleet` |
+| `laix.decision.engines.decision.history` | `laix.decision.planners.history` |
+| `laix.decision.engines.decision.explain` | `laix.decision.planners.explain` |
+| `laix.decision.engines.sensing` | `laix.decision.sensing` |
+| `laix.decision.engines.learning` | `laix.decision.learning` |
+| `laix.decision.engines.evaluation` | `laix.decision.evaluation` |
+| `laix.appkit.runtime.decision_runtime` | `laix.appkit.loop.decision_runtime` |
+| `laix.appkit.runtime.execution` | `laix.appkit.execution.execution` |
+| `laix.appkit.runtime.state` | `laix.appkit.state.state` |
+
+The top-level `from laix import ...` surface is unchanged. Only deep imports move.
+
 ## Vocabulary migration (0.10.0)
 
 0.10.0 renamed the planning and attention vocabulary. There are no compatibility aliases.
@@ -113,26 +135,26 @@ Paths changed with the names:
 | `core/engines/contract/decision_problem.py` | `decision/contract/planner_input.py` |
 | `core/engines/contract/plan.py` | `decision/contract/planner_result.py` |
 | `core/engines/contract/engine.py` | `decision/contract/planner_policy.py` |
-| `core/engines/live/live_engine.py` | `decision/engines/decision/single/planners/composite/live_composite_planner.py` |
-| `core/engines/policies/policy.py` | `decision/engines/decision/single/policies/decision_policy.py` |
-| `core/engines/policies/registry.py` | `decision/engines/decision/single/policies/decision_policy_registry.py` |
+| `core/engines/live/live_engine.py` | `decision/planners/single/composite/live_composite_planner.py` |
+| `core/engines/policies/policy.py` | `decision/policies/decision_policy.py` |
+| `core/engines/policies/registry.py` | `decision/policies/decision_policy_registry.py` |
 | `appkit/layer.py` | `appkit/decision_client.py` |
-| `core/engines/planners/attention/` | `decision/engines/decision/single/planners/human_attention/` |
-| `core/engines/signals/input/context.py` | `decision/engines/sensing/signals/input/signal_context.py` |
-| `core/engines/signals/input/feedback.py` | `decision/engines/sensing/signals/input/signal_feedback.py` |
-| `core/engines/signals/output/decision.py` | `decision/engines/sensing/signals/output/signal_attention_decision.py` |
+| `core/engines/planners/attention/` | `decision/planners/single/human_attention/` |
+| `core/engines/signals/input/context.py` | `decision/sensing/signals/input/signal_context.py` |
+| `core/engines/signals/input/feedback.py` | `decision/sensing/signals/input/signal_feedback.py` |
+| `core/engines/signals/output/decision.py` | `decision/sensing/signals/output/signal_attention_decision.py` |
 | `core/outcome_learning/attention/` | `decision/domain/outcomes/signal_attention/` |
-| `core/evaluation/attention.py` | `decision/engines/evaluation/cases/signal_attention.py` |
-| `core/engines/simulation/planner_score.py` | `decision/engines/evaluation/simulation/planner_benchmark_row.py` |
-| `core/engines/signals/attention.v1.json` | `decision/engines/sensing/signals/signal-attention.v1.json` |
+| `core/evaluation/attention.py` | `decision/evaluation/cases/signal_attention.py` |
+| `core/engines/simulation/planner_score.py` | `decision/evaluation/simulation/planner_benchmark_row.py` |
+| `core/engines/signals/attention.v1.json` | `decision/sensing/signals/signal-attention.v1.json` |
 | `packages/contracts/attention.v1.json` | `packages/contracts/signal-attention.v1.json` |
 | `packages/contracts/attention-bench.v1.json` | `packages/contracts/signal-attention-bench.v1.json` |
 | `core/contract/engine.ts` | `decision/contract/planner.ts` |
-| `core/live/live-engine.ts` | `decision/engines/decision/single/planners/composite/live-composite-planner.ts` |
-| `core/planners/attention/` | `decision/engines/decision/single/planners/human-attention/` |
-| `core/policies/registry.ts` | `decision/engines/decision/single/policies/decision-policy-registry.ts` |
+| `core/live/live-engine.ts` | `decision/planners/single/composite/live-composite-planner.ts` |
+| `core/planners/attention/` | `decision/planners/single/human-attention/` |
+| `core/policies/registry.ts` | `decision/policies/decision-policy-registry.ts` |
 | `appkit/layer.ts` | `appkit/decision-client.ts` |
-| `core/signals/attention.ts` | `decision/engines/sensing/signals/signal-attention.ts` |
+| `core/signals/attention.ts` | `decision/sensing/signals/signal-attention.ts` |
 
 ## Upgrading from a pre-0.10.0 release
 
@@ -176,7 +198,7 @@ Paths also changed:
 
 | Before | After |
 |---|---|
-| `core/engines/planners/live/` | `decision/engines/decision/single/planners/composite/` |
+| `core/engines/planners/live/` | `decision/planners/single/composite/` |
 | `utility/utility.py` | `utility/utility_planner.py` |
 | `mdp/mdp.py` | `mdp/mdp_planner.py` |
 | `pomdp/pomdp.py` | `pomdp/pomdp_planner.py` |
@@ -224,5 +246,5 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.12.0`. Add a new entry here when a release requires host changes; keep it
+The current release is `0.13.0`. Add a new entry here when a release requires host changes; keep it
 short and concrete.

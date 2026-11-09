@@ -3,16 +3,16 @@
 This is the working plan for establishing the novelty claim. It turns the claim that LAIX is novel
 into a precise statement, a prior-art gap, reproducible evidence and a path to external review.
 
-The `01-` to `05-` folders are reading stages. File names stay descriptive; the stage number gives
-the order. `checklist.md` tracks work across all stages.
+The `01-` to `04-` folders and `05-governance.md` are reading stages. File names stay descriptive;
+the stage number gives the order. `checklist.md` tracks work across all stages.
 
 ## How to use this folder
 
 1. Read the claim and current gaps on this page.
-2. Establish the gap in [Positioning](01-positioning/prior-art.md).
-3. Build the experiments in [Evaluation](02-evaluation/benchmark.md).
-4. Run one study outside the test suite in [Validation](03-validation/plan.md).
-5. Write and release from [Publication](04-publication/publication-plan.md).
+2. Establish the gap in [Positioning](01-positioning/README.md).
+3. Build the experiments in [Evaluation](02-evaluation/README.md).
+4. Run one study outside the test suite in [Validation](03-validation/README.md).
+5. Write and release from [Publication](04-publication/README.md).
 6. Check the legal framing in [Governance](05-governance.md).
 7. Track the work in [Checklist](checklist.md).
 
@@ -21,7 +21,7 @@ the order. `checklist.md` tracks work across all stages.
 | 01 | [Prior art](01-positioning/prior-art.md) | matrix, comparator discovery, fair comparison protocol |
 | 01 | [Comparators](01-positioning/comparators.md) | documented and measured external comparison |
 | 01 | [Formal model](01-positioning/formal-model.md) | definitions, score composition, invariants |
-| 01 | [Algorithm directions](01-positioning/04-algorithm-directions.md) | candidate algorithms beyond the composite score |
+| 01 | [Algorithm directions](01-positioning/algorithm-directions.md) | candidate algorithms beyond the composite score |
 | 02 | [Benchmark](02-evaluation/benchmark.md) | hypotheses, metrics, benchmark protocol, threats |
 | 02 | [Algorithm prototype results](02-evaluation/algorithm-prototypes.md) | smoke tests for CA-VOD, CABB, AADS, CDR and CDA |
 | 02 | [Evidence map](02-evaluation/evidence-map.md) | claims, numbers, sources and missing evidence |
@@ -53,7 +53,7 @@ the order. `checklist.md` tracks work across all stages.
   (PLD 2024/2853 mapping), `ablation_study.py` (all 7 planners on 7 demo cases, `LiveCompositePlanner` wins
   every case), `conflict_scenario.py` (triple-concern demo), `shadow_rollout.py` (rollout
   pattern).
-- Added: `01-positioning/04-algorithm-directions.md` (CA-VOD, CABB, AADS, CDR, CDA),
+- Added: `01-positioning/algorithm-directions.md` (CA-VOD, CABB, AADS, CDR, CDA),
   `02-evaluation/algorithm-prototypes.md` and the algorithm benchmark scripts.
 - Added: `01-positioning/formal-model.md` with exact score formulas and weights, `01-positioning/prior-art.md` matrix
   (10 capabilities × 7 columns), `tests/decision/test_invariants.py` (17 property tests, I1–I10),

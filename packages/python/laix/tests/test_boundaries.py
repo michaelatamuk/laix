@@ -15,15 +15,7 @@ import laix.decision
 PACKAGE = Path(laix.__file__).resolve().parent
 DECISION = PACKAGE / "decision"
 DECISION_FILES = sorted((DECISION).rglob("*.py"))
-APP_KIT_MODULES = {
-    "runtime",
-    "records",
-    "delivery",
-    "platform",
-    "layer",
-    "bench",
-    "appkit",
-}
+APP_KIT_MODULES = {"appkit"}
 
 
 def imported_modules(path: Path) -> set[str]:
