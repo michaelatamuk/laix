@@ -4,8 +4,12 @@ import { describe, it } from "node:test";
 import {
   CommitmentGraph,
   CommitmentLedger,
+  CommitmentPlanner,
+  UtilityModel,
+  type ActionOption,
   type Commitment,
   type CommitmentRef,
+  type PlannerInput,
 } from "../../../src/index.ts";
 
 interface RawCase {
@@ -18,12 +22,22 @@ interface RawCase {
   expected: Record<string, unknown>;
 }
 
+interface RawPlannerCase {
+  id: string;
+  require_verified: boolean;
+  local: Array<Record<string, unknown>>;
+  external: Array<Record<string, unknown>>;
+  options: Array<Record<string, unknown>>;
+  expected_action_id: string;
+  expected_blocked_by: Array<Record<string, unknown>>;
+}
+
 const fixture = JSON.parse(
   readFileSync(
     new URL("../../../../../contracts/commitment-graph.v1.json", import.meta.url),
     "utf8",
   ),
-) as { cases: RawCase[] };
+) as { cases: RawCase[]; planner_cases: RawPlannerCase[] };
 
 function asRef(raw: Record<string, unknown>): CommitmentRef {
   return {
@@ -58,6 +72,16 @@ function asRefs(items: CommitmentRef[]): Array<Record<string, unknown>> {
     ledger: item.ledger ?? null,
     id: item.id,
   }));
+}
+
+function asActionOption(raw: Record<string, unknown>): ActionOption {
+  return {
+    id: String(raw.id),
+    verb: raw.verb as ActionOption["verb"],
+    name: String(raw.name),
+    expectedBenefit: (raw.expected_benefit as number | undefined) ?? 0.5,
+    params: { ...((raw.params as Record<string, unknown> | undefined) ?? {}) },
+  };
 }
 
 describe("commitment graph parity fixture", () => {
@@ -131,4 +155,66 @@ describe("commitment graph parity fixture", () => {
       }
     });
   }
+});
+
+describe("commitment planner parity fixture", () => {
+  for (const testCase of fixture.planner_cases) {
+    it(testCase.id, () => {
+      const graph = new CommitmentGraph(
+        new CommitmentLedger(testCase.local.map(asCommitment)),
+        testCase.external.map(asCommitment),
+      );
+      const problem: PlannerInput = {
+        subject: "deliver",
+        at: "2026-11-01T10:00:00Z",
+        options: testCase.options.map(asActionOption),
+        attributes: { commitment_graph: graph },
+      };
+      const result = new CommitmentPlanner(
+        new UtilityModel(),
+        {},
+        { requireVerified: testCase.require_verified },
+      ).solve(problem);
+
+      assert.equal(result.actionId, testCase.expected_action_id);
+      if (result.actionId === "finish") {
+        assert.deepEqual(
+          result.attributes?.commitments_blocked_by,
+          testCase.expected_blocked_by,
+        );
+      } else {
+        const alternatives = result.alternatives as Array<
+          Record<string, unknown>
+        >;
+        const finish = alternatives.find((row) => row.action_id === "finish");
+        assert.deepEqual(finish?.blocked_by, testCase.expected_blocked_by);
+      }
+    });
+  }
+
+  it("round-trips a graph through toDict and fromDict", () => {
+    const graph = new CommitmentGraph(
+      new CommitmentLedger([{ id: "a", subject: "a" }]),
+      [
+        {
+          id: "b",
+          subject: "b",
+          owner: "other",
+          ledger: "other",
+          source: "reported",
+        },
+      ],
+    );
+    const payload = graph.toDict() as {
+      local: { commitments?: Commitment[] };
+      external: Commitment[];
+    };
+    const restored = CommitmentGraph.fromDict(payload);
+
+    assert.deepEqual(restored.toDict(), graph.toDict());
+    assert.deepEqual(
+      restored.commitments.map((item) => item.id),
+      ["a", "b"],
+    );
+  });
 });

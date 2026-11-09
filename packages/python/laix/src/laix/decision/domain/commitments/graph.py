@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from typing import Any
 
 from ...support.time import parse_iso
 from .commitment import Commitment
@@ -271,6 +272,17 @@ class CommitmentGraph:
             "local": self.local.to_dict(),
             "external": [item.to_dict() for item in self.external],
         }
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "CommitmentGraph":
+        """Rebuild a graph from a ``to_dict`` payload."""
+        local_payload = payload.get("local") or {}
+        external_payload = payload.get("external") or ()
+        local = CommitmentLedger.from_dict(dict(local_payload))
+        return cls(
+            local,
+            tuple(Commitment.from_dict(dict(item)) for item in external_payload),
+        )
 
 
 __all__ = ["CommitmentBlocker", "CommitmentGraph"]

@@ -181,6 +181,28 @@ def _score_option(
     )
 
 
+def _option_blockers(
+    option: ActionOption,
+    active: dict[str, Commitment],
+    graph: CommitmentGraph,
+    require_verified: bool,
+) -> tuple[dict[str, Any], ...]:
+    """Return the graph blockers for the commitments this option fulfills."""
+    found: dict[tuple[str, str, str], dict[str, Any]] = {}
+    for commitment_id in commitment_effect(option).fulfills:
+        commitment = active.get(commitment_id)
+        if commitment is None:
+            continue
+        for blocker in graph.blockers(commitment, require_verified=require_verified):
+            found[blocker.ref.key] = {
+                "owner": blocker.ref.owner,
+                "ledger": blocker.ref.ledger,
+                "id": blocker.ref.id,
+                "reason": blocker.reason,
+            }
+    return tuple(found[key] for key in sorted(found))
+
+
 class CommitmentPlanner:
     """Choose the option with the best utility plus commitment effect."""
 
@@ -190,9 +212,12 @@ class CommitmentPlanner:
         self,
         model: UtilityModel | None = None,
         weights: CommitmentWeights | None = None,
+        *,
+        require_verified: bool = True,
     ) -> None:
         self.model = model
         self.weights = weights or CommitmentWeights()
+        self.require_verified = require_verified
         self._utility = UtilityPlanner(model)
 
     def solve(self, problem: PlannerInput) -> PlannerResult:
@@ -207,7 +232,7 @@ class CommitmentPlanner:
         def blocked(commitment_id: str) -> bool:
             commitment = active.get(commitment_id)
             return True if commitment is None else graph.blocked(
-                commitment, require_verified=True
+                commitment, require_verified=self.require_verified
             )
 
         rows: list[_Row] = []
@@ -221,6 +246,9 @@ class CommitmentPlanner:
                     score=score,
                     feasible=feasible,
                     blocker=score.blocked or blocker,
+                    blocked_by=_option_blockers(
+                        option, active, graph, self.require_verified
+                    ),
                 )
             )
 
@@ -259,6 +287,7 @@ class CommitmentPlanner:
                 "commitments_created": list(best.score.created),
                 "commitments_due_fulfilled": list(best.score.due_fulfilled),
                 "commitments_blocked_fulfilled": list(best.score.blocked_fulfilled),
+                "commitments_blocked_by": [dict(item) for item in best.blocked_by],
             },
         )
 
@@ -285,6 +314,7 @@ class CommitmentPlanner:
                     "commitment": row.score.commitment,
                     "total": row.score.total,
                     "rejected_because": reason,
+                    "blocked_by": [dict(item) for item in row.blocked_by],
                 }
             )
         payload.sort(key=lambda item: (-float(item["total"]), str(item["action_id"])))

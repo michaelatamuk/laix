@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.15.0 - 2026-11-10
+
+### Added
+
+- **Configurable verification policy.** `CommitmentPlanner` accepts `require_verified=False` in Python
+  or `{ requireVerified: false }` in TypeScript when a host wants to plan with reported external
+  commitments. The default remains `True`.
+- **Structured blockers.** The planner result adds `commitments_blocked_by`, and each alternative adds
+  `blocked_by`, with `{owner, ledger, id, reason}` entries.
+- **Graph round-trip.** `CommitmentGraph.from_dict` / `fromDict` rebuilds a graph from `to_dict()`.
+
+### Changed
+
+- **Planner parity fixture.** `packages/contracts/commitment-graph.v1.json` now includes planner cases,
+  so both languages test the same trust policy and blocked-option outcomes.
+
 ## 0.14.0 - 2026-11-10
 
 ### Added
