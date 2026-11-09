@@ -30,15 +30,6 @@ validation pending.
 [Examples](examples/README.md) ·
 [Issues](https://github.com/michaelatamuk/laix/issues)
 
-| What you get | In one line |
-|---|---|
-| [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` |
-| [Two decision families](docs/02-decision/README.md) | signal attention — what matters now — and action — what to do |
-| [Five decision shapes](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history and explain |
-| [Bring your own policy](docs/02-decision/03-decision-shapes/01-single/05-policies.md) | any `name` + `decide` object; `PlannerPolicy` adapts a planner or model |
-| [Portable and tested](docs/06-project/02-quality/01-testing.md) | Python standard library only; TypeScript parity checked in CI |
-| [Integrations](docs/03-appkit/01-build/04-langgraph.md) | [LangGraph](docs/03-appkit/01-build/04-langgraph.md), [MCP](docs/03-appkit/01-build/05-mcp.md), [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) |
-
 ## Install
 
 Python:
@@ -155,6 +146,39 @@ and outcome close the loop and calibrate the next decision.
 The decision layer is `DecisionRequest` in, `Decision` out. The app kit is optional; it adds
 execution, records, stores, streaming, delivery and bench.
 
+## The decision surface
+
+The same contract covers attention, action, several decision shapes and your own policy.
+
+| What you get | In one line |
+|---|---|
+| [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe`, `guide`, `ask`, `act`, `verify`, `escalate` |
+| [Two decision families](docs/02-decision/README.md) | signal attention — what matters now — and action — what to do |
+| [Five decision shapes](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history and explain |
+| [Bring your own policy](docs/02-decision/03-decision-shapes/01-single/05-policies.md) | any `name` + `decide` object; a planner or model behind the same contract |
+| [Portable and tested](docs/06-project/02-quality/01-testing.md) | Python standard library only; TypeScript parity checked in CI |
+| [Integrations](docs/03-appkit/01-build/04-langgraph.md) | [LangGraph](docs/03-appkit/01-build/04-langgraph.md), [MCP](docs/03-appkit/01-build/05-mcp.md), [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) |
+
+A policy is any object with a `name` and a `decide(request)` method. `PlannerPolicy` adapts a
+planner, so a learned policy or model can sit behind the same contract.
+
+## When to use LAIX
+
+| You need | Use |
+|---|---|
+| Orchestration, tools and memory | An agent framework, with LAIX inside it. |
+| Durable execution, retries and process state | A workflow engine, with LAIX deciding. |
+| One explicit decision with reason, approval, audit and continuity | LAIX. |
+| One app with one simple rule | Plain app code, or a small policy. |
+| A classifier or a judge | A model; LAIX can wrap it behind `PlannerPolicy`. |
+
+LAIX sits inside the host; it does not replace the agent framework or workflow engine. For a fair
+comparison with JEV, classifiers and judges, see
+[LAIX and decision models](docs/04-concepts/02-positioning/01-decision-models.md).
+
+Robotics: task-level decisions above the safety and motion layer. See
+[LAIX for robotics](docs/04-concepts/02-positioning/03-robotics.md).
+
 ## The live composite planner
 
 **Live** means the decision is made inside the running loop, at event time, with the current state.
@@ -164,9 +188,6 @@ state with each request.
 `LiveCompositePlanner` combines four scores: utility, promises, execution risk and human attention. It
 returns a `PlannerResult`; `PlannerPolicy` adapts that result to the public `Decision`, so the app
 still calls `decide` and still gets a `Decision`.
-
-A policy is any object with a `name` and a `decide(request)` method. `PlannerPolicy` adapts a
-planner, so a learned policy or model can sit behind the same contract.
 
 Using the invoice request from the quickstart:
 
@@ -223,23 +244,6 @@ On a 10-task τ-bench retail slice, the guardrail passed **10/10** vs **9/10** f
 (single trial). External validation is still pending; full evidence and caveats are in
 [the benchmark](docs/07-research/02-evaluation/benchmark.md) and
 [the evidence map](docs/07-research/02-evaluation/evidence-map.md).
-
-## When to use LAIX
-
-| You need | Use |
-|---|---|
-| Orchestration, tools and memory | An agent framework, with LAIX inside it. |
-| Durable execution, retries and process state | A workflow engine, with LAIX deciding. |
-| One explicit decision with reason, approval, audit and continuity | LAIX. |
-| One app with one simple rule | Plain app code, or a small policy. |
-| A classifier or a judge | A model; LAIX can wrap it behind `PlannerPolicy`. |
-
-LAIX sits inside the host; it does not replace the agent framework or workflow engine. For a fair
-comparison with JEV, classifiers and judges, see
-[LAIX and decision models](docs/04-concepts/02-positioning/01-decision-models.md).
-
-Robotics: task-level decisions above the safety and motion layer. See
-[LAIX for robotics](docs/04-concepts/02-positioning/03-robotics.md).
 
 ## Documentation
 
