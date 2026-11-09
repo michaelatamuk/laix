@@ -61,9 +61,9 @@ name `appkit`.
 There is no compatibility alias. Update the import path; the record shape, reason codes and public
 names are unchanged.
 
-## Vocabulary migration (next release)
+## Vocabulary migration (0.10.0)
 
-The next release renames the planning and attention vocabulary. There are no compatibility aliases.
+0.10.0 renamed the planning and attention vocabulary. There are no compatibility aliases.
 
 | Before | After |
 |---|---|
@@ -224,6 +224,5 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.12.0`. The vocabulary migration above is part of 0.10.0. The planner naming
-change was the first migration entry that required host changes. Add a new entry here when a release
-requires host changes; keep it short and concrete.
+The current release is `0.12.0`. Add a new entry here when a release requires host changes; keep it
+short and concrete.
