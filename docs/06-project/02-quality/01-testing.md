@@ -110,6 +110,7 @@ support, changelog, citation metadata and security policy aligned.
 | `tests/decision/contract/test_reason_codes.py` | reason-code registry, decision schema and source coverage |
 | `tests/appkit/test_mcp_server.py` | MCP request parsing, `decide` tool, tool listing and tool call |
 | `tests/decision/contract/test_interop_contracts.py` | A2A card placement and OpenAPI action profile |
+| `packages/contracts/commitment-graph.v1.json` | shared cross-owner graph cases read by the Python and TypeScript tests |
 | `ruff check` | Python syntax, undefined names and unused imports |
 | `tsc` | TypeScript source and public declaration syntax/types |
 | `npm test` | TS contracts, conformance, parity, streaming, timeline, execution, planners |
