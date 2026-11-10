@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.17.0 - 2026-11-10
+
+### Added
+
+- **Actionable commitment blockers.** `CommitmentResolutionPlanner` turns a blocked hard commitment
+  into a `verify` or `ask` decision with `verification_refs` and an intent to resolve them.
+- **Stable rejection codes.** `CommitmentPlanner` alternatives carry `rejected_reason_code` from
+  `COMMITMENT_REJECTION_CODES`.
+- **Cross-owner composite and policy decisions.** `LiveCompositePlanner`, `CAVODPlanner` and
+  `PlanningPolicy` now see `CommitmentGraph` trust and freshness.
+- **Decision counterfactuals.** `decision_counterfactual` and
+  `commitment_verification_counterfactual` report what observation would flip a decision.
+- **Portfolio planning.** `PortfolioPlanner` chooses a planner from a named portfolio.
+- **Risk-bounded planning.** `RiskBoundedPlanner` rejects options whose CVaR exceeds a hard limit.
+- **Decision revalidation.** `RevalidationPlanner` returns `decision_held`, `decision_revised` or
+  `decision_escalated`.
+- **Case-based planning.** `CaseBasedPlanner` reuses a similar `PastDecision`.
+- **Goal conflict resolution.** `ConflictResolutionPlanner` resolves, asks or escalates explicit
+  goal conflicts.
+- **MDP policy iteration.** `policy_iteration` returns a stationary policy and values for a
+  discounted infinite-horizon model.
+
+### Changed
+
+- **Verified promises need a timestamp.** A `verified` commitment without a valid `verified_at` is now
+  untrusted, so it cannot satisfy a verified dependency.
+- **Graph-aware scoring is shared.** Composite, CA-VOD and policy decisions use the same blocker
+  rules as `CommitmentPlanner`.
+- **Reason-code registry is `1.1.0`.** The new planner and resolution codes are registered.
+
 ## 0.16.0 - 2026-11-10
 
 ### Added

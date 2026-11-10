@@ -11,23 +11,35 @@ from typing import Any
 
 from ..support.version import SCHEMA_VERSION
 
-REASON_CODES_VERSION = "1.0.0"
+REASON_CODES_VERSION = "1.1.0"
 
 #: Authored rules may add their own code. Everything else is enumerated here.
 REASON_CODE_GROUPS: dict[str, tuple[str, ...]] = {
     "planner": (
         "approval_rejected",
+        "case_based",
         "commitment_aware",
+        "commitment_resolution",
+        "decision_escalated",
+        "decision_held",
+        "decision_revised",
         "execution_aware",
         "expected_utility",
+        "goal_conflict",
+        "goal_conflict_needs_choice",
+        "goal_conflict_resolved",
         "human_attention_aware",
         "human_attention_budget_exhausted",
         "live_decision",
         "mdp_plan",
         "no_action",
+        "no_case",
         "no_feasible_option",
+        "no_goal_conflict",
         "no_options",
         "pomdp_plan",
+        "revalidated_new",
+        "risk_bounded",
         "terminal_state",
         "value_of_decision",
     ),

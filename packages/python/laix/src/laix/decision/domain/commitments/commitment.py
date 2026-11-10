@@ -45,8 +45,12 @@ class Commitment:
 
     @property
     def trusted(self) -> bool:
-        """Local and verified commitments may be used as decision evidence."""
-        return self.source in {"local", "verified"}
+        """Local and timestamped verified commitments may be decision evidence."""
+        if self.source == "local":
+            return True
+        if self.source == "verified":
+            return parse_iso(self.verified_at) is not None
+        return False
 
     def is_due(self, now: datetime) -> bool:
         due = parse_iso(self.due)

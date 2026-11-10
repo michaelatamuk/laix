@@ -23,11 +23,15 @@ from .learning.calibration import (
     samples_from_outcomes,
 )
 from .planners.single.commitment.commitment_planner import (
+    COMMITMENT_REJECTION_CODES,
     CommitmentPlanner,
     CommitmentEffect,
     CommitmentScore,
     CommitmentWeights,
     commitment_effect,
+)
+from .planners.single.commitment.commitment_resolution_planner import (
+    CommitmentResolutionPlanner,
 )
 from .planners.single.human_attention.human_attention_planner import (
     HumanAttentionPlanner,
@@ -73,8 +77,10 @@ from .planners.single.mdp.mdp_planner import (
     MDPPlanner,
     MdpModel,
     MdpTransition,
+    PolicyIterationResult,
     action_values,
     plan_actions,
+    policy_iteration,
     value_iteration,
 )
 from .learning.model import LearnedTransition, ModelLearner
@@ -98,6 +104,12 @@ from .planners.single.decision_value.ca_vod_planner import (
     CAVODScore,
     CAVODWeights,
 )
+from .planners.single.portfolio.portfolio_planner import PortfolioPlanner
+from .planners.single.risk.risk_bounded_planner import RiskBoundedPlanner
+from .planners.single.conflict.conflict_resolution_planner import (
+    ConflictResolutionPlanner,
+)
+from .planners.case_based.case_based_planner import CaseBasedPlanner, PastDecision
 from .planners.fleet.attention_scheduler import (
     AttentionCandidate,
     AttentionSchedule,
@@ -119,6 +131,7 @@ from .planners.history.repair import (
     RepairPlan,
     repair_continuity,
 )
+from .planners.history.revalidation import RevalidationPlanner
 from .planners.explain.counterfactual import (
     Counterfactual,
     CounterfactualReport,
@@ -129,6 +142,12 @@ from .planners.explain.counterfactual_search import (
     CounterfactualSearchResult,
     CounterfactualVariable,
     counterfactual_search,
+)
+from .planners.explain.decision_counterfactual import (
+    CounterfactualOutcome,
+    DecisionCounterfactualResult,
+    commitment_verification_counterfactual,
+    decision_counterfactual,
 )
 from .evaluation.simulation.simulator import (
     PlannerBenchmarkRow,
@@ -277,7 +296,9 @@ __all__ = [
     "CommitmentGraphReport",
     "CommitmentLedger",
     "CommitmentRef",
+    "COMMITMENT_REJECTION_CODES",
     "CommitmentPlanner",
+    "CommitmentResolutionPlanner",
     "CommitmentEffect",
     "CommitmentLedger",
     "CommitmentScore",
@@ -302,6 +323,8 @@ __all__ = [
     "MDPPlanner",
     "MdpModel",
     "MdpTransition",
+    "PolicyIterationResult",
+    "policy_iteration",
     "ModelLearner",
     "LearnedTransition",
     "ObservationProbability",
@@ -334,6 +357,11 @@ __all__ = [
     "CAVODPlanner",
     "CAVODScore",
     "CAVODWeights",
+    "PortfolioPlanner",
+    "RiskBoundedPlanner",
+    "ConflictResolutionPlanner",
+    "CaseBasedPlanner",
+    "PastDecision",
     "AttentionCandidate",
     "AttentionSchedule",
     "AttentionScheduleRow",
@@ -348,10 +376,15 @@ __all__ = [
     "DEFAULT_CONFLICT_RULES",
     "RepairAction",
     "RepairPlan",
+    "RevalidationPlanner",
     "repair_continuity",
     "Counterfactual",
     "CounterfactualChange",
+    "CounterfactualOutcome",
     "CounterfactualReport",
+    "DecisionCounterfactualResult",
+    "commitment_verification_counterfactual",
+    "decision_counterfactual",
     "CounterfactualSearchResult",
     "CounterfactualVariable",
     "counterfactual_attribution",

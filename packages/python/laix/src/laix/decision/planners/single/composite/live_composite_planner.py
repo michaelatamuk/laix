@@ -8,7 +8,7 @@ budget at the same time.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from ....support.time import parse_iso
@@ -21,7 +21,7 @@ from ..human_attention.human_attention_planner import (
 )
 from ..commitment.commitment_planner import (
     CommitmentWeights,
-    _commitments,
+    _active_and_graph,
     _score_option as commitment_score,
 )
 from ._live_row import _Row
@@ -53,12 +53,16 @@ class LiveCompositePlanner:
         execution_weights: ExecutionWeights | None = None,
         human_attention_weights: HumanAttentionWeights | None = None,
         enforce_feasibility: bool = True,
+        require_verified: bool = True,
+        max_verification_age: timedelta | None = None,
     ) -> None:
         self.model = model
         self.commitment_weights = commitment_weights or CommitmentWeights()
         self.execution_weights = execution_weights or ExecutionWeights()
         self.human_attention_weights = human_attention_weights or HumanAttentionWeights()
         self.enforce_feasibility = enforce_feasibility
+        self.require_verified = require_verified
+        self.max_verification_age = max_verification_age
         self._utility = UtilityPlanner(model)
 
     def solve(self, problem: PlannerInput) -> PlannerResult:
@@ -67,8 +71,18 @@ class LiveCompositePlanner:
             return self._wait("no_options", "there are no options to score")
 
         model = self._utility._model_for(problem)
-        commitments = _commitments(problem)
+        commitments, graph = _active_and_graph(problem)
         now = parse_iso(problem.at) or datetime.now(timezone.utc)
+
+        def is_blocked(commitment_id: str) -> bool:
+            commitment = commitments.get(commitment_id)
+            return True if commitment is None else graph.blocked(
+                commitment,
+                require_verified=self.require_verified,
+                now=now,
+                max_verification_age=self.max_verification_age,
+            )
+
         approval = _approval_required(problem)
         remaining = _remaining(problem)
         rows: list[_Row] = []
@@ -79,6 +93,7 @@ class LiveCompositePlanner:
                 commitments,
                 self.commitment_weights,
                 now,
+                is_blocked,
             )
             execution = execution_score(
                 option,

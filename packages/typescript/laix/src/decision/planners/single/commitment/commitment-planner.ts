@@ -101,7 +101,7 @@ export function activeCommitments(problem: PlannerInput): Map<string, Commitment
   return result;
 }
 
-function activeAndGraph(problem: PlannerInput): {
+export function activeAndGraph(problem: PlannerInput): {
   active: Map<string, Commitment>;
   graph: CommitmentGraph;
 } {
@@ -185,7 +185,7 @@ export function commitmentScoreOption(
   };
 }
 
-function optionBlockers(
+export function optionBlockers(
   option: ActionOption,
   active: Map<string, Commitment>,
   graph: CommitmentGraph,
@@ -213,6 +213,31 @@ function optionBlockers(
   return [...found.entries()]
     .sort(([left], [right]) => left.localeCompare(right))
     .map(([, value]) => value);
+}
+
+export const COMMITMENT_REJECTION_CODES = [
+  "blocked_hard_commitment",
+  "blocked_missing_dependency",
+  "blocked_stale_dependency",
+  "blocked_unverified_dependency",
+  "blocked_open_dependency",
+  "outside_hard_limits",
+  "lower_commitment_score",
+] as const;
+export type CommitmentRejectionCode = (typeof COMMITMENT_REJECTION_CODES)[number];
+
+const REASON_PRIORITY = ["missing", "stale", "unverified", "open"] as const;
+
+function rejectionCode(row: Row): CommitmentRejectionCode {
+  if (row.feasible) return "lower_commitment_score";
+  if (row.score.blocked?.startsWith("hard commitment")) {
+    return "blocked_hard_commitment";
+  }
+  const reasons = new Set(row.blockedBy.map((item) => item.reason));
+  for (const reason of REASON_PRIORITY) {
+    if (reasons.has(reason)) return `blocked_${reason}_dependency` as CommitmentRejectionCode;
+  }
+  return "outside_hard_limits";
 }
 
 interface Row {
@@ -378,6 +403,7 @@ export class CommitmentPlanner {
             ? `blocked by ${row.blocker}`
             : "outside the hard limits"
           : "lower commitment-adjusted score",
+        rejected_reason_code: rejectionCode(row),
         blocked_by: row.blockedBy.map((item) => ({ ...item })),
       }))
       .sort((left, right) =>

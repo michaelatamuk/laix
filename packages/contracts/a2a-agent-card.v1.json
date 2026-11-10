@@ -1,7 +1,7 @@
 {
   "name": "LAIX Decision Agent",
   "description": "A decision layer for AI agents that must act, ask, wait, verify or escalate. The agent returns the decision and its reason; the host executes it.",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "provider": {
     "organization": "LAIX",
     "url": "https://github.com/michaelatamuk/laix"

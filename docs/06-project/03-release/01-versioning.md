@@ -5,12 +5,12 @@ rule change does not always change the package version.
 
 | Thing | Current | Source |
 |---|---|---|
-| Python package | `0.16.0` | `packages/python/laix/pyproject.toml` |
-| TypeScript package | `0.16.0` | `packages/typescript/laix/package.json` |
+| Python package | `0.17.0` | `packages/python/laix/pyproject.toml` |
+| TypeScript package | `0.17.0` | `packages/typescript/laix/package.json` |
 | Record schema | `0.8.0` | `decision/support/version.py`, `contracts.ts` |
 | Rule sets | `0.8.0` | policy versions and vectors |
 | Signal-attention vectors | `0.8.0` | `signal-attention.v1.json` and conformance fixtures |
-| Reason-code registry | `1.0.0` | `packages/contracts/reason-codes.v1.json` |
+| Reason-code registry | `1.1.0` | `packages/contracts/reason-codes.v1.json` |
 
 ## The axes
 

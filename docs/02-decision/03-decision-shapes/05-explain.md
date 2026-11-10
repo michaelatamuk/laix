@@ -40,6 +40,13 @@ print(report.chosen_id, report.counterfactual_id, report.changes[0].new)
 The search is exact over the generated grid when the evaluation budget is not reached. It is not a
 global optimizer for arbitrary rule systems.
 
+## Counterfactual decisions
+
+`decision_counterfactual` solves a base problem and named candidate problems, then reports which
+candidate changes the action. `commitment_verification_counterfactual` applies that to external
+commitments: it marks one external promise verified at a time and reports the verification that
+would flip the decision.
+
 ## Limits
 
 The additive path assumes component scores. The search path is a bounded grid, not a global optimizer.

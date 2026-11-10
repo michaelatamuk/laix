@@ -189,7 +189,8 @@ pass a `CommitmentGraph` as `attributes["commitment_graph"]`, or pass
 ```
 
 `reason` is `missing`, `open`, `unverified` or `stale`. Each alternative also carries `blocked_by` with
-the same shape, so a host can explain a rejected option without re-running the graph.
+the same shape and a stable `rejected_reason_code`, so a host can explain a rejected option without
+re-running the graph.
 
 See [Commitments](../../02-domain/02-commitments.md) for the ledger and store.
 

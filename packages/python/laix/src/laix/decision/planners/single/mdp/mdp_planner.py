@@ -7,6 +7,8 @@ alternatives, so the result is explainable.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from ....support.values import clamp
 from ....contract.planner_policy import PlannerInput, PlannerResult
 from .mdp_model import MdpModel
@@ -57,6 +59,74 @@ def value_iteration(
         if delta <= tolerance:
             break
     return values
+
+
+@dataclass(frozen=True, slots=True)
+class PolicyIterationResult:
+    """A stationary policy and its state values."""
+
+    policy: dict[str, str]
+    values: dict[str, float]
+    iterations: int
+
+
+def policy_iteration(
+    model: MdpModel,
+    *,
+    tolerance: float = 1e-9,
+    max_iterations: int = 1000,
+) -> PolicyIterationResult:
+    """Solve a discounted infinite-horizon MDP with policy iteration."""
+    if model.horizon is not None:
+        raise ValueError("policy iteration needs an infinite horizon")
+    policy: dict[str, str] = {}
+    for state in model.states:
+        actions = model.actions_for(state)
+        if actions:
+            policy[state] = actions[0]
+    values = {state: 0.0 for state in model.states}
+
+    for iteration in range(1, max_iterations + 1):
+        for _ in range(max_iterations):
+            updated: dict[str, float] = {}
+            delta = 0.0
+            for state in model.states:
+                action = policy.get(state)
+                value = (
+                    0.0
+                    if action is None
+                    else _q_value(model, state, action, values)
+                )
+                updated[state] = value
+                delta = max(delta, abs(value - values[state]))
+            values = updated
+            if delta <= tolerance:
+                break
+
+        changed = False
+        for state in model.states:
+            actions = model.actions_for(state)
+            if not actions:
+                continue
+            best = max(
+                actions,
+                key=lambda action: _q_value(model, state, action, values),
+            )
+            if policy.get(state) != best:
+                policy[state] = best
+                changed = True
+        if not changed:
+            return PolicyIterationResult(
+                policy=dict(policy),
+                values=dict(values),
+                iterations=iteration,
+            )
+
+    return PolicyIterationResult(
+        policy=dict(policy),
+        values=dict(values),
+        iterations=max_iterations,
+    )
 
 
 def _lookahead_values(model: MdpModel) -> dict[str, float]:
@@ -172,7 +242,9 @@ __all__ = [
     "MDPPlanner",
     "MdpModel",
     "MdpTransition",
+    "PolicyIterationResult",
     "action_values",
     "plan_actions",
+    "policy_iteration",
     "value_iteration",
 ]

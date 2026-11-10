@@ -83,6 +83,21 @@ The decision package no longer nests algorithms under `engines/`, and the app ki
 
 The top-level `from laix import ...` surface is unchanged. Only deep imports move.
 
+## 0.17.0: decision extensions
+
+A `verified` commitment without a valid `verified_at` is now untrusted. Set the timestamp when the
+host marks a promise verified; a missing or invalid value can no longer satisfy a verified
+dependency.
+
+`CommitmentPlanner` alternatives add `rejected_reason_code`; keep using `rejected_because` for
+display. `CommitmentResolutionPlanner`, `PortfolioPlanner`, `RiskBoundedPlanner`,
+`RevalidationPlanner`, `CaseBasedPlanner` and `ConflictResolutionPlanner` are additive. `LiveCompositePlanner`,
+`CAVODPlanner` and `PlanningPolicy` accept the same trust and freshness settings as the commitment
+planner.
+
+`policy_iteration` supports infinite-horizon discounted MDPs; finite-horizon models keep using
+`value_iteration`.
+
 ## 0.16.0: freshness and graph tooling
 
 `CommitmentBlocker.reason` can now be `stale` in addition to `missing`, `open` and `unverified`.
@@ -298,5 +313,5 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.16.0`. Add a new entry here when a release requires host changes; keep it
+The current release is `0.17.0`. Add a new entry here when a release requires host changes; keep it
 short and concrete.

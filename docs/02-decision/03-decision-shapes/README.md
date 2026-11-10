@@ -31,6 +31,7 @@ siblings, not as one folder inside the other.
 3. [Fleet](03-fleet.md) — attention scheduling and the Whittle index.
 4. [History](04-history.md) — decision continuity and minimum-cost repair.
 5. [Explain](05-explain.md) — counterfactual attribution and bounded search.
+6. [Planner extensions](06-extensions.md) — portfolios, risk bounds, verification, revalidation, case-based reuse and conflicts.
 
 The research results and the prior-art caveats are in
 [Algorithm prototype results](../../07-research/02-evaluation/algorithm-prototypes.md).

@@ -52,7 +52,8 @@ commitment = Commitment(
 
 `verified` is a **host assertion, not a proof**. LAIX records that the host says it checked the
 promise; it does not sign, verify or fetch anything. `verified_at` is metadata, not a signature.
-The graph does not expire it unless you ask for a maximum age.
+A `verified` promise without a valid `verified_at` is treated as untrusted. The graph does not expire
+a timestamp unless you ask for a maximum age.
 
 `reported` is the safe default for another party's commitment. It is enough for planning that can
 tolerate uncertainty, but it does not satisfy a dependency that requires verification. A local ledger

@@ -146,6 +146,76 @@ export class MDPPlanner {
   }
 }
 
+export interface PolicyIterationResult {
+  policy: Record<string, string>;
+  values: Record<string, number>;
+  iterations: number;
+}
+
+export function policyIteration(
+  model: MdpModel,
+  options: { tolerance?: number; maxIterations?: number } = {},
+): PolicyIterationResult {
+  if (model.horizon !== null) {
+    throw new Error("policy iteration needs an infinite horizon");
+  }
+  const tolerance = options.tolerance ?? 1e-9;
+  const maxIterations = options.maxIterations ?? 1000;
+  const policy: Record<string, string> = {};
+  for (const state of model.states) {
+    const actions = model.actionsFor(state);
+    if (actions.length) policy[state] = actions[0]!;
+  }
+  let values: Record<string, number> = Object.fromEntries(
+    model.states.map((state) => [state, 0]),
+  );
+
+  for (let iteration = 1; iteration <= maxIterations; iteration += 1) {
+    for (let evaluation = 0; evaluation < maxIterations; evaluation += 1) {
+      const updated: Record<string, number> = {};
+      let delta = 0;
+      for (const state of model.states) {
+        const action = policy[state];
+        const value = action ? qValue(model, state, action, values) : 0;
+        updated[state] = value;
+        delta = Math.max(delta, Math.abs(value - values[state]!));
+      }
+      values = updated;
+      if (delta <= tolerance) break;
+    }
+
+    let changed = false;
+    for (const state of model.states) {
+      const actions = model.actionsFor(state);
+      if (!actions.length) continue;
+      const best = [...actions].sort((left, right) =>
+        qValue(model, state, right, values) !== qValue(model, state, left, values)
+          ? qValue(model, state, right, values) - qValue(model, state, left, values)
+          : left < right
+            ? -1
+            : 1,
+      )[0]!;
+      if (policy[state] !== best) {
+        policy[state] = best;
+        changed = true;
+      }
+    }
+    if (!changed) {
+      return {
+        policy: { ...policy },
+        values: { ...values },
+        iterations: iteration,
+      };
+    }
+  }
+
+  return {
+    policy: { ...policy },
+    values: { ...values },
+    iterations: maxIterations,
+  };
+}
+
 export function planActions(model: MdpModel, state?: string): string[] {
   let current = state ?? model.start;
   const path: string[] = [];
