@@ -1,16 +1,16 @@
-﻿![LAIX â€” Live Decision for AI agents, between plan and execution](docs/assets/banner.png)
+![LAIX — Live Decision for AI agents, between plan and execution](docs/assets/banner.png)
 
 [![CI](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelatamuk/laix/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)
 ![Node 22+](https://img.shields.io/badge/node-22%2B-339933?logo=node.js&logoColor=white)
 
-# LAIX â€” Live AI Experience
+# LAIX — Live AI Experience
 
 **LAIX makes the live decision for AI agents that act in the real world.**
 
 Agent frameworks plan. Workflow engines orchestrate. LAIX sits between the plan and its execution:
-it decides whether to wait, observe, guide, ask, act, verify or escalate â€” explicitly, with a reason
+it decides whether to wait, observe, guide, ask, act, verify or escalate — explicitly, with a reason
 code, a score and an audit trail. It is not an agent framework, a workflow engine or a model.
 
 One contract for utility, commitments, execution risk and human attention, with **decision
@@ -19,15 +19,15 @@ the next. The host owns execution, data, delivery and storage; LAIX owns the dec
 LAIX is **training-free**: the default path is deterministic policies and planners; a planner can use
 a model the host supplies.
 
-**Who it is for:** teams building AI agents or automations that take real actions â€” especially when
+**Who it is for:** teams building AI agents or automations that take real actions — especially when
 approvals, promises, human attention or auditability matter.
 
 **Status:** pre-1.0 (`0.17.3`). Internal benchmarks and a synthetic continuity test; external
 validation pending.
 
-[Quickstart](docs/01-start/02-first-steps/01-quickstart.md) Â·
-[Documentation](docs/README.md) Â·
-[Examples](examples/README.md) Â·
+[Quickstart](docs/01-start/02-first-steps/01-quickstart.md) ·
+[Documentation](docs/README.md) ·
+[Examples](examples/README.md) ·
 [Issues](https://github.com/michaelatamuk/laix/issues)
 
 ## Why LAIX
@@ -163,7 +163,7 @@ The same contract covers attention, action, several decision shapes and your own
 | What you get | In one line |
 |---|---|
 | [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe` (gather evidence), `guide` (surface attention), `ask`, `act` (do it now), `verify`, `escalate` |
-| [Two decision families](docs/02-decision/README.md) | signal attention â€” what matters now â€” and action â€” what to do |
+| [Two decision families](docs/02-decision/README.md) | signal attention — what matters now — and action — what to do |
 | [Decision shapes and extensions](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history, explain and policies; portfolios, risk bounds, revalidation, case-based reuse and conflict resolution |
 | [Bring your own policy](docs/02-decision/03-decision-shapes/06-policies/README.md) | any `name` + `decide` object; a planner or model behind the same contract |
 | [Portable and tested](docs/06-project/02-quality/01-testing.md) | Python standard library only; TypeScript parity checked in CI |
@@ -217,9 +217,9 @@ stateless utility planner completed **0%** with 36 continuity errors. See the
 ## Results
 
 `LiveCompositePlanner` scores **30/30** on the frozen 30-case test split of the 120-case corpus and
-**6/6** on the conflict cases. The hand-built integration baseline (the â€œglue baselineâ€) scores 28/30; the **+6.7 pp** difference
+**6/6** on the conflict cases. The hand-built integration baseline (the “glue baseline”) scores 28/30; the **+6.7 pp** difference
 is **not yet significant** (p = 0.48). Every single-concern planner has significantly lower accuracy
-(McNemar p â‰¤ 0.008).
+(McNemar p ≤ 0.008).
 
 ![Accuracy and conflict accuracy on the frozen test split](docs/assets/benchmark.png)
 
@@ -229,12 +229,12 @@ is **not yet significant** (p = 0.48). Every single-concern planner has signific
 | Conflict accuracy, 6 cases | **100%** | 100% (glue baseline) |
 | Promise keeping | **100%** | 100% (glue baseline) |
 | Irreversible actions | **0%** | 0% (glue baseline) |
-| p95 decision latency | **0.22 ms** | â€” |
+| p95 decision latency | **0.22 ms** | — |
 
 The glue baseline matches on conflict, promises, reversibility and budget; the remaining gap is
 accuracy on the other 24 cases.
 
-On a 10-task Ï„-bench retail slice, the guardrail passed **10/10** vs **9/10** for the baseline
+On a 10-task τ-bench retail slice, the guardrail passed **10/10** vs **9/10** for the baseline
 (single trial). External validation is still pending; full evidence and caveats are in
 [the benchmark](docs/07-research/02-evaluation/benchmark.md) and
 [the evidence map](docs/07-research/02-evaluation/evidence-map.md).
@@ -277,4 +277,3 @@ If you use LAIX in research, cite it via [CITATION.cff](CITATION.cff).
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE). Current release: `0.17.3`.
-
