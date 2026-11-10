@@ -9,13 +9,14 @@ LAIX defines the contracts. The app owns the database.
 | **Outcome** | A measured result of a decision. |
 | **Checkpoint** | A snapshot of a stream that can be resumed. |
 
-## Which store
+## Which store or port
 
 | Need | Contract | What it keeps |
 |---|---|---|
 | Short-lived experience state | `StateStore` | Goals, phase, beliefs, observations and history. |
 | Resume a stream | `StreamCheckpointStore` | Watermark, cadence, counters, buffered decisions and traces. |
 | A task's promises | `CommitmentStore` | `CommitmentLedger`: due times, status, dependencies and payload. |
+| Another owner's commitments | `CommitmentResolver` / `AsyncCommitmentResolver` | Resolved references for a commitment graph. |
 | Decision consequences | `OutcomeStore` | `Outcome` records: metric, before/after, label, attribution. |
 
 ## State store
