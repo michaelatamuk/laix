@@ -1,4 +1,4 @@
-﻿# The composite planner
+# The composite planner
 
 `LiveCompositePlanner` is the composite planner. It runs the four live planner scores on the same
 problem and returns one `PlannerResult`.
@@ -92,7 +92,7 @@ The composite planner sorts the feasible rows by `(-total, option.id)` and takes
 
 ```text
 1.0                                      if there is no second feasible row
-clamp(0.5 + 0.5 Ã— gap / |best|)          otherwise, gap = max(0, best - second)
+clamp(0.5 + 0.5 × gap / |best|)          otherwise, gap = max(0, best - second)
 ```
 
 ## The returned planner result
