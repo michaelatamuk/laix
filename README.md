@@ -37,9 +37,10 @@ validation pending.
 - **The next decision starts from the current state.** Commitments (promises), human-attention budget
   (how much you can interrupt a person), approvals, revisions, execution receipts and measured outcomes
   carry forward. A decision is a step, not a snapshot.
-- **Promises can cross owners.** A `CommitmentGraph` combines the local ledger with other parties'
-  commitments, so the planner can require an external dependency to be verified before an action that
-  depends on it.
+- **Promises can cross owners.** `CommitmentGraph` combines local and external commitments with
+  explicit `local` / `reported` / `verified` trust and freshness. A blocked hard promise becomes a
+  `verify` or `ask` decision, and the belief planner weighs an uncertain promise by its completion
+  probability.
 - **The host keeps control.** The decision layer is stateless. The host owns execution, data, storage
   and delivery; the optional app kit adds the lifecycle around the decision.
 - **It is portable and testable.** Python uses the standard library only. TypeScript mirrors the same
@@ -163,7 +164,7 @@ The same contract covers attention, action, several decision shapes and your own
 |---|---|
 | [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe` (gather evidence), `guide` (surface attention), `ask`, `act` (do it now), `verify`, `escalate` |
 | [Two decision families](docs/02-decision/README.md) | signal attention — what matters now — and action — what to do |
-| [Five decision shapes](docs/02-decision/03-decision-shapes/README.md) | single (one choice), sequence (a chain), fleet (many pending), history (repair), explain (why and what would flip it) |
+| [Decision shapes and extensions](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history, explain; [portfolios, risk bounds, revalidation, case-based reuse and conflict resolution](docs/02-decision/03-decision-shapes/06-extensions.md) |
 | [Bring your own policy](docs/02-decision/03-decision-shapes/01-single/05-policies.md) | any `name` + `decide` object; a planner or model behind the same contract |
 | [Portable and tested](docs/06-project/02-quality/01-testing.md) | Python standard library only; TypeScript parity checked in CI |
 | [Integrations](docs/03-appkit/01-build/README.md) | [LangGraph](docs/03-appkit/01-build/04-langgraph.md), [MCP](docs/03-appkit/01-build/05-mcp.md), [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) |
@@ -245,7 +246,7 @@ On a 10-task τ-bench retail slice, the guardrail passed **10/10** vs **9/10** f
 | [Documentation index](docs/README.md) | every guide and reference page |
 | [Quickstart](docs/01-start/02-first-steps/01-quickstart.md) | install and first decision |
 | [Decision overview](docs/02-decision/README.md) | contract, domain, decision shapes, sensing, learning, evaluation |
-| [Decision shapes](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history and explain |
+| [Decision shapes](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history, explain and planner extensions |
 | [App-kit overview](docs/03-appkit/README.md) | execution, streams, stores, platform, delivery, bench |
 | [Decision lifecycle](docs/01-start/01-orientation/02-decision-lifecycle.md) | moment to outcome in one loop |
 | [Deployment](docs/03-appkit/05-operate/03-deployment.md) | production topology, reliability, rollout and retention |
