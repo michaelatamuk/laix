@@ -8,7 +8,7 @@ import {
 } from "../utility/utility-planner.ts";
 import type { RiskAttitude } from "../utility/utility-planner.ts";
 import {
-  activeCommitments,
+  activeAndGraph,
   commitmentScoreOption,
 } from "../commitment/commitment-planner.ts";
 import type { CommitmentWeights } from "../commitment/commitment-planner.ts";
@@ -113,6 +113,8 @@ export class CAVODPlanner {
   readonly humanAttentionWeights: Required<HumanAttentionWeights>;
   readonly pomdpModel: PomdpModel | null;
   readonly belief: BeliefState;
+  readonly requireVerified: boolean;
+  readonly maxVerificationAgeMs?: number;
   private readonly utility: UtilityPlanner;
   private readonly enforceFeasibility: boolean;
 
@@ -126,6 +128,8 @@ export class CAVODPlanner {
       executionWeights?: ExecutionWeights;
       humanAttentionWeights?: HumanAttentionWeights;
       enforceFeasibility?: boolean;
+      requireVerified?: boolean;
+      maxVerificationAgeMs?: number;
     } = {},
   ) {
     this.model = model;
@@ -157,6 +161,8 @@ export class CAVODPlanner {
       exhausted: options.humanAttentionWeights?.exhausted ?? 1.0,
     };
     this.enforceFeasibility = options.enforceFeasibility ?? true;
+    this.requireVerified = options.requireVerified ?? true;
+    this.maxVerificationAgeMs = options.maxVerificationAgeMs;
     this.utility = new UtilityPlanner(model);
   }
 
@@ -166,8 +172,19 @@ export class CAVODPlanner {
       return this.wait("no_options", "there are no options to score");
     }
     const model = this.modelFor((problem.attributes ?? {}) as Record<string, unknown>);
-    const commitments = activeCommitments(problem);
+    const { active, graph } = activeAndGraph(problem);
     const now = new Date(problem.at);
+    const isBlocked = (commitmentId: string): boolean => {
+      const commitment = active.get(commitmentId);
+      return (
+        !commitment ||
+        graph.blocked(commitment, {
+          requireVerified: this.requireVerified,
+          now,
+          maxVerificationAgeMs: this.maxVerificationAgeMs,
+        })
+      );
+    };
     const approval = approvalRequired(problem);
     const remaining = remainingBudget(problem);
     const uncertaintyValue = uncertainty(problem, this.weights);
@@ -179,9 +196,10 @@ export class CAVODPlanner {
       const commitment = commitmentScoreOption(
         option,
         model,
-        commitments,
+        active,
         this.commitmentWeights,
         now,
+        isBlocked,
       );
       const execution = executionScoreOption(
         option,

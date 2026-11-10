@@ -210,6 +210,32 @@ def _option_blockers(
     return tuple(found[key] for key in sorted(found))
 
 
+_REASON_PRIORITY = ("missing", "stale", "unverified", "open")
+
+COMMITMENT_REJECTION_CODES = (
+    "blocked_hard_commitment",
+    "blocked_missing_dependency",
+    "blocked_stale_dependency",
+    "blocked_unverified_dependency",
+    "blocked_open_dependency",
+    "outside_hard_limits",
+    "lower_commitment_score",
+)
+
+
+def _rejection_code(row: _Row) -> str:
+    """Map a rejected row onto a stable code for host branching."""
+    if row.feasible:
+        return "lower_commitment_score"
+    if row.score.blocked and row.score.blocked.startswith("hard commitment"):
+        return "blocked_hard_commitment"
+    reasons = {str(item["reason"]) for item in row.blocked_by}
+    for reason in _REASON_PRIORITY:
+        if reason in reasons:
+            return f"blocked_{reason}_dependency"
+    return "outside_hard_limits"
+
+
 class CommitmentPlanner:
     """Choose the option with the best utility plus commitment effect."""
 
@@ -331,6 +357,7 @@ class CommitmentPlanner:
                     "commitment": row.score.commitment,
                     "total": row.score.total,
                     "rejected_because": reason,
+                    "rejected_reason_code": _rejection_code(row),
                     "blocked_by": [dict(item) for item in row.blocked_by],
                 }
             )
@@ -356,6 +383,7 @@ class CommitmentPlanner:
 
 
 __all__ = [
+    "COMMITMENT_REJECTION_CODES",
     "CommitmentPlanner",
     "CommitmentEffect",
     "CommitmentScore",

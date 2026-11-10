@@ -85,5 +85,13 @@ export function commitmentDue(commitment: Commitment, now: Date): boolean {
 
 export function commitmentTrusted(commitment: Commitment): boolean {
   const source = commitment.source ?? "local";
-  return source !== "reported";
+  if (source === "local") return true;
+  if (source === "verified") {
+    return (
+      commitment.verifiedAt !== undefined &&
+      commitment.verifiedAt !== null &&
+      !Number.isNaN(Date.parse(commitment.verifiedAt))
+    );
+  }
+  return false;
 }

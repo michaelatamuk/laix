@@ -35,6 +35,20 @@ app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` 
 | `AsyncCommitmentResolver` | the async variant for hosts that fetch before planning |
 | `InMemoryCommitmentResolver`, `resolve_commitment_graph` / `resolve_commitment_graph_async` | the built-in test resolver and graph helpers |
 | `CommitmentPlanner` | the planner that scores fulfill, violate and create effects |
+| `CommitmentResolutionPlanner` | turns blocked commitments into a `verify` or `ask` decision |
+| `COMMITMENT_REJECTION_CODES` | stable codes for rejected commitment options |
+
+## Decision extensions
+
+| Name | Purpose |
+|---|---|
+| `PortfolioPlanner` | chooses a named planner from a portfolio |
+| `RiskBoundedPlanner` | keeps expected utility inside a downside limit |
+| `RevalidationPlanner` | holds, revises or escalates an earlier decision |
+| `CaseBasedPlanner`, `PastDecision` | reuses a similar past decision |
+| `ConflictResolutionPlanner` | resolves or escalates goal conflicts |
+| `decision_counterfactual`, `commitment_verification_counterfactual` | shows what would flip a decision |
+| `policy_iteration`, `PolicyIterationResult` | discounted infinite-horizon MDP policy iteration |
 
 ## Decision mechanisms
 

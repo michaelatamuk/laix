@@ -93,6 +93,13 @@ print(plan.total_cost, [action.record_id for action in plan.actions])
 The exact path is exponential in the worst case but fast on small decision histories. The full
 method remains incremental truth maintenance with a weighted MaxSAT repair.
 
+## Decision revalidation
+
+`RevalidationPlanner` wraps another planner and compares the new result with a previous decision.
+It returns `decision_held` when the action is unchanged, `decision_revised` when a different action
+is now best, and `decision_escalated` when the old action is no longer feasible. The previous action
+comes from `attributes["previous_decision"]` or `attributes["previous_action_id"]`.
+
 ## What the decision layer owns
 
 LAIX evaluates the state and returns the decision. The host and the app kit own persistence:

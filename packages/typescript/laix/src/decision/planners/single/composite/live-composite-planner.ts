@@ -8,7 +8,7 @@ import {
 } from "../utility/utility-planner.ts";
 import type { RiskAttitude } from "../utility/utility-planner.ts";
 import {
-  activeCommitments,
+  activeAndGraph,
   commitmentScoreOption,
 } from "../commitment/commitment-planner.ts";
 import type { CommitmentWeights } from "../commitment/commitment-planner.ts";
@@ -37,6 +37,8 @@ interface LiveOptions {
   commitmentWeights?: CommitmentWeights;
   executionWeights?: ExecutionWeights;
   humanAttentionWeights?: HumanAttentionWeights;
+  requireVerified?: boolean;
+  maxVerificationAgeMs?: number;
 }
 
 interface Row {
@@ -59,6 +61,8 @@ export class LiveCompositePlanner {
   readonly commitmentWeights: Required<CommitmentWeights>;
   readonly executionWeights: Required<ExecutionWeights>;
   readonly humanAttentionWeights: Required<HumanAttentionWeights>;
+  readonly requireVerified: boolean;
+  readonly maxVerificationAgeMs?: number;
   private readonly utility: UtilityPlanner;
 
   constructor(model: UtilityModel = new UtilityModel(), options: LiveOptions = {}) {
@@ -82,6 +86,8 @@ export class LiveCompositePlanner {
       escalation: options.humanAttentionWeights?.escalation ?? 0.3,
       exhausted: options.humanAttentionWeights?.exhausted ?? 1.0,
     };
+    this.requireVerified = options.requireVerified ?? true;
+    this.maxVerificationAgeMs = options.maxVerificationAgeMs;
     this.utility = new UtilityPlanner(model);
   }
 
@@ -91,17 +97,29 @@ export class LiveCompositePlanner {
       return this.wait("no_options", "there are no options to score");
     }
     const model = this.modelFor((problem.attributes ?? {}) as Record<string, unknown>);
-    const commitments = activeCommitments(problem);
+    const { active, graph } = activeAndGraph(problem);
     const now = new Date(problem.at);
+    const isBlocked = (commitmentId: string): boolean => {
+      const commitment = active.get(commitmentId);
+      return (
+        !commitment ||
+        graph.blocked(commitment, {
+          requireVerified: this.requireVerified,
+          now,
+          maxVerificationAgeMs: this.maxVerificationAgeMs,
+        })
+      );
+    };
     const approval = approvalRequired(problem);
     const remaining = remainingBudget(problem);
     const rows: Row[] = options.map((option) => {
       const commitment = commitmentScoreOption(
         option,
         model,
-        commitments,
+        active,
         this.commitmentWeights,
         now,
+        isBlocked,
       );
       const execution = executionScoreOption(
         option,

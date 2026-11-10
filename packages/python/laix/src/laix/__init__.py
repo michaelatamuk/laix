@@ -97,11 +97,15 @@ from .decision.policies import (
 from .decision.domain.perception import Detection, Detector, PerceptionEvent, PerceptionFrame
 from .decision.sensing.resources import Budget, ResourcePlan, ResourceScheduler, SensingOption
 from .decision.planners.single.commitment.commitment_planner import (
+    COMMITMENT_REJECTION_CODES,
     CommitmentPlanner,
     CommitmentEffect,
     CommitmentScore,
     CommitmentWeights,
     commitment_effect,
+)
+from .decision.planners.single.commitment.commitment_resolution_planner import (
+    CommitmentResolutionPlanner,
 )
 from .decision.planners.single.human_attention.human_attention_planner import (
     HumanAttentionPlanner,
@@ -150,8 +154,10 @@ from .decision.planners.single.mdp.mdp_planner import (
     MDPPlanner,
     MdpModel,
     MdpTransition,
+    PolicyIterationResult,
     action_values,
     plan_actions,
+    policy_iteration,
     value_iteration,
 )
 from .decision.learning.model import LearnedTransition, ModelLearner
@@ -175,6 +181,15 @@ from .decision.planners.single.decision_value.ca_vod_planner import (
     CAVODScore,
     CAVODWeights,
 )
+from .decision.planners.single.portfolio.portfolio_planner import PortfolioPlanner
+from .decision.planners.single.risk.risk_bounded_planner import RiskBoundedPlanner
+from .decision.planners.single.conflict.conflict_resolution_planner import (
+    ConflictResolutionPlanner,
+)
+from .decision.planners.case_based.case_based_planner import (
+    CaseBasedPlanner,
+    PastDecision,
+)
 from .decision.planners.fleet.attention_scheduler import (
     AttentionCandidate,
     AttentionSchedule,
@@ -196,6 +211,7 @@ from .decision.planners.history.repair import (
     RepairPlan,
     repair_continuity,
 )
+from .decision.planners.history.revalidation import RevalidationPlanner
 from .decision.planners.explain.counterfactual import (
     Counterfactual,
     CounterfactualReport,
@@ -206,6 +222,12 @@ from .decision.planners.explain.counterfactual_search import (
     CounterfactualSearchResult,
     CounterfactualVariable,
     counterfactual_search,
+)
+from .decision.planners.explain.decision_counterfactual import (
+    CounterfactualOutcome,
+    DecisionCounterfactualResult,
+    commitment_verification_counterfactual,
+    decision_counterfactual,
 )
 from .decision.evaluation.simulation.simulator import (
     PlannerBenchmarkRow,
@@ -390,7 +412,9 @@ __all__ = [
     "CommitmentGraphReport",
     "CommitmentLedger",
     "CommitmentRef",
+    "COMMITMENT_REJECTION_CODES",
     "CommitmentPlanner",
+    "CommitmentResolutionPlanner",
     "CommitmentEffect",
     "CommitmentLedger",
     "CommitmentResolver",
@@ -445,6 +469,8 @@ __all__ = [
     "MDPPlanner",
     "MdpModel",
     "MdpTransition",
+    "PolicyIterationResult",
+    "policy_iteration",
     "ModelLearner",
     "LearnedTransition",
     "ObservationProbability",
@@ -477,6 +503,11 @@ __all__ = [
     "CAVODPlanner",
     "CAVODScore",
     "CAVODWeights",
+    "PortfolioPlanner",
+    "RiskBoundedPlanner",
+    "ConflictResolutionPlanner",
+    "CaseBasedPlanner",
+    "PastDecision",
     "AttentionCandidate",
     "AttentionSchedule",
     "AttentionScheduleRow",
@@ -491,14 +522,19 @@ __all__ = [
     "DEFAULT_CONFLICT_RULES",
     "RepairAction",
     "RepairPlan",
+    "RevalidationPlanner",
     "repair_continuity",
     "Counterfactual",
     "CounterfactualChange",
+    "CounterfactualOutcome",
     "CounterfactualReport",
     "CounterfactualSearchResult",
     "CounterfactualVariable",
+    "DecisionCounterfactualResult",
+    "commitment_verification_counterfactual",
     "counterfactual_attribution",
     "counterfactual_search",
+    "decision_counterfactual",
     "samples_from_outcomes",
     "seeded_scenarios",
     "value_iteration",

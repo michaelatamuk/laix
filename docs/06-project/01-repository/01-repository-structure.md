@@ -96,11 +96,12 @@ packages/python/laix/src/laix/
 │   │   ├── outcomes/        outcome record, ledger, store and signal-attention feedback
 │   │   └── perception/      detection, detector, event and frame
 │   ├── planners/
-│   │   ├── single/          utility, mdp, pomdp, commitment, execution, human_attention, decision_value, composite
+│   │   ├── single/          utility, mdp, pomdp, commitment, execution, human_attention, decision_value, composite, portfolio, risk, conflict
 │   │   ├── sequence/        sequence contract, CABB, rollout and replan
 │   │   ├── fleet/           attention scheduling and the exact Whittle index
-│   │   ├── history/         continuity repair
-│   │   └── explain/         attribution and counterfactual search
+│   │   ├── case_based/      reuse of similar past decisions
+│   │   ├── history/         continuity repair and decision revalidation
+│   │   └── explain/         attribution, counterfactual search and decision counterfactuals
 │   ├── policies/            decision_policy.py, registry, simulation and implementations/
 │   ├── sensing/
 │   │   ├── signals/         input, output, gates/, signal-attention.v1.json, decide, score
@@ -150,11 +151,12 @@ packages/typescript/laix/src/
 │   │   ├── outcomes/      outcome ledger and stores
 │   │   └── perception/perception.ts detector and frame contracts
 │   ├── planners/
-│   │   ├── single/        utility, mdp, pomdp, commitment, execution, human-attention, decision-value, composite
+│   │   ├── single/        utility, mdp, pomdp, commitment, execution, human-attention, decision-value, composite, portfolio, risk, conflict
 │   │   ├── sequence/      contract, CABB, rollout and replan
 │   │   ├── fleet/         attention scheduling and the exact Whittle index
-│   │   ├── history/       continuity repair
-│   │   └── explain/       attribution and counterfactual search
+│   │   ├── case-based/    reuse of similar past decisions
+│   │   ├── history/       continuity repair and decision revalidation
+│   │   └── explain/       attribution, counterfactual search and decision counterfactuals
 │   ├── policies/          eight packs, bandit, rules, target, planning, group, shadow
 │   ├── sensing/
 │   │   ├── signals/signal-attention.ts signal-attention policy
