@@ -8,6 +8,7 @@ decision/planners/
   single/      # one live decision
   sequence/    # a finite chain of decisions
   fleet/       # many pending decisions competing for attention
+  case_based/  # reuse of a similar decision
   history/     # a decision history that may need repair
   explain/     # why a decision happened, and what would flip it
 
@@ -26,12 +27,12 @@ siblings, not as one folder inside the other.
 ## Read in order
 
 1. [Single decision](01-single/README.md) — utility, commitments, execution risk, attention, CA-VOD,
-   composite, MDP and POMDP planners, plus the policy layer.
-2. [Sequence](02-sequence.md) — CABB, rollout and replan.
-3. [Fleet](03-fleet.md) — attention scheduling and the Whittle index.
-4. [History](04-history.md) — decision continuity and minimum-cost repair.
-5. [Explain](05-explain.md) — counterfactual attribution and bounded search.
-6. [Planner extensions](06-extensions.md) — portfolios, risk bounds, verification, revalidation, case-based reuse and conflicts.
+   composite, MDP and POMDP planners, plus the single-decision extensions.
+2. [Sequence](02-sequence/README.md) — CABB, rollout and replan.
+3. [Fleet](03-fleet/README.md) — attention scheduling and the Whittle index.
+4. [History](04-history/README.md) — decision continuity, repair and revalidation.
+5. [Explain](05-explain/README.md) — counterfactual attribution, bounded search and decision counterfactuals.
+6. [Policies](06-policies/README.md) — the chooser layer, packaged policies and wrappers.
 
 The research results and the prior-art caveats are in
 [Algorithm prototype results](../../07-research/02-evaluation/algorithm-prototypes.md).

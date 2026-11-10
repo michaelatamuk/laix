@@ -1,4 +1,4 @@
-# The composite planner
+﻿# The composite planner
 
 `LiveCompositePlanner` is the composite planner. It runs the four live planner scores on the same
 problem and returns one `PlannerResult`.
@@ -92,7 +92,7 @@ The composite planner sorts the feasible rows by `(-total, option.id)` and takes
 
 ```text
 1.0                                      if there is no second feasible row
-clamp(0.5 + 0.5 × gap / |best|)          otherwise, gap = max(0, best - second)
+clamp(0.5 + 0.5 Ã— gap / |best|)          otherwise, gap = max(0, best - second)
 ```
 
 ## The returned planner result
@@ -202,5 +202,5 @@ The composite planner is the composition object. The benchmark design and the me
 - [Single-decision planners](01-planners.md)
 - [Planner contract](../../01-contract/02-planner-contract.md)
 - [Commitments](../../02-domain/02-commitments.md)
-- [Decision continuity](../04-history.md)
+- [Decision continuity](../04-history/README.md)
 - [Evaluation](../../06-evaluation/01-cases.md)

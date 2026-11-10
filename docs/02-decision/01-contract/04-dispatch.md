@@ -146,5 +146,5 @@ policies use different internal result types.
 
 - [Decision contract](01-decision-contract.md) — the request and response shapes.
 - [Signal attention](../04-sensing/01-signals.md) — the attention path.
-- [Policies](../03-decision-shapes/01-single/05-policies.md) — the explicit policy path.
+- [Policies](../03-decision-shapes/06-policies/README.md) — the explicit policy path.
 - [Planner contract](02-planner-contract.md) — the `PlannerPolicy` path.

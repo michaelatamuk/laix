@@ -220,7 +220,7 @@ Reason codes are grouped by producer:
 | CA-VOD planner | `value_of_decision` |
 | Model-based planners | `mdp_plan`, `pomdp_plan`, `terminal_state`, `no_action` |
 | Authored rules | `policy_rule`, `no_rule` |
-| Packaged policies | `safe_action`, `safety_blocked`, `no_safe_option`, `ask_preference`, `verify_outcome`, `escalate_to_target`, `replan`, and the codes listed on the [policies page](../03-decision-shapes/01-single/05-policies.md) |
+| Packaged policies | `safe_action`, `safety_blocked`, `no_safe_option`, `ask_preference`, `verify_outcome`, `escalate_to_target`, `replan`, and the codes listed on the [policies page](../03-decision-shapes/06-policies/README.md) |
 
 The gate set emits the codes in the table above. `ask_approval` is a reserved enum value; approval is
 carried by `requires_approval` on the decision.
@@ -259,5 +259,5 @@ field is a schema change. [Records and schema](03-records.md) describes the vers
 
 - [Records and schema](03-records.md) — every record shape and the schema workflow.
 - [Dispatch](04-dispatch.md) — how the request selects a mechanism.
-- [Policies](../03-decision-shapes/01-single/05-policies.md) — the policy contract.
+- [Policies](../03-decision-shapes/06-policies/README.md) — the policy contract.
 - [Planner contract](02-planner-contract.md) — the `PlannerResult` shape and its conversion.

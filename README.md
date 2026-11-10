@@ -164,8 +164,8 @@ The same contract covers attention, action, several decision shapes and your own
 |---|---|
 | [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe` (gather evidence), `guide` (surface attention), `ask`, `act` (do it now), `verify`, `escalate` |
 | [Two decision families](docs/02-decision/README.md) | signal attention — what matters now — and action — what to do |
-| [Decision shapes and extensions](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history, explain; [portfolios, risk bounds, revalidation, case-based reuse and conflict resolution](docs/02-decision/03-decision-shapes/06-extensions.md) |
-| [Bring your own policy](docs/02-decision/03-decision-shapes/01-single/05-policies.md) | any `name` + `decide` object; a planner or model behind the same contract |
+| [Decision shapes and extensions](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history, explain and policies; portfolios, risk bounds, revalidation, case-based reuse and conflict resolution |
+| [Bring your own policy](docs/02-decision/03-decision-shapes/06-policies/README.md) | any `name` + `decide` object; a planner or model behind the same contract |
 | [Portable and tested](docs/06-project/02-quality/01-testing.md) | Python standard library only; TypeScript parity checked in CI |
 | [Integrations](docs/03-appkit/01-build/README.md) | [LangGraph](docs/03-appkit/01-build/04-langgraph.md), [MCP](docs/03-appkit/01-build/05-mcp.md), [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) |
 
@@ -208,7 +208,7 @@ A decision is one step in a sequence. It leaves state for the next decision.
 | 3 | verifies after execution | `c1` fulfilled; receipt and outcome recorded |
 
 The next decision sees the commitments, human-attention budget, approvals, revisions and outcomes the
-previous one left. See [Decision continuity](docs/02-decision/03-decision-shapes/04-history.md).
+previous one left. See [Decision continuity](docs/02-decision/03-decision-shapes/04-history/README.md).
 
 In a 12-episode synthetic mechanism test, the stateful decision loop completed **100%** of episodes; a
 stateless utility planner completed **0%** with 36 continuity errors. See the

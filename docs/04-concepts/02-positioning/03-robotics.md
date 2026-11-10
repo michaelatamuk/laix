@@ -107,5 +107,5 @@ the current evidence is in the
 - [Execution and recovery](../../03-appkit/03-execute/01-execution-and-recovery.md) - approval, receipts and recovery.
 - [Platform](../../03-appkit/04-connect/02-platform.md) - skills, approvals and events.
 - [Stores](../../03-appkit/04-connect/01-stores.md) - state, checkpoints and outcomes.
-- [Decision continuity](../../02-decision/03-decision-shapes/04-history.md) - state carried into the next decision.
+- [Decision continuity](../../02-decision/03-decision-shapes/04-history/README.md) - state carried into the next decision.
 - [Evaluation](../../02-decision/06-evaluation/01-cases.md) - cases, reports and benchmarks.

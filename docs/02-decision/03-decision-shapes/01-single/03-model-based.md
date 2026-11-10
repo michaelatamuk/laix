@@ -200,6 +200,19 @@ the MDP value of the most likely state; a POMDP can be worth less because uncert
 `Simulator` and `compare_planners` run planners over a model and report reward and optimality gap.
 See [Simulation](../../06-evaluation/03-simulation.md).
 
+## Policy iteration
+
+`policy_iteration` solves a discounted infinite-horizon `MdpModel` and returns a stationary policy,
+values and iteration count. It complements `value_iteration`; finite-horizon models should keep using
+value iteration because their policy is time-dependent.
+
+```python
+from laix import MdpModel, policy_iteration
+
+result = policy_iteration(model)
+print(result.policy, result.values)
+```
+
 ## Limits
 
 - A model-based planner needs a world model. The host supplies the states, transitions, rewards and
