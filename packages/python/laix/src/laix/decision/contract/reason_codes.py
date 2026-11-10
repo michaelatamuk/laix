@@ -19,6 +19,8 @@ REASON_CODE_GROUPS: dict[str, tuple[str, ...]] = {
         "approval_rejected",
         "case_based",
         "commitment_aware",
+        "commitment_belief",
+        "commitment_belief_verify",
         "commitment_resolution",
         "decision_escalated",
         "decision_held",

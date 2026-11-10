@@ -22,7 +22,7 @@ a model the host supplies.
 **Who it is for:** teams building AI agents or automations that take real actions — especially when
 approvals, promises, human attention or auditability matter.
 
-**Status:** pre-1.0 (`0.17.1`). Internal benchmarks and a synthetic continuity test; external
+**Status:** pre-1.0 (`0.17.2`). Internal benchmarks and a synthetic continuity test; external
 validation pending.
 
 [Quickstart](docs/01-start/02-first-steps/01-quickstart.md) ·
@@ -67,7 +67,7 @@ Robotics: task-level decisions above the safety and motion layer. See
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.17.1#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.17.2#subdirectory=packages/python/laix"
 ```
 
 From a local checkout, at the repository root:
@@ -275,4 +275,4 @@ If you use LAIX in research, cite it via [CITATION.cff](CITATION.cff).
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE). Current release: `0.17.1`.
+Apache-2.0. See [LICENSE](LICENSE). Current release: `0.17.2`.

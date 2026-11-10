@@ -12,6 +12,7 @@ export * from "./decision/domain/commitments/store.ts";
 export * from "./decision/planners/single/utility/utility-planner.ts";
 export * from "./decision/planners/single/commitment/commitment-planner.ts";
 export * from "./decision/planners/single/commitment/commitment-resolution-planner.ts";
+export * from "./decision/planners/single/commitment/commitment-belief-planner.ts";
 export * from "./decision/planners/single/execution/execution-planner.ts";
 export * from "./decision/planners/single/human-attention/human-attention-planner.ts";
 export * from "./decision/planners/single/decision-value/ca-vod-planner.ts";

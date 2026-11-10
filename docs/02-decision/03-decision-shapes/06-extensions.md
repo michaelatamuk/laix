@@ -53,6 +53,16 @@ The result carries `verification_refs` and `blocked_by`, each with `{owner, ledg
 The composite, CA-VOD and CABB sequence planners accept the same `require_verified` and
 `max_verification_age` settings, so cross-owner blockers reach the whole decision stack.
 
+## Belief-aware planning
+
+`CommitmentBeliefPlanner` weights expected utility by the chance that external dependencies complete.
+The probability comes from `attributes["commitment_probabilities"]` (keyed by `owner/ledger/id`,
+`owner:id` or plain id), then from `payload["completion_probability"]`, then from
+`default_probability`. Trusted and fresh verified promises count as certain.
+
+If the best action's completion probability is below `verify_below`, the planner returns `verify`
+with the uncertain references instead of acting on a low-confidence promise.
+
 ## Decision revalidation
 
 `RevalidationPlanner` wraps another planner and compares the new result with a previous decision.

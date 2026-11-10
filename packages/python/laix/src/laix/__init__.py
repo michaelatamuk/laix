@@ -104,6 +104,9 @@ from .decision.planners.single.commitment.commitment_planner import (
     CommitmentWeights,
     commitment_effect,
 )
+from .decision.planners.single.commitment.commitment_belief_planner import (
+    CommitmentBeliefPlanner,
+)
 from .decision.planners.single.commitment.commitment_resolution_planner import (
     CommitmentResolutionPlanner,
 )
@@ -415,6 +418,7 @@ __all__ = [
     "COMMITMENT_REJECTION_CODES",
     "CommitmentPlanner",
     "CommitmentResolutionPlanner",
+    "CommitmentBeliefPlanner",
     "CommitmentEffect",
     "CommitmentLedger",
     "CommitmentResolver",

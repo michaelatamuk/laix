@@ -36,6 +36,7 @@ app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` 
 | `InMemoryCommitmentResolver`, `resolve_commitment_graph` / `resolve_commitment_graph_async` | the built-in test resolver and graph helpers |
 | `CommitmentPlanner` | the planner that scores fulfill, violate and create effects |
 | `CommitmentResolutionPlanner` | turns blocked commitments into a `verify` or `ask` decision |
+| `CommitmentBeliefPlanner` | weights expected utility by external completion probability |
 | `COMMITMENT_REJECTION_CODES` | stable codes for rejected commitment options |
 
 ## Decision extensions
