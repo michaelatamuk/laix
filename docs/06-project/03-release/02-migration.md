@@ -83,6 +83,15 @@ The decision package no longer nests algorithms under `engines/`, and the app ki
 
 The top-level `from laix import ...` surface is unchanged. Only deep imports move.
 
+## 0.17.3: decision client field parity
+
+`DecisionClient` now keeps the full custom-policy decision: alternatives, attributes, intent, situation
+id, event and deadline metadata, revision, status, target and recipients. A host policy no longer loses
+those fields on the way out.
+
+The examples and docs were also aligned with the current decision and app-kit surface. No import
+changes are required.
+
 ## 0.17.2: belief-aware commitments
 
 `CommitmentBeliefPlanner` is additive. It reads completion probabilities from
@@ -326,5 +335,5 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.17.2`. Add a new entry here when a release requires host changes; keep it
+The current release is `0.17.3`. Add a new entry here when a release requires host changes; keep it
 short and concrete.

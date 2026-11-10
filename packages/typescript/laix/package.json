@@ -1,6 +1,6 @@
 {
   "name": "laix",
-  "version": "0.17.2",
+  "version": "0.17.3",
   "type": "module",
   "description": "LAIX: Live AI Experience. The decision layer for live AI experiences - decisions, timing, approval, audit and outcomes.",
   "main": "./dist/index.js",

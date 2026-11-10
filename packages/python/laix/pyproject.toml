@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "laix"
-version = "0.17.2"
+version = "0.17.3"
 description = "LAIX: Live AI Experience. The decision layer for live AI experiences: decisions, timing, approval, audit and outcomes."
 readme = "README.md"
 requires-python = ">=3.11"
