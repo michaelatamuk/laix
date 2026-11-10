@@ -142,3 +142,80 @@ test("CABB beats greedy rollout on an attention tradeoff", () => {
   assert.deepEqual(greedy.actions, ["start", "big", "nothing"]);
   assert.ok(exact.score > greedy.score);
 });
+
+
+function crossOwnerScenario(
+  source: "reported" | "verified",
+  verifiedAt: string | null = null,
+): DecisionScenario {
+  return {
+    steps: [
+      {
+        at: "2026-11-01T10:00:00Z",
+        options: [
+          {
+            id: "deliver",
+            verb: "act",
+            name: "deliver",
+            expectedBenefit: 1,
+            params: { commitments: { fulfills: ["c1"], hard: true } },
+          },
+          {
+            id: "wait",
+            verb: "wait",
+            name: "wait",
+            expectedBenefit: 0.1,
+          },
+        ],
+      },
+    ],
+    commitments: [
+      {
+        id: "c1",
+        subject: "deliver",
+        externalDependsOn: [
+          { owner: "supplier", ledger: "supplier", id: "ship" },
+        ],
+      },
+      {
+        id: "ship",
+        subject: "ship",
+        owner: "supplier",
+        ledger: "supplier",
+        status: "done",
+        source,
+        verifiedAt,
+      },
+    ],
+  };
+}
+
+test("CABB blocks a reported external dependency", () => {
+  const plan = new CABBPlanner().plan(crossOwnerScenario("reported"));
+
+  assert.deepEqual(plan.actions, ["wait"]);
+});
+
+test("CABB can allow a reported dependency explicitly", () => {
+  const plan = new CABBPlanner(undefined, { requireVerified: false }).plan(
+    crossOwnerScenario("reported"),
+  );
+
+  assert.deepEqual(plan.actions, ["deliver"]);
+});
+
+test("CABB allows a verified external dependency", () => {
+  const plan = new CABBPlanner().plan(
+    crossOwnerScenario("verified", "2026-11-01T09:30:00Z"),
+  );
+
+  assert.deepEqual(plan.actions, ["deliver"]);
+});
+
+test("CABB blocks a stale external dependency", () => {
+  const plan = new CABBPlanner(undefined, {
+    maxVerificationAgeMs: 60 * 60 * 1000,
+  }).plan(crossOwnerScenario("verified", "2026-10-30T09:00:00Z"));
+
+  assert.deepEqual(plan.actions, ["wait"]);
+});
