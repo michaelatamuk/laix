@@ -74,7 +74,7 @@ class LiveCompositePlanner:
         commitments, graph = _active_and_graph(problem)
         now = parse_iso(problem.at) or datetime.now(timezone.utc)
 
-        def blocked(commitment_id: str) -> bool:
+        def is_blocked(commitment_id: str) -> bool:
             commitment = commitments.get(commitment_id)
             return True if commitment is None else graph.blocked(
                 commitment,
@@ -93,7 +93,7 @@ class LiveCompositePlanner:
                 commitments,
                 self.commitment_weights,
                 now,
-                blocked,
+                is_blocked,
             )
             execution = execution_score(
                 option,
