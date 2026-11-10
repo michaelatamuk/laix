@@ -15,6 +15,10 @@ a known horizon, under open commitments and a shared human-attention budget.
 | [Rollout](02-rollout.md) | bounded greedy completion |
 | [Replan](03-replan.md) | recovery after an executed prefix |
 
+CABB and `plan_decisions` accept `require_verified` and `max_verification_age` (TypeScript
+`maxVerificationAgeMs`). Scenario commitments owned by another party are resolved through
+`CommitmentGraph` before scoring, so a stale or reported external promise blocks the option.
+
 ## Limits
 
 CABB is exact only for a finite deterministic scenario. Rollout is approximate. Replan is a recovery

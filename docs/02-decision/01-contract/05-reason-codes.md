@@ -16,12 +16,12 @@ The machine-readable registry is
 | `groups` | Codes by producer. |
 | `codes` | A flat sorted list for membership checks. |
 
-The current groups:
+The current registry version is `1.1.0`. The current groups:
 
 | Group | Count | Examples |
 |---|---:|---|
 | `signal_attention` | 15 | `worth_surfacing`, `quiet_hours`, `kill_switch`, `overdue_escalation` |
-| `planner` | 14 | `expected_utility`, `commitment_aware`, `live_decision`, `mdp_plan`, `pomdp_plan` |
+| `planner` | 28 | `expected_utility`, `commitment_aware`, `live_decision`, `mdp_plan`, `pomdp_plan`, `commitment_resolution`, `risk_bounded`, `decision_held` |
 | `policy` | 32 | `policy_rule`, `safe_action`, `no_safe_option`, `verify_outcome`, `replan`, `allocate` |
 | `appkit` | 1 | `execution_step` |
 | `bench` | 1 | `fixed_action` |

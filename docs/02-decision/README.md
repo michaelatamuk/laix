@@ -126,9 +126,15 @@ the selection rule and the identity fields.
 | Options and explicit decision rules | `RulePolicy` |
 | Options and one concern: utility, promises, execution risk or human attention | The matching planner through `PlannerPolicy` |
 | Options and several live concerns | `LiveCompositePlanner` through `PlannerPolicy` |
+| Options and a planner portfolio | `PortfolioPlanner` |
+| Options and a hard downside bound | `RiskBoundedPlanner` |
+| A blocked, stale or uncertain external promise | `CommitmentResolutionPlanner` or `CommitmentBeliefPlanner` |
 | Options, uncertainty, information value or a wait option | `CAVODPlanner` through `PlannerPolicy` |
 | Options and a known horizon | `CABBPlanner`, `RolloutPlanner` or `ReplanPlanner` |
 | Several pending decisions competing for human attention | `AttentionScheduler` |
+| A previous decision to re-check | `RevalidationPlanner` |
+| A similar past decision | `CaseBasedPlanner` |
+| Conflicting goals or constraints | `ConflictResolutionPlanner` |
 | A decision history that may conflict | `repair_continuity` |
 | A decision that needs a counterfactual explanation | `counterfactual_attribution` |
 | A world model with states and transitions | `MDPPlanner` through `PlannerPolicy` |
@@ -145,7 +151,7 @@ The words are not interchangeable.
 
 | Term | Meaning |
 |---|---|
-| **Planner** | A strategy that scores the options and chooses one. Built-ins: `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `CAVODPlanner`, `MDPPlanner`, `POMDPPlanner`. |
+| **Planner** | A strategy that scores the options and chooses one. Built-ins: `UtilityPlanner`, `CommitmentPlanner`, `ExecutionRiskPlanner`, `HumanAttentionPlanner`, `CAVODPlanner`, `MDPPlanner`, `POMDPPlanner`, plus the single-decision extensions. |
 | **CompositePlanner** | A composition of planners that returns one `PlannerResult`. The built-in composite planner is `LiveCompositePlanner`. |
 | **DecisionPolicy** | An integration layer with `decide(request)`. `PlannerPolicy` adapts a planner or composite planner to that interface. |
 | **Learner** | Code that updates a choice from measured outcomes: `UCBBandit`, `ModelLearner`. |
@@ -230,7 +236,7 @@ learning changes the chooser; evaluation proves it; support holds the infrastruc
 | `decision/evaluation/simulation/` | simulator, scenarios and planner comparison. |
 | `decision/evaluation/bench/` | the live decision benchmark. |
 | `decision/sensing/resources/` | budget, resource plan, scheduler and sensing options. |
-| `decision/domain/commitments/` | commitment model, ledger and stores. |
+| `decision/domain/commitments/` | commitment model, ref, ledger, graph and stores. |
 | `decision/domain/outcomes/` | outcome records, ledger, stores and signal-attention feedback records. |
 | `decision/learning/` | calibration, model learning, bandit and causal attribution. |
 | `decision/evaluation/cases/` | cases, rows, reports and decision comparison. |

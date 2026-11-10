@@ -135,6 +135,7 @@ decision:
 | `CommitmentRef` | `domain/commitments/commitment_ref.py` | an owner-qualified reference to a commitment |
 | `CommitmentLedger` | `domain/commitments/ledger.py` | the open promises for one task |
 | `CommitmentGraph` | `domain/commitments/graph.py` | local and external commitments with blockers, cycles and impact |
+| `CommitmentGraphReport` | `domain/commitments/graph.py` | missing refs, cycles and stale refs from `validate()` |
 | `Detection`, `PerceptionEvent`, `PerceptionFrame` | `domain/perception/` | host-driven perception records |
 
 These shapes have `to_dict()` where persistence matters. They sit outside the generated decision

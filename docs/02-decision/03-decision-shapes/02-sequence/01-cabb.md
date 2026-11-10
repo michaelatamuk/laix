@@ -61,6 +61,10 @@ print(plan.actions, plan.score, plan.optimal)
 `CABBPlanner` also exposes `evaluate` for a fixed chain and `advance` for a state update after a
 prefix. The exact guarantee applies only to the finite deterministic scenario.
 
+CABB accepts `require_verified` and `max_verification_age` (TypeScript `maxVerificationAgeMs`). It
+builds a `CommitmentGraph` from the scenario commitments, so an external dependency that is missing,
+reported or stale blocks an option. See [Commitments](../../02-domain/02-commitments.md).
+
 ## Related
 
 - [Sequence overview](README.md)
