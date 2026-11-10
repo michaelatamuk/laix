@@ -10,17 +10,21 @@ examples/
 ├── python/
 │   ├── decision/
 │   │   ├── domain/
+│   │   │   ├── commitment_graph    blockers, trust and graph queries
+│   │   │   ├── commitment_resolver resolver port and graph helper
+│   │   │   ├── commitment_freshness_bench  freshness checks
 │   │   │   ├── planning_store      promise and ledger persistence
 │   │   │   └── outcome_store       measured outcomes and stores
 │   │   ├── decision/
 │   │   │   ├── single/
 │   │   │   │   ├── decide/       signals, situations, actions and the decision layer call
 │   │   │   │   ├── policies/     packaged, authored and learned policies
-│   │   │   │   └── planners/     utility, commitment, execution, attention, CA-VOD, MDP, POMDP
-│   │   │   ├── sequence/         CABB, rollout and replan
+│   │   │   │   ├── planners/     utility, commitment, execution, attention, CA-VOD, MDP, POMDP, policy iteration
+│   │   │   │   └── extensions/   portfolio, risk, resolution, belief, case-based and conflict
+│   │   │   ├── sequence/         CABB, rollout, replan and cross-owner trust
 │   │   │   ├── fleet/            attention scheduling and the Whittle index
-│   │   │   ├── history/          continuity repair
-│   │   │   └── explain/          counterfactual attribution and search
+│   │   │   ├── history/          continuity repair and revalidation
+│   │   │   └── explain/          attribution, search and decision counterfactuals
 │   │   ├── sensing/
 │   │   │   ├── signals/          signal attention and quiet hours
 │   │   │   └── resources.py      resource admission and sensing
@@ -146,6 +150,17 @@ py examples/python/decision/sensing/signals/signal_attention_bill_due.py
 | POMDP belief planning | `pomdp_planner.py` | `pomdp_planner.mts` | `act go 2.8` |
 | CA-VOD information and option value | `ca_vod_planner.py` | `ca_vod_planner.mts` | `ask value_of_decision 0.28 0.0` / `ask value_of_decision 0.28 0` |
 | CA-VOD belief-state future value | `ca_vod_belief.py` | `ca_vod_belief.mts` | `ask 0.45 2` |
+| MDP policy iteration | `policy_iteration.py` | `policy_iteration.mts` | `go go 2.8` |
+
+### Single decision: extensions
+
+`examples/python/decision/decision/single/extensions/` · `examples/typescript/decision/decision/single/extensions/`
+
+| Story | Python | TypeScript | Output |
+|---|---|---|---|
+| Blocked and uncertain promises | `commitment_decisions.py` | `commitment_decisions.mts` | `verify commitment_resolution` / `verify 0.4` |
+| Planner portfolio and risk bound | `planner_selection.py` | `planner_selection.mts` | `risk safe 0.1` |
+| Case reuse and goal conflict | `review_and_conflict.py` | `review_and_conflict.mts` | `case send-now case_based` / `conflict escalate goal_conflict` |
 
 ### Sequence
 
@@ -155,6 +170,7 @@ py examples/python/decision/sensing/signals/signal_attention_bill_due.py
 |---|---|---|---|
 | Exact sequence planning, rollout and replan | `sequence_planning.py` | `sequence_planning.mts` | `ask,verify 1.49 True ask,verify verify` / `ask,verify 1.49 true ask,verify verify` |
 | Exact planning beats greedy rollout | `sequence_tradeoff.py` | `sequence_tradeoff.mts` | `cabb start,small,bonus 1.105` / `rollout start,big,nothing 0.605` |
+| Cross-owner trust in a sequence | `cross_owner.py` | `cross_owner.mts` | `wait deliver` |
 
 ### Fleet
 
@@ -173,7 +189,8 @@ py examples/python/decision/sensing/signals/signal_attention_bill_due.py
 |---|---|---|---|
 | CDR continuity repair | `continuity_repair.py` | `continuity_repair.mts` | `approval-1 supersede 1.0` |
 | CDR exact minimum-cost repair | `continuity_repair_exact.py` | `continuity_repair_exact.mts` | `3.0 2.0 ['b']` / `3 2 [ 'b' ]` |
-| Three concerns in one scenario | `conflict_scenario.py` | — | `LiveCompositePlanner wins every case` |
+| Three concerns in one scenario | `conflict_scenario.py` | - | `LiveCompositePlanner wins every case` |
+| Hold, revise or escalate an earlier decision | `revalidation.py` | `revalidation.mts` | `decision_held decision_revised bold` |
 
 ### Explain
 
@@ -183,6 +200,7 @@ py examples/python/decision/sensing/signals/signal_attention_bill_due.py
 |---|---|---|---|
 | CDA counterfactual attribution | `counterfactual_attribution.py` | `counterfactual_attribution.mts` | `ask wait commitment 0.970001` |
 | CDA counterfactual search | `counterfactual_search.py` | `counterfactual_search.mts` | `act escalate 0.5 0.1` |
+| Which verification would flip the decision | `decision_counterfactual.py` | `decision_counterfactual.mts` | `wait supplier/ship finish` |
 
 ## Sensing
 
