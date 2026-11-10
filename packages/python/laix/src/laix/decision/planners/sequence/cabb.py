@@ -12,10 +12,10 @@ is still required before calling it a new algorithmic primitive.
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
-from ...domain.commitments import Commitment
+from ...domain.commitments import Commitment, CommitmentGraph, CommitmentLedger
 from ...domain.decisions import ActionOption
 from ...support.time import parse_iso
 from ..single.commitment.commitment_planner import (
@@ -56,11 +56,15 @@ class CABBPlanner:
         commitment_weights: CommitmentWeights | None = None,
         execution_weights: ExecutionWeights | None = None,
         human_attention_weights: HumanAttentionWeights | None = None,
+        require_verified: bool = True,
+        max_verification_age: timedelta | None = None,
     ) -> None:
         self.model = model or UtilityModel()
         self.commitment_weights = commitment_weights or CommitmentWeights()
         self.execution_weights = execution_weights or ExecutionWeights()
         self.human_attention_weights = human_attention_weights or HumanAttentionWeights()
+        self.require_verified = require_verified
+        self.max_verification_age = max_verification_age
 
     def plan(self, scenario: DecisionScenario) -> DecisionPlan:
         if not scenario.steps:
@@ -248,16 +252,33 @@ class CABBPlanner:
         remaining: float,
         now: datetime,
     ) -> _Scored:
-        commitments = {
-            item.id: replace(item, status=statuses[item.id])
+        current = tuple(
+            replace(item, status=statuses[item.id])
             for item in scenario.commitments
-        }
+        )
+        commitments = {item.id: item for item in current}
+        local = CommitmentLedger(
+            tuple(item for item in current if item.owner == "local")
+        )
+        external = tuple(item for item in current if item.owner != "local")
+        graph = CommitmentGraph(local, external)
+
+        def is_blocked(commitment_id: str) -> bool:
+            item = commitments.get(commitment_id)
+            return True if item is None else graph.blocked(
+                item,
+                require_verified=self.require_verified,
+                now=now,
+                max_verification_age=self.max_verification_age,
+            )
+
         commitment = commitment_score(
             option,
             self.model,
             commitments,
             self.commitment_weights,
             now,
+            is_blocked,
         )
         execution = execution_score(
             option,

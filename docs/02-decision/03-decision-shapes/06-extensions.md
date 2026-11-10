@@ -50,6 +50,8 @@ because of blocked commitments, returns a concrete next step:
 - `ask` when constructed with `mode="ask"`.
 
 The result carries `verification_refs` and `blocked_by`, each with `{owner, ledger, id, reason}`.
+The composite, CA-VOD and CABB sequence planners accept the same `require_verified` and
+`max_verification_age` settings, so cross-owner blockers reach the whole decision stack.
 
 ## Decision revalidation
 

@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use LAIX, please cite this repository."
 title: "LAIX: Live AI Experience"
 type: software
-version: 0.17.0
+version: 0.17.1
 date-released: 2026-11-09
 authors:
   - name: "LAIX contributors"

@@ -1,5 +1,9 @@
 import type { ActionOption } from "../../contracts.ts";
 import type { Commitment, CommitmentStatus } from "../../domain/commitments/commitments.ts";
+import {
+  CommitmentGraph,
+  CommitmentLedger,
+} from "../../domain/commitments/commitments.ts";
 import { UtilityModel } from "../single/utility/utility-planner.ts";
 import { commitmentScoreOption } from "../single/commitment/commitment-planner.ts";
 import type { CommitmentWeights } from "../single/commitment/commitment-planner.ts";
@@ -45,6 +49,8 @@ export class CABBPlanner {
   readonly commitmentWeights: Required<CommitmentWeights>;
   readonly executionWeights: Required<ExecutionWeights>;
   readonly humanAttentionWeights: Required<HumanAttentionWeights>;
+  readonly requireVerified: boolean;
+  readonly maxVerificationAgeMs?: number;
 
   constructor(
     model: UtilityModel = new UtilityModel(),
@@ -52,6 +58,8 @@ export class CABBPlanner {
       commitmentWeights?: CommitmentWeights;
       executionWeights?: ExecutionWeights;
       humanAttentionWeights?: HumanAttentionWeights;
+      requireVerified?: boolean;
+      maxVerificationAgeMs?: number;
     } = {},
   ) {
     this.model = model;
@@ -74,6 +82,8 @@ export class CABBPlanner {
       escalation: options.humanAttentionWeights?.escalation ?? 0.3,
       exhausted: options.humanAttentionWeights?.exhausted ?? 1.0,
     };
+    this.requireVerified = options.requireVerified ?? true;
+    this.maxVerificationAgeMs = options.maxVerificationAgeMs;
   }
 
   plan(scenario: DecisionScenario): DecisionPlan {
@@ -285,12 +295,31 @@ export class CABBPlanner {
         status: statuses.get(item.id) ?? item.status ?? "open",
       });
     }
+    const local = [...active.values()].filter(
+      (item) => (item.owner ?? "local") === "local",
+    );
+    const external = [...active.values()].filter(
+      (item) => (item.owner ?? "local") !== "local",
+    );
+    const graph = new CommitmentGraph(new CommitmentLedger(local), external);
+    const isBlocked = (commitmentId: string): boolean => {
+      const item = active.get(commitmentId);
+      return (
+        !item ||
+        graph.blocked(item, {
+          requireVerified: this.requireVerified,
+          now,
+          maxVerificationAgeMs: this.maxVerificationAgeMs,
+        })
+      );
+    };
     const commitment = commitmentScoreOption(
       option,
       this.model,
       active,
       this.commitmentWeights,
       now,
+      isBlocked,
     );
     const execution = executionScoreOption(
       option,
@@ -380,6 +409,8 @@ export function planDecisions(
     commitmentWeights?: CommitmentWeights;
     executionWeights?: ExecutionWeights;
     humanAttentionWeights?: HumanAttentionWeights;
+    requireVerified?: boolean;
+    maxVerificationAgeMs?: number;
   } = {},
 ): DecisionPlan {
   return new CABBPlanner(options.model, options).plan(scenario);

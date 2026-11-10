@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.17.1 - 2026-11-10
+
+### Changed
+
+- **Sequence planners see cross-owner blockers.** `CABBPlanner` and `plan_decisions` /
+  `planDecisions` accept the same `require_verified` and `max_verification_age` settings as the
+  single-decision planners. Commitments owned by another party are resolved through
+  `CommitmentGraph` before an option is scored.
+
 ## 0.17.0 - 2026-11-10
 
 ### Added
@@ -8,8 +17,8 @@
   into a `verify` or `ask` decision with `verification_refs` and an intent to resolve them.
 - **Stable rejection codes.** `CommitmentPlanner` alternatives carry `rejected_reason_code` from
   `COMMITMENT_REJECTION_CODES`.
-- **Cross-owner composite and policy decisions.** `LiveCompositePlanner`, `CAVODPlanner` and
-  `PlanningPolicy` now see `CommitmentGraph` trust and freshness.
+- **Cross-owner composite, sequence and policy decisions.** `LiveCompositePlanner`, `CAVODPlanner`,
+  `CABBPlanner` and `PlanningPolicy` now see `CommitmentGraph` trust and freshness.
 - **Decision counterfactuals.** `decision_counterfactual` and
   `commitment_verification_counterfactual` report what observation would flip a decision.
 - **Portfolio planning.** `PortfolioPlanner` chooses a planner from a named portfolio.
@@ -26,8 +35,8 @@
 
 - **Verified promises need a timestamp.** A `verified` commitment without a valid `verified_at` is now
   untrusted, so it cannot satisfy a verified dependency.
-- **Graph-aware scoring is shared.** Composite, CA-VOD and policy decisions use the same blocker
-  rules as `CommitmentPlanner`.
+- **Graph-aware scoring is shared.** Composite, CA-VOD, sequence and policy decisions use the same
+  blocker rules as `CommitmentPlanner`.
 - **Reason-code registry is `1.1.0`.** The new planner and resolution codes are registered.
 
 ## 0.16.0 - 2026-11-10
