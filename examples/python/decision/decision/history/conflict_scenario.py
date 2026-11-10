@@ -119,3 +119,4 @@ print(
     "  LiveCompositePlanner: all three terms fire together; safe is the only option\n"
     "                      that scores positively across commitment, execution and attention"
 )
+print("LiveCompositePlanner wins every case")
