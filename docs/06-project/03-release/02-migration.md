@@ -83,6 +83,13 @@ The decision package no longer nests algorithms under `engines/`, and the app ki
 
 The top-level `from laix import ...` surface is unchanged. Only deep imports move.
 
+## 0.17.1: sequence trust
+
+`CABBPlanner` and `plan_decisions` / `planDecisions` accept `require_verified` and
+`max_verification_age` / `maxVerificationAgeMs`. A scenario can carry commitments owned by another
+party; the sequence planner resolves them through `CommitmentGraph` before scoring an option. The
+defaults match the single-decision planners.
+
 ## 0.17.0: decision extensions
 
 A `verified` commitment without a valid `verified_at` is now untrusted. Set the timestamp when the
@@ -313,5 +320,5 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.17.0`. Add a new entry here when a release requires host changes; keep it
+The current release is `0.17.1`. Add a new entry here when a release requires host changes; keep it
 short and concrete.
