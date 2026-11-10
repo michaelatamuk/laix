@@ -9,8 +9,8 @@ Four things define the app kit:
 - **One decision.** `DecisionClient` runs the decision layer, and can execute, record and deliver the result.
 - **A decision loop.** `DecisionRuntime` links observation, state, policy, execution and outcome.
 - **A stream.** `StreamSession` keeps event time, cadence, buffers, revisions and checkpoints.
-- **A host boundary.** Stores, platform and delivery are ports. The host owns the database, the
-  credentials and the transport.
+- **A host boundary.** Stores, resolvers, platform and delivery are ports. The host owns the database,
+  the credentials and the transport.
 
 The decision layer stays stateless. The app kit adds the surfaces, execution, ports and proof around it.
 
@@ -43,7 +43,7 @@ The decision layer stays stateless. The app kit adds the surfaces, execution, po
 | Connect | `StreamCheckpointStore` | Saves and resumes a stream. |
 | Connect | `Platform` | Runs skills, approvals, state and events. |
 | Connect | `DeliveryPort` | Delivers a decision and returns a receipt. |
-| Connect | `CommitmentResolver` | Resolves another owner's commitments for a graph. |
+| Connect | `CommitmentResolver` / `AsyncCommitmentResolver` | Resolves another owner's commitments for a graph. |
 | Operate | `BenchReport` | Runs deterministic cases and suites. |
 | Operate | `StreamStats` | Exports stream counters and latency. |
 | Operate | `run_planner_bench` | Runs the bench CLI over a simulator and reports reward, steps and optimality gap. |
@@ -69,6 +69,7 @@ The app kit defines the ports. The host implements them:
 - where state and checkpoints are saved;
 - how stream state is resumed;
 - how skills, events and approvals are reached;
+- how another owner's commitments are resolved;
 - where a decision is delivered;
 - how long records, traces and outcomes are kept.
 
@@ -84,7 +85,7 @@ Read in order. Each section opens with a short index that lists its pages in rea
 | [Build](01-build/README.md) | The adapter, one decision and policy selection. |
 | [Run](02-run/README.md) | The decision loop, streams and perception. |
 | [Execute](03-execute/README.md) | Execution, recovery, proposals and records. |
-| [Connect](04-connect/README.md) | Stores, platform and delivery. |
+| [Connect](04-connect/README.md) | Stores, resolvers, platform and delivery. |
 | [Operate](05-operate/README.md) | Bench, metrics and deployment. |
 
 ## Where the code lives
@@ -101,7 +102,7 @@ Read in order. Each section opens with a short index that lists its pages in rea
 | `appkit/live_context/` | the host-driven detector loop. |
 | `appkit/audit/` | decision record, proposal, approval, undo and audit events. |
 | `appkit/delivery/` | delivery port, receipt and the null implementation. |
-| `appkit/commitments/` | resolver port, in-memory resolver and graph helper. |
+| `appkit/commitments/` | resolver and async resolver ports, in-memory resolver and graph helpers. |
 | `appkit/platform/` | platform, in-memory platform, skill call, approvals and events. |
 | `appkit/bench/` | case, suite, row, report, runner and planner bench. |
 
