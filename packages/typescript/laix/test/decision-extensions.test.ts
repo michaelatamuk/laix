@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
   CAVODPlanner,
   CaseBasedPlanner,
+  CommitmentBeliefPlanner,
   CommitmentGraph,
   CommitmentLedger,
   CommitmentPlanner,
@@ -231,6 +232,55 @@ describe("decision extensions", () => {
       ["supplier/c2"],
     );
     assert.equal(result.flips[0]?.counterfactual_action_id, "finish");
+  });
+
+  it("verifies when the completion probability is low", () => {
+    const plan = new CommitmentBeliefPlanner(undefined, {
+      defaultProbability: 0.4,
+    }).solve(problem(graph()));
+
+    assert.equal(plan.verb, "verify");
+    assert.equal(plan.reasonCode, "commitment_belief_verify");
+    assert.equal(plan.attributes?.completion_probability, 0.4);
+  });
+
+  it("acts when the completion probability is high", () => {
+    const base = problem(graph());
+    const plan = new CommitmentBeliefPlanner(undefined, {
+      defaultProbability: 0.4,
+    }).solve({
+      ...base,
+      attributes: {
+        ...base.attributes,
+        commitment_probabilities: { "supplier/supplier/c2": 0.9 },
+      },
+    });
+
+    assert.equal(plan.actionId, "finish");
+    assert.equal(plan.attributes?.completion_probability, 0.9);
+  });
+
+  it("prefers a certain safe option over an uncertain promise", () => {
+    const plan = new CommitmentBeliefPlanner(undefined, {
+      defaultProbability: 0.4,
+    }).solve({
+      subject: "deliver",
+      at: "2026-11-01T10:00:00Z",
+      options: [
+        {
+          id: "finish",
+          verb: "act",
+          name: "finish",
+          expectedBenefit: 1,
+          params: { commitments: { fulfills: ["deliver"], hard: true } },
+        },
+        { id: "safe", verb: "act", name: "safe", expectedBenefit: 0.6 },
+      ],
+      attributes: { commitment_graph: graph() },
+    });
+
+    assert.equal(plan.actionId, "safe");
+    assert.equal(plan.reasonCode, "commitment_belief");
   });
 
   it("solves a discounted MDP with policy iteration", () => {

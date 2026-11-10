@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.17.2 - 2026-11-10
+
+### Added
+
+- **Belief-aware commitment planning.** `CommitmentBeliefPlanner` weights an option by the completion
+  probability of its external dependencies and returns `verify` when the best action is too
+  uncertain. Probabilities come from attributes, the commitment payload or a default.
+
 ## 0.17.1 - 2026-11-10
 
 ### Changed

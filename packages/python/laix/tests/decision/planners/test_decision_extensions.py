@@ -9,6 +9,7 @@ from laix import (
     CAVODPlanner,
     CaseBasedPlanner,
     Commitment,
+    CommitmentBeliefPlanner,
     CommitmentGraph,
     CommitmentLedger,
     CommitmentPlanner,
@@ -289,6 +290,59 @@ def test_commitment_counterfactual_finds_the_verification() -> None:
     assert result.base_action_id == "wait"
     assert [item.name for item in result.flips] == ["supplier/c2"]
     assert result.flips[0].counterfactual_action_id == "finish"
+
+
+def test_belief_planner_verifies_when_the_probability_is_low() -> None:
+    plan = CommitmentBeliefPlanner(default_probability=0.4).solve(_problem(_graph()))
+
+    assert plan.verb == "verify"
+    assert plan.reason_code == "commitment_belief_verify"
+    assert plan.attributes["completion_probability"] == 0.4
+
+
+def test_belief_planner_acts_when_the_probability_is_high() -> None:
+    problem = _problem(_graph())
+    problem = PlannerInput(
+        subject=problem.subject,
+        at=problem.at,
+        options=problem.options,
+        attributes={
+            **problem.attributes,
+            "commitment_probabilities": {"supplier/supplier/c2": 0.9},
+        },
+    )
+    plan = CommitmentBeliefPlanner(default_probability=0.4).solve(problem)
+
+    assert plan.action_id == "finish"
+    assert plan.attributes["completion_probability"] == 0.9
+
+
+def test_belief_planner_prefers_a_certain_safe_option() -> None:
+    graph = _graph()
+    problem = PlannerInput(
+        subject="deliver",
+        at="2026-11-01T10:00:00+00:00",
+        options=(
+            ActionOption(
+                id="finish",
+                verb="act",
+                name="finish",
+                expected_benefit=1.0,
+                params={"commitments": {"fulfills": ["deliver"], "hard": True}},
+            ),
+            ActionOption(
+                id="safe",
+                verb="act",
+                name="safe",
+                expected_benefit=0.6,
+            ),
+        ),
+        attributes={"commitment_graph": graph},
+    )
+    plan = CommitmentBeliefPlanner(default_probability=0.4).solve(problem)
+
+    assert plan.action_id == "safe"
+    assert plan.reason_code == "commitment_belief"
 
 
 def test_policy_iteration_matches_the_discounted_model() -> None:

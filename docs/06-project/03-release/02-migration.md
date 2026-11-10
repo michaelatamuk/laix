@@ -83,6 +83,12 @@ The decision package no longer nests algorithms under `engines/`, and the app ki
 
 The top-level `from laix import ...` surface is unchanged. Only deep imports move.
 
+## 0.17.2: belief-aware commitments
+
+`CommitmentBeliefPlanner` is additive. It reads completion probabilities from
+`attributes["commitment_probabilities"]`, a commitment's `payload["completion_probability"]` or its
+`default_probability`, and returns `verify` when the best action is below `verify_below`.
+
 ## 0.17.1: sequence trust
 
 `CABBPlanner` and `plan_decisions` / `planDecisions` accept `require_verified` and
@@ -320,5 +326,5 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.17.1`. Add a new entry here when a release requires host changes; keep it
+The current release is `0.17.2`. Add a new entry here when a release requires host changes; keep it
 short and concrete.
