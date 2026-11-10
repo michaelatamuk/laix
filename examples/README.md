@@ -106,9 +106,9 @@ py examples/python/decision/sensing/signals/signal_attention_bill_due.py
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
 | A sink is about to overflow. | `action_leaking_sink.py` | `action.mts` | `act policy_rule option-close-valve` |
-| The same sink, through `decide`. | `action_decide.py` | — | `act policy_rule option-close-valve DEC-...` |
+| The same sink, through `decide`. | `action_decide.py` | `action_decide.mts` | `act policy_rule option-close-valve DEC-...` / `act policy_rule option-close-valve` |
 | A bill needs payment and approval. | `action_pay_bill.py` | `action_pay_bill.mts` | `act policy_rule option-pay True` / `true` |
-| A parcel is late; a tracking page can settle it. | `action_check_again.py` | — | `observe policy_rule option-check-tracking` |
+| A parcel is late; a tracking page can settle it. | `action_check_again.py` | `action_check_again.mts` | `observe policy_rule option-check-tracking` |
 | No safe valve: the safety boundary escalates. | `action_no_valve.py` | `action_no_valve.mts` | `escalate manager 0.7` |
 | An alert assigns an owner with approval. | `action_assign_owner.py` | `action_assign_owner.mts` | `act policy_rule assign-owner True` / `true` |
 | A quality reading opens a watch. | `action_open_watch.py` | `action_open_watch.mts` | `guide policy_rule open-watch` |
@@ -127,13 +127,13 @@ py examples/python/decision/sensing/signals/signal_attention_bill_due.py
 | Preference elicitation | `preference_elicitation.py` | `packs.mts` | `ask ask_preference q2` |
 | Verification | `verification.py` | `packs.mts` | `verify verify_outcome api` |
 | Escalation | `escalation.py` | `packs.mts` | `escalate escalate_to_target manager` |
-| Time-critical gates | `time_critical.py` | — | `act breaker-dry 0.44` |
+| Time-critical gates | `time_critical.py` | `time_critical.mts` | `act breaker-dry 0.44` |
 | Learned bandit policy | `bandit.py` | `bandit.mts` | `manual automatic 0.75` |
 | Authored rules and a target | `authoring.py` | `authoring.mts` | `ask over_limit some ('alice', 'ben')` |
 | Group target and private masking | `group.py` | `group_shadow.mts` | `all ('alice', 'ben', 'chris') {'topic': 'math'}` |
 | Shadow policy comparison | `shadow.py` | `group_shadow.mts` | `ask 1 act` |
 | Commitment planning | `planning.py` | `planning.mts` | `act due_commitment a` |
-| A caller supplies its own policy. | `action_custom_policy.py` | — | `wait policy_rule` |
+| A caller supplies its own policy. | `action_custom_policy.py` | `action_custom_policy.mts` | `wait policy_rule` |
 
 ### Single decision: planners
 
@@ -189,7 +189,7 @@ py examples/python/decision/sensing/signals/signal_attention_bill_due.py
 |---|---|---|---|
 | CDR continuity repair | `continuity_repair.py` | `continuity_repair.mts` | `approval-1 supersede 1.0` |
 | CDR exact minimum-cost repair | `continuity_repair_exact.py` | `continuity_repair_exact.mts` | `3.0 2.0 ['b']` / `3 2 [ 'b' ]` |
-| Three concerns in one scenario | `conflict_scenario.py` | - | `LiveCompositePlanner wins every case` |
+| Three concerns in one scenario | `conflict_scenario.py` | `conflict_scenario.mts` | `LiveCompositePlanner wins every case` |
 | Hold, revise or escalate an earlier decision | `revalidation.py` | `revalidation.mts` | `decision_held decision_revised bold` |
 
 ### Explain
@@ -213,7 +213,7 @@ py examples/python/decision/sensing/signals/signal_attention_bill_due.py
 | A bill is due tomorrow. | `signal_attention_bill_due.py` | `signal_attention_bill_due.mts` | `guide worth_surfacing 84` |
 | The same bill arrives at night. | `signal_attention_quiet_hours.py` | `signal_attention_quiet_hours.mts` | `wait quiet_hours 84.0 True False` / `wait quiet_hours 84 true false` |
 | The person dismissed the signal. | `signal_attention_feedback.py` | `signal_attention_feedback.mts` | `wait dismissed` |
-| A power plan is below its required load. | `signal_attention_power_plan.py` | — | `guide worth_surfacing 75.0` |
+| A power plan is below its required load. | `signal_attention_power_plan.py` | `signal_attention_power_plan.mts` | `guide worth_surfacing 75.0` / `75` |
 
 ### Resources
 
@@ -292,7 +292,7 @@ py examples/python/decision/sensing/signals/signal_attention_bill_due.py
 
 | Story | Python | TypeScript | Output |
 |---|---|---|---|
-| Host adapter | `host_adapter.py` | - | `act valve host-calibrated True reason` |
+| Host adapter | `host_adapter.py` | `host_adapter.mts` | `act valve host-calibrated True reason` / `act valve host-calibrated true reason` |
 | Register and switch a policy | `policy_registry.py` | `policy_registry.mts` | `safety act valve` |
 
 ## Run

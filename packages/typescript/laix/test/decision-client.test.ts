@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { DecisionClient } from "../src/index.ts";
+import { DecisionClient, type DecisionPolicy } from "../src/index.ts";
 
 describe("one decision client entry point", () => {
   it("returns the same decision shape for an action request", () => {
@@ -57,5 +57,31 @@ describe("one decision client entry point", () => {
     });
     assert.equal(decision.verb, "guide");
     assert.equal(decision.reasonCode, "worth_surfacing");
+  });
+
+  it("preserves policy alternatives and attributes", () => {
+    const policy: DecisionPolicy = {
+      name: "test.v1",
+      decide: () => [
+        {
+          verb: "act",
+          confidence: 1,
+          reasonCode: "test",
+          rationale: "test",
+          actionId: "a",
+          alternatives: [{ action_id: "b" }],
+          attributes: { gate: "risk" },
+          intent: { capability: "act", args: { id: "a" } },
+        },
+      ],
+    };
+    const [decision] = new DecisionClient({ policy }).decide({
+      subject: "one decision",
+      at: "2026-11-01T10:00:00Z",
+    });
+
+    assert.deepEqual(decision.alternatives, [{ action_id: "b" }]);
+    assert.deepEqual(decision.attributes, { gate: "risk" });
+    assert.equal(decision.intent?.capability, "act");
   });
 });

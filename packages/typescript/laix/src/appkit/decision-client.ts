@@ -210,6 +210,7 @@ export class DecisionClient {
         deliver: decision.deliver ?? true,
         record: decision.record ?? true,
         decisionId: decision.decisionId,
+        situationId: decision.situationId,
         policyVersion: decision.policyVersion,
         evidence: decision.evidence,
         breakdown: decision.breakdown,
@@ -221,6 +222,17 @@ export class DecisionClient {
         createdAt: decision.createdAt,
         confidenceSource: decision.confidenceSource,
         calibrated: decision.calibrated,
+        attributes: decision.attributes,
+        alternatives: decision.alternatives,
+        streamId: decision.streamId,
+        eventTime: decision.eventTime,
+        deadline: decision.deadline,
+        validUntil: decision.validUntil,
+        supersedes: decision.supersedes,
+        revision: decision.revision,
+        status: decision.status,
+        target: decision.target,
+        recipients: decision.recipients,
       }));
     }
     if (request.situation || request.options?.length) {
