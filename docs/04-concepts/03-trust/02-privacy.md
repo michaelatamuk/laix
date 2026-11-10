@@ -36,7 +36,7 @@ Keep secrets, credentials and raw customer data in the host. Pass references in 
 - replace `rationale` and `undo_hint`.
 
 Apply `GroupPolicy` outermost when its target and recipients must win. Masking applies in either
-order. The policy contract is in [Policies](../../02-decision/03-decision-shapes/01-single/05-policies.md).
+order. The policy contract is in [Policies](../../02-decision/03-decision-shapes/06-policies/README.md).
 
 ## Stored data
 

@@ -42,6 +42,6 @@ uses the supplied state. The corpus and result are in
 
 ## Related
 
-- [Decision continuity](../03-decision-shapes/04-history.md)
+- [Decision continuity](../03-decision-shapes/04-history/README.md)
 - [Outcomes](../02-domain/03-outcomes.md)
 - [Evaluation](01-cases.md)

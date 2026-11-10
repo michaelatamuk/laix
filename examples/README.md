@@ -416,4 +416,4 @@ suite is the source of truth for behavioural parity.
 - `unknown` — the slow async handler timed out; reconcile before retrying.
 
 The full field list is in [`../docs/02-decision/01-contract/01-decision-contract.md`](../docs/02-decision/01-contract/01-decision-contract.md).
-The policy contracts are in [`../docs/02-decision/03-decision-shapes/01-single/05-policies.md`](../docs/02-decision/03-decision-shapes/01-single/05-policies.md).
+The policy contracts are in [`../docs/02-decision/03-decision-shapes/06-policies/README.md`](../docs/02-decision/03-decision-shapes/06-policies/README.md).

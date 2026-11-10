@@ -1,8 +1,8 @@
-# Planner extensions
+# Single-decision extensions
 
-These planners extend the decision layer without adding a data product. Each one answers a decision
-question: which planner to use, whether the downside is acceptable, what to verify, whether an old
-decision still holds, or which conflict response to choose.
+These planners extend the single-decision layer without adding a data product. Each one answers a
+decision question: which planner to use, whether the downside is acceptable, what to verify, or which
+conflict response to choose.
 
 ## Planner selection
 
@@ -63,19 +63,6 @@ The probability comes from `attributes["commitment_probabilities"]` (keyed by `o
 If the best action's completion probability is below `verify_below`, the planner returns `verify`
 with the uncertain references instead of acting on a low-confidence promise.
 
-## Decision revalidation
-
-`RevalidationPlanner` wraps another planner and compares the new result with a previous decision.
-
-| Result | Reason code | Meaning |
-|---|---|---|
-| `wait` | `decision_held` | the previous action is still the best |
-| current verb | `decision_revised` | a different action is now best |
-| `escalate` | `decision_escalated` | the previous action is no longer feasible |
-
-The previous action comes from `attributes["previous_decision"]` or
-`attributes["previous_action_id"]`.
-
 ## Case-based planning
 
 `CaseBasedPlanner` reuses a similar past decision.
@@ -95,19 +82,6 @@ nothing clears the threshold, the planner uses a fallback or returns `wait` with
 may declare `params["resolves"]` with conflict ids. If no option resolves them, the planner returns
 `ask` or `escalate` based on severity. With no conflict, it delegates to its wrapped planner.
 
-## Policy iteration
-
-`policy_iteration` solves a discounted infinite-horizon `MdpModel` and returns a stationary policy,
-values and iteration count. It complements `value_iteration`; finite-horizon models should keep using
-value iteration because their policy is time-dependent.
-
-## Counterfactual decisions
-
-`decision_counterfactual` solves a base problem and named candidate problems, then reports which
-candidate changes the action. `commitment_verification_counterfactual` applies the same idea to
-external commitments: it marks one external promise verified at a time and reports the verification
-that would flip the decision.
-
 ## Commitment rejection codes
 
 `CommitmentPlanner` alternatives carry `rejected_reason_code`:
@@ -124,9 +98,16 @@ lower_commitment_score
 
 Use the code for branching and `rejected_because` for display.
 
+## Elsewhere
+
+- Decision revalidation is in [History](../04-history/03-revalidation.md).
+- Decision counterfactuals are in [Explain](../05-explain/03-counterfactual.md).
+- Policy iteration is in [Model-based](03-model-based.md#policy-iteration).
+
 ## Related
 
-- [Single decision planners](01-single/01-planners.md)
-- [History](04-history.md)
-- [Explain](05-explain.md)
-- [Commitments](../02-domain/02-commitments.md)
+- [Single decision planners](01-planners.md)
+- [Composite](02-composite.md)
+- [Model-based](03-model-based.md)
+- [Policies](../06-policies/README.md)
+- [Commitments](../../02-domain/02-commitments.md)

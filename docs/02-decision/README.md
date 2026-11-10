@@ -85,7 +85,7 @@ DecisionRequest
              next DecisionRequest with current state
 ```
 
-That hand-off is [decision continuity](03-decision-shapes/04-history.md). It is what makes the
+That hand-off is [decision continuity](03-decision-shapes/04-history/README.md). It is what makes the
 decision layer stateful: the same chooser sees a different, current state on every step.
 
 ## A conceptual view
@@ -99,7 +99,7 @@ This diagram is a conceptual view of the decision layer, not the folder map. The
 |---|---|---|
 | **Contract** | `DecisionRequest`, `Decision`, `ExecutionReceipt`, `Trace` | What crosses the boundary. |
 | **Domain** | Decisions, commitments, outcomes, perception | What exists and what carries forward. |
-| **Decision** | Single, sequence, fleet, history, explain | How a decision is made. |
+| **Decision** | Single, sequence, fleet, history, explain, policies and extensions | How a decision is made. |
 | **Sensing** | Signals, resources | What feeds a decision. |
 | **Learning** | Calibration, model, bandit, causal | How it improves. |
 | **Evaluation** | Cases, benchmarks, simulation | How it is proved. |
@@ -205,7 +205,7 @@ learning changes the chooser; evaluation proves it; support holds the infrastruc
 |---|---|
 | [Contract](01-contract/README.md) | The request and response shapes, the planner contract, records and dispatch. |
 | [Domain](02-domain/README.md) | Decisions, commitments, outcomes and perception. |
-| [Decision](03-decision-shapes/README.md) | Single, sequence, fleet, history and explain. |
+| [Decision](03-decision-shapes/README.md) | Single, sequence, fleet, history, explain and policies, plus planner extensions. |
 | [Sensing](04-sensing/README.md) | Signal attention and resource admission. |
 | [Learning](05-learning/README.md) | Calibration, model learning, bandit and causal attribution. |
 | [Evaluation](06-evaluation/README.md) | Cases, benchmarks, simulation and the continuity benchmark. |
@@ -220,12 +220,13 @@ learning changes the chooser; evaluation proves it; support holds the infrastruc
 | `decision/sensing/signals/` | signal attention, gates, score and timing. |
 | `decision/policies/` | decision-policy protocol, registry and packaged policies. |
 | `decision/contract/` | `PlannerInput`, `PlannerResult`, `Planner` and `PlannerPolicy`. |
-| `decision/planners/single/` | utility, commitment, execution, human-attention, decision-value, composite, MDP and POMDP planners. |
+| `decision/planners/single/` | utility, commitment, execution, human-attention, decision-value, composite, MDP, POMDP, portfolio, risk and conflict planners. |
 | `decision/planners/single/composite/` | `LiveCompositePlanner` and `CompositeScore`. |
 | `decision/planners/sequence/` | finite-horizon sequence contract, `CABBPlanner`, `RolloutPlanner` and `ReplanPlanner`. |
 | `decision/planners/fleet/` | `AttentionScheduler` and the exact single-arm `WhittleScheduler`. |
-| `decision/planners/history/` | `repair_continuity` for conflicting decision histories. |
-| `decision/planners/explain/` | `counterfactual_attribution` and `counterfactual_search`. |
+| `decision/planners/case_based/` | `CaseBasedPlanner` and `PastDecision`. |
+| `decision/planners/history/` | `repair_continuity` and `RevalidationPlanner`. |
+| `decision/planners/explain/` | attribution, bounded counterfactual search and decision counterfactuals. |
 | `decision/evaluation/simulation/` | simulator, scenarios and planner comparison. |
 | `decision/evaluation/bench/` | the live decision benchmark. |
 | `decision/sensing/resources/` | budget, resource plan, scheduler and sensing options. |

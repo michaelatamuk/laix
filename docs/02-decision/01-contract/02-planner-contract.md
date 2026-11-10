@@ -81,7 +81,7 @@ class SequencePlanner(Protocol):
 | `DecisionPlan` | actions, score, attention spent, violations, nodes and optimality |
 
 A `Planner` answers one live decision. A `SequencePlanner` answers a finite chain. See
-[Sequence](../03-decision-shapes/02-sequence.md).
+[Sequence](../03-decision-shapes/02-sequence/README.md).
 
 ## `PlannerPolicy`
 
@@ -185,7 +185,7 @@ conversion to `Decision`.
 
 ## Related
 
-- [Policies](../03-decision-shapes/01-single/05-policies.md) — `PlannerPolicy` as a policy.
+- [Policies](../03-decision-shapes/06-policies/README.md) — `PlannerPolicy` as a policy.
 - [Single-decision planners](../03-decision-shapes/01-single/01-planners.md) — the four live planners.
 - [Composite planner](../03-decision-shapes/01-single/02-composite.md) — composition.
 - [Model-based planners](../03-decision-shapes/01-single/03-model-based.md) — MDP and POMDP.

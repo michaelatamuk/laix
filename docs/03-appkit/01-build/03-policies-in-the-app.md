@@ -14,7 +14,7 @@ class DecisionPolicy:
 ```
 
 The policy page covers the built-in policies, the decision classes and the wrappers:
-[Policies](../../02-decision/03-decision-shapes/01-single/05-policies.md).
+[Policies](../../02-decision/03-decision-shapes/06-policies/README.md).
 
 ## The default path
 
@@ -126,5 +126,5 @@ console.log(layer.policies());
 
 - [Integration](01-integration.md) - the adapter around the call.
 - [DecisionClient](02-single-decision.md) - `DecisionClient` and the one-shot surface.
-- [Policies](../../02-decision/03-decision-shapes/01-single/05-policies.md) - the contract, the decision classes and the wrappers.
+- [Policies](../../02-decision/03-decision-shapes/06-policies/README.md) - the contract, the decision classes and the wrappers.
 - [Deployment](../05-operate/03-deployment.md) - rollout and rollback.

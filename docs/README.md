@@ -107,7 +107,7 @@ TypeScript example is run by CI.
 | integrate with LangGraph | [LangGraph](03-appkit/01-build/04-langgraph.md) |
 | expose decisions over MCP | [MCP server](03-appkit/01-build/05-mcp.md) |
 | publish an A2A card or action profile | [A2A and OpenAPI](03-appkit/01-build/06-a2a.md) |
-| write my own policy | [Policies](02-decision/03-decision-shapes/01-single/05-policies.md), [Policies in the app](03-appkit/01-build/03-policies-in-the-app.md) |
+| write my own policy | [Policies](02-decision/03-decision-shapes/06-policies/README.md), [Policies in the app](03-appkit/01-build/03-policies-in-the-app.md) |
 | stream events | [Streaming](03-appkit/02-run/02-streaming.md) |
 | execute and recover | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md) |
 | learn from outcomes | [Outcome learning](02-decision/02-domain/03-outcomes.md) |
@@ -129,7 +129,7 @@ TypeScript example is run by CI.
 | I am… | Start with |
 |---|---|
 | Product | [What is LAIX?](01-start/01-orientation/01-what-is-laix.md), [Decision lifecycle](01-start/01-orientation/02-decision-lifecycle.md), [Scope and boundaries](04-concepts/01-architecture/02-scope-and-boundaries.md) |
-| Engineer | [Quickstart](01-start/02-first-steps/01-quickstart.md), [Decision contract](02-decision/01-contract/01-decision-contract.md), [Policies](02-decision/03-decision-shapes/01-single/05-policies.md), [Planner contract](02-decision/01-contract/02-planner-contract.md), [Live composite planner](02-decision/03-decision-shapes/01-single/02-composite.md), [App kit](03-appkit/README.md) |
+| Engineer | [Quickstart](01-start/02-first-steps/01-quickstart.md), [Decision contract](02-decision/01-contract/01-decision-contract.md), [Policies](02-decision/03-decision-shapes/06-policies/README.md), [Planner contract](02-decision/01-contract/02-planner-contract.md), [Live composite planner](02-decision/03-decision-shapes/01-single/02-composite.md), [App kit](03-appkit/README.md) |
 | Operator | [Execution and recovery](03-appkit/03-execute/01-execution-and-recovery.md), [Stores](03-appkit/04-connect/01-stores.md), [Platform](03-appkit/04-connect/02-platform.md), [Delivery](03-appkit/04-connect/03-delivery.md), [Deployment](03-appkit/05-operate/03-deployment.md), [Metrics](03-appkit/05-operate/02-metrics.md) |
 | Contributor | [Contributing](../CONTRIBUTING.md), [Testing](06-project/02-quality/01-testing.md), [Repository structure](06-project/01-repository/01-repository-structure.md) |
 | Researcher or reviewer | [Research and evidence](07-research/README.md), then [Prior art](07-research/01-positioning/prior-art.md), [Benchmark](07-research/02-evaluation/benchmark.md) |

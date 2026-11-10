@@ -68,10 +68,10 @@ mean + exploration × sqrt(log(total_pulls + 1) / pulls)   otherwise
 `BanditPolicy` puts the learner behind the policy interface. It reads arms from
 `DecisionRequest.attributes["arms"]` or from the bandit, respects `max_risk`, `budget` and
 `exclude`, and returns `act` with `bandit_choice`, or `wait` with `no_arms` or
-`no_arm_within_limits`. See [Policies](../03-decision-shapes/01-single/05-policies.md#learned-policy).
+`no_arm_within_limits`. See [Policies](../03-decision-shapes/06-policies/02-packaged-policies.md#learned-policy).
 
 ## Related
 
 - [Outcomes](../02-domain/03-outcomes.md)
-- [Policies](../03-decision-shapes/01-single/05-policies.md)
+- [Policies](../03-decision-shapes/06-policies/README.md)
 - [Bandit example](../../../examples/python/decision/decision/single/policies/bandit.py)

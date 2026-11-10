@@ -178,7 +178,7 @@ runtime-neutral.
 ## Related
 
 - [Streaming](../02-run/02-streaming.md) - checkpoints and resume.
-- [Decision continuity](../../02-decision/03-decision-shapes/04-history.md) - what survives a decision.
+- [Decision continuity](../../02-decision/03-decision-shapes/04-history/README.md) - what survives a decision.
 - [Commitments](../../02-decision/02-domain/02-commitments.md) - the ledger shape.
 - [Outcome learning](../../02-decision/02-domain/03-outcomes.md) - what labels are used for.
 - [Deployment](../05-operate/03-deployment.md) - retention and deletion.

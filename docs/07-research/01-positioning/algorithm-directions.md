@@ -12,10 +12,10 @@ This page records five directions that could give LAIX an algorithm of its own.
 | Direction | Prototype | API | Docs |
 |---|---|---|---|
 | CA-VOD | one-step value of decision plus optional belief-state future value | `CAVODPlanner` | [Decision value](../../02-decision/03-decision-shapes/01-single/04-decision-value.md) |
-| AADS | index policy plus exact single-arm Whittle index | `AttentionScheduler`, `WhittleScheduler` | [Fleet attention](../../02-decision/03-decision-shapes/03-fleet.md) |
-| CDR | greedy and exact minimum-weight vertex cover | `repair_continuity` | [Decision history](../../02-decision/03-decision-shapes/04-history.md) |
-| CDA | linear attribution plus bounded counterfactual search | `counterfactual_attribution`, `counterfactual_search` | [Explain a decision](../../02-decision/03-decision-shapes/05-explain.md) |
-| CABB | exact finite-horizon branch and bound over commitments and attention | `CABBPlanner`, `RolloutPlanner`, `ReplanPlanner` | [Sequence planning](../../02-decision/03-decision-shapes/02-sequence.md) |
+| AADS | index policy plus exact single-arm Whittle index | `AttentionScheduler`, `WhittleScheduler` | [Fleet attention](../../02-decision/03-decision-shapes/03-fleet/README.md) |
+| CDR | greedy and exact minimum-weight vertex cover | `repair_continuity` | [Decision history](../../02-decision/03-decision-shapes/04-history/README.md) |
+| CDA | linear attribution plus bounded counterfactual search | `counterfactual_attribution`, `counterfactual_search` | [Explain a decision](../../02-decision/03-decision-shapes/05-explain/README.md) |
+| CABB | exact finite-horizon branch and bound over commitments and attention | `CABBPlanner`, `RolloutPlanner`, `ReplanPlanner` | [Sequence planning](../../02-decision/03-decision-shapes/02-sequence/README.md) |
 
 The prototypes are deterministic and training-free. They are first implementations, not the full
 research methods described below.

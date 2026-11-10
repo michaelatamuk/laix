@@ -42,7 +42,7 @@ The decision is not the end of the story. It is the input to the next one.
 | Receipts and recovery | An unknown outcome must be reconciled, not retried blindly. | Execution bridge and saga. |
 | Outcomes and calibration | The next choice can learn from the last one. | Outcome store and calibration report. |
 
-That hand-off is [decision continuity](../../02-decision/03-decision-shapes/04-history.md).
+That hand-off is [decision continuity](../../02-decision/03-decision-shapes/04-history/README.md).
 
 ## One-shot or loop
 

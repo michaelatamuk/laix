@@ -244,6 +244,6 @@ behaviour through the app kit. See [Evaluation](../06-evaluation/01-cases.md).
 
 - [Decision contract](../01-contract/01-decision-contract.md)
 - [Dispatch](../01-contract/04-dispatch.md)
-- [Policies](../03-decision-shapes/01-single/05-policies.md)
+- [Policies](../03-decision-shapes/06-policies/README.md)
 - [Human-attention planning](../03-decision-shapes/01-single/01-planners.md#human-attention-planner)
 - [Evaluation](../06-evaluation/01-cases.md)
