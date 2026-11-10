@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.17.3 - 2026-11-10
+
+### Fixed
+
+- **Custom policies keep their full decision.** `DecisionClient` now preserves `alternatives`,
+  `attributes`, intent metadata, situation id, event/deadline fields, revision, status, target and
+  recipients when a host policy returns a decision.
+
+### Changed
+
+- **Decision examples have Python/TypeScript parity.** Added the remaining TypeScript counterparts and
+  new examples for commitment resolution, belief, portfolio, risk bounds, revalidation, case-based
+  reuse, conflict resolution, decision counterfactuals, policy iteration and CABB cross-owner trust.
+- **Decision docs and app-kit docs were consolidated.** Decision shapes are now consistent folders;
+  the app-kit resolver coverage and decision reference gaps were closed.
+
 ## 0.17.2 - 2026-11-10
 
 ### Added

@@ -18,7 +18,7 @@ This guide uses the Python package and the `LiveCompositePlanner` behind `Planne
 
 ```powershell
 python -m pip install langgraph
-python -m pip install "git+https://github.com/michaelatamuk/laix.git@v0.17.2#subdirectory=packages/python/laix"
+python -m pip install "git+https://github.com/michaelatamuk/laix.git@v0.17.3#subdirectory=packages/python/laix"
 ```
 
 The comparison adapter in `benchmarks/compare/adapters/langgraph/` is optional and is not a
