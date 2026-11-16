@@ -15,11 +15,11 @@ Implemented:
 - `Decision`, `DecisionRequest`, `EvidenceRef`, `ScoreBreakdown`
 - `DecisionPolicy`, `PlannerPolicy`, `toPlannerInput`, `toDecision`
 - generated `ReasonCodes` registry, checked against `packages/contracts/reason-codes.v1.json`
+- `ActionPolicy`, `ActionPolicyConfig`, `ActionPolicyInput`, `decideAction`
 
 Next:
 
-- action policy and `decide` dispatch
-- signal attention
+- `decide` dispatch and signal attention
 - commitment ledger and graph
 - JSON serialization and shared conformance fixtures
 - app kit
