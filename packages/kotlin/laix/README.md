@@ -16,12 +16,15 @@ Implemented:
 - `DecisionPolicy`, `PlannerPolicy`, `toPlannerInput`, `toDecision`
 - generated `ReasonCodes` registry, checked against `packages/contracts/reason-codes.v1.json`
 - `ActionPolicy`, `ActionPolicyConfig`, `ActionPolicyInput`, `decideAction`
+- `Signal`, `SignalContext`, `SignalFeedback`, gates and `decideSignalAttention`
+- `decide` dispatch with `select`, `attributesFor`, `annotateConfidence`, `coerce`
+- conformance against `packages/contracts/signal-attention.v1.json`
 
 Next:
 
-- `decide` dispatch and signal attention
 - commitment ledger and graph
-- JSON serialization and shared conformance fixtures
+- shared conformance fixtures for planners and commitments
+- JSON serialization and schema checks
 - app kit
 
 ## Build

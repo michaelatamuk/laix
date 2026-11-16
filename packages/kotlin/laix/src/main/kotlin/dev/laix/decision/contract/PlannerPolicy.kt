@@ -2,6 +2,7 @@ package dev.laix.decision.contract
 
 import dev.laix.decision.contracts.Decision
 import dev.laix.decision.contracts.DecisionRequest
+import dev.laix.decision.support.clamp
 
 /** The smallest contract a policy plugin implements. */
 interface DecisionPolicy {
@@ -39,7 +40,7 @@ fun toDecision(
 ): Decision =
     Decision(
         verb = plannerResult.verb,
-        confidence = plannerResult.confidence,
+        confidence = clamp(plannerResult.confidence),
         reasonCode = plannerResult.reasonCode,
         rationale = plannerResult.rationale,
         decisionId = decisionId,
