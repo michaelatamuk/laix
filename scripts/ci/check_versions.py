@@ -25,13 +25,23 @@ def main() -> int:
     typescript_version = json.loads(
         read("packages/typescript/laix/package.json")
     )["version"]
+    kotlin_version = re.search(
+        r'^version = "([^"]+)"$',
+        read("packages/kotlin/laix/build.gradle.kts"),
+        re.M,
+    )
     if python_version is None:
         print("python package version not found")
+        return 1
+    if kotlin_version is None:
+        print("kotlin package version not found")
         return 1
     version = python_version.group(1)
     errors: list[str] = []
     if typescript_version != version:
         errors.append(f"TypeScript version {typescript_version} != Python version {version}")
+    if kotlin_version.group(1) != version:
+        errors.append(f"Kotlin version {kotlin_version.group(1)} != Python version {version}")
 
     a2a_version = json.loads(read("packages/contracts/a2a-agent-card.v1.json"))["version"]
     if a2a_version != version:
