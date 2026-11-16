@@ -1,6 +1,8 @@
 package dev.laix.decision.commitments
 
 import dev.laix.decision.signals.parseIso
+import dev.laix.decision.support.parseJsonObject
+import dev.laix.decision.support.toJson
 import java.time.OffsetDateTime
 
 /** An in-memory set of commitments for one task. */
@@ -70,7 +72,10 @@ class CommitmentLedger(commitments: List<Commitment> = emptyList()) {
     fun toMap(): Map<String, Any?> =
         linkedMapOf("commitments" to items.values.map { it.toMap() })
 
+    fun toJson(pretty: Boolean = false): String = toMap().toJson(pretty)
+
     companion object {
+        fun fromJson(text: String): CommitmentLedger = fromMap(parseJsonObject(text))
         private val never: OffsetDateTime = OffsetDateTime.MAX
 
         private fun first(items: List<Commitment>): Commitment =

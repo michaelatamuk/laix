@@ -1,6 +1,8 @@
 package dev.laix.decision.commitments
 
 import dev.laix.decision.signals.parseIso
+import dev.laix.decision.support.parseJsonObject
+import dev.laix.decision.support.toJson
 import dev.laix.decision.support.utcNow
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -349,6 +351,8 @@ class CommitmentGraph(
             "external" to external.map { it.toMap() },
         )
 
+    fun toJson(pretty: Boolean = false): String = toMap().toJson(pretty)
+
     private fun reverseIndex(): Map<Triple<String, String, String>, List<Commitment>> {
         val reverse = LinkedHashMap<Triple<String, String, String>, MutableList<Commitment>>()
         for (item in commitments) {
@@ -386,6 +390,8 @@ class CommitmentGraph(
         }
 
     companion object {
+        fun fromJson(text: String): CommitmentGraph = fromMap(parseJsonObject(text))
+
         fun refFor(commitment: Commitment): CommitmentRef =
             CommitmentRef(owner = commitment.owner, ledger = commitment.ledger, id = commitment.id)
 
