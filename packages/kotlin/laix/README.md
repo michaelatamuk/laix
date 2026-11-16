@@ -5,20 +5,22 @@ contracts and is intended to share the same JSON fixtures.
 
 ## Status
 
-First vertical slice: the core contract and `UtilityPlanner`.
+Second vertical slice: the decision contract on top of the core records.
 
 Implemented:
 
 - `Verb`, `Belief`, `Constraint`, `ActionOption`, `Situation`, `Intent`
 - `PlannerInput`, `PlannerResult`, `Planner`
 - `UtilityWeights`, `UtilityModel`, `UtilityPlanner`
-- `UtilityPlanner` tests
+- `Decision`, `DecisionRequest`, `EvidenceRef`, `ScoreBreakdown`
+- `DecisionPolicy`, `PlannerPolicy`, `toPlannerInput`, `toDecision`
+- generated `ReasonCodes` registry, checked against `packages/contracts/reason-codes.v1.json`
 
 Next:
 
-- decision dispatch and `Decision`
+- action policy and `decide` dispatch
+- signal attention
 - commitment ledger and graph
-- remaining planners and policies
 - JSON serialization and shared conformance fixtures
 - app kit
 
@@ -29,3 +31,9 @@ Next:
 ```
 
 Requires Java 17+.
+
+Regenerate the reason-code registry after editing the shared contract:
+
+```powershell
+python scripts/contracts/generate_kotlin_reason_codes.py
+```

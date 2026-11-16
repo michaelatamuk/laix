@@ -172,4 +172,7 @@ data class Situation(
 data class Intent(
     val capability: String,
     val args: Map<String, Any?> = emptyMap(),
-)
+) {
+    fun asDict(): Map<String, Any?> =
+        linkedMapOf("capability" to capability, "args" to args)
+}
