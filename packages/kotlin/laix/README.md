@@ -19,12 +19,15 @@ Implemented:
 - `Signal`, `SignalContext`, `SignalFeedback`, gates and `decideSignalAttention`
 - `decide` dispatch with `select`, `attributesFor`, `annotateConfidence`, `coerce`
 - conformance against `packages/contracts/signal-attention.v1.json`
+- `Commitment`, `CommitmentRef`, `CommitmentLedger`, stores and `CommitmentGraph`
+- `CommitmentPlanner` with effect, weights and rejection codes
+- conformance against the graph and planner cases in `packages/contracts/commitment-graph.v1.json`
 
 Next:
 
-- commitment ledger and graph
-- shared conformance fixtures for planners and commitments
+- remaining single planners and policies
 - JSON serialization and schema checks
+- shared conformance fixtures for planner cases
 - app kit
 
 ## Build
