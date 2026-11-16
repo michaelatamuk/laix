@@ -86,7 +86,7 @@ private fun limit(kind: String, value: Any?): Double? {
     return if (kind == "interruption" && numeric > 1.0) numeric / 100.0 else numeric
 }
 
-private fun constraintBlocker(problem: PlannerInput, option: ActionOption): String? {
+internal fun constraintBlocker(problem: PlannerInput, option: ActionOption): String? {
     val situation = problem.situation ?: return null
     val amounts = mapOf(
         "risk" to option.risk,
@@ -108,10 +108,28 @@ private fun constraintBlocker(problem: PlannerInput, option: ActionOption): Stri
     return null
 }
 
-private fun approvalRequired(problem: PlannerInput): Boolean =
+internal fun approvalRequired(problem: PlannerInput): Boolean =
     problem.situation?.constraints?.any {
         it.kind == "approval" && truthy(it.value)
     } ?: false
+
+/** Resolve the model for one problem, letting request attributes override the defaults. */
+internal fun utilityModelFor(problem: PlannerInput, model: UtilityModel): UtilityModel {
+    val attributes = problem.attributes
+    val maxRisk = (attributes["max_risk"] as? Number)?.toDouble()
+    val maxCost = (attributes["max_cost"] as? Number)?.toDouble()
+    val maxLatency = (attributes["max_latency_ms"] as? Number)?.toDouble()
+    val attitude = attributes["risk_attitude"] as? String
+    if (maxRisk == null && maxCost == null && maxLatency == null && attitude == null) {
+        return model
+    }
+    return model.copy(
+        riskAttitude = attitude?.let { RiskAttitude.from(it) } ?: model.riskAttitude,
+        maxRisk = maxRisk ?: model.maxRisk,
+        maxCost = maxCost ?: model.maxCost,
+        maxLatencyMs = maxLatency ?: model.maxLatencyMs,
+    )
+}
 
 class UtilityPlanner(
     private val model: UtilityModel = UtilityModel(),
@@ -120,7 +138,7 @@ class UtilityPlanner(
         if (problem.options.isEmpty()) {
             return wait("no_options", "there are no options to score")
         }
-        val activeModel = modelFor(problem)
+        val activeModel = utilityModelFor(problem, model)
         val feasible = problem.options.filter {
             activeModel.feasible(it) && constraintBlocker(problem, it) == null
         }
@@ -148,23 +166,6 @@ class UtilityPlanner(
                 "utility" to bestScore,
                 "risk_attitude" to activeModel.riskAttitude.value,
             ),
-        )
-    }
-
-    private fun modelFor(problem: PlannerInput): UtilityModel {
-        val attributes = problem.attributes
-        val maxRisk = (attributes["max_risk"] as? Number)?.toDouble()
-        val maxCost = (attributes["max_cost"] as? Number)?.toDouble()
-        val maxLatency = (attributes["max_latency_ms"] as? Number)?.toDouble()
-        val attitude = attributes["risk_attitude"] as? String
-        if (maxRisk == null && maxCost == null && maxLatency == null && attitude == null) {
-            return model
-        }
-        return model.copy(
-            riskAttitude = attitude?.let { RiskAttitude.from(it) } ?: model.riskAttitude,
-            maxRisk = maxRisk ?: model.maxRisk,
-            maxCost = maxCost ?: model.maxCost,
-            maxLatencyMs = maxLatency ?: model.maxLatencyMs,
         )
     }
 
