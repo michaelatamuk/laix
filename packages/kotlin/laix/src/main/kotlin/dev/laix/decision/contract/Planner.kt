@@ -1,6 +1,7 @@
 package dev.laix.decision.contract
 
 import dev.laix.decision.contracts.ActionOption
+import dev.laix.decision.contracts.Intent
 import dev.laix.decision.contracts.Situation
 import dev.laix.decision.contracts.Verb
 
@@ -20,8 +21,10 @@ data class PlannerResult(
     val reasonCode: String,
     val rationale: String,
     val actionId: String? = null,
+    val intent: Intent? = null,
     val requiresApproval: Boolean = false,
     val reversible: Boolean = false,
+    val undoHint: String? = null,
     val score: Double? = null,
     val alternatives: List<Map<String, Any?>> = emptyList(),
     val attributes: Map<String, Any?> = emptyMap(),
