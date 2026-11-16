@@ -20,13 +20,13 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 /** Replays the shared commitment planner fixtures against this implementation. */
+@Suppress("UNCHECKED_CAST")
 class CommitmentPlannerConformanceTest {
     private val json = Json
 
     private fun commitments(value: kotlinx.serialization.json.JsonArray): List<Commitment> =
         value.map { Commitment.fromMap(it.jsonObject.toAny() as Map<String, Any?>) }
 
-    @Suppress("UNCHECKED_CAST")
     private fun options(value: kotlinx.serialization.json.JsonArray): List<ActionOption> =
         value.map { item ->
             val payload = item.jsonObject

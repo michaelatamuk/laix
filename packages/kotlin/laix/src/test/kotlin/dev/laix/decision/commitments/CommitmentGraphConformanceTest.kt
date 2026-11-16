@@ -44,7 +44,6 @@ class CommitmentGraphConformanceTest {
                 value.content.toDoubleOrNull() != null -> value.content.toDouble()
                 else -> value.content
             }
-            else -> null
         }
 
     private fun commitment(value: JsonObject): Commitment =

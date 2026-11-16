@@ -1,6 +1,8 @@
 package dev.laix.decision.commitments
 
 import dev.laix.decision.signals.parseIso
+import dev.laix.decision.support.parseJsonObject
+import dev.laix.decision.support.toJson
 import java.time.OffsetDateTime
 
 val COMMITMENT_STATUSES: List<String> = listOf("open", "done", "cancelled")
@@ -24,7 +26,10 @@ data class CommitmentRef(
     fun toMap(): Map<String, Any?> =
         linkedMapOf("owner" to owner, "id" to id, "ledger" to ledger)
 
+    fun toJson(pretty: Boolean = false): String = toMap().toJson(pretty)
+
     companion object {
+        fun fromJson(text: String): CommitmentRef = fromMap(parseJsonObject(text))
         fun fromMap(payload: Map<String, Any?>): CommitmentRef =
             CommitmentRef(
                 owner = payload["owner"]?.toString()
@@ -90,7 +95,10 @@ data class Commitment(
             "external_depends_on" to externalDependsOn.map { it.toMap() },
         )
 
+    fun toJson(pretty: Boolean = false): String = toMap().toJson(pretty)
+
     companion object {
+        fun fromJson(text: String): Commitment = fromMap(parseJsonObject(text))
         @Suppress("UNCHECKED_CAST")
         fun fromMap(payload: Map<String, Any?>): Commitment {
             fun strings(key: String): List<String> =

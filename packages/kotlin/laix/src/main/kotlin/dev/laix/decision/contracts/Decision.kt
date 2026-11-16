@@ -1,6 +1,8 @@
 package dev.laix.decision.contracts
 
 import dev.laix.decision.support.clamp
+import dev.laix.decision.support.parseJsonObject
+import dev.laix.decision.support.toJson
 
 /** Lifecycle of a decision that belongs to a stream. */
 enum class DecisionStatus(val value: String) {
@@ -134,7 +136,12 @@ data class Decision(
             "schema_version" to schemaVersion,
         )
 
+    /** Serialize to the published snake_case JSON shape. */
+    fun toJson(pretty: Boolean = false): String = toMap().toJson(pretty)
+
     companion object {
+        fun fromJson(text: String): Decision = fromMap(parseJsonObject(text))
+
         @Suppress("UNCHECKED_CAST")
         fun fromMap(payload: Map<String, Any?>): Decision {
             fun text(key: String): String? = payload[key]?.toString()

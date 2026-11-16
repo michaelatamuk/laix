@@ -22,11 +22,13 @@ Implemented:
 - `Commitment`, `CommitmentRef`, `CommitmentLedger`, stores and `CommitmentGraph`
 - `CommitmentPlanner` with effect, weights and rejection codes
 - conformance against the graph and planner cases in `packages/contracts/commitment-graph.v1.json`
+- snake_case JSON serialization for decisions, commitments, ledgers and graphs
+- `FileCommitmentStore` and `InMemoryCommitmentStore`
 
 Next:
 
 - remaining single planners and policies
-- JSON serialization and schema checks
+- schema validation against `packages/contracts/decision.v1.schema.json`
 - shared conformance fixtures for planner cases
 - app kit
 
