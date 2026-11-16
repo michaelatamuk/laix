@@ -1,5 +1,7 @@
 package dev.laix.decision.contracts
 
+import dev.laix.decision.signals.Signal
+
 /**
  * One request, whichever generic policy the app needs.
  *
@@ -9,7 +11,7 @@ package dev.laix.decision.contracts
 data class DecisionRequest(
     val subject: String,
     val at: String,
-    val signals: List<Any?> = emptyList(),
+    val signals: List<Signal> = emptyList(),
     val context: Any? = null,
     val situation: Situation? = null,
     val options: List<ActionOption> = emptyList(),
