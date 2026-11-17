@@ -30,6 +30,33 @@ data class RetryPolicy(
     }
 }
 
+/** One forward action and its optional compensation. */
+data class ExecutionStep(
+    val action: ActionOption,
+    val decision: Decision? = null,
+    val actor: String? = null,
+    val approver: String? = null,
+    val context: Map<String, Any?> = emptyMap(),
+    val idempotencyKey: String? = null,
+    val compensate: ((ExecutionReceipt) -> Map<String, Any?>)? = null,
+)
+
+/** The outcome of a multi-step execution, including every receipt. */
+data class ExecutionSagaResult(
+    val completed: List<String>,
+    val compensated: List<String>,
+    val receipts: List<ExecutionReceipt>,
+    val error: String? = null,
+) {
+    fun toMap(): Map<String, Any?> =
+        linkedMapOf(
+            "completed" to completed,
+            "compensated" to compensated,
+            "receipts" to receipts.map { it.toMap() },
+            "error" to error,
+        )
+}
+
 /**
  * Execution bridge: approval, execution, cancellation, recovery and receipts.
  *
@@ -151,6 +178,61 @@ class ExecutionBridge(
         )
         if (idempotencyKey != null) byKey[idempotencyKey] = receipt.id
         return receipt
+    }
+
+    /** Execute steps in order and compensate completed ones on failure. */
+    fun runSteps(steps: List<ExecutionStep>, actor: String = "system"): ExecutionSagaResult {
+        val receipts = mutableListOf<ExecutionReceipt>()
+        val completed = LinkedHashMap<String, ExecutionReceipt>()
+        val failure = mutableListOf<String>()
+        val sagaSteps = mutableListOf<SagaStep>()
+        for ((index, step) in steps.withIndex()) {
+            val key = index.toString()
+            val decision = step.decision ?: Decision(
+                verb = step.action.verb,
+                confidence = 1.0,
+                reasonCode = "execution_step",
+                rationale = step.action.name,
+            )
+            val forward: () -> Map<String, Any?> = {
+                val receipt = execute(
+                    decision = decision,
+                    action = step.action,
+                    actor = step.actor ?: actor,
+                    approver = step.approver,
+                    context = step.context,
+                    idempotencyKey = step.idempotencyKey,
+                )
+                receipts += receipt
+                if (receipt.status == "executed" || receipt.status == "duplicate") {
+                    completed[key] = receipt
+                    receipt.detail
+                } else {
+                    val message = receipt.error ?: "${step.action.name} did not execute"
+                    failure += message
+                    throw RuntimeException(message)
+                }
+            }
+            val compensate: (() -> Map<String, Any?>)? = when {
+                step.compensate != null -> fun(): Map<String, Any?> {
+                    val receipt = completed[key] ?: return emptyMap()
+                    return step.compensate.invoke(receipt)
+                }
+                canUndo(step.action.name) -> fun(): Map<String, Any?> {
+                    val receipt = completed[key] ?: return emptyMap()
+                    return undo(receipt.id, actor).detail
+                }
+                else -> null
+            }
+            sagaSteps += SagaStep(step.action.name, forward, compensate)
+        }
+        val result = Saga().run(sagaSteps)
+        return ExecutionSagaResult(
+            completed = result.completed,
+            compensated = result.compensated,
+            receipts = receipts,
+            error = failure.firstOrNull() ?: result.error,
+        )
     }
 
     fun refuse(
