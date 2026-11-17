@@ -69,6 +69,26 @@ natively:
 - `Decision` clamps `confidence` on construction and `copy`, like the Python
   record's `__post_init__`.
 
+## Known differences from Python
+
+Normal requests and decisions match. These edge cases still differ, and are listed
+so a host can judge whether they matter:
+
+- `clamp(NaN)` keeps `NaN`; Python's `min`/`max` yields `1.0`.
+- `fromMap` fills a missing required field with its default; Python's `from_dict`
+  raises.
+- A boolean field given the string `"false"` reads as true and re-serializes as
+  `true`; Python keeps the string.
+- Nested equality does not coerce numeric types (`[1]` and `[1.0]` differ);
+  Python treats them as equal.
+- Float rendering of `NaN`/`Infinity` follows JSON (`NaN`, `Infinity`); Python
+  `repr` uses `nan`/`inf`.
+- File stores write raw UTF-8 JSON; Python's `json.dumps` escapes non-ASCII as
+  `\uXXXX`. The parsed data is identical.
+- Stream backpressure polls with `delay(1)` instead of waking on an event.
+- Retry delays truncate to milliseconds; Python sleeps fractional seconds.
+- The MCP supported protocol versions are a hand-maintained list.
+
 ## Examples
 
 ```powershell
