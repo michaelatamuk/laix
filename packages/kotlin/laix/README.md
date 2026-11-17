@@ -3,6 +3,10 @@
 A Kotlin/JVM implementation of the LAIX decision layer. It mirrors the Python and
 TypeScript packages and uses the shared JSON contracts for conformance.
 
+Start with the [Kotlin guide](../../../docs/01-start/02-first-steps/03-kotlin.md) for install,
+the CLI, bench and MCP tasks, and the example suite. The
+[example project](../../../examples/kotlin/README.md) has 64 runnable examples.
+
 ## Status
 
 Implemented:
@@ -64,6 +68,14 @@ natively:
   the others.
 - `Decision` clamps `confidence` on construction and `copy`, like the Python
   record's `__post_init__`.
+
+## Examples
+
+```powershell
+# from the repository root
+.\packages\kotlin\laix\gradlew.bat -p examples\kotlin run --args="--all"
+.\packages\kotlin\laix\gradlew.bat -p examples\kotlin test
+```
 
 ## Build
 

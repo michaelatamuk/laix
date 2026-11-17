@@ -76,8 +76,8 @@ No. LAIX defines the store contracts; the host owns the database, retention and 
 
 ## Which languages are supported?
 
-Python and TypeScript. The two packages share the decision contract, the reason codes and the test
-vectors.
+Python, TypeScript and Kotlin/JVM. The three packages share the decision contract, the reason codes
+and the shared test vectors. The Kotlin package is JVM-only and is not published to Maven yet.
 
 ## How do I start?
 

@@ -1,8 +1,8 @@
 ﻿# Contributing to LAIX
 
 Thanks for helping. LAIX is a small, opinionated codebase: the decision contract, the
-planner surface and the Python/TypeScript parity are the product. Changes that keep those
-three coherent are welcome.
+planner surface and the Python, TypeScript and Kotlin parity are the product. Changes that keep
+them coherent are welcome.
 
 ## Before you start
 
@@ -14,7 +14,7 @@ three coherent are welcome.
 
 ## Development setup
 
-Python 3.11 or newer and Node 22 or newer are required.
+Python 3.11 or newer, Node 22 or newer and JDK 17 or newer are required.
 
 ```powershell
 git clone https://github.com/michaelatamuk/laix.git
@@ -31,7 +31,8 @@ npm ci
 ```
 
 The Python package uses the standard library. The TypeScript package has no runtime
-dependencies.
+dependencies. The Kotlin package is JVM-only; the Gradle wrapper downloads Gradle and the Kotlin
+toolchain.
 
 ## Repository layout
 
@@ -39,9 +40,10 @@ dependencies.
 |---|---|
 | `packages/python/laix/` | Python package and tests |
 | `packages/typescript/laix/` | TypeScript package and tests |
+| `packages/kotlin/laix/` | Kotlin/JVM package, tests and Gradle tasks |
 | `packages/contracts/` | shared schemas and conformance vectors |
 | `docs/` | numbered guides and reference pages |
-| `examples/` | runnable Python and TypeScript examples |
+| `examples/` | runnable Python, TypeScript and Kotlin examples |
 | `benchmarks/` | versioned corpus and external comparison harness |
 | `data/` | optional external validation material |
 | `results/` | generated benchmark evidence |
@@ -56,7 +58,7 @@ dependencies.
   composition, `DecisionPolicy` is an integration, and `Learner` is learning. Do not call a
   composite planner an engine.
 - **Keep the public API in `__init__.py` and `index.ts`.**
-- **Mirror the Python surface in TypeScript.** Parity is tested, not assumed.
+- **Mirror the Python surface in TypeScript and Kotlin.** Parity is tested, not assumed.
 - **Use generic vocabulary.** No app, domain or vendor names in the decision layer.
 - **Training-free by default.** A planner may use a model the host supplies; the contract
   does not change.
@@ -88,6 +90,15 @@ npm run conformance
 npm run live-bench
 ```
 
+Kotlin/JVM:
+
+```powershell
+cd packages/kotlin/laix
+.\gradlew.bat test
+.\gradlew.bat build
+.\gradlew.bat -p ../../../examples/kotlin test
+```
+
 Repository checks, from the root:
 
 ```powershell
@@ -111,7 +122,7 @@ The live benchmark, analysis and ablations are also documented in
 ## Pull request checklist
 
 - [ ] Tests cover the change.
-- [ ] Python and TypeScript still agree, or the difference is documented.
+- [ ] Python, TypeScript and Kotlin still agree, or the difference is documented.
 - [ ] Public imports still work.
 - [ ] Docs and relative links are updated.
 - [ ] `CHANGELOG.md` is updated.

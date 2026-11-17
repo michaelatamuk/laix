@@ -70,6 +70,23 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 }
 ```
 
+## Kotlin/JVM
+
+```powershell
+cd packages/kotlin/laix
+.\gradlew.bat test
+.\gradlew.bat build
+.\gradlew.bat -p ../../../examples/kotlin test
+```
+
+Kotlin examples, from the repository root:
+
+```powershell
+.\packages\kotlin\laix\gradlew.bat -p examples\kotlin run --args="--all"
+```
+
+`ExamplesTest` runs every Kotlin example, so an example that stops compiling or printing fails CI.
+
 ## Current results
 
 | Check | Result |
@@ -77,6 +94,8 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 | Python tests | 470 passed |
 | Invariant tests | 17/17 |
 | TypeScript tests | 210 passed |
+| Kotlin tests | 355 passed |
+| Kotlin examples | 64/64 run |
 | Signal-attention conformance | 24/24 |
 | LAIX-Bench | 25/25 |
 | 7-case live demo | `LiveCompositePlanner` 7/7 |
@@ -110,7 +129,7 @@ support, changelog, citation metadata and security policy aligned.
 | `tests/decision/contract/test_reason_codes.py` | reason-code registry, decision schema and source coverage |
 | `tests/appkit/test_mcp_server.py` | MCP request parsing, `decide` tool, tool listing and tool call |
 | `tests/decision/contract/test_interop_contracts.py` | A2A card placement and OpenAPI action profile |
-| `packages/contracts/commitment-graph.v1.json` | shared cross-owner graph cases read by the Python and TypeScript tests |
+| `packages/contracts/commitment-graph.v1.json` | shared cross-owner graph cases read by the Python, TypeScript and Kotlin tests |
 | `ruff check` | Python syntax, undefined names and unused imports |
 | `tsc` | TypeScript source and public declaration syntax/types |
 | `npm test` | TS contracts, conformance, parity, streaming, timeline, execution, planners |
@@ -128,7 +147,7 @@ support, changelog, citation metadata and security policy aligned.
 | `scripts/ci/check_versions.py` | package, A2A card and public version references |
 | `benchmarks/live/v1/` | versioned corpus and schema |
 | `benchmarks/compare/adapters/` | optional external adapters and capability matrix |
-| examples | every runnable Python and TypeScript example |
+| examples | every runnable Python, TypeScript and Kotlin example |
 | docs links | relative links in docs, examples and README files |
 
 ## CI

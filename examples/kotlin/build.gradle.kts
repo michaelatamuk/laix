@@ -1,0 +1,26 @@
+plugins {
+    kotlin("jvm") version "2.1.20"
+    application
+}
+
+group = "dev.laix"
+version = "0.17.3"
+
+kotlin {
+    jvmToolchain(17)
+}
+
+dependencies {
+    implementation("dev.laix:laix-decision:0.17.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+    testImplementation(kotlin("test-junit5"))
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+application {
+    mainClass.set("dev.laix.examples.MainKt")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}

@@ -1,8 +1,13 @@
 # API map
 
-One page for the public surface. Python and TypeScript export the same concepts. This is a
-map by role, not a generated signature reference. The package `__all__` lists the decision layer exports; the
+One page for the public surface. Python, TypeScript and Kotlin/JVM export the same concepts. This
+is a map by role, not a generated signature reference. The package `__all__` lists the decision layer exports; the
 app kit adds lazy exports and the bench runner adds its own `laix.appkit.bench` surface.
+
+Kotlin uses the same class names, with camelCase members (`reasonCode`, `actionId`) and the same
+snake_case JSON keys. Free functions follow Kotlin conventions: `decide`, `resolveCommitmentGraph`,
+`runBench`, `runLiveBench` and `comparePlanners`. See the
+[Kotlin guide](../../01-start/02-first-steps/03-kotlin.md) for the package layout.
 
 ## Contract
 

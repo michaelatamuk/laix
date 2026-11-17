@@ -46,7 +46,8 @@ the stage number gives the order. `checklist.md` tracks work across all stages.
 ## Snapshot
 
 - Repository: `laix`
-- Status at time of writing: Python and TypeScript tests, parity, conformance, bench and examples pass.
+- Status at time of writing: Python and TypeScript tests, parity, conformance, bench and examples pass;
+  the Kotlin package passes its tests, shared-contract replay and examples.
 - Existing proof points: `LiveCompositePlanner`, the live decision benchmark, Python/TypeScript parity,
   conformance vectors, deterministic replay and the audit trail.
 - Added: `01-positioning/comparators.md` (documented capability comparison, 7 systems), `05-governance.md`
@@ -162,7 +163,7 @@ Out of scope:
 | Timing and revision | stream session, timeline | exists | formal revision invariants |
 | Calibration | calibration and decision calibration | exists | held-out calibration report |
 | Audit | receipts, traces, decision record | exists | replay and tamper evidence in evaluation |
-| Parity | Python and TypeScript suites | exists | include in artifact release |
+| Parity | Python, TypeScript and Kotlin suites | exists | include in artifact release |
 | Benchmark | 120 live cases + 7-case demo | **done** | harder real-incident cases |
 | Ablation | 7 planner variants on the test split | **done** | — |
 | Glue baseline | `scripts/novelty/shared/glue_baseline.py` | **done** | external adapters still missing |

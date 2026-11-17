@@ -102,13 +102,14 @@ Controls:
 
 ### 7. Supply chain
 
-The decision layer is standard-library only. Optional extras and the TypeScript package still need
-normal dependency hygiene.
+The Python decision layer is standard-library only. Optional extras, the TypeScript package and the
+Kotlin/JVM package (Kotlin, kotlinx-serialization and kotlinx-coroutines) still need normal dependency
+hygiene.
 
 Controls:
 
 - pin and review optional dependencies;
-- run `npm audit` and Python dependency checks in the host;
+- run `npm audit`, Python dependency checks and Gradle dependency checks in the host;
 - do not load untrusted policy or model code;
 - treat `langgraph` and other comparison adapters as optional, isolated tooling.
 

@@ -23,6 +23,9 @@ Use this list when preparing a Zenodo or GitHub release. The DOI and tag are int
 - `scripts/novelty/reproduce.sh`
 - `scripts/novelty/shared/live_bench_common.py`
 - `packages/typescript/laix/scripts/live-bench.mjs`
+- `packages/kotlin/laix` (third implementation: contract records, planners, policies and app kit;
+  checked by the shared contract replay, not part of the live-bench parity numbers)
+- `examples/kotlin` (64 runnable examples, executed by CI)
 - `benchmarks/compare/README.md`
 - `benchmarks/compare/adapters/` (protocol, result, LangGraph and Temporal adapters)
 - `benchmarks/compare/capabilities.v1.json`

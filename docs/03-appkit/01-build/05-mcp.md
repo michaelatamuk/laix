@@ -40,6 +40,17 @@ Or from a source checkout:
 python -m laix.appkit.mcp_server
 ```
 
+Kotlin/JVM ships the same stdio server. Run it through the Gradle task:
+
+```powershell
+cd packages/kotlin/laix
+.\gradlew.bat mcp
+```
+
+The Kotlin server implements `initialize`, `ping`, `tools/list` and `tools/call` with the same
+`decide` tool, `policy: auto` and `policy: live`, and it negotiates the requested MCP protocol
+revision when it supports it.
+
 The transport is stdio. Point an MCP client at the command:
 
 ```json
@@ -160,7 +171,7 @@ Unknown top-level fields are ignored. Invalid required fields raise a tool error
 - The server does not execute actions, open databases or deliver messages.
 - The MCP client controls which tools a model can call and what request content it can see.
 - Keep secrets and raw customer content out of the request and out of the tool result.
-- The server is Python-only. The TypeScript package does not ship an MCP server.
+- Python and Kotlin/JVM ship an MCP server. The TypeScript package does not.
 
 ## Related
 

@@ -46,7 +46,7 @@ commands.
 | Duplicate side effect | retry without an idempotency key | `ExecutionBridge` key, receipt status |
 | Missing decision record | the host did not create a record | `create_record`, your record store, or the stream `recorder` callback |
 | Streaming drops events | buffer full, cooldown or hysteresis | `on_full`, capacity, cooldown, counters |
-| Python and TypeScript disagree | version skew or a parity regression | `npm run conformance`, `npm run live-bench` |
+| Implementations disagree | version skew or a parity regression | `npm run conformance`, `npm run live-bench`, `gradlew test` |
 | Docs link fails | moved page or renamed file | `python scripts/ci/check_docs_links.py` |
 | High latency | model or planner in the hot path | p95/p99, model calls, planner depth |
 

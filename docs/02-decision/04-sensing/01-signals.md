@@ -232,7 +232,7 @@ The same bill at 23:30 returns `wait` with `quiet_hours`; the score is still 84,
 
 ## Conformance
 
-The signal-attention vectors are shared by Python and TypeScript:
+The signal-attention vectors are shared by Python, TypeScript and Kotlin:
 
 - `packages/contracts/signal-attention.v1.json` — decision cases;
 - `packages/contracts/signal-attention-bench.v1.json` — outcome cases.

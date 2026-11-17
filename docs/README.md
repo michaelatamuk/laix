@@ -3,7 +3,8 @@
 LAIX — **Live AI Experience** — is the live decision layer for AI agents that act in
 the real world. An agent or automation is always in the loop: it notices what is changing, decides what
 matters and acts before the moment passes. LAIX gives that loop a single decision contract. The host
-owns the experience; LAIX owns the decision.
+owns the experience; LAIX owns the decision. The same contract ships as Python, TypeScript
+and Kotlin/JVM packages.
 
 > **What matters now, and what should the experience do about it?**
 
@@ -95,14 +96,15 @@ Read in order.
 ## Examples
 
 Runnable examples are organized by language, then by decision or app kit, and by decision shape
-inside the decision layer in [`../examples/README.md`](../examples/README.md). Every Python and
-TypeScript example is run by CI.
+inside the decision layer in [`../examples/README.md`](../examples/README.md). Every Python,
+TypeScript and Kotlin example is run by CI.
 
 ## Which page do I need?
 
 | I want to… | Read |
 |---|---|
 | make one decision | [Quickstart](01-start/02-first-steps/01-quickstart.md) |
+| use LAIX from Kotlin/JVM | [Kotlin guide](01-start/02-first-steps/03-kotlin.md) |
 | plug LAIX into an app | [Host integration](01-start/02-first-steps/02-host-integration.md), then [Integration](03-appkit/01-build/01-integration.md) |
 | integrate with LangGraph | [LangGraph](03-appkit/01-build/04-langgraph.md) |
 | expose decisions over MCP | [MCP server](03-appkit/01-build/05-mcp.md) |

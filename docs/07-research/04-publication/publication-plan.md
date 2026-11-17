@@ -25,7 +25,7 @@ Acceptance criteria:
 
 - A fresh clone can reproduce the main table.
 - The paper states the commit hash and package versions.
-- The artifact includes Python and TypeScript conformance cases.
+- The artifact includes Python, TypeScript and Kotlin conformance cases.
 - No secret or personal data is required.
 
 ## 2. Paper and dissemination

@@ -38,7 +38,8 @@ laix/
 ├── packages/
 │   ├── contracts/         JSON Schema and shared test vectors
 │   ├── python/laix/       Python package and tests
-│   └── typescript/laix/   TypeScript package and tests
+│   ├── typescript/laix/   TypeScript package and tests
+│   └── kotlin/laix/       Kotlin/JVM package, tests and Gradle tasks
 ├── docs/
 │   ├── README.md          audience-first index
 │   ├── 01-start/          overview; orientation/, first-steps/
@@ -58,7 +59,8 @@ laix/
 │   ├── data/              decision JSON for the CLI
 │   ├── mcp/               MCP client config
 │   ├── python/            decision/ and appkit/, then decision shape
-│   └── typescript/        the same decision and app-kit split
+│   ├── typescript/        the same decision and app-kit split
+│   └── kotlin/            a Gradle project with the same split and a runnable registry
 ├── scripts/
 │   ├── ci/                repository checks (relative links and versions)
 │   ├── novelty/
@@ -69,14 +71,15 @@ laix/
 │   │   ├── vignette-study/   vignette generation, analysis and server
 │   │   ├── shared/        shared benchmark and glue modules
 │   │   └── reproduce.sh   full evidence pipeline
-│   ├── contracts/         decision schema and reason-code exporter
+│   ├── contracts/         decision schema, reason-code exporters and the Kotlin generator
 │   └── docs/             brand asset renderer
 └── .github/               CI and release workflows
 ```
 
 `packages/contracts/` is the shared source of truth for the decision record shape, the standalone
 decision schema, the reason-code registry and the test vectors. The decision layer record schema is generated
-from the Python dataclasses and ships inside the package.
+from the Python dataclasses and ships inside the package; the Kotlin reason-code registry is generated
+from the same contract by `scripts/contracts/generate_kotlin_reason_codes.py`.
 
 `scripts/ci/check_docs_links.py` checks every relative link in the docs, examples and README files;
 the `docs` CI job runs it.
@@ -196,6 +199,33 @@ packages/typescript/laix/src/
 The TypeScript package mirrors the same folders under `src/decision` and `src/appkit`. It exports one
 entry point, `laix`. `tsconfig.build.json` emits ESM JavaScript and declarations to `dist/`. The public type entry is
 `dist/index.d.ts`. `prepare` rebuilds `dist/` before a local install or package tarball.
+
+## Kotlin package
+
+```text
+packages/kotlin/laix/src/main/kotlin/dev/laix/decision/
+├── contract/            Planner, PlannerInput, PlannerResult, DecisionPolicy and reason codes
+├── contracts/           request, response and payload records
+├── planners/            single, sequence, fleet, history, case-based and explain
+├── policies/            action policy, packaged packs, rules, planning, bandit and composition
+├── signals/             signal-attention gates, scoring and decisions
+├── commitments/         ledger, graph and stores
+├── outcomes/            outcome ledger, stores and signal-attention outcomes
+├── learning/            calibration, model, bandit and causal
+├── evaluation/          cases, bench, simulation and the bench CLI
+├── appkit/              client, runtime, execution, streaming, stores, audit, platform and MCP
+├── sensing/             resource admission
+└── perception/          detectors and frames
+```
+
+The Kotlin package uses the same folders as the decision layer and the app kit. It exports plain Kotlin
+types: camelCase members with snake_case JSON. `build.gradle.kts` exposes the `run` (CLI), `bench` and
+`mcp` tasks. `examples/kotlin` is a separate Gradle project that includes the package as a composite
+build, so the examples always run against the working tree.
+
+Tests replay the shared vectors in `packages/contracts`. `scripts/contracts/generate_kotlin_reason_codes.py`
+regenerates the reason-code registry, and `scripts/ci/check_versions.py` keeps the package version equal
+to Python's.
 
 ## Shared spec
 

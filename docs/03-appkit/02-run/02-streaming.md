@@ -255,9 +255,10 @@ around it: time, cadence, buffering and revision.
 Use `decide` or `DecisionClient.decide` for a one-shot answer. Use `DecisionClient.stream` when the host has a stream of
 events and needs decisions over time.
 
-Python and TypeScript expose `StreamSession`; `DecisionClient.stream` returns one. TypeScript also exports
-`Refiner`, `Decider`, `StreamSessionOptions`, `SourceOptions`, `FullPolicy`, `LatePolicy`,
-`DECISION_STATUSES` and `DecisionStatus`.
+Python, TypeScript and Kotlin expose `StreamSession`; `DecisionClient.stream` returns one. TypeScript
+also exports `Refiner`, `Decider`, `StreamSessionOptions`, `SourceOptions`, `FullPolicy`, `LatePolicy`,
+`DECISION_STATUSES` and `DecisionStatus`. Kotlin uses `kotlinx.coroutines.flow.Flow` for `feed`,
+`feedWindows` and `decisions`.
 
 ## Related
 

@@ -106,3 +106,6 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew test --no-daemon
+      - name: Examples
+        working-directory: packages/kotlin/laix
+        run: ./gradlew -p ../../../examples/kotlin test --no-daemon
