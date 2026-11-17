@@ -1,7 +1,10 @@
 package dev.laix.decision.contracts
 
+import dev.laix.decision.signals.parseIso
 import dev.laix.decision.support.clamp
 import dev.laix.decision.support.round6
+import dev.laix.decision.support.utcNow
+import java.time.OffsetDateTime
 
 const val SCHEMA_VERSION = "0.8.0"
 
@@ -60,6 +63,20 @@ data class Belief(
             confidence >= 0.55 -> "medium"
             else -> "low"
         }
+
+    fun expired(now: OffsetDateTime? = null): Boolean {
+        val expires = parseIso(expiresAt) ?: return false
+        val moment = now ?: utcNow()
+        return !expires.toInstant().isAfter(moment.toInstant())
+    }
+
+    fun decayed(now: OffsetDateTime? = null, halfLifeMinutes: Double = 720.0): Double {
+        val updated = parseIso(updatedAt) ?: return confidence
+        if (halfLifeMinutes <= 0) return confidence
+        val elapsed = java.time.Duration.between(updated, now ?: utcNow()).toMillis() / 60_000.0
+        if (elapsed <= 0) return confidence
+        return clamp(confidence * Math.pow(0.5, elapsed / halfLifeMinutes))
+    }
 }
 
 data class Constraint(

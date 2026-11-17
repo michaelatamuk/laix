@@ -23,3 +23,10 @@ fun truthy(value: Any?): Boolean =
         null -> false
         else -> true
     }
+
+fun confidenceBand(value: Double): String =
+    when {
+        value >= 0.8 -> "high"
+        value >= 0.55 -> "medium"
+        else -> "low"
+    }
