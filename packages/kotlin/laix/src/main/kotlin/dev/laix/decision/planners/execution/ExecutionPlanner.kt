@@ -143,7 +143,7 @@ class ExecutionRiskPlanner(
         )
     }
 
-    private fun scoreOption(
+    internal fun scoreOption(
         option: ActionOption,
         model: UtilityModel,
         weights: ExecutionWeights,
@@ -224,8 +224,8 @@ class ExecutionRiskPlanner(
         val blocker: String?,
     )
 
-    private companion object {
-        fun receiptStatus(problem: PlannerInput, option: ActionOption): String? {
+    companion object {
+        internal fun receiptStatus(problem: PlannerInput, option: ActionOption): String? {
             val attributes = problem.attributes
             val raw = attributes["execution_state"]
             if (raw is Map<*, *>) {

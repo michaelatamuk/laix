@@ -252,7 +252,7 @@ class HumanAttentionPlanner(
         )
     }
 
-    private fun scoreOption(
+    internal fun scoreOption(
         option: ActionOption,
         model: UtilityModel,
         weights: HumanAttentionWeights,
@@ -329,8 +329,8 @@ class HumanAttentionPlanner(
         val blocker: String?,
     )
 
-    private companion object {
-        fun remaining(problem: PlannerInput): Double {
+    companion object {
+        internal fun remaining(problem: PlannerInput): Double {
             val attributes = problem.attributes
             val raw = attributes["human_attention_budget"] ?: 1.0
             val base = when (raw) {
