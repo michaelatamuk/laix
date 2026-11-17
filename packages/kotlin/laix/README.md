@@ -14,23 +14,25 @@ Implemented:
   POMDP, CA-VOD, live composite, CABB/rollout/replan
 - policies: the action policy and the reference packs (safety, verification,
   preference elicitation, active perception, replanning, escalation,
-  negotiation, allocation), rule policies, planning, target/group composition
-  and the UCB bandit
+  negotiation, allocation), rule policies, planning, target/group composition,
+  the UCB bandit, simulation and shadow policies
 - signal attention: gates, scoring, decisions, outcomes, precision, hazard and
   calibration
 - commitments: ledger, stores, graph, resolvers, planner fixtures
 - outcomes: ledger, store, calibration, causal attribution, model learning
-- app kit: `DecisionClient`, `DecisionRuntime`, execution bridge and sagas,
-  delivery port, experience state and stores, audit records and proposals,
-  platform seam, streaming sessions, resource scheduler, live context
-- evaluation: parity cases, reports, attention replay and the attention bench
-- JSON: snake_case serialization, file stores, request parsing, CLI and
-  OpenTelemetry attribute names
-- MCP: the `decide` tool payload for auto and live policies
+- app kit: `DecisionClient`, `DecisionRuntime`, execution bridge, async execution
+  and sagas, delivery port, experience state and stores, audit records and
+  proposals, platform seam, streaming sessions (windows, timeline, sources,
+  feed and checkpoints), resource scheduler, live context
+- evaluation: parity cases, reports, attention replay and bench, simulation,
+  live bench, planner bench and the bench CLI
+- JSON: snake_case serialization, file stores, request parsing, CLI,
+  OpenTelemetry attribute names, async streaming and JSON-schema validation
+- MCP: the stdio server with initialize, ping, tools/list and tools/call
 
-Not yet ported: the simulation and bench runners, the async execution mixin, the
-streaming feed/source/window/timeline extras, JSON-schema validation, the MCP
-stdio transport and Kotlin Multiplatform targets.
+Not ported: Kotlin Multiplatform targets (this package is JVM only), the Python
+schema builder, the Python novelty and incident-replay research scripts, and the
+Python packaging/publishing setup.
 
 ## Conformance
 
@@ -40,6 +42,7 @@ Tests replay the shared contracts in `packages/contracts`:
 - `signal-attention.v1.json`
 - `commitment-graph.v1.json` (graph and planner cases)
 - `signal-attention-bench.v1.json`
+- `decision.v1.schema.json`
 
 Version checks keep Python, TypeScript and Kotlin on the same version.
 
@@ -58,6 +61,24 @@ Requires Java 17+.
 .\gradlew.bat run --args="explain path\to\decision.json --json"
 .\gradlew.bat run --args="lint path\to\decision.json"
 ```
+
+## Bench
+
+```powershell
+.\gradlew.bat bench --args="--list"
+.\gradlew.bat bench --args="--suite safety --json"
+.\gradlew.bat bench --args="--planners"
+.\gradlew.bat bench --args="--live"
+```
+
+## MCP server
+
+```powershell
+.\gradlew.bat mcp
+```
+
+The server speaks JSON-RPC over stdio and exposes the `decide` tool for
+`policy: auto` and `policy: live`.
 
 ## Regenerate the reason-code registry
 
