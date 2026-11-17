@@ -30,7 +30,10 @@ import dev.laix.decision.select
 class DecisionClient(
     val runtime: DecisionRuntime = DecisionRuntime(),
     policy: DecisionPolicy? = null,
-) {
+) : DecisionPolicy {
+    override val name: String
+        get() = activePolicy?.name?.ifEmpty { null } ?: "builtin"
+
     private val decisions = mutableListOf<Decision>()
     private val registry = DecisionPolicyRegistry()
     private var activePolicy: DecisionPolicy? = null
@@ -53,7 +56,7 @@ class DecisionClient(
 
     fun policies(): List<String> = registry.names()
 
-    fun decide(request: DecisionRequest): List<Decision> {
+    override fun decide(request: DecisionRequest): List<Decision> {
         val route = select(request, activePolicy)
         val result = when (route) {
             Route.ACTION -> {
