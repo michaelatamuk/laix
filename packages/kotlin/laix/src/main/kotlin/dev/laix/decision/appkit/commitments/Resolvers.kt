@@ -16,6 +16,11 @@ fun interface CommitmentResolver {
     fun resolve(refs: List<CommitmentRef>): List<Commitment>
 }
 
+/** An async variant for hosts that fetch before planning. */
+interface AsyncCommitmentResolver {
+    suspend fun resolve(refs: List<CommitmentRef>): List<Commitment>
+}
+
 /** Resolve from commitments already held by the host. */
 class InMemoryCommitmentResolver(
     commitments: List<Commitment> = emptyList(),
@@ -44,6 +49,17 @@ class InMemoryCommitmentResolver(
 fun resolveCommitmentGraph(
     local: CommitmentLedger,
     resolver: CommitmentResolver,
+): CommitmentGraph {
+    val refs = local.all()
+        .flatMap { it.externalDependsOn }
+        .distinct()
+    return CommitmentGraph(local, resolver.resolve(refs))
+}
+
+/** Async variant of [resolveCommitmentGraph]. */
+suspend fun resolveCommitmentGraphAsync(
+    local: CommitmentLedger,
+    resolver: AsyncCommitmentResolver,
 ): CommitmentGraph {
     val refs = local.all()
         .flatMap { it.externalDependsOn }

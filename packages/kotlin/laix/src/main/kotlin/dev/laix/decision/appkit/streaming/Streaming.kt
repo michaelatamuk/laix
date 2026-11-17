@@ -5,14 +5,17 @@ import dev.laix.decision.contracts.Decision
 import dev.laix.decision.contracts.DecisionRequest
 import dev.laix.decision.contracts.DecisionStatus
 import dev.laix.decision.planners.attention.HumanAttentionBudget
-import dev.laix.decision.signals.parseIso
+import dev.laix.decision.support.parseIso
 import dev.laix.decision.support.iso
+import dev.laix.decision.support.isoFull
 import dev.laix.decision.support.newId
 import dev.laix.decision.support.parseJsonObject
 import dev.laix.decision.support.toJson
 import dev.laix.decision.support.utcNow
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withTimeoutOrNull
 import java.nio.file.AtomicMoveNotSupportedException
@@ -285,13 +288,13 @@ class StreamSession(
     fun snapshot(): Map<String, Any?> =
         linkedMapOf(
             "stream_id" to streamId,
-            "watermark" to watermark?.toString(),
-            "last_decision" to lastDecision?.toString(),
+            "watermark" to watermark?.let { isoFull(it) },
+            "last_decision" to lastDecision?.let { isoFull(it) },
             "last_signature" to (lastSignature ?: emptyList<Pair<String, String?>>()).map {
                 listOf(it.first, it.second)
             },
-            "last_signature_at" to lastSignatureAt?.toString(),
-            "window_start" to windowStart?.toString(),
+            "last_signature_at" to lastSignatureAt?.let { isoFull(it) },
+            "window_start" to windowStart?.let { isoFull(it) },
             "window_count" to windowCount,
             "stats" to stats.snapshot(),
             "pending" to items.map { it.toMap() },
@@ -324,17 +327,15 @@ class StreamSession(
         windowCount = (snapshot["window_count"] as? Number)?.toInt() ?: 0
         (snapshot["stats"] as? Map<*, *>)?.let { restoreStats(it) }
         (snapshot["pending"] as? Iterable<*>)?.let { pendingItems ->
-            items.clear()
-            for (item in pendingItems) {
-                if (item is Map<*, *>) {
-                    items.addLast(
-                        Decision.fromMap(
-                            item.entries.associate { it.key.toString() to it.value },
-                        ),
-                    )
-                    if (items.size >= capacity) break
+            // Python restores into `deque(maxlen=capacity)`, which keeps the
+            // newest decisions when the snapshot holds more than capacity.
+            val restored = pendingItems.mapNotNull { item ->
+                (item as? Map<*, *>)?.let {
+                    Decision.fromMap(it.entries.associate { e -> e.key.toString() to e.value })
                 }
             }
+            items.clear()
+            restored.takeLast(capacity).forEach { items.addLast(it) }
         }
         (snapshot["traces"] as? Iterable<*>)?.forEach { item ->
             (item as? Map<*, *>)?.let { map ->
@@ -406,10 +407,18 @@ class StreamSession(
         }
     }
 
-    /** Observe a flow of events and emit its decisions. */
-    fun feed(events: Flow<DecisionRequest>): Flow<Decision> = flow {
-        events.collect { request ->
-            observe(request, status = "final", force = false).forEach { emit(it) }
+    /**
+     * Observe a flow of events and emit its decisions.
+     *
+     * With a positive [coalesceMs], only the newest event survives a quiet
+     * period of that length; the debounce window for a busy source.
+     */
+    @OptIn(FlowPreview::class)
+    fun feed(events: Flow<DecisionRequest>, coalesceMs: Long = 0): Flow<Decision> = flow {
+        val source = if (coalesceMs > 0) events.debounce(coalesceMs) else events
+        source.collect { request ->
+            admit(request, "final", force = false, revision = 0, supersedes = null)
+                .forEach { emit(it) }
         }
     }
 

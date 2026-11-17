@@ -23,11 +23,16 @@ class BanditPolicy(
     val budget: Double = Double.POSITIVE_INFINITY,
 ) : DecisionPolicy {
     override val name: String = "bandit.v1"
-    val version: String = "0.8.0"
+    override val version: String = "0.8.0"
 
     override fun decide(request: DecisionRequest): List<Decision> {
-        for (item in policyMaps(policyValue(request, "arms"))) {
-            bandit.add(arm(item))
+        for (item in policyList(policyValue(request, "arms"))) {
+            val parsed = when (item) {
+                is Arm -> item
+                is Map<*, *> -> arm(item.entries.associate { it.key.toString() to it.value })
+                else -> continue
+            }
+            bandit.add(parsed)
         }
 
         if (bandit.arms().isEmpty()) {

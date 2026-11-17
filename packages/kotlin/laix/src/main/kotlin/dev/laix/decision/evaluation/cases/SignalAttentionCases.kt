@@ -6,9 +6,13 @@ import dev.laix.decision.signals.Signal
 import dev.laix.decision.signals.SignalContext
 import dev.laix.decision.signals.SignalFeedback
 import dev.laix.decision.signals.decideSignalAttention
-import dev.laix.decision.signals.parseIso
+import dev.laix.decision.support.parseIsoLocal
 import dev.laix.decision.signals.rank
 import dev.laix.decision.support.round
+import dev.laix.decision.support.parseJsonObject
+import dev.laix.decision.support.truthy
+import java.nio.file.Files
+import java.nio.file.Path
 import kotlin.math.abs
 
 private fun mapOfAny(value: Any?): Map<String, Any?>? =
@@ -18,7 +22,7 @@ private fun strings(value: Any?): List<String> =
     (value as? Iterable<*>)?.map { it.toString() } ?: emptyList()
 
 private fun bool(payload: Map<String, Any?>, key: String, default: Boolean): Boolean =
-    payload[key] as? Boolean ?: default
+    payload[key]?.let { truthy(it) } ?: default
 
 private fun number(payload: Map<String, Any?>, key: String, default: Double): Double =
     when (val value = payload[key]) {
@@ -29,7 +33,7 @@ private fun number(payload: Map<String, Any?>, key: String, default: Double): Do
 
 /** Build a signal context from the camelCase contract fixture shape. */
 fun contextFrom(payload: Map<String, Any?>): SignalContext {
-    val now = parseIso(payload["now"]?.toString())
+    val now = parseIsoLocal(payload["now"]?.toString())
         ?: throw IllegalArgumentException("a case context needs `now`")
     val feedback = mapOfAny(payload["feedback"])?.mapValues { (_, value) ->
         val entry = mapOfAny(value) ?: return@mapValues SignalFeedback(state = "")
@@ -151,6 +155,12 @@ fun runVectors(document: Map<String, Any?>): List<String> {
         mapOfAny(item)?.let { compareSignalAttentionCase(it) } ?: emptyList()
     }
 }
+
+/** Read a fixture file and run its cases. */
+fun loadVectors(path: Path): Map<String, Any?> = parseJsonObject(Files.readString(path))
+
+/** Read a fixture file from its string path. */
+fun loadVectors(path: String): Map<String, Any?> = loadVectors(Path.of(path))
 
 /** Validate the fixture against the attention vocabulary. */
 fun validateDocument(document: Map<String, Any?>): List<String> {

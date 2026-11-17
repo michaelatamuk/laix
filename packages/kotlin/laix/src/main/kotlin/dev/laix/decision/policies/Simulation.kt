@@ -21,7 +21,7 @@ class ShadowPolicy(
     val shadow: DecisionPolicy,
     override val name: String = "shadow.v1",
 ) : DecisionPolicy {
-    val version: String = name
+    override val version: String = name
     val differences: MutableList<ShadowDifference> = mutableListOf()
 
     override fun decide(request: DecisionRequest): List<Decision> {

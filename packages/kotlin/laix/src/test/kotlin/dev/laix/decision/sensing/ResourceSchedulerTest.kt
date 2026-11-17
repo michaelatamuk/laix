@@ -66,7 +66,7 @@ class ResourceSchedulerTest {
         kotlin.test.assertFailsWith<IllegalArgumentException> {
             SensingOption("bad", tier = "medium")
         }
-        assertEquals(1.0, SensingOption("x", informationGain = 2.0).normalizedInformationGain)
+        assertEquals(1.0, SensingOption("x", informationGain = 2.0).informationGain)
     }
 
     @Test

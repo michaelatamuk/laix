@@ -74,11 +74,11 @@ fun counterfactualAttribution(
         for (component in available) {
             val alternativeKey = ALTERNATIVE_KEYS.getValue(component)
             if (alternative[alternativeKey] == null) continue
-            val delta = round6(maxOf(0.0, gap + margin))
+            val delta = maxOf(0.0, gap + margin)
             rows += Counterfactual(
                 alternativeId = alternativeId,
                 component = component,
-                delta = delta,
+                delta = round6(delta),
                 chosenTotal = round6(chosenTotal),
                 alternativeTotal = round6(alternativeTotal),
                 resultingTotal = round6(alternativeTotal + delta),

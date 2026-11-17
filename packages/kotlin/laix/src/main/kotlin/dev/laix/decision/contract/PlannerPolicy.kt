@@ -9,6 +9,15 @@ fun interface DecisionPolicy {
     val name: String
         get() = ""
 
+    /**
+     * The optional version reported by `DecisionClient.status`.
+     *
+     * Mirrors Python's `getattr(policy, "version", None)`: a policy that does
+     * not publish a version reports none instead of borrowing its name.
+     */
+    val version: String?
+        get() = null
+
     fun decide(request: DecisionRequest): List<Decision>
 }
 
@@ -61,7 +70,7 @@ class PlannerPolicy(
     val planner: Planner,
     override val name: String = "planner.v1",
 ) : DecisionPolicy {
-    val version: String
+    override val version: String
         get() = name
 
     override fun decide(request: DecisionRequest): List<Decision> =

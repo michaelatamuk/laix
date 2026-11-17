@@ -3,6 +3,7 @@ package dev.laix.decision.outcomes
 import dev.laix.decision.support.parseJsonObject
 import dev.laix.decision.support.round
 import dev.laix.decision.support.toJson
+import dev.laix.decision.support.truthy
 import dev.laix.decision.support.newId
 import dev.laix.decision.support.iso
 import dev.laix.decision.contracts.SCHEMA_VERSION
@@ -74,7 +75,7 @@ data class Outcome(
                 delta = (payload["delta"] as? Number)?.toDouble() ?: 0.0,
                 label = payload["label"]?.toString()
                     ?: throw IllegalArgumentException("label is required"),
-                attributed = payload["attributed"] as? Boolean ?: false,
+                attributed = truthy(payload["attributed"]),
                 direction = payload["direction"]?.toString() ?: "higher-better",
                 evidence = (payload["evidence"] as? Map<*, *>)?.entries?.associate { e ->
                     e.key.toString() to e.value

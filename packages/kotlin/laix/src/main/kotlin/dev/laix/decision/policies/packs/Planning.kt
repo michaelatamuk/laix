@@ -6,7 +6,7 @@ import dev.laix.decision.contract.DecisionPolicy
 import dev.laix.decision.contracts.Decision
 import dev.laix.decision.contracts.DecisionRequest
 import dev.laix.decision.contracts.Verb
-import dev.laix.decision.signals.parseIso
+import dev.laix.decision.support.parseIso
 import dev.laix.decision.support.utcNow
 import java.time.Duration
 
@@ -18,7 +18,7 @@ class PlanningPolicy(
     val maxVerificationAge: Duration? = null,
 ) : DecisionPolicy {
     override val name: String = "planning.v1"
-    val version: String = name
+    override val version: String = name
 
     override fun decide(request: DecisionRequest): List<Decision> {
         val now = parseIso(request.at) ?: utcNow()

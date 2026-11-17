@@ -53,6 +53,30 @@ class McpServerTest {
     }
 
     @Test
+    fun `initialize negotiates a supported protocol revision`() {
+        val response = json(
+            server().handle(
+                """{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26"}}""",
+            )!!,
+        )
+        val result = response.getValue("result").jsonObject
+
+        assertEquals("2025-03-26", result.getValue("protocolVersion").jsonPrimitive.content)
+    }
+
+    @Test
+    fun `initialize falls back to the newest revision`() {
+        val response = json(
+            server().handle(
+                """{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"1999-01-01"}}""",
+            )!!,
+        )
+        val result = response.getValue("result").jsonObject
+
+        assertEquals("2025-06-18", result.getValue("protocolVersion").jsonPrimitive.content)
+    }
+
+    @Test
     fun `notifications need no reply`() {
         assertNull(
             server().handle("""{"jsonrpc":"2.0","method":"notifications/initialized"}"""),

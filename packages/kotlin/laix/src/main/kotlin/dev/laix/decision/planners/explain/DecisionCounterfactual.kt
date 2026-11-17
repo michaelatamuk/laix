@@ -3,7 +3,8 @@ package dev.laix.decision.planners.explain
 import dev.laix.decision.commitments.CommitmentGraph
 import dev.laix.decision.contract.Planner
 import dev.laix.decision.contract.PlannerInput
-import dev.laix.decision.signals.parseIso
+import dev.laix.decision.support.isoFull
+import dev.laix.decision.support.parseIsoLocal
 import java.time.OffsetDateTime
 
 /** The decision under one counterfactual input. */
@@ -51,8 +52,10 @@ fun commitmentVerificationCounterfactual(
     val attributes = problem.attributes
     val graph = attributes["commitment_graph"] as? CommitmentGraph
         ?: return decisionCounterfactual(problem, planner, emptyMap())
-    val timestamp = (now ?: parseIso(problem.at)
-        ?: throw IllegalArgumentException("problem.at is not parseable")).toString()
+    val timestamp = isoFull(
+        now ?: parseIsoLocal(problem.at)
+            ?: throw IllegalArgumentException("problem.at is not parseable"),
+    )
     val candidates = LinkedHashMap<String, PlannerInput>()
     for (item in graph.external) {
         if (item.trusted) continue

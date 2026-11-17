@@ -369,7 +369,7 @@ class CalibratedPolicy(
     name: String? = null,
 ) : DecisionPolicy {
     override val name: String = name ?: "${policy.name.ifEmpty { "policy" }}.calibrated"
-    val version: String = this.name
+    override val version: String = this.name
 
     override fun decide(request: DecisionRequest): List<Decision> =
         policy.decide(request).map { calibrateDecision(it, report) }

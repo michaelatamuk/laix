@@ -8,12 +8,18 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.PrintWriter
 
 const val MCP_PROTOCOL_VERSION: String = "2025-06-18"
+
+/** Protocol revisions this server can speak. */
+val MCP_SUPPORTED_PROTOCOL_VERSIONS: List<String> = listOf(
+    "2025-06-18",
+    "2025-03-26",
+    "2024-11-05",
+)
 
 /**
  * Minimal MCP stdio server exposing the LAIX `decide` tool.
@@ -53,14 +59,23 @@ class McpStdioServer(
         if (id == null) return null  // notification
 
         return when (method) {
-            "initialize" -> result(
-                id,
-                linkedMapOf(
-                    "protocolVersion" to MCP_PROTOCOL_VERSION,
-                    "capabilities" to linkedMapOf("tools" to emptyMap<String, Any?>()),
-                    "serverInfo" to linkedMapOf("name" to "laix", "version" to version()),
-                ),
-            )
+            "initialize" -> {
+                // MCP negotiation: accept the client's revision when supported,
+                // otherwise answer with the newest revision this server speaks.
+                val requested = ((request["params"] as? JsonObject)?.get("protocolVersion")
+                    as? JsonPrimitive)?.content
+                val negotiated = requested
+                    ?.takeIf { it in MCP_SUPPORTED_PROTOCOL_VERSIONS }
+                    ?: MCP_PROTOCOL_VERSION
+                result(
+                    id,
+                    linkedMapOf(
+                        "protocolVersion" to negotiated,
+                        "capabilities" to linkedMapOf("tools" to emptyMap<String, Any?>()),
+                        "serverInfo" to linkedMapOf("name" to "laix", "version" to version()),
+                    ),
+                )
+            }
             "ping" -> result(id, emptyMap<String, Any?>())
             "tools/list" -> result(id, linkedMapOf("tools" to listOf(toolDescriptor())))
             "tools/call" -> {

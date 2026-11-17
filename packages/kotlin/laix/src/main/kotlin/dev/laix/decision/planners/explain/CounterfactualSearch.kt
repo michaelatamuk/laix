@@ -1,7 +1,6 @@
 package dev.laix.decision.planners.explain
 
 import dev.laix.decision.support.round
-import kotlin.math.roundToInt
 
 /** One bounded input to the decision function. */
 data class CounterfactualVariable(
@@ -38,7 +37,7 @@ private fun grid(variable: CounterfactualVariable): List<Double> {
     require(variable.value in variable.lower..variable.upper) {
         "value must be inside [lower, upper]"
     }
-    val count = ((variable.upper - variable.lower) / variable.step).roundToInt()
+    val count = round((variable.upper - variable.lower) / variable.step, 0).toInt()
     val values = sortedSetOf<Double>()
     for (index in 0..count) {
         values += round9(variable.lower + index * variable.step)
@@ -94,11 +93,13 @@ fun counterfactualSearch(
         }
     }
     candidates.sortWith(
-        compareBy(
-            { it.distance },
-            { it.names.joinToString("\u0000") },
-            { it.values.joinToString(",") },
-        ),
+        Comparator { left, right ->
+            val byDistance = left.distance.compareTo(right.distance)
+            if (byDistance != 0) return@Comparator byDistance
+            val byNames = compareNames(left.names, right.names)
+            if (byNames != 0) return@Comparator byNames
+            compareValues(left.values, right.values)
+        },
     )
 
     var evaluations = 0
@@ -140,8 +141,23 @@ fun counterfactualSearch(
     )
 }
 
-private fun <T> combinations(items: List<T>, size: Int): List<List<T>> {
-    val result = mutableListOf<List<T>>()
+private fun compareNames(left: List<String>, right: List<String>): Int {
+    for (index in 0 until minOf(left.size, right.size)) {
+        val compared = left[index].compareTo(right[index])
+        if (compared != 0) return compared
+    }
+    return left.size.compareTo(right.size)
+}
+
+private fun compareValues(left: List<Double>, right: List<Double>): Int {
+    for (index in 0 until minOf(left.size, right.size)) {
+        val compared = left[index].compareTo(right[index])
+        if (compared != 0) return compared
+    }
+    return left.size.compareTo(right.size)
+}
+
+private fun <T> combinations(items: List<T>, size: Int): List<List<T>> {    val result = mutableListOf<List<T>>()
     fun walk(start: Int, current: MutableList<T>) {
         if (current.size == size) {
             result += current.toList()

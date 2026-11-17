@@ -67,7 +67,7 @@ class LiveCompositeTest {
         assertEquals(listOf("c1"), plan.attributes["commitments_fulfilled"])
         assertEquals(0.6, plan.attributes["utility"])
         assertTrue((plan.attributes["commitment_score"] as Double) > 0)
-        assertEquals(0.0, plan.attributes["execution_score"])
+        assertEquals(0.0, plan.attributes["execution_score"] as Double, 0.0)
     }
 
     @Test

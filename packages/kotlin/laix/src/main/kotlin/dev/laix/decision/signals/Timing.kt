@@ -1,17 +1,10 @@
 package dev.laix.decision.signals
 
-import java.time.Instant
-import java.time.LocalDateTime
 import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 /** Parse an ISO-8601 instant, accepting naive values as UTC. */
-fun parseIso(value: String?): OffsetDateTime? {
-    if (value.isNullOrBlank()) return null
-    return runCatching { OffsetDateTime.parse(value) }.getOrNull()
-        ?: runCatching { LocalDateTime.parse(value).atOffset(ZoneOffset.UTC) }.getOrNull()
-        ?: runCatching { Instant.parse(value).atOffset(ZoneOffset.UTC) }.getOrNull()
-}
+@Deprecated("Use dev.laix.decision.support.parseIso")
+fun parseIso(value: String?): OffsetDateTime? = dev.laix.decision.support.parseIso(value)
 
 /** True inside the window, inclusive on both ends. Bad input is never quiet. */
 fun isQuiet(now: OffsetDateTime, quietHours: Any?): Boolean {

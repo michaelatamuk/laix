@@ -2,7 +2,8 @@ package dev.laix.decision.appkit.audit
 
 import dev.laix.decision.contracts.EvidenceRef
 import dev.laix.decision.support.iso
-import kotlinx.serialization.json.JsonPrimitive
+import dev.laix.decision.support.pythonFloatRepr
+import dev.laix.decision.support.pythonJsonString
 import java.security.MessageDigest
 
 /** The approval state carried by a decision record. */
@@ -82,13 +83,18 @@ data class DecisionRecord(
 private fun canonical(value: Any?): String =
     when (value) {
         null -> "null"
-        is Boolean -> JsonPrimitive(value).toString()
-        is Number -> JsonPrimitive(value).toString()
-        is String -> JsonPrimitive(value).toString()
+        is Boolean -> if (value) "true" else "false"
+        is Number -> when (value) {
+            is Int, is Long, is Short, is Byte -> value.toString()
+            is Double -> pythonFloatRepr(value)
+            is Float -> pythonFloatRepr(value.toDouble())
+            else -> pythonFloatRepr(value.toDouble())
+        }
+        is String -> pythonJsonString(value)
         is Map<*, *> -> value.entries
             .sortedBy { it.key.toString() }
             .joinToString(separator = ",", prefix = "{", postfix = "}") {
-                "${JsonPrimitive(it.key.toString())}:${canonical(it.value)}"
+                "${pythonJsonString(it.key.toString())}:${canonical(it.value)}"
             }
         is Iterable<*> -> value.joinToString(separator = ",", prefix = "[", postfix = "]") {
             canonical(it)
@@ -96,7 +102,7 @@ private fun canonical(value: Any?): String =
         is Array<*> -> value.joinToString(separator = ",", prefix = "[", postfix = "]") {
             canonical(it)
         }
-        else -> JsonPrimitive(value.toString()).toString()
+        else -> pythonJsonString(value.toString())
     }
 
 private fun hash(payload: Map<String, Any?>): String {
@@ -132,7 +138,7 @@ fun createRecord(
     require(title.isNotBlank() && decision.isNotBlank()) { "title and decision are required" }
     require(evidence.isNotEmpty()) { "at least one evidence ref is required" }
     val moment = now ?: iso()
-    val id = recordId ?: (
+    val id = recordId?.takeIf { it.isNotEmpty() } ?: (
         "dr-" + MessageDigest.getInstance("SHA-256")
             .digest("$title|$moment".toByteArray(Charsets.UTF_8))
             .joinToString("") { "%02x".format(it.toInt() and 0xFF) }

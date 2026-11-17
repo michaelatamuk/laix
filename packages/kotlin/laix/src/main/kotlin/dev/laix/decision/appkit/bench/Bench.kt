@@ -9,7 +9,6 @@ import dev.laix.decision.contracts.Belief
 import dev.laix.decision.contracts.DecisionRequest
 import dev.laix.decision.contracts.Situation
 import dev.laix.decision.contracts.Verb
-import dev.laix.decision.evaluation.simulation.PlannerBenchmarkRow
 import dev.laix.decision.evaluation.simulation.Scenario
 import dev.laix.decision.evaluation.simulation.SimulationReport
 import dev.laix.decision.evaluation.simulation.Simulator
@@ -17,7 +16,6 @@ import dev.laix.decision.evaluation.simulation.comparePlanners
 import dev.laix.decision.planners.mdp.MDPPlanner
 import dev.laix.decision.planners.mdp.MdpModel
 import dev.laix.decision.planners.mdp.MdpTransition
-import dev.laix.decision.policies.ShadowPolicy
 import dev.laix.decision.policies.packs.ActivePerceptionPolicy
 import dev.laix.decision.policies.packs.AllocationPolicy
 import dev.laix.decision.policies.packs.EscalationPolicy
@@ -30,6 +28,7 @@ import dev.laix.decision.signals.QuietHours
 import dev.laix.decision.signals.Signal
 import dev.laix.decision.signals.SignalContext
 import dev.laix.decision.signals.SignalFeedback
+import dev.laix.decision.support.pythonRepr
 import dev.laix.decision.support.round
 import java.time.OffsetDateTime
 
@@ -532,7 +531,11 @@ fun suiteNames(): List<String> = allSuites().map { it.name }
 
 /** Run the selected suites and compare each case field by field. */
 fun runBench(suites: List<String>? = null): BenchReport {
-    val chosen = suites?.toSet() ?: emptySet()
+    val known = suiteNames()
+    val requested = suites.orEmpty()
+    val unknown = requested.filter { it !in known }
+    require(unknown.isEmpty()) { "unknown suite: ${unknown.joinToString(", ")}" }
+    val chosen = requested.toSet()
     val selected = allSuites().filter { chosen.isEmpty() || it.name in chosen }
     val rows = mutableListOf<BenchRow>()
     for (suite in selected) {
@@ -541,7 +544,7 @@ fun runBench(suites: List<String>? = null): BenchReport {
             val decisions = policy.decide(case.request)
             val actual = decisions.firstOrNull()?.toMap() ?: emptyMap()
             val mismatches = case.expected.mapNotNull { (name, want) ->
-                if (actual[name] != want) "$name: ${actual[name]} != $want" else null
+                if (actual[name] != want) "$name: ${pythonRepr(actual[name])} != ${pythonRepr(want)}" else null
             }
             rows += BenchRow(suite.name, case.id, case.expected, actual, mismatches)
         }

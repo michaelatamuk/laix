@@ -17,7 +17,7 @@ class TargetedPolicy(
     }
 
     override val name: String = "targeted.v1"
-    val version: String = policy.name.ifEmpty { name }
+    override val version: String = policy.version ?: name
 
     override fun decide(request: DecisionRequest): List<Decision> {
         val targetMode = if (target == "request") request.target else TargetMode.from(target)
@@ -46,7 +46,7 @@ class GroupPolicy(
     }
 
     override val name: String = "group.v1"
-    val version: String = policy.name.ifEmpty { name }
+    override val version: String = policy.version ?: name
 
     override fun decide(request: DecisionRequest): List<Decision> {
         val to = recipients.ifEmpty { request.recipients }
@@ -82,6 +82,7 @@ class GroupPolicy(
                 .associate { it.key.toString() to maskValue(it.value) }
             is List<*> -> value.map { maskValue(it) }
             is Set<*> -> value.map { maskValue(it) }.toSet()
+            is Array<*> -> value.map { maskValue(it) }
             else -> value
         }
 }

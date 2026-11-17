@@ -139,6 +139,29 @@ class OutcomeBanditTest {
     }
 
     @Test
+    fun `bandit policy accepts arm objects and maps`() {
+        val policy = dev.laix.decision.policies.packs.BanditPolicy()
+        val request = dev.laix.decision.contracts.DecisionRequest(
+            subject = "s",
+            at = "2026-11-01T10:00:00+00:00",
+            attributes = mapOf(
+                "arms" to listOf(
+                    Arm("existing", priorMean = 0.1),
+                    mapOf("id" to "mapped", "prior_mean" to 0.9),
+                ),
+            ),
+        )
+        val decision = policy.decide(request).single()
+
+        assertEquals(
+            listOf("existing", "mapped"),
+            policy.bandit.arms().map { it.id },
+        )
+        assertEquals(dev.laix.decision.contracts.Verb.ACT, decision.verb)
+        assertEquals("existing", decision.actionId)
+    }
+
+    @Test
     fun `bandit maps carry pulls and means`() {
         val bandit = UCBBandit(listOf(Arm("a")))
         bandit.update("a", 1.0)

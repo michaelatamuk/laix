@@ -7,6 +7,7 @@ import dev.laix.decision.appkit.bench.runPlannerBench
 import dev.laix.decision.appkit.bench.suiteNames
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 class BenchTest {
@@ -48,6 +49,11 @@ class BenchTest {
         assertEquals(2, payload["passed"])
         assertEquals(1.0, payload["agreement"])
         assertTrue((payload["rows"] as List<*>).isNotEmpty())
+    }
+
+    @Test
+    fun `unknown suites are rejected`() {
+        assertFailsWith<IllegalArgumentException> { runBench(listOf("missing")) }
     }
 
     @Test

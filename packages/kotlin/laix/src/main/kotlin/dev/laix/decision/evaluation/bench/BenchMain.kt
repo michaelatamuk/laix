@@ -49,6 +49,12 @@ fun runBenchCli(args: List<String>): Int {
         return 0
     }
 
+    val unknown = suites.filter { it !in BENCH_SUITE_NAMES }
+    if (unknown.isNotEmpty()) {
+        System.err.println("laix-bench: unknown suite ${unknown.first()}")
+        return 2
+    }
+
     if (live) {
         val report = runLiveBench()
         if (json) {

@@ -100,10 +100,10 @@ class ModelLearner(
         val learned = learned()
         require(learned.isNotEmpty()) { "no transitions have been learned" }
         val nextStates = learned.flatMap { it.probabilities.keys }.toSet()
-        val knownStates = states ?: (
-            learned.map { it.state }.toSet() + nextStates
-            ).sorted()
-        val knownActions = actions ?: learned.map { it.action }.toSet().sorted()
+        val knownStates = states?.takeIf { it.isNotEmpty() }
+            ?: (learned.map { it.state }.toSet() + nextStates).sorted()
+        val knownActions = actions?.takeIf { it.isNotEmpty() }
+            ?: learned.map { it.action }.toSet().sorted()
         val transitions = mutableListOf<MdpTransition>()
         for (item in learned) {
             val total = item.probabilities.values.sum()
@@ -123,7 +123,7 @@ class ModelLearner(
             states = knownStates,
             actions = knownActions,
             transitions = transitions,
-            start = start ?: knownStates.first(),
+            start = start?.takeIf { it.isNotEmpty() } ?: knownStates.first(),
             discount = discount,
             horizon = horizon,
         )
