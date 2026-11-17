@@ -11,6 +11,10 @@ import dev.laix.decision.support.newId
 import dev.laix.decision.support.parseJsonObject
 import dev.laix.decision.support.toJson
 import dev.laix.decision.support.utcNow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withTimeoutOrNull
 import java.nio.file.AtomicMoveNotSupportedException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -376,6 +380,78 @@ class StreamSession(
         val traceId = traceByDecision[decisionId]
             ?: throw NoSuchElementException("unknown decision '$decisionId'")
         return traces[traceId] ?: throw NoSuchElementException("unknown decision '$decisionId'")
+    }
+
+    /** Emit a fast decision, await the deep path, then emit its revision. */
+    suspend fun observeRefined(
+        request: DecisionRequest,
+        refine: suspend (DecisionRequest) -> List<Decision>,
+        status: String = "provisional",
+        timeoutMs: Long? = null,
+    ): List<Decision> {
+        require(timeoutMs == null || timeoutMs > 0) { "timeout_ms must be positive" }
+        val first = observe(request, status = status)
+        if (first.isEmpty()) return emptyList()
+        if (timeoutMs == null) {
+            val refined = refine(request)
+            return first + reviseWith(first.last(), request, refined)
+        }
+        val refined = withTimeoutOrNull(timeoutMs) { refine(request) }
+        return if (refined == null) {
+            stats.refineTimeouts++
+            val final = reviseWith(first.last(), request, first, status = "final")
+            first + final
+        } else {
+            first + reviseWith(first.last(), request, refined)
+        }
+    }
+
+    /** Observe a flow of events and emit its decisions. */
+    fun feed(events: Flow<DecisionRequest>): Flow<Decision> = flow {
+        events.collect { request ->
+            observe(request, status = "final", force = false).forEach { emit(it) }
+        }
+    }
+
+    /** Aggregate events into tumbling windows, then decide each window. */
+    fun feedWindows(
+        events: Flow<DecisionRequest>,
+        windowMs: Long,
+        onWindow: (WindowBatch) -> DecisionRequest?,
+        late: String = "drop",
+    ): Flow<Decision> = flow {
+        val window = TumblingWindow(windowMs, late)
+        suspend fun emitBatch(batch: WindowBatch) {
+            val request = onWindow(batch) ?: return
+            observe(request, status = "final", force = false).forEach { emit(it) }
+        }
+        events.collect { request ->
+            window.add(request).forEach { emitBatch(it) }
+        }
+        window.flush().forEach { emitBatch(it) }
+    }
+
+    /** Wait for buffer space, then observe; the backpressure path. */
+    suspend fun observeWait(
+        request: DecisionRequest,
+        status: String = "final",
+        force: Boolean = false,
+    ): List<Decision> {
+        while (!closed && items.size >= capacity) delay(1)
+        return observe(request, status = status, force = force)
+    }
+
+    /** Yield buffered decisions in order until the session closes. */
+    fun decisions(): Flow<Decision> = flow {
+        while (true) {
+            val decision = items.removeFirstOrNull()
+            if (decision != null) {
+                emit(decision)
+                continue
+            }
+            if (closed) return@flow
+            delay(1)
+        }
     }
 
     private fun admit(
