@@ -14,6 +14,10 @@ import dev.laix.decision.contracts.ActionOption
 import dev.laix.decision.contracts.Decision
 import dev.laix.decision.contracts.DecisionRequest
 import dev.laix.decision.contracts.Verb
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.runBlocking
 import java.time.OffsetDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -46,6 +50,94 @@ class StreamingExtrasTest {
         eventTime = eventTime,
         streamId = streamId,
     )
+
+    @Test
+    fun `refined decisions add a revision`() = runBlocking {
+        val manual = ManualClock(OffsetDateTime.parse(at))
+        val session = StreamSession(
+            decide = { request -> listOf(decision(eventTime = request.at)) },
+            clock = { manual() },
+        )
+
+        val result = session.observeRefined(request(), refine = { listOf(decision()) })
+
+        assertEquals(2, result.size)
+        assertEquals(1, result[1].revision)
+        assertEquals(result[0].decisionId, result[1].supersedes)
+    }
+
+    @Test
+    fun `refinement timeouts fall back to final`() = runBlocking {
+        val manual = ManualClock(OffsetDateTime.parse(at))
+        val session = StreamSession(
+            decide = { request -> listOf(decision(eventTime = request.at)) },
+            clock = { manual() },
+        )
+
+        val result = session.observeRefined(
+            request(),
+            refine = {
+                delay(2_000)
+                listOf(decision())
+            },
+            timeoutMs = 20,
+        )
+
+        assertEquals(2, result.size)
+        assertEquals(1, session.stats().refineTimeouts)
+    }
+
+    @Test
+    fun `feed consumes a flow`() = runBlocking {
+        val manual = ManualClock(OffsetDateTime.parse(at))
+        val session = StreamSession(
+            decide = { request -> listOf(decision(eventTime = request.at)) },
+            clock = { manual() },
+        )
+
+        val decisions = session.feed(
+            flowOf(
+                request("2026-11-01T10:00:00+00:00"),
+                request("2026-11-01T10:01:00+00:00"),
+            ),
+        ).toList()
+
+        assertEquals(2, decisions.size)
+    }
+
+    @Test
+    fun `windows are decided when they close`() = runBlocking {
+        val manual = ManualClock(OffsetDateTime.parse(at))
+        val session = StreamSession(
+            decide = { request -> listOf(decision(eventTime = request.at)) },
+            clock = { manual() },
+        )
+
+        val decisions = session.feedWindows(
+            flowOf(
+                request("2026-11-01T10:00:10+00:00"),
+                request("2026-11-01T10:00:20+00:00"),
+                request("2026-11-01T10:01:10+00:00"),
+            ),
+            windowMs = 60_000,
+            onWindow = { request("2026-11-01T10:00:00+00:00") },
+        ).toList()
+
+        assertEquals(2, decisions.size)
+    }
+
+    @Test
+    fun `decisions drains the buffer and closes`() = runBlocking {
+        val manual = ManualClock(OffsetDateTime.parse(at))
+        val session = StreamSession(
+            decide = { request -> listOf(decision(eventTime = request.at)) },
+            clock = { manual() },
+        )
+        session.observe(request())
+        session.close()
+
+        assertEquals(1, session.decisions().toList().size)
+    }
 
     @Test
     fun `tumbling windows close on the next window`() {
