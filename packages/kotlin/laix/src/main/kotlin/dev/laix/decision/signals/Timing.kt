@@ -27,6 +27,6 @@ private fun minutes(value: String): Int? =
 
 /** Hours from `now` to `whenIso`. Negative means overdue. `null` when unparsable. */
 fun hoursUntil(now: OffsetDateTime, whenIso: String?): Double? {
-    val whenValue = parseIso(whenIso) ?: return null
+    val whenValue = dev.laix.decision.support.parseIso(whenIso) ?: return null
     return (whenValue.toInstant().toEpochMilli() - now.toInstant().toEpochMilli()) / 3_600_000.0
 }
