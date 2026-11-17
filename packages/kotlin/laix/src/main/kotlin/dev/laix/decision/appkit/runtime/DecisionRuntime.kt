@@ -13,6 +13,11 @@ import dev.laix.decision.outcomes.Outcome
 import dev.laix.decision.outcomes.OutcomeLedger
 import dev.laix.decision.policies.action.ActionPolicy
 import dev.laix.decision.policies.action.ActionPolicyInput
+import dev.laix.decision.sensing.resources.Budget
+import dev.laix.decision.sensing.resources.ResourcePlan
+import dev.laix.decision.sensing.resources.ResourceScheduler
+import dev.laix.decision.sensing.resources.SensingOption
+import dev.laix.decision.support.iso
 import dev.laix.decision.support.newId
 
 /**
@@ -27,6 +32,7 @@ class DecisionRuntime(
     val policy: ActionPolicy = ActionPolicy(),
     val bridge: ExecutionBridge = ExecutionBridge(),
     val outcomes: OutcomeLedger = OutcomeLedger(),
+    val resources: ResourceScheduler = ResourceScheduler(),
     private val idFactory: (String) -> String = ::newId,
 ) {
     private val actions = LinkedHashMap<String, ActionOption>()
@@ -180,6 +186,25 @@ class DecisionRuntime(
             )
         }
         return outcome
+    }
+
+    fun schedule(
+        options: List<SensingOption>,
+        budget: Budget? = null,
+        uncertainty: Double? = null,
+    ): ResourcePlan {
+        val resolved = uncertainty ?: run {
+            val confidence = state.confidence()
+            if (confidence > 0) 1.0 - confidence else 0.5
+        }
+        val plan = resources.schedule(options, budget, resolved)
+        state.history += linkedMapOf(
+            "at" to iso(),
+            "event" to "resource.plan",
+            "allowed" to plan.allowed,
+            "deepCalls" to plan.deepCalls,
+        )
+        return plan
     }
 
     fun trace(decisionId: String): Trace {
