@@ -23,7 +23,7 @@ a model the host supplies.
 **Who it is for:** teams building AI agents or automations that take real actions — especially when
 approvals, promises, human attention or auditability matter.
 
-**Status:** pre-1.0 (`0.17.3`). Internal benchmarks and a synthetic continuity test; external
+**Status:** pre-1.0 (`0.18.0`). Internal benchmarks and a synthetic continuity test; external
 validation pending.
 
 [Quickstart](docs/01-start/02-first-steps/01-quickstart.md) ·
@@ -85,7 +85,7 @@ The [quickstart](docs/01-start/02-first-steps/01-quickstart.md) covers all three
 Python, from the git tag (PyPI publishing is not configured yet):
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.17.3#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.18.0#subdirectory=packages/python/laix"
 ```
 
 Or from a local checkout, at the repository root:
@@ -108,7 +108,7 @@ includeBuild("../path/to/laix/packages/kotlin/laix")
 
 // build.gradle.kts
 dependencies {
-    implementation("dev.laix:laix-decision:0.17.3")
+    implementation("dev.laix:laix-decision:0.18.0")
 }
 ```
 
@@ -322,4 +322,4 @@ If you use LAIX in research, cite it via [CITATION.cff](CITATION.cff).
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE). Current release: `0.17.3` for all three packages.
+Apache-2.0. See [LICENSE](LICENSE). Current release: `0.18.0` for all three packages.

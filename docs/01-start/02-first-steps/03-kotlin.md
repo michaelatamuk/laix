@@ -4,7 +4,7 @@ The Kotlin package is the third implementation of the LAIX decision layer, next 
 TypeScript. It mirrors the same decision contract, reason codes, planner behaviour and app-kit
 surfaces, and it replays the shared JSON contracts in `packages/contracts`.
 
-- Coordinates: `dev.laix:laix-decision:0.17.3` (not published to Maven yet).
+- Coordinates: `dev.laix:laix-decision:0.18.0` (not published to Maven yet).
 - Toolchain: Kotlin 2.1, Gradle 8.12, JDK 17. The Gradle wrapper downloads Gradle and the Kotlin
   toolchain.
 - Package root: `packages/kotlin/laix`, source root `src/main/kotlin/dev/laix/decision`.
@@ -22,7 +22,7 @@ includeBuild("../path/to/laix/packages/kotlin/laix")
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("dev.laix:laix-decision:0.17.3")
+    implementation("dev.laix:laix-decision:0.18.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
 }
 ```

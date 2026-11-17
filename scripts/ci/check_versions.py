@@ -51,14 +51,17 @@ def main() -> int:
         "README.md": [
             f"Current release: `{version}`",
             f"@v{version}#subdirectory=packages/python/laix",
+            f"dev.laix:laix-decision:{version}",
         ],
         "docs/01-start/02-first-steps/01-quickstart.md": [
             f"@v{version}#subdirectory=packages/python/laix",
             f"laix-{version}.tgz",
+            f"dev.laix:laix-decision:{version}",
         ],
         "docs/06-project/03-release/01-versioning.md": [
             f"| Python package | `{version}` |",
             f"| TypeScript package | `{version}` |",
+            f"| Kotlin package | `{version}` |",
         ],
         "docs/02-decision/01-contract/03-records.md": [
             f"| Package | `{version}` |",
@@ -74,6 +77,28 @@ def main() -> int:
         ],
         "SECURITY.md": [
             f"| `{version.rsplit('.', 1)[0]}.x` | yes |",
+        ],
+        "docs/01-start/02-first-steps/03-kotlin.md": [
+            f"dev.laix:laix-decision:{version}",
+        ],
+        "examples/kotlin/gradle.properties": [
+            f"laixVersion={version}",
+        ],
+        "docs/06-project/03-release/02-migration.md": [
+            f"The current release is `{version}`.",
+        ],
+        "docs/07-research/04-publication/artifact-manifest.md": [
+            f"current package version is `{version}`",
+        ],
+        "docs/06-project/03-release/03-publishing.md": [
+            f"laix=={version}",
+            f"npm install laix@{version}",
+        ],
+        "docs/03-appkit/01-build/04-langgraph.md": [
+            f"@v{version}#subdirectory=packages/python/laix",
+        ],
+        ".github/ISSUE_TEMPLATE/bug_report.yml": [
+            f'placeholder: "{version}"',
         ],
     }
     for path, fragments in checks.items():

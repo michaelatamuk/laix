@@ -83,6 +83,16 @@ The decision package no longer nests algorithms under `engines/`, and the app ki
 
 The top-level `from laix import ...` surface is unchanged. Only deep imports move.
 
+## 0.18.0: three implementations and docs
+
+The package version moves for Python, TypeScript and Kotlin; the record schema stays `0.8.0` and no
+decision-record or import changes are required. Kotlin consumers continue to use the Gradle composite
+build until the package is published to Maven.
+
+The Kotlin package gained Python-parity behaviour for rounding, truthiness, UTC and offset
+timestamps, record hashes, confidence clamping and streaming restore order. Hosts that depended on
+the previous edge-case behaviour should re-run their fixtures.
+
 ## 0.17.3: decision client field parity
 
 `DecisionClient` now keeps the full custom-policy decision: alternatives, attributes, intent, situation
@@ -335,5 +345,5 @@ owned by the host. When their shape changes:
 
 ## Current status
 
-The current release is `0.17.3`. Add a new entry here when a release requires host changes; keep it
+The current release is `0.18.0`. Add a new entry here when a release requires host changes; keep it
 short and concrete.

@@ -33,6 +33,19 @@ jobs:
       - name: Check versions
         run: python scripts/ci/check_versions.py
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Test Kotlin
+        working-directory: packages/kotlin/laix
+        run: |
+          chmod +x gradlew
+          ./gradlew test --no-daemon
+          ./gradlew -p ../../../examples/kotlin test --no-daemon
+
       - name: Live bench v2
         run: bash scripts/novelty/reproduce.sh
       - name: Test TypeScript
