@@ -151,6 +151,7 @@ class StreamSession(
     private val trace: Boolean = true,
     private val recorder: ((Decision) -> Unit)? = null,
     var humanAttentionBudget: HumanAttentionBudget? = null,
+    var timeline: DecisionTimeline? = null,
     private var clock: () -> OffsetDateTime = { utcNow() },
     private val idFactory: () -> String = { newId("STR") },
 ) {
@@ -291,7 +292,7 @@ class StreamSession(
             "stats" to stats.snapshot(),
             "pending" to items.map { it.toMap() },
             "traces" to traces.values.map { it.toMap() },
-            "timeline" to null,
+            "timeline" to timeline?.toMap(),
             "human_attention_budget" to humanAttentionBudget?.toMap(),
         )
 
@@ -349,6 +350,11 @@ class StreamSession(
         }
         (snapshot["human_attention_budget"] as? Map<*, *>)?.let {
             humanAttentionBudget = HumanAttentionBudget.fromMap(
+                it.entries.associate { entry -> entry.key.toString() to entry.value },
+            )
+        }
+        (snapshot["timeline"] as? Map<*, *>)?.let {
+            timeline = DecisionTimeline.fromMap(
                 it.entries.associate { entry -> entry.key.toString() to entry.value },
             )
         }
@@ -491,6 +497,7 @@ class StreamSession(
                 traceByDecision[decision.decisionId] = decision.traceId
             }
             recorder?.invoke(decision)
+            timeline?.add(decision)
             humanAttentionBudget?.let { budget ->
                 var cost = when (val raw = decision.attributes["human_attention_cost"]) {
                     is Number -> raw.toDouble()
