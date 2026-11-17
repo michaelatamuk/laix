@@ -14,10 +14,19 @@ application {
     mainClass.set("dev.laix.decision.appkit.cli.MainKt")
 }
 
+tasks.register<JavaExec>("mcp") {
+    group = "application"
+    description = "Run the LAIX MCP server over stdio"
+    mainClass.set("dev.laix.decision.appkit.mcp.McpMainKt")
+    classpath = sourceSets["main"].runtimeClasspath
+}
+
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    testImplementation("com.networknt:json-schema-validator:1.5.6")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
