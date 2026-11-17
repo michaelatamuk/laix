@@ -154,6 +154,7 @@ class SagaMcpTest {
         )
         @Suppress("UNCHECKED_CAST")
         val livePayload = parseJson(live) as Map<String, Any?>
+        @Suppress("UNCHECKED_CAST")
         val decision = (livePayload["decisions"] as List<Map<String, Any?>>).single()
         assertEquals("live_decision", decision["reason_code"])
     }

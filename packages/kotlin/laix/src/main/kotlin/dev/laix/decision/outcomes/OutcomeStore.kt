@@ -116,6 +116,5 @@ class FileOutcomeStore(
                 value.content == "null" -> null
                 else -> value.content.toLongOrNull() ?: value.content.toDoubleOrNull() ?: value.content
             }
-            else -> null
         }
 }
