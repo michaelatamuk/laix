@@ -11,7 +11,7 @@ import java.util.Locale
 /** Choose only inside the hard risk limit. */
 class SafetyConstrainedPolicy : DecisionPolicy {
     override val name: String = "safety-constrained.v1"
-    val version: String = "0.8.0"
+    override val version: String = "0.8.0"
 
     override fun decide(request: DecisionRequest): List<Decision> {
         if (truthy(policyValue(request, "safety_blocked", false))) {
@@ -72,7 +72,7 @@ class SafetyConstrainedPolicy : DecisionPolicy {
 /** Confirm that an action did what it claimed. */
 class VerificationPolicy : DecisionPolicy {
     override val name: String = "verification.v1"
-    val version: String = "0.8.0"
+    override val version: String = "0.8.0"
 
     override fun decide(request: DecisionRequest): List<Decision> {
         if (truthy(policyValue(request, "verified", false))) {
@@ -177,7 +177,7 @@ class VerificationPolicy : DecisionPolicy {
 /** Ask the question that best reduces uncertainty. */
 class PreferenceElicitationPolicy : DecisionPolicy {
     override val name: String = "preference-elicitation.v1"
-    val version: String = "0.8.0"
+    override val version: String = "0.8.0"
 
     override fun decide(request: DecisionRequest): List<Decision> {
         val uncertainty = policyNumber(request, "uncertainty", 0.5)
@@ -229,7 +229,7 @@ class PreferenceElicitationPolicy : DecisionPolicy {
 /** Choose the next look when uncertainty is high. */
 class ActivePerceptionPolicy : DecisionPolicy {
     override val name: String = "active-perception.v1"
-    val version: String = "0.8.0"
+    override val version: String = "0.8.0"
 
     override fun decide(request: DecisionRequest): List<Decision> {
         val uncertainty = policyNumber(request, "uncertainty", 0.5)
@@ -288,7 +288,7 @@ class ActivePerceptionPolicy : DecisionPolicy {
 /** Choose a plan after the old one broke. */
 class ReplanningPolicy : DecisionPolicy {
     override val name: String = "replanning.v1"
-    val version: String = "0.8.0"
+    override val version: String = "0.8.0"
 
     override fun decide(request: DecisionRequest): List<Decision> {
         val plans = policyMaps(policyValue(request, "plans"))
@@ -341,7 +341,7 @@ class ReplanningPolicy : DecisionPolicy {
 /** Decide when a situation must leave the current owner. */
 class EscalationPolicy : DecisionPolicy {
     override val name: String = "escalation.v1"
-    val version: String = "0.8.0"
+    override val version: String = "0.8.0"
 
     override fun decide(request: DecisionRequest): List<Decision> {
         if (truthy(policyValue(request, "resolved", false))) {
@@ -423,7 +423,7 @@ class EscalationPolicy : DecisionPolicy {
 /** Accept, counter or walk from a simple offer. */
 class NegotiationPolicy : DecisionPolicy {
     override val name: String = "negotiation.v1"
-    val version: String = "0.8.0"
+    override val version: String = "0.8.0"
 
     override fun decide(request: DecisionRequest): List<Decision> {
         val offer = policyNumber(request, "offer", 0.0)
@@ -485,7 +485,7 @@ class NegotiationPolicy : DecisionPolicy {
 /** Choose a portfolio of work under a budget. */
 class AllocationPolicy : DecisionPolicy {
     override val name: String = "allocation.v1"
-    val version: String = "0.8.0"
+    override val version: String = "0.8.0"
 
     override fun decide(request: DecisionRequest): List<Decision> {
         val requests = policyMaps(policyValue(request, "requests"))

@@ -46,6 +46,25 @@ Tests replay the shared contracts in `packages/contracts`:
 
 Version checks keep Python, TypeScript and Kotlin on the same version.
 
+## Python parity notes
+
+A few helpers deliberately reproduce Python behaviour that Kotlin does not have
+natively:
+
+- `support.round` rounds the exact binary double with banker's rounding, like
+  Python's `round`, and keeps a signed zero.
+- `support.truthy` is Python `bool()`; `support.policyTruthy` is the token-based
+  truthiness the planner policies apply to constraint strings.
+- `support.parseIso` normalises to UTC like `parse_iso`; `parseIsoLocal` keeps
+  the written offset like `datetime.fromisoformat`.
+- `support.iso` renders `timespec="seconds"`; `isoFull` renders `isoformat()`
+  with microseconds only when present.
+- Decision-record hashes use a canonical JSON writer with `ensure_ascii=True`
+  and Python float formatting, so a record sealed in any package verifies in
+  the others.
+- `Decision` clamps `confidence` on construction and `copy`, like the Python
+  record's `__post_init__`.
+
 ## Build
 
 ```powershell

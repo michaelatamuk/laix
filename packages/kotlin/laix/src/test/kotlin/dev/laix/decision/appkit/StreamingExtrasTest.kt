@@ -300,4 +300,32 @@ class StreamingExtrasTest {
         restored.restore(snapshot)
         assertEquals(2, restored.timeline?.all()?.size)
     }
+
+    @Test
+    fun `feed coalesces to the newest request`() = runBlocking {
+        val decider: (DecisionRequest) -> List<Decision> = { request ->
+            listOf(
+                Decision(
+                    verb = Verb.WAIT,
+                    confidence = 0.5,
+                    reasonCode = "r",
+                    rationale = request.at,
+                ),
+            )
+        }
+
+        val raw = StreamSession(decide = decider)
+        val rawDecisions = raw.feed(
+            flowOf(request("2026-11-01T10:00:00+00:00"), request("2026-11-01T10:01:00+00:00")),
+        ).toList()
+        assertEquals(2, rawDecisions.size)
+
+        val coalesced = StreamSession(decide = decider)
+        val coalescedDecisions = coalesced.feed(
+            flowOf(request("2026-11-01T10:00:00+00:00"), request("2026-11-01T10:01:00+00:00")),
+            coalesceMs = 50,
+        ).toList()
+        assertEquals(1, coalescedDecisions.size)
+        assertEquals("2026-11-01T10:01:00+00:00", coalescedDecisions.single().rationale)
+    }
 }

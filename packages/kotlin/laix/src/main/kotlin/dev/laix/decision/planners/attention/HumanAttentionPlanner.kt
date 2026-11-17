@@ -364,13 +364,4 @@ class HumanAttentionPlanner(
     }
 }
 
-private fun truthyApproval(value: Any?): Boolean =
-    when (value) {
-        null -> false
-        is Boolean -> value
-        is Number -> value.toDouble() != 0.0
-        is String -> value.trim().lowercase() in setOf("1", "true", "yes", "approved", "required", "on")
-        is Collection<*> -> value.isNotEmpty()
-        is Map<*, *> -> value.isNotEmpty()
-        else -> true
-    }
+private fun truthyApproval(value: Any?): Boolean = dev.laix.decision.support.truthy(value)

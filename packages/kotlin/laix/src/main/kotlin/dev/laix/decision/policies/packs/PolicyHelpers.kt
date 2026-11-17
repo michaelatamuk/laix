@@ -23,6 +23,10 @@ internal fun policyMaps(value: Any?): List<Map<String, Any?>> =
         (item as? Map<*, *>)?.entries?.associate { it.key.toString() to it.value }
     } ?: emptyList()
 
+/** Every item of a policy list, keeping non-map values (such as [Arm]). */
+internal fun policyList(value: Any?): List<Any?> =
+    (value as? Iterable<*>)?.toList() ?: emptyList()
+
 internal fun mapNumber(map: Map<String, Any?>, key: String, default: Double = 0.0): Double =
     when (val value = map[key]) {
         is Number -> value.toDouble()

@@ -11,19 +11,34 @@ data class Budget(
 )
 
 /** One perception or model call the scheduler can admit. */
-data class SensingOption(
+@ConsistentCopyVisibility
+data class SensingOption private constructor(
     val name: String,
-    val tier: String = "cheap",
-    val cost: Double = 0.0,
-    val latencyMs: Int = 0,
-    val informationGain: Double = 0.0,
+    val tier: String,
+    val cost: Double,
+    val latencyMs: Int,
+    val informationGain: Double,
 ) {
-    init {
-        require(tier in setOf("cheap", "deep")) { "unknown sensing tier: $tier" }
-    }
+    companion object {
+        operator fun invoke(
+            name: String,
+            tier: String = "cheap",
+            cost: Double = 0.0,
+            latencyMs: Int = 0,
+            informationGain: Double = 0.0,
+        ): SensingOption {
+            require(tier in setOf("cheap", "deep")) { "unknown sensing tier: $tier" }
+            return create(name, tier, cost, latencyMs, clamp(informationGain))
+        }
 
-    val normalizedInformationGain: Double
-        get() = clamp(informationGain)
+        private fun create(
+            name: String,
+            tier: String,
+            cost: Double,
+            latencyMs: Int,
+            informationGain: Double,
+        ): SensingOption = SensingOption(name, tier, cost, latencyMs, informationGain)
+    }
 }
 
 /** What the resource scheduler admitted and what it skipped. */
@@ -74,7 +89,7 @@ class ResourceScheduler(
                 cost += option.cost
                 continue
             }
-            val gain = option.normalizedInformationGain * maxOf(clamped, 0.05)
+            val gain = option.informationGain * maxOf(clamped, 0.05)
             val reason = when {
                 deepCalls >= limits.maxDeepCalls -> "deep-call budget exhausted"
                 cost + option.cost > limits.maxCost -> "cost budget exhausted"

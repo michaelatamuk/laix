@@ -4,11 +4,11 @@ import dev.laix.decision.contract.Planner
 import dev.laix.decision.contract.PlannerInput
 import dev.laix.decision.contract.PlannerResult
 import dev.laix.decision.contracts.ActionOption
-import dev.laix.decision.contracts.Constraint
 import dev.laix.decision.contracts.Verb
+import dev.laix.decision.support.asNumber
 import dev.laix.decision.support.clamp
+import dev.laix.decision.support.policyTruthy
 import dev.laix.decision.support.round6
-import dev.laix.decision.support.truthy
 import java.util.Locale
 
 enum class RiskAttitude(val value: String) {
@@ -98,7 +98,7 @@ internal fun constraintBlocker(problem: PlannerInput, option: ActionOption): Str
     for (constraint in situation.constraints) {
         if (!constraint.hard) continue
         if (constraint.kind == "safety") {
-            if (truthy(constraint.value)) return "safety"
+            if (policyTruthy(constraint.value)) return "safety"
             continue
         }
         val amount = amounts[constraint.kind] ?: continue
@@ -110,21 +110,23 @@ internal fun constraintBlocker(problem: PlannerInput, option: ActionOption): Str
 
 internal fun approvalRequired(problem: PlannerInput): Boolean =
     problem.situation?.constraints?.any {
-        it.kind == "approval" && truthy(it.value)
+        it.kind == "approval" && policyTruthy(it.value)
     } ?: false
 
 /** Resolve the model for one problem, letting request attributes override the defaults. */
 internal fun utilityModelFor(problem: PlannerInput, model: UtilityModel): UtilityModel {
     val attributes = problem.attributes
-    val maxRisk = (attributes["max_risk"] as? Number)?.toDouble()
-    val maxCost = (attributes["max_cost"] as? Number)?.toDouble()
-    val maxLatency = (attributes["max_latency_ms"] as? Number)?.toDouble()
-    val attitude = attributes["risk_attitude"] as? String
-    if (maxRisk == null && maxCost == null && maxLatency == null && attitude == null) {
+    val maxRisk = asNumber(attributes["max_risk"])
+    val maxCost = asNumber(attributes["max_cost"])
+    val maxLatency = asNumber(attributes["max_latency_ms"])
+    // Python only builds an override model when one of the hard limits is set;
+    // `risk_attitude` on its own does not change the model.
+    if (maxRisk == null && maxCost == null && maxLatency == null) {
         return model
     }
     return model.copy(
-        riskAttitude = attitude?.let { RiskAttitude.from(it) } ?: model.riskAttitude,
+        riskAttitude = (attributes["risk_attitude"]?.toString() ?: model.riskAttitude.value)
+            .let { RiskAttitude.from(it) },
         maxRisk = maxRisk ?: model.maxRisk,
         maxCost = maxCost ?: model.maxCost,
         maxLatencyMs = maxLatency ?: model.maxLatencyMs,

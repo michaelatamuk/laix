@@ -94,6 +94,31 @@ class AuditAndResolversTest {
     }
 
     @Test
+    fun `the async resolver builds the same graph`() = kotlinx.coroutines.runBlocking {
+        val ref = CommitmentRef(owner = "supplier", ledger = "supplier", id = "ship")
+        val local = CommitmentLedger(
+            listOf(Commitment(id = "deliver", subject = "deliver", externalDependsOn = listOf(ref))),
+        )
+        val resolver = object : dev.laix.decision.appkit.commitments.AsyncCommitmentResolver {
+            override suspend fun resolve(refs: List<CommitmentRef>): List<Commitment> =
+                listOf(
+                    Commitment(
+                        id = "ship",
+                        subject = "ship",
+                        owner = "supplier",
+                        ledger = "supplier",
+                        status = "done",
+                    ),
+                )
+        }
+
+        val graph = dev.laix.decision.appkit.commitments.resolveCommitmentGraphAsync(local, resolver)
+
+        assertEquals(2, graph.commitments.size)
+        assertEquals("ship", graph.get(ref)?.id)
+    }
+
+    @Test
     fun `the file state store round-trips snapshots`(@TempDir directory: Path) {
         val store = FileStateStore(directory.resolve("states"))
         val state = ExperienceState(subject = "demo")

@@ -15,7 +15,8 @@ import dev.laix.decision.signals.QuietHours
 import dev.laix.decision.signals.Signal
 import dev.laix.decision.signals.SignalContext
 import dev.laix.decision.signals.SignalFeedback
-import dev.laix.decision.signals.parseIso
+import dev.laix.decision.support.parseIso
+import dev.laix.decision.support.truthy
 
 private fun mapOf(value: Any?): Map<String, Any?>? =
     (value as? Map<*, *>)?.entries?.associate { it.key.toString() to it.value }
@@ -34,7 +35,7 @@ private fun number(payload: Map<String, Any?>, key: String, default: Double): Do
     }
 
 private fun bool(payload: Map<String, Any?>, key: String, default: Boolean): Boolean =
-    payload[key] as? Boolean ?: default
+    payload[key]?.let { truthy(it) } ?: default
 
 /** Build a [Situation] from its public JSON shape. */
 fun parseSituation(payload: Map<String, Any?>, subject: String, at: String): Situation {

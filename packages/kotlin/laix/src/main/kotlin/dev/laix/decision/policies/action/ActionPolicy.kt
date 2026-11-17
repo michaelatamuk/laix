@@ -6,8 +6,8 @@ import dev.laix.decision.contracts.Situation
 import dev.laix.decision.contracts.Verb
 import dev.laix.decision.support.clamp
 import dev.laix.decision.support.iso
+import dev.laix.decision.support.policyTruthy
 import dev.laix.decision.support.round
-import dev.laix.decision.support.truthy
 import java.util.Locale
 
 const val ACTION_POLICY_VERSION: String = "0.8.0"
@@ -45,10 +45,10 @@ class ActionPolicy(
         }
         val uncertainty = number(attributes, "uncertainty", 1.0 - confidence)
         val urgency = number(attributes, "urgency", 0.5)
-        val deadlineBreached = truthy(attributes["deadline_breached"])
-        val safetyBreached = truthy(attributes["safety_breached"])
-        val verificationDue = truthy(attributes["verification_due"])
-        val needsMoreInfo = truthy(attributes["needs_more_info"])
+        val deadlineBreached = policyTruthy(attributes["deadline_breached"])
+        val safetyBreached = policyTruthy(attributes["safety_breached"])
+        val verificationDue = policyTruthy(attributes["verification_due"])
+        val needsMoreInfo = policyTruthy(attributes["needs_more_info"])
 
         val verb: Verb
         val chosen: ActionOption?
@@ -243,10 +243,10 @@ class ActionPolicy(
     }
 
     private fun safetyBlocked(situation: Situation): Boolean =
-        situation.constraints.any { it.kind == "safety" && it.hard && truthy(it.value) }
+        situation.constraints.any { it.kind == "safety" && it.hard && policyTruthy(it.value) }
 
     private fun approvalRequired(situation: Situation): Boolean =
-        situation.constraints.any { it.kind == "approval" && truthy(it.value) }
+        situation.constraints.any { it.kind == "approval" && policyTruthy(it.value) }
 
     private fun best(options: List<ActionOption>): ActionOption =
         options.sortedWith(compareBy({ -it.utility }, { it.id })).first()

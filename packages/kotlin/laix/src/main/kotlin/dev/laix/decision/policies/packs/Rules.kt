@@ -5,6 +5,8 @@ import dev.laix.decision.contracts.Decision
 import dev.laix.decision.contracts.DecisionRequest
 import dev.laix.decision.contracts.Intent
 import dev.laix.decision.contracts.Verb
+import dev.laix.decision.support.pythonEquals
+import dev.laix.decision.support.pythonIn
 
 /** One condition and the decision it produces. */
 data class Rule(
@@ -25,7 +27,7 @@ class RulePolicy(
     fallback: Rule? = null,
 ) : DecisionPolicy {
     val rules: List<Rule> = rules.toList()
-    val version: String = name
+    override val version: String = name
     private val fallback: Rule = fallback ?: Rule(
         condition = emptyMap(),
         verb = Verb.WAIT,
@@ -62,13 +64,13 @@ class RulePolicy(
                     val ok = when (operator.toString()) {
                         "gte" -> number(actual)?.let { number(value)?.let { limit -> it >= limit } } ?: false
                         "lte" -> number(actual)?.let { number(value)?.let { limit -> it <= limit } } ?: false
-                        "in" -> (value as? Iterable<*>)?.contains(actual) ?: false
-                        "contains" -> contains(actual, value)
+                        "in" -> pythonIn(value, actual)
+                        "contains" -> pythonIn(actual, value)
                         else -> false
                     }
                     if (!ok) return false
                 }
-            } else if (actual != expected) {
+            } else if (!pythonEquals(actual, expected)) {
                 return false
             }
         }
@@ -80,13 +82,5 @@ class RulePolicy(
             is Number -> value.toDouble()
             is String -> value.toDoubleOrNull()
             else -> null
-        }
-
-    private fun contains(actual: Any?, value: Any?): Boolean =
-        when (actual) {
-            null -> false
-            is Collection<*> -> actual.contains(value)
-            is Map<*, *> -> actual.containsKey(value)
-            else -> actual.toString().contains(value?.toString() ?: "")
         }
 }

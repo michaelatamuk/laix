@@ -93,6 +93,34 @@ class GroupPolicyTest {
     }
 
     @Test
+    fun `group policy masks arrays like lists`() {
+        val policy = GroupPolicy(
+            DecisionPolicy {
+                listOf(
+                    Decision(
+                        verb = Verb.GUIDE,
+                        confidence = 0.9,
+                        reasonCode = "share",
+                        rationale = "share",
+                        attributes = mapOf(
+                            "array" to arrayOf(
+                                mapOf("health" to "private", "ok" to 1),
+                                mapOf("health" to "private", "ok" to 2),
+                            ),
+                        ),
+                    ),
+                )
+            },
+            privateAttributes = listOf("health"),
+        )
+        val decision = policy.decide(request).single()
+
+        @Suppress("UNCHECKED_CAST")
+        val array = decision.attributes["array"] as List<Map<String, Any?>>
+        assertEquals(listOf(mapOf("ok" to 1), mapOf("ok" to 2)), array)
+    }
+
+    @Test
     fun `targeted policy applies request targets`() {
         val policy = TargetedPolicy(fakePolicy())
         val decision = policy.decide(

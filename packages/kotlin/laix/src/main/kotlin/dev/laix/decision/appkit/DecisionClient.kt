@@ -160,7 +160,9 @@ class DecisionClient(
         linkedMapOf(
             "schemaVersion" to SCHEMA_VERSION,
             "policy" to (activePolicy?.name?.ifEmpty { null } ?: "builtin"),
-            "policyVersion" to (activePolicy?.name?.ifEmpty { null } ?: ACTION_POLICY_VERSION),
+            "policyVersion" to (
+                activePolicy?.version ?: if (activePolicy == null) ACTION_POLICY_VERSION else null
+                ),
             "decisions" to decisions.size,
             "policies" to registry.names(),
         )

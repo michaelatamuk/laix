@@ -15,6 +15,7 @@ import dev.laix.decision.signals.decideSignalAttention
 import dev.laix.decision.support.DecisionPolicyError
 import dev.laix.decision.support.clamp
 import dev.laix.decision.support.newId
+import dev.laix.decision.support.truthy
 
 /** Which handler a request is routed to. */
 enum class Route {
@@ -138,7 +139,8 @@ private fun identify(decision: Decision, makeId: (String) -> String): Decision {
 @Suppress("UNCHECKED_CAST")
 private fun decisionFromMap(value: Map<*, *>): Decision {
     fun text(key: String): String? = value[key]?.toString()
-    fun bool(key: String, default: Boolean): Boolean = value[key] as? Boolean ?: default
+    fun bool(key: String, default: Boolean): Boolean =
+        value[key]?.let { truthy(it) } ?: default
 
     return Decision(
         verb = Verb.from(text("verb")?.takeIf { it.isNotEmpty() } ?: Verb.WAIT.value),
