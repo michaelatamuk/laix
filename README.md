@@ -4,7 +4,7 @@
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)
 ![Node 22+](https://img.shields.io/badge/node-22%2B-339933?logo=node.js&logoColor=white)
-![Kotlin/JVM 17+](https://img.shields.io/badge/kotlin-2.1%20%2F%20JVM%2017%2B-7F52FF?logo=kotlin&logoColor=white)
+![Kotlin 2.1+](https://img.shields.io/badge/kotlin-2.1%2B-7F52FF?logo=kotlin&logoColor=white)
 
 # LAIX — Live AI Experience
 
@@ -44,8 +44,9 @@ validation pending.
   probability.
 - **The host keeps control.** The decision layer is stateless. The host owns execution, data, storage
   and delivery; the optional app kit adds the lifecycle around the decision.
-- **It is portable and testable.** Python uses the standard library only. TypeScript and Kotlin/JVM
-  mirror the same contract, and CI checks parity, conformance, examples and the benchmark.
+- **It is portable and testable.** Python, TypeScript and Kotlin/JVM share one contract and one set of
+  conformance vectors; CI runs their tests and examples, the live benchmark, and the
+  Python↔TypeScript live-action parity check.
 
 ## When to use LAIX
 
@@ -64,28 +65,42 @@ comparison with decision models, classifiers and judges, see
 Robotics: task-level decisions above the safety and motion layer. See
 [LAIX for robotics](docs/04-concepts/02-positioning/03-robotics.md).
 
+## Three implementations, one contract
+
+Python, TypeScript and Kotlin/JVM implement the same decision contract, reason codes and app kit.
+All three share the vectors in `packages/contracts`, and `scripts/ci/check_versions.py` keeps
+their package versions aligned.
+
+| Implementation | Path | Toolchain |
+|---|---|---|
+| Python | `packages/python/laix` | Python 3.11+ |
+| TypeScript | `packages/typescript/laix` | Node 22+ |
+| Kotlin/JVM | `packages/kotlin/laix` | Kotlin 2.1, JDK 17 |
+
+The [quickstart](docs/01-start/02-first-steps/01-quickstart.md) covers all three, and the
+[Kotlin guide](docs/01-start/02-first-steps/03-kotlin.md) covers the JVM setup.
+
 ## Install
 
-Python:
+Python, from the git tag (PyPI publishing is not configured yet):
 
 ```powershell
 pip install "git+https://github.com/michaelatamuk/laix.git@v0.17.3#subdirectory=packages/python/laix"
 ```
 
-From a local checkout, at the repository root:
+Or from a local checkout, at the repository root:
 
 ```powershell
 pip install -e packages/python/laix
 ```
 
-TypeScript, from a local checkout (the package is not published to npm yet):
+TypeScript, from a local checkout (not on npm yet):
 
 ```powershell
 npm install file:../path/to/laix/packages/typescript/laix
 ```
 
-Kotlin/JVM, from a local checkout with a Gradle composite build (the package is not published to
-Maven yet):
+Kotlin/JVM, from a local checkout with a Gradle composite build (not on Maven yet):
 
 ```kotlin
 // settings.gradle.kts
@@ -102,9 +117,11 @@ for the full setup, or the [Kotlin guide](docs/01-start/02-first-steps/03-kotlin
 
 ## One decision
 
-A `DecisionRequest` carries what the app knows and the options it can take. `decide` returns one
-`Decision`. In this example a payment needs owner approval: the built-in action policy chooses to
-pay and flags the approval, and the host must obtain that approval before it executes.
+The example uses Python; the same request and decision exist in all three packages. A
+`DecisionRequest` carries what the app knows and the options it can take. `decide` returns a list
+of decisions, normally one. In this example a payment needs owner approval: the built-in action
+policy chooses to pay and flags the approval, and the host must obtain that approval before it
+executes.
 
 ```python
 from laix import ActionOption, Belief, DecisionRequest, Situation, decide
@@ -158,7 +175,18 @@ choice.
 
 The full request, with a commitment and a human-attention budget, is in the
 [quickstart](docs/01-start/02-first-steps/01-quickstart.md#full-request-approval-commitment-and-attention).
-TypeScript and Kotlin/JVM have the same `Decision` shape; the quickstart has both versions.
+
+The same call in each package:
+
+| Implementation | Call |
+|---|---|
+| Python | `decide(request)[0]` |
+| TypeScript | `decide(request)[0]` |
+| Kotlin/JVM | `decide(request).single()` |
+
+The request fields, decision fields and reason codes are identical; only the naming style changes.
+The quickstart has a full snippet for each language, and the
+[Kotlin guide](docs/01-start/02-first-steps/03-kotlin.md) covers the JVM package.
 
 ## How it works
 
@@ -167,24 +195,25 @@ TypeScript and Kotlin/JVM have the same `Decision` shape; the quickstart has bot
 An agent or automation plans the task. LAIX decides the next move. The host executes it. The receipt
 and outcome close the loop and calibrate the next decision.
 
-The decision layer is `DecisionRequest` in, `Decision` out. The app kit is optional; it adds
-execution, records, stores, streaming, delivery and bench.
+The decision layer is `DecisionRequest` in, one or more `Decision`s out. The app kit is optional; it
+adds execution, records, stores, streaming, delivery and bench.
 
-## The decision surface
+## Decision continuity
 
-The same contract covers attention, action, several decision shapes and your own policy.
+A decision is one step in a sequence. It leaves state for the next decision.
 
-| What you get | In one line |
-|---|---|
-| [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe` (gather evidence), `guide` (surface attention), `ask`, `act` (do it now), `verify`, `escalate` |
-| [Two decision families](docs/02-decision/README.md) | signal attention — what matters now — and action — what to do |
-| [Decision shapes and extensions](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history, explain and policies; portfolios, risk bounds, revalidation, case-based reuse and conflict resolution |
-| [Bring your own policy](docs/02-decision/03-decision-shapes/06-policies/README.md) | any `name` + `decide` object; a planner or model behind the same contract |
-| [Portable and tested](docs/06-project/02-quality/01-testing.md) | Python standard library only; TypeScript and Kotlin/JVM parity checked in CI |
-| [Integrations](docs/03-appkit/01-build/README.md) | [LangGraph](docs/03-appkit/01-build/04-langgraph.md), [MCP](docs/03-appkit/01-build/05-mcp.md), [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) |
+| Step | Decision | State carried forward |
+|---|---|---|
+| 1 | acts, creating commitment `c1` | `c1` open; human-attention budget 0.6 spent |
+| 2 | asks because `c1` is due and the budget is low | `c1` still open; approval pending |
+| 3 | verifies after execution | `c1` fulfilled; receipt and outcome recorded |
 
-A policy is any object with a `name` and a `decide(request)` method. `PlannerPolicy` adapts a
-planner, so a learned policy or model can sit behind the same contract.
+The next decision sees the commitments, human-attention budget, approvals, revisions and outcomes the
+previous one left. See [Decision continuity](docs/02-decision/03-decision-shapes/04-history/README.md).
+
+In the 12-episode synthetic continuity benchmark, the stateful decision loop completed **100%** of
+episodes; a stateless utility planner completed **0%** with 36 continuity errors. See the
+[continuity benchmark](docs/07-research/02-evaluation/continuity-benchmark.md).
 
 ## The live composite planner
 
@@ -202,38 +231,24 @@ budget):
 | Same request | Policy | Result |
 |---|---|---|
 | `decide(request)` | The built-in action policy | `pay`; approval required |
-| `decide(request, policy=...)` | `PlannerPolicy(LiveCompositePlanner())` | `ask`; commitment to ask fulfilled |
+| `decide` with a composite policy | `PlannerPolicy(LiveCompositePlanner())` | `ask`; commitment to ask fulfilled |
 
 The composite planner chooses `ask` over `pay`. `pay` has the higher utility, but it breaks the
 commitment to ask the owner before paying; `ask` fulfills that commitment and stays within the
-human-attention budget. The decision carries the four scores, so the trade-off is visible.
+human-attention budget. The decision carries the four scores, so the trade-off is visible. The same
+`PlannerPolicy` and `LiveCompositePlanner` pair exists in Python, TypeScript and Kotlin.
 
-A separate conflict scenario is in
-[`examples/python/decision/decision/history/conflict_scenario.py`](examples/python/decision/decision/history/conflict_scenario.py).
-
-## Decision continuity
-
-A decision is one step in a sequence. It leaves state for the next decision.
-
-| Step | Decision | State carried forward |
-|---|---|---|
-| 1 | acts, creating commitment `c1` | `c1` open; human-attention budget 0.6 spent |
-| 2 | asks because `c1` is due and the budget is low | `c1` still open; approval pending |
-| 3 | verifies after execution | `c1` fulfilled; receipt and outcome recorded |
-
-The next decision sees the commitments, human-attention budget, approvals, revisions and outcomes the
-previous one left. See [Decision continuity](docs/02-decision/03-decision-shapes/04-history/README.md).
-
-In a 12-episode synthetic mechanism test, the stateful decision loop completed **100%** of episodes; a
-stateless utility planner completed **0%** with 36 continuity errors. See the
-[continuity benchmark](docs/07-research/02-evaluation/continuity-benchmark.md).
+Runnable conflict scenarios and the other decision shapes are in the
+[examples](examples/README.md) for all three implementations.
 
 ## Results
 
+Benchmark numbers are from the Python package.
+
 `LiveCompositePlanner` scores **30/30** on the frozen 30-case test split of the 120-case corpus and
-**6/6** on the conflict cases. The hand-built integration baseline (the “glue baseline”) scores 28/30; the **+6.7 pp** difference
-is **not yet significant** (p = 0.48). Every single-concern planner has significantly lower accuracy
-(McNemar p ≤ 0.008).
+**6/6** on the conflict cases. The hand-built integration baseline (the "glue baseline") scores 28/30;
+the **+6.7 pp** difference is **not yet significant** (p = 0.48). Every single-concern planner has
+significantly lower accuracy (McNemar p ≤ 0.008).
 
 ![Accuracy and conflict accuracy on the frozen test split](docs/assets/benchmark.png)
 
@@ -253,6 +268,22 @@ On a 10-task τ-bench retail slice, the guardrail passed **10/10** vs **9/10** f
 [the benchmark](docs/07-research/02-evaluation/benchmark.md) and
 [the evidence map](docs/07-research/02-evaluation/evidence-map.md).
 
+## The decision surface
+
+The same contract covers attention, action, several decision shapes and your own policy.
+
+| What you get | In one line |
+|---|---|
+| [Seven verbs](docs/02-decision/01-contract/01-decision-contract.md) | `wait`, `observe` (gather evidence), `guide` (surface attention), `ask`, `act` (do it now), `verify`, `escalate` |
+| [Two decision families](docs/02-decision/README.md) | signal attention — what matters now — and action — what to do |
+| [Decision shapes and extensions](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history, explain and policies; portfolios, risk bounds, revalidation, case-based reuse and conflict resolution |
+| [Bring your own policy](docs/02-decision/03-decision-shapes/06-policies/README.md) | a policy object with a `name` and a `decide` method; a planner or model behind the same contract |
+| [Portable and tested](docs/06-project/02-quality/01-testing.md) | one contract across Python, TypeScript and Kotlin/JVM; shared-vector conformance in CI |
+| [Integrations](docs/03-appkit/01-build/README.md) | [LangGraph](docs/03-appkit/01-build/04-langgraph.md), [MCP](docs/03-appkit/01-build/05-mcp.md), [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) |
+
+A policy needs a `name` and a `decide` method (`DecisionPolicy` in Kotlin). `PlannerPolicy` adapts a
+planner, so a learned policy or model can sit behind the same contract in every implementation.
+
 ## Documentation
 
 | Start with | Covers |
@@ -267,15 +298,15 @@ On a 10-task τ-bench retail slice, the guardrail passed **10/10** vs **9/10** f
 | [LangGraph](docs/03-appkit/01-build/04-langgraph.md) | a decision node, approval interrupt and checkpointer |
 | [MCP server](docs/03-appkit/01-build/05-mcp.md) | expose `decide` over stdio |
 | [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) | an agent card and a host action profile |
-| [Kotlin/JVM](packages/kotlin/laix/README.md) | the JVM package, CLI, bench, MCP server and examples |
+| [Kotlin/JVM guide](docs/01-start/02-first-steps/03-kotlin.md) | install, CLI, bench, MCP and the example suite |
 | [Examples](examples/README.md) | Python, TypeScript and Kotlin, grouped by decision and app kit |
 
 ## Contributing
 
 Run the full checks before opening a change; the commands, design rules and pull-request checklist
 are in [CONTRIBUTING.md](CONTRIBUTING.md). CI runs the same checks on every push, plus the live
-benchmark, TypeScript and Kotlin parity, examples, and docs link and anchor checks. See
-[Testing](docs/06-project/02-quality/01-testing.md) for every check.
+benchmark, every package's tests and examples, Python↔TypeScript live-action parity, and docs link
+and anchor checks. See [Testing](docs/06-project/02-quality/01-testing.md) for every check.
 
 Questions go to [SUPPORT.md](SUPPORT.md); participation is covered by
 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
@@ -291,4 +322,4 @@ If you use LAIX in research, cite it via [CITATION.cff](CITATION.cff).
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE). Current release: `0.17.3`.
+Apache-2.0. See [LICENSE](LICENSE). Current release: `0.17.3` for all three packages.
