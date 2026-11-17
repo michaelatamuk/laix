@@ -8,7 +8,7 @@ the real world.** Install it, send one request and read one decision. Then choos
 Python:
 
 ```powershell
-pip install "git+https://github.com/michaelatamuk/laix.git@v0.17.3#subdirectory=packages/python/laix"
+pip install "git+https://github.com/michaelatamuk/laix.git@v0.18.0#subdirectory=packages/python/laix"
 ```
 
 Local checkout, from the repository root:
@@ -36,13 +36,13 @@ includeBuild("../path/to/laix/packages/kotlin/laix")
 
 // build.gradle.kts
 dependencies {
-    implementation("dev.laix:laix-decision:0.17.3")
+    implementation("dev.laix:laix-decision:0.18.0")
 }
 ```
 
 JDK 17 or newer; the Gradle wrapper downloads Gradle and the Kotlin toolchain.
 
-The release page also has a packed `laix-0.17.3.tgz`. See
+The release page also has a packed `laix-0.18.0.tgz`. See
 [versioning](../../06-project/03-release/01-versioning.md) for tags and schema versions.
 
 ## One decision

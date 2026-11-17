@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "dev.laix"
-version = "0.17.3"
+version = "0.18.0"
 
 kotlin {
     jvmToolchain(17)

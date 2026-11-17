@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.18.0 - 2026-11-17
 
 ### Added
 
@@ -19,7 +19,8 @@
   several planner/policy edge cases now match the Python reference.
 - **Contributing covers three packages.** Setup, checks and the pull-request checklist now
   include Kotlin/JVM, and the repository map, API map and versioning pages list it.
-
+- **README for three implementations.** The root README presents Python, TypeScript and Kotlin/JVM
+  as peers and follows the contract, model, differentiator, mechanism, evidence and scope order.
 
 ## 0.17.3 - 2026-11-10
 

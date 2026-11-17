@@ -89,6 +89,8 @@ Kotlin examples, from the repository root:
 
 ## Current results
 
+Counts and benchmark rows are the `0.18.0` release snapshot.
+
 | Check | Result |
 |---|---|
 | Python tests | 470 passed |

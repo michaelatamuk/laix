@@ -3,15 +3,17 @@ plugins {
     application
 }
 
+val laixVersion: String by project
+
 group = "dev.laix"
-version = "0.17.3"
+version = laixVersion
 
 kotlin {
     jvmToolchain(17)
 }
 
 dependencies {
-    implementation("dev.laix:laix-decision:0.17.3")
+    implementation("dev.laix:laix-decision:$laixVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
     testImplementation(kotlin("test-junit5"))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
