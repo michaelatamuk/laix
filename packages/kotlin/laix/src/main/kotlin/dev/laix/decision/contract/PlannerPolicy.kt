@@ -5,7 +5,7 @@ import dev.laix.decision.contracts.DecisionRequest
 import dev.laix.decision.support.clamp
 
 /** The smallest contract a policy plugin implements. */
-interface DecisionPolicy {
+fun interface DecisionPolicy {
     val name: String
         get() = ""
 
