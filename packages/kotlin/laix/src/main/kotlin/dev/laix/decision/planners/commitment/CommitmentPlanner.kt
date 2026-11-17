@@ -121,7 +121,7 @@ class CommitmentPlanner(
         )
     }
 
-    private fun scoreOption(
+    internal fun scoreOption(
         option: ActionOption,
         model: UtilityModel,
         active: Map<String, Commitment>,
