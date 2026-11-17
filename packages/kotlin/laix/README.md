@@ -1,36 +1,47 @@
 # laix-decision (Kotlin)
 
-A Kotlin/JVM implementation of the LAIX decision layer. It mirrors the Python and TypeScript
-contracts and is intended to share the same JSON fixtures.
+A Kotlin/JVM implementation of the LAIX decision layer. It mirrors the Python and
+TypeScript packages and uses the shared JSON contracts for conformance.
 
 ## Status
 
-Second vertical slice: the decision contract on top of the core records.
-
 Implemented:
 
-- `Verb`, `Belief`, `Constraint`, `ActionOption`, `Situation`, `Intent`
-- `PlannerInput`, `PlannerResult`, `Planner`
-- `UtilityWeights`, `UtilityModel`, `UtilityPlanner`
-- `Decision`, `DecisionRequest`, `EvidenceRef`, `ScoreBreakdown`
-- `DecisionPolicy`, `PlannerPolicy`, `toPlannerInput`, `toDecision`
-- generated `ReasonCodes` registry, checked against `packages/contracts/reason-codes.v1.json`
-- `ActionPolicy`, `ActionPolicyConfig`, `ActionPolicyInput`, `decideAction`
-- `Signal`, `SignalContext`, `SignalFeedback`, gates and `decideSignalAttention`
-- `decide` dispatch with `select`, `attributesFor`, `annotateConfidence`, `coerce`
-- conformance against `packages/contracts/signal-attention.v1.json`
-- `Commitment`, `CommitmentRef`, `CommitmentLedger`, stores and `CommitmentGraph`
-- `CommitmentPlanner` with effect, weights and rejection codes
-- conformance against the graph and planner cases in `packages/contracts/commitment-graph.v1.json`
-- snake_case JSON serialization for decisions, commitments, ledgers and graphs
-- `FileCommitmentStore` and `InMemoryCommitmentStore`
+- contract records: verbs, beliefs, constraints, options, situations, goals,
+  observations, requests, decisions, evidence, score breakdowns, reason codes
+- planners: utility, commitment (with belief and resolution), execution risk,
+  human attention, risk bounded, goal conflict, case based, portfolio, MDP,
+  POMDP, CA-VOD, live composite, CABB/rollout/replan
+- policies: the action policy and the reference packs (safety, verification,
+  preference elicitation, active perception, replanning, escalation,
+  negotiation, allocation), rule policies, planning, target/group composition
+  and the UCB bandit
+- signal attention: gates, scoring, decisions, outcomes, precision, hazard and
+  calibration
+- commitments: ledger, stores, graph, resolvers, planner fixtures
+- outcomes: ledger, store, calibration, causal attribution, model learning
+- app kit: `DecisionClient`, `DecisionRuntime`, execution bridge and sagas,
+  delivery port, experience state and stores, audit records and proposals,
+  platform seam, streaming sessions, resource scheduler, live context
+- evaluation: parity cases, reports, attention replay and the attention bench
+- JSON: snake_case serialization, file stores, request parsing, CLI and
+  OpenTelemetry attribute names
+- MCP: the `decide` tool payload for auto and live policies
 
-Next:
+Not yet ported: the simulation and bench runners, the async execution mixin, the
+streaming feed/source/window/timeline extras, JSON-schema validation, the MCP
+stdio transport and Kotlin Multiplatform targets.
 
-- remaining single planners and policies
-- schema validation against `packages/contracts/decision.v1.schema.json`
-- shared conformance fixtures for planner cases
-- app kit
+## Conformance
+
+Tests replay the shared contracts in `packages/contracts`:
+
+- `reason-codes.v1.json`
+- `signal-attention.v1.json`
+- `commitment-graph.v1.json` (graph and planner cases)
+- `signal-attention-bench.v1.json`
+
+Version checks keep Python, TypeScript and Kotlin on the same version.
 
 ## Build
 
@@ -40,7 +51,17 @@ Next:
 
 Requires Java 17+.
 
-Regenerate the reason-code registry after editing the shared contract:
+## CLI
+
+```powershell
+.\gradlew.bat run --args="explain path\to\decision.json"
+.\gradlew.bat run --args="explain path\to\decision.json --json"
+.\gradlew.bat run --args="lint path\to\decision.json"
+```
+
+## Regenerate the reason-code registry
+
+After editing the shared contract:
 
 ```powershell
 python scripts/contracts/generate_kotlin_reason_codes.py
