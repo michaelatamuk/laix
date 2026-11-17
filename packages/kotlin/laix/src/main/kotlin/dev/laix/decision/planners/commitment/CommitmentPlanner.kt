@@ -47,7 +47,7 @@ class CommitmentPlanner(
 
         val activeModel = utilityModelFor(problem, model ?: UtilityModel())
         val (active, graph) = activeAndGraph(problem)
-        val now = parseIso(problem.at) ?: utcNow()
+        val now = plannerNow(problem)
 
         fun blocked(commitmentId: String): Boolean {
             val commitment = active[commitmentId] ?: return true
@@ -68,7 +68,14 @@ class CommitmentPlanner(
                 score = score,
                 feasible = feasible,
                 blocker = score.blocked ?: blocker,
-                blockedBy = optionBlockers(option, active, graph, now),
+                blockedBy = optionBlockers(
+                    option = option,
+                    active = active,
+                    graph = graph,
+                    requireVerified = requireVerified,
+                    now = now,
+                    maxVerificationAge = maxVerificationAge,
+                ),
             )
         }
 
@@ -158,30 +165,6 @@ class CommitmentPlanner(
         )
     }
 
-    /** Return the graph blockers for the commitments this option fulfills. */
-    private fun optionBlockers(
-        option: ActionOption,
-        active: Map<String, Commitment>,
-        graph: CommitmentGraph,
-        now: OffsetDateTime,
-    ): List<Map<String, Any?>> {
-        val found = LinkedHashMap<Triple<String, String, String>, Map<String, Any?>>()
-        for (commitmentId in commitmentEffect(option).fulfills) {
-            val commitment = active[commitmentId] ?: continue
-            for (blocker in graph.blockers(
-                commitment,
-                requireVerified = requireVerified,
-                now = now,
-                maxVerificationAge = maxVerificationAge,
-            )) {
-                found[blocker.ref.key] = blocker.toMap()
-            }
-        }
-        return found.keys
-            .sortedWith(compareBy({ it.first }, { it.second }, { it.third }))
-            .map { found.getValue(it) }
-    }
-
     private fun alternatives(rows: List<Row>, bestId: String): List<Map<String, Any?>> {
         val payload = mutableListOf<Map<String, Any?>>()
         for (row in rows) {
@@ -250,7 +233,7 @@ class CommitmentPlanner(
     }
 }
 
-private fun commitments(problem: PlannerInput): Map<String, Commitment> {
+internal fun commitments(problem: PlannerInput): Map<String, Commitment> {
     val attributes = problem.attributes
     val raw = attributes["commitments"] ?: attributes["commitment_ledger"] ?: return emptyMap()
     if (raw is CommitmentLedger) return raw.all().associateBy { it.id }
@@ -272,7 +255,7 @@ private fun commitments(problem: PlannerInput): Map<String, Commitment> {
 }
 
 /** Return local commitments and the graph the planner should reason over. */
-private fun activeAndGraph(problem: PlannerInput): Pair<Map<String, Commitment>, CommitmentGraph> {
+internal fun activeAndGraph(problem: PlannerInput): Pair<Map<String, Commitment>, CommitmentGraph> {
     val attributes = problem.attributes
     val rawGraph = attributes["commitment_graph"]
     if (rawGraph is CommitmentGraph) {
@@ -295,4 +278,34 @@ private fun activeAndGraph(problem: PlannerInput): Pair<Map<String, Commitment>,
         else -> emptyList()
     }
     return active to CommitmentGraph(active.values.toList(), external)
+}
+
+/** The problem's clock, falling back to now when `at` is not parseable. */
+internal fun plannerNow(problem: PlannerInput): OffsetDateTime =
+    parseIso(problem.at) ?: utcNow()
+
+/** Return the graph blockers for the commitments this option fulfills. */
+internal fun optionBlockers(
+    option: ActionOption,
+    active: Map<String, Commitment>,
+    graph: CommitmentGraph,
+    requireVerified: Boolean,
+    now: OffsetDateTime,
+    maxVerificationAge: Duration?,
+): List<Map<String, Any?>> {
+    val found = LinkedHashMap<Triple<String, String, String>, Map<String, Any?>>()
+    for (commitmentId in commitmentEffect(option).fulfills) {
+        val commitment = active[commitmentId] ?: continue
+        for (blocker in graph.blockers(
+            commitment,
+            requireVerified = requireVerified,
+            now = now,
+            maxVerificationAge = maxVerificationAge,
+        )) {
+            found[blocker.ref.key] = blocker.toMap()
+        }
+    }
+    return found.keys
+        .sortedWith(compareBy({ it.first }, { it.second }, { it.third }))
+        .map { found.getValue(it) }
 }
