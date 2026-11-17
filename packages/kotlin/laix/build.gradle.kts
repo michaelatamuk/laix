@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "2.1.20"
+    application
 }
 
 group = "dev.laix"
@@ -7,6 +8,10 @@ version = "0.17.3"
 
 kotlin {
     jvmToolchain(17)
+}
+
+application {
+    mainClass.set("dev.laix.decision.appkit.cli.MainKt")
 }
 
 dependencies {
