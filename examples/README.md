@@ -42,11 +42,13 @@ examples/
 │       ├── execute/              execution, reliability, action profile, saga, record and proposal
 │       ├── connect/              platform, delivery, state/outcome files and stores
 │       └── operate/              LAIX-Bench, metrics and OpenTelemetry
-└── typescript/
-    └── (the same decision and app-kit split)
+├── typescript/
+│   └── (the same decision and app-kit split)
+└── kotlin/
+    └── (the same split, one Gradle project with a runnable registry)
 ```
 
-Every Python and TypeScript example is executed by CI. The output shown is the actual output.
+Every Python, TypeScript and Kotlin example is executed by CI. The output shown is the actual output.
 
 ## Run
 
@@ -67,11 +69,25 @@ Get-ChildItem examples/typescript -Recurse -Filter *.mts | ForEach-Object {
 }
 ```
 
+Kotlin:
+
+```powershell
+.\packages\kotlin\laix\gradlew.bat -p examples\kotlin run --args="--list"
+.\packages\kotlin\laix\gradlew.bat -p examples\kotlin run --args="--all"
+.\packages\kotlin\laix\gradlew.bat -p examples\kotlin test
+```
+
 A single example:
 
 ```powershell
 $env:PYTHONPATH = "packages/python/laix/src"
 py examples/python/decision/sensing/signals/signal_attention_bill_due.py
+```
+
+A single Kotlin example takes a path substring:
+
+```powershell
+.\packages\kotlin\laix\gradlew.bat -p examples\kotlin run --args="decision/single/planners/utility"
 ```
 
 # Decision
@@ -358,13 +374,22 @@ laix explain examples/data/decision.json
 laix lint examples/data/decision.json
 ```
 
+The Kotlin CLI does the same through the Gradle `run` task:
+
+```powershell
+cd packages/kotlin/laix
+.\gradlew.bat run --args="explain ..\..\..\examples\data\decision.json"
+.\gradlew.bat run --args="lint ..\..\..\examples\data\decision.json"
+```
+
 `laix explain` prints the decision fields. `laix lint` exits non-zero when an audit field is
 missing. The test suite covers both.
 
 ### MCP
 
 `examples/mcp/client-config.json` is a ready MCP client entry. It launches `laix-mcp` over stdio.
-See [the MCP guide](../docs/03-appkit/01-build/05-mcp.md) for the tool request and install.
+See [the MCP guide](../docs/03-appkit/01-build/05-mcp.md) for the tool request and install. The
+Kotlin package exposes the same tool through `gradlew mcp`.
 
 ### A2A and OpenAPI
 
@@ -374,6 +399,23 @@ The A2A card and OpenAPI action profile are contracts, not runnable examples:
 - `packages/contracts/action.openapi.v1.json`
 
 See [A2A and OpenAPI](../docs/03-appkit/01-build/06-a2a.md).
+
+## Kotlin
+
+`examples/kotlin/` is a Gradle project with 64 examples, one line of output each. It mirrors the
+same decision and app-kit split, and `ExamplesTest` runs every example in CI. The mapping is:
+
+| Folder | Kotlin examples |
+|---|---|
+| `decision/single/decide` | action, attention, a silent signal |
+| `decision/single/planners` | utility, commitment, execution, attention, live composite, MDP, POMDP, CA-VOD, portfolio, case-based, risk, conflict |
+| `decision/single/policies` | the eight packs, rules, bandit, group, targeted, shadow |
+| `decision/sequence`, `fleet`, `explain` | CABB, rollout, replan, AADS, Whittle, CDA |
+| `decision/domain`, `learning`, `evaluation`, `perception` | commitments, outcomes, calibration, model, causal, cases, bench, simulation, live bench, resources, live context |
+| `appkit/build`, `run`, `execute`, `connect` | client, runtime, streams, execution, saga, records, proposals, stores, platform, delivery |
+
+See [`kotlin/README.md`](kotlin/README.md) for the full path list and the
+[Kotlin guide](../docs/01-start/02-first-steps/03-kotlin.md) for setup.
 
 ## Parity notes
 

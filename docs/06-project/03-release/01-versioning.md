@@ -7,6 +7,7 @@ rule change does not always change the package version.
 |---|---|---|
 | Python package | `0.17.3` | `packages/python/laix/pyproject.toml` |
 | TypeScript package | `0.17.3` | `packages/typescript/laix/package.json` |
+| Kotlin package | `0.17.3` | `packages/kotlin/laix/build.gradle.kts` |
 | Record schema | `0.8.0` | `decision/support/version.py`, `contracts.ts` |
 | Rule sets | `0.8.0` | policy versions and vectors |
 | Signal-attention vectors | `0.8.0` | `signal-attention.v1.json` and conformance fixtures |
@@ -16,7 +17,7 @@ rule change does not always change the package version.
 
 | Axis | What it covers | When it changes |
 |---|---|---|
-| Package version | The Python and TypeScript packages. | Any user-visible feature, fix or behaviour change. |
+| Package version | The Python, TypeScript and Kotlin packages. | Any user-visible feature, fix or behaviour change. |
 | Record schema | Field names, JSON keys, types and allowed values. | A record shape changes. |
 | Rule set | DecisionPolicy names, thresholds and reason codes. | A rule changes behaviour. |
 | Signal-attention vectors | The shared attention conformance cases. | A labelled vector or expected decision changes. |
@@ -33,7 +34,7 @@ package and policy versions available for rollback.
 
 ## When to bump
 
-- **Package** - any user-visible change, feature or fix. Both packages move together for a release.
+- **Package** - any user-visible change, feature or fix. All three packages move together for a release.
 - **Record schema** - a record shape changes. Regenerate `laix-v1.schema.json` and update
   [Records and schema](../../02-decision/01-contract/03-records.md).
 - **Rule sets or signal-attention vectors** - a rule, threshold or labelled vector changes behaviour.
@@ -43,10 +44,11 @@ package and policy versions available for rollback.
 
 ## Releases
 
-1. Update both package versions, `CITATION.cff`, `SECURITY.md` and `CHANGELOG.md`.
+1. Update all three package versions, `CITATION.cff`, `SECURITY.md` and `CHANGELOG.md`.
 2. Run the full test, bench, conformance and example checks. See [Testing](../02-quality/01-testing.md).
 3. Commit the release.
-4. Tag `vX.Y.Z` and push the tag. The release workflow builds Python and TypeScript packages.
+4. Tag `vX.Y.Z` and push the tag. The release workflow builds Python and TypeScript packages; the
+   Kotlin package is built and tested by CI but is not published to Maven yet.
 5. Optionally publish the packages to PyPI and npm with the manual [Publishing](03-publishing.md) workflow.
 6. Pin the new tag in the [quickstart](../../01-start/02-first-steps/01-quickstart.md) install command and the release
    notes.
@@ -69,8 +71,9 @@ The public entry points, record fields and decision shape are the compatibility 
 modules can move. Additive fields are preferred; removing or renaming a record field is a schema
 change.
 
-Python and TypeScript move together for a release. A parity difference is a regression. The shared
-vectors in `packages/contracts/` are the reference for both packages.
+Python, TypeScript and Kotlin move together for a release. A parity difference is a regression. The
+shared vectors in `packages/contracts/` are the reference for all three packages, and
+`scripts/ci/check_versions.py` enforces the same package version.
 
 ## Related
 

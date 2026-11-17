@@ -33,6 +33,12 @@ Use one of these:
 - configure npm trusted publishing for this repository and remove the `NODE_AUTH_TOKEN` environment
   variable from `publish.yml`.
 
+## Maven
+
+The Kotlin package is not published yet. It is built and tested by CI, and consumers use a Gradle
+composite build (`includeBuild("path/to/laix/packages/kotlin/laix")`). Adding `maven-publish` and a
+signing configuration is a separate release decision.
+
 The workflow runs the build, tests and conformance suite before `npm publish --provenance`.
 
 ## Publish

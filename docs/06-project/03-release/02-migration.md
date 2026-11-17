@@ -13,7 +13,7 @@ version only moves by a small amount. This page is the upgrade path; the version
 
 ## Upgrade steps
 
-1. Update the Python and TypeScript packages together.
+1. Update the Python, TypeScript and Kotlin packages together.
 2. Run the full checks:
 
    ```powershell
@@ -306,7 +306,7 @@ have to match. For example, the `live` benchmark key maps to `LiveCompositePlann
 - Additive fields are preferred.
 - Removing or renaming a record field is a schema change and needs a new schema version.
 - A change to a reason code is a behaviour change; call it out in the changelog.
-- Python and TypeScript move together for a release. A parity difference is a regression.
+- Python, TypeScript and Kotlin move together for a release. A parity difference is a regression.
 
 ## Deprecation policy
 

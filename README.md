@@ -4,6 +4,7 @@
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)
 ![Node 22+](https://img.shields.io/badge/node-22%2B-339933?logo=node.js&logoColor=white)
+![Kotlin/JVM 17+](https://img.shields.io/badge/kotlin-2.1%20%2F%20JVM%2017%2B-7F52FF?logo=kotlin&logoColor=white)
 
 # LAIX — Live AI Experience
 
@@ -43,8 +44,8 @@ validation pending.
   probability.
 - **The host keeps control.** The decision layer is stateless. The host owns execution, data, storage
   and delivery; the optional app kit adds the lifecycle around the decision.
-- **It is portable and testable.** Python uses the standard library only. TypeScript mirrors the same
-  contract, and CI checks parity, conformance, examples and the benchmark.
+- **It is portable and testable.** Python uses the standard library only. TypeScript and Kotlin/JVM
+  mirror the same contract, and CI checks parity, conformance, examples and the benchmark.
 
 ## When to use LAIX
 
@@ -83,8 +84,21 @@ TypeScript, from a local checkout (the package is not published to npm yet):
 npm install file:../path/to/laix/packages/typescript/laix
 ```
 
-Python 3.11+ or Node 22+. See the [quickstart](docs/01-start/02-first-steps/01-quickstart.md) for the
-full setup.
+Kotlin/JVM, from a local checkout with a Gradle composite build (the package is not published to
+Maven yet):
+
+```kotlin
+// settings.gradle.kts
+includeBuild("../path/to/laix/packages/kotlin/laix")
+
+// build.gradle.kts
+dependencies {
+    implementation("dev.laix:laix-decision:0.17.3")
+}
+```
+
+Python 3.11+, Node 22+, or JDK 17+. See the [quickstart](docs/01-start/02-first-steps/01-quickstart.md)
+for the full setup, or the [Kotlin guide](docs/01-start/02-first-steps/03-kotlin.md) for the JVM package.
 
 ## One decision
 
@@ -144,7 +158,7 @@ choice.
 
 The full request, with a commitment and a human-attention budget, is in the
 [quickstart](docs/01-start/02-first-steps/01-quickstart.md#full-request-approval-commitment-and-attention).
-TypeScript has the same `Decision` shape; the quickstart has the TypeScript version.
+TypeScript and Kotlin/JVM have the same `Decision` shape; the quickstart has both versions.
 
 ## How it works
 
@@ -166,7 +180,7 @@ The same contract covers attention, action, several decision shapes and your own
 | [Two decision families](docs/02-decision/README.md) | signal attention — what matters now — and action — what to do |
 | [Decision shapes and extensions](docs/02-decision/03-decision-shapes/README.md) | single, sequence, fleet, history, explain and policies; portfolios, risk bounds, revalidation, case-based reuse and conflict resolution |
 | [Bring your own policy](docs/02-decision/03-decision-shapes/06-policies/README.md) | any `name` + `decide` object; a planner or model behind the same contract |
-| [Portable and tested](docs/06-project/02-quality/01-testing.md) | Python standard library only; TypeScript parity checked in CI |
+| [Portable and tested](docs/06-project/02-quality/01-testing.md) | Python standard library only; TypeScript and Kotlin/JVM parity checked in CI |
 | [Integrations](docs/03-appkit/01-build/README.md) | [LangGraph](docs/03-appkit/01-build/04-langgraph.md), [MCP](docs/03-appkit/01-build/05-mcp.md), [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) |
 
 A policy is any object with a `name` and a `decide(request)` method. `PlannerPolicy` adapts a
@@ -253,13 +267,14 @@ On a 10-task τ-bench retail slice, the guardrail passed **10/10** vs **9/10** f
 | [LangGraph](docs/03-appkit/01-build/04-langgraph.md) | a decision node, approval interrupt and checkpointer |
 | [MCP server](docs/03-appkit/01-build/05-mcp.md) | expose `decide` over stdio |
 | [A2A and OpenAPI](docs/03-appkit/01-build/06-a2a.md) | an agent card and a host action profile |
-| [Examples](examples/README.md) | Python and TypeScript, grouped by decision and app kit |
+| [Kotlin/JVM](packages/kotlin/laix/README.md) | the JVM package, CLI, bench, MCP server and examples |
+| [Examples](examples/README.md) | Python, TypeScript and Kotlin, grouped by decision and app kit |
 
 ## Contributing
 
 Run the full checks before opening a change; the commands, design rules and pull-request checklist
 are in [CONTRIBUTING.md](CONTRIBUTING.md). CI runs the same checks on every push, plus the live
-benchmark, TypeScript parity, examples, and docs link and anchor checks. See
+benchmark, TypeScript and Kotlin parity, examples, and docs link and anchor checks. See
 [Testing](docs/06-project/02-quality/01-testing.md) for every check.
 
 Questions go to [SUPPORT.md](SUPPORT.md); participation is covered by

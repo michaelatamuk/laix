@@ -1,5 +1,26 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- **Kotlin/JVM implementation.** The decision layer and app kit ship as a third implementation:
+  contract records, planners, policies, signal attention, commitments, outcomes, learning,
+  evaluation, app kit, bench CLI and the MCP stdio server. It replays the shared contract vectors,
+  and `scripts/ci/check_versions.py` keeps the three package versions aligned.
+- **Kotlin documentation and examples.** A dedicated Kotlin guide, Kotlin sections in the
+  quickstart, install, CLI, bench, MCP, testing, versioning and FAQ pages, and a 64-example
+  Gradle project under `examples/kotlin`. `ExamplesTest` runs every example in CI.
+
+### Changed
+
+- **Python parity fixes in the Kotlin package.** Python rounding, truthiness, UTC and offset
+  timestamps, exact decision-record hashes, confidence clamping, streaming restore order and
+  several planner/policy edge cases now match the Python reference.
+- **Contributing covers three packages.** Setup, checks and the pull-request checklist now
+  include Kotlin/JVM, and the repository map, API map and versioning pages list it.
+
+
 ## 0.17.3 - 2026-11-10
 
 ### Fixed

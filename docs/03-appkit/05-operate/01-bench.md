@@ -1,6 +1,6 @@
 # Bench
 
-LAIX-Bench runs the same test cases in Python and TypeScript. It is a deterministic regression suite,
+LAIX-Bench runs the same test cases in Python, TypeScript and Kotlin/JVM. It is a deterministic regression suite,
 not a claim about production accuracy.
 
 | Word | Meaning |
@@ -31,6 +31,16 @@ npm.cmd run bench -- --suite safety --json
 npm.cmd run bench -- --planners
 ```
 
+Kotlin/JVM:
+
+```powershell
+cd packages/kotlin/laix
+.\gradlew.bat bench --args="--list"
+.\gradlew.bat bench --args="--suite safety --json"
+.\gradlew.bat bench --args="--planners"
+.\gradlew.bat bench --args="--live"
+```
+
 ```text
 suite                     cases  passed  agreement
 attention                     3       3      1.000
@@ -46,7 +56,8 @@ escalation                    3       3      1.000
 overall                      25      25      1.000
 ```
 
-Both exit `0` when agreement meets `--fail-under`, otherwise `1`.
+All three exit `0` when agreement meets `--fail-under`, otherwise `1`; the Kotlin CLI rejects an
+unknown suite name.
 
 ## Suites
 
@@ -93,7 +104,8 @@ BenchCase(
 ## Add a case
 
 1. Add it to `packages/python/laix/src/laix/appkit/bench/runner.py`.
-2. Add the same case to `packages/typescript/laix/src/appkit/bench.ts`.
+2. Add the same case to `packages/typescript/laix/src/appkit/bench.ts` and
+   `packages/kotlin/laix/src/main/kotlin/dev/laix/decision/appkit/bench/Bench.kt`.
 3. Run both benches.
 4. Keep the case as a regression.
 
@@ -134,7 +146,7 @@ TypeScript exports the same benchmark as `runBench`, `runStreamBench`, `runPlann
 
 - The decision classes return the expected verb, reason, action and approval flag on fixed cases.
 - A change that breaks a class fails in CI.
-- Python and TypeScript agree on the same fixtures.
+- Python, TypeScript and Kotlin agree on the same fixtures.
 
 ## What it does not prove
 

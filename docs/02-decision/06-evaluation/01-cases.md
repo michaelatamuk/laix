@@ -87,9 +87,12 @@ Two fixture shapes exist:
 | `npm run live-bench` | Python and TypeScript actions on the live corpus |
 | `pytest` | Python contracts, policies, planners and app-kit behaviour |
 | `npm test` | the same surface in TypeScript |
+| `gradlew test` | the same surface in Kotlin/JVM |
+| `gradlew -p examples/kotlin test` | the Kotlin example suite |
 
 The conformance run agrees on 24/24 signal-attention decisions. The live-bench parity check agrees on
-210/210 action ids.
+210/210 action ids. The Kotlin package replays the same signal-attention vectors, reason codes,
+commitment graph and planner cases, the attention bench and the decision schema.
 
 ## Related
 

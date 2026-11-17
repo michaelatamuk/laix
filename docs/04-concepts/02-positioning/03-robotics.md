@@ -39,7 +39,8 @@ LAIX is a good fit for discrete, task-level decisions such as:
 Do not put LAIX in the hard real-time or safety-critical loop.
 
 - It has no hard real-time guarantees, no WCET and no RTOS integration.
-- It is a Python and TypeScript library; the host owns process priority, scheduling and watchdogs.
+- It is a Python, TypeScript and Kotlin/JVM library; the host owns process priority, scheduling and
+  watchdogs.
 - It does not provide functional safety, redundancy, e-stop logic or certified safety functions.
 - It does not provide perception, SLAM, sensor fusion, motion planning or trajectory control.
 - Its planners are decision planners, not motion planners.

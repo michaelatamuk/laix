@@ -27,6 +27,21 @@ TypeScript:
 }
 ```
 
+Kotlin/JVM, from a local checkout (the package is not published to Maven yet). Add a composite build in
+`settings.gradle.kts` and depend on the package:
+
+```kotlin
+// settings.gradle.kts
+includeBuild("../path/to/laix/packages/kotlin/laix")
+
+// build.gradle.kts
+dependencies {
+    implementation("dev.laix:laix-decision:0.17.3")
+}
+```
+
+JDK 17 or newer; the Gradle wrapper downloads Gradle and the Kotlin toolchain.
+
 The release page also has a packed `laix-0.17.3.tgz`. See
 [versioning](../../06-project/03-release/01-versioning.md) for tags and schema versions.
 
@@ -96,6 +111,22 @@ const [decision] = new DecisionClient().decide({
   signals: [{ id: "s-1", kind: "deadline", severity: "high", confidence: 0.9 }],
   context: { now: "2026-11-01T10:00:00Z", quietHours: ["22:00", "06:00"] },
 });
+```
+
+Kotlin/JVM:
+
+```kotlin
+import dev.laix.decision.appkit.DecisionClient
+import dev.laix.decision.contracts.DecisionRequest
+
+val decisions = DecisionClient().decide(
+    DecisionRequest(
+        subject = "one decision",
+        at = "2026-11-01T10:00:00+00:00",
+        signals = listOf(signal),
+        context = context,
+    ),
+)
 ```
 
 ## Use the decision
@@ -262,6 +293,9 @@ The composite planner chooses `ask` over `pay`. `pay` has the higher utility, bu
 commitment to ask the owner before paying; `ask` fulfills that commitment and stays within the
 human-attention budget. The decision carries the four scores, so the trade-off is visible.
 
+The Kotlin example suite has the same request and composite planner in
+`examples/kotlin/src/main/kotlin/dev/laix/examples/`. See the [Kotlin guide](03-kotlin.md).
+
 ## Choose a surface
 
 | You need | Use |
@@ -280,3 +314,4 @@ human-attention budget. The decision carries the four scores, so the trade-off i
 - Learn from outcomes: [outcome learning](../../02-decision/02-domain/03-outcomes.md).
 - Read the full loop: [decision lifecycle](../01-orientation/02-decision-lifecycle.md).
 - Runnable examples: [`../../../examples/README.md`](../../../examples/README.md).
+- Use LAIX from Kotlin/JVM: [Kotlin guide](03-kotlin.md).

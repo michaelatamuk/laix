@@ -42,7 +42,7 @@ LAIX turns those properties into one decision layer:
 - **Live decision** - promises, execution risk and human attention are part of the decision;
   calibration and decision time complete the loop.
 - **Host control** — LAIX decides; the host owns data, execution, storage and delivery.
-- **Evidence** — conformance vectors, bench, examples and Python/TypeScript parity.
+- **Evidence** — conformance vectors, bench, examples and Python, TypeScript and Kotlin parity.
 
 The contribution is the combination: a coherent decision layer for live experiences.
 `LiveCompositePlanner` makes that concrete: one planner result can keep a promise, avoid an irreversible action
