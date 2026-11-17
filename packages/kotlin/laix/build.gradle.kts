@@ -14,6 +14,13 @@ application {
     mainClass.set("dev.laix.decision.appkit.cli.MainKt")
 }
 
+tasks.register<JavaExec>("bench") {
+    group = "application"
+    description = "Run the LAIX decision-class bench"
+    mainClass.set("dev.laix.decision.evaluation.bench.BenchMainKt")
+    classpath = sourceSets["main"].runtimeClasspath
+}
+
 tasks.register<JavaExec>("mcp") {
     group = "application"
     description = "Run the LAIX MCP server over stdio"
