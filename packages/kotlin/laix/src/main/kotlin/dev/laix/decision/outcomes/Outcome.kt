@@ -106,11 +106,11 @@ private fun labelFor(delta: Double, tolerance: Double, direction: String): Strin
  * change; otherwise the label is still recorded but excluded from the
  * attributed summary.
  */
-class OutcomeLedger(
+open class OutcomeLedger(
     val tolerance: Double = 1e-9,
     val records: MutableList<Outcome> = mutableListOf(),
-) {
-    fun record(
+) : OutcomeStore {
+    open fun record(
         decisionId: String,
         metric: String,
         before: Double,
@@ -145,18 +145,18 @@ class OutcomeLedger(
         return outcome
     }
 
-    fun add(outcome: Outcome): Outcome {
+    override fun add(outcome: Outcome): Outcome {
         records += outcome
         return outcome
     }
 
-    fun forDecision(decisionId: String): List<Outcome> =
+    override fun forDecision(decisionId: String): List<Outcome> =
         records.filter { it.decisionId == decisionId }
 
-    fun all(): List<Outcome> = records.toList()
+    override fun all(): List<Outcome> = records.toList()
 
     /** Measured gain, with attribution coverage stated separately. */
-    fun summary(): Map<String, Any?> {
+    override fun summary(): Map<String, Any?> {
         val attributed = records.filter { it.attributed }
         val improved = attributed.count { it.label == "helped" }
         val hurt = attributed.count { it.label == "hurt" }
