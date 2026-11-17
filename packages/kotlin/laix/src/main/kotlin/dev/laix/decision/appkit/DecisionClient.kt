@@ -7,6 +7,7 @@ import dev.laix.decision.appkit.delivery.DeliveryReceipt
 import dev.laix.decision.appkit.execution.ExecutionBridge
 import dev.laix.decision.appkit.records.ExecutionReceipt
 import dev.laix.decision.appkit.runtime.DecisionRuntime
+import dev.laix.decision.appkit.streaming.StreamSession
 import dev.laix.decision.attributesFor
 import dev.laix.decision.contract.DecisionPolicy
 import dev.laix.decision.contracts.Decision
@@ -15,6 +16,9 @@ import dev.laix.decision.contracts.SCHEMA_VERSION
 import dev.laix.decision.outcomes.Outcome
 import dev.laix.decision.policies.DecisionPolicyRegistry
 import dev.laix.decision.policies.action.ACTION_POLICY_VERSION
+import dev.laix.decision.planners.attention.HumanAttentionBudget
+import dev.laix.decision.support.utcNow
+import java.time.OffsetDateTime
 import dev.laix.decision.select
 
 /**
@@ -68,6 +72,41 @@ class DecisionClient(
         decisions += result
         return result
     }
+
+    /** Create a stream session backed by this layer's decision path. */
+    fun stream(
+        streamId: String = "",
+        capacity: Int = 32,
+        onFull: String = "latest_wins",
+        late: String = "drop",
+        cooldownMs: Long = 0,
+        hysteresisMs: Long = 0,
+        dedupeMs: Long = 0,
+        maxDecisionsPerWindow: Int? = null,
+        budgetWindowMs: Long = 1000,
+        latencySamples: Int = 256,
+        trace: Boolean = true,
+        recorder: ((Decision) -> Unit)? = null,
+        humanAttentionBudget: HumanAttentionBudget? = null,
+        clock: () -> OffsetDateTime = { utcNow() },
+    ): StreamSession =
+        StreamSession(
+            decide = this::decide,
+            streamId = streamId,
+            capacity = capacity,
+            onFull = onFull,
+            late = late,
+            cooldownMs = cooldownMs,
+            hysteresisMs = hysteresisMs,
+            dedupeMs = dedupeMs,
+            maxDecisionsPerWindow = maxDecisionsPerWindow,
+            budgetWindowMs = budgetWindowMs,
+            latencySamples = latencySamples,
+            trace = trace,
+            recorder = recorder,
+            humanAttentionBudget = humanAttentionBudget,
+            clock = clock,
+        )
 
     fun execute(
         decision: Decision,
